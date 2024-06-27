@@ -1,0 +1,18 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DataObra"
+        xmlns:syncfusion="http://schemas.syncfusion.com/wpf" x:Class="DataObra.Inicio"
+        mc:Ignorable="d"
+        Title="Inicio" Height="450" Width="800">
+    <Grid>
+
+        <syncfusion:TabControlExt HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <syncfusion:TabItemExt Header="TabItem1"/>
+            <syncfusion:TabItemExt Header="TabItem2"/>
+        </syncfusion:TabControlExt>
+
+    </Grid>
+</Window>
