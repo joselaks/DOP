@@ -14,14 +14,24 @@ using System.Windows.Shapes;
 
 namespace DataObra
 {
-    /// <summary>
-    /// Lógica de interacción para Inicio.xaml
-    /// </summary>
     public partial class Inicio : Window
     {
+        public List<string> Listado;
+
         public Inicio()
         {
             InitializeComponent();
+            Listado = new List<string>();
+
+            string texto = "uno";
+            Listado.Add(texto);
+            texto = "dos";
+            Listado.Add(texto);
+
+            foreach (var item in Listado)
+            {
+                MessageBox.Show(item);
+            }
         }
     }
 }

@@ -10,9 +10,15 @@
     <Grid>
 
         <syncfusion:TabControlExt HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <syncfusion:TabItemExt Header="TabItem1"/>
+            <syncfusion:TabItemExt Header="TabItem1" >
+                <Label Content="Agrupadores" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="32" FontWeight="Bold" />
+                
+            
+
+            </syncfusion:TabItemExt>
             <syncfusion:TabItemExt Header="TabItem2"/>
         </syncfusion:TabControlExt>
+        <syncfusion:Clock />
 
     </Grid>
 </Window>
