@@ -1,0 +1,105 @@
+﻿<UserControl x:Class="DataObra.Base.Controles.DiagramaInsumos"
+                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DataObra.Base.Controles"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="12"/>
+            <RowDefinition Height="45"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2" Grid.RowSpan="6" BorderThickness="3" BorderBrush="Violet" Margin="-9,-9,-9,-9" />
+
+        <Label Content="Insumos" FontWeight="SemiBold" Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontSize="21" Margin="0,-10,0,0" VerticalAlignment="Top" Background="Violet" ToolTip="los 6 tipos de Insumos" />
+
+        <Button x:Name="SubContratos" Content="SubContratos" HorizontalAlignment="Right" Grid.Row="4" Grid.Column="4" Background="DarkSeaGreen" BorderThickness="0" Width="120" Height="60" FontSize="18" Click="BotonDoc_Click" ToolTip="Agrega SubContrato" Margin="0,0,10,0" />
+
+        <Button x:Name="Auxiliares" Content="Auxiliares" HorizontalAlignment="Right" Grid.Row="6" Grid.Column="4" Background="DarkSeaGreen" BorderThickness="0" Width="120" Height="60" FontSize="18" Click="BotonDoc_Click" ToolTip="Agrega Auxiliar" Margin="0,0,10,0" />
+
+        <Button x:Name="ManodeObra" Content="Mano de O." Grid.Row="2" Grid.Column="4" Grid.RowSpan="1" HorizontalAlignment="Right" Background="DarkSeaGreen" BorderThickness="0" Width="120" Height="60" FontSize="18" Click="BotonDoc_Click" ToolTip="Agrega Mano de Obra" Margin="0,0,10,0" />
+
+        <Button x:Name="Obreros" Content="Obreros" Grid.Row="2" Grid.Column="0" Grid.RowSpan="1" HorizontalAlignment="Left" Background="DarkSeaGreen" BorderThickness="0" Width="120" Height="60" FontSize="18" Click="BotonDoc_Click" ToolTip="Agrega Obrero" Margin="0,0,10,0" />
+        <Path Grid.Column="1" Grid.Row="2" Stretch="Fill" Fill="LimeGreen" Data="M 0,110 70,110 45,90 75,90 120,120 75,150 45,150 70,130 0,130 Z"
+            HorizontalAlignment="Center" Width="50" Height="24" Margin="0,0,2,0" RenderTransformOrigin=".5,.5">
+            <Path.RenderTransform>
+                <RotateTransform Angle="0" />
+            </Path.RenderTransform>
+        </Path>
+
+        <Button x:Name="Convenios" Content="Convenios" Grid.Row="2" Grid.Column="2" Grid.RowSpan="1" HorizontalAlignment="Left" Background="DarkSeaGreen" BorderThickness="0" Width="120" Height="60" FontSize="18" Click="BotonDoc_Click" ToolTip="Agrega Convenio"/>
+
+        <Path Grid.Column="3" Grid.Row="2" Stretch="Fill" Fill="LimeGreen" Data="M 0,110 70,110 45,90 75,90 120,120 75,150 45,150 70,130 0,130 Z"
+            HorizontalAlignment="Center" Width="50" Height="24" Margin="0,0,2,0" RenderTransformOrigin=".5,.5">
+            <Path.RenderTransform> <RotateTransform Angle="0" /> </Path.RenderTransform>
+        </Path>
+
+        <Button x:Name="Contratistas" Content="Contratistas" Grid.Row="4" Grid.Column="0" Grid.RowSpan="1" HorizontalAlignment="Left" Background="DarkSeaGreen" BorderThickness="0" Width="120" Height="60" FontSize="18" Click="BotonDoc_Click" ToolTip="Agrega Contratista" />
+        <Path Grid.Column="1" Grid.Row="4" Stretch="Fill" Fill="LimeGreen" Data="M 0,110 70,110 45,90 75,90 120,120 75,150 45,150 70,130 0,130 Z"
+            HorizontalAlignment="Center" Width="50" Height="24" Margin="0,0,2,0" RenderTransformOrigin=".5,.5">
+            <Path.RenderTransform> <RotateTransform Angle="0" /> </Path.RenderTransform>
+        </Path>
+
+        <Button x:Name="Contratos" Content="Contratos" Grid.Row="4" Grid.Column="2" Grid.RowSpan="1" HorizontalAlignment="Left" Background="DarkSeaGreen" BorderThickness="0" Width="120" Height="60" FontSize="18" Click="BotonDoc_Click" ToolTip="Agrega Contrato" />
+        <Path Grid.Column="3" Grid.Row="4" Stretch="Fill" Fill="LimeGreen" Data="M 0,110 70,110 45,90 75,90 120,120 75,150 45,150 70,130 0,130 Z"
+            HorizontalAlignment="Center" Width="50" Height="24" Margin="0,0,2,0" RenderTransformOrigin=".5,.5">
+            <Path.RenderTransform>
+                <RotateTransform Angle="0" />
+            </Path.RenderTransform>
+        </Path>
+
+        <Button x:Name="Tareas" Content="Tareas" Grid.Row="6" Grid.Column="2" Grid.RowSpan="1" HorizontalAlignment="Left" Background="Violet"  BorderThickness="0" Width="120" Height="60" FontSize="18" FontWeight="SemiBold" Click="BotonDoc_Click" ToolTip="Agrega análisis de Tarea" />
+        <Path Grid.Column="3" Grid.Row="6" Stretch="Fill" Fill="Violet" Data="M 0,110 70,110 45,90 75,90 120,120 75,150 45,150 70,130 0,130 Z" ToolTip="Insumos componen Tareas"
+             HorizontalAlignment="Center" Width="50" Height="24" Margin="0,0,2,0" RenderTransformOrigin=".5,.5">
+            <Path.RenderTransform> <RotateTransform Angle="180" /> </Path.RenderTransform>
+        </Path>
+
+        <Button x:Name="Otros" Content="Otros" Grid.Row="6" Grid.Column="5" HorizontalAlignment="Left" Background="DarkSeaGreen" BorderThickness="0" Width="120" Height="60" FontSize="18" Click="BotonDoc_Click" ToolTip="Agrega Otro" />
+
+        <Button x:Name="Equipos" Content="Equipos" Grid.Row="4" Grid.Column="5" HorizontalAlignment="Left" Background="DarkSeaGreen" BorderThickness="0" Width="120" Height="60" FontSize="18" Click="BotonDoc_Click" ToolTip="Agrega Equipo" />
+        <Path Grid.Column="7" Grid.Row="3" Stretch="Fill" Fill="LimeGreen" Data="M 0,110 70,110 45,90 75,90 120,120 75,150 45,150 70,130 0,130 Z" ToolTip="Listas de precio"
+            HorizontalAlignment="Center" Width="50" Height="24" Margin="0,0,2,0" RenderTransformOrigin=".5,.5">
+            <Path.RenderTransform> <RotateTransform Angle="90" /> </Path.RenderTransform>
+        </Path>
+
+        <Button x:Name="Materiales" Content="Materiales" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="5" Background="DarkSeaGreen" BorderThickness="0" Width="120" Height="60" FontSize="18" Click="BotonDoc_Click" ToolTip="Agrega Material" />
+        <Path Grid.Column="6" Grid.Row="3" Stretch="Fill" Fill="LimeGreen" Data="M 0,110 70,110 45,90 75,90 120,120 75,150 45,150 70,130 0,130 Z" ToolTip="Diferentes medidas, tipos y marcas"
+           HorizontalAlignment="Center" Width="50" Height="24" Margin="0,0,2,0" RenderTransformOrigin=".5,.5">
+            <Path.RenderTransform> <RotateTransform Angle="215" /> </Path.RenderTransform>
+        </Path>
+
+        <Button x:Name="Articulos" Content="Articulos" Grid.Row="4" Grid.Column="7" Grid.RowSpan="1" HorizontalAlignment="Right" Background="DarkSeaGreen" BorderThickness="0" Width="120" Height="60" FontSize="18" Click="BotonDoc_Click" ToolTip="Agrega Articulo" />
+        <Path Grid.Column="6" Grid.Row="4" Stretch="Fill" Fill="LimeGreen" Data="M 0,110 70,110 45,90 75,90 120,120 75,150 45,150 70,130 0,130 Z" ToolTip="Diferentes medidas, tipos y marcas"
+           HorizontalAlignment="Center" Width="50" Height="24" Margin="0,0,2,0" RenderTransformOrigin=".5,.5">
+            <Path.RenderTransform> <RotateTransform Angle="180" /> </Path.RenderTransform>
+        </Path>
+
+        <Button x:Name="Proveedores" Content="Proveedores" Grid.Row="2" Grid.Column="7" HorizontalAlignment="Right" Background="DarkSeaGreen" BorderThickness="0" Width="120" Height="60" FontSize="18" Click="BotonDoc_Click" ToolTip="Agrega Proveedor" />
+
+        <Path Grid.Column="6" Grid.Row="5" Stretch="Fill" Fill="LimeGreen" Data="M 0,110 70,110 45,90 75,90 120,120 75,150 45,150 70,130 0,130 Z" ToolTip="Diferentes medidas, tipos y marcas"
+           HorizontalAlignment="Center" Width="50" Height="24" Margin="0,0,2,0" RenderTransformOrigin=".5,.5">
+            <Path.RenderTransform> <RotateTransform Angle="145" /> </Path.RenderTransform>
+        </Path>
+
+    </Grid>
+
+</UserControl>

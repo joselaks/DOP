@@ -1,0 +1,58 @@
+﻿<UserControl xmlns:Syncfusion="http://schemas.syncfusion.com/wpf"  x:Class="DataObra.Insumos.NavInsumo"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DataObra.Insumos"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="1360">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border BorderThickness="2" BorderBrush="Black" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="32" ></RowDefinition>
+                    <RowDefinition ></RowDefinition>
+
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="Uno" Name="Titulo1" Grid.Column="1" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,4,10,4">
+                        <TextBox Width="92" Height="28" ></TextBox>
+                        <Image Source="/DataObra;component/Imagenes/Lupa.png" />
+                    </StackPanel>
+
+                </Grid>
+                <Syncfusion:SfDataGrid x:Name="Grilla1" Grid.Row="3" SelectionMode="Single" AutoGenerateColumns="False"  >
+                    <Syncfusion:SfDataGrid.Columns>
+                        <Syncfusion:GridTextColumn HeaderText="Descripción" Width="92"/>
+                        <Syncfusion:GridTextColumn HeaderText="Unidad" Width="92"/>
+                        <Syncfusion:GridTextColumn HeaderText="Precio" Width="92"/>
+                    </Syncfusion:SfDataGrid.Columns>
+                </Syncfusion:SfDataGrid>
+            </Grid>
+        </Border>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+            <TextBlock Text="Tres" Name="Titulo3" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" />
+            <Image Source="/DataObra;component/Imagenes/Actualiza.png" Margin="12,5,1,5" ToolTip="Ver relacionado" />
+        </StackPanel>
+
+    </Grid>
+</UserControl>
