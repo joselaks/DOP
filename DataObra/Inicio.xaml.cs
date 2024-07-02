@@ -188,7 +188,7 @@ namespace DataObra
                     switch (Solapa)
                     {
                         case "Agrupadores":
-                            navAgrupador = new NavAgrupador();
+                            navAgrupador = new NavAgrupador(tileSele.Name);
                             nuevaGrilla.Children.Add(navAgrupador);
                             break;
                         case "Documentos":

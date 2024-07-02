@@ -23,16 +23,34 @@ namespace DataObra.Agrupadores.Clases
     {
         Servidor azure;
         public ObservableCollection<KanbanModel> Tasks { get; set; }
-        public NavAgrupador()
+        public NavAgrupador(string pTipo)
         {
             InitializeComponent();
+
+            int TipoAgrupa;
+
+            switch (pTipo)
+            {
+                case "Obras":
+                    TipoAgrupa = 1;
+                    break;
+                case "Admin":
+                    TipoAgrupa = 2;
+                    break;
+                case "Clientes":
+                    TipoAgrupa = 3;
+                    break;
+                default:
+                    TipoAgrupa = 100;
+                    break;
+            }
 
             azure = new Servidor();
 
             Tasks = new ObservableCollection<KanbanModel>();
             KanbanModel task;
 
-            foreach (var item in azure.Agrupadores)
+            foreach (var item in azure.Agrupadores.Where(a => a.TipoID == TipoAgrupa))
             {
                 task = new KanbanModel();
 
@@ -48,11 +66,23 @@ namespace DataObra.Agrupadores.Clases
                 {
                     task.Category = "Pendientes";
                 }
-                
+
                 Tasks.Add(task);
             }
 
             this.GrillaAgrupadores.ItemsSource = Tasks;
         }
+
+        private void Nuevo_Click(object sender, RoutedEventArgs e)
+        {
+            KanbanModel task = new KanbanModel();
+
+            task.Title = "Nuevo Agrupador";
+            task.Description = "Nuevo";
+            task.Category = "Activos";
+
+            Tasks.Add(task);
+        }
     }
 }
+

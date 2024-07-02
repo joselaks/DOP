@@ -7,8 +7,13 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        
+
         <Kanban:SfKanban x:Name="GrillaAgrupadores" MinColumnWidth="150" ColumnMappingPath="Category" AutoGenerateColumns="False">
+            <Kanban:SfKanban.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Nuevo" Click="Nuevo_Click"/>
+                </ContextMenu>
+            </Kanban:SfKanban.ContextMenu>
             <Kanban:SfKanban.IndicatorColorPalette>
                 <Kanban:ColorMapping Key="Low" Color="Blue"/>
                 <Kanban:ColorMapping Key="Normal" Color="Green" />

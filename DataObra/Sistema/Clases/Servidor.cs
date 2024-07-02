@@ -104,13 +104,15 @@ namespace DataObra.Sistema.Clases
 
         private void InitializeClasificadores()
         {
-            //Clasificadores = new ObservableCollection<SysClasificador2>
+            //Clasificadores = new ObservableCollection<SysClasificador>
             //{
             //    new SysClasificador { ID = 1, Descrip = "Factura", Active = true, Tipo = 'D', Numero = 10 },
             //    new SysClasificador { ID = 2, Descrip = "Remito", Active = false, Tipo = 'D', Numero = null },
             //    new SysClasificador { ID = 3, Descrip = "Pedido", Active = true, Tipo = 'D', Numero = 20 },
             //};
         }
+
+        #endregion
 
         #region AGRUPADORES
         private void InitializeAgrupadores()
@@ -177,21 +179,7 @@ namespace DataObra.Sistema.Clases
         }
     }
 
-    // SI DESCOMENTO ESTO, FUNCIONA
-    //public class Agrupador // Repetido, ya esta en Agrupadores/Clases
-    //{
-    //    public int ID { get; set; }
-    //    public int CuentaID { get; set; }
-    //    public int UsuarioID { get; set; }
-    //    public DateTime Editado { get; set; }
-    //    public int TipoID { get; set; }
-    //    public string Descrip { get; set; } = string.Empty;
-    //    public bool Active { get; set; }
-    //    public int Numero { get; set; }
-    //}
-
     #endregion Agrupadores
 
-        #endregion
-
 }
+
