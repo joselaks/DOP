@@ -39,9 +39,11 @@ namespace DataObra
         public Inicio()
         {
             InitializeComponent();
+
             Solapa = "Agrupadores";
 
             GrupoAgrupadores();
+
             GrupoDocumentos();
             GrupoInsumos();
 

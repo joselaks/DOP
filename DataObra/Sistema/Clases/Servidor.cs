@@ -1,4 +1,5 @@
-﻿using DataObra.Documentos.Clases;
+﻿using DataObra.Agrupadores.Clases;
+using DataObra.Documentos.Clases;
 using DataObra.Sur.Clases;
 using System;
 using System.Collections.Generic;
@@ -176,17 +177,18 @@ namespace DataObra.Sistema.Clases
         }
     }
 
-    public class Agrupador // Repetido, ya esta en Agrupadores/Clases
-    {
-        public int ID { get; set; }
-        public int CuentaID { get; set; }
-        public int UsuarioID { get; set; }
-        public DateTime Editado { get; set; }
-        public int TipoID { get; set; }
-        public string Descrip { get; set; } = string.Empty;
-        public bool Active { get; set; }
-        public int Numero { get; set; }
-    }
+    // SI DESCOMENTO ESTO, FUNCIONA
+    //public class Agrupador // Repetido, ya esta en Agrupadores/Clases
+    //{
+    //    public int ID { get; set; }
+    //    public int CuentaID { get; set; }
+    //    public int UsuarioID { get; set; }
+    //    public DateTime Editado { get; set; }
+    //    public int TipoID { get; set; }
+    //    public string Descrip { get; set; } = string.Empty;
+    //    public bool Active { get; set; }
+    //    public int Numero { get; set; }
+    //}
 
     #endregion Agrupadores
 
