@@ -25,7 +25,7 @@ namespace DataObra.Sistema.Clases
         public ObservableCollection<SurUsuario> Usuarios { get; private set; }
         
         //public ObservableCollection<SysClasificador> Clasificadores { get; set; }
-        public ObservableCollection<Clases.Agrupador> Agrupadores { get; private set; }
+        public ObservableCollection<Agrupadores.Clases.Agrupador> Agrupadores { get; private set; }
         public ObservableCollection<Documento> Documentos { get; private set; }
 
         #endregion

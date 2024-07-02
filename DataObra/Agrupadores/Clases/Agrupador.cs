@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataObra.Agrupadores.Clases
 {
-    class Agrupador
+    public class Agrupador
     {
         #region SISTEMA
         public int ID { get; set; }
@@ -22,7 +22,7 @@ namespace DataObra.Agrupadores.Clases
         #endregion
     }
 
-    class AgrupadorRel
+    public class AgrupadorRel
     {
         public int SuperiorID { get; set; }
         public int InferiorID { get; set; }
