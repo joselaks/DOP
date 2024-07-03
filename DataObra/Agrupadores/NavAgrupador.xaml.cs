@@ -23,6 +23,8 @@ namespace DataObra.Agrupadores.Clases
     {
         Servidor azure;
         public ObservableCollection<KanbanModel> Tasks { get; set; }
+        private KanbanModel selectedItem;
+
         public NavAgrupador(string pTipo)
         {
             InitializeComponent();
@@ -82,6 +84,27 @@ namespace DataObra.Agrupadores.Clases
             task.Category = "Activos";
 
             Tasks.Add(task);
+        }
+
+        private void Modificar_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void Borrar_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void GrillaAgrupadores_CardTapped(object sender, KanbanTappedEventArgs e)
+        {
+            var sele = e.SelectedCard as KanbanCardItem;
+
+            MessageBox.Show(sele.Name);
+        }
+
+        private void GrillaAgrupadores_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            
         }
     }
 }
