@@ -24,6 +24,7 @@ namespace DataObra.Agrupadores.Clases
         Servidor azure;
         public ObservableCollection<KanbanModel> Tasks { get; set; }
         private KanbanModel selectedItem;
+        // Comentario
 
         public NavAgrupador(string pTipo)
         {
