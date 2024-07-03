@@ -98,9 +98,8 @@ namespace DataObra.Agrupadores.Clases
 
         private void GrillaAgrupadores_CardTapped(object sender, KanbanTappedEventArgs e)
         {
-            var sele = e.SelectedCard as KanbanCardItem;
-
-            MessageBox.Show(sele.Name);
+            KanbanModel kanbanModel = e.SelectedCard.Content as KanbanModel;
+            MessageBox.Show(kanbanModel.Title.ToString());
         }
 
         private void GrillaAgrupadores_DoubleClick(object sender, MouseButtonEventArgs e)
