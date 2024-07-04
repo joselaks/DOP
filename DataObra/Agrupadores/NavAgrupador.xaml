@@ -5,48 +5,30 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DataObra.Agrupadores.Clases"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="1132">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="27" />
             <RowDefinition Height="*" />
-
         </Grid.RowDefinitions>
-        
-        
-        
-        <ToolBarTray DockPanel.Dock="Top">
-            <ToolBar>
-                <Button Click="Nuevo_Click">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="/Imagenes/suma.png" Width="16" Height="16"/>
-                        <TextBlock Text="Agregar" Margin="5,0,0,0"/>
-                    </StackPanel>
-                </Button>
-                <Button Click="Modificar_Click">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="/Imagenes/operar.png" Width="16" Height="16"/>
-                        <TextBlock Text="Modificar" Margin="5,0,0,0"/>
-                    </StackPanel>
-                </Button>
-                <Button Click="Borrar_Click">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="/Imagenes/otrosBTN.png" Width="16" Height="16"/>
-                        <TextBlock Text="Borrar" Margin="5,0,0,0"/>
-                    </StackPanel>
-                </Button>
-            </ToolBar>
-        </ToolBarTray>
-        
+
+        <Button Click="Nuevo_Click" Content="Nuevo" Width="82" Height="23" HorizontalAlignment="Left" Margin="12,0,0,0" />
+
         <Kanban:SfKanban MouseDoubleClick="GrillaAgrupadores_DoubleClick" CardTapped="GrillaAgrupadores_CardTapped" Grid.Row="1" Selector.Selected="Nuevo_Click" x:Name="GrillaAgrupadores" MinColumnWidth="150" ColumnMappingPath="Category" AutoGenerateColumns="False">
             <Kanban:SfKanban.IndicatorColorPalette>
                 <Kanban:ColorMapping Key="Low" Color="Blue"/>
                 <Kanban:ColorMapping Key="Normal" Color="Green" />
                 <Kanban:ColorMapping Key="High" Color="Red" />
             </Kanban:SfKanban.IndicatorColorPalette>
+            <Kanban:SfKanban.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Editar" Click="EditarFicha_Click"/>
+                </ContextMenu>
+            </Kanban:SfKanban.ContextMenu>
             <Kanban:KanbanColumn Categories="Pendientes" AllowDrop="True" IsExpanded="True" Title="Pendientes"/>
             <Kanban:KanbanColumn Categories="Activos" AllowDrop="True" IsExpanded="True" Title="Activos"/>
-            <Kanban:KanbanColumn Categories="Archivados" AllowDrag="True" IsExpanded="True" Title="Archivados"/>
+            <Kanban:KanbanColumn Categories="Archivados" AllowDrag="True" IsExpanded="False" Title="Archivados"/>
+            <Kanban:KanbanColumn Categories="Borrados" AllowDrag="True" IsExpanded="False" Title="Borrados"/>
         </Kanban:SfKanban>
     </Grid>
 </UserControl>

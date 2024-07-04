@@ -1,6 +1,8 @@
-﻿using DataObra.Sistema.Clases;
+﻿using DataObra.Documentos.Clases;
+using DataObra.Sistema.Clases;
 using Syncfusion.ProjIO;
 using Syncfusion.UI.Xaml.Kanban;
+using Syncfusion.Windows.Shared;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,16 +24,15 @@ namespace DataObra.Agrupadores.Clases
     public partial class NavAgrupador : UserControl
     {
         Servidor azure;
-        public ObservableCollection<KanbanModel> Tasks { get; set; }
+        public ObservableCollection<KanbanModel> Listado { get; set; }
         private KanbanModel selectedItem;
-        // Comentario
+
+        int TipoAgrupa;
 
         public NavAgrupador(string pTipo)
         {
             InitializeComponent();
-
-            int TipoAgrupa;
-
+            
             switch (pTipo)
             {
                 case "Obras":
@@ -48,9 +49,14 @@ namespace DataObra.Agrupadores.Clases
                     break;
             }
 
+            CargaAgrupadores(TipoAgrupa);
+        }
+
+        private void CargaAgrupadores(int pTipo)
+        {
             azure = new Servidor();
 
-            Tasks = new ObservableCollection<KanbanModel>();
+            Listado = new ObservableCollection<KanbanModel>();
             KanbanModel task;
 
             foreach (var item in azure.Agrupadores.Where(a => a.TipoID == TipoAgrupa))
@@ -70,10 +76,16 @@ namespace DataObra.Agrupadores.Clases
                     task.Category = "Pendientes";
                 }
 
-                Tasks.Add(task);
+                Listado.Add(task);
             }
 
-            this.GrillaAgrupadores.ItemsSource = Tasks;
+            this.GrillaAgrupadores.ItemsSource = Listado;
+
+
+        }
+        private void GrillaAgrupadores_CardTapped(object sender, KanbanTappedEventArgs e)
+        {
+            selectedItem = e.SelectedCard.Content as KanbanModel;
         }
 
         private void Nuevo_Click(object sender, RoutedEventArgs e)
@@ -82,29 +94,41 @@ namespace DataObra.Agrupadores.Clases
 
             task.Title = "Nuevo Agrupador";
             task.Description = "Nuevo";
-            task.Category = "Activos";
+            task.Category = "Pendientes";
 
-            Tasks.Add(task);
-        }
-
-        private void Modificar_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void Borrar_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void GrillaAgrupadores_CardTapped(object sender, KanbanTappedEventArgs e)
-        {
-            KanbanModel kanbanModel = e.SelectedCard.Content as KanbanModel;
-            MessageBox.Show(kanbanModel.Title.ToString());
+            Listado.Add(task);
         }
 
         private void GrillaAgrupadores_DoubleClick(object sender, MouseButtonEventArgs e)
         {
-            
+            // Abre el Agrupador con todos los documentos relacionados
+
+            if (selectedItem != null)
+            {
+                MessageBox.Show("Abierto: " + selectedItem.Title);
+            }
+        }
+
+        private void EditarFicha_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedItem != null)
+            {
+                var sele = azure.Agrupadores.FirstOrDefault(a => a.ID == selectedItem.ID.ConvertToInt64Null());
+
+                if (sele != null)
+                {
+                    Ficha fichaWindow = new Ficha(sele, 1);
+                    fichaWindow.AgrupadorModified += FichaWindow_AgrupadorModified;
+                    fichaWindow.Show();
+                }
+            }
+        }
+
+        private void FichaWindow_AgrupadorModified(object? sender, Agrupador e)
+        {
+            CargaAgrupadores(TipoAgrupa);
+            this.GrillaAgrupadores.ItemsSource = null;
+            this.GrillaAgrupadores.ItemsSource = azure.Agrupadores;
         }
     }
 }
