@@ -79,9 +79,8 @@ namespace DataObra.Agrupadores.Clases
                 Listado.Add(task);
             }
 
+            this.GrillaAgrupadores.ItemsSource = null;
             this.GrillaAgrupadores.ItemsSource = Listado;
-
-
         }
         private void GrillaAgrupadores_CardTapped(object sender, KanbanTappedEventArgs e)
         {
@@ -126,9 +125,16 @@ namespace DataObra.Agrupadores.Clases
 
         private void FichaWindow_AgrupadorModified(object? sender, Agrupador e)
         {
-            CargaAgrupadores(TipoAgrupa);
-            this.GrillaAgrupadores.ItemsSource = null;
-            this.GrillaAgrupadores.ItemsSource = azure.Agrupadores;
+            var modificado = Listado.FirstOrDefault(a => a.ID == e.ID.ToString());
+
+            if (modificado != null)
+            {
+                // Actualiza las propiedades del objeto existente
+                modificado.Title = e.Descrip;
+                //modificado.num = e.Numero;
+
+                //CargaAgrupadores(TipoAgrupa);
+            }
         }
     }
 }

@@ -8,8 +8,10 @@
         Title="FichaAgrupador" Height="450" Width="800">
     <Grid>
         <StackPanel Margin="10">
-            <TextBlock Text="Título" Margin="0,0,0,5"/>
+            <TextBlock Text="Descripción" Margin="0,0,0,5"/>
             <TextBox Text="{Binding Descrip}" Margin="0,0,0,10"/>
+            <TextBlock Text="Numero" Margin="0,0,0,5"/>
+            <TextBox Text="{Binding Numero}" Margin="0,0,0,10"/>
             <Button Content="Guardar" Click="BotonGuardar_Click"/>
         </StackPanel>
     </Grid>
