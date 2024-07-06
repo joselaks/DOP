@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:DataObra.Agrupadores.Clases"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="1132">
-    <Grid>
+    <Grid x:Name="Grilla">
         <Grid.RowDefinitions>
             <RowDefinition Height="27" />
             <RowDefinition Height="*" />

@@ -2,6 +2,7 @@
 using DataObra.Sistema.Clases;
 using Syncfusion.ProjIO;
 using Syncfusion.UI.Xaml.Kanban;
+using Syncfusion.UI.Xaml.TreeView;
 using Syncfusion.Windows.Shared;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Syncfusion.Windows.Controls.Layout;
+using Syncfusion.UI.Xaml.Diagram.Stencil;
 
 namespace DataObra.Agrupadores.Clases
 {
@@ -28,11 +31,14 @@ namespace DataObra.Agrupadores.Clases
         private KanbanModel selectedItem;
 
         int TipoAgrupa;
+        string Tipo;
 
         public NavAgrupador(string pTipo)
         {
             InitializeComponent();
             
+            Tipo = pTipo;
+
             switch (pTipo)
             {
                 case "Obras":
@@ -102,11 +108,92 @@ namespace DataObra.Agrupadores.Clases
         {
             // Abre el Agrupador con todos los documentos relacionados
 
-            if (selectedItem != null)
+            switch (Tipo)
             {
-                MessageBox.Show("Abierto: " + selectedItem.Title);
+                case "Obras":
+                    string[] colObra = { "Presupuestos", "Planes", "Certificados", "Partes", "Remitos", "Facturas" };
+                    foreach (var item in colObra)
+                    {
+                        CreaCarpetas(item);
+                    }
+                    break;
+                case "Clientes":
+                    string[] colAdmin = { "Facturas", "Cobros" };
+                    foreach (var item in colAdmin)
+                    {
+                        CreaCarpetas(item);
+                    }
+                    break;
+                case "Proveedores":
+                    string[] colProv = { "Compras", "Remitos", "Facturas", "Pagos" };
+                    foreach (var item in colProv)
+                    {
+                        CreaCarpetas(item);
+                    }
+                    break;
+                case "Contratistas":
+                    string[] colCont = { "Contratos", "Remitos", "Facturas", "Pagos" };
+                    foreach (var item in colCont)
+                    {
+                        CreaCarpetas(item);
+                    }
+                    break;
+                case "Obreros":
+                    string[] colObrero = { "Partes", "Sueldo", "Pagos" };
+                    foreach (var item in colObrero)
+                    {
+                        CreaCarpetas(item);
+                    }
+                    break;
+                case "Admin":
+                    string[] colTec = { "Acopios", "Pedidos", "Compras", "Remitos", "Facturas", "Pagos" };
+                    foreach (var item in colTec)
+                    {
+                        CreaCarpetas(item);
+                    }
+                    break;
+                default:
+                    break;
             }
         }
+
+        public void CreaCarpetas(string pAgrupador)
+        {
+            // Crea instancia de TileView
+            TileViewControl Tiles = new TileViewControl();
+
+            // Items
+            TileViewItem tileView = new TileViewItem();
+            tileView.Width = 400;
+            tileView.Height = 350;
+            tileView.Margin = new Thickness(5);
+            tileView.Header = pAgrupador;
+            tileView.Content = "Documetos de " + pAgrupador;
+
+            // Agregar el TileViewItem al TileViewControl
+            Tiles.Items.Add(tileView);
+
+            Grilla.Children.Add(Tiles);
+        }
+
+        //private void CreaCarpetas(string item)
+        //{
+        //    RadTileViewItem carpeta = new RadTileViewItem();
+        //    carpeta.Style = (Style)FindResource("RadTileViewItemStyle");
+        //    carpeta.Header = item;
+
+        //    switch (item)
+        //    {
+        //        case "Presupuestos":
+        //            cListadoPresupuestos listapre = new cListadoPresupuestos("1");
+        //            carpeta.Content = listapre;
+        //            break;
+        //        case "Facturas":
+        //            break;
+        //    }
+
+        //    navegador.Items.Add(carpeta);
+        //}
 
         private void EditarFicha_Click(object sender, RoutedEventArgs e)
         {
@@ -116,7 +203,7 @@ namespace DataObra.Agrupadores.Clases
 
                 if (sele != null)
                 {
-                    Ficha fichaWindow = new Ficha(sele, 1);
+                    FichaAgrupador fichaWindow = new FichaAgrupador(sele, 1);
                     fichaWindow.AgrupadorModified += FichaWindow_AgrupadorModified;
                     fichaWindow.Show();
                 }
@@ -131,9 +218,7 @@ namespace DataObra.Agrupadores.Clases
             {
                 // Actualiza las propiedades del objeto existente
                 modificado.Title = e.Descrip;
-                //modificado.num = e.Numero;
-
-                //CargaAgrupadores(TipoAgrupa);
+                modificado.Description = e.Numero.ToString();
             }
         }
     }
