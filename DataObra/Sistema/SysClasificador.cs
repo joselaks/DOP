@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataObra.Sistema.Clases
+namespace DataObra.Sistema
 {
     class SysClasificador
     {

@@ -87,11 +87,7 @@
 </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Agrupadores\Clases\" />
-      <Folder Include="Documentos\Clases\" />
       <Folder Include="Imagenes\" />
       <Folder Include="Insumos\Clases\" />
-      <Folder Include="Sistema\Clases\" />
-      <Folder Include="Sur\Clases\" />
     </ItemGroup>
 </Project>

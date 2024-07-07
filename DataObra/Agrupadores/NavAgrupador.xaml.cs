@@ -1,5 +1,4 @@
-﻿using DataObra.Documentos.Clases;
-using DataObra.Sistema.Clases;
+﻿using DataObra.Documentos;
 using Syncfusion.ProjIO;
 using Syncfusion.UI.Xaml.Kanban;
 using Syncfusion.UI.Xaml.TreeView;
@@ -21,6 +20,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Syncfusion.Windows.Controls.Layout;
 using Syncfusion.UI.Xaml.Diagram.Stencil;
+using DataObra.Sistema;
 
 namespace DataObra.Agrupadores.Clases
 {

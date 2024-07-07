@@ -1,5 +1,4 @@
-﻿using DataObra.Agrupadores.Clases;
-using DataObra.Sistema.Clases;
+﻿using DataObra.Sistema;
 using System;
 using System.Collections.Generic;
 using System.Linq;

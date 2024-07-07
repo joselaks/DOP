@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace DataObra.Base.Clases
+namespace DataObra.Sistema
 {
     public class ObjetoNotificable : INotifyPropertyChanged
     {

@@ -1,6 +1,6 @@
-﻿using DataObra.Agrupadores.Clases;
-using DataObra.Documentos.Clases;
-using DataObra.Sur.Clases;
+﻿using DataObra.Agrupadores;
+using DataObra.Documentos;
+using DataObra.Sur;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataObra.Sistema.Clases
+namespace DataObra.Sistema
 {
     public class Servidor
     {
@@ -23,9 +23,9 @@ namespace DataObra.Sistema.Clases
         #region COLECCIONES
 
         public ObservableCollection<SurUsuario> Usuarios { get; private set; }
-        
+
         //public ObservableCollection<SysClasificador> Clasificadores { get; set; }
-        public ObservableCollection<Agrupadores.Clases.Agrupador> Agrupadores { get; private set; }
+        public ObservableCollection<Agrupador> Agrupadores { get; private set; }
         public ObservableCollection<Documento> Documentos { get; private set; }
 
         #endregion
@@ -84,7 +84,7 @@ namespace DataObra.Sistema.Clases
                 if (item.EntidadID.HasValue && agrupadoresDict.TryGetValue(item.EntidadID.Value, out var entidad))
                 {
                     item.Entidad = entidad.Descrip;
-                    item.EntidadTipo = tipoDiccionario.TryGetValue((int)entidad.TipoID, out var tipo) ? tipo : "Otro";
+                    item.EntidadTipo = tipoDiccionario.TryGetValue(entidad.TipoID, out var tipo) ? tipo : "Otro";
                 }
                 item.Usuario = usuariosDict.TryGetValue(item.UsuarioID, out var usuario) ? $"{usuario.Nombre} {usuario.Apellido}" : item.Usuario;
                 item.Revisado = usuariosDict.TryGetValue(item.RevisadoID, out var verifica) ? $"{verifica.Nombre} {verifica.Apellido}" : item.Revisado;

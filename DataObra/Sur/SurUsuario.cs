@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataObra.Sur.Clases
+namespace DataObra.Sur
 {
     public class SurUsuario
     {

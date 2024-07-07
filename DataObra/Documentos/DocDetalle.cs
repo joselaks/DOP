@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataObra.Documentos.Clases
+namespace DataObra.Documentos
 {
     public class DocDetalle
     {
@@ -38,7 +38,7 @@ namespace DataObra.Documentos.Clases
         #endregion
         #region DATOS ARTICULO
         public DateTime Fecha { get; set; }
-        public string ArticuloDescrip { get; set; } = string.Empty; 
+        public string ArticuloDescrip { get; set; } = string.Empty;
         public decimal ArticuloCantSuma { get; set; }
         public decimal ArticuloCantResta { get; set; }
         public decimal ArticuloPrecio { get; set; }

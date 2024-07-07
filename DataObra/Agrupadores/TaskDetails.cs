@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataObra.Agrupadores.Clases
+namespace DataObra.Agrupadores
 {
     public class TaskDetails
     {

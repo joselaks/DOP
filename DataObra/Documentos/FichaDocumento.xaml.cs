@@ -1,6 +1,5 @@
-﻿using DataObra.Agrupadores.Clases;
-using DataObra.Documentos.Clases;
-using DataObra.Sistema.Clases;
+﻿using DataObra.Agrupadores;
+using DataObra.Sistema;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -89,7 +88,7 @@ namespace DataObra.Documentos
 
         private void ComboPresupuestos_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var sele = ComboPresupuestos.SelectedItem as Agrupadores.Clases.Agrupador;
+            var sele = ComboPresupuestos.SelectedItem as Agrupador;
             
             if (sele != null)
             {
@@ -100,7 +99,7 @@ namespace DataObra.Documentos
 
         private void ComboObras_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var sele = ComboObras.SelectedItem as Agrupadores.Clases.Agrupador;
+            var sele = ComboObras.SelectedItem as Agrupador;
 
             if (sele != null)
             {
@@ -110,7 +109,7 @@ namespace DataObra.Documentos
         }
         private void ComboAdmin_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var sele = ComboAdmin.SelectedItem as Agrupadores.Clases.Agrupador;
+            var sele = ComboAdmin.SelectedItem as Agrupador;
 
             if (sele != null)
             {
@@ -120,7 +119,7 @@ namespace DataObra.Documentos
         }
         private void ComboEntidad_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var sele = ComboEntidad.SelectedItem as Agrupadores.Clases.Agrupador;
+            var sele = ComboEntidad.SelectedItem as Agrupador;
 
             if (sele != null)
             {
