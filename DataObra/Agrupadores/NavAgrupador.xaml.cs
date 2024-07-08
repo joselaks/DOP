@@ -109,11 +109,15 @@ namespace DataObra.Agrupadores.Clases
             var documentosPorTipo = new Dictionary<string, string[]>
             {
                 ["Obras"] = new[] { "Presupuestos", "Planes", "Certificados", "Partes", "Remitos", "Facturas" },
-                ["Clientes"] = new[] { "Facturas", "Cobros" },
-                ["Proveedores"] = new[] { "Compras", "Remitos", "Facturas", "Pagos" },
+                ["Clientes"] = new[] { "Presupuestos", "Facturas", "Cobros" },
+                ["Proveedores"] = new[] { "Acopios", "Compras", "Remitos", "Facturas", "Pagos" },
                 ["Contratistas"] = new[] { "Contratos", "Remitos", "Facturas", "Pagos" },
                 ["Obreros"] = new[] { "Partes", "Sueldo", "Pagos" },
-                ["Admin"] = new[] { "Acopios", "Pedidos", "Compras", "Remitos", "Facturas", "Pagos" }
+                ["Admin"] = new[] { "Acopios", "Pedidos", "Compras", "Remitos", "Facturas", "Pagos" },
+                ["Cuentas"] = new[] { "Ingresos", "Egresos"},
+                ["Depositos"] = new[] { "Entradas", "Salidas"},
+                ["Impuestos"] = new[] { "Iva", "IB", "Ganancias"},
+                ["Temas"] = new[] { "Pendientes", "En Proceso", "Terminados" }
             };
 
             TileViewControl Tiles = new TileViewControl();
@@ -122,7 +126,7 @@ namespace DataObra.Agrupadores.Clases
             {
                 foreach (var item in documentos)
                 {
-                    var tileView = CrearTileViewItem(item, "Documentos de " + Tipo);
+                    var tileView = CrearTileViewItem(item, item + " de " + selectedItem.Title);
                     Tiles.Items.Add(tileView);
                 }
             }
