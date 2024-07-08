@@ -57,7 +57,7 @@ namespace DataObra
             DiagramaInsumos diagInsumos = new DiagramaInsumos();
             this.GrillaDiagramaInsumos.Children.Add(diagInsumos);
 
-            this.TabPrincipal.SelectedIndex = 2;
+            this.TabPrincipal.SelectedIndex = 1;
         }
 
         #region Tiles

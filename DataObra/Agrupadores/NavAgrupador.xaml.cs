@@ -103,97 +103,55 @@ namespace DataObra.Agrupadores.Clases
 
             Listado.Add(task);
         }
-
-        private void GrillaAgrupadores_DoubleClick(object sender, MouseButtonEventArgs e)
+        private void AbrirAgrupador()
         {
-            // Abre el Agrupador con todos los documentos relacionados
-
-            switch (Tipo)
+            // Mapeo de tipos a colecciones de documentos
+            var documentosPorTipo = new Dictionary<string, string[]>
             {
-                case "Obras":
-                    string[] colObra = { "Presupuestos", "Planes", "Certificados", "Partes", "Remitos", "Facturas" };
-                    foreach (var item in colObra)
-                    {
-                        CreaCarpetas(item);
-                    }
-                    break;
-                case "Clientes":
-                    string[] colAdmin = { "Facturas", "Cobros" };
-                    foreach (var item in colAdmin)
-                    {
-                        CreaCarpetas(item);
-                    }
-                    break;
-                case "Proveedores":
-                    string[] colProv = { "Compras", "Remitos", "Facturas", "Pagos" };
-                    foreach (var item in colProv)
-                    {
-                        CreaCarpetas(item);
-                    }
-                    break;
-                case "Contratistas":
-                    string[] colCont = { "Contratos", "Remitos", "Facturas", "Pagos" };
-                    foreach (var item in colCont)
-                    {
-                        CreaCarpetas(item);
-                    }
-                    break;
-                case "Obreros":
-                    string[] colObrero = { "Partes", "Sueldo", "Pagos" };
-                    foreach (var item in colObrero)
-                    {
-                        CreaCarpetas(item);
-                    }
-                    break;
-                case "Admin":
-                    string[] colTec = { "Acopios", "Pedidos", "Compras", "Remitos", "Facturas", "Pagos" };
-                    foreach (var item in colTec)
-                    {
-                        CreaCarpetas(item);
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
+                ["Obras"] = new[] { "Presupuestos", "Planes", "Certificados", "Partes", "Remitos", "Facturas" },
+                ["Clientes"] = new[] { "Facturas", "Cobros" },
+                ["Proveedores"] = new[] { "Compras", "Remitos", "Facturas", "Pagos" },
+                ["Contratistas"] = new[] { "Contratos", "Remitos", "Facturas", "Pagos" },
+                ["Obreros"] = new[] { "Partes", "Sueldo", "Pagos" },
+                ["Admin"] = new[] { "Acopios", "Pedidos", "Compras", "Remitos", "Facturas", "Pagos" }
+            };
 
-        public void CreaCarpetas(string pAgrupador)
-        {
-            // Crea instancia de TileView
             TileViewControl Tiles = new TileViewControl();
 
-            // Items
-            TileViewItem tileView = new TileViewItem();
-            tileView.Width = 400;
-            tileView.Height = 350;
-            tileView.Margin = new Thickness(5);
-            tileView.Header = pAgrupador;
-            tileView.Content = "Documetos de " + pAgrupador;
+            if (documentosPorTipo.TryGetValue(Tipo, out var documentos))
+            {
+                foreach (var item in documentos)
+                {
+                    var tileView = CrearTileViewItem(item, "Documentos de " + Tipo);
+                    Tiles.Items.Add(tileView);
+                }
+            }
 
-            // Agregar el TileViewItem al TileViewControl
-            Tiles.Items.Add(tileView);
-
+            Grilla.Children.Clear();
             Grilla.Children.Add(Tiles);
         }
 
-        //private void CreaCarpetas(string item)
-        //{
-        //    RadTileViewItem carpeta = new RadTileViewItem();
-        //    carpeta.Style = (Style)FindResource("RadTileViewItemStyle");
-        //    carpeta.Header = item;
+        private void GrillaAgrupadores_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            AbrirAgrupador();
+        }
 
-        //    switch (item)
-        //    {
-        //        case "Presupuestos":
-        //            cListadoPresupuestos listapre = new cListadoPresupuestos("1");
-        //            carpeta.Content = listapre;
-        //            break;
-        //        case "Facturas":
-        //            break;
-        //    }
+        private void AbrirAgrupador_Click(object sender, RoutedEventArgs e)
+        {
+            AbrirAgrupador();
+        }
 
-        //    navegador.Items.Add(carpeta);
-        //}
+        private TileViewItem CrearTileViewItem(string header, string content)
+        {
+            return new TileViewItem
+            {
+                Width = 800,
+                Height = 750,
+                Margin = new Thickness(5),
+                Header = header,
+                Content = content
+            };
+        }
 
         private void EditarFicha_Click(object sender, RoutedEventArgs e)
         {
@@ -221,6 +179,7 @@ namespace DataObra.Agrupadores.Clases
                 modificado.Description = e.Numero.ToString();
             }
         }
+
     }
 }
 

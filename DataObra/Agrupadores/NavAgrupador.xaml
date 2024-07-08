@@ -8,7 +8,6 @@
              d:DesignHeight="450" d:DesignWidth="1132">
     <Grid x:Name="Grilla">
         <Grid.RowDefinitions>
-            <RowDefinition Height="27" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -22,7 +21,8 @@
             </Kanban:SfKanban.IndicatorColorPalette>
             <Kanban:SfKanban.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Editar" Click="EditarFicha_Click"/>
+                    <MenuItem Header="Abrir Agrupador" Click="AbrirAgrupador_Click"/>
+                    <MenuItem Header="Editar Ficha" Click="EditarFicha_Click"/>
                 </ContextMenu>
             </Kanban:SfKanban.ContextMenu>
             <Kanban:KanbanColumn Categories="Pendientes" AllowDrop="True" IsExpanded="True" Title="Pendientes"/>
