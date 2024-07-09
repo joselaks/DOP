@@ -1,42 +1,32 @@
 ﻿using DataObra.Documentos;
-using Syncfusion.ProjIO;
+using DataObra.Sistema;
 using Syncfusion.UI.Xaml.Kanban;
-using Syncfusion.UI.Xaml.TreeView;
 using Syncfusion.Windows.Shared;
-using System;
-using System.Collections.Generic;
+using Syncfusion.Windows.Tools.Controls;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Syncfusion.Windows.Controls.Layout;
-using Syncfusion.UI.Xaml.Diagram.Stencil;
-using DataObra.Sistema;
 
 namespace DataObra.Agrupadores.Clases
 {
     public partial class NavAgrupador : UserControl
     {
+        #region Declaraciones
         Servidor azure;
         public ObservableCollection<KanbanModel> Listado { get; set; }
         private KanbanModel selectedItem;
 
         int TipoAgrupa;
         string Tipo;
+        #endregion
 
         public NavAgrupador(string pTipo)
         {
             InitializeComponent();
-            
+
+            #region PRINCIPALES
             Tipo = pTipo;
 
             switch (pTipo)
@@ -88,21 +78,7 @@ namespace DataObra.Agrupadores.Clases
             this.GrillaAgrupadores.ItemsSource = null;
             this.GrillaAgrupadores.ItemsSource = Listado;
         }
-        private void GrillaAgrupadores_CardTapped(object sender, KanbanTappedEventArgs e)
-        {
-            selectedItem = e.SelectedCard.Content as KanbanModel;
-        }
 
-        private void Nuevo_Click(object sender, RoutedEventArgs e)
-        {
-            KanbanModel task = new KanbanModel();
-
-            task.Title = "Nuevo Agrupador";
-            task.Description = "Nuevo";
-            task.Category = "Pendientes";
-
-            Listado.Add(task);
-        }
         private void AbrirAgrupador()
         {
             // Mapeo de tipos a colecciones de documentos
@@ -114,9 +90,9 @@ namespace DataObra.Agrupadores.Clases
                 ["Contratistas"] = new[] { "Contratos", "Remitos", "Facturas", "Pagos" },
                 ["Obreros"] = new[] { "Partes", "Sueldo", "Pagos" },
                 ["Admin"] = new[] { "Acopios", "Pedidos", "Compras", "Remitos", "Facturas", "Pagos" },
-                ["Cuentas"] = new[] { "Ingresos", "Egresos"},
-                ["Depositos"] = new[] { "Entradas", "Salidas"},
-                ["Impuestos"] = new[] { "Iva", "IB", "Ganancias"},
+                ["Cuentas"] = new[] { "Ingresos", "Egresos" },
+                ["Depositos"] = new[] { "Entradas", "Salidas" },
+                ["Impuestos"] = new[] { "Iva", "IB", "Ganancias" },
                 ["Temas"] = new[] { "Pendientes", "En Proceso", "Terminados" }
             };
 
@@ -124,15 +100,73 @@ namespace DataObra.Agrupadores.Clases
 
             if (documentosPorTipo.TryGetValue(Tipo, out var documentos))
             {
+                bool primero = true;
+
                 foreach (var item in documentos)
                 {
-                    var tileView = CrearTileViewItem(item, item + " de " + selectedItem.Title);
+                    var tileView = CrearTileViewItem(item, item + " de " + selectedItem.Title, primero);
                     Tiles.Items.Add(tileView);
+                    primero = false;
                 }
             }
 
             Grilla.Children.Clear();
             Grilla.Children.Add(Tiles);
+
+            // Intento de cambiar el nombre de la solapa por el del Agrupador abierto
+            var tabItem = FindParent<TabItemExt>(this);
+            if (tabItem != null)
+            {
+                tabItem.Header = selectedItem.Title;
+            }
+        }
+
+        private TileViewItem CrearTileViewItem(string header, string content, bool maximizado = false)
+        {
+            // Crea instancia de UserControl
+            ListaDocumentos ListadoDocs = new ListaDocumentos();
+
+            var tileViewItem = new TileViewItem
+            {
+                Width = 800,
+                Height = 750,
+                Margin = new Thickness(5),
+                Header = header,
+                // Establece UserControl como contenido del TileViewItem
+                Content = ListadoDocs
+            };
+
+            // Configura el estado inicial del TileViewItem
+            if (maximizado)
+            {
+                tileViewItem.TileViewItemState = TileViewItemState.Maximized;
+            }
+            else
+            {
+                tileViewItem.TileViewItemState = TileViewItemState.Normal;
+            }
+
+            return tileViewItem;
+        }
+
+
+        #endregion
+
+        #region CLICKS
+        private void GrillaAgrupadores_CardTapped(object sender, KanbanTappedEventArgs e)
+        {
+            selectedItem = e.SelectedCard.Content as KanbanModel;
+        }
+               
+        private void Nuevo_Click(object sender, RoutedEventArgs e)
+        {
+            KanbanModel task = new KanbanModel();
+
+            task.Title = "Nuevo Agrupador";
+            task.Description = "Nuevo";
+            task.Category = "Pendientes";
+
+            Listado.Add(task);
         }
 
         private void GrillaAgrupadores_DoubleClick(object sender, MouseButtonEventArgs e)
@@ -144,19 +178,7 @@ namespace DataObra.Agrupadores.Clases
         {
             AbrirAgrupador();
         }
-
-        private TileViewItem CrearTileViewItem(string header, string content)
-        {
-            return new TileViewItem
-            {
-                Width = 800,
-                Height = 750,
-                Margin = new Thickness(5),
-                Header = header,
-                Content = content
-            };
-        }
-
+       
         private void EditarFicha_Click(object sender, RoutedEventArgs e)
         {
             if (selectedItem != null)
@@ -172,6 +194,10 @@ namespace DataObra.Agrupadores.Clases
             }
         }
 
+        #endregion
+
+        #region Internas
+
         private void FichaWindow_AgrupadorModified(object? sender, Agrupador e)
         {
             var modificado = Listado.FirstOrDefault(a => a.ID == e.ID.ToString());
@@ -184,6 +210,24 @@ namespace DataObra.Agrupadores.Clases
             }
         }
 
+        public T FindParent<T>(DependencyObject child) where T : DependencyObject
+        {
+            DependencyObject parentObject = VisualTreeHelper.GetParent(child);
+
+            if (parentObject == null) return null;
+
+            T parent = parentObject as T;
+            if (parent != null)
+            {
+                return parent;
+            }
+            else
+            {
+                return FindParent<T>(parentObject);
+            }
+        }
+
+        #endregion
     }
 }
 
