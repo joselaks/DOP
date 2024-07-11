@@ -7,20 +7,11 @@ using DataObra.Sistema;
 using DataObra.Sur;
 using Syncfusion.Windows.Shared;
 using Syncfusion.Windows.Tools.Controls;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace DataObra
 {
@@ -184,11 +175,15 @@ namespace DataObra
                 if (!abierto)
                 {
                     Grid nuevaGrilla = new Grid();
+                    TabItemExt nuevoTab = new TabItemExt();
+                    nuevoTab.Header = tileSele.Name;
+                    nuevoTab.AllowPin = true;
+                    nuevoTab.ShowPin = true;
 
                     switch (Solapa)
                     {
                         case "Agrupadores":
-                            navAgrupador = new NavAgrupador(tileSele.Name);
+                            navAgrupador = new NavAgrupador(tileSele.Name,nuevoTab, TabAgrupadores);
                             nuevaGrilla.Children.Add(navAgrupador);
                             break;
                         case "Documentos":
@@ -203,10 +198,7 @@ namespace DataObra
                             break;
                     }
 
-                    TabItemExt nuevoTab = new TabItemExt();
-                    nuevoTab.Header = tileSele.Name;
-                    nuevoTab.AllowPin = true;
-                    nuevoTab.ShowPin = true;
+                 
                     nuevoTab.Content = nuevaGrilla;
 
                     switch (Solapa)

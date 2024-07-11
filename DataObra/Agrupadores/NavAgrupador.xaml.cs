@@ -21,10 +21,14 @@ namespace DataObra.Agrupadores.Clases
         int TipoAgrupa;
         string Tipo;
         #endregion
+        TabItemExt TabItemAbierto;
+        TabControl TabControlAbierto;
 
-        public NavAgrupador(string pTipo)
+        public NavAgrupador(string pTipo, TabItemExt pTab, TabControlExt pTabControl)
         {
             InitializeComponent();
+            TabItemAbierto = pTab;
+            TabControlAbierto = pTabControl;
 
             #region PRINCIPALES
             Tipo = pTipo;
@@ -81,43 +85,48 @@ namespace DataObra.Agrupadores.Clases
 
         private void AbrirAgrupador()
         {
-            // Mapeo de tipos a colecciones de documentos
-            var documentosPorTipo = new Dictionary<string, string[]>
+            var esta = TabControlAbierto.Items.Cast<TabItemExt>().FirstOrDefault(t => t.Header.ToString() == selectedItem.Title);
+
+            if (esta == null)
             {
-                ["Obras"] = new[] { "Presupuestos", "Planes", "Certificados", "Partes", "Remitos", "Facturas" },
-                ["Clientes"] = new[] { "Presupuestos", "Facturas", "Cobros" },
-                ["Proveedores"] = new[] { "Acopios", "Compras", "Remitos", "Facturas", "Pagos" },
-                ["Contratistas"] = new[] { "Contratos", "Remitos", "Facturas", "Pagos" },
-                ["Obreros"] = new[] { "Partes", "Sueldo", "Pagos" },
-                ["Admin"] = new[] { "Acopios", "Pedidos", "Compras", "Remitos", "Facturas", "Pagos" },
-                ["Cuentas"] = new[] { "Ingresos", "Egresos" },
-                ["Depositos"] = new[] { "Entradas", "Salidas" },
-                ["Impuestos"] = new[] { "Iva", "IB", "Ganancias" },
-                ["Temas"] = new[] { "Pendientes", "En Proceso", "Terminados" }
-            };
-
-            TileViewControl Tiles = new TileViewControl();
-
-            if (documentosPorTipo.TryGetValue(Tipo, out var documentos))
-            {
-                bool primero = true;
-
-                foreach (var item in documentos)
+                // Mapeo de tipos a colecciones de documentos
+                var documentosPorTipo = new Dictionary<string, string[]>
                 {
-                    var tileView = CrearTileViewItem(item, item + " de " + selectedItem.Title, primero);
-                    Tiles.Items.Add(tileView);
-                    primero = false;
+                    ["Obras"] = new[] { "Presupuestos", "Planes", "Certificados", "Partes", "Remitos", "Facturas" },
+                    ["Clientes"] = new[] { "Presupuestos", "Facturas", "Cobros" },
+                    ["Proveedores"] = new[] { "Acopios", "Compras", "Remitos", "Facturas", "Pagos" },
+                    ["Contratistas"] = new[] { "Contratos", "Remitos", "Facturas", "Pagos" },
+                    ["Obreros"] = new[] { "Partes", "Sueldo", "Pagos" },
+                    ["Admin"] = new[] { "Acopios", "Pedidos", "Compras", "Remitos", "Facturas", "Pagos" },
+                    ["Cuentas"] = new[] { "Ingresos", "Egresos" },
+                    ["Depositos"] = new[] { "Entradas", "Salidas" },
+                    ["Impuestos"] = new[] { "Iva", "IB", "Ganancias" },
+                    ["Temas"] = new[] { "Pendientes", "En Proceso", "Terminados" }
+                };
+
+                TileViewControl Tiles = new TileViewControl();
+
+                if (documentosPorTipo.TryGetValue(Tipo, out var documentos))
+                {
+                    bool primero = true;
+
+                    foreach (var item in documentos)
+                    {
+                        var tileView = CrearTileViewItem(item, item + " de " + selectedItem.Title, primero);
+                        Tiles.Items.Add(tileView);
+                        primero = false;
+                    }
                 }
+
+                Grilla.Children.Clear();
+                Grilla.Children.Add(Tiles);
+
+                TabItemAbierto.Header = selectedItem.Title;
             }
-
-            Grilla.Children.Clear();
-            Grilla.Children.Add(Tiles);
-
-            // Intento de cambiar el nombre de la solapa por el del Agrupador abierto
-            var tabItem = FindParent<TabItemExt>(this);
-            if (tabItem != null)
+            else
             {
-                tabItem.Header = selectedItem.Title;
+                TabControlAbierto.SelectedItem = esta;
+                TabControlAbierto.Items.Remove(TabItemAbierto);
             }
         }
 
@@ -207,23 +216,6 @@ namespace DataObra.Agrupadores.Clases
                 // Actualiza las propiedades del objeto existente
                 modificado.Title = e.Descrip;
                 modificado.Description = e.Numero.ToString();
-            }
-        }
-
-        public T FindParent<T>(DependencyObject child) where T : DependencyObject
-        {
-            DependencyObject parentObject = VisualTreeHelper.GetParent(child);
-
-            if (parentObject == null) return null;
-
-            T parent = parentObject as T;
-            if (parent != null)
-            {
-                return parent;
-            }
-            else
-            {
-                return FindParent<T>(parentObject);
             }
         }
 
