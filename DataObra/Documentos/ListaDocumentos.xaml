@@ -7,8 +7,15 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Syncfusion:SfDataGrid Name="GrillaDocs" Grid.Column="1" Grid.Row="1" AutoGenerateColumns="False" Margin="4,5,0,0"
-                      IsReadOnly="True">
+        <Syncfusion:SfDataGrid Name="GrillaDocumentos" Grid.Column="1" Grid.Row="1" AutoGenerateColumns="False" Margin="4,5,0,0"
+                   MouseDoubleClick="GrillaDocs_MouseDoubleClick"   IsReadOnly="True">
+            <Syncfusion:SfDataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Nuevo" Click="Nuevo_Click"/>
+                    <MenuItem Header="Editar" Click="Editar_Click"/>
+                    <MenuItem Header="Borrar" Click="Borrar_Click"/>
+                </ContextMenu>
+            </Syncfusion:SfDataGrid.ContextMenu>
             <Syncfusion:SfDataGrid.Columns>
                 <Syncfusion:GridTextColumn HeaderText="Documento" MappingName="TipoDoc" Width="92"/>
                 <Syncfusion:GridDateTimeColumn HeaderText="Fecha" MappingName="Fecha1" Width="90"/>
