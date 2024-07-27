@@ -49,7 +49,6 @@ namespace DataObra.Documentos
                         nueva.DocumentoModified += FichaWindow_DocumentoModified;
                         nueva.Show();
                         break;
-
                     case "abrir":
                         Documento sele = this.GrillaDocumentos.SelectedItem as Documento;
                         if (sele != null)
@@ -59,7 +58,6 @@ namespace DataObra.Documentos
                             fichaWindow.Show();
                         }
                         break;
-
                     case "borrar":
                         Documento seleBorrar = this.GrillaDocumentos.SelectedItem as Documento;
                         if (seleBorrar != null)
