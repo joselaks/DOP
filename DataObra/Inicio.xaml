@@ -169,6 +169,7 @@
                     <Label Content="DataObra: la Información de tus Obras" Margin="0,0,0,23" FontSize="27" FontStyle="Italic" Grid.ColumnSpan="5" Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontWeight="SemiBold" />
 
                     <StackPanel  Grid.Row="0" HorizontalAlignment="Center">
+                        <Button Content="Pantalla Base" Click="Button_Click_1"></Button>
                         <Label Content="Primeros pasos" FontSize="18" Grid.Row="0" HorizontalAlignment="Center" Margin="0,30,0,30"  FontWeight="SemiBold"/>
                         <Label Content="Concpetos básicos" FontSize="18" HorizontalAlignment="Center" />
                         <Label Content="Como agregar un agrupador" FontSize="18" HorizontalAlignment="Center" />

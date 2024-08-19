@@ -31,7 +31,7 @@ namespace DataObra
         {
             InitializeComponent();
 
-            Solapa = "Agrupadores";
+            Solapa = "Inicio";
 
             GrupoAgrupadores();
 
@@ -48,7 +48,7 @@ namespace DataObra
             DiagramaInsumos diagInsumos = new DiagramaInsumos();
             this.GrillaDiagramaInsumos.Children.Add(diagInsumos);
 
-            this.TabPrincipal.SelectedIndex = 1;
+            this.TabPrincipal.SelectedIndex = 0;
         }
 
         #region Tiles
@@ -287,6 +287,12 @@ namespace DataObra
         private void TabAgrupadores_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            PantallaBase pantallaBase = new PantallaBase();
+            pantallaBase.Show();
         }
     }
 }
