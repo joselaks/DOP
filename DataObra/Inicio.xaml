@@ -136,7 +136,11 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <syncfusion:TabControlExt SelectionChanged="TabPrincipal_SelectionChanged" IsCustomTabItemContextMenuEnabled="False" CloseButtonType="Hide" Style="{DynamicResource NewtabControlExtStyle}" x:Name="TabPrincipal" BorderThickness="0" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="269*"/>
+            <ColumnDefinition Width="131*"/>
+        </Grid.ColumnDefinitions>
+        <syncfusion:TabControlExt SelectionChanged="TabPrincipal_SelectionChanged" IsCustomTabItemContextMenuEnabled="False" CloseButtonType="Hide" Style="{DynamicResource NewtabControlExtStyle}" x:Name="TabPrincipal" BorderThickness="0" Grid.ColumnSpan="2" >
 
             <syncfusion:TabItemExt Header="Inicio">
                 <Grid>
@@ -169,6 +173,7 @@
                     <Label Content="DataObra: la Información de tus Obras" Margin="0,0,0,23" FontSize="27" FontStyle="Italic" Grid.ColumnSpan="5" Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontWeight="SemiBold" />
 
                     <StackPanel  Grid.Row="0" HorizontalAlignment="Center">
+                        <Button Content="Pantalla Login" Click="Button_Click_2"></Button>
                         <Button Content="Pantalla Base" Click="Button_Click_1"></Button>
                         <Label Content="Primeros pasos" FontSize="18" Grid.Row="0" HorizontalAlignment="Center" Margin="0,30,0,30"  FontWeight="SemiBold"/>
                         <Label Content="Concpetos básicos" FontSize="18" HorizontalAlignment="Center" />

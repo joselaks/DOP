@@ -294,5 +294,11 @@ namespace DataObra
             PantallaBase pantallaBase = new PantallaBase();
             pantallaBase.Show();
         }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            Login pantallaLogin = new Login();
+            pantallaLogin.Show();
+        }
     }
 }
