@@ -89,8 +89,8 @@ namespace DataObra.Documentos
                 switch (button.Name)
                 {
                     case "nuevo":
-                        Ficha nueva = new Ficha(null);
-                        nueva.DocumentoModified += FichaWindow_DocumentoModified;
+                        VenDocumento nueva = new VenDocumento("Facturas");
+                        //nueva.DocumentoModified += FichaWindow_DocumentoModified;
                         nueva.Show();
                         break;
 
@@ -98,8 +98,8 @@ namespace DataObra.Documentos
                         Documento sele = this.GrillaDocumentos.SelectedItem as Documento;
                         if (sele != null)
                         {
-                            Ficha fichaWindow = new Ficha(sele);
-                            fichaWindow.DocumentoModified += FichaWindow_DocumentoModified;
+                            VenDocumento fichaWindow = new VenDocumento("Facturas");
+                            //fichaWindow.DocumentoModified += FichaWindow_DocumentoModified;
                             fichaWindow.Show();
                         }
                         break;
