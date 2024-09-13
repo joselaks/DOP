@@ -1,0 +1,16 @@
+﻿<Window x:Class="WebEjemplos.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WebEjemplos"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Button x:Name="Agregar" Content="Agregar" HorizontalAlignment="Left" Margin="94,102,0,0" VerticalAlignment="Top" Width="265" Click="Agregar_Click" />
+        <Button x:Name="Listar" Content="Listar" HorizontalAlignment="Left" Margin="94,137,0,0" VerticalAlignment="Top" Width="265" Click="Listar_Click" />
+        <Button x:Name="Modificar" Content="Modificar" HorizontalAlignment="Left" Margin="94,178,0,0" VerticalAlignment="Top" Width="265" Click="Modificar_Click" />
+        <Button x:Name="Borrar" Content="Borrar" HorizontalAlignment="Left" Margin="94,217,0,0" VerticalAlignment="Top" Width="265" Click="Borrar_Click" />
+
+    </Grid>
+</Window>

@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataObra", "DataObra\DataObra.csproj", "{F4E7ADA7-6E2A-4089-A0C1-1329988612E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataObra", "DataObra\DataObra.csproj", "{F4E7ADA7-6E2A-4089-A0C1-1329988612E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebEjemplos", "WebEjemplos\WebEjemplos.csproj", "{BDDFC73F-3033-445E-B330-A137F5332CDC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{F4E7ADA7-6E2A-4089-A0C1-1329988612E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4E7ADA7-6E2A-4089-A0C1-1329988612E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4E7ADA7-6E2A-4089-A0C1-1329988612E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDDFC73F-3033-445E-B330-A137F5332CDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDDFC73F-3033-445E-B330-A137F5332CDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDDFC73F-3033-445E-B330-A137F5332CDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDDFC73F-3033-445E-B330-A137F5332CDC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
