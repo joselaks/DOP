@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Net.Http.Json;
 
 namespace WebEjemplos
 {
@@ -25,11 +26,20 @@ namespace WebEjemplos
             InitializeComponent();
         }
 
-        private void Agregar_Click(object sender, RoutedEventArgs e)
+        private async void Agregar_Click(object sender, RoutedEventArgs e)
         {
             var url = "https://webservicedataobra.azurewebsites.net/documentos";
             var jsonSerializerOptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
-
+            using (var httpClient = new HttpClient())
+            {
+                var documento = new Documento() { Tipo = 2, Numero = 100, Descripcion = "Prueba1" };
+                var respuesta = await httpClient.PostAsJsonAsync(url, documento);
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    var cuerpo = await respuesta.Content.ReadAsStringAsync();
+                    MessageBox.Show("El id es " + cuerpo);
+                }
+            }
         }
 
         private async void Listar_Click(object sender, RoutedEventArgs e)
