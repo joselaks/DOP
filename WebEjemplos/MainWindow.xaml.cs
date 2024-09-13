@@ -56,13 +56,27 @@ namespace WebEjemplos
 
         }
 
-        private void Modificar_Click(object sender, RoutedEventArgs e)
+        private async void Modificar_Click(object sender, RoutedEventArgs e)
         {
+            var url = "https://webservicedataobra.azurewebsites.net/documentos";
+            var jsonSerializerOptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
+            using (var httpClient = new HttpClient())
+            {
+                var documento = new Documento() { Id = 2, Tipo = 5, Numero = 500, Descripcion = "Modificado" };
+                await httpClient.PutAsJsonAsync($"{url}/{documento.Id}", documento);
+            }
 
         }
 
-        private void Borrar_Click(object sender, RoutedEventArgs e)
+        private async void Borrar_Click(object sender, RoutedEventArgs e)
         {
+            var url = "https://webservicedataobra.azurewebsites.net/documentos";
+            var jsonSerializerOptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
+            using (var httpClient = new HttpClient())
+            {
+                var documento = new Documento() { Id = 3, Tipo = 5, Numero = 500, Descripcion = "Modificado" };
+                await httpClient.DeleteAsync($"{url}/{documento.Id}");
+            }
 
         }
     }
