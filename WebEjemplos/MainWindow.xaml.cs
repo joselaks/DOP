@@ -66,12 +66,21 @@ namespace WebEjemplos
                 await httpClient.DeleteAsync($"{url}/{documento.Id}");
         }
 
+        private async void Obtener_Click(object sender, RoutedEventArgs e)
+        {
+            int idDoc = 1;
+            var respuesta = await httpClient.GetAsync($"{url}/{idDoc}");
+            var respestaString = await respuesta.Content.ReadAsStringAsync();
+            var Documentos = JsonSerializer.Deserialize<Documento>(respestaString,
+                new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+        }
+
         public static void Configure(ServiceCollection services)
         { 
             services.AddHttpClient();
         }
 
-
+        
     }
 
     public class Documento

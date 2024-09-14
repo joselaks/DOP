@@ -11,6 +11,7 @@
         <Button x:Name="Listar" Content="Listar" HorizontalAlignment="Left" Margin="94,137,0,0" VerticalAlignment="Top" Width="265" Click="Listar_Click" />
         <Button x:Name="Modificar" Content="Modificar" HorizontalAlignment="Left" Margin="94,178,0,0" VerticalAlignment="Top" Width="265" Click="Modificar_Click" />
         <Button x:Name="Borrar" Content="Borrar" HorizontalAlignment="Left" Margin="94,217,0,0" VerticalAlignment="Top" Width="265" Click="Borrar_Click" />
+        <Button x:Name="Obtener" Content="Obtener por ID" HorizontalAlignment="Left" Margin="94,256,0,0" VerticalAlignment="Top" Width="265" Click="Obtener_Click" />
 
     </Grid>
 </Window>
