@@ -4,14 +4,23 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WebEjemplos"
+        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button x:Name="Agregar" Content="Agregar" HorizontalAlignment="Left" Margin="94,102,0,0" VerticalAlignment="Top" Width="265" Click="Agregar_Click" />
-        <Button x:Name="Listar" Content="Listar" HorizontalAlignment="Left" Margin="94,137,0,0" VerticalAlignment="Top" Width="265" Click="Listar_Click" />
-        <Button x:Name="Modificar" Content="Modificar" HorizontalAlignment="Left" Margin="94,178,0,0" VerticalAlignment="Top" Width="265" Click="Modificar_Click" />
-        <Button x:Name="Borrar" Content="Borrar" HorizontalAlignment="Left" Margin="94,217,0,0" VerticalAlignment="Top" Width="265" Click="Borrar_Click" />
-        <Button x:Name="Obtener" Content="Obtener por ID" HorizontalAlignment="Left" Margin="94,256,0,0" VerticalAlignment="Top" Width="265" Click="Obtener_Click" />
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32" />
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
+            <Button x:Name="Agregar" Content="Agregar" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Width="65" Click="Agregar_Click" />
+            <Button x:Name="Listar" Content="Listar" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Width="65" Click="Listar_Click" />
+            <Button Content="Modificar DobleClick" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Width="132" ToolTip="Cambia descripción"/>
+            <Button x:Name="Borrar" Content="Borrar Supr" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Width="69" />
+            <Button x:Name="Obtener" Content="Obtener x ID" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Width="85" Click="Obtener_Click" />
+        </StackPanel>
+        <syncfusion:SfDataGrid Grid.Row="1" x:Name="dataGrid" AutoGenerateColumns="True" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Width="Auto" Height="Auto" MouseDoubleClick="DataGrid_MouseDoubleClick"  KeyDown="DataGrid_KeyDown"/>
     </Grid>
 </Window>
+
