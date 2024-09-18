@@ -21,6 +21,7 @@
             <Button x:Name="Obtener" Content="Obtener x ID" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Width="85" Click="Obtener_Click" />
         </StackPanel>
         <syncfusion:SfDataGrid Grid.Row="1" x:Name="dataGrid" AutoGenerateColumns="True" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Width="Auto" Height="Auto" MouseDoubleClick="DataGrid_MouseDoubleClick"  KeyDown="DataGrid_KeyDown"/>
+        <TextBlock Grid.Row="1" x:Name="IndicadorEspera" Text="Cargando..." HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed" FontSize="16" Foreground="Red"/>
     </Grid>
 </Window>
 

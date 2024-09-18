@@ -41,6 +41,7 @@ namespace WebEjemplos
         {
             try
             {
+                IndicadorEspera.Visibility = Visibility.Visible;
                 var documento = new Documento() { Tipo = random.Next(1, 11), Numero = random.Next(500,2400), Descripcion = GenerarTextoAleatorio(insumosConstruccion) };
                 var respuesta = await httpClient.PostAsJsonAsync(url, documento);
                 
@@ -60,6 +61,10 @@ namespace WebEjemplos
             {
                 MessageBox.Show($"Ocurrió un error: {ex.Message}");
             }
+            finally
+            {
+                IndicadorEspera.Visibility = Visibility.Collapsed;
+            }
         }
 
 
@@ -67,6 +72,7 @@ namespace WebEjemplos
         {
             try
             {
+                IndicadorEspera.Visibility = Visibility.Visible;
                 var respuesta = await httpClient.GetAsync(url);
                 if (respuesta.IsSuccessStatusCode)
                 {
@@ -83,6 +89,10 @@ namespace WebEjemplos
             {
                 MessageBox.Show($"Ocurrió un error: {ex.Message}");
             }
+            finally
+            {
+                IndicadorEspera.Visibility = Visibility.Collapsed;
+            }
         }
 
 
@@ -90,6 +100,7 @@ namespace WebEjemplos
         {
             try
             {
+                IndicadorEspera.Visibility = Visibility.Visible;
                 documento.Descripcion = GenerarTextoAleatorio(insumosConstruccion);
                 await httpClient.PutAsJsonAsync($"{url}/{documento.Id}", documento);
                 MessageBox.Show("Documento modificado exitosamente");
@@ -99,12 +110,17 @@ namespace WebEjemplos
             {
                 MessageBox.Show($"Ocurrió un error: {ex.Message}");
             }
+            finally
+            {
+                IndicadorEspera.Visibility = Visibility.Collapsed;
+            }
         }
 
         private async void Borrar_Click(Documento documento)
         {
             try
             {
+                IndicadorEspera.Visibility = Visibility.Visible;
                 await httpClient.DeleteAsync($"{url}/{documento.Id}");
                 MessageBox.Show("Documento borrado exitosamente");
                 Listar_Click(null, null); // Actualiza listado
@@ -112,6 +128,10 @@ namespace WebEjemplos
             catch (Exception ex)
             {
                 MessageBox.Show($"Ocurrió un error: {ex.Message}");
+            }
+            finally
+            {
+                IndicadorEspera.Visibility = Visibility.Collapsed;
             }
         }
 
