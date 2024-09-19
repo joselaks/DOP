@@ -12,6 +12,9 @@
             <RowDefinition Height="32" />
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
         
         <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
             <Button x:Name="Agregar" Content="Agregar" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Width="65" Click="Agregar_Click" />
@@ -19,6 +22,8 @@
             <Button Content="Modificar DobleClick" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Width="132" ToolTip="Cambia descripción"/>
             <Button x:Name="Borrar" Content="Borrar Supr" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Width="69" />
             <Button x:Name="Obtener" Content="Obtener x ID" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Width="85" Click="Obtener_Click" />
+
+            <Label x:Name="Tiempo" Margin="69,0,0,0" Width="Auto" />
         </StackPanel>
         <syncfusion:SfDataGrid Grid.Row="1" x:Name="dataGrid" AutoGenerateColumns="True" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Top" Width="Auto" Height="Auto" MouseDoubleClick="DataGrid_MouseDoubleClick"  KeyDown="DataGrid_KeyDown"/>
         <TextBlock Grid.Row="1" x:Name="IndicadorEspera" Text="Cargando..." HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed" FontSize="16" Foreground="Red"/>

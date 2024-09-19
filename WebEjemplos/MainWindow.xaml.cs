@@ -14,6 +14,8 @@ using System.Net.Http.Json;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.RegularExpressions;
 using System;
+using System.Diagnostics;
+
 
 namespace WebEjemplos
 {
@@ -70,9 +72,14 @@ namespace WebEjemplos
 
         private async void Listar_Click(object sender, RoutedEventArgs e)
         {
+            Tiempo.Content = "";
+            Stopwatch stopwatch = new Stopwatch();
+
             try
             {
                 IndicadorEspera.Visibility = Visibility.Visible;
+                stopwatch.Start();
+
                 var respuesta = await httpClient.GetAsync(url);
                 if (respuesta.IsSuccessStatusCode)
                 {
@@ -91,7 +98,9 @@ namespace WebEjemplos
             }
             finally
             {
+                stopwatch.Stop();
                 IndicadorEspera.Visibility = Visibility.Collapsed;
+                Tiempo.Content = $"Tiempo: {stopwatch.ElapsedMilliseconds} ms";
             }
         }
 
