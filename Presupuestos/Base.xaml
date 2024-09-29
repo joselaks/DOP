@@ -18,6 +18,8 @@
             <Button Content="Abrir" Height="26" Width="60"/>
             <Button Content="Borrar" Height="26" Width="60"/>
         </syncfusion:ToolBarAdv>
-
+        <syncfusion:SfTreeGrid Grid.Row="2">
+            
+        </syncfusion:SfTreeGrid>
     </Grid>
 </Window>
