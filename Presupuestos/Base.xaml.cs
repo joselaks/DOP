@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Syncfusion.Windows.Shared;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,7 @@ namespace Presupuestos
     /// <summary>
     /// Lógica de interacción para Base.xaml
     /// </summary>
-    public partial class Base : Window
+    public partial class Base : ChromelessWindow
     {
         public Base()
         {

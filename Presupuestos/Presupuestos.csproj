@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -10,6 +10,10 @@
 
   <ItemGroup>
     <PackageReference Include="syncfusion.ui.wpf.net" Version="27.1.50" />
-  </ItemGroup>
+      <PackageReference Include="Syncfusion.Shared.WPF" Version="27.1.50"/>
+    <PackageReference Include="Syncfusion.Themes.Windows11Light.WPF" Version="27.1.50"/>
+    <PackageReference Include="Syncfusion.SfSkinManager.WPF" Version="27.1.50"/>
+    <PackageReference Include="Syncfusion.Themes.Metro.WPF" Version="27.1.50"/>
+</ItemGroup>
 
 </Project>
