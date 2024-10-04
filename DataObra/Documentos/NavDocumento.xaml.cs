@@ -21,9 +21,11 @@ namespace DataObra.Documentos
     {
         bool angosto = true;
         Servidor azure;
+        Datos.Conectores.ObtenerDocumentos oDatos;
         public NavDocumento(string pModo, string pDoc)
         {
             InitializeComponent();
+            oDatos = new Datos.Conectores.ObtenerDocumentos();
             this.FechaDesde.SelectedDate = DateTime.Today.AddDays(-30);
             this.FechaHasta.SelectedDate = DateTime.Today;
 
@@ -38,8 +40,7 @@ namespace DataObra.Documentos
 
         private async Task obtenerDocsAsync()
         {
-            Datos.Conectores.ObtenerDocumentos lista1 = new Datos.Conectores.ObtenerDocumentos();
-            this.GrillaDocumentos.ItemsSource = await lista1.ObtenerDocsAsync();
+            this.GrillaDocumentos.ItemsSource = await oDatos.ObtenerDocsAsync();
         }
 
         private void FichaWindow_DocumentoModified(object sender, Documento e)
