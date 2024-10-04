@@ -12,7 +12,7 @@ namespace DataObra
         public App()
         {
             //Register Syncfusion license
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzM1NDAzN0AzMjM2MmUzMDJlMzBLTnVMTDcyanFpbFRZa0RLNExzcVFGTnhOd0JadEU2U1VrRmNvdVY4bUhrPQ==");
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NDaF5cWGJCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWH9ec3ZWRGFZU0JxXkA=");
         }
     }
 

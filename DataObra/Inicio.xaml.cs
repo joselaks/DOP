@@ -300,5 +300,11 @@ namespace DataObra
             Login pantallaLogin = new Login();
             pantallaLogin.Show();
         }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            MuestraConectorDatos ventanaMuestra = new MuestraConectorDatos();
+            ventanaMuestra.Show();
+        }
     }
 }
