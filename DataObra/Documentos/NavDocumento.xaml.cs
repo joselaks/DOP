@@ -29,9 +29,17 @@ namespace DataObra.Documentos
 
             azure = new Servidor();
 
-            this.GrillaDocumentos.ItemsSource = azure.Documentos;
-            DataContext = azure.Documentos;
+            //this.GrillaDocumentos.ItemsSource = azure.Documentos;
+
+            _ = obtenerDocsAsync();
+            //DataContext = azure.Documentos;
             
+        }
+
+        private async Task obtenerDocsAsync()
+        {
+            Datos.Conectores.ObtenerDocumentos lista1 = new Datos.Conectores.ObtenerDocumentos();
+            this.GrillaDocumentos.ItemsSource = await lista1.ObtenerDocsAsync();
         }
 
         private void FichaWindow_DocumentoModified(object sender, Documento e)

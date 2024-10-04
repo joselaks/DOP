@@ -26,38 +26,34 @@ namespace DataObra.Datos.Conectores
 
         }
 
-        public async Task<List<DocumentoTest>> ObtenerDocsAsync()
+        public async Task<List<Documento>> ObtenerDocsAsync()
         {
-            List<DocumentoTest> nulo = new List<DocumentoTest>();
-
-            var respuesta = await httpClient.GetAsync(url);
-            if (respuesta.IsSuccessStatusCode)
+            try
             {
-                var respestaString = await respuesta.Content.ReadAsStringAsync();
-                var listadoDocumentos = JsonSerializer.Deserialize<List<DocumentoTest>>(respestaString, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-                if (listadoDocumentos != null)
-                {
-                    return listadoDocumentos;
+                var respuesta = await httpClient.GetAsync(url);
 
-                }
-                else
+                if (respuesta.IsSuccessStatusCode)
                 {
-                    return nulo;
-
+                    var respuestaString = await respuesta.Content.ReadAsStringAsync();
+                    var listadoDocumentos = JsonSerializer.Deserialize<List<Documento>>(respuestaString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    return listadoDocumentos ?? new List<Documento>();  // Devuelve listado
                 }
             }
-            else
+            catch (Exception ex)
             {
-                return nulo;
+                // Tabla de registro de errores
             }
+
+            return new List<Documento>(); // Devuelve lista vacía
         }
+
     }
 }
 
-public class DocumentoTest
-{
-    public int Id { get; set; }
-    public int Tipo { get; set; }
-    public int Numero { get; set; }
-    public string? Descripcion { get; set; }
-}
+//public class DocumentoTest
+//{
+//    public int Id { get; set; }
+//    public int Tipo { get; set; }
+//    public int Numero { get; set; }
+//    public string? Descripcion { get; set; }
+//}

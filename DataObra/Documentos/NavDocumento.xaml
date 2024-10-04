@@ -28,14 +28,15 @@
         <Syncfusion:SfDataGrid Name="GrillaDocumentos" Grid.Column="1" Grid.Row="1" AutoGenerateColumns="False" Margin="4,5,0,0"
                                MouseDoubleClick="MouseDoubleClick" IsReadOnly="True">
             <Syncfusion:SfDataGrid.Columns>
-                <Syncfusion:GridTextColumn HeaderText="Documento" MappingName="TipoDoc" Width="92"/>
+                <Syncfusion:GridTextColumn HeaderText="ID" MappingName="ID" Width="92"/>
+                <Syncfusion:GridTextColumn HeaderText="Tipo" MappingName="Tipo" Width="92"/>
                 <Syncfusion:GridDateTimeColumn HeaderText="Fecha" MappingName="Fecha1" Width="90"/>
                 <Syncfusion:GridTextColumn HeaderText="Obra" MappingName="Obra" Width="90"/>
                 <Syncfusion:GridTextColumn HeaderText="Admin" MappingName="Admin" Width="90"/>
                 <Syncfusion:GridTextColumn HeaderText="Tipo Ent." MappingName="EntidadTipo" Width="90"/>
                 <Syncfusion:GridTextColumn HeaderText="Entidad" MappingName="Entidad" Width="90"/>
-                <Syncfusion:GridTextColumn HeaderText="Descripción" MappingName="Descrip" Width="90"/>
-                <Syncfusion:GridTextColumn HeaderText="Numero" MappingName="Numero1" Width="90"/>
+                <Syncfusion:GridTextColumn HeaderText="Descripcion" MappingName="Descripcion" Width="90"/>
+                <Syncfusion:GridTextColumn HeaderText="Numero" MappingName="Numero" Width="90"/>
                 <Syncfusion:GridTextColumn HeaderText="Pesos" MappingName="Pesos" Width="90"/>
                 <Syncfusion:GridTextColumn HeaderText="Dolares" MappingName="Dolares" Width="90"/>
                 <Syncfusion:GridTextColumn HeaderText="Impuestos" MappingName="Impuestos" Width="90"/>
