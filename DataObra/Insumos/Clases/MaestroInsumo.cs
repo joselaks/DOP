@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace DataObra.Insumos.Clases
 {
-    public class MaestroInsumo  // Del Usuario, creados manualmente o automaticamente al Comprar/Facturar
+    public class Insumo  // Del Usuario, creados manualmente o automaticamente al Comprar/Facturar
     {
         #region SISTEMA
         public int? ID { get; set; }
-        public int CuentaID { get; set; }
+        public short CuentaID { get; set; }
         public int UsuarioID { get; set; } // Creador
         public int EditadoID { get; set; } // Ultima edición
         public DateTime Editado { get; set; }
@@ -20,7 +20,7 @@ namespace DataObra.Insumos.Clases
         public string Descrip { get; set; } = string.Empty;
         public string Unidad { get; set; } = string.Empty;
         public string? Codigo { get; set; }
-        public int ZonaID { get; set; } // Zona de los precios.
+        public byte ZonaID { get; set; } // Zona de los precios.
         #endregion
         #region VALORES
         public decimal Pesos { get; set; }

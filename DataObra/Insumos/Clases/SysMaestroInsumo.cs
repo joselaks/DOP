@@ -9,16 +9,15 @@ namespace DataObra.Insumos.Clases
     public class SysMaestroInsumo
     {
         #region SISTEMA
-        public int? ID { get; set; }
-        public int UsuarioID { get; set; } 
-        public DateTime Editado { get; set; }
+        public int ID { get; set; } // Int
+        public int UsuarioID { get; set; } // Int
+        public DateTime Editado { get; set; } // Date
         #endregion
         #region DATOS
-        public int TipoID { get; set; } // ??
-        
-        public string Unidad { get; set; }
-        public string Codigo { get; set; }
-        public int ZonaID { get; set; } // Zona de los precios.
+        public char TipoID { get; set; } // char(1) Materiales Mano de Obra, etc.
+        public required string Unidad { get; set; }
+        public required string Codigo { get; set; }
+        public int ZonaID { get; set; } // Zona de los precios
         #endregion
         #region VALORES
         public decimal Pesos { get; set; }

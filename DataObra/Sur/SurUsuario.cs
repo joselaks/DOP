@@ -20,31 +20,28 @@ namespace DataObra.Sur
         public string Pass { get; set; }
         public bool Active { get; set; }
         #endregion
-        #region DATOS
+        #region USUARIO
         public int? DNI { get; set; }
         public DateTime Nacimiento { get; set; }
         public string Nombre { get; set; } = string.Empty;
         public string Apellido { get; set; } = string.Empty;
         public string? Ocupacion { get; set; }  // Profesion, etc.
-        public string Ciudad { get; set; }
+        public string Ciudad { get; set; } = string.Empty; // Ciudad o Localidad
         public string Estado { get; set; } = string.Empty; // Provincia
         public string Pais { get; set; } = string.Empty;
-        #endregion
-        #region CONTACTO
         public string? Celular { get; set; }
         public string? Email2 { get; set; }
-
         #endregion
     }
 
     public class SurUsuarioLog
     {
         #region SISTEMA
-        public int? ID { get; set; }  // Sesion ID
+        public int ID { get; set; }  // Sesion ID
         public DateTime Entrada { get; set; } // Fecha y Hora
         public DateTime Salida { get; set; } // Fecha y Hora
         public int UsuarioID { get; set; }
-        public string Usuario { get; set; } = string.Empty;  // Nombre de Usuario
+        public string Usuario { get; set; } = string.Empty;  // Mostrar Nombre de Usuario
         public string Alias { get; set; } = string.Empty; // de la Cuenta
         #endregion
     }

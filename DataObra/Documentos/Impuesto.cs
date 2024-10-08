@@ -9,7 +9,7 @@ namespace DataObra.Documentos
     class Impuesto
     {
         #region SISTEMA
-        public int? ID { get; set; }
+        public int ID { get; set; }
         public int CuentaID { get; set; }
         public int UsuarioID { get; set; }
         public DateTime Editado { get; set; }

@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace DataObra.Sistema
 {
-    class SysClasificador
+    class SysClasificador  // Ciudades, Profesiones, Corralones, etc. uso interno
     {
-        public int ID { get; set; }
-        public string Descrip { get; set; } = string.Empty;
-        public bool Active { get; set; }
-        public char Tipo { get; set; }
-        public int? Numero { get; set; }
+        public int ID { get; set; } // Int
+        public char TipoID { get; set; } // C P etc.    
+        public string Descrip { get; set; } = string.Empty; // varchar(50)
+        public bool Active { get; set; } // bit Si se muestra en los listados
+        public short? Numero { get; set; } // Dato opcional
     }
 }
