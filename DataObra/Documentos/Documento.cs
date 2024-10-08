@@ -59,6 +59,7 @@ namespace DataObra.Documentos
         public decimal ImpuestosD { get; set; } // Decimal 19.2
 
         #region Por Tipo
+        public decimal Materiales { get; set; } // Decimal 19.2
         public decimal ManodeObra { get; set; } // Decimal 19.2
         public decimal Subcontratos { get; set; } // Decimal 19.2
         public decimal Equipos { get; set; } // Decimal 19.2

@@ -21,7 +21,7 @@ namespace DataObra.Agrupadores
         Servidor azure = new Servidor();
         public event EventHandler<Agrupador> AgrupadorModified;
 
-        public FichaAgrupador(Agrupador pAgrupador, int pTipoAgrupa)
+        public FichaAgrupador(Agrupador pAgrupador, char pTipoAgrupa)
         {
             InitializeComponent();
             if (pAgrupador == null)

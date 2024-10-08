@@ -196,7 +196,7 @@ namespace DataObra.Agrupadores.Clases
 
                 if (sele != null)
                 {
-                    FichaAgrupador fichaWindow = new FichaAgrupador(sele, 1);
+                    FichaAgrupador fichaWindow = new FichaAgrupador(sele, 'P');
                     fichaWindow.AgrupadorModified += FichaWindow_AgrupadorModified;
                     fichaWindow.Show();
                 }

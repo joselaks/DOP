@@ -54,16 +54,16 @@ namespace DataObra.Documentos
                 var entidad = azure.Agrupadores.FirstOrDefault(a => a.ID == oActivo.EntidadID);
                 switch (entidad.TipoID)
                 {
-                    case 10:
+                    case 'C':
                         this.EsCliente.IsChecked = true;
                         break;
-                    case 20:
+                    case 'P':
                         this.EsProveedor.IsChecked = true;
                         break;
-                    case 30:
+                    case 'S':
                         this.EsContratista.IsChecked = true;
                         break;
-                    case 40:
+                    case 'O':
                         this.EsPersonal.IsChecked = true;
                         break;
                     default:
