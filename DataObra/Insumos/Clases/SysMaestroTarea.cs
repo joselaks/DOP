@@ -10,10 +10,10 @@ namespace DataObra.Insumos.Clases
         public DateTime Editado { get; set; }
         #endregion
         #region DATOS
-        public int TipoID { get; set; } // Hay tipos?
-        public string Descrip { get; set; }
-        public string Unidad { get; set; }
-        public string Codigo { get; set; }
+        public bool Auxiliar { get; set; } // Si es Auxiliar 
+        public string Descrip { get; set; } // varchar(65)
+        public string Unidad { get; set; } // char(2)
+        public string Codigo { get; set; } // varchar(20)
         public string Memoria { get; set; } // Memoria descriptiva de la Tarea
         public int RubroGenericoID { get; set; } 
         public int RubroID { get; set; }

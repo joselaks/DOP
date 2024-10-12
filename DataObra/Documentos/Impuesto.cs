@@ -10,37 +10,37 @@ namespace DataObra.Documentos
     {
         #region SISTEMA
         public int ID { get; set; }
-        public int CuentaID { get; set; }
-        public int UsuarioID { get; set; }
-        public DateTime Editado { get; set; }
-        public int TipoID { get; set; }
+        public short CuentaID { get; set; } // Smallint
+        public int UsuarioID { get; set; } // Ultimo en modificar
+        public DateTime Editado { get; set; } // Ultima fecha de modificacion
+        public int TipoID { get; set; } // De la tabla clasificadores
         #endregion
         #region AGRUPADORES
         public int? TesoreriaID { get; set; }
         public int? AdminID { get; set; }
         public int? ObraID { get; set; }
         public int? EntidadID { get; set; }
-        public int? EntidadTipo { get; set; }
+        public char? EntidadTipo { get; set; } // Cliente Proveedor Contratista Obrero oTro
         #endregion
         #region DOCUMENTOS
-        public int? CompraID { get; set; }
-        public int? ContratoID { get; set; }
-        public int? FacturaID { get; set; }
-        public int? OrdenID { get; set; }
-        public int? CobroID { get; set; }
-        public int? PagoID { get; set; }
+        public int? CompraID { get; set; } // Impuesto detalle
+        public int? ContratoID { get; set; } // Impuesto detalle
+        public int? FacturaID { get; set; } // Impuesto detalle
+        public int? OrdenID { get; set; } // Impuesto detalle
+        public int? CobroID { get; set; } // Impuesto detalle
+        public int? PagoID { get; set; } // Impuesto detalle
         #endregion
         #region DATOS
-        public DateTime Fecha { get; set; }
-        public int Comprobante { get; set; }
-        public string Descrip { get; set; } = string.Empty;
-        public string? Notas { get; set; }
-        public bool Previsto { get; set; }
+        public DateTime Fecha { get; set; } // Date
+        public int? Comprobante { get; set; } // Relacionado con el impuestop, del usuario
+        public string Descrip { get; set; } = string.Empty; // Detalle del impuesto
+        public string? Notas { get; set; } // Del usuario
+        public bool Previsto { get; set; } // En Compras o Contratos son impuestos no confirmados
         #endregion
         #region TOTALES
-        public decimal SumaPesos { get; set; }
-        public decimal RestaPesos { get; set; }
-        public decimal Alicuota { get; set; } // Va en cada concepto de facturas?
+        public decimal SumaPesos { get; set; } // Facturas de Venta, Retenciones realizadas
+        public decimal RestaPesos { get; set; } // Facturas de Compra, Percepcioens recibidas
+        public decimal Alicuota { get; set; } // Porcentual aplicado decimal 9,2
         #endregion
         #region RELACIONES
         public int? MovimientoID { get; set; } // Si el impuesto esta asociado a un movimiento, ejemplo pagar el saldo mensual de IVA

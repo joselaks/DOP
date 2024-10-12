@@ -57,7 +57,7 @@ namespace DataObra.Documentos
         public decimal Dolares { get; set; } // Decimal 19.2
         public decimal Impuestos { get; set; } // Decimal 19.2
         public decimal ImpuestosD { get; set; } // Decimal 19.2
-
+        #endregion
         #region Por Tipo
         public decimal Materiales { get; set; } // Decimal 19.2
         public decimal ManodeObra { get; set; } // Decimal 19.2
@@ -69,8 +69,6 @@ namespace DataObra.Documentos
         public decimal SubcontratosD { get; set; } // Decimal 19.2
         public decimal EquiposD { get; set; } // Decimal 19.2
         public decimal OtrosD { get; set; } // Decimal 19.2
-        #endregion
-
         #endregion
         #region RELACIONES
         public bool RelDoc { get; set; } // Entre documentos
