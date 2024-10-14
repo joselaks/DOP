@@ -16,7 +16,7 @@ namespace DataObra.Insumos.Clases
         public int UsuarioID { get; set; } // Creador
         public int EditadoID { get; set; } // Ultima edición
         public DateTime Editado { get; set; }
-        public int TipoID { get; set; } //
+        //public int TipoID { get; set; } //
         #endregion
         #region DATOS
         public string Unidad { get; set; }
@@ -25,7 +25,7 @@ namespace DataObra.Insumos.Clases
         public string Codigo { get; set; }
         public string Orden { get; set; }  // 1.1 1.2  1.21 etc. ?
         #endregion
-        #region VALORES
+        #region VALORES Unitarios
         public decimal CostoPesos { get; set; }
         public decimal CostoDolares { get; set; }
         public decimal VentaPesos { get; set; }
@@ -39,14 +39,14 @@ namespace DataObra.Insumos.Clases
         public int? MaestroTareaID { get; set; }  // Maestro del Usuario
         public int? SysMaestroTareaID { get; set; }  // Maestro DO
         public bool RelIns { get; set; } // Si tiene insumos o es global
+        public bool RelAux { get; set; } // Si es auxiliar
         #endregion
     }
     class PreRelacion  // Relacion de Tarea con Insumos del Presupuesto
     {
         public int TareaID { get; set; }
         public int InsumoID { get; set; }
-        public int CuentaID { get; set; }
-        public string TipoRel { get; set; }
+        public short CuentaID { get; set; }
         public decimal Cantidad { get; set; }
     }
 }

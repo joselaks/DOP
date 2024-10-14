@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataObra.Sistema
 {
-    class SysClasificador  // Ciudades, Profesiones, Corralones, etc. uso interno
+    class Clasificador  // Ciudades, Profesiones, Tipos, Corralones, etc. uso interno
     {
         public int ID { get; set; } // Int
         public char TipoID { get; set; } // C P etc.    
