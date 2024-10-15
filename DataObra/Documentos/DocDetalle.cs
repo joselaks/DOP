@@ -6,19 +6,20 @@ using System.Threading.Tasks;
 
 namespace DataObra.Documentos
 {
-    public class DocDetalle
+    public class DocumentoDet  // Tabla DocumentosDet
     {
         #region SISTEMA
-        public int? ID { get; set; }
-        public int CuentaID { get; set; }
+        public int ID { get; set; }
+        public short CuentaID { get; set; }
         public int UsuarioID { get; set; }
-        public DateTime Editado { get; set; }
-        public int TipoID { get; set; } // ??
+        public DateTime Editado { get; set; } // date
+        public char TipoID { get; set; } // Insumos Dto Acopio Dto Anticipo Det Certificado
         #endregion
         #region AGRUPADORES
         public int? AdminID { get; set; }
         public int? EntidadID { get; set; }
-        public int? EntidadTipo { get; set; }
+
+        // public int? EntidadTipo { get; set; } no seria necesario
         public int? DepositoID { get; set; }
         #endregion
         #region DOCUMENTOS
@@ -38,17 +39,17 @@ namespace DataObra.Documentos
         #endregion
         #region DATOS ARTICULO
         public DateTime Fecha { get; set; }
-        public string ArticuloDescrip { get; set; } = string.Empty;
-        public decimal ArticuloCantSuma { get; set; }
-        public decimal ArticuloCantResta { get; set; }
-        public decimal ArticuloPrecio { get; set; }
+        public string ArticuloDescrip { get; set; } = string.Empty; // varchar65
+        public decimal? ArticuloCantSuma { get; set; } // decimal 19,2
+        public decimal? ArticuloCantResta { get; set; } // Notas de credito
+        public decimal ArticuloPrecio { get; set; } // decimal 19,2
         #endregion
         #region VALORES  // Los resta son para nota de crédito
-        public decimal SumaPesos { get; set; }
-        public decimal RestaPesos { get; set; }
-        public decimal SumaDolares { get; set; }
-        public decimal RestaDolares { get; set; }
-        public decimal Cambio { get; set; } // Va o no?
+        public decimal? SumaPesos { get; set; } // decimal 19,2
+        public decimal? RestaPesos { get; set; } // decimal 19,2  Notas de credito
+        public decimal? SumaDolares { get; set; } // decimal 19,2
+        public decimal? RestaDolares { get; set; } // decimal 19,2  Notas de credito
+        public decimal? Cambio { get; set; } // Tipo de cambio tomado decimal 9,2
         #endregion
     }
 }

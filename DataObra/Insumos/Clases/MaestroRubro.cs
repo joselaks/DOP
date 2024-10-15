@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace DataObra.Insumos.Clases
 {
-    public class MaestroRubro
+    public class MaestroRubro // Tabla MaestroRubros
     {
         #region SISTEMA
-        public int? ID { get; set; }
-        public int CuentaID { get; set; }
+        public int ID { get; set; }
+        public short CuentaID { get; set; }
         public int UsuarioID { get; set; } // Creador
         #endregion
         #region DATOS
-        public string Descrip { get; set; }
-        public string Etiqueta { get; set; }
+        public string Descrip { get; set; } // varchar 65
+        public bool Tipo { get; set; } // Rubro o SubRubro?
         #endregion
     }
 }

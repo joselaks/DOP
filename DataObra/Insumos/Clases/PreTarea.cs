@@ -9,8 +9,8 @@ namespace DataObra.Insumos.Clases
     public class PreTarea  // Tarea en un Presupuesto
     {
         #region SISTEMA
-        public int? ID { get; set; }
-        public int CuentaID { get; set; }
+        public int ID { get; set; }
+        public short CuentaID { get; set; }
         public int ObraID { get; set; } // Creador
         public int PresupestoID { get; set; } // Creador
         public int UsuarioID { get; set; } // Creador
