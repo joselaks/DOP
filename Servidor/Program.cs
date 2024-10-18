@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using Biblioteca;
+using Servidor.Utilidades;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,7 +35,23 @@ builder.Services.AddScoped<IDbConnection>(sp => new SqlConnection(connectionStri
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Servidor DataObra", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Servidor DataObra",
+        Version = "v1",
+        Description="Servidor API con los servicios necesarios"
+
+    });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header
+    });
+    c.OperationFilter<FiltroAutorizacion>();
+
 });
 builder.Services.AddCors(opciones =>
 {
@@ -69,8 +86,8 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.UseAuthorization();
 
-app.MapGet("/", () => "Hello World!");
-app.MapGet("/Validacion/{email}/{pass}", async (string email, string pass, IDbConnection db) =>
+app.MapGet("/", () => "Hello World!").RequireAuthorization();
+app.MapGet("/Validacion/", async (string email, string pass, IDbConnection db) =>
 {
     var respuesta = new CredencialesUsuario();
     var verificado = await db.QueryFirstOrDefaultAsync<Usuario>("VerificaUsuario", new { email, pass },
@@ -95,8 +112,14 @@ app.MapGet("/Validacion/{email}/{pass}", async (string email, string pass, IDbCo
     }
     return Results.NotFound();
 
+}).WithOpenApi(opciones=>
+{
+    opciones.Summary = "Validacion de usuarios";
+    opciones.Description = "Devuelve un objeto con el Token y el registro del usuario completo";
+    opciones.Parameters[0].Description = "Email del usuario";
+    opciones.Parameters[1].Description = "Contraseña";
+    return opciones;
 });
-
 
 
 
