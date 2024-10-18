@@ -16,4 +16,8 @@
     <ItemGroup>
       <Folder Include="Insumos\Clases\" />
     </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Biblioteca\Biblioteca.csproj" />
+    </ItemGroup>
 </Project>
