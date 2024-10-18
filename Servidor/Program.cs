@@ -8,6 +8,8 @@ using Dapper;
 using Microsoft.OpenApi.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.IdentityModel.Tokens.Jwt;
+using Biblioteca;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,11 +18,11 @@ string key = "ESTALLAVEFUNCOINARIASI12345PARARECORDARLAMEJOR=";
 
 #region Configuración de la cadena de conexión
 // ------- Azure ------------- 
-// string connectionString = "Server=tcp:ghu95zexx2.database.windows.net,1433;Initial Catalog=DataObraBeta001;Persist Security Info=False;User ID=joselaks;Password=Santorini2010;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30"
+// string connectionString = "Server=tcp:ghu95zexx2.database.windows.net,1433;Initial Catalog=DataObraBeta001;Persist Security Info=False;User ID=joselaks;Password=Santorini2010;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30";
 // ------- Unpaz -------------
-// string connectionString = "Data Source=UEJINF-P2-19\\TEST01;Initial Catalog=DataObraBeta001;User ID=sa;Password=santorini2010;Encrypt=False"
+string connectionString = "Data Source=UEJINF-P2-19\\TEST01;Initial Catalog=DataObraBeta001;User ID=sa;Password=santorini2010;Encrypt=False";
 // ----Notebook Lenovo José --
-string connectionString = "Data Source=LENOVO-JOSE;Initial Catalog=MiBaseDeDatos;Integrated Security=True;Encrypt=False";
+//string connectionString = "Data Source=LENOVO-JOSE;Initial Catalog=MiBaseDeDatos;Integrated Security=True;Encrypt=False";
 #endregion
 
 #region Area de servicios
@@ -68,6 +70,35 @@ app.UseSwaggerUI();
 app.UseAuthorization();
 
 app.MapGet("/", () => "Hello World!");
+app.MapGet("/Validacion/{email}/{pass}", async (string email, string pass, IDbConnection db) =>
+{
+    var respuesta = new CredencialesUsuario();
+    var verificado = await db.QueryFirstOrDefaultAsync<Usuario>("VerificaUsuario", new { email, pass },
+    commandType: CommandType.StoredProcedure);
+
+    if (verificado != null)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var byteKey = Encoding.UTF8.GetBytes(key);
+
+        var tokenDes = new SecurityTokenDescriptor
+        {
+            Expires = DateTime.UtcNow.AddMonths(1),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(byteKey),
+            SecurityAlgorithms.HmacSha256Signature)
+        };
+        var token = tokenHandler.CreateToken(tokenDes);
+
+        respuesta.Token = tokenHandler.WriteToken(token);
+        respuesta.DatosUsuario = verificado;
+        return Results.Ok(respuesta);
+    }
+    return Results.NotFound();
+
+});
+
+
+
 
 #endregion
 
