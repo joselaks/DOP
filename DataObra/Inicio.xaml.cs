@@ -306,5 +306,11 @@ namespace DataObra
             MuestraConectorDatos ventanaMuestra = new MuestraConectorDatos();
             ventanaMuestra.Show();
         }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            VenDocumento ventanaDoc = new VenDocumento("Facturas");
+            ventanaDoc.Show();
+        }
     }
 }

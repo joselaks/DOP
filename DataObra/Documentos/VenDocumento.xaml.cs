@@ -1,32 +1,23 @@
 ﻿using Syncfusion.Windows.Shared;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace DataObra.Documentos
 {
     public partial class VenDocumento : Window
     {
         string Tipo;
+
         public VenDocumento(string pTipo)
         {
             InitializeComponent();
             Tipo = pTipo;
+            AbreDoc();
         }
 
         private void AbreDoc()
         {
-            // Mapeo de tipos a colecciones de documentos
             var documentosPorTipo = new Dictionary<string, string[]>
             {
                 ["Facturas"] = new[] { "Compras", "Remitos", "Pagos" },
@@ -35,7 +26,7 @@ namespace DataObra.Documentos
                 ["Compras"] = new[] { "Pedidos", "Remitos", "Facturas" },
             };
 
-            TileViewControl Tiles = new TileViewControl();
+            var Tiles = new TileViewControl();
 
             if (documentosPorTipo.TryGetValue(Tipo, out var documentos))
             {
@@ -43,7 +34,7 @@ namespace DataObra.Documentos
 
                 foreach (var item in documentos)
                 {
-                    var tileView = CrearTileViewItem(item, "xx", primero);
+                    var tileView = CrearTileViewItem(item, primero);
                     Tiles.Items.Add(tileView);
                     primero = false;
                 }
@@ -51,36 +42,41 @@ namespace DataObra.Documentos
 
             GrillaVenDocumento.Children.Clear();
             GrillaVenDocumento.Children.Add(Tiles);
-
         }
 
-        private TileViewItem CrearTileViewItem(string header, string content, bool maximizado = false)
+        private TileViewItem CrearTileViewItem(string header, bool maximizado = false)
         {
-            // Crea instancia de UserControl
-            ListaDocumentos ListadoDocs = new ListaDocumentos();
-
             var tileViewItem = new TileViewItem
             {
-                Width = 800,
-                Height = 750,
+                Width = 600,
+                Height = 550,
                 Margin = new Thickness(5),
                 Header = header,
-                // Establece UserControl como contenido del TileViewItem
-                Content = ListadoDocs
+                Content = new DataObra.Documentos.Ficha(null) // Cambia a tu UserControl
             };
 
             // Configura el estado inicial del TileViewItem
-            if (maximizado)
-            {
-                tileViewItem.TileViewItemState = TileViewItemState.Maximized;
-            }
-            else
-            {
-                tileViewItem.TileViewItemState = TileViewItemState.Normal;
-            }
+            tileViewItem.TileViewItemState = maximizado ? TileViewItemState.Maximized : TileViewItemState.Normal;
+
+            // Asocia el evento StateChanged
+            tileViewItem.StateChanged += TileViewItem_StateChanged;
 
             return tileViewItem;
         }
 
+        private void TileViewItem_StateChanged(object sender, EventArgs e) // Cambiado aquí
+        {
+            if (sender is TileViewItem tileViewItem)
+            {
+                if (tileViewItem.TileViewItemState == TileViewItemState.Maximized)
+                {
+                    tileViewItem.Content = new DataObra.Documentos.Ficha(null); // Contenido maximizado
+                }
+                else
+                {
+                    tileViewItem.Content = new ListaDocumentos(); // Contenido normal/minimizado
+                }
+            }
+        }
     }
 }

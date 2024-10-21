@@ -1,11 +1,11 @@
-﻿<Window xmlns:Syncfusion="http://schemas.syncfusion.com/wpf"  x:Class="DataObra.Documentos.Ficha"
+﻿<UserControl xmlns:Syncfusion="http://schemas.syncfusion.com/wpf"  x:Class="DataObra.Documentos.Ficha"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DataObra.Documentos"
         mc:Ignorable="d"
-        Title="Ficha" Height="650" Width="960">
+        Height="Auto" Width="Auto">
     <Syncfusion:TabControlExt >
         <Syncfusion:TabItemExt>
             <Grid x:Name="LayoutRoot" >
@@ -300,4 +300,4 @@
         
         
     </Syncfusion:TabControlExt>
-</Window>
+</UserControl>

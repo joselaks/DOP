@@ -19,7 +19,7 @@ namespace DataObra.Documentos
     /// <summary>
     /// Lógica de interacción para Ficha.xaml
     /// </summary>
-    public partial class Ficha : Window
+    public partial class Ficha : UserControl
     {
         Servidor azure = new Servidor();
         public event EventHandler<Documento> DocumentoModified;
@@ -183,12 +183,12 @@ namespace DataObra.Documentos
             oActivo.EditadoFecha = DateTime.Now;
 
             DocumentoModified?.Invoke(this, oActivo);
-            this.Close();
+            //this.Close();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            //this.Close();
         }
 
         #endregion Pantalla

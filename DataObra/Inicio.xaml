@@ -176,6 +176,7 @@
                         <Button Content="Pantalla Login" Click="Button_Click_2"></Button>
                         <Button Content="Pantalla Base" Click="Button_Click_1"></Button>
                         <Button Content="Conexión" Click="Button_Click_3"></Button>
+                        <Button Content="Documento" Click="Button_Click_4"></Button>
                         <Label Content="Primeros pasos" FontSize="18" Grid.Row="0" HorizontalAlignment="Center" Margin="0,30,0,30"  FontWeight="SemiBold"/>
                         <Label Content="Concpetos básicos" FontSize="18" HorizontalAlignment="Center" />
                         <Label Content="Como agregar un agrupador" FontSize="18" HorizontalAlignment="Center" />

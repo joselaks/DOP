@@ -47,7 +47,7 @@ namespace DataObra.Documentos
                     case "nuevo":
                         Ficha nueva = new Ficha(null);
                         nueva.DocumentoModified += FichaWindow_DocumentoModified;
-                        nueva.Show();
+                        //nueva.Show();
                         break;
                     case "abrir":
                         Documento sele = this.GrillaDocumentos.SelectedItem as Documento;
@@ -55,7 +55,7 @@ namespace DataObra.Documentos
                         {
                             Ficha fichaWindow = new Ficha(sele);
                             fichaWindow.DocumentoModified += FichaWindow_DocumentoModified;
-                            fichaWindow.Show();
+                            //fichaWindow.Show();
                         }
                         break;
                     case "borrar":
