@@ -11,6 +11,7 @@ using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using Biblioteca;
 using Servidor.Utilidades;
+using Servidor.Repositorios;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,17 +20,21 @@ string key = "ESTALLAVEFUNCOINARIASI12345PARARECORDARLAMEJOR=";
 
 #region Configuración de la cadena de conexión
 // ------- Azure ------------- 
-// string connectionString = "Server=tcp:ghu95zexx2.database.windows.net,1433;Initial Catalog=DataObraBeta001;Persist Security Info=False;User ID=joselaks;Password=Santorini2010;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30";
+string connectionString = "Server=tcp:ghu95zexx2.database.windows.net,1433;Initial Catalog=DataObraBeta001;Persist Security Info=False;User ID=joselaks;Password=Santorini2010;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30";
 // ------- Unpaz -------------
-string connectionString = "Data Source=UEJINF-P2-19\\TEST01;Initial Catalog=DataObraBeta001;User ID=sa;Password=santorini2010;Encrypt=False";
+// string connectionString = "Data Source=UEJINF-P2-19\\TEST01;Initial Catalog=DataObraBeta001;User ID=sa;Password=santorini2010;Encrypt=False";
 // ----Notebook Lenovo José --
-//string connectionString = "Data Source=LENOVO-JOSE;Initial Catalog=MiBaseDeDatos;Integrated Security=True;Encrypt=False";
+// string connectionString = "Data Source=LENOVO-JOSE;Initial Catalog=DataObraBetaTest;Integrated Security=True;Encrypt=False";
 #endregion
 
 #region Area de servicios
 
 // Configura la conexión a la base
-builder.Services.AddScoped<IDbConnection>(sp => new SqlConnection(connectionString));
+//builder.Services.AddScoped<IDbConnection>(sp => new SqlConnection(connectionString));
+
+//Agrega el servicio del repositorio al contenedor de dependencias
+builder.Services.AddSingleton(new rDocumentos(connectionString));
+builder.Services.AddSingleton(new rUsuarios(connectionString));
 
 // Configurar servicios de Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -86,31 +91,11 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.UseAuthorization();
 
-app.MapGet("/", () => "Hello World!").RequireAuthorization();
-app.MapGet("/Validacion/", async (string email, string pass, IDbConnection db) =>
+app.MapGet("/", () => "Hello World!").RequireAuthorization().WithTags("Testeos");
+app.MapGet("usuarios/validacion/", async (string email, string pass, rUsuarios repo) =>
 {
-    var respuesta = new CredencialesUsuario();
-    var verificado = await db.QueryFirstOrDefaultAsync<Usuario>("VerificaUsuario", new { email, pass },
-    commandType: CommandType.StoredProcedure);
-
-    if (verificado != null)
-    {
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var byteKey = Encoding.UTF8.GetBytes(key);
-
-        var tokenDes = new SecurityTokenDescriptor
-        {
-            Expires = DateTime.UtcNow.AddMonths(1),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(byteKey),
-            SecurityAlgorithms.HmacSha256Signature)
-        };
-        var token = tokenHandler.CreateToken(tokenDes);
-
-        respuesta.Token = tokenHandler.WriteToken(token);
-        respuesta.DatosUsuario = verificado;
-        return Results.Ok(respuesta);
-    }
-    return Results.NotFound();
+    var respuesta = await repo.VerificaUsuario(email, pass);
+    return respuesta;
 
 }).WithOpenApi(opciones=>
 {
@@ -119,10 +104,58 @@ app.MapGet("/Validacion/", async (string email, string pass, IDbConnection db) =
     opciones.Parameters[0].Description = "Email del usuario";
     opciones.Parameters[1].Description = "Contraseña";
     return opciones;
-});
+}).WithTags("Usuarios");
+
+app.MapPost("documentos/", async (rDocumentos repositorio, Documento documento) =>
+{
+    var nuevoDocumento = await repositorio.InsertarDocumentoAsync(documento);
+    return Results.Created($"documentos/{nuevoDocumento}", nuevoDocumento);
+}).WithTags("Documentos").WithName("InsertarDocumento");
+
+app.MapDelete("/{id:int}", async (rDocumentos repositorio, int id) =>
+{
+    var resultado = await repositorio.EliminarDocumentoAsync(id);
+    return resultado ? Results.NoContent() : Results.NotFound();
+})
+.WithTags("Documentos")
+.WithName("EliminarDocumento");
+
+app.MapGet("/cuenta/{cuentaID:int}", async (rDocumentos repositorio, int cuentaID) =>
+{
+    var documentos = await repositorio.ObtenerDocumentosPorCuentaIDAsync(cuentaID);
+    return Results.Ok(documentos);
+})
+.WithTags("Documentos")
+.WithName("ObtenerDocumentosPorCuentaID");
+
+app.MapGet("/ID/{ID:int}", async (rDocumentos repositorio, int ID) =>
+{
+    var documentos = await repositorio.ObtenerDocumentosPorIDAsync(ID);
+    return Results.Ok(documentos);
+})
+.WithTags("Documentos")
+.WithName("ObtenerDocumentosPorID");
+
+app.MapPut("/{id:int}", async (rDocumentos repositorio, int id, Documento documento) =>
+{
+    if (id != documento.ID)
+    {
+        return Results.BadRequest("El ID del documento no coincide con el ID del parámetro.");
+    }
+
+    var resultado = await repositorio.ActualizarDocumentoAsync(documento);
+    return resultado ? Results.NoContent() : Results.NotFound();
+})
+.WithTags("Documentos")
+.WithName("ActualizarDocumento");
+
+
+
+app.Run();
+
 
 
 
 #endregion
 
-app.Run();
+
