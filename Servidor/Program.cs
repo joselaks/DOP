@@ -91,8 +91,11 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.UseAuthorization();
 
-app.MapGet("/", () => "Hello World!").RequireAuthorization().WithTags("Testeos");
-app.MapGet("usuarios/validacion/", async (string email, string pass, rUsuarios repo) =>
+var usu = app.MapGroup("/usuarios");
+var doc = app.MapGroup("/documentos");
+
+//app.MapGet("/", () => "Hello World!").RequireAuthorization().WithTags("Testeos");
+usu.MapGet("validacion/", async (string email, string pass, rUsuarios repo) =>
 {
     var respuesta = await repo.VerificaUsuario(email, pass);
     return respuesta;
@@ -106,13 +109,13 @@ app.MapGet("usuarios/validacion/", async (string email, string pass, rUsuarios r
     return opciones;
 }).WithTags("Usuarios");
 
-app.MapPost("documentos/", async (rDocumentos repositorio, Documento documento) =>
+doc.MapPost("/", async (rDocumentos repositorio, Documento documento) =>
 {
     var nuevoDocumento = await repositorio.InsertarDocumentoAsync(documento);
     return Results.Created($"documentos/{nuevoDocumento}", nuevoDocumento);
 }).WithTags("Documentos").WithName("InsertarDocumento");
 
-app.MapDelete("/{id:int}", async (rDocumentos repositorio, int id) =>
+doc.MapDelete("/", async (rDocumentos repositorio, int id) =>
 {
     var resultado = await repositorio.EliminarDocumentoAsync(id);
     return resultado ? Results.NoContent() : Results.NotFound();
@@ -120,7 +123,7 @@ app.MapDelete("/{id:int}", async (rDocumentos repositorio, int id) =>
 .WithTags("Documentos")
 .WithName("EliminarDocumento");
 
-app.MapGet("/cuenta/{cuentaID:int}", async (rDocumentos repositorio, int cuentaID) =>
+doc.MapGet("/cuenta/", async (rDocumentos repositorio, int cuentaID) =>
 {
     var documentos = await repositorio.ObtenerDocumentosPorCuentaIDAsync(cuentaID);
     return Results.Ok(documentos);
@@ -128,7 +131,7 @@ app.MapGet("/cuenta/{cuentaID:int}", async (rDocumentos repositorio, int cuentaI
 .WithTags("Documentos")
 .WithName("ObtenerDocumentosPorCuentaID");
 
-app.MapGet("/ID/{ID:int}", async (rDocumentos repositorio, int ID) =>
+doc.MapGet("/id/", async (rDocumentos repositorio, int ID) =>
 {
     var documentos = await repositorio.ObtenerDocumentosPorIDAsync(ID);
     return Results.Ok(documentos);
@@ -136,7 +139,7 @@ app.MapGet("/ID/{ID:int}", async (rDocumentos repositorio, int ID) =>
 .WithTags("Documentos")
 .WithName("ObtenerDocumentosPorID");
 
-app.MapPut("/{id:int}", async (rDocumentos repositorio, int id, Documento documento) =>
+doc.MapPut("/", async (rDocumentos repositorio, int id, Documento documento) =>
 {
     if (id != documento.ID)
     {
