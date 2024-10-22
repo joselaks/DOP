@@ -113,13 +113,13 @@ doc.MapPost("/", async (rDocumentos repositorio, Documento documento) =>
 {
     var nuevoDocumento = await repositorio.InsertarDocumentoAsync(documento);
     return Results.Created($"documentos/{nuevoDocumento}", nuevoDocumento);
-}).WithTags("Documentos").WithName("InsertarDocumento");
+}).RequireAuthorization().WithTags("Documentos").WithName("InsertarDocumento");
 
 doc.MapDelete("/", async (rDocumentos repositorio, int id) =>
 {
     var resultado = await repositorio.EliminarDocumentoAsync(id);
     return resultado ? Results.NoContent() : Results.NotFound();
-})
+}).RequireAuthorization()
 .WithTags("Documentos")
 .WithName("EliminarDocumento");
 
@@ -127,7 +127,7 @@ doc.MapGet("/cuenta/", async (rDocumentos repositorio, int cuentaID) =>
 {
     var documentos = await repositorio.ObtenerDocumentosPorCuentaIDAsync(cuentaID);
     return Results.Ok(documentos);
-})
+}).RequireAuthorization()
 .WithTags("Documentos")
 .WithName("ObtenerDocumentosPorCuentaID");
 
@@ -135,7 +135,7 @@ doc.MapGet("/id/", async (rDocumentos repositorio, int ID) =>
 {
     var documentos = await repositorio.ObtenerDocumentosPorIDAsync(ID);
     return Results.Ok(documentos);
-})
+}).RequireAuthorization()
 .WithTags("Documentos")
 .WithName("ObtenerDocumentosPorID");
 
@@ -148,7 +148,7 @@ doc.MapPut("/", async (rDocumentos repositorio, int id, Documento documento) =>
 
     var resultado = await repositorio.ActualizarDocumentoAsync(documento);
     return resultado ? Results.NoContent() : Results.NotFound();
-})
+}).RequireAuthorization()
 .WithTags("Documentos")
 .WithName("ActualizarDocumento");
 
