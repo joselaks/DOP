@@ -127,7 +127,7 @@ doc.MapGet("/cuenta/", async (rDocumentos repositorio, int cuentaID) =>
 {
     var documentos = await repositorio.ObtenerDocumentosPorCuentaIDAsync(cuentaID);
     return Results.Ok(documentos);
-}).RequireAuthorization()
+})
 .WithTags("Documentos")
 .WithName("ObtenerDocumentosPorCuentaID");
 

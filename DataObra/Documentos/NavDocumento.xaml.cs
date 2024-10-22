@@ -40,7 +40,7 @@ namespace DataObra.Documentos
 
         private async Task obtenerDocsAsync()
         {
-            this.GrillaDocumentos.ItemsSource = await oDatos.ObtenerDocsAsync();
+            //this.GrillaDocumentos.ItemsSource = await oDatos.ObtenerDocsAsync();
         }
 
         private void FichaWindow_DocumentoModified(object sender, Documento e)

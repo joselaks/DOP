@@ -5,14 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.Text.Json;
-using DataObra.Documentos;
+using Biblioteca;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DataObra.Datos.Conectores
 {
     public class ObtenerDocumentos
     {
-        public string url = "https://webservicedataobra.azurewebsites.net/documentos";
         public HttpClient httpClient;
         public JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
 
@@ -26,10 +25,12 @@ namespace DataObra.Datos.Conectores
 
         }
 
-        public async Task<List<Documento>> ObtenerDocsAsync()
+        public async Task<List<Documento>> ObtenerPorCuentaAsync(short cuentaID)
         {
             try
             {
+                string url = $"https://localhost:7255/documentos/cuenta?cuentaID={cuentaID}";
+
                 var respuesta = await httpClient.GetAsync(url);
 
                 if (respuesta.IsSuccessStatusCode)
@@ -49,11 +50,3 @@ namespace DataObra.Datos.Conectores
 
     }
 }
-
-//public class DocumentoTest
-//{
-//    public int Id { get; set; }
-//    public int Tipo { get; set; }
-//    public int Numero { get; set; }
-//    public string? Descripcion { get; set; }
-//}

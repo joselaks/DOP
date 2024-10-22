@@ -1,6 +1,7 @@
 ﻿using DataObra.Agrupadores;
 using DataObra.Agrupadores.Clases;
 using DataObra.Base.Controles;
+using DataObra.Datos.Conectores;
 using DataObra.Documentos;
 using DataObra.Insumos;
 using DataObra.Sistema;
@@ -12,6 +13,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Biblioteca;
 
 namespace DataObra
 {
@@ -301,11 +303,25 @@ namespace DataObra
             pantallaLogin.Show();
         }
 
-        private void Button_Click_3(object sender, RoutedEventArgs e)
+        private async void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            MuestraConectorDatos ventanaMuestra = new MuestraConectorDatos();
-            ventanaMuestra.Show();
+            short cuentaID = 5; // Reemplaza con el ID que necesites consultar
+            var obtenerDocumentos = new ObtenerDocumentos();
+            List<Biblioteca.Documento> documentos = await obtenerDocumentos.ObtenerPorCuentaAsync(cuentaID);
+
+            // Aquí puedes manipular la lista de documentos, por ejemplo:
+            if (documentos.Count > 0)
+            {
+                MessageBox.Show($"Documentos encontrados: {documentos.Count}", "Resultados");
+            }
+            else
+            {
+                MessageBox.Show("No se encontraron documentos", "Resultados");
+
+            }
+
         }
+
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
