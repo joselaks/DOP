@@ -25,55 +25,60 @@ namespace DataObra.Datos
             httpClient = httpClientFactory.CreateClient();
         }
 
-        public async Task<CredencialesUsuario> ValidaUsuarioAsync(string email, string pass)
-        {
-            try
-            {
-                string url = $"https://localhost:7255/usuarios/validacion?email={email}&pass={pass}";
-                var respuesta = await httpClient.GetAsync(url);
-                if (respuesta.IsSuccessStatusCode)
-                {
-                    var respuestaString = await respuesta.Content.ReadAsStringAsync();
-                    var datosUsuario = JsonSerializer.Deserialize<CredencialesUsuario>(respuestaString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                    if (datosUsuario != null)
-                    {
-                        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", datosUsuario.Token);
-
-                    }
-                    return datosUsuario ?? new CredencialesUsuario();
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
-            return new CredencialesUsuario();
-        }
-
-        //public async Task<List<Documento>> GetDocumentosCuentaAsync(short cuentaID)
+        //public async Task<CredencialesUsuario> ValidaUsuarioAsync(string email, string pass)
         //{
         //    try
         //    {
-        //        string url = $"https://localhost:7255/documentos/cuenta?cuentaID={cuentaID}";
-
+        //        string url = $"https://localhost:7255/usuarios/validacion?email={email}&pass={pass}";
         //        var respuesta = await httpClient.GetAsync(url);
-
         //        if (respuesta.IsSuccessStatusCode)
         //        {
         //            var respuestaString = await respuesta.Content.ReadAsStringAsync();
-        //            var listadoDocumentos = JsonSerializer.Deserialize<List<Documento>>(respuestaString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-        //            return listadoDocumentos ?? new List<Documento>();  // Devuelve listado
+        //            var datosUsuario = JsonSerializer.Deserialize<CredencialesUsuario>(respuestaString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        //            if (datosUsuario != null)
+        //            {
+        //                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", datosUsuario.Token);
+
+        //            }
+        //            return datosUsuario ?? new CredencialesUsuario();
         //        }
         //    }
         //    catch (Exception ex)
         //    {
-        //        // Tabla de registro de errores
-        //    }
 
-        //    return new List<Documento>(); // Devuelve lista vacía
+        //    }
+        //    return new CredencialesUsuario();
         //}
 
-        public async Task<(bool Success, string Message, List<Documento> Documentos)> GetDocumentosPorCuentaIDAsync(short cuentaID)
+        public async Task<(bool Success, string Message, CredencialesUsuario Usuario)> ValidarUsuarioAsync(string email, string pass)
+        {
+            string url = $"https://localhost:7255/usuarios/validacion?email={email}&pass={pass}";
+
+            try
+            {
+                var response = await httpClient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                var responseString = await response.Content.ReadAsStringAsync();
+                var usuario = JsonSerializer.Deserialize<CredencialesUsuario>(responseString, jsonSerializerOptions);
+                if (usuario.Token != null)
+                {
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", usuario.Token);
+
+                }
+                return (true, "Usuario validado exitosamente.", usuario);
+            }
+            catch (HttpRequestException httpEx)
+            {
+                return (false, $"Error HTTP: {httpEx.Message}", null);
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error: {ex.Message}", null);
+            }
+        }
+
+
+            public async Task<(bool Success, string Message, List<Documento> Documentos)> GetDocumentosPorCuentaIDAsync(short cuentaID)
         {
             var url = $"https://localhost:7255/documentos/cuenta/{cuentaID}";
 

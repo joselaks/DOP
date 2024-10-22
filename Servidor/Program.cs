@@ -94,20 +94,21 @@ app.UseAuthorization();
 var usu = app.MapGroup("/usuarios");
 var doc = app.MapGroup("/documentos");
 
-//app.MapGet("/", () => "Hello World!").RequireAuthorization().WithTags("Testeos");
 usu.MapGet("validacion/", async (string email, string pass, rUsuarios repo) =>
 {
     var respuesta = await repo.VerificaUsuario(email, pass);
-    return respuesta;
-
-}).WithOpenApi(opciones=>
+    return respuesta != null ? Results.Ok(respuesta) : Results.NotFound(new { Mensaje = "Usuario no encontrado o credenciales incorrectas." });
+})
+.WithOpenApi(opciones =>
 {
     opciones.Summary = "Validacion de usuarios";
     opciones.Description = "Devuelve un objeto con el Token y el registro del usuario completo";
     opciones.Parameters[0].Description = "Email del usuario";
     opciones.Parameters[1].Description = "Contraseña";
     return opciones;
-}).WithTags("Usuarios");
+})
+.WithTags("Usuarios")
+.WithName("ValidacionDeUsuarios");
 
 doc.MapPost("/", async (rDocumentos repositorio, Documento documento) =>
 {

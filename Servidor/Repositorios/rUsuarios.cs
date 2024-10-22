@@ -24,7 +24,7 @@ namespace Servidor.Repositorios
             string key = "ESTALLAVEFUNCOINARIASI12345PARARECORDARLAMEJOR=";
             using (var db = new SqlConnection(_connectionString))
             {
-                var verificado = await db.QueryFirstOrDefaultAsync<Usuario>("VerificaUsuario", new { email, pass },
+                var verificado = await db.QuerySingleOrDefaultAsync<Usuario>("VerificaUsuario", new { email, pass },
                                                         commandType: CommandType.StoredProcedure);
                 if (verificado != null)
                 {

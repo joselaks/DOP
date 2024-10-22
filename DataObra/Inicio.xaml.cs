@@ -336,22 +336,25 @@ namespace DataObra
 
         private async void conectaUsuario_Click(object sender, RoutedEventArgs e)
         {
-            var datosUsuario = await datosWeb.ValidaUsuarioAsync("jose@dataobra.com", "contra");
-            if (datosUsuario.Token != null)
-            {
-                MessageBox.Show(datosUsuario.DatosUsuario.Email.ToString());
+            string email = "jose@dataobra.com"; // Email a validar
+            string pass = "contra"; // Contraseña
 
+            var (success, message, usuario) = await datosWeb.ValidarUsuarioAsync(email, pass);
+
+            if (success)
+            {
+                MessageBox.Show(message, "Éxito");
+                // Aquí puedes mostrar los detalles del usuario en la interfaz de usuario
+                // Por ejemplo:
+                // textBoxNombre.Text = usuario.Nombre;
             }
             else
             {
-                MessageBox.Show("No se encontro usuario");
+                MessageBox.Show(message, "Error");
             }
-        }
-
-        private void Button_Click_5(object sender, RoutedEventArgs e)
-        {
 
         }
+        
 
         private async void crearDoc_Click(object sender, RoutedEventArgs e)
         {
