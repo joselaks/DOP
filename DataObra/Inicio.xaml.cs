@@ -304,6 +304,38 @@ namespace DataObra
             pantallaLogin.Show();
         }
 
+        
+
+
+            private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            VenDocumento ventanaDoc = new VenDocumento("Facturas");
+            ventanaDoc.Show();
+        }
+
+        // Botón de verificacion del usuario
+        private async void conectaUsuario_Click(object sender, RoutedEventArgs e)
+        {
+            string email = "jose@dataobra.com"; // Email a validar
+            string pass = "contra"; // Contraseña
+
+            var (success, message, usuario) = await datosWeb.ValidarUsuarioAsync(email, pass);
+
+            if (success)
+            {
+                MessageBox.Show(message, "Éxito");
+                // Aquí puedes mostrar los detalles del usuario en la interfaz de usuario
+                // Por ejemplo:
+                // textBoxNombre.Text = usuario.Nombre;
+            }
+            else
+            {
+                MessageBox.Show(message, "Error");
+            }
+
+        }
+
+        // Boton de buscar los documentos de la cuenta
         private async void BuscaDocumento(object sender, RoutedEventArgs e)
         {
             short cuentaID = 5; // ID de la cuenta a consultar
@@ -327,35 +359,7 @@ namespace DataObra
             }
         }
 
-
-            private void Button_Click_4(object sender, RoutedEventArgs e)
-        {
-            VenDocumento ventanaDoc = new VenDocumento("Facturas");
-            ventanaDoc.Show();
-        }
-
-        private async void conectaUsuario_Click(object sender, RoutedEventArgs e)
-        {
-            string email = "jose@dataobra.com"; // Email a validar
-            string pass = "contra"; // Contraseña
-
-            var (success, message, usuario) = await datosWeb.ValidarUsuarioAsync(email, pass);
-
-            if (success)
-            {
-                MessageBox.Show(message, "Éxito");
-                // Aquí puedes mostrar los detalles del usuario en la interfaz de usuario
-                // Por ejemplo:
-                // textBoxNombre.Text = usuario.Nombre;
-            }
-            else
-            {
-                MessageBox.Show(message, "Error");
-            }
-
-        }
-        
-
+        // Boton de crear un documento
         private async void crearDoc_Click(object sender, RoutedEventArgs e)
         {
             var documento = new Biblioteca.Documento
@@ -416,15 +420,16 @@ namespace DataObra
 
         }
 
+        // Botón de actualizar un documento
         private async void actualizarDoc_Click(object sender, RoutedEventArgs e)
         {
             var documento = new Biblioteca.Documento
             {
                 // Define las propiedades del documento
-                ID = 9,
-                CuentaID = 100,
-                TipoID = 200,
-                UsuarioID = 3,
+                ID = 10,
+                CuentaID = 55,
+                TipoID = 5,
+                UsuarioID = 1,
                 CreadoFecha = DateTime.Now,
                 EditadoID = 4,
                 EditadoFecha = DateTime.Now,
@@ -475,14 +480,16 @@ namespace DataObra
 
         }
 
+        // Botón de borrar un documento
         private async void borrarDoc_Click(object sender, RoutedEventArgs e)
         {
-            int id = 8; // ID del documento a eliminar
+            int id = 10; // ID del documento a eliminar
             var (success, message) = await datosWeb.DeleteDocumentoAsync(id);
             MessageBox.Show(message, success ? "Éxito" : "Error");
 
         }
 
+        // Botón de obtener un documento por ID
         private async void obtenerPorID_Click(object sender, RoutedEventArgs e)
         {
             int id = 3; // ID del documento a obtener
