@@ -17,14 +17,14 @@ namespace Servidor.Repositorios
             _connectionString = connectionString;
         }
 
-        public async Task<IEnumerable<Documento>> ObtenerDocumentosAsync()
-        {
-            using (var db = new SqlConnection(_connectionString))
-            {
-                var documentos = await db.QueryAsync<Documento>("sp_GetDocumentos", commandType: CommandType.StoredProcedure);
-                return documentos;
-            }
-        }
+        //public async Task<IEnumerable<Documento>> ObtenerDocumentosAsync()
+        //{
+        //    using (var db = new SqlConnection(_connectionString))
+        //    {
+        //        var documentos = await db.QueryAsync<Documento>("sp_GetDocumentos", commandType: CommandType.StoredProcedure);
+        //        return documentos;
+        //    }
+        //}
 
         public async Task<int> InsertarDocumentoAsync(Documento documento)
         {

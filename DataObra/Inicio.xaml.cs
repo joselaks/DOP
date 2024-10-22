@@ -1,7 +1,6 @@
 ﻿using DataObra.Agrupadores;
 using DataObra.Agrupadores.Clases;
 using DataObra.Base.Controles;
-using DataObra.Datos.Conectores;
 using DataObra.Documentos;
 using DataObra.Insumos;
 using DataObra.Sistema;
@@ -14,6 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Biblioteca;
+using DataObra.Datos;
 
 namespace DataObra
 {
@@ -27,12 +27,13 @@ namespace DataObra
         NavAgrupador navAgrupador;
         NavDocumento navDocumentos;
         NavInsumo navInsumos;
+        DatosWeb datosWeb;
         ////NavTareas navTareas;
 
         public Inicio()
         {
             InitializeComponent();
-
+            datosWeb = new DatosWeb();
             Solapa = "Inicio";
 
             GrupoAgrupadores();
@@ -185,7 +186,7 @@ namespace DataObra
                     switch (Solapa)
                     {
                         case "Agrupadores":
-                            navAgrupador = new NavAgrupador(tileSele.Name,nuevoTab, TabAgrupadores);
+                            navAgrupador = new NavAgrupador(tileSele.Name, nuevoTab, TabAgrupadores);
                             nuevaGrilla.Children.Add(navAgrupador);
                             break;
                         case "Documentos":
@@ -200,7 +201,7 @@ namespace DataObra
                             break;
                     }
 
-                 
+
                     nuevoTab.Content = nuevaGrilla;
 
                     switch (Solapa)
@@ -303,30 +304,198 @@ namespace DataObra
             pantallaLogin.Show();
         }
 
-        private async void Button_Click_3(object sender, RoutedEventArgs e)
+        private async void BuscaDocumento(object sender, RoutedEventArgs e)
         {
-            short cuentaID = 5; // Reemplaza con el ID que necesites consultar
-            var obtenerDocumentos = new ObtenerDocumentos();
-            List<Biblioteca.Documento> documentos = await obtenerDocumentos.ObtenerPorCuentaAsync(cuentaID);
+            short cuentaID = 5; // ID de la cuenta a consultar
+            var (success, message, documentos) = await datosWeb.GetDocumentosPorCuentaIDAsync(cuentaID);
 
-            // Aquí puedes manipular la lista de documentos, por ejemplo:
-            if (documentos.Count > 0)
+            if (success)
             {
-                MessageBox.Show($"Documentos encontrados: {documentos.Count}", "Resultados");
+                MessageBox.Show(message, "Éxito");
+                // Aquí se puede obtener la lista de documentos
+                // Por ejemplo:
+                // foreach (var doc in documentos)
+                // {
+                //     listBoxDocumentos.Items.Add(doc.Descrip);
+                // }
             }
             else
             {
-                MessageBox.Show("No se encontraron documentos", "Resultados");
+                MessageBox.Show(message, "Error");
+
 
             }
-
         }
 
 
-        private void Button_Click_4(object sender, RoutedEventArgs e)
+            private void Button_Click_4(object sender, RoutedEventArgs e)
         {
             VenDocumento ventanaDoc = new VenDocumento("Facturas");
             ventanaDoc.Show();
+        }
+
+        private async void conectaUsuario_Click(object sender, RoutedEventArgs e)
+        {
+            var datosUsuario = await datosWeb.ValidaUsuarioAsync("jose@dataobra.com", "contra");
+            if (datosUsuario.Token != null)
+            {
+                MessageBox.Show(datosUsuario.DatosUsuario.Email.ToString());
+
+            }
+            else
+            {
+                MessageBox.Show("No se encontro usuario");
+            }
+        }
+
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private async void crearDoc_Click(object sender, RoutedEventArgs e)
+        {
+            var documento = new Biblioteca.Documento
+            {
+                // Define las propiedades del documento
+                CuentaID = 1,
+                TipoID = 2,
+                UsuarioID = 3,
+                CreadoFecha = DateTime.Now,
+                EditadoID = 4,
+                EditadoFecha = DateTime.Now,
+                RevisadoID = 5,
+                RevisadoFecha = DateTime.Now,
+                AdminID = 3,
+                ObraID = 5,
+                PresupuestoID = 6,
+                RubroID = 6,
+                EntidadID = 7,
+                DepositoID = 5,
+                Descrip = "a",
+                Concepto1 = "b",
+                Fecha1 = DateTime.Now,
+                Fecha2 = DateTime.Now,
+
+                Fecha3 = DateTime.Now,
+                Numero1 = 0,
+                Numero2 = 0,
+                Numero3 = 0,
+                Notas = "bb",
+                Active = false,
+                Pesos = 0,
+                Dolares = 0,
+                Impuestos = 0,
+                ImpuestosD = 0,
+                Materiales = 0,
+                ManodeObra = 0,
+                Subcontratos = 0,
+                Equipos = 0,
+                Otros = 0,
+                MaterialesD = 0,
+                ManodeObraD = 0,
+                SubcontratosD = 0,
+                EquiposD = 0,
+                OtrosD = 0,
+                RelDoc = false,
+                RelArt = false,
+                RelMov = false,
+                RelImp = false,
+                RelRub = false,
+                RelTar = false,
+                RelIns = false
+                // Añadir más propiedades según sea necesario...
+            };
+
+            var (success, message) = await datosWeb.PostDocumentoAsync(documento);
+
+            MessageBox.Show(message, success ? "Éxito" : "Error");
+
+        }
+
+        private async void actualizarDoc_Click(object sender, RoutedEventArgs e)
+        {
+            var documento = new Biblioteca.Documento
+            {
+                // Define las propiedades del documento
+                ID = 9,
+                CuentaID = 100,
+                TipoID = 200,
+                UsuarioID = 3,
+                CreadoFecha = DateTime.Now,
+                EditadoID = 4,
+                EditadoFecha = DateTime.Now,
+                RevisadoID = 5,
+                RevisadoFecha = DateTime.Now,
+                AdminID = 3,
+                ObraID = 5,
+                PresupuestoID = 6,
+                RubroID = 6,
+                EntidadID = 7,
+                DepositoID = 5,
+                Descrip = "a",
+                Concepto1 = "b",
+                Fecha1 = DateTime.Now,
+                Fecha2 = DateTime.Now,
+
+                Fecha3 = DateTime.Now,
+                Numero1 = 0,
+                Numero2 = 0,
+                Numero3 = 0,
+                Notas = "bb",
+                Active = false,
+                Pesos = 0,
+                Dolares = 0,
+                Impuestos = 0,
+                ImpuestosD = 0,
+                Materiales = 0,
+                ManodeObra = 0,
+                Subcontratos = 0,
+                Equipos = 0,
+                Otros = 0,
+                MaterialesD = 0,
+                ManodeObraD = 0,
+                SubcontratosD = 0,
+                EquiposD = 0,
+                OtrosD = 0,
+                RelDoc = false,
+                RelArt = false,
+                RelMov = false,
+                RelImp = false,
+                RelRub = false,
+                RelTar = false,
+                RelIns = false
+                // Añadir más propiedades según sea necesario...
+            };
+            var (success, message) = await datosWeb.PutDocumentoAsync(documento);
+            MessageBox.Show(message, success ? "Éxito" : "Error");
+
+        }
+
+        private async void borrarDoc_Click(object sender, RoutedEventArgs e)
+        {
+            int id = 8; // ID del documento a eliminar
+            var (success, message) = await datosWeb.DeleteDocumentoAsync(id);
+            MessageBox.Show(message, success ? "Éxito" : "Error");
+
+        }
+
+        private async void obtenerPorID_Click(object sender, RoutedEventArgs e)
+        {
+            int id = 3; // ID del documento a obtener
+            var (success, message, documento) = await datosWeb.ObtenerDocumentoPorIDAsync(id);
+
+            if (success)
+            {
+                MessageBox.Show(message, "Éxito");
+                // Aquí se puede mostrar los detalles del documento en la interfaz de usuario
+                // Por ejemplo:
+                // textBoxDescripcion.Text = documento.Descrip;
+            }
+            else
+            {
+                MessageBox.Show(message, "Error");
+            }
         }
     }
 }

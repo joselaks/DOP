@@ -28,8 +28,6 @@ namespace DataObra.Documentos
 
         private async Task obtenerDocsAsync()
         {
-            Datos.Conectores.ObtenerDocumentos lista1 = new Datos.Conectores.ObtenerDocumentos();
-            //this.grillaDocumentos.ItemsSource = await lista1.ObtenerDocsAsync();
         }
 
     }

@@ -21,11 +21,9 @@ namespace DataObra.Documentos
     {
         bool angosto = true;
         Servidor azure;
-        Datos.Conectores.ObtenerDocumentos oDatos;
         public NavDocumento(string pModo, string pDoc)
         {
             InitializeComponent();
-            oDatos = new Datos.Conectores.ObtenerDocumentos();
             this.FechaDesde.SelectedDate = DateTime.Today.AddDays(-30);
             this.FechaHasta.SelectedDate = DateTime.Today;
 

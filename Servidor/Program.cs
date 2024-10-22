@@ -115,31 +115,37 @@ doc.MapPost("/", async (rDocumentos repositorio, Documento documento) =>
     return Results.Created($"documentos/{nuevoDocumento}", nuevoDocumento);
 }).RequireAuthorization().WithTags("Documentos").WithName("InsertarDocumento");
 
-doc.MapDelete("/", async (rDocumentos repositorio, int id) =>
+doc.MapDelete("/{id:int}", async (rDocumentos repositorio, int id) =>
 {
     var resultado = await repositorio.EliminarDocumentoAsync(id);
-    return resultado ? Results.NoContent() : Results.NotFound();
-}).RequireAuthorization()
+    return resultado ? Results.NoContent() : Results.NotFound(new { Mensaje = "No se encontró el documento para eliminar." });
+})
+.RequireAuthorization()
 .WithTags("Documentos")
 .WithName("EliminarDocumento");
 
-doc.MapGet("/cuenta/", async (rDocumentos repositorio, int cuentaID) =>
+
+doc.MapGet("/cuenta/{cuentaID:int}", async (rDocumentos repositorio, int cuentaID) =>
 {
     var documentos = await repositorio.ObtenerDocumentosPorCuentaIDAsync(cuentaID);
-    return Results.Ok(documentos);
+    return documentos != null ? Results.Ok(documentos) : Results.NotFound(new { Mensaje = "No se encontraron documentos con el CuentaID proporcionado." });
 })
+.RequireAuthorization()
 .WithTags("Documentos")
 .WithName("ObtenerDocumentosPorCuentaID");
 
-doc.MapGet("/id/", async (rDocumentos repositorio, int ID) =>
-{
-    var documentos = await repositorio.ObtenerDocumentosPorIDAsync(ID);
-    return Results.Ok(documentos);
-}).RequireAuthorization()
-.WithTags("Documentos")
-.WithName("ObtenerDocumentosPorID");
 
-doc.MapPut("/", async (rDocumentos repositorio, int id, Documento documento) =>
+doc.MapGet("/id/{id:int}", async (rDocumentos repositorio, int id) =>
+{
+    var documento = await repositorio.ObtenerDocumentosPorIDAsync(id);
+    return documento != null ? Results.Ok(documento) : Results.NotFound(new { Mensaje = "No se encontró el documento con el ID proporcionado." });
+})
+.RequireAuthorization()
+.WithTags("Documentos")
+.WithName("ObtenerDocumentoPorID");
+
+
+doc.MapPut("/{id:int}", async (rDocumentos repositorio, int id, Documento documento) =>
 {
     if (id != documento.ID)
     {
@@ -147,10 +153,13 @@ doc.MapPut("/", async (rDocumentos repositorio, int id, Documento documento) =>
     }
 
     var resultado = await repositorio.ActualizarDocumentoAsync(documento);
-    return resultado ? Results.NoContent() : Results.NotFound();
-}).RequireAuthorization()
+    return resultado ? Results.NoContent() : Results.NotFound(new { Mensaje = "No se encontró el documento para actualizar." });
+})
+.RequireAuthorization()
 .WithTags("Documentos")
 .WithName("ActualizarDocumento");
+
+
 
 
 
