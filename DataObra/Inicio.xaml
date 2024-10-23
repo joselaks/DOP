@@ -7,6 +7,9 @@
         xmlns:syncfusion="http://schemas.syncfusion.com/wpf" x:Class="DataObra.Inicio"
         mc:Ignorable="d"
         Title="Inicio" Height="450" Width="800" WindowState="Maximized">
+    Gravedad	Código	Descripción	Proyecto	Archivo	Línea	Estado suprimido
+Error (activo)	NETSDK1022	Se incluyeron "Page" elementos duplicados. El SDK de .NET incluye "Page" elementos de su directorio de proyecto de manera predeterminada. Puede quitar esos elementos del archivo de proyecto o establecer la propiedad "EnableDefaultPageItems" en "false" si desea incluirlos explícitamente en el archivo de proyecto. Para más información, consulte https://aka.ms/sdkimplicititems. Los elementos duplicados eran: 'Inicio.xaml'	DataObra	C:\Program Files\dotnet\sdk\8.0.400\Sdks\Microsoft.NET.Sdk.WindowsDesktop\targets\Microsoft.NET.Sdk.WindowsDesktop.targets	111	
+
     <Window.Resources>
         <Style x:Key="NewtabControlExtStyle" TargetType="{x:Type syncfusion:TabControlExt}">
             <Style.Triggers>

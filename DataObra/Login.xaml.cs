@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataObra.Datos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,20 +17,25 @@ namespace DataObra
 {
     public partial class Login : Window
     {
+        DatosWeb Azure;
+
         public Login()
         {
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
             // Lógica para manejar el inicio de sesión
-            string usuario = txtUsuario.Text;
-            string contraseña = txtContraseña.Password;
+            string mail = txtUsuario.Text;
+            string clave = txtContraseña.Password;
 
-            if (usuario == "demo@dataobra.com" && contraseña == "demo")
+            var (success, message, usuario) = await Azure.ValidarUsuarioAsync(mail, clave);
+
+            if (success)
             {
-                // Cambiar la pantalla
+                MessageBox.Show(message, "Éxito");
+
                 LoginSection.Visibility = Visibility.Collapsed;
                 TextBlock userName = new TextBlock
                 {
