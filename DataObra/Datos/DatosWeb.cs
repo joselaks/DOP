@@ -37,9 +37,10 @@ namespace DataObra.Datos
                 if (usuario.Token != null)
                 {
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", usuario.Token);
+                    return (true, "Usuario validado exitosamente.", usuario);
 
                 }
-                return (true, "Usuario validado exitosamente.", usuario);
+                return (true, "Usuario inexistene.", usuario);
             }
             catch (HttpRequestException httpEx)
             {
