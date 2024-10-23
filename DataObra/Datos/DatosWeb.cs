@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Data;
+using System.Windows;
 
 namespace DataObra.Datos
 {
@@ -18,18 +19,15 @@ namespace DataObra.Datos
         public JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
         public DatosWeb()
         {
-            ServiceCollection serviceCollection = new ServiceCollection();
-            serviceCollection.AddHttpClient();
-            var servicios = serviceCollection.BuildServiceProvider();
-            var httpClientFactory = servicios.GetRequiredService<IHttpClientFactory>();
-            httpClient = httpClientFactory.CreateClient();
+            // En cualquier parte de tu aplicación
+            httpClient = ((App)Application.Current).HttpClient;
+
         }
 
         // Procedimiento para validar usuario. Una vez verificado graba el Token en el httpClient para las próximas consultas
         public async Task<(bool Success, string Message, CredencialesUsuario Usuario)> ValidarUsuarioAsync(string email, string pass)
         {
             string url = $"https://localhost:7255/usuarios/validacion?email={email}&pass={pass}";
-
             try
             {
                 var response = await httpClient.GetAsync(url);
@@ -56,7 +54,8 @@ namespace DataObra.Datos
         // Procedimiento para obtener todos los documentos de una cuenta
         public async Task<(bool Success, string Message, List<Documento> Documentos)> GetDocumentosPorCuentaIDAsync(short cuentaID)
         {
-            var url = $"https://localhost:7255/documentos/cuenta/{cuentaID}";
+            //var url = $"https://localhost:7255/documentos/cuenta/{cuentaID}";
+            var url = $"{App.BaseUrl}documentos/cuenta/{cuentaID}";
 
             try
             {

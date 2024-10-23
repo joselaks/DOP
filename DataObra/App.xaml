@@ -3,6 +3,10 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:DataObra"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
     StartupUri="Inicio.xaml">
-    <Application.Resources />
+    <Application.Resources>
+        <sys:String x:Key="BaseUrlLocal">https://localhost:7255/</sys:String>
+        <sys:String x:Key="BaseUrlProduction">https://dataobra.com/</sys:String>
+    </Application.Resources>
 </Application>
