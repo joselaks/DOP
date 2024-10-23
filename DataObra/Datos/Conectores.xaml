@@ -18,13 +18,14 @@
         <TextBlock TextAlignment="Center" Margin="10,6,10,3">Usuarios</TextBlock>
         <TextBlock TextAlignment="Center" Margin="10,6,10,3" Grid.Row="1" >Documentos</TextBlock>
         <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Center" Grid.Column="2" Grid.Row="0">
-            <Button Content="Verifica" Margin="3,3,3,3" Width="50" x:Name="veriUsu" Click="nuevoDoc_Click"/>
+            <Button Content="Verifica" Margin="3,3,3,3" Width="90" x:Name="veriUsu" Click="veriUsu_Click" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1">
-            <Button Content="Nuevo" Margin="3,3,3,3" Width="50" x:Name="nuevoDoc" Click="nuevoDoc_Click"/>
-            <Button Content="Borra" Margin="3,3,3,3" Width="50" x:Name="borraDoc" Click="nuevoDoc_Click"/>
-            <Button Content="Edita" Margin="3,3,3,3" Width="50" x:Name="editaDoc" Click="nuevoDoc_Click"/>
-
+            <Button Content="Nuevo" Margin="3,3,3,3" Width="90" x:Name="nuevoDoc" Click="nuevoDoc_Click"/>
+            <Button Content="Borra" Margin="3,3,3,3" Width="90" x:Name="borraDoc" Click="borraDoc_Click" />
+            <Button Content="Edita" Margin="3,3,3,3" Width="90" x:Name="editaDoc" Click="editaDoc_Click" />
+            <Button Content="Busca p/ID" Margin="3,3,3,3" Width="90" x:Name="buscaIDDoc" Click="buscaIDDoc_Click" />
+            <Button Content="Busca p/cuenta" Margin="3,3,3,3" Width="90" x:Name="buscaCuentaDoc" Click="buscaCuentaDoc_Click" />
         </StackPanel>
 
     </Grid>

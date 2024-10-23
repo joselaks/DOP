@@ -175,12 +175,6 @@
                     <StackPanel  Grid.Row="0" HorizontalAlignment="Center" Grid.RowSpan="3">
                         <Button Content="Pantalla Login" Click="Button_Click_2"></Button>
                         <Button Content="Pantalla Base" Click="Button_Click_1"></Button>
-                        <Button Content="Conecta Usuario" Name="conectaUsuario" Click="conectaUsuario_Click"></Button>
-                        <Button Content="Obtener doc.de la cuenta" Click="BuscaDocumento"  ></Button>
-                        <Button Content="Crear documentos" x:Name="crearDoc" Click="crearDoc_Click"></Button>
-                        <Button Content="Actualizar documentos" x:Name="actualizarDoc" Click="actualizarDoc_Click" ></Button>
-                        <Button Content="Borrar documentos" x:Name="borrarDoc" Click="borrarDoc_Click" ></Button>
-                        <Button Content="Obtener por ID" x:Name="obtenerPorID" Click="obtenerPorID_Click" ></Button>
                         <Button Content="Documento" Click="Button_Click_4"></Button>
                         <Button Content="Ventana Conectores" x:Name="vConect" Click="vConect_Click"></Button>
                         <Label Content="Primeros pasos" FontSize="18" Grid.Row="0" HorizontalAlignment="Center" Margin="0,30,0,30"  FontWeight="SemiBold"/>
