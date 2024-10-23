@@ -182,6 +182,7 @@
                         <Button Content="Borrar documentos" x:Name="borrarDoc" Click="borrarDoc_Click" ></Button>
                         <Button Content="Obtener por ID" x:Name="obtenerPorID" Click="obtenerPorID_Click" ></Button>
                         <Button Content="Documento" Click="Button_Click_4"></Button>
+                        <Button Content="Ventana Conectores" x:Name="vConect" Click="vConect_Click"></Button>
                         <Label Content="Primeros pasos" FontSize="18" Grid.Row="0" HorizontalAlignment="Center" Margin="0,30,0,30"  FontWeight="SemiBold"/>
                         <Label Content="Concpetos básicos" FontSize="18" HorizontalAlignment="Center" />
                         <Label Content="Como agregar un agrupador" FontSize="18" HorizontalAlignment="Center" />

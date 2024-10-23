@@ -507,5 +507,11 @@ namespace DataObra
                 MessageBox.Show(message, "Error");
             }
         }
+
+        private void vConect_Click(object sender, RoutedEventArgs e)
+        {
+            Datos.Conectores v1 = new Conectores();
+            v1.Show();
+        }
     }
 }
