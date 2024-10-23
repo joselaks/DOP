@@ -22,6 +22,7 @@ namespace DataObra
         public Login()
         {
             InitializeComponent();
+            Azure = new DatosWeb();
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
