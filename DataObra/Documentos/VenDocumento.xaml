@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DataObra.Documentos" xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
         mc:Ignorable="d"
-        Title="VenDocumento" Height="450" Width="800">
+        Title="VenDocumento" Height="950" Width="1300">
     <Grid x:Name="GrillaVenDocumento">
 
     </Grid>

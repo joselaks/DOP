@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DataObra.Documentos"
         mc:Ignorable="d"
-        Height="Auto" Width="Auto">
+        Height="480" Width="1100">
     <Syncfusion:TabControlExt >
         <Syncfusion:TabItemExt>
             <Grid x:Name="LayoutRoot" >
@@ -21,8 +21,7 @@
                     <RowDefinition Height="104" />
                     <RowDefinition Height="160" />
                     <RowDefinition Height="109" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="35" />
+                    <RowDefinition Height="27" />
                 </Grid.RowDefinitions>
 
                 <Border x:Name="FECHAS" Grid.Row="0" Grid.ColumnSpan="3" Margin="5,5,5,5" BorderThickness="3" BorderBrush="#FF3399FF" >
@@ -266,21 +265,7 @@
                     </Grid>
                 </Border>
 
-                <Border Name="RELACIONADOS" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5" Grid.RowSpan="1" Margin="5,5,5,5" BorderThickness="3" BorderBrush="#FF3399FF" >
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-
-                        <Label Content="Documentos Relacionados" Grid.Row="0" HorizontalAlignment="Left" />
-
-                    </Grid>
-                </Border>
+                <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5" Content="Documentos Relacionados" HorizontalAlignment="Left" />
 
                 <StackPanel Visibility="Collapsed" Grid.Column="2" Grid.Row="5" Height="32" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" >
                     <Button Name="Boton1" Content="Boton1" Click="Boton1_Click" Width="99" Height="25" HorizontalAlignment="Right" Margin="55,0,19,0" />

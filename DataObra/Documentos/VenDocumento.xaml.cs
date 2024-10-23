@@ -26,33 +26,35 @@ namespace DataObra.Documentos
                 ["Compras"] = new[] { "Pedidos", "Remitos", "Facturas" },
             };
 
-            var Tiles = new TileViewControl();
+            // Defino el TileControl
+            var ControlDocumentos = new TileViewControl();
+            ControlDocumentos.MinimizedItemsOrientation = MinimizedItemsOrientation.Bottom;
 
-            if (documentosPorTipo.TryGetValue(Tipo, out var documentos))
+            if (documentosPorTipo.TryGetValue(Tipo, out var listaDocumentos))
             {
                 bool primero = true;
 
-                foreach (var item in documentos)
+                foreach (var item in listaDocumentos)
                 {
                     var tileView = CrearTileViewItem(item, primero);
-                    Tiles.Items.Add(tileView);
+                    ControlDocumentos.Items.Add(tileView);
                     primero = false;
                 }
             }
 
             GrillaVenDocumento.Children.Clear();
-            GrillaVenDocumento.Children.Add(Tiles);
+            GrillaVenDocumento.Children.Add(ControlDocumentos);
         }
 
         private TileViewItem CrearTileViewItem(string header, bool maximizado = false)
         {
             var tileViewItem = new TileViewItem
             {
-                Width = 600,
-                Height = 550,
+                Width = 1100,
+                Height = 480,
                 Margin = new Thickness(5),
                 Header = header,
-                Content = new DataObra.Documentos.Ficha(null) // Cambia a tu UserControl
+                Content = new DataObra.Documentos.Ficha(null) 
             };
 
             // Configura el estado inicial del TileViewItem
