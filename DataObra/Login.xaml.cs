@@ -33,7 +33,7 @@ namespace DataObra
 
             var (success, message, usuario) = await Azure.ValidarUsuarioAsync(mail, clave);
 
-            if (success)
+            if (usuario.Token!=null)
             {
                 MessageBox.Show(message, "Éxito");
 
