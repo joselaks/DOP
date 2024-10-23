@@ -20,4 +20,12 @@
     <ItemGroup>
       <ProjectReference Include="..\Biblioteca\Biblioteca.csproj" />
     </ItemGroup>
+	
+<ItemGroup>
+		<Page Include="Inicio.xaml">
+			<Generator>MSBuild:Compile</Generator>
+			<SubType>Designer</SubType>
+		</Page>
+</ItemGroup>
+	
 </Project>
