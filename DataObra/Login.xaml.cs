@@ -40,7 +40,7 @@ namespace DataObra
                 LoginSection.Visibility = Visibility.Collapsed;
                 TextBlock userName = new TextBlock
                 {
-                    Text = "Bienvenido, " + usuario,
+                    Text = "Bienvenido, " + usuario.DatosUsuario.Nombre,
                     FontSize = 20,
                     Margin = new Thickness(10)
                 };
