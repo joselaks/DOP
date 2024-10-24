@@ -33,24 +33,31 @@ namespace DataObra
 
             var (success, message, usuario) = await Azure.ValidarUsuarioAsync(mail, clave);
 
-            if (usuario.Token!=null)
+            if (success) 
             {
-                MessageBox.Show(message, "Éxito");
-
-                LoginSection.Visibility = Visibility.Collapsed;
-                TextBlock userName = new TextBlock
+                if (usuario.Token != null)
                 {
-                    Text = "Bienvenido, " + usuario.DatosUsuario.Nombre,
-                    FontSize = 20,
-                    Margin = new Thickness(10)
-                };
-                MainContent.Children.Add(userName);
+                    MessageBox.Show(message, "Éxito");
 
-                textodemo.Text = "";
+                    LoginSection.Visibility = Visibility.Collapsed;
+                    TextBlock userName = new TextBlock
+                    {
+                        Text = "Bienvenido, " + usuario.DatosUsuario.Nombre,
+                        FontSize = 20,
+                        Margin = new Thickness(10)
+                    };
+                    MainContent.Children.Add(userName);
+
+                    textodemo.Text = "";
+                }
+                else
+                {
+                    MessageBox.Show("Usuario o contraseña incorrectos");
+                }
             }
             else
             {
-                MessageBox.Show("Usuario o contraseña incorrectos");
+                MessageBox.Show("Repita la operación");
             }
         }
 
