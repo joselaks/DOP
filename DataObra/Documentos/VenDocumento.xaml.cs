@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace DataObra.Documentos
 {
@@ -27,8 +28,9 @@ namespace DataObra.Documentos
             };
 
             // Defino el TileControl
-            var ControlDocumentos = new TileViewControl();
-            ControlDocumentos.MinimizedItemsOrientation = MinimizedItemsOrientation.Bottom;
+            //var ControlDocumentos = new TileViewControl();
+            //ControlDocumentos.MinimizedItemsOrientation = MinimizedItemsOrientation.Bottom;
+            //ControlDocumentos.MinimizedItemTemplate = (DataTemplate)Resources["MinimizedItemTemplate"];
 
             if (documentosPorTipo.TryGetValue(Tipo, out var listaDocumentos))
             {
@@ -54,7 +56,7 @@ namespace DataObra.Documentos
                 Height = 480,
                 Margin = new Thickness(5),
                 Header = header,
-                Content = new DataObra.Documentos.Ficha(null) 
+                Content = new DataObra.Documentos.Ficha(null),
             };
 
             // Configura el estado inicial del TileViewItem
@@ -66,19 +68,27 @@ namespace DataObra.Documentos
             return tileViewItem;
         }
 
-        private void TileViewItem_StateChanged(object sender, EventArgs e) // Cambiado aquí
+        private bool isHandlingStateChange = false;
+
+        private void TileViewItem_StateChanged(object sender, EventArgs e)
         {
+            if (isHandlingStateChange) return;
+            isHandlingStateChange = true;
+
             if (sender is TileViewItem tileViewItem)
             {
                 if (tileViewItem.TileViewItemState == TileViewItemState.Maximized)
                 {
-                    tileViewItem.Content = new DataObra.Documentos.Ficha(null); // Contenido maximizado
+                    tileViewItem.Content = new DataObra.Documentos.Ficha(null); // Maximized content
                 }
                 else
                 {
-                    tileViewItem.Content = new ListaDocumentos(); // Contenido normal/minimizado
+                    tileViewItem.Content = new MinDocumento(); // Normal/minimized content
                 }
             }
+
+            isHandlingStateChange = false;
         }
+
     }
 }

@@ -291,7 +291,7 @@ namespace DataObra
         {
 
         }
-
+        
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             PantallaBase pantallaBase = new PantallaBase();
@@ -304,15 +304,11 @@ namespace DataObra
             pantallaLogin.Show();
         }
 
-        
-
-
-            private void Button_Click_4(object sender, RoutedEventArgs e)
+        private void Button_Click_4(object sender, RoutedEventArgs e)
         {
             VenDocumento ventanaDoc = new VenDocumento("Facturas");
             ventanaDoc.Show();
         }
-
        
         private void vConect_Click(object sender, RoutedEventArgs e)
         {
