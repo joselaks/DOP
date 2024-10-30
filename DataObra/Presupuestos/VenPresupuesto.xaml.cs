@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bibioteca.Clases;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,9 @@ namespace DataObra.Presupuestos
         public VenPresupuesto()
         {
             InitializeComponent();
+            Presupuesto Objeto = new Presupuesto();
+            Objeto.agregaNodo("R", null);
+            this.grillaArbol.ItemsSource = Objeto.Arbol;
         }
 
     }

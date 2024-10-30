@@ -30,7 +30,17 @@
                 <syncfusion:ButtonAdv SizeMode="Small" Label="Log-in" Margin="3" SmallIcon="/Presupuestos/abrir.png" />
                 <syncfusion:ButtonAdv SizeMode="Small" Label="Log-in" Margin="3" SmallIcon="/Presupuestos/abrir.png" />
             </StackPanel>
-            <syncfusion:SfTreeGrid x:Name="grillaArbol" Grid.Row="1">
+            <syncfusion:SfTreeGrid x:Name="grillaArbol" Grid.Row="1" AutoGenerateColumns="False" AllowEditing="True">
+                <syncfusion:SfTreeGrid.Columns>
+                    <syncfusion:TreeGridColumns>
+                        <syncfusion:TreeGridTextColumn MappingName="ID" Width="50"/>
+                        <syncfusion:TreeGridTextColumn MappingName="Descripcion" Width="300" />
+                        <syncfusion:TreeGridTextColumn MappingName="Unidad" Width="80" />
+                        <syncfusion:TreeGridTextColumn MappingName="Cantidad" Width="80" />
+                        <syncfusion:TreeGridTextColumn MappingName="PU" Width="80" />
+                        <syncfusion:TreeGridTextColumn MappingName="Importe" Width="120" />
+                    </syncfusion:TreeGridColumns>
+                </syncfusion:SfTreeGrid.Columns>
             </syncfusion:SfTreeGrid>
         </Grid>
         <Grid Grid.Column="2" Grid.Row="0" Grid.RowSpan="3" x:Name="Navegador">

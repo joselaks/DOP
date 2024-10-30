@@ -1,0 +1,922 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Collections.ObjectModel;
+
+namespace Bibioteca.Clases
+{
+    public class Presupuesto : ObjetoNotificable
+    {
+        public Nodo respuesta;
+
+        #region Estructura
+
+        public List<Concepto> listaConceptosLeer;
+        public List<Relacion> listaRelacionesLeer;
+        public List<Concepto> listaConceptosGrabar;
+        public List<Relacion> listaRelacionesGrabar;
+
+        string nombre { get; set; }
+        public string Nombre
+        {
+            get
+            {
+                return nombre;
+            }
+            set
+            {
+                nombre = value;
+                OnPropertyChanged("Nombre");
+            }
+        }
+
+        string direccion { get; set; }
+        public string Direccion
+        {
+            get
+            {
+                return direccion;
+            }
+            set
+            {
+                direccion = value;
+                OnPropertyChanged("Direccion");
+            }
+        }
+
+        ObservableCollection<Nodo> arbol;
+        bool existe;
+
+        public bool Existe
+        {
+            get
+            {
+                return this.existe;
+            }
+            set
+            {
+                this.existe = value;
+            }
+        }
+
+        public ObservableCollection<Nodo> Arbol
+        {
+            get
+            {
+                if (arbol == null)
+                {
+                    arbol = new ObservableCollection<Nodo>();
+                }
+                return arbol;
+            }
+            set
+            {
+                arbol = value;
+                OnPropertyChanged("Arbol");
+            }
+        }
+
+        ObservableCollection<Insumo> insumos;
+
+        public ObservableCollection<Insumo> Insumos
+        {
+            get
+            {
+                if (insumos == null)
+                {
+                    insumos = new ObservableCollection<Insumo>();
+                }
+                return insumos;
+            }
+            set
+            {
+                insumos = value;
+                OnPropertyChanged("Insumos");
+            }
+        }
+
+        decimal totaDirecto;
+
+        public decimal TotalDirecto
+        {
+            get
+            {
+                if (Arbol != null)
+                {
+                    totaDirecto = Arbol.Sum(i => i.Importe);
+                }
+
+                return totaDirecto;
+            }
+            set
+            {
+                totaDirecto = value;
+                OnPropertyChanged("TotalDirecto");
+            }
+        }
+
+        decimal totalMateriales;
+        public decimal TotalMateriales
+        {
+            get
+            {
+                if (Arbol != null)
+                {
+                    totalMateriales = Arbol.Sum(i => i.Materiales);
+                }
+
+                return totalMateriales;
+            }
+            set
+            {
+                totalMateriales = value;
+                OnPropertyChanged("TotalMateriales");
+            }
+        }
+
+        decimal totalmanodeObra;
+        public decimal TotalManodeObra
+        {
+            get
+            {
+                if (Arbol != null)
+                {
+                    totalmanodeObra = Arbol.Sum(i => i.ManodeObra);
+                }
+
+                return totalmanodeObra;
+            }
+            set
+            {
+                totalmanodeObra = value;
+                OnPropertyChanged("TotalManodeObra");
+            }
+        }
+
+        decimal totalEquipos;
+        public decimal TotalEquipos
+        {
+            get
+            {
+                if (Arbol != null)
+                {
+                    totalEquipos = Arbol.Sum(i => i.Equipos);
+                }
+
+                return totalEquipos;
+            }
+            set
+            {
+                totalEquipos = value;
+                OnPropertyChanged("TotalEquipos");
+            }
+        }
+
+        decimal totalSubcontratos;
+        public decimal TotalSubcontratos
+        {
+            get
+            {
+                if (Arbol != null)
+                {
+                    totalSubcontratos = Arbol.Sum(i => i.Subcontratos);
+                }
+
+                return totalSubcontratos;
+            }
+            set
+            {
+                totalSubcontratos = value;
+                OnPropertyChanged("TotalSubcontratos");
+            }
+        }
+
+        decimal totalOtros;
+        public decimal TotalOtros
+        {
+            get
+            {
+                if (Arbol != null)
+                {
+                    totalOtros = Arbol.Sum(i => i.Otros);
+                }
+
+                return totalOtros;
+            }
+            set
+            {
+                totalOtros = value;
+                OnPropertyChanged("TotalOtros");
+            }
+        }
+
+
+        #endregion
+
+        #region Numeradores
+
+        public int ordenint = 1;
+
+        int numeraRubro = 1;
+
+        public int NumeraRubro
+        {
+            get
+            {
+                return this.numeraRubro;
+            }
+            set
+            {
+                this.numeraRubro = value;
+            }
+        }
+
+        int numeraTarea = 1;
+
+        public int NumeraTarea
+        {
+            get
+            {
+                return this.numeraTarea;
+            }
+            set
+            {
+                this.numeraTarea = value;
+            }
+        }
+
+        int numeraMaterial = 1;
+
+        public int NumeraMaterial
+        {
+            get
+            {
+                return this.numeraMaterial;
+            }
+            set
+            {
+                this.numeraMaterial = value;
+            }
+        }
+
+        int numeraManodeObra = 1;
+
+        public int NumeraManodeObra
+        {
+            get
+            {
+                return this.numeraManodeObra;
+            }
+            set
+            {
+                this.numeraManodeObra = value;
+            }
+        }
+
+        int numeraEquipo = 1;
+
+        public int NumeraEquipo
+        {
+            get
+            {
+                return this.numeraEquipo;
+            }
+            set
+            {
+                this.numeraEquipo = value;
+            }
+        }
+
+        int numeraSubcontrato = 1;
+
+        public int NumeraSubcontrato
+        {
+            get
+            {
+                return this.numeraSubcontrato;
+            }
+            set
+            {
+                this.numeraSubcontrato = value;
+            }
+        }
+
+        int numeraOtro = 1;
+
+        public int NumeraOtro
+        {
+            get
+            {
+                return this.numeraOtro;
+            }
+            set
+            {
+                this.numeraOtro = value;
+            }
+        }
+
+
+        int numeraAux = 1;
+        public int NumeraAux
+        {
+            get
+            {
+                return this.numeraAux;
+            }
+            set
+            {
+                this.numeraAux = value;
+            }
+        }
+
+
+        #endregion
+
+        public void generaPresupuesto(string origen, List<Clases.Concepto> listaConceptos, List<Clases.Relacion> listaRelaciones)
+        {
+            Arbol = new ObservableCollection<Nodo>();
+            var relaciones = listaRelaciones.Where(a => a.Superior == null).OrderBy(b => b.OrdenInt).ToList(); //Nodos Raiz
+            foreach (var item in relaciones)
+            {
+                Clases.Concepto rubro = listaConceptos.FirstOrDefault(a => a.Codigo == item.Inferior); //Concepto de los rubros raiz
+
+                Nodo registro = new Nodo();
+                registro.ID = rubro.Codigo;
+                registro.Descripcion = rubro.Descrip;
+                registro.Tipo = (rubro.Tipo == "0") ? "R" : rubro.Tipo;
+                registro.PU = rubro.Precio;
+                registro.Unidad = rubro.Unidad;
+                registro.Cantidad = item.Cantidad;
+                registro.Sup = true;
+                this.Arbol.Add(registro);
+                var bajoRubro = GetElementosHijos(registro, listaConceptos, listaRelaciones, 1); //Rama del rubro
+                if (bajoRubro != null)
+                {
+                    registro.Inferiores = new ObservableCollection<Nodo>();
+                    foreach (var itemBajoRubro in bajoRubro)
+                    {
+                        registro.Inferiores.Add(itemBajoRubro);
+                    }
+                }
+            }
+        }
+
+        private ObservableCollection<Nodo> GetElementosHijos(Nodo elemento, List<Clases.Concepto> listaConceptos, List<Clases.Relacion> listaRelaciones, int _nivel)
+        {
+            //Si por cualquier razón el elemento es nulo, regresamos inmediatamente
+            //la ejecución
+            if (elemento == null)
+                return null;
+
+            ObservableCollection<Nodo> elementosHijos = null;
+            var qryRelacion = listaRelaciones.Where(a => a.Superior == elemento.ID).OrderBy(b => b.OrdenInt).ToList();
+            if (qryRelacion != null && qryRelacion.Count > 0)
+            {
+                foreach (var item in qryRelacion)
+                {
+                    Concepto concepto = listaConceptos.FirstOrDefault(a => a.Codigo == item.Inferior);
+                    Nodo newItem = new Nodo();
+                    newItem.ID = concepto.Codigo;
+                    newItem.Descripcion = concepto.Descrip;
+                    newItem.PU = concepto.Precio;
+                    newItem.Cantidad = item.Cantidad;
+                    newItem.Sup = false;
+                    newItem.Unidad = concepto.Unidad;
+                    //newItem.Tipo = (concepto.Tipo == "0") ? _nivel.ToString() : concepto.Tipo;
+                    newItem.Tipo = concepto.Tipo;
+                    newItem.Inferiores = new ObservableCollection<Nodo>();
+                    var subelementosHijos = GetElementosHijos(newItem, listaConceptos, listaRelaciones, _nivel + 1);
+                    if (subelementosHijos != null && subelementosHijos.Count > 0)
+                    {
+                        newItem.Inferiores = new ObservableCollection<Nodo>();
+                        foreach (var elementoHijo in subelementosHijos)
+                        {
+                            if (newItem.Tipo == "0")//viene de fiebdc
+                            {
+                                if (elementoHijo.Tipo != "0")
+                                {
+                                    newItem.Tipo = "T";
+                                }
+
+                            }
+                            newItem.Inferiores.Add(elementoHijo);
+                        }
+                    }
+                    if (elementosHijos == null)
+                        elementosHijos = new ObservableCollection<Nodo>();
+                    elementosHijos.Add(newItem);
+                }
+            }
+            else
+            {
+                if (elementosHijos == null)
+                    elementosHijos = new ObservableCollection<Nodo>();
+            }
+            return elementosHijos;
+        }
+
+
+
+        public void mismoCodigo(IEnumerable<Nodo> items, Nodo editado)
+        {
+            foreach (var item in items)
+            {
+                if (item.ID == editado.ID)
+                {
+                    item.Descripcion = editado.Descripcion;
+                    item.Unidad = editado.Unidad;
+                    item.PU = editado.PU;
+                    item.Tipo = editado.Tipo;
+                }
+                if (item.HasItems)
+                {
+                    mismoCodigo(item.Inferiores, editado);
+                }
+            }
+        }
+
+        public void cambiaCodigo(IEnumerable<Nodo> items, string nuevo, string viejo)
+        {
+            foreach (var item in items)
+            {
+                if (item.ID == viejo)
+                {
+                    item.ID = nuevo;
+                }
+                if (item.HasItems)
+                {
+                    cambiaCodigo(item.Inferiores, nuevo, viejo);
+                }
+            }
+        }
+
+        public bool verificaCodigo(IEnumerable<Nodo> items, string codigo) //verifica si existe el código, pero no para cambios de codigos porque ahi ya existiría el original.
+        {
+            bool respuesta = false;
+            foreach (var item in items)
+            {
+                if (item.ID == codigo)
+                {
+                    respuesta = true;
+                    return respuesta;
+                }
+                if (item.HasItems && respuesta != true)
+                {
+                    bool parcial = verificaCodigo(item.Inferiores, codigo);
+                    if (parcial == true)
+                    {
+                        respuesta = true;
+                    }
+                }
+            }
+            return respuesta;
+        }
+
+        public void cambioDesdeInsumo(IEnumerable<Nodo> items, string id, decimal nuevoPU)
+        {
+            foreach (var item in items)
+            {
+                if (item.ID == id)
+                {
+                    item.PU = nuevoPU;
+                }
+                if (item.HasItems)
+                {
+                    cambioDesdeInsumo(item.Inferiores, id, nuevoPU);
+                }
+            }
+        }
+
+        public void cambioCantidadAuxiliar(IEnumerable<Nodo> items, CambioAuxiliar dato)
+        {
+            foreach (var item in items)
+            {
+                if (item.ID == dato.IdInferior && FindParentNode(Arbol, item, null).ID == dato.IdSuperior)
+                {
+                    item.Cantidad = dato.Cantidad;
+                }
+                if (item.HasItems)
+                {
+                    cambioCantidadAuxiliar(item.Inferiores, dato);
+                }
+            }
+        }
+
+
+        public void operarTipos(IEnumerable<Nodo> items, string tipo, decimal coef)
+        {
+            foreach (var item in items)
+            {
+                if (tipo == "todo")
+                {
+                    item.PU = item.PU * coef;
+                }
+                else
+                {
+                    if (item.Tipo == tipo)
+                    {
+                        item.PU = item.PU * coef;
+                    }
+
+                }
+                if (item.HasItems)
+                {
+                    operarTipos(item.Inferiores, tipo, coef);
+                }
+            }
+
+        }
+
+
+        public void recalculo(IEnumerable<Nodo> items, bool inicio, decimal FactorSup, bool cInsumos)
+        {
+            if (inicio == true) //comienza el procedimiento
+            {
+                if (Insumos == null)
+                {
+                    Insumos = new ObservableCollection<Insumo>();
+                }
+                else
+                {
+                    foreach (var item in Insumos)
+                    {
+                        item.Cantidad = 0;
+                        item.PU = 0;
+                        item.Unidad = null;
+                        item.Importe = 0;
+                    }
+                }
+                ordenint = 1;
+            }
+            foreach (var item in items)
+            {
+                if (item.Tipo == "R" || item.Tipo == "T")
+                {
+                    item.OrdenInt = ordenint;
+                    ordenint = ordenint + 1;
+
+                }
+                if (item.HasItems) //tiene inferiores
+                {
+                    if (item.Sup == true) //es el rubro o nodo superior
+                    {
+                        FactorSup = item.Cantidad;
+                    }
+
+                    recalculo(item.Inferiores, false, FactorSup * item.Cantidad, true); //Primero digo hasta abajo
+
+                    #region Calculo de PU y suma de importes por tipo
+
+                    item.Factor = FactorSup;
+
+                    item.PU = (from c in item.Inferiores
+                               select c.Importe).Sum();
+
+                    item.Materiales = (from c in item.Inferiores
+                                       select c.Materiales).Sum() * item.Cantidad;
+                    item.ManodeObra = (from c in item.Inferiores
+                                       select c.ManodeObra).Sum() * item.Cantidad;
+                    item.Equipos = (from c in item.Inferiores
+                                    select c.Equipos).Sum() * item.Cantidad;
+                    item.Subcontratos = (from c in item.Inferiores
+                                         select c.Subcontratos).Sum() * item.Cantidad;
+                    item.Otros = (from c in item.Inferiores
+                                  select c.Otros).Sum() * item.Cantidad;
+
+                    #endregion
+                }
+                else //es el ultimo del arbol
+                {
+                    #region calculo totales por tipo
+
+                    switch (item.Tipo)
+                    {
+                        case "M":
+                            item.Materiales = item.Cantidad * item.PU;
+                            item.ManodeObra = 0;
+                            item.Equipos = 0;
+                            item.Subcontratos = 0;
+                            item.Otros = 0;
+                            break;
+                        case "D":
+                            item.ManodeObra = item.Cantidad * item.PU;
+                            item.Materiales = 0;
+                            item.Equipos = 0;
+                            item.Subcontratos = 0;
+                            item.Otros = 0;
+
+                            break;
+                        case "E":
+                            item.Equipos = item.Cantidad * item.PU;
+                            item.ManodeObra = 0;
+                            item.Materiales = 0;
+                            item.Subcontratos = 0;
+                            item.Otros = 0;
+
+                            break;
+                        case "S":
+                            item.Subcontratos = item.Cantidad * item.PU;
+                            item.Materiales = 0;
+                            item.ManodeObra = 0;
+                            item.Equipos = 0;
+                            item.Otros = 0;
+
+                            break;
+                        case "O":
+                            item.Otros = item.Cantidad * item.PU;
+                            item.ManodeObra = 0;
+                            item.Equipos = 0;
+                            item.Subcontratos = 0;
+                            item.Equipos = 0;
+
+                            break;
+                        default:
+                            break;
+                    }
+
+                    #endregion
+
+                    Insumo sele = Insumos.FirstOrDefault(a => a.ID == item.ID);
+                    if (sele == null)
+                    {
+                        Insumo registro = new Insumo();
+                        registro.ID = item.ID;
+                        registro.Descripcion = item.Descripcion;
+                        registro.Cantidad = item.Cantidad * FactorSup;
+                        registro.Unidad = item.Unidad;
+                        registro.PU = item.PU;
+                        registro.Importe = registro.Cantidad * registro.PU;
+                        registro.Tipo = item.Tipo;
+                        Insumos.Add(registro);
+                    }
+                    else
+                    {
+                        sele.Descripcion = item.Descripcion;
+                        sele.Unidad = item.Unidad;
+                        sele.PU = item.PU;
+                        sele.Cantidad = sele.Cantidad + (item.Cantidad * FactorSup);
+                        sele.Tipo = item.Tipo;
+                        sele.Importe = sele.PU * sele.Cantidad;
+                    }
+                }
+
+                item.Importe = item.Cantidad * item.PU;
+                item.Factor = FactorSup;
+            }
+        }
+
+
+
+        public Nodo FindParentNode(IEnumerable<Nodo> items, Nodo inferior, Nodo superior)
+        {
+            foreach (var item in items)
+            {
+                if (item.Equals(inferior))
+                {
+                    respuesta = superior;
+
+                }
+                if (item.HasItems)
+                {
+                    FindParentNode(item.Inferiores, inferior, item);
+
+                }
+            }
+
+            return respuesta;
+        }
+
+        public void sinCero()
+        {
+            foreach (var item in Insumos.ToList())
+            {
+                if (item.Cantidad == 0)
+                {
+                    Insumos.Remove(item);
+                }
+            }
+        }
+
+        public void agregaNodo(string tipo, Nodo superior)
+        {
+            switch (tipo)
+            {
+                case "R":
+                    Bibioteca.Clases.Nodo rubro = new Bibioteca.Clases.Nodo();
+                    rubro.Tipo = "R";
+                    rubro.Cantidad = 1;
+                    rubro.Sup = true;
+                    rubro.Inferiores = new ObservableCollection<Bibioteca.Clases.Nodo>();
+                    Existe = false;
+                    while (verificaCodigo(Arbol, "R" + NumeraRubro.ToString()))
+                    {
+                        NumeraRubro = NumeraRubro + 1;
+                    }
+                    rubro.ID = "R" + NumeraRubro.ToString();
+                    rubro.Descripcion = "Rubro " + NumeraRubro.ToString();
+                    Arbol.Add(rubro);
+                    break;
+                case "T":
+                    Bibioteca.Clases.Nodo tarea = new Bibioteca.Clases.Nodo();
+                    tarea.Tipo = "T";
+                    tarea.Inferiores = new ObservableCollection<Bibioteca.Clases.Nodo>();
+                    Existe = false;
+                    while (verificaCodigo(Arbol, "T" + NumeraTarea.ToString()))
+                    {
+                        NumeraTarea = NumeraTarea + 1;
+                    }
+                    tarea.ID = "T" + NumeraTarea.ToString();
+                    tarea.Descripcion = "Tarea " + NumeraTarea.ToString();
+                    superior.Inferiores.Add(tarea);
+                    break;
+                case "M":
+                    Bibioteca.Clases.Nodo material = new Bibioteca.Clases.Nodo();
+                    material.Tipo = "M";
+                    material.Inferiores = new ObservableCollection<Bibioteca.Clases.Nodo>();
+                    Existe = false;
+                    while (verificaCodigo(Arbol, "M" + NumeraMaterial.ToString()))
+                    {
+                        NumeraMaterial = NumeraMaterial + 1;
+                    }
+                    material.ID = "M" + NumeraMaterial.ToString();
+                    material.Descripcion = "Material " + NumeraMaterial.ToString();
+                    superior.Inferiores.Add(material);
+                    break;
+                case "D":
+                    Bibioteca.Clases.Nodo mano = new Bibioteca.Clases.Nodo();
+                    mano.Tipo = "D";
+                    mano.Inferiores = new ObservableCollection<Bibioteca.Clases.Nodo>();
+                    Existe = false;
+                    while (verificaCodigo(Arbol, "D" + NumeraManodeObra.ToString()))
+                    {
+                        NumeraManodeObra = NumeraManodeObra + 1;
+                    }
+                    mano.ID = "O" + NumeraManodeObra.ToString();
+                    mano.Descripcion = "Mano de obra " + NumeraManodeObra.ToString();
+                    superior.Inferiores.Add(mano);
+                    break;
+                case "E":
+                    Bibioteca.Clases.Nodo equipo = new Bibioteca.Clases.Nodo();
+                    equipo.Tipo = "E";
+                    equipo.Inferiores = new ObservableCollection<Bibioteca.Clases.Nodo>();
+                    Existe = false;
+                    while (verificaCodigo(Arbol, "E" + NumeraEquipo.ToString()))
+                    {
+                        NumeraEquipo = NumeraEquipo + 1;
+                    }
+                    equipo.ID = "E" + NumeraEquipo.ToString();
+                    equipo.Descripcion = "Equipo " + NumeraEquipo.ToString();
+                    superior.Inferiores.Add(equipo);
+                    break;
+                case "S":
+                    Bibioteca.Clases.Nodo subcon = new Bibioteca.Clases.Nodo();
+                    subcon.Tipo = "S";
+                    subcon.Inferiores = new ObservableCollection<Bibioteca.Clases.Nodo>();
+                    Existe = false;
+                    while (verificaCodigo(Arbol, "S" + NumeraSubcontrato.ToString()))
+                    {
+                        NumeraSubcontrato = NumeraSubcontrato + 1;
+                    }
+                    subcon.ID = "S" + NumeraSubcontrato.ToString();
+                    subcon.Descripcion = "Subcontrato " + NumeraSubcontrato.ToString();
+                    superior.Inferiores.Add(subcon);
+                    break;
+                case "O":
+                    Bibioteca.Clases.Nodo otro = new Bibioteca.Clases.Nodo();
+                    otro.Tipo = "O";
+                    otro.Inferiores = new ObservableCollection<Bibioteca.Clases.Nodo>();
+                    Existe = false;
+                    while (verificaCodigo(Arbol, "O" + NumeraOtro.ToString()))
+                    {
+                        NumeraOtro = NumeraOtro + 1;
+                    }
+                    otro.ID = "O" + NumeraOtro.ToString();
+                    otro.Descripcion = "Insumo " + NumeraOtro.ToString();
+                    superior.Inferiores.Add(otro);
+                    break;
+                case "A":
+                    Bibioteca.Clases.Nodo aux = new Bibioteca.Clases.Nodo();
+                    aux.Tipo = "A";
+                    aux.Inferiores = new ObservableCollection<Bibioteca.Clases.Nodo>();
+                    Existe = false;
+                    while (verificaCodigo(Arbol, "A" + NumeraAux.ToString()))
+                    {
+                        NumeraAux = NumeraAux + 1;
+                    }
+                    aux.ID = "A" + NumeraAux.ToString();
+                    aux.Descripcion = "Auxiliar " + NumeraAux.ToString();
+                    superior.Inferiores.Add(aux);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public void aplanar(IEnumerable<Nodo> items, Nodo parentItem)
+        {
+            foreach (var item in items)
+            {
+                bool existe = listaConceptosGrabar.Any(a => a.Codigo == item.ID);
+                if (existe == false)
+                {
+                    Concepto registroC = new Concepto();
+                    registroC.Codigo = item.ID;
+                    registroC.Descrip = item.Descripcion;
+                    registroC.Tipo = item.Tipo;
+                    registroC.Precio = item.PU;
+                    registroC.Unidad = item.Unidad;
+                    listaConceptosGrabar.Add(registroC);
+                }
+                Relacion registroR = new Relacion();
+                if (parentItem != null)
+                {
+                    registroR.Superior = parentItem.ID;
+                }
+
+                registroR.Inferior = item.ID;
+                registroR.Cantidad = item.Cantidad;
+                listaRelacionesGrabar.Add(registroR);
+                if (item.HasItems == true)
+                {
+                    //antes de segir bajando, verificar si ya existen relaciones anteriores para no agregar.
+                    bool anterior = listaRelacionesGrabar.Any(a => a.Superior == item.ID);
+                    if (anterior == false)
+                    {
+                        aplanar(item.Inferiores, item);
+                    }
+                }
+            }
+        }
+
+        public Nodo clonar(Nodo origen)
+        {
+            Nodo respuesta = new Nodo();
+            respuesta.ID = origen.ID;
+            respuesta.Descripcion = origen.Descripcion;
+            respuesta.Unidad = origen.Unidad;
+            respuesta.Cantidad = origen.Cantidad;
+            Insumo existe = this.Insumos.FirstOrDefault(a => a.ID == origen.ID);
+            if (existe != null)
+            {
+                respuesta.PU = existe.PU;
+            }
+            else
+            {
+                respuesta.PU = origen.PU;
+            }
+            respuesta.Tipo = origen.Tipo;
+            respuesta.Inferiores = GetClonesInferiores(origen);
+            return respuesta;
+
+        }
+
+        public ObservableCollection<Nodo> GetClonesInferiores(Nodo elemento)
+        {
+            if (elemento == null)
+                return null;
+
+            if (!elemento.HasItems)
+            {
+                ObservableCollection<Nodo> inferioresVacios = new ObservableCollection<Nodo>();
+                return inferioresVacios;
+
+            }
+            else
+            {
+                ObservableCollection<Nodo> inferioresLlenos = new ObservableCollection<Nodo>();
+                foreach (var item in elemento.Inferiores)
+                {
+                    Nodo respuesta = new Nodo();
+                    respuesta.ID = item.ID;
+                    respuesta.Descripcion = item.Descripcion;
+                    respuesta.Unidad = item.Unidad;
+                    respuesta.Cantidad = item.Cantidad;
+                    Insumo existe = this.Insumos.FirstOrDefault(a => a.ID == item.ID);
+                    if (existe != null)
+                    {
+                        respuesta.PU = existe.PU;
+                    }
+                    else
+                    {
+                        respuesta.PU = item.PU;
+                    }
+                    respuesta.Tipo = item.Tipo;
+                    respuesta.Inferiores = GetClonesInferiores(item);
+                    inferioresLlenos.Add(respuesta);
+                    if (item.HasItems)
+                    {
+                        respuesta.Inferiores = GetClonesInferiores(item);
+                    }
+
+                }
+                return inferioresLlenos;
+
+            }
+
+        }
+
+
+
+    }
+}
