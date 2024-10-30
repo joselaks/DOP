@@ -1,0 +1,79 @@
+﻿<Window x:Class="DataObra.Presupuestos.VenPresupuesto"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+         xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DataObra.Presupuestos"
+        mc:Ignorable="d"
+        Title="Presupuesto" Height="800" Width="1000">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition  Height="4*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10*" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0" Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal">
+                <syncfusion:ButtonAdv SizeMode="Small" Label="Log-in" Margin="3" SmallIcon="/Presupuestos/abrir.png" />
+                <syncfusion:ButtonAdv SizeMode="Small" Label="Log-in" Margin="3" SmallIcon="/Presupuestos/abrir.png" />
+                <syncfusion:ButtonAdv SizeMode="Small" Label="Log-in" Margin="3" SmallIcon="/Presupuestos/abrir.png" />
+                <syncfusion:ButtonAdv SizeMode="Small" Label="Log-in" Margin="3" SmallIcon="/Presupuestos/abrir.png" />
+            </StackPanel>
+            <syncfusion:SfTreeGrid x:Name="grillaArbol" Grid.Row="1">
+            </syncfusion:SfTreeGrid>
+        </Grid>
+        <Grid Grid.Column="2" Grid.Row="0" Grid.RowSpan="3" x:Name="Navegador">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal">
+                <syncfusion:ButtonAdv SizeMode="Small" Label="Log-in" Margin="3" SmallIcon="/Presupuestos/abrir.png" />
+                <syncfusion:ButtonAdv SizeMode="Small" Label="Log-in" Margin="3" SmallIcon="/Presupuestos/abrir.png" />
+            </StackPanel>
+            <syncfusion:SfDataGrid x:Name="grillaNavegador" Grid.Row="1" >
+            </syncfusion:SfDataGrid>
+        </Grid>
+        <Grid Grid.Column="0" Grid.Row="2" x:Name="Detalle">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal">
+                <syncfusion:ButtonAdv SizeMode="Small" Label="Log-in" Margin="3" SmallIcon="/Presupuestos/abrir.png" />
+                <syncfusion:ButtonAdv SizeMode="Small" Label="Log-in" Margin="3" SmallIcon="/Presupuestos/abrir.png" />
+            </StackPanel>
+            <syncfusion:SfDataGrid x:Name="grillaDetalle" Grid.Row="1" >
+            </syncfusion:SfDataGrid>
+        </Grid>
+        <syncfusion:SfGridSplitter
+            Grid.Row="1"
+            Grid.Column="0"
+            Height="5"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Top"
+            EnableCollapseButton="True"
+            ResizeBehavior="PreviousAndNext"
+            ShowsPreview="True" />
+        <syncfusion:SfGridSplitter
+            Grid.RowSpan="3"
+            Grid.Column="1"
+            Width="5"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Stretch"
+            EnableCollapseButton="True"
+            ResizeBehavior="PreviousAndNext"
+            ShowsPreview="True" />
+
+    </Grid>
+</Window>

@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Biblioteca;
 using DataObra.Datos;
+using DataObra.Presupuestos;
 
 namespace DataObra
 {
@@ -318,6 +319,12 @@ namespace DataObra
         {
             Datos.Conectores v1 = new Conectores();
             v1.Show();
+        }
+
+        private void vPres_Click(object sender, RoutedEventArgs e)
+        {
+            VenPresupuesto ventanaPres= new VenPresupuesto();
+            ventanaPres.Show();
         }
     }
 }

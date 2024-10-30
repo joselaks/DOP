@@ -8,6 +8,11 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Presupuestos\abrir.png" />
+    <None Remove="Presupuestos\import.png" />
+  </ItemGroup>
+
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
         <PackageReference Include="Syncfusion.UI.WPF.NET" Version="27.1.51" />
@@ -19,6 +24,11 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Biblioteca\Biblioteca.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Resource Include="Presupuestos\abrir.png" />
+      <Resource Include="Presupuestos\import.png" />
     </ItemGroup>
 		
 </Project>
