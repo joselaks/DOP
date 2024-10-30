@@ -6,7 +6,19 @@
         xmlns:local="clr-namespace:DataObra.Documentos" xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
         mc:Ignorable="d"
         Title="VenDocumento" Height="950" Width="1300">
+    <Window.Resources>
+        <DataTemplate x:Key="MinimizedItemTemplate">
+            <Border Width="300" Height="200" Background="LightGray">
+                <ContentPresenter />
+            </Border>
+        </DataTemplate>
+    </Window.Resources>
     <Grid x:Name="GrillaVenDocumento">
+
+        <syncfusion:TileViewControl x:Name="ControlDocumentos"
+                                    MinimizedItemsOrientation="Bottom"
+                                    >
+        </syncfusion:TileViewControl>
 
     </Grid>
 </Window>
