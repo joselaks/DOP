@@ -41,6 +41,7 @@ namespace DataObra.Documentos
                     CreadoFecha = System.DateTime.Today,
                     Usuario = azure.Usuario,
                     EditadoFecha = System.DateTime.Today,
+                    EntidadID = 1
                 };
                 this.ComboObras.SelectedItem = azure.GetFirstAgrupadorByTipoIDOrdered(1);
                 this.ComboAdmin.SelectedItem = azure.GetFirstAgrupadorByTipoIDOrdered(2);

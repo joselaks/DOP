@@ -27,18 +27,21 @@ namespace DataObra.Documentos
                 ["Compras"] = new[] { "Pedidos", "Remitos", "Facturas" },
             };
 
-            // Defino el TileControl
-            //var ControlDocumentos = new TileViewControl();
-            //ControlDocumentos.MinimizedItemsOrientation = MinimizedItemsOrientation.Bottom;
-            //ControlDocumentos.MinimizedItemTemplate = (DataTemplate)Resources["MinimizedItemTemplate"];
-
             if (documentosPorTipo.TryGetValue(Tipo, out var listaDocumentos))
             {
                 bool primero = true;
 
                 foreach (var item in listaDocumentos)
                 {
-                    var tileView = CrearTileViewItem(item, primero);
+                    // Crear instancia de Documento
+                    var documento = new Documento
+                    {
+                        Descrip = item,
+                        Notas = $"Detalles del documento {item}"
+                    };
+
+                    // Crear y agregar el TileViewItem asociado a ese documento
+                    var tileView = CrearTileViewItem(item, documento, primero);
                     ControlDocumentos.Items.Add(tileView);
                     primero = false;
                 }
@@ -48,7 +51,7 @@ namespace DataObra.Documentos
             GrillaVenDocumento.Children.Add(ControlDocumentos);
         }
 
-        private TileViewItem CrearTileViewItem(string header, bool maximizado = false)
+        private TileViewItem CrearTileViewItem(string header, Documento documento, bool maximizado = false)
         {
             var tileViewItem = new TileViewItem
             {
@@ -56,35 +59,33 @@ namespace DataObra.Documentos
                 Height = 480,
                 Margin = new Thickness(5),
                 Header = header,
-                Content = new DataObra.Documentos.Ficha(null),
+                Content = new Ficha(documento)  // Pasar documento a Ficha
             };
 
             // Configura el estado inicial del TileViewItem
             tileViewItem.TileViewItemState = maximizado ? TileViewItemState.Maximized : TileViewItemState.Normal;
 
             // Asocia el evento StateChanged
-            tileViewItem.StateChanged += TileViewItem_StateChanged;
+            tileViewItem.StateChanged += (s, e) => TileViewItem_StateChanged(tileViewItem, documento);
 
             return tileViewItem;
         }
 
+
         private bool isHandlingStateChange = false;
 
-        private void TileViewItem_StateChanged(object sender, EventArgs e)
+        private void TileViewItem_StateChanged(TileViewItem tileViewItem, Documento documento)
         {
             if (isHandlingStateChange) return;
             isHandlingStateChange = true;
 
-            if (sender is TileViewItem tileViewItem)
+            if (tileViewItem.TileViewItemState == TileViewItemState.Maximized)
             {
-                if (tileViewItem.TileViewItemState == TileViewItemState.Maximized)
-                {
-                    tileViewItem.Content = new DataObra.Documentos.Ficha(null); // Maximized content
-                }
-                else
-                {
-                    tileViewItem.Content = new MinDocumento(); // Normal/minimized content
-                }
+                tileViewItem.Content = new Ficha(documento); // Muestra contenido maximizado
+            }
+            else
+            {
+                tileViewItem.Content = new MinDocumento(documento); // Muestra contenido minimizado
             }
 
             isHandlingStateChange = false;

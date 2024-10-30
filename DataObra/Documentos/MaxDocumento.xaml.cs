@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace DataObra.Documentos
 {
     /// <summary>
-    /// Lógica de interacción para MinDocumento.xaml
+    /// Lógica de interacción para MaxDocumento.xaml
     /// </summary>
-    public partial class MinDocumento : UserControl
+    public partial class MaxDocumento : UserControl
     {
-        public MinDocumento(Documento documento)
+        public MaxDocumento()
         {
             InitializeComponent();
         }
