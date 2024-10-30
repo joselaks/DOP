@@ -14,9 +14,13 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
         <TextBlock TextAlignment="Center" Margin="10,6,10,3">Usuarios</TextBlock>
         <TextBlock TextAlignment="Center" Margin="10,6,10,3" Grid.Row="1" >Documentos</TextBlock>
+        <TextBlock TextAlignment="Center" Margin="10,6,10,3" Grid.Row="2" >Detalle Doc</TextBlock>
         <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Center" Grid.Column="2" Grid.Row="0">
             <Button Content="Verifica" Margin="3,3,3,3" Width="90" x:Name="veriUsu" Click="veriUsu_Click" />
         </StackPanel>
