@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DataObra.Presupuestos"
         mc:Ignorable="d"
-        Title="Presupuesto" Height="800" Width="1000">
+        Title="" Height="1000" Width="1200">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="10*" />
@@ -24,6 +24,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
+                <TextBlock FontWeight="Bold" FontSize="20" Margin="3,1,3,1">Presupuesto</TextBlock>
                 <syncfusion:ButtonAdv SizeMode="Small" Label="Log-in" Margin="3" SmallIcon="/Presupuestos/abrir.png" />
                 <syncfusion:ButtonAdv SizeMode="Small" Label="Log-in" Margin="3" SmallIcon="/Presupuestos/abrir.png" />
                 <syncfusion:ButtonAdv SizeMode="Small" Label="Log-in" Margin="3" SmallIcon="/Presupuestos/abrir.png" />
@@ -38,6 +39,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
+                <TextBlock FontWeight="Bold" FontSize="20" Margin="3,1,3,1">Buscador</TextBlock>
                 <syncfusion:ButtonAdv SizeMode="Small" Label="Log-in" Margin="3" SmallIcon="/Presupuestos/abrir.png" />
                 <syncfusion:ButtonAdv SizeMode="Small" Label="Log-in" Margin="3" SmallIcon="/Presupuestos/abrir.png" />
             </StackPanel>
@@ -50,6 +52,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
+                <TextBlock FontWeight="Bold" FontSize="20" Margin="3,1,3,1">Insumos</TextBlock>
                 <syncfusion:ButtonAdv SizeMode="Small" Label="Log-in" Margin="3" SmallIcon="/Presupuestos/abrir.png" />
                 <syncfusion:ButtonAdv SizeMode="Small" Label="Log-in" Margin="3" SmallIcon="/Presupuestos/abrir.png" />
             </StackPanel>

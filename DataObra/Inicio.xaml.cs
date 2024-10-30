@@ -320,6 +320,8 @@ namespace DataObra
         private void vPres_Click(object sender, RoutedEventArgs e)
         {
             VenPresupuesto ventanaPres= new VenPresupuesto();
+            ventanaPres.Owner = this; 
+            ventanaPres.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             ventanaPres.Show();
         }
     }
