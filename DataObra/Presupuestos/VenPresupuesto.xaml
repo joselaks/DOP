@@ -1,73 +1,248 @@
-﻿<Window x:Class="DataObra.Presupuestos.VenPresupuesto"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-         xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DataObra.Presupuestos"
-        mc:Ignorable="d"
-        Title="" Height="1000" Width="1200">
+﻿<Window
+    x:Class="DataObra.Presupuestos.VenPresupuesto"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:DataObra.Presupuestos"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:numberformat="clr-namespace:System.Globalization;assembly=mscorlib"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    Title=""
+    Width="1200"
+    Height="1000"
+    mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="10*" />
             <RowDefinition Height="auto" />
-            <RowDefinition  Height="4*" />
+            <RowDefinition Height="4*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10*" />
             <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="4*" />
         </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0" Grid.Row="0">
+        <Grid Grid.Row="0" Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="60" />
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
-                <TextBlock FontWeight="Bold" FontSize="20" Margin="3,1,3,1">Presupuesto</TextBlock>
-                <syncfusion:ButtonAdv SizeMode="Small" Label="Log-in" Margin="3" SmallIcon="/Presupuestos/abrir.png" />
-                <syncfusion:ButtonAdv SizeMode="Small" Label="Log-in" Margin="3" SmallIcon="/Presupuestos/abrir.png" />
-                <syncfusion:ButtonAdv SizeMode="Small" Label="Log-in" Margin="3" SmallIcon="/Presupuestos/abrir.png" />
-                <syncfusion:ButtonAdv SizeMode="Small" Label="Log-in" Margin="3" SmallIcon="/Presupuestos/abrir.png" />
+                <TextBlock
+                    Margin="3,1,3,1"
+                    FontSize="20"
+                    FontWeight="Bold">
+                    Presupuesto
+                </TextBlock>
+                <syncfusion:ButtonAdv
+                    Margin="3"
+                    Label="Log-in"
+                    SizeMode="Small"
+                    SmallIcon="/Presupuestos/abrir.png" />
+                <syncfusion:ButtonAdv
+                    Margin="3"
+                    Label="Log-in"
+                    SizeMode="Small"
+                    SmallIcon="/Presupuestos/abrir.png" />
+                <syncfusion:ButtonAdv
+                    Margin="3"
+                    Label="Log-in"
+                    SizeMode="Small"
+                    SmallIcon="/Presupuestos/abrir.png" />
+                <syncfusion:ButtonAdv
+                    Margin="3"
+                    Label="Log-in"
+                    SizeMode="Small"
+                    SmallIcon="/Presupuestos/abrir.png" />
             </StackPanel>
-            <syncfusion:SfTreeGrid x:Name="grillaArbol" Grid.Row="1" AutoGenerateColumns="False" AllowEditing="True">
+            <syncfusion:SfTreeGrid
+                x:Name="grillaArbol"
+                Grid.Row="1"
+                AllowEditing="True"
+                AutoGenerateColumns="False">
                 <syncfusion:SfTreeGrid.Columns>
                     <syncfusion:TreeGridColumns>
-                        <syncfusion:TreeGridTextColumn MappingName="ID" Width="50"/>
-                        <syncfusion:TreeGridTextColumn MappingName="Descripcion" Width="300" />
-                        <syncfusion:TreeGridTextColumn MappingName="Unidad" Width="80" />
-                        <syncfusion:TreeGridTextColumn MappingName="Cantidad" Width="80" />
-                        <syncfusion:TreeGridTextColumn MappingName="PU" Width="80" />
-                        <syncfusion:TreeGridTextColumn MappingName="Importe" Width="120" />
+                        <syncfusion:TreeGridTextColumn Width="50" MappingName="ID" />
+                        <syncfusion:TreeGridTextColumn Width="300" MappingName="Descripcion" />
+                        <syncfusion:TreeGridTextColumn Width="80" MappingName="Unidad" />
+                        <syncfusion:TreeGridTextColumn Width="80" MappingName="Cantidad" />
+                        <syncfusion:TreeGridTextColumn Width="80" MappingName="PU" />
+                        <syncfusion:TreeGridTextColumn Width="120" MappingName="Importe" />
                     </syncfusion:TreeGridColumns>
                 </syncfusion:SfTreeGrid.Columns>
             </syncfusion:SfTreeGrid>
+            <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+                <StackPanel Margin="2">
+                    <Label
+                        Margin="2"
+                        Padding="0,5,5,5"
+                        HorizontalAlignment="Center"
+                        Content="Materiales"
+                        FontWeight="DemiBold" />
+                    <syncfusion:CurrencyTextBox
+                        Width="100"
+                        Height="24"
+                        Margin="2"
+                        HorizontalContentAlignment="Center"
+                        Value="0">
+                        <syncfusion:CurrencyTextBox.NumberFormat>
+                            <numberformat:NumberFormatInfo
+                                CurrencyDecimalDigits="2"
+                                CurrencyDecimalSeparator=","
+                                CurrencyGroupSeparator=" "
+                                CurrencySymbol="$" />
+                        </syncfusion:CurrencyTextBox.NumberFormat>
+                    </syncfusion:CurrencyTextBox>
+                </StackPanel>
+                <StackPanel Margin="2">
+                    <Label
+         Margin="2"
+         Padding="0,5,5,5"
+         HorizontalAlignment="Center"
+         Content="Mano de >Obra"
+         FontWeight="DemiBold" />
+                    <syncfusion:CurrencyTextBox
+         Width="100"
+         Height="24"
+         Margin="2"
+         HorizontalContentAlignment="Center"
+         Value="0">
+                        <syncfusion:CurrencyTextBox.NumberFormat>
+                            <numberformat:NumberFormatInfo
+                 CurrencyDecimalDigits="2"
+                 CurrencyDecimalSeparator=","
+                 CurrencyGroupSeparator=" "
+                 CurrencySymbol="$" />
+                        </syncfusion:CurrencyTextBox.NumberFormat>
+                    </syncfusion:CurrencyTextBox>
+                </StackPanel>
+                <StackPanel Margin="2">
+                    <Label
+         Margin="2"
+         Padding="0,5,5,5"
+         HorizontalAlignment="Center"
+         Content="Equipos"
+         FontWeight="DemiBold" />
+                    <syncfusion:CurrencyTextBox
+         Width="100"
+         Height="24"
+         Margin="2"
+         HorizontalContentAlignment="Center"
+         Value="0">
+                        <syncfusion:CurrencyTextBox.NumberFormat>
+                            <numberformat:NumberFormatInfo
+                 CurrencyDecimalDigits="2"
+                 CurrencyDecimalSeparator=","
+                 CurrencyGroupSeparator=" "
+                 CurrencySymbol="$" />
+                        </syncfusion:CurrencyTextBox.NumberFormat>
+                    </syncfusion:CurrencyTextBox>
+                </StackPanel>
+                <StackPanel Margin="2">
+                    <Label
+         Margin="2"
+         Padding="0,5,5,5"
+         HorizontalAlignment="Center"
+         Content="Subcontratos"
+         FontWeight="DemiBold" />
+                    <syncfusion:CurrencyTextBox
+         Width="100"
+         Height="24"
+         Margin="2"
+         HorizontalContentAlignment="Center"
+         Value="0">
+                        <syncfusion:CurrencyTextBox.NumberFormat>
+                            <numberformat:NumberFormatInfo
+                 CurrencyDecimalDigits="2"
+                 CurrencyDecimalSeparator=","
+                 CurrencyGroupSeparator=" "
+                 CurrencySymbol="$" />
+                        </syncfusion:CurrencyTextBox.NumberFormat>
+                    </syncfusion:CurrencyTextBox>
+                </StackPanel>
+                <StackPanel Margin="2">
+                    <Label
+         Margin="2"
+         Padding="0,5,5,5"
+         HorizontalAlignment="Center"
+         Content="Otros"
+         FontWeight="DemiBold" />
+                    <syncfusion:CurrencyTextBox
+         Width="100"
+         Height="24"
+         Margin="2"
+         HorizontalContentAlignment="Center"
+         Value="0">
+                        <syncfusion:CurrencyTextBox.NumberFormat>
+                            <numberformat:NumberFormatInfo
+                 CurrencyDecimalDigits="2"
+                 CurrencyDecimalSeparator=","
+                 CurrencyGroupSeparator=" "
+                 CurrencySymbol="$" />
+                        </syncfusion:CurrencyTextBox.NumberFormat>
+                    </syncfusion:CurrencyTextBox>
+                </StackPanel>
+
+            </StackPanel>
+
         </Grid>
-        <Grid Grid.Column="2" Grid.Row="0" Grid.RowSpan="3" x:Name="Navegador">
+        <Grid
+            x:Name="Navegador"
+            Grid.Row="0"
+            Grid.RowSpan="3"
+            Grid.Column="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
-                <TextBlock FontWeight="Bold" FontSize="20" Margin="3,1,3,1">Buscador</TextBlock>
-                <syncfusion:ButtonAdv SizeMode="Small" Label="Log-in" Margin="3" SmallIcon="/Presupuestos/abrir.png" />
-                <syncfusion:ButtonAdv SizeMode="Small" Label="Log-in" Margin="3" SmallIcon="/Presupuestos/abrir.png" />
+                <TextBlock
+                    Margin="3,1,3,1"
+                    FontSize="20"
+                    FontWeight="Bold">
+                    Buscador
+                </TextBlock>
+                <syncfusion:ButtonAdv
+                    Margin="3"
+                    Label="Log-in"
+                    SizeMode="Small"
+                    SmallIcon="/Presupuestos/abrir.png" />
+                <syncfusion:ButtonAdv
+                    Margin="3"
+                    Label="Log-in"
+                    SizeMode="Small"
+                    SmallIcon="/Presupuestos/abrir.png" />
             </StackPanel>
-            <syncfusion:SfDataGrid x:Name="grillaNavegador" Grid.Row="1" >
-            </syncfusion:SfDataGrid>
+            <syncfusion:SfDataGrid x:Name="grillaNavegador" Grid.Row="1" />
         </Grid>
-        <Grid Grid.Column="0" Grid.Row="2" x:Name="Detalle">
+        <Grid
+            x:Name="Detalle"
+            Grid.Row="2"
+            Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
-                <TextBlock FontWeight="Bold" FontSize="20" Margin="3,1,3,1">Insumos</TextBlock>
-                <syncfusion:ButtonAdv SizeMode="Small" Label="Log-in" Margin="3" SmallIcon="/Presupuestos/abrir.png" />
-                <syncfusion:ButtonAdv SizeMode="Small" Label="Log-in" Margin="3" SmallIcon="/Presupuestos/abrir.png" />
+                <TextBlock
+                    Margin="3,1,3,1"
+                    FontSize="20"
+                    FontWeight="Bold">
+                    Insumos
+                </TextBlock>
+                <syncfusion:ButtonAdv
+                    Margin="3"
+                    Label="Log-in"
+                    SizeMode="Small"
+                    SmallIcon="/Presupuestos/abrir.png" />
+                <syncfusion:ButtonAdv
+                    Margin="3"
+                    Label="Log-in"
+                    SizeMode="Small"
+                    SmallIcon="/Presupuestos/abrir.png" />
             </StackPanel>
-            <syncfusion:SfDataGrid x:Name="grillaDetalle" Grid.Row="1" >
-            </syncfusion:SfDataGrid>
+            <syncfusion:SfDataGrid x:Name="grillaDetalle" Grid.Row="1" />
         </Grid>
         <syncfusion:SfGridSplitter
             Grid.Row="1"
