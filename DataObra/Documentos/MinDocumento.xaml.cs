@@ -23,6 +23,8 @@ namespace DataObra.Documentos
         public MinDocumento(Documento documento)
         {
             InitializeComponent();
+
+            this.DataContext = documento;
         }
     }
 }

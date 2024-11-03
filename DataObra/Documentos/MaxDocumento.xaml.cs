@@ -20,9 +20,10 @@ namespace DataObra.Documentos
     /// </summary>
     public partial class MaxDocumento : UserControl
     {
-        public MaxDocumento()
+        public MaxDocumento(Documento pDocumento)
         {
             InitializeComponent();
+            this.DataContext = pDocumento;
         }
     }
 }

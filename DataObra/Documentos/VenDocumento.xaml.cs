@@ -9,6 +9,7 @@ namespace DataObra.Documentos
     public partial class VenDocumento : Window
     {
         string Tipo;
+        public Documento oActivo;
 
         public VenDocumento(string pTipo)
         {
@@ -41,7 +42,7 @@ namespace DataObra.Documentos
                     };
 
                     // Crear y agregar el TileViewItem asociado a ese documento
-                    var tileView = CrearTileViewItem(item, documento, primero);
+                    var tileView = CrearTileViewItem(item, oActivo, primero);
                     ControlDocumentos.Items.Add(tileView);
                     primero = false;
                 }
@@ -53,13 +54,16 @@ namespace DataObra.Documentos
 
         private TileViewItem CrearTileViewItem(string header, Documento documento, bool maximizado = false)
         {
+            oActivo = new Documento();
+            oActivo.Numero1 = 11;
+
             var tileViewItem = new TileViewItem
             {
                 Width = 1100,
                 Height = 480,
                 Margin = new Thickness(5),
                 Header = header,
-                Content = new Ficha(documento)  // Pasar documento a Ficha
+                Content = new MaxDocumento(documento) // Muestra contenido maximizado
             };
 
             // Configura el estado inicial del TileViewItem
@@ -81,7 +85,7 @@ namespace DataObra.Documentos
 
             if (tileViewItem.TileViewItemState == TileViewItemState.Maximized)
             {
-                tileViewItem.Content = new Ficha(documento); // Muestra contenido maximizado
+                tileViewItem.Content = new MaxDocumento(documento); // Muestra contenido maximizado
             }
             else
             {

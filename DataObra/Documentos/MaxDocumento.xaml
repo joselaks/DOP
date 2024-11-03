@@ -22,7 +22,7 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Row="2">
                 <TextBlock Text="Número: " FontWeight="Bold"/>
-                <TextBlock Text="{Binding Numero}"/>
+                <TextBox Text="{Binding Numero1}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Row="3">
                 <TextBlock Text="Obra: " FontWeight="Bold"/>
