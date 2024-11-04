@@ -257,7 +257,12 @@ namespace Bibioteca.Clases
             return other;
         }
 
-        public ObservableCollection<Nodo> Inferiores;
+        public ObservableCollection<Nodo> inferiores;
+        public ObservableCollection<Nodo> Inferiores
+        {
+            get { return inferiores; }
+            set { inferiores = value; }
+        }
 
 
 

@@ -41,15 +41,18 @@
                     SizeMode="Small"
                     SmallIcon="/Presupuestos/abrir.png" />
                 <syncfusion:ButtonAdv
+                    x:Name="Fiebdc"
                     Margin="3"
                     Label="Log-in"
                     SizeMode="Small"
+                    Click="Fiebdc_Click"
                     SmallIcon="/Presupuestos/abrir.png" />
                 <syncfusion:ButtonAdv
                     Margin="3"
                     Label="Log-in"
                     SizeMode="Small"
-                    SmallIcon="/Presupuestos/abrir.png" />
+                    Click="aTarea_Click"
+                    SmallIcon="/Presupuestos/agregar.png" />
                 <syncfusion:ButtonAdv
                     Margin="3"
                     Label="Log-in"
@@ -72,7 +75,10 @@
                     </syncfusion:TreeGridColumns>
                 </syncfusion:SfTreeGrid.Columns>
             </syncfusion:SfTreeGrid>
-            <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <StackPanel
+                Grid.Row="3"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
                 <StackPanel Margin="2">
                     <Label
                         Margin="2"
@@ -97,89 +103,89 @@
                 </StackPanel>
                 <StackPanel Margin="2">
                     <Label
-         Margin="2"
-         Padding="0,5,5,5"
-         HorizontalAlignment="Center"
-         Content="Mano de >Obra"
-         FontWeight="DemiBold" />
+                        Margin="2"
+                        Padding="0,5,5,5"
+                        HorizontalAlignment="Center"
+                        Content="Mano de &gt;Obra"
+                        FontWeight="DemiBold" />
                     <syncfusion:CurrencyTextBox
-         Width="100"
-         Height="24"
-         Margin="2"
-         HorizontalContentAlignment="Center"
-         Value="0">
+                        Width="100"
+                        Height="24"
+                        Margin="2"
+                        HorizontalContentAlignment="Center"
+                        Value="0">
                         <syncfusion:CurrencyTextBox.NumberFormat>
                             <numberformat:NumberFormatInfo
-                 CurrencyDecimalDigits="2"
-                 CurrencyDecimalSeparator=","
-                 CurrencyGroupSeparator=" "
-                 CurrencySymbol="$" />
+                                CurrencyDecimalDigits="2"
+                                CurrencyDecimalSeparator=","
+                                CurrencyGroupSeparator=" "
+                                CurrencySymbol="$" />
                         </syncfusion:CurrencyTextBox.NumberFormat>
                     </syncfusion:CurrencyTextBox>
                 </StackPanel>
                 <StackPanel Margin="2">
                     <Label
-         Margin="2"
-         Padding="0,5,5,5"
-         HorizontalAlignment="Center"
-         Content="Equipos"
-         FontWeight="DemiBold" />
+                        Margin="2"
+                        Padding="0,5,5,5"
+                        HorizontalAlignment="Center"
+                        Content="Equipos"
+                        FontWeight="DemiBold" />
                     <syncfusion:CurrencyTextBox
-         Width="100"
-         Height="24"
-         Margin="2"
-         HorizontalContentAlignment="Center"
-         Value="0">
+                        Width="100"
+                        Height="24"
+                        Margin="2"
+                        HorizontalContentAlignment="Center"
+                        Value="0">
                         <syncfusion:CurrencyTextBox.NumberFormat>
                             <numberformat:NumberFormatInfo
-                 CurrencyDecimalDigits="2"
-                 CurrencyDecimalSeparator=","
-                 CurrencyGroupSeparator=" "
-                 CurrencySymbol="$" />
+                                CurrencyDecimalDigits="2"
+                                CurrencyDecimalSeparator=","
+                                CurrencyGroupSeparator=" "
+                                CurrencySymbol="$" />
                         </syncfusion:CurrencyTextBox.NumberFormat>
                     </syncfusion:CurrencyTextBox>
                 </StackPanel>
                 <StackPanel Margin="2">
                     <Label
-         Margin="2"
-         Padding="0,5,5,5"
-         HorizontalAlignment="Center"
-         Content="Subcontratos"
-         FontWeight="DemiBold" />
+                        Margin="2"
+                        Padding="0,5,5,5"
+                        HorizontalAlignment="Center"
+                        Content="Subcontratos"
+                        FontWeight="DemiBold" />
                     <syncfusion:CurrencyTextBox
-         Width="100"
-         Height="24"
-         Margin="2"
-         HorizontalContentAlignment="Center"
-         Value="0">
+                        Width="100"
+                        Height="24"
+                        Margin="2"
+                        HorizontalContentAlignment="Center"
+                        Value="0">
                         <syncfusion:CurrencyTextBox.NumberFormat>
                             <numberformat:NumberFormatInfo
-                 CurrencyDecimalDigits="2"
-                 CurrencyDecimalSeparator=","
-                 CurrencyGroupSeparator=" "
-                 CurrencySymbol="$" />
+                                CurrencyDecimalDigits="2"
+                                CurrencyDecimalSeparator=","
+                                CurrencyGroupSeparator=" "
+                                CurrencySymbol="$" />
                         </syncfusion:CurrencyTextBox.NumberFormat>
                     </syncfusion:CurrencyTextBox>
                 </StackPanel>
                 <StackPanel Margin="2">
                     <Label
-         Margin="2"
-         Padding="0,5,5,5"
-         HorizontalAlignment="Center"
-         Content="Otros"
-         FontWeight="DemiBold" />
+                        Margin="2"
+                        Padding="0,5,5,5"
+                        HorizontalAlignment="Center"
+                        Content="Otros"
+                        FontWeight="DemiBold" />
                     <syncfusion:CurrencyTextBox
-         Width="100"
-         Height="24"
-         Margin="2"
-         HorizontalContentAlignment="Center"
-         Value="0">
+                        Width="100"
+                        Height="24"
+                        Margin="2"
+                        HorizontalContentAlignment="Center"
+                        Value="0">
                         <syncfusion:CurrencyTextBox.NumberFormat>
                             <numberformat:NumberFormatInfo
-                 CurrencyDecimalDigits="2"
-                 CurrencyDecimalSeparator=","
-                 CurrencyGroupSeparator=" "
-                 CurrencySymbol="$" />
+                                CurrencyDecimalDigits="2"
+                                CurrencyDecimalSeparator=","
+                                CurrencyGroupSeparator=" "
+                                CurrencySymbol="$" />
                         </syncfusion:CurrencyTextBox.NumberFormat>
                     </syncfusion:CurrencyTextBox>
                 </StackPanel>
