@@ -84,17 +84,18 @@
                     SmallIcon="/Presupuestos/abrir.png" />
             </StackPanel>
             <syncfusion:SfTreeGrid
-                x:Name="grillaArbol"
+                Name="grillaArbol"
                 Grid.Row="1"
                 AllowEditing="True"
                 AllowResizingColumns="True"
-                AutoGenerateColumns="False">
+                AutoGenerateColumns="False"
+                CurrentCellEndEdit="grillaArbol_CurrentCellEndEdit">
                 <syncfusion:SfTreeGrid.Columns>
                     <syncfusion:TreeGridColumns>
                         <syncfusion:TreeGridTextColumn
                             Width="50"
                             CellStyle="{StaticResource TipoCellStyle}"
-                            MappingName="ID" />
+                            MappingName="ID"  />
                         <syncfusion:TreeGridTextColumn
                             Width="300"
                             CellStyle="{StaticResource TipoCellStyle}"

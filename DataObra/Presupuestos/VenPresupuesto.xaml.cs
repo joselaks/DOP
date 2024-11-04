@@ -4,6 +4,7 @@ using Syncfusion.UI.Xaml.Grid;
 using Syncfusion.UI.Xaml.TreeGrid;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -98,6 +99,16 @@ namespace DataObra.Presupuestos
             }
         }
 
-        
+        private void grillaArbol_CurrentCellEndEdit(object sender, CurrentCellEndEditEventArgs e)
+        {
+
+            var currentRowIndex = e.RowColumnIndex.RowIndex;
+            var currentColumnIndex = e.RowColumnIndex.ColumnIndex;
+
+            
+        }
     }
+
+
 }
+
