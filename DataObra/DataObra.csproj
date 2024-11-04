@@ -12,7 +12,6 @@
     <None Remove="Presupuestos\abrir.png" />
     <None Remove="Presupuestos\agregar.png" />
     <None Remove="Presupuestos\arbol.png" />
-    <None Remove="Presupuestos\import.png" />
   </ItemGroup>
 
     <ItemGroup>
@@ -32,7 +31,6 @@
       <Resource Include="Presupuestos\abrir.png" />
       <Resource Include="Presupuestos\agregar.png" />
       <Resource Include="Presupuestos\arbol.png" />
-      <Resource Include="Presupuestos\import.png" />
     </ItemGroup>
 		
 </Project>

@@ -16,15 +16,20 @@
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
                     <Setter Property="Foreground" Value="Transparent" />
+                    <Setter Property="Background"  Value="LightYellow"/>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
 
-        <Style TargetType="syncfusion:TreeGridCell" x:Key="TipoCellStyle">
-            <Setter Property="FontWeight" Value="Normal"/>
+        <Style x:Key="TipoCellStyle" TargetType="syncfusion:TreeGridCell">
+            <Setter Property="FontWeight" Value="Normal" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
-                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="FontWeight" Value="Bold" />
+                    <Setter Property="Background"  Value="LightYellow"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Tipo}" Value="T">
+                <Setter Property="FontWeight" Value="Bold" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -86,18 +91,25 @@
                 AutoGenerateColumns="False">
                 <syncfusion:SfTreeGrid.Columns>
                     <syncfusion:TreeGridColumns>
-                        <syncfusion:TreeGridTextColumn Width="50" MappingName="ID" />
-                        <syncfusion:TreeGridTextColumn Width="300" MappingName="Descripcion"
-                                                       CellStyle="{StaticResource TipoCellStyle}"/>
+                        <syncfusion:TreeGridTextColumn
+                            Width="50"
+                            CellStyle="{StaticResource TipoCellStyle}"
+                            MappingName="ID" />
+                        <syncfusion:TreeGridTextColumn
+                            Width="300"
+                            CellStyle="{StaticResource TipoCellStyle}"
+                            MappingName="Descripcion" />
                         <syncfusion:TreeGridTextColumn
                             Width="80"
+                            CellStyle="{StaticResource CantidadCellStyle}"
                             MappingName="Unidad"
                             TextAlignment="Right" />
 
-                        <!--<syncfusion:TreeGridTextColumn
+                        <syncfusion:TreeGridTextColumn
                             Width="80"
                             MappingName="Tipo"
-                            TextAlignment="Right" />-->
+                            TextAlignment="Right" 
+                            CellStyle="{StaticResource TipoCellStyle}"/>
 
                         <syncfusion:TreeGridNumericColumn
                             CellStyle="{StaticResource CantidadCellStyle}"
@@ -114,6 +126,7 @@
 
                         <syncfusion:TreeGridNumericColumn
                             Width="80"
+                            CellStyle="{StaticResource CantidadCellStyle}"
                             MappingName="PU"
                             NumberDecimalDigits="2"
                             NumberDecimalSeparator=","
@@ -121,6 +134,7 @@
                             NumberGroupSizes="3" />
                         <syncfusion:TreeGridNumericColumn
                             Width="120"
+                            CellStyle="{StaticResource TipoCellStyle}"
                             MappingName="Importe"
                             NumberDecimalDigits="2"
                             NumberDecimalSeparator=","
