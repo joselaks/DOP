@@ -27,6 +27,7 @@ namespace DataObra.Presupuestos
     public partial class VenPresupuesto : Window
     {
         public Presupuesto Objeto;
+        private object _originalValue;
         public VenPresupuesto()
         {
             InitializeComponent();
@@ -34,10 +35,10 @@ namespace DataObra.Presupuestos
             Objeto.agregaNodo("R", null);
             this.grillaArbol.ItemsSource = Objeto.Arbol;
             this.grillaArbol.ChildPropertyName = "Inferiores";
-           
+
         }
 
-        
+
 
         private void Fiebdc_Click(object sender, RoutedEventArgs e)
         {
@@ -102,13 +103,45 @@ namespace DataObra.Presupuestos
         private void grillaArbol_CurrentCellEndEdit(object sender, CurrentCellEndEditEventArgs e)
         {
 
-            var currentRowIndex = e.RowColumnIndex.RowIndex;
-            var currentColumnIndex = e.RowColumnIndex.ColumnIndex;
 
-            
+            var column = grillaArbol.Columns[e.RowColumnIndex.ColumnIndex].MappingName;
+            var record = grillaArbol.GetNodeAtRowIndex(e.RowColumnIndex.RowIndex).Item as Nodo;
+
+            if (column == "Cantidad")
+            {
+                var newValue = record.Cantidad.ToString();
+                MessageBox.Show($"La cantidad cambió de {_originalValue} a {newValue}");
+            }
+            else if (column == "Descripcion")
+            {
+                var newValue = record.Descripcion;
+                MessageBox.Show($"La descripción cambió de {_originalValue} a {newValue}");
+            }
+
+            // Restablece el valor original
+            _originalValue = null;
+
         }
-    }
 
+
+        private void grillaArbol_CurrentCellBeginEdit(object sender, TreeGridCurrentCellBeginEditEventArgs e)
+        {
+
+
+            var column = grillaArbol.Columns[e.RowColumnIndex.ColumnIndex].MappingName;
+            var record = grillaArbol.GetNodeAtRowIndex(e.RowColumnIndex.RowIndex).Item as Nodo;
+
+            if (column == "Cantidad")
+            {
+                _originalValue = record.Cantidad;
+            }
+            else if (column == "Descripcion")
+            {
+                _originalValue = record.Descripcion;
+            }
+        }
+
+    }
 
 }
 

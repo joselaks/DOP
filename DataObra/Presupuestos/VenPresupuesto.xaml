@@ -89,7 +89,8 @@
                 AllowEditing="True"
                 AllowResizingColumns="True"
                 AutoGenerateColumns="False"
-                CurrentCellEndEdit="grillaArbol_CurrentCellEndEdit">
+                CurrentCellEndEdit="grillaArbol_CurrentCellEndEdit"
+                CurrentCellBeginEdit="grillaArbol_CurrentCellBeginEdit">
                 <syncfusion:SfTreeGrid.Columns>
                     <syncfusion:TreeGridColumns>
                         <syncfusion:TreeGridTextColumn
@@ -106,11 +107,11 @@
                             MappingName="Unidad"
                             TextAlignment="Right" />
 
-                        <syncfusion:TreeGridTextColumn
+                        <!--<syncfusion:TreeGridTextColumn
                             Width="80"
                             MappingName="Tipo"
                             TextAlignment="Right" 
-                            CellStyle="{StaticResource TipoCellStyle}"/>
+                            CellStyle="{StaticResource TipoCellStyle}"/>-->
 
                         <syncfusion:TreeGridNumericColumn
                             CellStyle="{StaticResource CantidadCellStyle}"
