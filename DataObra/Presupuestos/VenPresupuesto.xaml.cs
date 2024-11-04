@@ -1,5 +1,6 @@
 ﻿using Bibioteca.Clases;
 using Microsoft.Win32;
+using Syncfusion.UI.Xaml.Grid;
 using Syncfusion.UI.Xaml.TreeGrid;
 using System;
 using System.Collections.Generic;
@@ -32,10 +33,10 @@ namespace DataObra.Presupuestos
             Objeto.agregaNodo("R", null);
             this.grillaArbol.ItemsSource = Objeto.Arbol;
             this.grillaArbol.ChildPropertyName = "Inferiores";
-
-
-
+           
         }
+
+        
 
         private void Fiebdc_Click(object sender, RoutedEventArgs e)
         {

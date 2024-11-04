@@ -11,6 +11,25 @@
     Width="1200"
     Height="1000"
     mc:Ignorable="d">
+    <Window.Resources>
+        <Style x:Key="CantidadCellStyle" TargetType="syncfusion:TreeGridCell">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
+                    <Setter Property="Foreground" Value="Transparent" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="syncfusion:TreeGridCell" x:Key="TipoCellStyle">
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
+                    <Setter Property="FontWeight" Value="Bold"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="10*" />
@@ -43,15 +62,15 @@
                 <syncfusion:ButtonAdv
                     x:Name="Fiebdc"
                     Margin="3"
+                    Click="Fiebdc_Click"
                     Label="Log-in"
                     SizeMode="Small"
-                    Click="Fiebdc_Click"
-                    SmallIcon="/Presupuestos/abrir.png" />
+                    SmallIcon="/Presupuestos/arbol.png" />
                 <syncfusion:ButtonAdv
                     Margin="3"
+                    Click="aTarea_Click"
                     Label="Log-in"
                     SizeMode="Small"
-                    Click="aTarea_Click"
                     SmallIcon="/Presupuestos/agregar.png" />
                 <syncfusion:ButtonAdv
                     Margin="3"
@@ -63,15 +82,50 @@
                 x:Name="grillaArbol"
                 Grid.Row="1"
                 AllowEditing="True"
+                AllowResizingColumns="True"
                 AutoGenerateColumns="False">
                 <syncfusion:SfTreeGrid.Columns>
                     <syncfusion:TreeGridColumns>
                         <syncfusion:TreeGridTextColumn Width="50" MappingName="ID" />
-                        <syncfusion:TreeGridTextColumn Width="300" MappingName="Descripcion" />
-                        <syncfusion:TreeGridTextColumn Width="80" MappingName="Unidad" />
-                        <syncfusion:TreeGridTextColumn Width="80" MappingName="Cantidad" />
-                        <syncfusion:TreeGridTextColumn Width="80" MappingName="PU" />
-                        <syncfusion:TreeGridTextColumn Width="120" MappingName="Importe" />
+                        <syncfusion:TreeGridTextColumn Width="300" MappingName="Descripcion"
+                                                       CellStyle="{StaticResource TipoCellStyle}"/>
+                        <syncfusion:TreeGridTextColumn
+                            Width="80"
+                            MappingName="Unidad"
+                            TextAlignment="Right" />
+
+                        <!--<syncfusion:TreeGridTextColumn
+                            Width="80"
+                            MappingName="Tipo"
+                            TextAlignment="Right" />-->
+
+                        <syncfusion:TreeGridNumericColumn
+                            CellStyle="{StaticResource CantidadCellStyle}"
+                            HeaderText="Cantidad"
+                            MappingName="Cantidad" />
+
+
+                        <!--<syncfusion:TreeGridNumericColumn MappingName="Cantidad" HeaderText="Cantidad">
+                            <syncfusion:TreeGridNumericColumn.ValueBinding>
+                                <Binding Path="." Converter="{StaticResource CantidadConverter}" Mode="TwoWay"/>
+                            </syncfusion:TreeGridNumericColumn.ValueBinding>
+                        </syncfusion:TreeGridNumericColumn-->
+
+
+                        <syncfusion:TreeGridNumericColumn
+                            Width="80"
+                            MappingName="PU"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3" />
+                        <syncfusion:TreeGridNumericColumn
+                            Width="120"
+                            MappingName="Importe"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3" />
                     </syncfusion:TreeGridColumns>
                 </syncfusion:SfTreeGrid.Columns>
             </syncfusion:SfTreeGrid>
