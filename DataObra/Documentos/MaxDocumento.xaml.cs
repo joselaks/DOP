@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Biblioteca;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,10 +21,11 @@ namespace DataObra.Documentos
     /// </summary>
     public partial class MaxDocumento : UserControl
     {
-        public MaxDocumento(Documento pDocumento)
+        public MaxDocumento(Documento documento)
         {
             InitializeComponent();
-            this.DataContext = pDocumento;
+
+            this.DataContext = documento;
         }
     }
 }
