@@ -15,6 +15,7 @@ using System.Windows.Media;
 using Biblioteca;
 using DataObra.Datos;
 using DataObra.Presupuestos;
+using System.Windows.Automation;
 
 namespace DataObra
 {
@@ -307,7 +308,9 @@ namespace DataObra
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
-            VenDocumento ventanaDoc = new VenDocumento("Facturas");
+            int seleID = 3;
+
+            VenDocumento ventanaDoc = new VenDocumento("Facturas", seleID);
             ventanaDoc.Show();
         }
        

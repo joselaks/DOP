@@ -1,4 +1,5 @@
-﻿using Syncfusion.Windows.Shared;
+﻿using DataObra.Datos;
+using Syncfusion.Windows.Shared;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -6,49 +7,65 @@ using System.Windows.Controls;
 
 namespace DataObra.Documentos
 {
+    public static class DocumentosTipos
+    {
+        public static readonly Dictionary<string, string[]> DocumentosPorTipo = new Dictionary<string, string[]>
+        {
+            ["Facturas"] = new[] { "Compra", "Remito", "Pago", "Pago" },
+            ["Pedidos"] = new[] { "Compra", "Factura" },
+            ["Remitos"] = new[] { "Pedido", "Compra", "Factura" },
+            ["Compras"] = new[] { "Pedido", "Remito", "Factura" },
+        };
+    }
+
     public partial class VenDocumento : Window
     {
         string Tipo;
-        public Documento oActivo;
-        public int nro = 10;
+        public Biblioteca.Documento oActivo = new Biblioteca.Documento();
+        DatosWeb datosWeb;
 
-        public VenDocumento(string pTipo)
+        public VenDocumento(string pTipo, int pID)
         {
             InitializeComponent();
             Tipo = pTipo;
-            AbreDoc();
+            oActivo.Descrip = "RELACIONADO";
+
+            datosWeb = new DatosWeb();
+            ObtenerDocumento(pID);
         }
-        private void AbreDoc()
+
+        private async void ObtenerDocumento(int pID)
         {
-            var documentosPorTipo = new Dictionary<string, string[]>
-            {
-                ["Facturas"] = new[] { "Compras", "Remitos", "Pagos" },
-                ["Pedidos"] = new[] { "Compras", "Facturas" },
-                ["Remitos"] = new[] { "Pedidos", "Compras", "Facturas" },
-                ["Compras"] = new[] { "Pedidos", "Remitos", "Facturas" },
-            };
+            var (success, message, documento) = await datosWeb.ObtenerDocumentoPorIDAsync(pID);
 
-            if (documentosPorTipo.TryGetValue(Tipo, out var listaDocumentos))
+            if (success)
             {
-                bool primero = true;
+                AbreDoc(documento);
+            }
+            else
+            {
+                MessageBox.Show("No encontrado en servidor");
+            }
+        }
 
-                foreach (var item in listaDocumentos)
+        private void AbreDoc(Biblioteca.Documento pDocumento)
+        {
+            if (DocumentosTipos.DocumentosPorTipo.TryGetValue(Tipo, out var listaDocumentos))
+            {
+                bool esPrimero = true;
+
+                foreach (var item in listaDocumentos) // Cambiar por la colección de docs relacionados
                 {
-                    // Crear instancia de Documento
-                    var documento = new Documento
+                    var documento = new Biblioteca.Documento
                     {
                         Descrip = item,
                         Notas = $"Detalles del documento {item}"
                     };
 
-                    // Crear y agregar el TileViewItem asociado a ese documento
-                    oActivo = new Documento();
-                    oActivo.Numero1 = nro;
-                    nro++;
+                    var nuevoTile = CrearTileViewItem(item, esPrimero ? pDocumento : oActivo, esPrimero);
 
-                    var tileView = CrearTileViewItem(item, oActivo, primero);
-                    ControlDocumentos.Items.Add(tileView);
-                    primero = false;
+                    ControlDocumentos.Items.Add(nuevoTile);
+                    esPrimero = false;
                 }
             }
 
@@ -56,7 +73,7 @@ namespace DataObra.Documentos
             GrillaVenDocumento.Children.Add(ControlDocumentos);
         }
 
-        private TileViewItem CrearTileViewItem(string header, Documento pDocumento, bool maximizado = false)
+        private TileViewItem CrearTileViewItem(string header, Biblioteca.Documento documento, bool maximizado = false)
         {
             var tileViewItem = new TileViewItem
             {
@@ -64,36 +81,25 @@ namespace DataObra.Documentos
                 Height = 480,
                 Margin = new Thickness(5),
                 Header = header,
-                Content = new MaxDocumento(pDocumento) // Muestra contenido maximizado
+                Content = maximizado ? (object)new MaxDocumento(documento) : new MinDocumento(documento),
+                TileViewItemState = maximizado ? TileViewItemState.Maximized : TileViewItemState.Normal
             };
 
-            // Configura el estado inicial del TileViewItem
-            tileViewItem.TileViewItemState = maximizado ? TileViewItemState.Maximized : TileViewItemState.Normal;
-
-            // Asocia el evento StateChanged
-            tileViewItem.StateChanged += (s, e) => TileViewItem_StateChanged(tileViewItem, pDocumento);
+            tileViewItem.StateChanged += (s, e) => TileViewItem_StateChanged(tileViewItem, documento);
 
             return tileViewItem;
         }
 
-        private bool isHandlingStateChange = false;
-
-        private void TileViewItem_StateChanged(TileViewItem tileViewItem, Documento pDocumento)
-        {
-            if (isHandlingStateChange) return;
-            isHandlingStateChange = true;
-
-            if (tileViewItem.TileViewItemState == TileViewItemState.Maximized)
+        private void TileViewItem_StateChanged(TileViewItem tileViewItem, Biblioteca.Documento documento) 
+        { 
+            if (tileViewItem.TileViewItemState == TileViewItemState.Maximized) 
             {
-                tileViewItem.Content = new MaxDocumento(pDocumento); // Muestra contenido maximizado
+                tileViewItem.Content = new MaxDocumento(documento); 
             }
             else
             {
-                tileViewItem.Content = new MinDocumento(pDocumento); // Muestra contenido minimizado
+                tileViewItem.Content = new MinDocumento(documento); 
             }
-
-            isHandlingStateChange = false;
         }
-
     }
 }

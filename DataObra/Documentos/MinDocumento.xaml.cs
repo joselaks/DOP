@@ -20,7 +20,7 @@ namespace DataObra.Documentos
     /// </summary>
     public partial class MinDocumento : UserControl
     {
-        public MinDocumento(Documento documento)
+        public MinDocumento(Biblioteca.Documento documento)
         {
             InitializeComponent();
 

@@ -21,7 +21,7 @@ namespace DataObra.Documentos
     /// </summary>
     public partial class MaxDocumento : UserControl
     {
-        public MaxDocumento(Documento documento)
+        public MaxDocumento(Biblioteca.Documento documento)
         {
             InitializeComponent();
 

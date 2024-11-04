@@ -14,29 +14,90 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <TextBlock Text="Resumen del Documento" FontSize="16" FontWeight="Bold" Grid.Row="0" Margin="0,0,0,10"/>
+            <TextBlock Text="Documento MAXIMIZADO" FontSize="16" FontWeight="Bold" Grid.Row="0" Margin="0,0,0,10"/>
             <StackPanel Orientation="Horizontal" Grid.Row="1">
                 <TextBlock Text="Fecha: " FontWeight="Bold"/>
-                <TextBlock Text="{Binding Fecha}"/>
+                <TextBlock Text="{Binding Fecha1}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Row="2">
-                <TextBlock Text="Número: " FontWeight="Bold"/>
+                <TextBlock Text="Número 1: " FontWeight="Bold"/>
                 <TextBox Text="{Binding Numero1}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Row="3">
                 <TextBlock Text="Obra: " FontWeight="Bold"/>
-                <TextBlock Text="{Binding Obra}"/>
+                <TextBlock Text="{Binding Descrip}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Row="4">
                 <TextBlock Text="Administración: " FontWeight="Bold"/>
-                <TextBlock Text="{Binding Administracion}"/>
+                <TextBlock Text="{Binding AdminID}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Row="5">
                 <TextBlock Text="Importe Total: " FontWeight="Bold"/>
                 <TextBlock Text="{Binding ImporteTotal}"/>
             </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="6">
+                <TextBlock Text="Usuario ID: " FontWeight="Bold"/>
+                <TextBlock Text="{Binding UsuarioID}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="7">
+                <TextBlock Text="Cuenta ID: " FontWeight="Bold"/>
+                <TextBlock Text="{Binding CuentaID}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="8">
+                <TextBlock Text="Tipo ID: " FontWeight="Bold"/>
+                <TextBlock Text="{Binding TipoID}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="9">
+                <TextBlock Text="Creado Fecha: " FontWeight="Bold"/>
+                <TextBlock Text="{Binding CreadoFecha}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="10">
+                <TextBlock Text="Editado ID: " FontWeight="Bold"/>
+                <TextBlock Text="{Binding EditadoID}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="11">
+                <TextBlock Text="Editado Fecha: " FontWeight="Bold"/>
+                <TextBlock Text="{Binding EditadoFecha}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="12">
+                <TextBlock Text="Revisado ID: " FontWeight="Bold"/>
+                <TextBlock Text="{Binding RevisadoID}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="13">
+                <TextBlock Text="Revisado Fecha: " FontWeight="Bold"/>
+                <TextBlock Text="{Binding RevisadoFecha}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="14">
+                <TextBlock Text="Presupuesto ID: " FontWeight="Bold"/>
+                <TextBlock Text="{Binding PresupuestoID}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="15">
+                <TextBlock Text="Rubro ID: " FontWeight="Bold"/>
+                <TextBlock Text="{Binding RubroID}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="16">
+                <TextBlock Text="Entidad ID: " FontWeight="Bold"/>
+                <TextBlock Text="{Binding EntidadID}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="17">
+                <TextBlock Text="Depósito ID: " FontWeight="Bold"/>
+                <TextBlock Text="{Binding DepositoID}"/>
+            </StackPanel>
         </Grid>
-
     </Grid>
+
 </UserControl>
