@@ -35,10 +35,9 @@ namespace DataObra.Presupuestos
             Objeto.agregaNodo("R", null);
             this.grillaArbol.ItemsSource = Objeto.Arbol;
             this.grillaArbol.ChildPropertyName = "Inferiores";
-
+            this.grillaDetalle.ItemsSource = Objeto.Insumos;
+            
         }
-
-
 
         private void Fiebdc_Click(object sender, RoutedEventArgs e)
         {
@@ -74,6 +73,13 @@ namespace DataObra.Presupuestos
             Objeto.recalculo(Objeto.Arbol, true, 0, true);
 
             Objeto.sinCero();
+
+            totMateriales.Value = Objeto.TotalMateriales;
+            totMDO.Value = Objeto.TotalManodeObra;
+            totEquipos.Value = Objeto.TotalEquipos;
+            totSubcontratos.Value = Objeto.TotalSubcontratos;
+            totOtros.Value= Objeto.TotalOtros;
+            totGeneral.Value = Objeto.TotalDirecto;
             //Totales grillas
             //listaInsumos.grillaInsumos.CalculateAggregates();
             //this.GrillaArbol.CalculateAggregates();

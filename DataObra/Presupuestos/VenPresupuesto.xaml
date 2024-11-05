@@ -16,7 +16,7 @@
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
                     <Setter Property="Foreground" Value="Transparent" />
-                    <Setter Property="Background"  Value="LightYellow"/>
+                    <Setter Property="Background" Value="LightYellow" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -26,10 +26,10 @@
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
                     <Setter Property="FontWeight" Value="Bold" />
-                    <Setter Property="Background"  Value="LightYellow"/>
+                    <Setter Property="Background" Value="LightYellow" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="T">
-                <Setter Property="FontWeight" Value="Bold" />
+                    <Setter Property="FontWeight" Value="Bold" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -89,14 +89,14 @@
                 AllowEditing="True"
                 AllowResizingColumns="True"
                 AutoGenerateColumns="False"
-                CurrentCellEndEdit="grillaArbol_CurrentCellEndEdit"
-                CurrentCellBeginEdit="grillaArbol_CurrentCellBeginEdit">
+                CurrentCellBeginEdit="grillaArbol_CurrentCellBeginEdit"
+                CurrentCellEndEdit="grillaArbol_CurrentCellEndEdit">
                 <syncfusion:SfTreeGrid.Columns>
                     <syncfusion:TreeGridColumns>
                         <syncfusion:TreeGridTextColumn
                             Width="50"
                             CellStyle="{StaticResource TipoCellStyle}"
-                            MappingName="ID"  />
+                            MappingName="ID" />
                         <syncfusion:TreeGridTextColumn
                             Width="300"
                             CellStyle="{StaticResource TipoCellStyle}"
@@ -110,7 +110,7 @@
                         <!--<syncfusion:TreeGridTextColumn
                             Width="80"
                             MappingName="Tipo"
-                            TextAlignment="Right" 
+                            TextAlignment="Right"
                             CellStyle="{StaticResource TipoCellStyle}"/>-->
 
                         <syncfusion:TreeGridNumericColumn
@@ -149,7 +149,7 @@
                 Grid.Row="3"
                 HorizontalAlignment="Right"
                 Orientation="Horizontal">
-                <StackPanel Margin="2">
+                <StackPanel Margin="2" Cursor="">
                     <Label
                         Margin="2"
                         Padding="0,5,5,5"
@@ -157,19 +157,16 @@
                         Content="Materiales"
                         FontWeight="DemiBold" />
                     <syncfusion:CurrencyTextBox
+                        x:Name="totMateriales"
                         Width="100"
                         Height="24"
                         Margin="2"
                         HorizontalContentAlignment="Center"
-                        Value="0">
-                        <syncfusion:CurrencyTextBox.NumberFormat>
-                            <numberformat:NumberFormatInfo
-                                CurrencyDecimalDigits="2"
-                                CurrencyDecimalSeparator=","
-                                CurrencyGroupSeparator=" "
-                                CurrencySymbol="$" />
-                        </syncfusion:CurrencyTextBox.NumberFormat>
-                    </syncfusion:CurrencyTextBox>
+                        CurrencyDecimalDigits="2"
+                        CurrencyDecimalSeparator=","
+                        CurrencyGroupSeparator=" "
+                        CurrencySymbol="$"
+                        Value="0" />
                 </StackPanel>
                 <StackPanel Margin="2">
                     <Label
@@ -179,19 +176,16 @@
                         Content="Mano de &gt;Obra"
                         FontWeight="DemiBold" />
                     <syncfusion:CurrencyTextBox
+                        x:Name="totMDO"
                         Width="100"
                         Height="24"
                         Margin="2"
                         HorizontalContentAlignment="Center"
-                        Value="0">
-                        <syncfusion:CurrencyTextBox.NumberFormat>
-                            <numberformat:NumberFormatInfo
-                                CurrencyDecimalDigits="2"
-                                CurrencyDecimalSeparator=","
-                                CurrencyGroupSeparator=" "
-                                CurrencySymbol="$" />
-                        </syncfusion:CurrencyTextBox.NumberFormat>
-                    </syncfusion:CurrencyTextBox>
+                        CurrencyDecimalDigits="2"
+                        CurrencyDecimalSeparator=","
+                        CurrencyGroupSeparator=" "
+                        CurrencySymbol="$"
+                        Value="0" />
                 </StackPanel>
                 <StackPanel Margin="2">
                     <Label
@@ -201,19 +195,16 @@
                         Content="Equipos"
                         FontWeight="DemiBold" />
                     <syncfusion:CurrencyTextBox
+                        x:Name="totEquipos"
                         Width="100"
                         Height="24"
                         Margin="2"
                         HorizontalContentAlignment="Center"
-                        Value="0">
-                        <syncfusion:CurrencyTextBox.NumberFormat>
-                            <numberformat:NumberFormatInfo
-                                CurrencyDecimalDigits="2"
-                                CurrencyDecimalSeparator=","
-                                CurrencyGroupSeparator=" "
-                                CurrencySymbol="$" />
-                        </syncfusion:CurrencyTextBox.NumberFormat>
-                    </syncfusion:CurrencyTextBox>
+                        CurrencyDecimalDigits="2"
+                        CurrencyDecimalSeparator=","
+                        CurrencyGroupSeparator=" "
+                        CurrencySymbol="$"
+                        Value="0" />
                 </StackPanel>
                 <StackPanel Margin="2">
                     <Label
@@ -223,19 +214,16 @@
                         Content="Subcontratos"
                         FontWeight="DemiBold" />
                     <syncfusion:CurrencyTextBox
+                        x:Name="totSubcontratos"
                         Width="100"
                         Height="24"
                         Margin="2"
                         HorizontalContentAlignment="Center"
-                        Value="0">
-                        <syncfusion:CurrencyTextBox.NumberFormat>
-                            <numberformat:NumberFormatInfo
-                                CurrencyDecimalDigits="2"
-                                CurrencyDecimalSeparator=","
-                                CurrencyGroupSeparator=" "
-                                CurrencySymbol="$" />
-                        </syncfusion:CurrencyTextBox.NumberFormat>
-                    </syncfusion:CurrencyTextBox>
+                        CurrencyDecimalDigits="2"
+                        CurrencyDecimalSeparator=","
+                        CurrencyGroupSeparator=" "
+                        CurrencySymbol="$"
+                        Value="0" />
                 </StackPanel>
                 <StackPanel Margin="2">
                     <Label
@@ -245,19 +233,35 @@
                         Content="Otros"
                         FontWeight="DemiBold" />
                     <syncfusion:CurrencyTextBox
+                        x:Name="totOtros"
                         Width="100"
                         Height="24"
                         Margin="2"
                         HorizontalContentAlignment="Center"
-                        Value="0">
-                        <syncfusion:CurrencyTextBox.NumberFormat>
-                            <numberformat:NumberFormatInfo
-                                CurrencyDecimalDigits="2"
-                                CurrencyDecimalSeparator=","
-                                CurrencyGroupSeparator=" "
-                                CurrencySymbol="$" />
-                        </syncfusion:CurrencyTextBox.NumberFormat>
-                    </syncfusion:CurrencyTextBox>
+                        CurrencyDecimalDigits="2"
+                        CurrencyDecimalSeparator=","
+                        CurrencyGroupSeparator=" "
+                        CurrencySymbol="$"
+                        Value="0" />
+                </StackPanel>
+                <StackPanel Margin="2">
+                    <Label
+                        Margin="2"
+                        Padding="0,5,5,5"
+                        HorizontalAlignment="Center"
+                        Content="Total"
+                        FontWeight="DemiBold" />
+                    <syncfusion:CurrencyTextBox
+                        x:Name="totGeneral"
+                        Width="100"
+                        Height="24"
+                        Margin="2"
+                        HorizontalContentAlignment="Center"
+                        CurrencyDecimalDigits="2"
+                        CurrencyDecimalSeparator=","
+                        CurrencyGroupSeparator=" "
+                        CurrencySymbol="$"
+                        Value="0" />
                 </StackPanel>
 
             </StackPanel>
