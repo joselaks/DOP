@@ -267,7 +267,7 @@
 
                 <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5" Content="Documentos Relacionados" HorizontalAlignment="Left" />
 
-                <StackPanel Visibility="Collapsed" Grid.Column="2" Grid.Row="5" Height="32" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" >
+                <StackPanel Visibility="Visible" Grid.Column="2" Grid.Row="5" Height="32" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" >
                     <Button Name="Boton1" Content="Boton1" Click="Boton1_Click" Width="99" Height="25" HorizontalAlignment="Right" Margin="55,0,19,0" />
                     <Button Name="Boton2" Content="Boton2" Width="99" Height="25" HorizontalAlignment="Right" Margin="55,0,19,0" />
                     <Button Name="Boton3" Content="Boton3" Width="99" Height="25" HorizontalAlignment="Right" Margin="55,0,19,0" />

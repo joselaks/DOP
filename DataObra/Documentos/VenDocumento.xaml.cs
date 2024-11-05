@@ -40,6 +40,7 @@ namespace DataObra.Documentos
 
             if (success)
             {
+                // Convierte DocumentoBibloteca a Documento
                 AbreDoc(documento);
             }
             else

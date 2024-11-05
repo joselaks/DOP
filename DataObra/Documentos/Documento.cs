@@ -6,6 +6,14 @@ using System.Threading.Tasks;
 
 namespace DataObra.Documentos
 {
+    class DocumentoRel  // Relaciones entre Documentos
+    {
+        public int SuperiorID { get; set; }
+        public int InferiorID { get; set; }
+        public short CuentaID { get; set; }
+        public bool PorInsumos { get; set; } = true; // Si la relación esta dada por compartir detalle de insumos
+                                                     // o es manual
+    }
     public class Documento
     {
         #region SISTEMA
@@ -43,7 +51,7 @@ namespace DataObra.Documentos
         #region DATOS
         public string? Descrip { get; set; } // varchar150  Titulo o descripción del usuario
         public string? Concepto1 { get; set; } // varchar150
-        public DateTime Fecha1 { get; set; } // Date Fecha del docuemnto ingresada por el usuario
+        public DateTime Fecha1 { get; set; } // Date Fecha del documento ingresada por el usuario
         public DateTime? Fecha2 { get; set; } // Date Fecha de vencimiento o entrega o ...
         public DateTime? Fecha3 { get; set; } // Date Fecha contable o ...
         public int Numero1 { get; set; } // Int en las facturas en numero de sucursal
@@ -79,14 +87,59 @@ namespace DataObra.Documentos
         public bool RelTar { get; set; } // Tareas
         public bool RelIns { get; set; } // Insumos
         #endregion
-    }
 
-    class DocumentoRel  // Relaciones entre Documentos
-    {
-        public int SuperiorID { get; set; }
-        public int InferiorID { get; set; }
-        public short CuentaID { get; set; }
-        public bool PorInsumos { get; set; } = true; // Si la relación esta dada por compartir detalle de insumos
-                                                     // o es manual
+        // Método de conversión
+        public static Documento Convertir(Biblioteca.Documento docBiblioteca)
+        {
+            return new Documento
+            {
+                ID = docBiblioteca.ID,
+                CuentaID = docBiblioteca.CuentaID,
+                TipoID = docBiblioteca.TipoID,
+                UsuarioID = docBiblioteca.UsuarioID,
+                CreadoFecha = docBiblioteca.CreadoFecha,
+                EditadoID = docBiblioteca.EditadoID,
+                EditadoFecha = docBiblioteca.EditadoFecha,
+                RevisadoID = docBiblioteca.RevisadoID,
+                RevisadoFecha = docBiblioteca.RevisadoFecha,
+                AdminID = docBiblioteca.AdminID,
+                ObraID = docBiblioteca.ObraID,
+                PresupuestoID = docBiblioteca.PresupuestoID,
+                RubroID = docBiblioteca.RubroID,
+                EntidadID = docBiblioteca.EntidadID,
+                DepositoID = docBiblioteca.DepositoID,
+                Descrip = docBiblioteca.Descrip,
+                Concepto1 = docBiblioteca.Concepto1,
+                Fecha1 = docBiblioteca.Fecha1,
+                Fecha2 = docBiblioteca.Fecha2,
+                Fecha3 = docBiblioteca.Fecha3,
+                Numero1 = docBiblioteca.Numero1,
+                Numero2 = docBiblioteca.Numero2,
+                Numero3 = docBiblioteca.Numero3,
+                Notas = docBiblioteca.Notas,
+                Active = docBiblioteca.Active,
+                Pesos = docBiblioteca.Pesos,
+                Dolares = docBiblioteca.Dolares,
+                Impuestos = docBiblioteca.Impuestos,
+                ImpuestosD = docBiblioteca.ImpuestosD,
+                Materiales = docBiblioteca.Materiales,
+                ManodeObra = docBiblioteca.ManodeObra,
+                Subcontratos = docBiblioteca.Subcontratos,
+                Equipos = docBiblioteca.Equipos,
+                Otros = docBiblioteca.Otros,
+                MaterialesD = docBiblioteca.MaterialesD,
+                ManodeObraD = docBiblioteca.ManodeObraD,
+                SubcontratosD = docBiblioteca.SubcontratosD,
+                EquiposD = docBiblioteca.EquiposD,
+                OtrosD = docBiblioteca.OtrosD,
+                RelDoc = docBiblioteca.RelDoc,
+                RelArt = docBiblioteca.RelArt,
+                RelMov = docBiblioteca.RelMov,
+                RelImp = docBiblioteca.RelImp,
+                RelRub = docBiblioteca.RelRub,
+                RelTar = docBiblioteca.RelTar,
+                RelIns = docBiblioteca.RelIns
+            };
+        }
     }
 }
