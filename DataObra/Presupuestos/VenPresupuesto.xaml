@@ -17,11 +17,11 @@
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
                     <Setter Property="Foreground" Value="Transparent" />
-                    <Setter Property="Background"  Value="#C0C0C0"/>
+                    <Setter Property="Background" Value="#C0C0C0" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="T">
                     <Setter Property="Foreground" Value="Black" />
-                    <Setter Property="Background"  Value="#E0E0E0"/>
+                    <Setter Property="Background" Value="#E0E0E0" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -104,27 +104,51 @@
                                 <Image Source="/Presupuestos/Tarea.png" />
                             </syncfusion:DropDownMenuItem.Icon>
                         </syncfusion:DropDownMenuItem>
-                        <syncfusion:DropDownMenuItem HorizontalAlignment="Left" Header="Material">
+                        <syncfusion:DropDownMenuItem
+                            HorizontalAlignment="Left"
+                            Click="DropDownMenuItem_Click"
+                            Header="Material">
                             <syncfusion:DropDownMenuItem.Icon>
                                 <Image Source="/Presupuestos/Material.png" />
                             </syncfusion:DropDownMenuItem.Icon>
                         </syncfusion:DropDownMenuItem>
-                        <syncfusion:DropDownMenuItem HorizontalAlignment="Left" Header="Mano de Obra">
+                        <syncfusion:DropDownMenuItem
+                            HorizontalAlignment="Left"
+                            Click="DropDownMenuItem_Click_1"
+                            Header="Mano de Obra">
                             <syncfusion:DropDownMenuItem.Icon>
                                 <Image Source="/Presupuestos/mdo.png" />
                             </syncfusion:DropDownMenuItem.Icon>
                         </syncfusion:DropDownMenuItem>
-                        <syncfusion:DropDownMenuItem HorizontalAlignment="Left" Header="Equipo">
+                        <syncfusion:DropDownMenuItem
+                            HorizontalAlignment="Left"
+                            Click="DropDownMenuItem_Click_2"
+                            Header="Equipo">
                             <syncfusion:DropDownMenuItem.Icon>
                                 <Image Source="/Presupuestos/equipos.png" />
                             </syncfusion:DropDownMenuItem.Icon>
                         </syncfusion:DropDownMenuItem>
-                        <syncfusion:DropDownMenuItem HorizontalAlignment="Left" Header="Subcontrato">
+                        <syncfusion:DropDownMenuItem
+                            HorizontalAlignment="Left"
+                            Click="DropDownMenuItem_Click_3"
+                            Header="Subcontrato">
                             <syncfusion:DropDownMenuItem.Icon>
                                 <Image Source="/Presupuestos/subcontrato.png" />
                             </syncfusion:DropDownMenuItem.Icon>
                         </syncfusion:DropDownMenuItem>
-                        <syncfusion:DropDownMenuItem HorizontalAlignment="Left" Header="Otro">
+                        <syncfusion:DropDownMenuItem
+                            HorizontalAlignment="Left"
+                            Click="DropDownMenuItem_Click_4"
+                            Header="Otro">
+                            <syncfusion:DropDownMenuItem.Icon>
+                                <Image Source="/Presupuestos/otros.png" />
+                            </syncfusion:DropDownMenuItem.Icon>
+                        </syncfusion:DropDownMenuItem>
+                        <syncfusion:DropDownMenuItem
+                            x:Name="sAux"
+                            HorizontalAlignment="Left"
+                            Click="sAux_Click"
+                            Header="Auxiliar">
                             <syncfusion:DropDownMenuItem.Icon>
                                 <Image Source="/Presupuestos/otros.png" />
                             </syncfusion:DropDownMenuItem.Icon>
@@ -192,6 +216,15 @@
                     SmallIcon="/Presupuestos/Import.png"
                     ToolTip="Fiebdc" />
 
+                <syncfusion:ButtonAdv
+                    x:Name="rec"
+                    Margin="3"
+                    Click="recalculo_Click"
+                    Label="Log-in"
+                    SizeMode="Small"
+                    SmallIcon="/Presupuestos/recalculo.png"
+                    ToolTip="Recalculo" />
+
             </StackPanel>
             <syncfusion:SfTreeGrid
                 Name="grillaArbol"
@@ -203,7 +236,6 @@
                 AutoGenerateColumns="False"
                 CurrentCellBeginEdit="grillaArbol_CurrentCellBeginEdit"
                 CurrentCellEndEdit="grillaArbol_CurrentCellEndEdit"
-                SelectionBackground="SkyBlue"                                                    
                 SelectionForeground="DarkBlue">
                 <syncfusion:SfTreeGrid.Columns>
                     <syncfusion:TreeGridColumns>

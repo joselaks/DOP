@@ -18,6 +18,7 @@
     <None Remove="Presupuestos\Material.png" />
     <None Remove="Presupuestos\mdo.png" />
     <None Remove="Presupuestos\otros.png" />
+    <None Remove="Presupuestos\recalculo.png" />
     <None Remove="Presupuestos\Rubro.png" />
     <None Remove="Presupuestos\Save.png" />
     <None Remove="Presupuestos\subcontrato.png" />
@@ -47,6 +48,7 @@
       <Resource Include="Presupuestos\Material.png" />
       <Resource Include="Presupuestos\mdo.png" />
       <Resource Include="Presupuestos\otros.png" />
+      <Resource Include="Presupuestos\recalculo.png" />
       <Resource Include="Presupuestos\Rubro.png" />
       <Resource Include="Presupuestos\Save.png" />
       <Resource Include="Presupuestos\subcontrato.png" />

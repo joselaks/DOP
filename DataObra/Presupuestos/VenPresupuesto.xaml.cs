@@ -36,7 +36,9 @@ namespace DataObra.Presupuestos
             this.grillaArbol.ItemsSource = Objeto.Arbol;
             this.grillaArbol.ChildPropertyName = "Inferiores";
             this.grillaDetalle.ItemsSource = Objeto.Insumos;
-            
+            this.grillaArbol.SelectionBackground = null;
+
+
         }
 
         private void Fiebdc_Click(object sender, RoutedEventArgs e)
@@ -75,12 +77,12 @@ namespace DataObra.Presupuestos
 
             Objeto.sinCero();
 
-            totMateriales.Value = Objeto.TotalMateriales;
-            totMDO.Value = Objeto.TotalManodeObra;
-            totEquipos.Value = Objeto.TotalEquipos;
-            totSubcontratos.Value = Objeto.TotalSubcontratos;
-            totOtros.Value= Objeto.TotalOtros;
-            totGeneral.Value = Objeto.TotalDirecto;
+            totMateriales.Value = Objeto.Arbol.Sum(i => i.Materiales);
+            totMDO.Value = Objeto.Arbol.Sum(i => i.ManodeObra);
+            totEquipos.Value = Objeto.Arbol.Sum(i => i.Equipos);
+            totSubcontratos.Value = Objeto.Arbol.Sum(i => i.Subcontratos);
+            totOtros.Value= Objeto.Arbol.Sum(i => i.Otros);
+            totGeneral.Value = Objeto.Arbol.Sum(i => i.Importe);
             //Totales grillas
             //listaInsumos.grillaInsumos.CalculateAggregates();
             //this.GrillaArbol.CalculateAggregates();
@@ -112,21 +114,24 @@ namespace DataObra.Presupuestos
 
 
             var column = grillaArbol.Columns[e.RowColumnIndex.ColumnIndex].MappingName;
-            var record = grillaArbol.GetNodeAtRowIndex(e.RowColumnIndex.RowIndex).Item as Nodo;
-
-            if (column == "Cantidad")
+            var editado = grillaArbol.GetNodeAtRowIndex(e.RowColumnIndex.RowIndex).Item as Nodo;
+            switch (column)
             {
-                var newValue = record.Cantidad.ToString();
-                MessageBox.Show($"La cantidad cambió de {_originalValue} a {newValue}");
+                case "ID":
+                    Objeto.cambiaCodigo(Objeto.Arbol, editado.ID, _originalValue.ToString());
+                    break;
+                case "Cantidad":
+                    CambioAuxiliar dato = new CambioAuxiliar();
+                    dato.IdInferior = editado.ID;
+                    dato.IdSuperior = Objeto.FindParentNode(Objeto.Arbol, editado, null).ID;
+                    dato.Cantidad = editado.Cantidad;
+                    Objeto.cambioCantidadAuxiliar(Objeto.Arbol, dato);
+                    break;
+                default:
+                    Objeto.mismoCodigo(Objeto.Arbol, editado);
+                    break;
             }
-            else if (column == "Descripcion")
-            {
-                var newValue = record.Descripcion;
-                MessageBox.Show($"La descripción cambió de {_originalValue} a {newValue}");
-            }
-
-            // Restablece el valor original
-            _originalValue = null;
+            recalculo();
 
         }
 
@@ -136,14 +141,11 @@ namespace DataObra.Presupuestos
             var column = grillaArbol.Columns[e.RowColumnIndex.ColumnIndex].MappingName;
             var record = grillaArbol.GetNodeAtRowIndex(e.RowColumnIndex.RowIndex).Item as Nodo;
 
-            if (column == "Cantidad")
+            if (column == "ID")
             {
-                _originalValue = record.Cantidad;
+                _originalValue = record.ID;
             }
-            else if (column == "Descripcion")
-            {
-                _originalValue = record.Descripcion;
-            }
+            
         }
 
         private void colCodigo_IsCheckedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -185,7 +187,7 @@ namespace DataObra.Presupuestos
 
         private void aRubro_Click(object sender, RoutedEventArgs e)
         {
-
+            Objeto.agregaNodo("R", null);
         }
 
         private void colMDO_IsCheckedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -241,6 +243,131 @@ namespace DataObra.Presupuestos
                 column.IsHidden = !isChecked; // Cambiar la condición IsHidden
             }
 
+        }
+
+        private void DropDownMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.grillaArbol.SelectedItem == null)
+            {
+                MessageBox.Show("debe seleccionar una tarea o auxiliar para  el material");
+            }
+            else
+            {
+                Bibioteca.Clases.Nodo sele = this.grillaArbol.SelectedItem as Bibioteca.Clases.Nodo; //obtine contenido
+                if (sele.Tipo != "T" && sele.Tipo != "A")
+                {
+                    MessageBox.Show("debe seleccionar una tarea o auxiliar para el material");
+                }
+                else
+                {
+                    Objeto.agregaNodo("M", sele);
+                }
+            }
+        }
+
+        private void DropDownMenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (this.grillaArbol.SelectedItem == null)
+            {
+                MessageBox.Show("debe seleccionar ua tarea para la mano de obra");
+            }
+            else
+            {
+                Bibioteca.Clases.Nodo sele = this.grillaArbol.SelectedItem as Bibioteca.Clases.Nodo; //obtine contenido
+                if (sele.Tipo != "T" && sele.Tipo != "A")
+                {
+                    MessageBox.Show("debe seleccionar una tarea para la mano de obra");
+                }
+                else
+                {
+                    Objeto.agregaNodo("D", sele);
+                }
+            }
+        }
+
+        private void DropDownMenuItem_Click_2(object sender, RoutedEventArgs e)
+        {
+            if (this.grillaArbol.SelectedItem == null)
+            {
+                MessageBox.Show("debe seleccionar ua tarea para el equipo");
+            }
+            else
+            {
+                Bibioteca.Clases.Nodo sele = this.grillaArbol.SelectedItem as Bibioteca.Clases.Nodo; //obtine contenido
+                if (sele.Tipo != "T" && sele.Tipo != "A")
+                {
+                    MessageBox.Show("debe seleccionar una tarea para el equipo");
+                }
+                else
+                {
+                    Objeto.agregaNodo("E", sele);
+                }
+            }
+        }
+
+        private void DropDownMenuItem_Click_3(object sender, RoutedEventArgs e)
+        {
+            if (this.grillaArbol.SelectedItem == null)
+            {
+                MessageBox.Show("debe seleccionar ua tarea para la el subcontrato");
+            }
+            else
+            {
+                Bibioteca.Clases.Nodo sele = this.grillaArbol.SelectedItem as Bibioteca.Clases.Nodo; //obtine contenido
+                if (sele.Tipo != "T" && sele.Tipo != "A")
+                {
+                    MessageBox.Show("debe seleccionar una tarea para el subcontrato");
+                }
+                else
+                {
+                    Objeto.agregaNodo("S", sele);
+                }
+            }
+        }
+
+        private void DropDownMenuItem_Click_4(object sender, RoutedEventArgs e)
+        {
+            if (this.grillaArbol.SelectedItem == null)
+            {
+                MessageBox.Show("debe seleccionar ua tarea para el insumo");
+            }
+            else
+            {
+                Bibioteca.Clases.Nodo sele = this.grillaArbol.SelectedItem as Bibioteca.Clases.Nodo; //obtine contenido
+                if (sele.Tipo != "T" && sele.Tipo != "A")
+                {
+                    MessageBox.Show("debe seleccionar una tarea para el insumo");
+                }
+                else
+                {
+                    Objeto.agregaNodo("O", sele);
+                }
+            }
+        }
+
+        private void sAux_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.grillaArbol.SelectedItem == null)
+            {
+                MessageBox.Show("debe seleccionar ua tarea para el auxiliar");
+            }
+            else
+            {
+                Bibioteca.Clases.Nodo sele = this.grillaArbol.SelectedItem as Bibioteca.Clases.Nodo; //obtine contenido
+                if (sele.Tipo != "T" && sele.Tipo != "A")
+                {
+                    MessageBox.Show("debe seleccionar una tarea u otro auxiliar para el auxiliar");
+                }
+                else
+                {
+                    Objeto.agregaNodo("A", sele);
+                }
+            }
+        }
+
+        private void recalculo_Click(object sender, RoutedEventArgs e)
+        {
+            recalculo();
         }
     }
 
