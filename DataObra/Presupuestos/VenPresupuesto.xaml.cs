@@ -32,13 +32,18 @@ namespace DataObra.Presupuestos
         {
             InitializeComponent();
             Objeto = new Presupuesto();
-            Objeto.agregaNodo("R", null);
             this.grillaArbol.ItemsSource = Objeto.Arbol;
             this.grillaArbol.ChildPropertyName = "Inferiores";
             this.grillaDetalle.ItemsSource = Objeto.Insumos;
-            this.grillaArbol.SelectionBackground = null;
+            this.grillaArbol.RowDragDropController.Dropped += RowDragDropController_Dropped;
 
 
+
+        }
+
+        private void RowDragDropController_Dropped(object sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridRowDroppedEventArgs e)
+        {
+            recalculo();
         }
 
         private void Fiebdc_Click(object sender, RoutedEventArgs e)
@@ -81,7 +86,7 @@ namespace DataObra.Presupuestos
             totMDO.Value = Objeto.Arbol.Sum(i => i.ManodeObra);
             totEquipos.Value = Objeto.Arbol.Sum(i => i.Equipos);
             totSubcontratos.Value = Objeto.Arbol.Sum(i => i.Subcontratos);
-            totOtros.Value= Objeto.Arbol.Sum(i => i.Otros);
+            totOtros.Value = Objeto.Arbol.Sum(i => i.Otros);
             totGeneral.Value = Objeto.Arbol.Sum(i => i.Importe);
             //Totales grillas
             //listaInsumos.grillaInsumos.CalculateAggregates();
@@ -145,7 +150,7 @@ namespace DataObra.Presupuestos
             {
                 _originalValue = record.ID;
             }
-            
+
         }
 
         private void colCodigo_IsCheckedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -368,6 +373,41 @@ namespace DataObra.Presupuestos
         private void recalculo_Click(object sender, RoutedEventArgs e)
         {
             recalculo();
+        }
+
+        private void grillaArbol_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete)
+            {
+                var selectedItems = grillaArbol.SelectedItems;
+                var itemsToRemove = new List<Nodo>();
+                foreach (var item in selectedItems)
+                {
+                    itemsToRemove.Add(item as Nodo);
+                }
+                foreach (var item in itemsToRemove)
+                {
+                    RemoveItemRecursively(Objeto.Arbol, item);
+                }
+            }
+
+
+        }
+
+        private bool RemoveItemRecursively(ObservableCollection<Nodo> collection, Nodo itemToRemove)
+        {
+            if (collection.Contains(itemToRemove))
+            {
+                collection.Remove(itemToRemove); return true;
+            }
+            foreach (var item in collection)
+            {
+                if (RemoveItemRecursively(item.inferiores, itemToRemove))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 
