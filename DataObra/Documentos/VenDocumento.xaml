@@ -16,7 +16,7 @@
     <Grid x:Name="GrillaVenDocumento">
 
         <syncfusion:TileViewControl x:Name="ControlDocumentos"
-                                    MinimizedItemsOrientation="Bottom"
+                                    MinimizedItemsOrientation="Right"
                                     >
         </syncfusion:TileViewControl>
 

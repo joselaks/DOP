@@ -118,12 +118,12 @@ namespace DataObra.Datos
 
         }
 
-        //Edita un documento
+        // Edita un documento
         private async void editaDoc_Click(object sender, RoutedEventArgs e)
         {
             var documento = new Biblioteca.Documento
             {
-                // Define las propiedades del documento
+                #region
                 ID = 10,
                 CuentaID = 55,
                 TipoID = 5,
@@ -171,10 +171,10 @@ namespace DataObra.Datos
                 RelRub = false,
                 RelTar = false,
                 RelIns = false
+                #endregion
             };
             var (success, message) = await datosWeb.PutDocumentoAsync(documento);
             MessageBox.Show(message, success ? "Éxito" : "Error");
-
         }
 
         // Busca un documento por su ID

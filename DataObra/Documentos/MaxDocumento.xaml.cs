@@ -1,4 +1,7 @@
 ﻿using Biblioteca;
+using DataObra.Agrupadores;
+using DataObra.Datos;
+using DataObra.Sistema;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,19 +16,264 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Syncfusion.Windows.Shared;
+using Syncfusion.Windows.Tools.Controls;
 
 namespace DataObra.Documentos
 {
-    /// <summary>
-    /// Lógica de interacción para MaxDocumento.xaml
-    /// </summary>
     public partial class MaxDocumento : UserControl
     {
-        public MaxDocumento(Documento documento)
+        Servidor azure = new Servidor();
+        Documento oActivo;
+        public event EventHandler<Documento> DocumentoModified;
+        public bool Guardar;
+        DatosWeb datosWeb;
+        public bool Modificado { get; private set; }
+
+        public MaxDocumento(Biblioteca.Documento pDoc, DatosWeb pDatosWeb) 
         {
             InitializeComponent();
+            Modificado = false;
+            datosWeb = pDatosWeb;
+            this.ComboObras.ItemsSource = azure.Agrupadores.Where(a => a.TipoID == 1).OrderBy(a => a.Descrip);
+            this.ComboAdmin.ItemsSource = azure.Agrupadores.Where(a => a.TipoID == 2).OrderBy(a => a.Descrip);
 
-            this.DataContext = documento;
+            if (pDoc == null)
+            {
+                oActivo = new Documento()
+                {
+                    Fecha1 = System.DateTime.Today,
+                    CreadoFecha = System.DateTime.Today,
+                    Usuario = azure.Usuario,
+                    EditadoFecha = System.DateTime.Today,
+                    EntidadID = 1
+                };
+                this.ComboObras.SelectedItem = azure.GetFirstAgrupadorByTipoIDOrdered(1);
+                this.ComboAdmin.SelectedItem = azure.GetFirstAgrupadorByTipoIDOrdered(2);
+            }
+            else
+            {
+                // Recibe el Documento a editar bajado del servidor y lo convierte
+                oActivo = Documento.Convertir(pDoc);
+
+                this.ComboObras.SelectedItem = azure.Agrupadores.FirstOrDefault(a => a.ID == oActivo.ObraID);
+                this.ComboAdmin.SelectedItem = azure.Agrupadores.FirstOrDefault(a => a.ID == oActivo.AdminID);
+                var entidad = azure.Agrupadores.FirstOrDefault(a => a.ID == oActivo.EntidadID);
+
+                if (entidad != null)
+                {
+                    switch (entidad.TipoID)
+                    {
+                        case 'C':
+                            this.EsCliente.IsChecked = true;
+                            break;
+                        case 'P':
+                            this.EsProveedor.IsChecked = true;
+                            break;
+                        case 'S':
+                            this.EsContratista.IsChecked = true;
+                            break;
+                        case 'O':
+                            this.EsPersonal.IsChecked = true;
+                            break;
+                        default:
+                            break;
+                    }
+                    this.ComboEntidad.SelectedItem = entidad;
+                }
+
+                if (oActivo.RevisadoID != 0)
+                {
+                    //this.CelRevisadoFecha.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    //this.CelRevisadoFecha.Visibility = Visibility.Collapsed;
+                }
+            }
+
+            this.DataContext = oActivo;
+            SubscribeToChanges(this); // No funciona...
         }
+
+        #region COMBOS
+
+        private void ComboPresupuestos_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var sele = ComboPresupuestos.SelectedItem as Agrupador;
+
+            if (sele != null)
+            {
+                oActivo.PresupuestoID = sele.ID;
+                oActivo.Presupuesto = sele.Descrip;
+            }
+        }
+
+        private void ComboObras_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var sele = ComboObras.SelectedItem as Agrupador;
+
+            if (sele != null)
+            {
+                oActivo.ObraID = sele.ID;
+                oActivo.Obra = sele.Descrip;
+            }
+        }
+        private void ComboAdmin_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var sele = ComboAdmin.SelectedItem as Agrupador;
+
+            if (sele != null)
+            {
+                oActivo.AdminID = sele.ID;
+                oActivo.Admin = sele.Descrip;
+            }
+        }
+        private void ComboEntidad_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var sele = ComboEntidad.SelectedItem as Agrupador;
+
+            if (sele != null)
+            {
+                oActivo.EntidadID = sele.ID;
+                oActivo.Entidad = sele.Descrip;
+                oActivo.EntidadTipo = EntidadTipoHelper.GetEntidadTipo(sele.ID);
+            }
+        }
+
+        #endregion
+
+        #region PANTALLA
+
+        private void EntityType_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is RadioButton radioButton)
+            {
+                var tipoDiccionario = new Dictionary<string, int>
+                {
+                    { "EsCliente", 10 },
+                    { "EsProveedor", 20 },
+                    { "EsContratista", 30 },
+                    { "EsPersonal", 40 }
+                };
+
+                if (tipoDiccionario.TryGetValue(radioButton.Name, out int tipoID))
+                {
+                    this.ComboEntidad.ItemsSource = azure.Agrupadores.Where(a => a.TipoID == tipoID).OrderBy(a => a.Descrip);
+                    this.ComboEntidad.SelectedItem = azure.GetFirstAgrupadorByTipoIDOrdered(tipoID);
+                }
+            }
+        }
+
+        private void BotonVerifica_Click(object sender, RoutedEventArgs e)
+        {
+            if (oActivo.RevisadoID == 0)
+            {
+                oActivo.RevisadoID = azure.UsuarioID;
+                oActivo.Revisado = azure.Usuario;
+                oActivo.RevisadoFecha = System.DateTime.Today;
+            }
+            else
+            {
+                oActivo.RevisadoID = 0;
+                oActivo.Revisado = "";
+            }
+        }
+
+        // Procedimiento guardar en servidor
+        private async void BotonGuardar_Click(object sender, RoutedEventArgs e)
+        {
+            oActivo.EditadoID = azure.UsuarioID;
+            oActivo.Editado = azure.Usuario;
+            oActivo.EditadoFecha = DateTime.Now;
+
+            Biblioteca.Documento wDoc = new Biblioteca.Documento();
+            wDoc = Documento.ConvertirInverso(oActivo);
+
+            var (success, message) = await datosWeb.PutDocumentoAsync(wDoc);
+            Window ventanaPadre = Window.GetWindow(this);
+            if (ventanaPadre != null)
+            {
+                MessageBox.Show(message, success ? "Éxito" : "Error");
+                ventanaPadre.Close();
+            }
+            
+            DocumentoModified?.Invoke(this, oActivo);
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Obtener la ventana que contiene este UserControl
+            Window ventanaPadre = Window.GetWindow(this);
+
+            if (ventanaPadre != null)
+            {
+                if (Modificado)
+                {
+                    var result = MessageBox.Show("Hay cambios sin guardar. ¿Está seguro de que desea cerrar?", "Confirmar cierre", MessageBoxButton.YesNo);
+                    if (result == MessageBoxResult.No)
+                    {
+                        return; // No cerrar la ventana
+                    }
+                }
+                ventanaPadre.Close();
+            }
+        }
+
+        #endregion Pantalla
+
+        private void SubscribeToChanges(DependencyObject parent)
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+
+                // Manejo de los cambios en TextBox
+                if (child is TextBox textBox)
+                {
+                    textBox.TextChanged += (s, e) => Modificado = true;
+                }
+                // Manejo de los cambios en CheckBox
+                else if (child is CheckBox checkBox)
+                {
+                    checkBox.Checked += (s, e) => Modificado = true;
+                    checkBox.Unchecked += (s, e) => Modificado = true;
+                }
+                // Manejo de los cambios en ComboBox
+                else if (child is ComboBox comboBox)
+                {
+                    comboBox.SelectionChanged += (s, e) => Modificado = true;
+                }
+                // Manejo de los cambios en DatePicker
+                else if (child is DatePicker datePicker)
+                {
+                    datePicker.SelectedDateChanged += (s, e) => Modificado = true;
+                }
+                // Manejo de los cambios en los controles de Syncfusion
+                //else if (child is Syncfusion.Windows.Tools.Controls.IntegerTextBox integerTextBox)
+                //{
+                //    integerTextBox.ValueChanged += (s, e) => Modificado = true;
+                //}
+                //else if (child is Syncfusion.Windows.Tools.Controls.DoubleTextBox doubleTextBox)
+                //{
+                //    doubleTextBox.ValueChanged += (s, e) => Modificado = true;
+                //}
+                //else if (child is Syncfusion.Windows.Tools.DateTimeEdit dateTimeEdit)
+                //{
+                //    dateTimeEdit.ValueChanged += (s, e) => Modificado = true;
+                //}
+                else if (child is Syncfusion.Windows.Tools.Controls.ComboBoxAdv comboBoxAdv)
+                {
+                    comboBoxAdv.SelectionChanged += (s, e) => Modificado = true;
+                }
+
+                // Recursivamente suscribirse a los hijos
+                if (VisualTreeHelper.GetChildrenCount(child) > 0)
+                {
+                    SubscribeToChanges(child);
+                }
+            }
+        }
+
     }
 }

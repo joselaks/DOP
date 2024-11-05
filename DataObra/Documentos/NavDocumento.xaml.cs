@@ -91,21 +91,24 @@ namespace DataObra.Documentos
 
         private void Menu_Click(object sender, RoutedEventArgs e)
         {
+            int seleID = 3;
+
             if (sender is Button button)
             {
                 switch (button.Name)
                 {
                     case "nuevo":
-                        VenDocumento nueva = new VenDocumento("Facturas");
+                        VenDocumento nueva = new VenDocumento("Facturas", 0);
                         //nueva.DocumentoModified += FichaWindow_DocumentoModified;
                         nueva.Show();
                         break;
 
                     case "abrir":
                         Documento sele = this.GrillaDocumentos.SelectedItem as Documento;
+                        
                         if (sele != null)
                         {
-                            VenDocumento fichaWindow = new VenDocumento("Facturas");
+                            VenDocumento fichaWindow = new VenDocumento("Facturas", seleID);
                             //fichaWindow.DocumentoModified += FichaWindow_DocumentoModified;
                             fichaWindow.Show();
                         }
@@ -113,6 +116,7 @@ namespace DataObra.Documentos
 
                     case "borrar":
                         Documento seleBorrar = this.GrillaDocumentos.SelectedItem as Documento;
+                        
                         if (seleBorrar != null)
                         {
                             var result = MessageBox.Show($"Seguro de borrar {seleBorrar.Descrip}?", "Confirmar", MessageBoxButton.YesNo);
