@@ -141,5 +141,64 @@ namespace DataObra.Documentos
                 RelIns = docBiblioteca.RelIns
             };
         }
+
+        public static Biblioteca.Documento ConvertirInverso(Documento doc)
+        {
+            if (doc == null)
+            {
+                throw new ArgumentNullException(nameof(doc));
+            }
+
+            return new Biblioteca.Documento
+            {
+                ID = doc.ID,
+                CuentaID = doc.CuentaID,
+                TipoID = doc.TipoID,
+                UsuarioID = doc.UsuarioID,
+                CreadoFecha = doc.CreadoFecha,
+                EditadoID = doc.EditadoID,
+                EditadoFecha = doc.EditadoFecha,
+                RevisadoID = doc.RevisadoID,
+                RevisadoFecha = doc.RevisadoFecha,
+                AdminID = doc.AdminID,
+                ObraID = doc.ObraID,
+                PresupuestoID = doc.PresupuestoID,
+                RubroID = doc.RubroID,
+                EntidadID = doc.EntidadID,
+                DepositoID = doc.DepositoID,
+                Descrip = doc.Descrip,
+                Concepto1 = doc.Concepto1,
+                Fecha1 = doc.Fecha1,
+                Fecha2 = doc.Fecha2,
+                Fecha3 = doc.Fecha3,
+                Numero1 = doc.Numero1,
+                Numero2 = doc.Numero2,
+                Numero3 = doc.Numero3,
+                Notas = doc.Notas,
+                Active = doc.Active,
+                Pesos = doc.Pesos,
+                Dolares = doc.Dolares,
+                Impuestos = doc.Impuestos,
+                ImpuestosD = doc.ImpuestosD,
+                Materiales = doc.Materiales,
+                ManodeObra = doc.ManodeObra,
+                Subcontratos = doc.Subcontratos,
+                Equipos = doc.Equipos,
+                Otros = doc.Otros,
+                MaterialesD = doc.MaterialesD,
+                ManodeObraD = doc.ManodeObraD,
+                SubcontratosD = doc.SubcontratosD,
+                EquiposD = doc.EquiposD,
+                OtrosD = doc.OtrosD,
+                RelDoc = doc.RelDoc,
+                RelArt = doc.RelArt,
+                RelMov = doc.RelMov,
+                RelImp = doc.RelImp,
+                RelRub = doc.RelRub,
+                RelTar = doc.RelTar,
+                RelIns = doc.RelIns
+            };
+        }
+
     }
 }

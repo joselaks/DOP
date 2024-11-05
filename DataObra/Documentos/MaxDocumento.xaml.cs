@@ -1,5 +1,6 @@
 ﻿using Biblioteca;
 using DataObra.Agrupadores;
+using DataObra.Datos;
 using DataObra.Sistema;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Syncfusion.Windows.Shared;
+using Syncfusion.Windows.Tools.Controls;
 
 namespace DataObra.Documentos
 {
@@ -23,10 +26,15 @@ namespace DataObra.Documentos
         Servidor azure = new Servidor();
         Documento oActivo;
         public event EventHandler<Documento> DocumentoModified;
+        public bool Guardar;
+        DatosWeb datosWeb;
+        public bool Modificado { get; private set; }
 
-        public MaxDocumento(Biblioteca.Documento pDoc) 
+        public MaxDocumento(Biblioteca.Documento pDoc, DatosWeb pDatosWeb) 
         {
             InitializeComponent();
+            Modificado = false;
+            datosWeb = pDatosWeb;
             this.ComboObras.ItemsSource = azure.Agrupadores.Where(a => a.TipoID == 1).OrderBy(a => a.Descrip);
             this.ComboAdmin.ItemsSource = azure.Agrupadores.Where(a => a.TipoID == 2).OrderBy(a => a.Descrip);
 
@@ -84,7 +92,8 @@ namespace DataObra.Documentos
                 }
             }
 
-            this.DataContext = pDoc;
+            this.DataContext = oActivo;
+            SubscribeToChanges(this); // No funciona...
         }
 
         #region COMBOS
@@ -134,7 +143,6 @@ namespace DataObra.Documentos
 
         #endregion
 
-
         #region PANTALLA
 
         private void EntityType_Checked(object sender, RoutedEventArgs e)
@@ -172,27 +180,100 @@ namespace DataObra.Documentos
             }
         }
 
-        private void BotonGuardar_Click(object sender, RoutedEventArgs e)
+        // Procedimiento guardar en servidor
+        private async void BotonGuardar_Click(object sender, RoutedEventArgs e)
         {
-            // Procedimiento guardar en servidor
-
-            if (oActivo.ID == 0)
-            {
-            }
-
             oActivo.EditadoID = azure.UsuarioID;
             oActivo.Editado = azure.Usuario;
             oActivo.EditadoFecha = DateTime.Now;
 
+            Biblioteca.Documento wDoc = new Biblioteca.Documento();
+            wDoc = Documento.ConvertirInverso(oActivo);
+
+            var (success, message) = await datosWeb.PutDocumentoAsync(wDoc);
+            Window ventanaPadre = Window.GetWindow(this);
+            if (ventanaPadre != null)
+            {
+                MessageBox.Show(message, success ? "Éxito" : "Error");
+                ventanaPadre.Close();
+            }
+            
             DocumentoModified?.Invoke(this, oActivo);
-            //this.Close();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            //this.Close();
+            // Obtener la ventana que contiene este UserControl
+            Window ventanaPadre = Window.GetWindow(this);
+
+            if (ventanaPadre != null)
+            {
+                if (Modificado)
+                {
+                    var result = MessageBox.Show("Hay cambios sin guardar. ¿Está seguro de que desea cerrar?", "Confirmar cierre", MessageBoxButton.YesNo);
+                    if (result == MessageBoxResult.No)
+                    {
+                        return; // No cerrar la ventana
+                    }
+                }
+                ventanaPadre.Close();
+            }
         }
 
         #endregion Pantalla
+
+        private void SubscribeToChanges(DependencyObject parent)
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+
+                // Manejo de los cambios en TextBox
+                if (child is TextBox textBox)
+                {
+                    textBox.TextChanged += (s, e) => Modificado = true;
+                }
+                // Manejo de los cambios en CheckBox
+                else if (child is CheckBox checkBox)
+                {
+                    checkBox.Checked += (s, e) => Modificado = true;
+                    checkBox.Unchecked += (s, e) => Modificado = true;
+                }
+                // Manejo de los cambios en ComboBox
+                else if (child is ComboBox comboBox)
+                {
+                    comboBox.SelectionChanged += (s, e) => Modificado = true;
+                }
+                // Manejo de los cambios en DatePicker
+                else if (child is DatePicker datePicker)
+                {
+                    datePicker.SelectedDateChanged += (s, e) => Modificado = true;
+                }
+                // Manejo de los cambios en los controles de Syncfusion
+                //else if (child is Syncfusion.Windows.Tools.Controls.IntegerTextBox integerTextBox)
+                //{
+                //    integerTextBox.ValueChanged += (s, e) => Modificado = true;
+                //}
+                //else if (child is Syncfusion.Windows.Tools.Controls.DoubleTextBox doubleTextBox)
+                //{
+                //    doubleTextBox.ValueChanged += (s, e) => Modificado = true;
+                //}
+                //else if (child is Syncfusion.Windows.Tools.DateTimeEdit dateTimeEdit)
+                //{
+                //    dateTimeEdit.ValueChanged += (s, e) => Modificado = true;
+                //}
+                else if (child is Syncfusion.Windows.Tools.Controls.ComboBoxAdv comboBoxAdv)
+                {
+                    comboBoxAdv.SelectionChanged += (s, e) => Modificado = true;
+                }
+
+                // Recursivamente suscribirse a los hijos
+                if (VisualTreeHelper.GetChildrenCount(child) > 0)
+                {
+                    SubscribeToChanges(child);
+                }
+            }
+        }
+
     }
 }

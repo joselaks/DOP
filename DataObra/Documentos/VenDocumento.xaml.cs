@@ -11,7 +11,7 @@ namespace DataObra.Documentos
     {
         public static readonly Dictionary<string, string[]> DocumentosPorTipo = new Dictionary<string, string[]>
         {
-            ["Facturas"] = new[] { "Compra", "Remito", "Pago", "Pago" },
+            ["Facturas"] = new[] { "Compra", "Remito 232", "Pago 52", "Pago 22", "Pago 44" },
             ["Pedidos"] = new[] { "Compra", "Factura" },
             ["Remitos"] = new[] { "Pedido", "Compra", "Factura" },
             ["Compras"] = new[] { "Pedido", "Remito", "Factura" },
@@ -82,7 +82,7 @@ namespace DataObra.Documentos
                 Height = 480,
                 Margin = new Thickness(5),
                 Header = header,
-                Content = maximizado ? (object)new MaxDocumento(documento) : new MinDocumento(documento),
+                Content = maximizado ? (object)new MaxDocumento(documento,datosWeb) : new MinDocumento(documento),
                 TileViewItemState = maximizado ? TileViewItemState.Maximized : TileViewItemState.Normal
             };
 
@@ -95,7 +95,7 @@ namespace DataObra.Documentos
         { 
             if (tileViewItem.TileViewItemState == TileViewItemState.Maximized) 
             {
-                tileViewItem.Content = new MaxDocumento(documento); 
+                tileViewItem.Content = new MaxDocumento(documento,datosWeb); 
             }
             else
             {
