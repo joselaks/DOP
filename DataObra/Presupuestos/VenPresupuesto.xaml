@@ -12,11 +12,16 @@
     Height="1000"
     mc:Ignorable="d">
     <Window.Resources>
+        <local:BackgroundConverter x:Key="BackgroundConverter" />
         <Style x:Key="CantidadCellStyle" TargetType="syncfusion:TreeGridCell">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
                     <Setter Property="Foreground" Value="Transparent" />
-                    <Setter Property="Background" Value="LightYellow" />
+                    <Setter Property="Background"  Value="#C0C0C0"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Tipo}" Value="T">
+                    <Setter Property="Foreground" Value="Black" />
+                    <Setter Property="Background"  Value="#E0E0E0"/>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -26,10 +31,10 @@
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
                     <Setter Property="FontWeight" Value="Bold" />
-                    <Setter Property="Background" Value="LightYellow" />
+                    <Setter Property="Background" Value="#C0C0C0" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="T">
-                    <Setter Property="FontWeight" Value="Bold" />
+                    <Setter Property="Background" Value="#E0E0E0" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -63,40 +68,149 @@
                     Margin="3"
                     Label="Log-in"
                     SizeMode="Small"
-                    SmallIcon="/Presupuestos/abrir.png" />
+                    SmallIcon="/Presupuestos/abrir.png"
+                    ToolTip="Abrir" />
+                <syncfusion:ButtonAdv
+                    Margin="3"
+                    Label="Log-in"
+                    SizeMode="Small"
+                    SmallIcon="/Presupuestos/base.png"
+                    ToolTip="Guardar" />
+
+
+
+                <syncfusion:DropDownButtonAdv
+                    x:Name="dropAgregar"
+                    Width="100"
+                    Label="Items"
+                    SmallIcon="/Presupuestos/agregar.png"
+                    ToolTip="Agregar conceptos">
+                    <syncfusion:DropDownMenuGroup IsResizable="True">
+                        <syncfusion:DropDownMenuItem
+                            x:Name="aRubro"
+                            HorizontalAlignment="Left"
+                            Click="aRubro_Click"
+                            Header="Rubro">
+                            <syncfusion:DropDownMenuItem.Icon>
+                                <Image Source="/Presupuestos/Rubro.png" />
+                            </syncfusion:DropDownMenuItem.Icon>
+                        </syncfusion:DropDownMenuItem>
+                        <syncfusion:DropDownMenuItem
+                            x:Name="aTarea"
+                            HorizontalAlignment="Left"
+                            Click="aTarea_Click"
+                            Header="Tarea">
+                            <syncfusion:DropDownMenuItem.Icon>
+                                <Image Source="/Presupuestos/Tarea.png" />
+                            </syncfusion:DropDownMenuItem.Icon>
+                        </syncfusion:DropDownMenuItem>
+                        <syncfusion:DropDownMenuItem HorizontalAlignment="Left" Header="Material">
+                            <syncfusion:DropDownMenuItem.Icon>
+                                <Image Source="/Presupuestos/Material.png" />
+                            </syncfusion:DropDownMenuItem.Icon>
+                        </syncfusion:DropDownMenuItem>
+                        <syncfusion:DropDownMenuItem HorizontalAlignment="Left" Header="Mano de Obra">
+                            <syncfusion:DropDownMenuItem.Icon>
+                                <Image Source="/Presupuestos/mdo.png" />
+                            </syncfusion:DropDownMenuItem.Icon>
+                        </syncfusion:DropDownMenuItem>
+                        <syncfusion:DropDownMenuItem HorizontalAlignment="Left" Header="Equipo">
+                            <syncfusion:DropDownMenuItem.Icon>
+                                <Image Source="/Presupuestos/equipos.png" />
+                            </syncfusion:DropDownMenuItem.Icon>
+                        </syncfusion:DropDownMenuItem>
+                        <syncfusion:DropDownMenuItem HorizontalAlignment="Left" Header="Subcontrato">
+                            <syncfusion:DropDownMenuItem.Icon>
+                                <Image Source="/Presupuestos/subcontrato.png" />
+                            </syncfusion:DropDownMenuItem.Icon>
+                        </syncfusion:DropDownMenuItem>
+                        <syncfusion:DropDownMenuItem HorizontalAlignment="Left" Header="Otro">
+                            <syncfusion:DropDownMenuItem.Icon>
+                                <Image Source="/Presupuestos/otros.png" />
+                            </syncfusion:DropDownMenuItem.Icon>
+                        </syncfusion:DropDownMenuItem>
+                    </syncfusion:DropDownMenuGroup>
+                </syncfusion:DropDownButtonAdv>
+
+
+
+                <syncfusion:DropDownButtonAdv
+                    x:Name="dropColumnas"
+                    Width="100"
+                    Label="Columnas"
+                    SmallIcon="/Presupuestos/Tarea.png"
+                    ToolTip="Visualizar columnas">
+                    <syncfusion:DropDownMenuGroup IsResizable="True">
+                        <syncfusion:DropDownMenuItem
+                            x:Name="colCodigo"
+                            Header="Código"
+                            IsCheckable="True"
+                            IsCheckedChanged="colCodigo_IsCheckedChanged" />
+                        <syncfusion:DropDownMenuItem
+                            x:Name="colTipo"
+                            Header="Tipo"
+                            IsCheckable="True"
+                            IsCheckedChanged="colTipo_IsCheckedChanged" />
+                        <syncfusion:DropDownMenuItem
+                            x:Name="colMat"
+                            Header="Materiales"
+                            IsCheckable="True"
+                            IsCheckedChanged="colMat_IsCheckedChanged" />
+                        <syncfusion:DropDownMenuItem
+                            x:Name="colMDO"
+                            Header="Mano de Obra"
+                            IsCheckable="True"
+                            IsCheckedChanged="colMDO_IsCheckedChanged" />
+
+
+                        <syncfusion:DropDownMenuItem
+                            x:Name="colEqi"
+                            Header="Equipos"
+                            IsCheckable="True"
+                            IsCheckedChanged="colEqi_IsCheckedChanged" />
+                        <syncfusion:DropDownMenuItem
+                            x:Name="colSub"
+                            Header="Subcontratos"
+                            IsCheckable="True"
+                            IsCheckedChanged="colSub_IsCheckedChanged" />
+                        <syncfusion:DropDownMenuItem
+                            x:Name="colOtr"
+                            Header="Otros"
+                            IsCheckable="True"
+                            IsCheckedChanged="colOtr_IsCheckedChanged" />
+
+                    </syncfusion:DropDownMenuGroup>
+                </syncfusion:DropDownButtonAdv>
+
+
                 <syncfusion:ButtonAdv
                     x:Name="Fiebdc"
                     Margin="3"
                     Click="Fiebdc_Click"
                     Label="Log-in"
                     SizeMode="Small"
-                    SmallIcon="/Presupuestos/arbol.png" />
-                <syncfusion:ButtonAdv
-                    Margin="3"
-                    Click="aTarea_Click"
-                    Label="Log-in"
-                    SizeMode="Small"
-                    SmallIcon="/Presupuestos/agregar.png" />
-                <syncfusion:ButtonAdv
-                    Margin="3"
-                    Label="Log-in"
-                    SizeMode="Small"
-                    SmallIcon="/Presupuestos/abrir.png" />
+                    SmallIcon="/Presupuestos/Import.png"
+                    ToolTip="Fiebdc" />
+
             </StackPanel>
             <syncfusion:SfTreeGrid
                 Name="grillaArbol"
                 Grid.Row="1"
+                AllowDraggingRows="True"
+                AllowDrop="True"
                 AllowEditing="True"
                 AllowResizingColumns="True"
                 AutoGenerateColumns="False"
                 CurrentCellBeginEdit="grillaArbol_CurrentCellBeginEdit"
-                CurrentCellEndEdit="grillaArbol_CurrentCellEndEdit">
+                CurrentCellEndEdit="grillaArbol_CurrentCellEndEdit"
+                SelectionBackground="SkyBlue"                                                    
+                SelectionForeground="DarkBlue">
                 <syncfusion:SfTreeGrid.Columns>
                     <syncfusion:TreeGridColumns>
                         <syncfusion:TreeGridTextColumn
-                            Width="50"
+                            Width="10"
                             CellStyle="{StaticResource TipoCellStyle}"
-                            MappingName="ID" />
+                            MappingName="I" />
                         <syncfusion:TreeGridTextColumn
                             Width="300"
                             CellStyle="{StaticResource TipoCellStyle}"
@@ -107,24 +221,17 @@
                             MappingName="Unidad"
                             TextAlignment="Right" />
 
-                        <!--<syncfusion:TreeGridTextColumn
+                        <syncfusion:TreeGridTextColumn
                             Width="80"
+                            CellStyle="{StaticResource TipoCellStyle}"
+                            IsHidden="True"
                             MappingName="Tipo"
-                            TextAlignment="Right"
-                            CellStyle="{StaticResource TipoCellStyle}"/>-->
+                            TextAlignment="Right" />
 
                         <syncfusion:TreeGridNumericColumn
                             CellStyle="{StaticResource CantidadCellStyle}"
                             HeaderText="Cantidad"
                             MappingName="Cantidad" />
-
-
-                        <!--<syncfusion:TreeGridNumericColumn MappingName="Cantidad" HeaderText="Cantidad">
-                            <syncfusion:TreeGridNumericColumn.ValueBinding>
-                                <Binding Path="." Converter="{StaticResource CantidadConverter}" Mode="TwoWay"/>
-                            </syncfusion:TreeGridNumericColumn.ValueBinding>
-                        </syncfusion:TreeGridNumericColumn-->
-
 
                         <syncfusion:TreeGridNumericColumn
                             Width="80"
@@ -134,6 +241,7 @@
                             NumberDecimalSeparator=","
                             NumberGroupSeparator="."
                             NumberGroupSizes="3" />
+
                         <syncfusion:TreeGridNumericColumn
                             Width="120"
                             CellStyle="{StaticResource TipoCellStyle}"
@@ -142,6 +250,61 @@
                             NumberDecimalSeparator=","
                             NumberGroupSeparator="."
                             NumberGroupSizes="3" />
+
+                        <syncfusion:TreeGridNumericColumn
+                            Width="120"
+                            CellStyle="{StaticResource TipoCellStyle}"
+                            IsHidden="True"
+                            MappingName="Materiales"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3" />
+
+                        <syncfusion:TreeGridNumericColumn
+                            Width="120"
+                            CellStyle="{StaticResource TipoCellStyle}"
+                            IsHidden="True"
+                            MappingName="ManodeObra"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3" />
+
+                        <syncfusion:TreeGridNumericColumn
+                            Width="120"
+                            CellStyle="{StaticResource TipoCellStyle}"
+                            IsHidden="True"
+                            MappingName="Equipos"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3" />
+
+                        <syncfusion:TreeGridNumericColumn
+                            Width="120"
+                            CellStyle="{StaticResource TipoCellStyle}"
+                            IsHidden="True"
+                            MappingName="Subcontratos"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3" />
+
+                        <syncfusion:TreeGridNumericColumn
+                            Width="120"
+                            CellStyle="{StaticResource TipoCellStyle}"
+                            IsHidden="True"
+                            MappingName="Otros"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3" />
+                        <syncfusion:TreeGridTextColumn
+                            Width="50"
+                            CellStyle="{StaticResource TipoCellStyle}"
+                            MappingName="ID" />
+
                     </syncfusion:TreeGridColumns>
                 </syncfusion:SfTreeGrid.Columns>
             </syncfusion:SfTreeGrid>

@@ -68,6 +68,7 @@ namespace DataObra.Presupuestos
                 recalculo();
             }
         }
+
         public void recalculo()
         {
             Objeto.recalculo(Objeto.Arbol, true, 0, true);
@@ -132,8 +133,6 @@ namespace DataObra.Presupuestos
 
         private void grillaArbol_CurrentCellBeginEdit(object sender, TreeGridCurrentCellBeginEditEventArgs e)
         {
-
-
             var column = grillaArbol.Columns[e.RowColumnIndex.ColumnIndex].MappingName;
             var record = grillaArbol.GetNodeAtRowIndex(e.RowColumnIndex.RowIndex).Item as Nodo;
 
@@ -147,6 +146,102 @@ namespace DataObra.Presupuestos
             }
         }
 
+        private void colCodigo_IsCheckedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var isChecked = (bool)e.NewValue;
+
+            var column = grillaArbol.Columns.FirstOrDefault(c => c.MappingName == "ID");
+
+            if (column != null)
+            {
+                column.IsHidden = !isChecked; // Cambiar la condición IsHidden
+            }
+        }
+
+        private void colTipo_IsCheckedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var isChecked = (bool)e.NewValue;
+
+            var column = grillaArbol.Columns.FirstOrDefault(c => c.MappingName == "Tipo");
+
+            if (column != null)
+            {
+                column.IsHidden = !isChecked; // Cambiar la condición IsHidden
+            }
+        }
+
+        private void colMat_IsCheckedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var isChecked = (bool)e.NewValue;
+
+            // Encontrar la columna con el MappingName "Tipo"
+            var column = grillaArbol.Columns.FirstOrDefault(c => c.MappingName == "Materiales");
+
+            if (column != null)
+            {
+                column.IsHidden = !isChecked; // Cambiar la condición IsHidden
+            }
+        }
+
+        private void aRubro_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void colMDO_IsCheckedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var isChecked = (bool)e.NewValue;
+
+            // Encontrar la columna con el MappingName "Tipo"
+            var column = grillaArbol.Columns.FirstOrDefault(c => c.MappingName == "ManodeObra");
+
+            if (column != null)
+            {
+                column.IsHidden = !isChecked; // Cambiar la condición IsHidden
+            }
+        }
+
+        private void colEqi_IsCheckedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var isChecked = (bool)e.NewValue;
+
+            // Encontrar la columna con el MappingName "Tipo"
+            var column = grillaArbol.Columns.FirstOrDefault(c => c.MappingName == "Equipos");
+
+            if (column != null)
+            {
+                column.IsHidden = !isChecked; // Cambiar la condición IsHidden
+            }
+
+        }
+
+        private void colSub_IsCheckedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var isChecked = (bool)e.NewValue;
+
+            // Encontrar la columna con el MappingName "Tipo"
+            var column = grillaArbol.Columns.FirstOrDefault(c => c.MappingName == "Subcontratos");
+
+            if (column != null)
+            {
+                column.IsHidden = !isChecked; // Cambiar la condición IsHidden
+            }
+
+        }
+
+        private void colOtr_IsCheckedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var isChecked = (bool)e.NewValue;
+
+            // Encontrar la columna con el MappingName "Tipo"
+            var column = grillaArbol.Columns.FirstOrDefault(c => c.MappingName == "Otros");
+
+            if (column != null)
+            {
+                column.IsHidden = !isChecked; // Cambiar la condición IsHidden
+            }
+
+        }
     }
 
 }
