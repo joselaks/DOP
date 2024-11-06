@@ -2,7 +2,10 @@
 using Microsoft.Win32;
 using Syncfusion.UI.Xaml.Grid;
 using Syncfusion.UI.Xaml.TreeGrid;
+using Syncfusion.UI.Xaml.TreeView;
+using Syncfusion.Windows.Controls.PivotGrid;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -28,6 +31,7 @@ namespace DataObra.Presupuestos
     {
         public Presupuesto Objeto;
         private object _originalValue;
+        Insumo _copia;
         public VenPresupuesto()
         {
             InitializeComponent();
@@ -35,16 +39,159 @@ namespace DataObra.Presupuestos
             this.grillaArbol.ItemsSource = Objeto.Arbol;
             this.grillaArbol.ChildPropertyName = "Inferiores";
             this.grillaDetalle.ItemsSource = Objeto.Insumos;
-            this.grillaArbol.RowDragDropController.Dropped += RowDragDropController_Dropped;
-
-
-
+            this.grillaArbol.RowDragDropController.CanAutoExpand = true;
+            this.grillaArbol.RowDragDropController.AutoExpandDelay = new TimeSpan(0, 0, 2);
+            this.grillaArbol.RowDragDropController.Drop += RowDragDropController_Drop;
+            this.grillaDetalle.RowDragDropController.DragStart += RowDragDropController_DragStart1;
         }
 
-        private void RowDragDropController_Dropped(object sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridRowDroppedEventArgs e)
+
+        private void RowDragDropController_DragStart1(object? sender, TreeGridRowDragStartEventArgs e)
         {
-            recalculo();
+
+            if (grillaDetalle.SelectedItems != null)
+            {
+                foreach (var item in grillaDetalle.SelectedItems)
+                {
+                    _copia = item as Insumo;
+                }
+            }
+            else
+            {
+                e.Handled = true;
+            }
+            
         }
+
+        private void RowDragDropController_Drop(object? sender, TreeGridRowDropEventArgs e)
+        {
+            if (e.IsFromOutSideSource)
+            {
+                if (_copia != null)
+                {
+                    Nodo nuevo = new Nodo
+                    {
+                        Descripcion = _copia.Descripcion,
+                        Cantidad = _copia.Cantidad
+                    };
+
+                    var dropPosition = e.DropPosition.ToString();
+                    var rowIndex = grillaArbol.ResolveToRowIndex(e.TargetNode.Item);
+                    int nodeIndex = (int)rowIndex;
+
+                    if (dropPosition != "None" && rowIndex != -1)
+                    {
+                        TreeNode treeNode = grillaArbol.GetNodeAtRowIndex(rowIndex);
+
+                        if (treeNode == null)
+                            return;
+
+                        grillaArbol.SelectionController.SuspendUpdates();
+                        var itemIndex = -1;
+                        IList sourceCollection = null;
+
+                        if (dropPosition == "DropBelow" || dropPosition == "DropAbove")
+                        {
+                            TreeNode parentNode = treeNode.ParentNode;
+
+                            if (parentNode == null)
+                            {
+                                // Caso raíz
+                                sourceCollection = grillaArbol.View.SourceCollection as IList;
+                            }
+                            else
+                            {
+                                // Verificar la condición del nodo padre
+                                var parent = parentNode.Item as Nodo;
+                                if (parent.Tipo == "T")
+                                {
+                                    // Colección de hijos del nodo padre
+                                    var collection = grillaArbol.View.GetPropertyAccessProvider().GetValue(parentNode.Item, grillaArbol.ChildPropertyName) as IEnumerable;
+                                    sourceCollection = GetSourceListCollection(collection);
+                                }
+                                else
+                                {
+                                    // Mostrar mensaje de error y salir sin insertar
+                                    MessageBox.Show("El nodo padre no cumple con la condición requerida (Tipo = 'T').");
+                                     e.Handled = true;;
+                                    return;
+                                }
+                            }
+
+                            itemIndex = sourceCollection.IndexOf(treeNode.Item);
+
+                            if (dropPosition == "DropBelow")
+                            {
+                                itemIndex += 1;
+                            }
+                        }
+                        else if (dropPosition == "DropAsChild")
+                        {
+                            var parent = treeNode.Item as Nodo;
+                            if (parent.Tipo == "T")
+                            {
+                                var collection = grillaArbol.View.GetPropertyAccessProvider().GetValue(treeNode.Item, grillaArbol.ChildPropertyName) as IEnumerable;
+                                sourceCollection = GetSourceListCollection(collection);
+
+                                if (sourceCollection == null)
+                                {
+                                    var list = new ObservableCollection<Nodo>();
+                                    grillaArbol.View.GetPropertyAccessProvider().SetValue(treeNode.Item, grillaArbol.ChildPropertyName, list);
+                                    sourceCollection = list;
+                                }
+
+                                itemIndex = sourceCollection.Count;
+
+                                // Expande el nodo para mostrar los hijos
+                                if (!treeNode.IsExpanded)
+                                {
+                                    grillaArbol.ExpandNode(treeNode);
+                                }
+                            }
+                            else
+                            {
+                                // Mostrar mensaje de error y salir sin insertar
+                                MessageBox.Show("El nodo padre no cumple con la condición requerida (Tipo = 'T').");
+                                e.Handled = true;
+                                return;
+                            }
+                        }
+
+                        if (sourceCollection != null && itemIndex >= 0)
+                        {
+                            sourceCollection.Insert(itemIndex, nuevo);
+                        }
+
+                        grillaArbol.SelectionController.ResumeUpdates();
+                        (grillaArbol.SelectionController as TreeGridRowSelectionController).RefreshSelection();
+                        e.Handled = true;
+                    }
+
+                    if (grillaDetalle.ItemsSource is ObservableCollection<Insumo> insumos)
+                    {
+                        //insumos.Remove(_copia);
+                    }
+                }
+                else
+                {
+                    e.Handled = true;
+                }
+            }
+        }
+
+        private IList GetSourceListCollection(IEnumerable collection)
+        {
+            if (collection is IList list)
+            {
+                return list;
+            }
+
+            return new List<object>(collection.Cast<object>());
+        }
+
+
+
+
 
         private void Fiebdc_Click(object sender, RoutedEventArgs e)
         {

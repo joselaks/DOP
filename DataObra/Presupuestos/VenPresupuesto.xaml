@@ -234,12 +234,12 @@
                 AllowEditing="True"
                 AllowResizingColumns="True"
                 AutoGenerateColumns="False"
-                SelectionMode="Extended"
                 CurrentCellBeginEdit="grillaArbol_CurrentCellBeginEdit"
                 CurrentCellEndEdit="grillaArbol_CurrentCellEndEdit"
-                SelectionForeground="White"
+                KeyDown="grillaArbol_KeyDown"
                 SelectionBackground="Black"
-                KeyDown="grillaArbol_KeyDown">
+                SelectionForeground="White"
+                SelectionMode="Extended">
                 <syncfusion:SfTreeGrid.Columns>
                     <syncfusion:TreeGridColumns>
                         <syncfusion:TreeGridTextColumn
@@ -520,7 +520,11 @@
                     SizeMode="Small"
                     SmallIcon="/Presupuestos/abrir.png" />
             </StackPanel>
-            <syncfusion:SfDataGrid x:Name="grillaDetalle" Grid.Row="1" AllowEditing="True" />
+            <syncfusion:SfTreeGrid
+                x:Name="grillaDetalle"
+                Grid.Row="1"
+                AllowEditing="True"
+                AllowDraggingRows="True"/>
         </Grid>
         <syncfusion:SfGridSplitter
             Grid.Row="1"
