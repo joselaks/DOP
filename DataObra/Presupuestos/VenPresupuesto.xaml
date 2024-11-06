@@ -23,9 +23,9 @@
                     <Setter Property="Foreground" Value="Black" />
                     <Setter Property="Background" Value="#E0E0E0" />
                 </DataTrigger>
+
             </Style.Triggers>
         </Style>
-
         <Style x:Key="TipoCellStyle" TargetType="syncfusion:TreeGridCell">
             <Setter Property="FontWeight" Value="Normal" />
             <Style.Triggers>
@@ -38,7 +38,6 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -47,9 +46,9 @@
             <RowDefinition Height="4*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10*" />
+            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="4*" />
+            <ColumnDefinition x:Name="panelBuscador" Width="30" />
         </Grid.ColumnDefinitions>
         <Grid Grid.Row="0" Grid.Column="0">
             <Grid.RowDefinitions>
@@ -185,8 +184,6 @@
                             Header="Mano de Obra"
                             IsCheckable="True"
                             IsCheckedChanged="colMDO_IsCheckedChanged" />
-
-
                         <syncfusion:DropDownMenuItem
                             x:Name="colEqi"
                             Header="Equipos"
@@ -202,7 +199,13 @@
                             Header="Otros"
                             IsCheckable="True"
                             IsCheckedChanged="colOtr_IsCheckedChanged" />
-
+                        <!--<Separator />
+                        <syncfusion:DropDownMenuItem
+                            x:Name="Todos"
+                            Header="Todos"
+                            IsCheckable="True"
+                            IsCheckedChanged="colOtr_IsCheckedChanged"
+                            />-->
                     </syncfusion:DropDownMenuGroup>
                 </syncfusion:DropDownButtonAdv>
 
@@ -224,6 +227,14 @@
                     SizeMode="Small"
                     SmallIcon="/Presupuestos/recalculo.png"
                     ToolTip="Recalculo" />
+                <syncfusion:ButtonAdv
+                    x:Name="bus"
+                    Margin="3"
+                    Click="bus_Click"
+                    Label="Log-in"
+                    SizeMode="Small"
+                    SmallIcon="/Presupuestos/Buscador.png"
+                    ToolTip="Recalculo" />
 
             </StackPanel>
             <syncfusion:SfTreeGrid
@@ -237,15 +248,10 @@
                 CurrentCellBeginEdit="grillaArbol_CurrentCellBeginEdit"
                 CurrentCellEndEdit="grillaArbol_CurrentCellEndEdit"
                 KeyDown="grillaArbol_KeyDown"
-                SelectionBackground="Black"
-                SelectionForeground="White"
-                SelectionMode="Extended">
+                SelectionMode="Single">
                 <syncfusion:SfTreeGrid.Columns>
                     <syncfusion:TreeGridColumns>
-                        <syncfusion:TreeGridTextColumn
-                            Width="10"
-                            CellStyle="{StaticResource TipoCellStyle}"
-                            MappingName="I" />
+
                         <syncfusion:TreeGridTextColumn
                             Width="300"
                             CellStyle="{StaticResource TipoCellStyle}"
@@ -266,7 +272,11 @@
                         <syncfusion:TreeGridNumericColumn
                             CellStyle="{StaticResource CantidadCellStyle}"
                             HeaderText="Cantidad"
-                            MappingName="Cantidad" />
+                            MappingName="Cantidad"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3" />
 
                         <syncfusion:TreeGridNumericColumn
                             Width="80"
@@ -335,10 +345,12 @@
                             NumberDecimalSeparator=","
                             NumberGroupSeparator="."
                             NumberGroupSizes="3" />
+
                         <syncfusion:TreeGridTextColumn
                             Width="50"
                             CellStyle="{StaticResource TipoCellStyle}"
                             MappingName="ID" />
+
 
                     </syncfusion:TreeGridColumns>
                 </syncfusion:SfTreeGrid.Columns>
@@ -475,6 +487,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
+                <Image Source="/Presupuestos/Buscador.png"></Image>
                 <TextBlock
                     Margin="3,1,3,1"
                     FontSize="20"
@@ -523,8 +536,44 @@
             <syncfusion:SfTreeGrid
                 x:Name="grillaDetalle"
                 Grid.Row="1"
+                AllowDraggingRows="True"
                 AllowEditing="True"
-                AllowDraggingRows="True"/>
+                AllowResizingColumns="True"
+                AutoGenerateColumns="False">
+                <syncfusion:SfTreeGrid.Columns>
+                    <syncfusion:TreeGridTextColumn Width="50" MappingName="ID" />
+                    <syncfusion:TreeGridTextColumn Width="150" MappingName="Descripcion" />
+                    <syncfusion:TreeGridTextColumn Width="50" MappingName="Unidad" />
+                    <syncfusion:TreeGridNumericColumn
+                        Width="80"
+                        HeaderText="Cantidad"
+                        MappingName="Cantidad"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3" />
+                    <syncfusion:TreeGridNumericColumn
+                        Width="80"
+                        HeaderText="P.U"
+                        MappingName="PU"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3" />
+                    <syncfusion:TreeGridNumericColumn
+                        Width="150"
+                        HeaderText="Importe"
+                        MappingName="Importe"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3" />
+
+                    <syncfusion:TreeGridTextColumn Width="50" MappingName="Tipo" />
+
+                </syncfusion:SfTreeGrid.Columns>
+
+            </syncfusion:SfTreeGrid>
         </Grid>
         <syncfusion:SfGridSplitter
             Grid.Row="1"

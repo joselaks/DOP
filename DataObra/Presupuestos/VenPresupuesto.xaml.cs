@@ -43,6 +43,7 @@ namespace DataObra.Presupuestos
             this.grillaArbol.RowDragDropController.AutoExpandDelay = new TimeSpan(0, 0, 2);
             this.grillaArbol.RowDragDropController.Drop += RowDragDropController_Drop;
             this.grillaDetalle.RowDragDropController.DragStart += RowDragDropController_DragStart1;
+            this.grillaArbol.SelectionBackground = null;
         }
 
 
@@ -64,20 +65,6 @@ namespace DataObra.Presupuestos
                     return;
                 }
             }
-
-
-
-            //if (grillaDetalle.SelectedItems != null)
-            //{
-            //    foreach (var item in grillaDetalle.SelectedItems)
-            //    {
-            //        _copia = item as Insumo;
-            //    }
-            //}
-            //else
-            //{
-            //    e.Handled = true;
-            //}
             
         }
 
@@ -340,6 +327,7 @@ namespace DataObra.Presupuestos
             {
                 column.IsHidden = !isChecked; // Cambiar la condición IsHidden
             }
+
         }
 
         private void colMat_IsCheckedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -573,6 +561,11 @@ namespace DataObra.Presupuestos
                 }
             }
             return false;
+        }
+
+        private void bus_Click(object sender, RoutedEventArgs e)
+        {
+            this.panelBuscador.Width = new GridLength(200, GridUnitType.Pixel);
         }
     }
 

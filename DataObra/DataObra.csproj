@@ -13,6 +13,7 @@
     <None Remove="Presupuestos\agregar.png" />
     <None Remove="Presupuestos\arbol.png" />
     <None Remove="Presupuestos\base.png" />
+    <None Remove="Presupuestos\Buscador.png" />
     <None Remove="Presupuestos\equipos.png" />
     <None Remove="Presupuestos\Import.png" />
     <None Remove="Presupuestos\Material.png" />
@@ -43,6 +44,7 @@
       <Resource Include="Presupuestos\agregar.png" />
       <Resource Include="Presupuestos\arbol.png" />
       <Resource Include="Presupuestos\base.png" />
+      <Resource Include="Presupuestos\Buscador.png" />
       <Resource Include="Presupuestos\equipos.png" />
       <Resource Include="Presupuestos\Import.png" />
       <Resource Include="Presupuestos\Material.png" />
