@@ -506,7 +506,8 @@
                 x:Name="grillaNavegador"
                 Grid.Row="1"
                 AllowDraggingRows="True"
-                AutoGenerateColumnsMode="None">
+                AutoGenerateColumnsMode="None"
+                AllowResizingColumns="True">
                 <syncfusion:SfTreeGrid.Columns>
                       <syncfusion:TreeGridTextColumn
                         Width="150"
