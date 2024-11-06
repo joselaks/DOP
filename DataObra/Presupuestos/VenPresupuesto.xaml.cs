@@ -49,17 +49,35 @@ namespace DataObra.Presupuestos
         private void RowDragDropController_DragStart1(object? sender, TreeGridRowDragStartEventArgs e)
         {
 
-            if (grillaDetalle.SelectedItems != null)
+            foreach (var node in e.DraggingNodes)
             {
-                foreach (var item in grillaDetalle.SelectedItems)
+                if (node.Item !=null)
                 {
-                    _copia = item as Insumo;
+                    //MessageBox.Show("Si se seleccionaron insumos");
+                    _copia = node.Item as Insumo;
+
+                }
+                else
+                {
+                    MessageBox.Show("No se seleccionaron insumos");
+                    e.Handled = true;
+                    return;
                 }
             }
-            else
-            {
-                e.Handled = true;
-            }
+
+
+
+            //if (grillaDetalle.SelectedItems != null)
+            //{
+            //    foreach (var item in grillaDetalle.SelectedItems)
+            //    {
+            //        _copia = item as Insumo;
+            //    }
+            //}
+            //else
+            //{
+            //    e.Handled = true;
+            //}
             
         }
 
