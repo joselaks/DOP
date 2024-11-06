@@ -1,5 +1,6 @@
 ﻿using Bibioteca.Clases;
 using Microsoft.Win32;
+using Syncfusion.Licensing;
 using Syncfusion.UI.Xaml.Grid;
 using Syncfusion.UI.Xaml.TreeGrid;
 using Syncfusion.UI.Xaml.TreeView;
@@ -32,6 +33,10 @@ namespace DataObra.Presupuestos
         public Presupuesto Objeto;
         private object _originalValue;
         Insumo _copia;
+        Nodo _busca;
+        bool ddeInsumos = false;
+        bool ddeBuscador = false;
+        ObservableCollection<Nodo> oBuscador = new ObservableCollection<Nodo>();
         public VenPresupuesto()
         {
             InitializeComponent();
@@ -42,17 +47,37 @@ namespace DataObra.Presupuestos
             this.grillaArbol.RowDragDropController.CanAutoExpand = true;
             this.grillaArbol.RowDragDropController.AutoExpandDelay = new TimeSpan(0, 0, 2);
             this.grillaArbol.RowDragDropController.Drop += RowDragDropController_Drop;
+            this.grillaNavegador.RowDragDropController.DragStart += RowDragDropController_DragStart;
             this.grillaDetalle.RowDragDropController.DragStart += RowDragDropController_DragStart1;
             this.grillaArbol.SelectionBackground = null;
         }
 
+        private void RowDragDropController_DragStart(object? sender, TreeGridRowDragStartEventArgs e)
+        {
+            ddeBuscador = true;
+            foreach (var node in e.DraggingNodes)
+            {
+                if (node.Item != null)
+                {
+                    //MessageBox.Show("Si se seleccionaron insumos");
+                    _busca = node.Item as Nodo;
+
+                }
+                else
+                {
+                    MessageBox.Show("No se seleccionó nada");
+                    e.Handled = true;
+                    return;
+                }
+            }
+        }
 
         private void RowDragDropController_DragStart1(object? sender, TreeGridRowDragStartEventArgs e)
         {
-
+            ddeInsumos = true;
             foreach (var node in e.DraggingNodes)
             {
-                if (node.Item !=null)
+                if (node.Item != null)
                 {
                     //MessageBox.Show("Si se seleccionaron insumos");
                     _copia = node.Item as Insumo;
@@ -65,20 +90,25 @@ namespace DataObra.Presupuestos
                     return;
                 }
             }
-            
+
         }
 
         private void RowDragDropController_Drop(object? sender, TreeGridRowDropEventArgs e)
         {
+            Nodo nuevo = null;
             if (e.IsFromOutSideSource)
             {
-                if (_copia != null)
+                
+                if (ddeInsumos == true || ddeBuscador == true )
                 {
-                    Nodo nuevo = new Nodo
+                    if (ddeInsumos == true)
                     {
-                        Descripcion = _copia.Descripcion,
-                        Cantidad = _copia.Cantidad
-                    };
+                        nuevo = new Nodo
+                        {
+                            Descripcion = _copia.Descripcion,
+                            Cantidad = _copia.Cantidad
+                        };
+                    }
 
                     var dropPosition = e.DropPosition.ToString();
                     var rowIndex = grillaArbol.ResolveToRowIndex(e.TargetNode.Item);
@@ -108,7 +138,7 @@ namespace DataObra.Presupuestos
                             {
                                 // Verificar la condición del nodo padre
                                 var parent = parentNode.Item as Nodo;
-                                if (parent.Tipo == "T")
+                                if (parent.Tipo == "T" || ddeBuscador == true)
                                 {
                                     // Colección de hijos del nodo padre
                                     var collection = grillaArbol.View.GetPropertyAccessProvider().GetValue(parentNode.Item, grillaArbol.ChildPropertyName) as IEnumerable;
@@ -118,7 +148,7 @@ namespace DataObra.Presupuestos
                                 {
                                     // Mostrar mensaje de error y salir sin insertar
                                     MessageBox.Show("El nodo padre no cumple con la condición requerida (Tipo = 'T').");
-                                     e.Handled = true;;
+                                    e.Handled = true; ;
                                     return;
                                 }
                             }
@@ -164,7 +194,14 @@ namespace DataObra.Presupuestos
 
                         if (sourceCollection != null && itemIndex >= 0)
                         {
-                            sourceCollection.Insert(itemIndex, nuevo);
+                            if (ddeInsumos == true)
+                            {
+                                    sourceCollection.Insert(itemIndex, nuevo);
+                            }
+                            if (ddeBuscador == true) 
+                            {
+                                sourceCollection.Insert(itemIndex, _busca);
+                            }
                         }
 
                         grillaArbol.SelectionController.ResumeUpdates();
@@ -172,16 +209,18 @@ namespace DataObra.Presupuestos
                         e.Handled = true;
                     }
 
-                    if (grillaDetalle.ItemsSource is ObservableCollection<Insumo> insumos)
-                    {
-                        //insumos.Remove(_copia);
-                    }
+                    //if (grillaDetalle.ItemsSource is ObservableCollection<Insumo> insumos)
+                    //{
+                    //    insumos.Remove(_copia);
+                    //}
                 }
                 else
                 {
                     e.Handled = true;
                 }
             }
+            ddeInsumos = false;
+            ddeBuscador = false;
         }
 
         private IList GetSourceListCollection(IEnumerable collection)
@@ -566,6 +605,49 @@ namespace DataObra.Presupuestos
         private void bus_Click(object sender, RoutedEventArgs e)
         {
             this.panelBuscador.Width = new GridLength(200, GridUnitType.Pixel);
+        }
+
+        private void grillaDetalle_CurrentCellBeginEdit(object sender, TreeGridCurrentCellBeginEditEventArgs e)
+        {
+
+        }
+
+        private void grillaDetalle_CurrentCellEndEdit(object sender, CurrentCellEndEditEventArgs e)
+        {
+            var editado = grillaDetalle.GetNodeAtRowIndex(e.RowColumnIndex.RowIndex).Item as Insumo;
+            Objeto.cambioDesdeInsumo(Objeto.Arbol, editado.ID, editado.PU);
+            recalculo();
+        }
+
+        private void buscar_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+
+            openFileDialog.Multiselect = false;
+            openFileDialog.Filter = "Archivo Fiebdc|*.bc3";
+
+            if (openFileDialog.ShowDialog().Value)
+            {
+                FileStream stream = File.OpenRead(openFileDialog.FileName);
+                string textoFie;
+                using (StreamReader reader = new StreamReader(stream, Encoding.Default, true))
+                {
+                    textoFie = reader.ReadToEnd();
+                    //this.txtArchivoActualiza.Text = "Archivo seleccionado";
+                    string txtNombre = stream.Name;
+                }
+                Bibioteca.Clases.Fiebdc fie = new Bibioteca.Clases.Fiebdc(textoFie);
+                Bibioteca.Clases.Presupuesto pres = new Bibioteca.Clases.Presupuesto();
+
+                Bibioteca.Clases.Presupuesto objetofieb = new Bibioteca.Clases.Presupuesto();
+                objetofieb.generaPresupuesto("fie", fie.listaConceptos, fie.listaRelaciones);
+                foreach (var item in objetofieb.Arbol)
+                {
+                    oBuscador.Add(item);
+                }
+              grillaNavegador.ItemsSource = oBuscador;
+            }
+
         }
     }
 

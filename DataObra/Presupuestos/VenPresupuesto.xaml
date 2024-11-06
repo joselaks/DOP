@@ -487,7 +487,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
-                <Image Source="/Presupuestos/Buscador.png"></Image>
+                <Image Source="/Presupuestos/Buscador.png" />
                 <TextBlock
                     Margin="3,1,3,1"
                     FontSize="20"
@@ -495,17 +495,30 @@
                     Buscador
                 </TextBlock>
                 <syncfusion:ButtonAdv
+                    x:Name="buscar"
                     Margin="3"
+                    Click="buscar_Click"
                     Label="Log-in"
                     SizeMode="Small"
-                    SmallIcon="/Presupuestos/abrir.png" />
-                <syncfusion:ButtonAdv
-                    Margin="3"
-                    Label="Log-in"
-                    SizeMode="Small"
-                    SmallIcon="/Presupuestos/abrir.png" />
+                    SmallIcon="/Presupuestos/Buscador.png" />
             </StackPanel>
-            <syncfusion:SfDataGrid x:Name="grillaNavegador" Grid.Row="1" />
+            <syncfusion:SfTreeGrid
+                x:Name="grillaNavegador"
+                Grid.Row="1"
+                AllowDraggingRows="True"
+                AutoGenerateColumnsMode="None">
+                <syncfusion:SfTreeGrid.Columns>
+                      <syncfusion:TreeGridTextColumn
+                        Width="150"
+                        IsReadOnly="True"
+                        MappingName="Descripcion" />
+                    <syncfusion:TreeGridTextColumn
+                        Width="50"
+                        IsReadOnly="True"
+                        MappingName="Unidad" />
+                </syncfusion:SfTreeGrid.Columns>
+
+            </syncfusion:SfTreeGrid>
         </Grid>
         <Grid
             x:Name="Detalle"
@@ -539,14 +552,26 @@
                 AllowDraggingRows="True"
                 AllowEditing="True"
                 AllowResizingColumns="True"
-                AutoGenerateColumns="False">
+                AutoGenerateColumns="False"
+                CurrentCellBeginEdit="grillaDetalle_CurrentCellBeginEdit"
+                CurrentCellEndEdit="grillaDetalle_CurrentCellEndEdit">
                 <syncfusion:SfTreeGrid.Columns>
-                    <syncfusion:TreeGridTextColumn Width="50" MappingName="ID" />
-                    <syncfusion:TreeGridTextColumn Width="150" MappingName="Descripcion" />
-                    <syncfusion:TreeGridTextColumn Width="50" MappingName="Unidad" />
+                    <syncfusion:TreeGridTextColumn
+                        Width="50"
+                        IsReadOnly="True"
+                        MappingName="ID" />
+                    <syncfusion:TreeGridTextColumn
+                        Width="150"
+                        IsReadOnly="True"
+                        MappingName="Descripcion" />
+                    <syncfusion:TreeGridTextColumn
+                        Width="50"
+                        IsReadOnly="True"
+                        MappingName="Unidad" />
                     <syncfusion:TreeGridNumericColumn
                         Width="80"
                         HeaderText="Cantidad"
+                        IsReadOnly="True"
                         MappingName="Cantidad"
                         NumberDecimalDigits="2"
                         NumberDecimalSeparator=","
@@ -563,6 +588,7 @@
                     <syncfusion:TreeGridNumericColumn
                         Width="150"
                         HeaderText="Importe"
+                        IsReadOnly="True"
                         MappingName="Importe"
                         NumberDecimalDigits="2"
                         NumberDecimalSeparator=","
