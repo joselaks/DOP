@@ -30,11 +30,23 @@
             <Setter Property="FontWeight" Value="Normal" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
-                    <Setter Property="FontWeight" Value="Bold" />
-                    <Setter Property="Background" Value="#C0C0C0" />
+                    <!--<Setter Property="FontWeight" Value="Bold" />
+                    <Setter Property="Background" Value="#C0C0C0" />-->
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="T">
-                    <Setter Property="Background" Value="#E0E0E0" />
+                    <!--<Setter Property="Background" Value="#E0E0E0" />-->
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="ExpandedCellStyle" TargetType="syncfusion:TreeGridExpanderCell">
+            <Setter Property="FontWeight" Value="Normal" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
+                    <!--<Setter Property="FontWeight" Value="Bold" />
+                    <Setter Property="Background" Value="#C0C0C0" />-->
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Tipo}" Value="T">
+                    <!--<Setter Property="Background" Value="#E0E0E0" />-->
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -162,6 +174,7 @@
                     Width="100"
                     Label="Columnas"
                     SmallIcon="/Presupuestos/Tarea.png"
+                    StayDropDownOnClick="True"
                     ToolTip="Visualizar columnas">
                     <syncfusion:DropDownMenuGroup IsResizable="True">
                         <syncfusion:DropDownMenuItem
@@ -247,27 +260,23 @@
                 AutoGenerateColumns="False"
                 CurrentCellBeginEdit="grillaArbol_CurrentCellBeginEdit"
                 CurrentCellEndEdit="grillaArbol_CurrentCellEndEdit"
+                ExpanderCellStyle="{StaticResource ExpandedCellStyle}"
+                ExpanderColumn="Descripcion"
                 KeyDown="grillaArbol_KeyDown"
                 SelectionMode="Single">
                 <syncfusion:SfTreeGrid.Columns>
                     <syncfusion:TreeGridColumns>
 
-                        <syncfusion:TreeGridTextColumn
-                            Width="300"
-                            CellStyle="{StaticResource TipoCellStyle}"
-                            MappingName="Descripcion" />
+                        <syncfusion:TreeGridTextColumn Width="50" MappingName="ID" />
+                        <syncfusion:TreeGridTextColumn Width="50" MappingName="Tipo" />
+                        <syncfusion:TreeGridTextColumn Width="250" MappingName="Descripcion" />
+
                         <syncfusion:TreeGridTextColumn
                             Width="80"
                             CellStyle="{StaticResource CantidadCellStyle}"
                             MappingName="Unidad"
                             TextAlignment="Right" />
 
-                        <syncfusion:TreeGridTextColumn
-                            Width="80"
-                            CellStyle="{StaticResource TipoCellStyle}"
-                            IsHidden="True"
-                            MappingName="Tipo"
-                            TextAlignment="Right" />
 
                         <syncfusion:TreeGridNumericColumn
                             CellStyle="{StaticResource CantidadCellStyle}"
@@ -346,10 +355,6 @@
                             NumberGroupSeparator="."
                             NumberGroupSizes="3" />
 
-                        <syncfusion:TreeGridTextColumn
-                            Width="50"
-                            CellStyle="{StaticResource TipoCellStyle}"
-                            MappingName="ID" />
 
 
                     </syncfusion:TreeGridColumns>
@@ -506,10 +511,10 @@
                 x:Name="grillaNavegador"
                 Grid.Row="1"
                 AllowDraggingRows="True"
-                AutoGenerateColumnsMode="None"
-                AllowResizingColumns="True">
+                AllowResizingColumns="True"
+                AutoGenerateColumnsMode="None">
                 <syncfusion:SfTreeGrid.Columns>
-                      <syncfusion:TreeGridTextColumn
+                    <syncfusion:TreeGridTextColumn
                         Width="150"
                         IsReadOnly="True"
                         MappingName="Descripcion" />

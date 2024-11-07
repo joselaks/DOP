@@ -50,6 +50,13 @@ namespace DataObra.Presupuestos
             this.grillaNavegador.RowDragDropController.DragStart += RowDragDropController_DragStart;
             this.grillaDetalle.RowDragDropController.DragStart += RowDragDropController_DragStart1;
             this.grillaArbol.SelectionBackground = null;
+            //Defino los cheques iniciales de columnas
+            this.colCodigo.IsChecked = false;
+            var cID = grillaArbol.Columns.FirstOrDefault(c => c.MappingName == "ID");
+            cID.IsHidden = true;
+            this.colTipo.IsChecked = true;
+
+
         }
 
         private void RowDragDropController_DragStart(object? sender, TreeGridRowDragStartEventArgs e)
@@ -330,6 +337,7 @@ namespace DataObra.Presupuestos
             recalculo();
 
         }
+
 
 
         private void grillaArbol_CurrentCellBeginEdit(object sender, TreeGridCurrentCellBeginEditEventArgs e)
