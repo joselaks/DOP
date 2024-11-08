@@ -8,6 +8,7 @@ namespace Bibioteca.Clases
 {
     public class Nodo : ObjetoNotificable
     {
+
         bool sup;
 
         public bool Sup

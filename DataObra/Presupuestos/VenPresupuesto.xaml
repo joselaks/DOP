@@ -12,7 +12,20 @@
     Height="1000"
     mc:Ignorable="d">
     <Window.Resources>
-        <local:BackgroundConverter x:Key="BackgroundConverter" />
+       
+            <!-- DataTemplate para ícono Rubro -->
+            <DataTemplate x:Key="RubroTemplate">
+                <Image Source="/Presupuestos/arbol.png" Width="15" Height="15"/>
+            </DataTemplate>
+            <!-- DataTemplate para ícono Tarea -->
+            <DataTemplate x:Key="TareaTemplate">
+            <Image Source="/Presupuestos/otros.png" Width="15" Height="15"></Image>
+            </DataTemplate>
+            <!-- DataTemplateSelector -->
+            <local:IconTemplateSelector x:Key="IconTemplateSelector" 
+                                    RubroTemplate="{StaticResource RubroTemplate}"
+                                    TareaTemplate="{StaticResource TareaTemplate}"/>
+            <local:BackgroundConverter x:Key="BackgroundConverter" />
         <Style x:Key="CantidadCellStyle" TargetType="syncfusion:TreeGridCell">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
@@ -268,7 +281,14 @@
                     <syncfusion:TreeGridColumns>
 
                         <syncfusion:TreeGridTextColumn Width="50" MappingName="ID" />
-                        <syncfusion:TreeGridTextColumn Width="50" MappingName="Tipo" />
+
+
+                        <syncfusion:TreeGridTemplateColumn MappingName="Tipo" HeaderText="Nat" CellTemplateSelector="{StaticResource IconTemplateSelector}" Width="20"/>
+
+
+                        <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="Tipo" />-->
+
+
                         <syncfusion:TreeGridTextColumn Width="250" MappingName="Descripcion" />
 
                         <syncfusion:TreeGridTextColumn
