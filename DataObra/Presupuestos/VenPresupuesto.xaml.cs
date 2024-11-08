@@ -37,6 +37,7 @@ namespace DataObra.Presupuestos
         bool ddeInsumos = false;
         bool ddeBuscador = false;
         ObservableCollection<Nodo> oBuscador = new ObservableCollection<Nodo>();
+        //SfTreeGrid grillaNavegador = new SfTreeGrid();
         public VenPresupuesto()
         {
             InitializeComponent();
@@ -50,6 +51,7 @@ namespace DataObra.Presupuestos
             this.grillaNavegador.RowDragDropController.DragStart += RowDragDropController_DragStart;
             this.grillaDetalle.RowDragDropController.DragStart += RowDragDropController_DragStart1;
             this.grillaArbol.SelectionBackground = null;
+            //grillaNavegador.AllowDraggingRows = true;
             //Defino los cheques iniciales de columnas
             this.colCodigo.IsChecked = false;
             var cID = grillaArbol.Columns.FirstOrDefault(c => c.MappingName == "ID");
@@ -654,7 +656,11 @@ namespace DataObra.Presupuestos
                 {
                     oBuscador.Add(item);
                 }
-              grillaNavegador.ItemsSource = oBuscador;
+                grillaNavegador.ChildPropertyName = "Inferiores";
+                grillaNavegador.ItemsSource = oBuscador;
+               
+                //this.nav.Children.Add(grillaNavegador);
+
             }
 
         }

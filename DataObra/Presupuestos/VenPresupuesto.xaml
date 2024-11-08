@@ -12,20 +12,75 @@
     Height="1000"
     mc:Ignorable="d">
     <Window.Resources>
-       
-            <!-- DataTemplate para ícono Rubro -->
-            <DataTemplate x:Key="RubroTemplate">
-                <Image Source="/Presupuestos/arbol.png" Width="15" Height="15"/>
-            </DataTemplate>
-            <!-- DataTemplate para ícono Tarea -->
-            <DataTemplate x:Key="TareaTemplate">
-            <Image Source="/Presupuestos/otros.png" Width="15" Height="15"></Image>
-            </DataTemplate>
-            <!-- DataTemplateSelector -->
-            <local:IconTemplateSelector x:Key="IconTemplateSelector" 
-                                    RubroTemplate="{StaticResource RubroTemplate}"
-                                    TareaTemplate="{StaticResource TareaTemplate}"/>
-            <local:BackgroundConverter x:Key="BackgroundConverter" />
+
+        <!--  DataTemplate para ícono Rubro  -->
+        <DataTemplate x:Key="RubTemplate">
+            <Image
+                Width="15"
+                Height="15"
+                Source="/Presupuestos/Rubro.png" />
+        </DataTemplate>
+        <!--  DataTemplate para ícono Tarea  -->
+        <DataTemplate x:Key="TarTemplate">
+            <Image
+                Width="15"
+                Height="15"
+                Source="/Presupuestos/Tarea.png" />
+        </DataTemplate>
+        <!--  DataTemplate para ícono Materiales  -->
+        <DataTemplate x:Key="MatTemplate">
+            <Image
+                Width="15"
+                Height="15"
+                Source="/Presupuestos/Material.png" />
+        </DataTemplate>
+        <!--  DataTemplate para ícono Mano de obra  -->
+        <DataTemplate x:Key="MdoTemplate">
+            <Image
+                Width="15"
+                Height="15"
+                Source="/Presupuestos/mdo.png" />
+        </DataTemplate>
+        <!--  DataTemplate para ícono Equipos  -->
+        <DataTemplate x:Key="EquTemplate">
+            <Image
+                Width="15"
+                Height="15"
+                Source="/Presupuestos/equipos.png" />
+        </DataTemplate>
+        <!--  DataTemplate para ícono Subcontratos  -->
+        <DataTemplate x:Key="SubTemplate">
+            <Image
+                Width="15"
+                Height="15"
+                Source="/Presupuestos/subcontrato.png" />
+        </DataTemplate>
+        <!--  DataTemplate para ícono Otros  -->
+        <DataTemplate x:Key="OtrTemplate">
+            <Image
+                Width="15"
+                Height="15"
+                Source="/Presupuestos/otros.png" />
+        </DataTemplate>
+        <!--  DataTemplate para ícono AuxTemplate  -->
+        <DataTemplate x:Key="AuxTemplate">
+            <Image
+                Width="15"
+                Height="15"
+                Source="/Presupuestos/arbol.png" />
+        </DataTemplate>
+        <!--  DataTemplateSelector  -->
+        <local:IconTemplateSelector
+            x:Key="IconTemplateSelector"
+            AuxTemplate="{StaticResource AuxTemplate}"
+            EquTemplate="{StaticResource EquTemplate}"
+            MatTemplate="{StaticResource MatTemplate}"
+            MdoTemplate="{StaticResource MdoTemplate}"
+            OtrTemplate="{StaticResource OtrTemplate}"
+            RubTemplate="{StaticResource RubTemplate}"
+            SubTemplate="{StaticResource SubTemplate}"
+            TarTemplate="{StaticResource TarTemplate}" />
+        <local:BackgroundConverter x:Key="BackgroundConverter" />
         <Style x:Key="CantidadCellStyle" TargetType="syncfusion:TreeGridCell">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
@@ -43,11 +98,11 @@
             <Setter Property="FontWeight" Value="Normal" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
-                    <!--<Setter Property="FontWeight" Value="Bold" />
-                    <Setter Property="Background" Value="#C0C0C0" />-->
+                    <Setter Property="FontWeight" Value="Bold" />
+                    <Setter Property="Background" Value="#C0C0C0" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="T">
-                    <!--<Setter Property="Background" Value="#E0E0E0" />-->
+                    <Setter Property="Background" Value="#E0E0E0" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -55,11 +110,11 @@
             <Setter Property="FontWeight" Value="Normal" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
-                    <!--<Setter Property="FontWeight" Value="Bold" />
-                    <Setter Property="Background" Value="#C0C0C0" />-->
+                    <Setter Property="FontWeight" Value="Bold" />
+                    <Setter Property="Background" Value="#C0C0C0" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="T">
-                    <!--<Setter Property="Background" Value="#E0E0E0" />-->
+                    <Setter Property="Background" Value="#E0E0E0" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -73,7 +128,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="auto" />
-            <ColumnDefinition x:Name="panelBuscador" Width="30" />
+            <ColumnDefinition x:Name="panelBuscador" Width="300" />
         </Grid.ColumnDefinitions>
         <Grid Grid.Row="0" Grid.Column="0">
             <Grid.RowDefinitions>
@@ -283,7 +338,11 @@
                         <syncfusion:TreeGridTextColumn Width="50" MappingName="ID" />
 
 
-                        <syncfusion:TreeGridTemplateColumn MappingName="Tipo" HeaderText="Nat" CellTemplateSelector="{StaticResource IconTemplateSelector}" Width="20"/>
+                        <syncfusion:TreeGridTemplateColumn
+                            Width="25"
+                            CellTemplateSelector="{StaticResource IconTemplateSelector}"
+                            HeaderText="Nat"
+                            MappingName="Tipo" />
 
 
                         <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="Tipo" />-->
@@ -527,24 +586,30 @@
                     SizeMode="Small"
                     SmallIcon="/Presupuestos/Buscador.png" />
             </StackPanel>
-            <syncfusion:SfTreeGrid
-                x:Name="grillaNavegador"
-                Grid.Row="1"
-                AllowDraggingRows="True"
-                AllowResizingColumns="True"
-                AutoGenerateColumnsMode="None">
-                <syncfusion:SfTreeGrid.Columns>
-                    <syncfusion:TreeGridTextColumn
-                        Width="150"
-                        IsReadOnly="True"
-                        MappingName="Descripcion" />
-                    <syncfusion:TreeGridTextColumn
-                        Width="50"
-                        IsReadOnly="True"
-                        MappingName="Unidad" />
-                </syncfusion:SfTreeGrid.Columns>
+            <Grid x:Name="nav" Grid.Row="1">
+                <syncfusion:SfTreeGrid x:Name="grillaNavegador" AllowDraggingRows="True">
+                    <syncfusion:SfTreeGrid.Columns>
 
-            </syncfusion:SfTreeGrid>
+
+                        <syncfusion:TreeGridTextColumn Width="50" MappingName="ID" />
+
+
+                        <syncfusion:TreeGridTemplateColumn
+                            Width="25"
+                            CellTemplateSelector="{StaticResource IconTemplateSelector}"
+                            HeaderText="Nat"
+                            MappingName="Tipo" />
+
+
+                        <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="Tipo" />-->
+
+
+                        <syncfusion:TreeGridTextColumn Width="250" MappingName="Descripcion" />
+                    </syncfusion:SfTreeGrid.Columns>
+
+                </syncfusion:SfTreeGrid>
+            </Grid>
+
         </Grid>
         <Grid
             x:Name="Detalle"
