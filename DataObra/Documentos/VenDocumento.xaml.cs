@@ -78,8 +78,8 @@ namespace DataObra.Documentos
         {
             var tileViewItem = new TileViewItem
             {
-                Width = 1100,
-                Height = 480,
+                Width = 1150,
+                Height = 800,
                 Margin = new Thickness(5),
                 Header = header,
                 Content = maximizado ? (object)new MaxDocumento(documento,datosWeb) : new MinDocumento(documento),
