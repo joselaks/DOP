@@ -101,7 +101,7 @@ namespace DataObra.Datos
             var usuario = await consultasAPI.ValidarUsuarioAsync(email, pass);
             if (usuario.Usuario != null)
             {
-                MessageBox.Show(usuario.Usuario.DatosUsuario.Nombre);
+                MessageBox.Show(usuario.Usuario.Nombre + " " + usuario.Usuario.Apellido);
             }
 
             //var (success, message, usuario) = await datosWeb.ValidarUsuarioAsync(email, pass);

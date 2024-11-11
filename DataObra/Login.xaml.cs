@@ -1,4 +1,5 @@
 ﻿using DataObra.Datos;
+using Syncfusion.XlsIO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,12 +18,12 @@ namespace DataObra
 {
     public partial class Login : Window
     {
-        DatosWeb Azure;
+        ConsultasAPI Azure;
 
         public Login()
         {
             InitializeComponent();
-            Azure = new DatosWeb();
+            Azure = new ConsultasAPI();
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -31,18 +32,18 @@ namespace DataObra
             string mail = txtUsuario.Text;
             string clave = txtContraseña.Password;
 
-            var (success, message, usuario) = await Azure.ValidarUsuarioAsync(mail, clave);
+            var respuesta = await Azure.ValidarUsuarioAsync(mail, clave);
 
-            if (success) 
+            if (respuesta.Success) 
             {
-                if (usuario.Token != null)
+                if (respuesta.Usuario != null)
                 {
-                    MessageBox.Show(message, "Éxito");
+                    MessageBox.Show(respuesta.Message);
 
                     LoginSection.Visibility = Visibility.Collapsed;
                     TextBlock userName = new TextBlock
                     {
-                        Text = "Bienvenido, " + usuario.DatosUsuario.Nombre,
+                        Text = "Bienvenido, " + respuesta.Usuario.Nombre,
                         FontSize = 20,
                         Margin = new Thickness(10)
                     };
@@ -54,10 +55,9 @@ namespace DataObra
                 {
                     MessageBox.Show("Usuario o contraseña incorrectos");
                 }
-            }
-            else
+            }else 
             {
-                MessageBox.Show("Repita la operación");
+                MessageBox.Show("Usuario o contraseña incorrectos");
             }
         }
 

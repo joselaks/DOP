@@ -47,11 +47,11 @@ namespace DataObra.Datos
         }
 
         // Validar usuario
-        public async Task<(bool Success, string Message, CredencialesUsuario? Usuario)> ValidarUsuarioAsync(string email, string pass)
+        public async Task<(bool Success, string Message, Usuario? Usuario)> ValidarUsuarioAsync(string email, string pass)
         {
             var item = new QueueItem
             {
-                Url = $"https://localhost:7255/usuarios/validacion",
+                Url = $"{App.BaseUrl}usuarios/validacion",
                 Method = HttpMethod.Get,
                 Parameters = new Dictionary<string, string>
                 {
@@ -70,7 +70,7 @@ namespace DataObra.Datos
                 if (usuario.Token != null)
                 {
                     _queueManager.HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", usuario.Token);
-                    return (true, "Usuario validado exitosamente.", usuario);
+                    return (true, "Usuario validado exitosamente.", usuario.DatosUsuario);
                 }
                 else
                 {
