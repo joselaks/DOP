@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Biblioteca;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -97,7 +98,11 @@ namespace DataObra.Datos
             string email = "jose@dataobra.com"; // Email a validar
             string pass = "contra"; // Contraseña
 
-            consultasAPI.ValidarUsuarioAsync(email, pass);
+            var usuario = await consultasAPI.ValidarUsuarioAsync(email, pass);
+            if (usuario.Usuario != null)
+            {
+                MessageBox.Show(usuario.Usuario.DatosUsuario.Nombre);
+            }
 
             //var (success, message, usuario) = await datosWeb.ValidarUsuarioAsync(email, pass);
 

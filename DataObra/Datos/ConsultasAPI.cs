@@ -46,8 +46,8 @@ namespace DataObra.Datos
             return result == MessageBoxResult.Yes;
         }
 
-        // Método de ejemplo para validar usuario
-        public async void ValidarUsuarioAsync(string email, string pass)
+        // Validar usuario
+        public async Task<(bool Success, string Message, CredencialesUsuario? Usuario)> ValidarUsuarioAsync(string email, string pass)
         {
             var item = new QueueItem
             {
@@ -70,16 +70,16 @@ namespace DataObra.Datos
                 if (usuario.Token != null)
                 {
                     _queueManager.HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", usuario.Token);
-                    MessageBox.Show("Usuario validado exitosamente.");
+                    return (true, "Usuario validado exitosamente.", usuario);
                 }
                 else
                 {
-                    MessageBox.Show("Usuario inexistente.");
+                    return (false, "No pudo validarse el usuario", null);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error: {ex.Message}");
+                return (false, $"Error: {ex.Message}", null);
             }
         }
 
