@@ -88,7 +88,7 @@ namespace DataObra.Datos
         {
             var item = new QueueItem
             {
-                Url = $"{App.BaseUrl}documentos/{cuentaID}",
+                Url = $"{App.BaseUrl}documentos/",
                 Method = HttpMethod.Post,
                 Data = nuevoDoc
             };
