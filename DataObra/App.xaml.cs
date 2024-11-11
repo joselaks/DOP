@@ -2,6 +2,7 @@
 using System.Data;
 using System.Net.Http;
 using System.Windows;
+using DataObra.Datos;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DataObra
@@ -11,6 +12,7 @@ namespace DataObra
     /// </summary>
     public partial class App : Application
     {
+        public static HttpQueueManager QueueManager { get; private set; }
         public IServiceProvider ServiceProvider { get; private set; }
         public HttpClient HttpClient { get; private set; }
         public static string BaseUrl { get; private set; }
@@ -35,8 +37,10 @@ namespace DataObra
             // cambiar cuando pase a producción
             //BaseUrl = "https://dataobra.com/";
 
+            // Inicializa QueueManager con HttpClient
+            QueueManager = new HttpQueueManager(HttpClient);
 
-            // Otros códigos de inicialización si es necesario
+           // Otros códigos de inicialización si es necesario
         }
     }
 

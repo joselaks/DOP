@@ -20,11 +20,16 @@ namespace DataObra.Datos
     public partial class Conectores : Window
     {
         DatosWeb datosWeb;
+        ConsultasAPI consultasAPI;
+        private readonly HttpQueueManager _queueManager;
 
         public Conectores()
         {
             InitializeComponent();
             datosWeb = new DatosWeb();
+            consultasAPI = new ConsultasAPI();
+            _queueManager = App.QueueManager; // Obtiene el QueueManager de la clase App
+            this.LogListBox.ItemsSource = _queueManager.Logs;
         }
 
         // Crea un nuevo documento
@@ -92,19 +97,21 @@ namespace DataObra.Datos
             string email = "jose@dataobra.com"; // Email a validar
             string pass = "contra"; // Contraseña
 
-            var (success, message, usuario) = await datosWeb.ValidarUsuarioAsync(email, pass);
+            consultasAPI.ValidarUsuarioAsync(email, pass);
 
-            if (success)
-            {
-                MessageBox.Show(message, "Éxito");
-                // Aquí puedes mostrar los detalles del usuario en la interfaz de usuario
-                // Por ejemplo:
-                // textBoxNombre.Text = usuario.Nombre;
-            }
-            else
-            {
-                MessageBox.Show(message, "Error");
-            }
+            //var (success, message, usuario) = await datosWeb.ValidarUsuarioAsync(email, pass);
+
+            //if (success)
+            //{
+            //    MessageBox.Show(message, "Éxito");
+            //    // Aquí puedes mostrar los detalles del usuario en la interfaz de usuario
+            //    // Por ejemplo:
+            //    // textBoxNombre.Text = usuario.Nombre;
+            //}
+            //else
+            //{
+            //    MessageBox.Show(message, "Error");
+            //}
 
 
         }

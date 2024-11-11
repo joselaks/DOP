@@ -16,7 +16,7 @@
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBlock TextAlignment="Center" Margin="10,6,10,3">Usuarios</TextBlock>
         <TextBlock TextAlignment="Center" Margin="10,6,10,3" Grid.Row="1" >Documentos</TextBlock>
@@ -31,6 +31,8 @@
             <Button Content="Busca p/ID" Margin="3,3,3,3" Width="90" x:Name="buscaIDDoc" Click="buscaIDDoc_Click" />
             <Button Content="Busca p/cuenta" Margin="3,3,3,3" Width="90" x:Name="buscaCuentaDoc" Click="buscaCuentaDoc_Click" />
         </StackPanel>
+        <ListBox x:Name="LogListBox" Grid.Row="4" Grid.ColumnSpan="2"
+         DisplayMemberPath="LogEntryDisplay" Margin="2" Background="Beige"/>
 
     </Grid>
 </Window>
