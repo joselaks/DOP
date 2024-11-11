@@ -234,5 +234,10 @@ namespace DataObra.Datos
 
             }
         }
+
+        private void limpiaLogin_Click(object sender, RoutedEventArgs e)
+        {
+            _queueManager.Logs.Clear();
+        }
     }
 }
