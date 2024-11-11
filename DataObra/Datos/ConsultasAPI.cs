@@ -7,6 +7,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Security.Policy;
 
 namespace DataObra.Datos
 {
@@ -81,6 +82,35 @@ namespace DataObra.Datos
                 MessageBox.Show($"Error: {ex.Message}");
             }
         }
+
+        //Procedimiento para crear un nuevo documento
+        public async Task<(bool Success, string Message, int? Id)> PostDocumentoAsync(int cuentaID, Documento nuevoDoc)
+        {
+            var item = new QueueItem
+            {
+                Url = $"{App.BaseUrl}documentos/{cuentaID}",
+                Method = HttpMethod.Post,
+                Data = nuevoDoc
+            };
+            _queueManager.Enqueue(item);
+
+            try
+            {
+                var response = await item.ResponseTaskCompletionSource.Task;
+                var responseString = await response.Content.ReadAsStringAsync();
+                var nuevoDocumentoID = JsonSerializer.Deserialize<int>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                return (true, "Documento insertado con ID",nuevoDocumentoID);
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error: {ex.Message}", null);
+            }
+
+
+
+        }
+
+
 
         // Procedimiento para obtener todos los documentos de una cuenta
         public async Task<(bool Success, string Message, List<Documento> Documentos)> GetDocumentosPorCuentaIDAsync(short cuentaID)

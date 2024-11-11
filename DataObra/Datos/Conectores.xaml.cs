@@ -86,9 +86,9 @@ namespace DataObra.Datos
                 RelIns = false
             };
 
-            var (success, message) = await datosWeb.PostDocumentoAsync(documento);
-
-            MessageBox.Show(message, success ? "Éxito" : "Error");
+            var respuesta = await consultasAPI.PostDocumentoAsync(1, documento);
+            int? nuevodoc = respuesta.Id;
+            MessageBox.Show(respuesta.Message + nuevodoc.ToString());
         }
 
         //Verifica un usuario, graba el Token y obtiene sus datos
