@@ -9,6 +9,7 @@ namespace DataObra.Datos
 {
     public class LogEntry
     {
+        public int Id { get; set; }
         public DateTime Timestamp { get; set; }
         public string Url { get; set; }
         public HttpMethod Method { get; set; }

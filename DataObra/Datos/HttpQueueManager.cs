@@ -23,6 +23,7 @@ namespace DataObra.Datos
         private readonly Dispatcher _dispatcher = Dispatcher.CurrentDispatcher;
 
         public event Func<QueueItem, Task<bool>> RequestRetryConfirmation;
+     
 
         public HttpQueueManager(HttpClient httpClient)
         {
@@ -122,6 +123,7 @@ namespace DataObra.Datos
             {
                 Logs.Add(new LogEntry
                 {
+                    Id=item.Id,
                     Timestamp = DateTime.Now,
                     Url = item.Url,
                     Method = item.Method,

@@ -56,9 +56,6 @@ namespace Servidor.Repositorios
             }
         }
 
-
-
-
         public async Task<IEnumerable<Documento>> ObtenerDocumentosPorCuentaIDAsync(int cuentaID)
         {
             using (var db = new SqlConnection(_connectionString))
@@ -90,10 +87,13 @@ namespace Servidor.Repositorios
             using (var db = new SqlConnection(_connectionString))
             {
                 var parameters = new DynamicParameters(documento);
-                var affectedRows = await db.ExecuteAsync("DocumentosPut", parameters, commandType: CommandType.StoredProcedure);
-                return affectedRows > 0;
-            }
+                parameters.Add("Success", dbType: DbType.Boolean, direction: ParameterDirection.Output);
 
+                await db.ExecuteAsync("DocumentosPut", parameters, commandType: CommandType.StoredProcedure);
+
+                bool success = parameters.Get<bool>("Success");
+                return success;
+            }
         }
     }
 }

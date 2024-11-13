@@ -155,15 +155,20 @@ doc.MapGet("/id/{id:int}", async (rDocumentos repositorio, int id) =>
 .WithName("ObtenerDocumentoPorID");
 
 
-doc.MapPut("/{id:int}", async (rDocumentos repositorio, int id, Documento documento) =>
+doc.MapPut("/", async (rDocumentos repositorio, Documento documento) =>
 {
-    if (id != documento.ID)
-    {
-        return Results.BadRequest("El ID del documento no coincide con el ID del parámetro.");
-    }
-
     var resultado = await repositorio.ActualizarDocumentoAsync(documento);
-    return resultado ? Results.NoContent() : Results.NotFound(new { Mensaje = "No se encontró el documento para actualizar." });
+
+    if (resultado)
+    {
+        // Si se eliminó, devolvemos un estado 200 (Ok) con éxito y mensaje
+        return Results.Ok(new { Success = true, Message = "Documento modificado exitosamente." });
+    }
+    else
+    {
+        // Si no se encontró el documento para eliminar, devolvemos un estado estado 200 (Ok) con mensaje avisando que no lo encontró
+        return Results.Ok(new { Success = false, Message = "No se encontró el documento para modificar." });
+    }
 })
 .RequireAuthorization()
 .WithTags("Documentos")

@@ -15,6 +15,7 @@ namespace DataObra.Datos
     public partial class ConsultasAPI
     {
         private readonly HttpQueueManager _queueManager;
+        int evento = 1;
 
         public ConsultasAPI()
         {
@@ -22,36 +23,19 @@ namespace DataObra.Datos
             _queueManager.RequestRetryConfirmation += OnRequestRetryConfirmation;
         }
 
-        private void OnAddGetRequestClick(object sender, RoutedEventArgs e)
-        {
-            var item = new QueueItem
-            {
-                Url = "https://jsonplaceholder.typicode.com/posts",
-                Method = HttpMethod.Get,
-                Parameters = new Dictionary<string, string>
-                {
-                    { "userId", "1" }
-                }
-            };
-            _queueManager.Enqueue(item);
-        }
-
-        private void OnShowLogsClick(object sender, RoutedEventArgs e)
-        {
-            //LogListBox.ItemsSource = _queueManager.GetLogs();
-        }
-
+        // Solicita definición cuando la operación rebotó 3 veces
         private async Task<bool> OnRequestRetryConfirmation(QueueItem item)
         {
             var result = MessageBox.Show($"La solicitud a {item.Url} ha fallado tres veces. ¿Deseas seguir intentándolo?", "Reintentar Solicitud", MessageBoxButton.YesNo);
             return result == MessageBoxResult.Yes;
         }
 
-        // Validar usuario
+        // Usuario Get
         public async Task<(bool Success, string Message, Usuario? Usuario)> ValidarUsuarioAsync(string email, string pass)
         {
             var item = new QueueItem
             {
+                Id = evento,
                 Url = $"{App.BaseUrl}usuarios/validacion",
                 Method = HttpMethod.Get,
                 Parameters = new Dictionary<string, string>
@@ -61,6 +45,7 @@ namespace DataObra.Datos
                 }
             };
             _queueManager.Enqueue(item);
+            evento++;
 
             try
             {
@@ -89,11 +74,13 @@ namespace DataObra.Datos
         {
             var item = new QueueItem
             {
+                Id= evento,
                 Url = $"{App.BaseUrl}documentos/",
                 Method = HttpMethod.Post,
                 Data = nuevoDoc
             };
             _queueManager.Enqueue(item);
+            evento++;
 
             try
             {
@@ -107,22 +94,20 @@ namespace DataObra.Datos
                 return (false, $"Error: {ex.Message}", null);
             }
 
-
-
         }
-
-
 
         // Documentos Get por ID
         public async Task<(bool Success, string Message, List<Documento> Documentos)> GetDocumentosPorCuentaIDAsync(short cuentaID)
         {
             var item = new QueueItem
             {
+                Id = evento,
                 Url = $"{App.BaseUrl}documentos/cuenta/{cuentaID}",
                 Method = HttpMethod.Get
             };
 
             _queueManager.Enqueue(item);
+            evento++;
 
             try
             {
@@ -137,15 +122,17 @@ namespace DataObra.Datos
             }
         }
 
-
+        // Documento Delete
         public async Task<(bool Success, string Message)> DeleteDocumentoAsync(int id)
         {
             var item = new QueueItem
             {
+                Id = evento,
                 Url = $"{App.BaseUrl}documentos/{id}",
                 Method = HttpMethod.Delete
             };
             _queueManager.Enqueue(item);
+            evento++;
 
             try
             {
@@ -167,12 +154,38 @@ namespace DataObra.Datos
             }
         }
 
-       
+        //Documento Put
+        public async Task<(bool Success, string Message)> PutDocumentoAsync(Documento modDoc)
+        {
+            var item = new QueueItem
+            {
+                Id = evento,
+                Url = $"{App.BaseUrl}documentos/",
+                Method = HttpMethod.Put,
+                Data = modDoc
+            };
+            _queueManager.Enqueue(item);
+            evento++;
 
+            try
+            {
+                var response = await item.ResponseTaskCompletionSource.Task;
+                var responseString = await response.Content.ReadAsStringAsync();
 
+                // Deserializar la respuesta JSON
+                var resultado = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-
-
+                return (resultado.Success, resultado.Message);
+            }
+            catch (HttpRequestException httpEx)
+            {
+                return (false, $"Error HTTP: {httpEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error: {ex.Message}");
+            }
+        }
 
         private void DisplayData(List<Documento> documentos)
         {

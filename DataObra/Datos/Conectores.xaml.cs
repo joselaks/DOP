@@ -1,4 +1,5 @@
 ﻿using Biblioteca;
+using Syncfusion.UI.Xaml.Diagram;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,7 @@ namespace DataObra.Datos
             consultasAPI = new ConsultasAPI();
             _queueManager = App.QueueManager; // Obtiene el QueueManager de la clase App
             this.LogListBox.ItemsSource = _queueManager.Logs;
+            this.grillaLogs.ItemsSource = _queueManager.GetLogs();
         }
 
         // Crea un nuevo documento
@@ -153,79 +155,91 @@ namespace DataObra.Datos
         // Edita un documento
         private async void editaDoc_Click(object sender, RoutedEventArgs e)
         {
-        //    var documento = new Biblioteca.Documento
-        //    {
-        //        #region
-        //        ID = 10,
-        //        CuentaID = 55,
-        //        TipoID = 5,
-        //        UsuarioID = 1,
-        //        CreadoFecha = DateTime.Now,
-        //        EditadoID = 4,
-        //        EditadoFecha = DateTime.Now,
-        //        RevisadoID = 5,
-        //        RevisadoFecha = DateTime.Now,
-        //        AdminID = 3,
-        //        ObraID = 5,
-        //        PresupuestoID = 6,
-        //        RubroID = 6,
-        //        EntidadID = 7,
-        //        DepositoID = 5,
-        //        Descrip = "a",
-        //        Concepto1 = "b",
-        //        Fecha1 = DateTime.Now,
-        //        Fecha2 = DateTime.Now,
+            #region Datos para testeo
+            var documento = new Biblioteca.Documento
+            {
+                #region
+                ID = 100,
+                CuentaID = 55,
+                TipoID = 5,
+                UsuarioID = 1,
+                CreadoFecha = DateTime.Now,
+                EditadoID = 4,
+                EditadoFecha = DateTime.Now,
+                RevisadoID = 5,
+                RevisadoFecha = DateTime.Now,
+                AdminID = 3,
+                ObraID = 5,
+                PresupuestoID = 6,
+                RubroID = 6,
+                EntidadID = 7,
+                DepositoID = 5,
+                Descrip = "a",
+                Concepto1 = "b",
+                Fecha1 = DateTime.Now,
+                Fecha2 = DateTime.Now,
 
-        //        Fecha3 = DateTime.Now,
-        //        Numero1 = 0,
-        //        Numero2 = 0,
-        //        Numero3 = 0,
-        //        Notas = "bb",
-        //        Active = false,
-        //        Pesos = 0,
-        //        Dolares = 0,
-        //        Impuestos = 0,
-        //        ImpuestosD = 0,
-        //        Materiales = 0,
-        //        ManodeObra = 0,
-        //        Subcontratos = 0,
-        //        Equipos = 0,
-        //        Otros = 0,
-        //        MaterialesD = 0,
-        //        ManodeObraD = 0,
-        //        SubcontratosD = 0,
-        //        EquiposD = 0,
-        //        OtrosD = 0,
-        //        RelDoc = false,
-        //        RelArt = false,
-        //        RelMov = false,
-        //        RelImp = false,
-        //        RelRub = false,
-        //        RelTar = false,
-        //        RelIns = false
-        //        #endregion
-        //    };
-        //    var (success, message) = await datosWeb.PutDocumentoAsync(documento);
-        //    MessageBox.Show(message, success ? "Éxito" : "Error");
-        //}
+                Fecha3 = DateTime.Now,
+                Numero1 = 0,
+                Numero2 = 0,
+                Numero3 = 0,
+                Notas = "bb",
+                Active = false,
+                Pesos = 0,
+                Dolares = 0,
+                Impuestos = 0,
+                ImpuestosD = 0,
+                Materiales = 0,
+                ManodeObra = 0,
+                Subcontratos = 0,
+                Equipos = 0,
+                Otros = 0,
+                MaterialesD = 0,
+                ManodeObraD = 0,
+                SubcontratosD = 0,
+                EquiposD = 0,
+                OtrosD = 0,
+                RelDoc = false,
+                RelArt = false,
+                RelMov = false,
+                RelImp = false,
+                RelRub = false,
+                RelTar = false,
+                RelIns = false
+            };
+            #endregion
 
-        //// Busca un documento por su ID
-        //private async void buscaIDDoc_Click(object sender, RoutedEventArgs e)
-        //{
-        //    int id = 3; // ID del documento a obtener
-        //    var (success, message, documento) = await datosWeb.ObtenerDocumentoPorIDAsync(id);
+            // Codigo a utilizar
+            var respuesta = await consultasAPI.PutDocumentoAsync(documento);
 
-        //    if (success)
-        //    {
-        //        MessageBox.Show(message, "Éxito");
-        //        // Aquí se puede mostrar los detalles del documento en la interfaz de usuario
-        //        // Por ejemplo:
-        //        // textBoxDescripcion.Text = documento.Descrip;
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show(message, "Error");
-        //    }
+            //Respuestas
+            bool resultadoBorrado = respuesta.Success;  // true si lo editó, false si no existia el registro
+            string mensaje = respuesta.Message;
+
+            //Mensaje para testeo
+            if (respuesta.Success != null)
+            {
+                MessageBox.Show(respuesta.Success + " " + respuesta.Message);
+            }
+        }
+
+        // Busca un documento por su ID
+        private async void buscaIDDoc_Click(object sender, RoutedEventArgs e)
+        {
+            //int id = 3; // ID del documento a obtener
+            //var (success, message, documento) = await datosWeb.ObtenerDocumentoPorIDAsync(id);
+
+            //if (success)
+            //{
+            //    MessageBox.Show(message, "Éxito");
+            //    // Aquí se puede mostrar los detalles del documento en la interfaz de usuario
+            //    // Por ejemplo:
+            //    // textBoxDescripcion.Text = documento.Descrip;
+            //}
+            //else
+            //{
+            //    MessageBox.Show(message, "Error");
+            //}
 
 
         }
@@ -253,9 +267,9 @@ namespace DataObra.Datos
             _queueManager.Logs.Clear();
         }
 
-        private void buscaIDDoc_Click(object sender, RoutedEventArgs e)
-        {
+        //private void buscaIDDoc_Click(object sender, RoutedEventArgs e)
+        //{
 
-        }
+        //}
     }
 }

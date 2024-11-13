@@ -9,6 +9,7 @@ namespace DataObra.Datos
 {
     public class QueueItem
     {
+        public int Id { get; set; }
         public string Url { get; set; }
         public HttpMethod Method { get; set; }
         public object Data { get; set; }
