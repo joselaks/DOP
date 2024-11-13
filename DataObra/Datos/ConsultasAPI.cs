@@ -30,7 +30,7 @@ namespace DataObra.Datos
             return result == MessageBoxResult.Yes;
         }
 
-        // Usuario Get
+        // Usuario Get y validación
         public async Task<(bool Success, string Message, Usuario? Usuario)> ValidarUsuarioAsync(string email, string pass)
         {
             var item = new QueueItem
@@ -96,13 +96,13 @@ namespace DataObra.Datos
 
         }
 
-        // Documentos Get por ID
-        public async Task<(bool Success, string Message, List<Documento> Documentos)> GetDocumentosPorCuentaIDAsync(short cuentaID)
+        // Documentos Get por Cuenta
+        public async Task<(bool Success, string Message, List<Documento> Documentos)> GetDocumentosPorCuentaIDAsync(int ID)
         {
             var item = new QueueItem
             {
                 Id = evento,
-                Url = $"{App.BaseUrl}documentos/cuenta/{cuentaID}",
+                Url = $"{App.BaseUrl}documentos/{ID}",
                 Method = HttpMethod.Get
             };
 
@@ -151,6 +151,86 @@ namespace DataObra.Datos
             catch (Exception ex)
             {
                 return (false, $"Error: {ex.Message}");
+            }
+        }
+
+
+        // Documento Get por ID
+        public async Task<(bool Success, string Message, Documento? doc)> ObtenerDocumentoPorID(int id)
+        {
+            var item = new QueueItem
+            {
+                Id = evento,
+                Url = $"{App.BaseUrl}documentos/id/{id}",
+                Method = HttpMethod.Get
+            };
+            _queueManager.Enqueue(item);
+            evento++;
+
+            try
+            {
+                var response = await item.ResponseTaskCompletionSource.Task;
+                var responseString = await response.Content.ReadAsStringAsync();
+
+                // Deserializar la respuesta JSON
+                var resultado = JsonSerializer.Deserialize<Documento>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                if (resultado != null)
+                {
+                    return (true, "Se obtuvo el documento", resultado);
+                }
+                else
+                {
+                    return(false, "No se obtuvo el documento", resultado);
+                }
+               
+            }
+            catch (HttpRequestException httpEx)
+            {
+                return (false, $"Error HTTP: {httpEx.Message}", null);
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error: {ex.Message}", null);
+            }
+        }
+
+
+        // Documento Get por cuentaID
+        public async Task<(bool Success, string Message, List<Documento> docs)> ObtenerDocumentosPorCuentaID(int id)
+        {
+            var item = new QueueItem
+            {
+                Id = evento,
+                Url = $"{App.BaseUrl}documentos/cuenta/{id}",
+                Method = HttpMethod.Get
+            };
+            _queueManager.Enqueue(item);
+            evento++;
+
+            try
+            {
+                var response = await item.ResponseTaskCompletionSource.Task;
+                var responseString = await response.Content.ReadAsStringAsync();
+
+                // Deserializar la respuesta JSON
+                var resultado = JsonSerializer.Deserialize<List<Documento>>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                if (resultado != null)
+                {
+                    return (true, "Se obtuvieron los", resultado);
+                }
+                else
+                {
+                    return (false, "No se obtuvoieron documentos", resultado);
+                }
+
+            }
+            catch (HttpRequestException httpEx)
+            {
+                return (false, $"Error HTTP: {httpEx.Message}", null);
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error: {ex.Message}", null);
             }
         }
 

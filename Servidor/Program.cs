@@ -148,7 +148,16 @@ doc.MapGet("/cuenta/{cuentaID:int}", async (rDocumentos repositorio, int cuentaI
 doc.MapGet("/id/{id:int}", async (rDocumentos repositorio, int id) =>
 {
     var documento = await repositorio.ObtenerDocumentosPorIDAsync(id);
-    return documento != null ? Results.Ok(documento) : Results.NotFound(new { Mensaje = "No se encontró el documento con el ID proporcionado." });
+    if(documento != null)
+    {
+        // Devuelve el documento buscado
+        return Results.Ok(documento);
+    }
+    else
+    {
+        // no lo encontró y devuelve null
+        return Results.Ok(null);
+    }
 })
 .RequireAuthorization()
 .WithTags("Documentos")

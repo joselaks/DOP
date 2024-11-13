@@ -21,14 +21,12 @@ namespace DataObra.Datos
     /// </summary>
     public partial class Conectores : Window
     {
-        //DatosWeb datosWeb;
         ConsultasAPI consultasAPI;
         private readonly HttpQueueManager _queueManager;
 
         public Conectores()
         {
             InitializeComponent();
-            //datosWeb = new DatosWeb();
             consultasAPI = new ConsultasAPI();
             _queueManager = App.QueueManager; // Obtiene el QueueManager de la clase App
             this.LogListBox.ItemsSource = _queueManager.Logs;
@@ -134,7 +132,7 @@ namespace DataObra.Datos
         private async void borraDoc_Click(object sender, RoutedEventArgs e)
         {
             #region Datos para testeo
-            int id = 22;
+            int id = 13;
             #endregion
 
             // Codigo a utilizar
@@ -158,8 +156,7 @@ namespace DataObra.Datos
             #region Datos para testeo
             var documento = new Biblioteca.Documento
             {
-                #region
-                ID = 100,
+                ID = 19,
                 CuentaID = 55,
                 TipoID = 5,
                 UsuarioID = 1,
@@ -223,41 +220,48 @@ namespace DataObra.Datos
             }
         }
 
-        // Busca un documento por su ID
         private async void buscaIDDoc_Click(object sender, RoutedEventArgs e)
         {
-            //int id = 3; // ID del documento a obtener
-            //var (success, message, documento) = await datosWeb.ObtenerDocumentoPorIDAsync(id);
+            #region Datos para testeo
+            int id = 19; // ID del documento a obtener
+            #endregion
 
-            //if (success)
-            //{
-            //    MessageBox.Show(message, "Éxito");
-            //    // Aquí se puede mostrar los detalles del documento en la interfaz de usuario
-            //    // Por ejemplo:
-            //    // textBoxDescripcion.Text = documento.Descrip;
-            //}
-            //else
-            //{
-            //    MessageBox.Show(message, "Error");
-            //}
+            // Código a utilizar
+            var docBuscado = await consultasAPI.ObtenerDocumentoPorID(id);
 
+            // Respuestas
+            bool resultado = docBuscado.Success;
+            string mensaje = docBuscado.Message;
+            Documento? documento = docBuscado.doc;
+
+            //Mensaje para testeo
+            if (docBuscado.Success != null)
+            {
+                MessageBox.Show(docBuscado.Success + " " + docBuscado.Message );
+            }
 
         }
+
 
         // Busca los documentos de una cuenta 
         private async void buscaCuentaDoc_Click(object sender, RoutedEventArgs e)
         {
-            short cuentaID = 1; // ID de la cuenta a consultar
-            var docs = await consultasAPI.GetDocumentosPorCuentaIDAsync(cuentaID);
-            if (docs.Documentos!=null)
+            #region Datos para testeo
+            int id = 1; // ID del documento a obtener
+            #endregion
+
+            // Código a utilizar
+            var docBuscado = await consultasAPI.ObtenerDocumentosPorCuentaID(id);
+
+            // Respuestas
+            bool resultado = docBuscado.Success;
+            string mensaje = docBuscado.Message;
+            List<Documento> documento = docBuscado.docs;
+
+            //Mensaje para testeo
+            if (docBuscado.Success != null)
             {
-                MessageBox.Show(docs.Success.ToString() + " " + docs.Documentos.Count().ToString());
-                // Aquí se puede obtener la lista de documentos
-                // Por ejemplo:
-                // foreach (var item in docs.Documentos)
-                // {
-                //     
-                // }
+                MessageBox.Show(resultado + " " + mensaje + " Cantidad: " + documento.Count());
             }
 
         }
@@ -266,10 +270,6 @@ namespace DataObra.Datos
         {
             _queueManager.Logs.Clear();
         }
-
-        //private void buscaIDDoc_Click(object sender, RoutedEventArgs e)
-        //{
-
-        //}
+       
     }
 }
