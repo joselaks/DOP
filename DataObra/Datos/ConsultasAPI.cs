@@ -84,7 +84,7 @@ namespace DataObra.Datos
         }
 
         //Procedimiento para crear un nuevo documento
-        public async Task<(bool Success, string Message, int? Id)> PostDocumentoAsync(int cuentaID, Documento nuevoDoc)
+        public async Task<(bool Success, string Message, int? Id)> PostDocumentoAsync(Documento nuevoDoc)
         {
             var item = new QueueItem
             {

@@ -34,7 +34,7 @@ namespace Servidor.Repositorios
                 var parameters = new DynamicParameters(documento);
                 parameters.Add("@ID", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
-                await db.ExecuteAsync("InsertarDocumento", parameters, commandType: CommandType.StoredProcedure);
+                await db.ExecuteAsync("DocumentosPost", parameters, commandType: CommandType.StoredProcedure);
                 respuesta = parameters.Get<int>("@ID");
 
             }
@@ -45,7 +45,7 @@ namespace Servidor.Repositorios
         {
             using (var db = new SqlConnection(_connectionString))
             {
-                var affectedRows = await db.ExecuteAsync("BorrarDocumento", new { ID = id }, commandType: CommandType.StoredProcedure);
+                var affectedRows = await db.ExecuteAsync("DocumentosDelete", new { ID = id }, commandType: CommandType.StoredProcedure);
                 return affectedRows > 0;
             }
 
@@ -57,7 +57,7 @@ namespace Servidor.Repositorios
             using (var db = new SqlConnection(_connectionString))
             {
                 var documentos = await db.QueryAsync<Documento>(
-                    "ObtieneDocumentosCuenta",
+                    "DocumentosGetCuenta",
                     new { CuentaID = cuentaID },
                     commandType: CommandType.StoredProcedure
                 );
@@ -70,7 +70,7 @@ namespace Servidor.Repositorios
             using (var db = new SqlConnection(_connectionString))
             {
                 var documento = await db.QueryFirstAsync<Documento>(
-                    "ObtenerDocumentoPorID",
+                    "DocumentosGetID",
                     new { ID = id },
                     commandType: CommandType.StoredProcedure
                 );
@@ -83,7 +83,7 @@ namespace Servidor.Repositorios
             using (var db = new SqlConnection(_connectionString))
             {
                 var parameters = new DynamicParameters(documento);
-                var affectedRows = await db.ExecuteAsync("ModificarDocumento", parameters, commandType: CommandType.StoredProcedure);
+                var affectedRows = await db.ExecuteAsync("DocumentosPut", parameters, commandType: CommandType.StoredProcedure);
                 return affectedRows > 0;
             }
 
