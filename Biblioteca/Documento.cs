@@ -56,4 +56,13 @@ namespace Biblioteca
         public bool RelIns { get; set; }
     }
 
+    public class DocumentoRel
+    {
+        public int SuperiorID { get; set; }
+        public int InferiorID { get; set; }
+        public short CuentaID { get; set; }
+        public bool PorInsumos { get; set; }
+    }
+
+
 }

@@ -96,6 +96,40 @@ namespace DataObra.Datos
 
         }
 
+        //Documento rel Post
+        public async Task<(bool Success, string Message)> PostDocumentoRelAsync(DocumentoRel nuevaRel)
+        {
+            var item = new QueueItem
+            {
+                Id = evento,
+                Url = $"{App.BaseUrl}documentos/rel",
+                Method = HttpMethod.Post,
+                Data = nuevaRel
+            };
+            _queueManager.Enqueue(item);
+            evento++;
+
+            try
+            {
+                var response = await item.ResponseTaskCompletionSource.Task;
+                var responseString = await response.Content.ReadAsStringAsync();
+
+                // Deserializar la respuesta JSON
+                var resultado = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                return (resultado.Success, resultado.Message);
+            }
+            catch (HttpRequestException httpEx)
+            {
+                return (false, $"Error HTTP: {httpEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error: {ex.Message}");
+            }
+
+        }
+
         // Documentos Get por Cuenta
         public async Task<(bool Success, string Message, List<Documento> Documentos)> GetDocumentosPorCuentaIDAsync(int ID)
         {
@@ -121,6 +155,41 @@ namespace DataObra.Datos
                 return (false, $"Error: {ex.Message}", null);
             }
         }
+
+        // DocumentosRel Get por superiorID
+        public async Task<(bool Success, string Message, List<DocumentoRel> DocumentosRel)> GetDocumentosRelPorSupIDAsync(int supID)
+        {
+            var item = new QueueItem
+            {
+                Id = evento,
+                Url = $"{App.BaseUrl}documentos/rel/{supID}",
+                Method = HttpMethod.Get
+            };
+
+            _queueManager.Enqueue(item);
+            evento++;
+
+            try
+            {
+                var response = await item.ResponseTaskCompletionSource.Task;
+                var responseString = await response.Content.ReadAsStringAsync();
+                var documentos = JsonSerializer.Deserialize<List<DocumentoRel>>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                return (true, "Documentos relacionados obtenidos exitosamente.", documentos);
+            }
+            catch (HttpRequestException httpEx)
+            {
+                return (false, $"Error HTTP: {httpEx.Message}", null);
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error: {ex.Message}", null);
+            }
+        }
+
+
+
+
+
 
         // Documento Delete
         public async Task<(bool Success, string Message)> DeleteDocumentoAsync(int id)

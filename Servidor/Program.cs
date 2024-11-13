@@ -98,24 +98,12 @@ usu.MapGet("validacion/", async (string email, string pass, rUsuarios repo) =>
 {
     var respuesta = await repo.VerificaUsuario(email, pass);
     return respuesta != null ? Results.Ok(respuesta) : Results.NotFound(new { Mensaje = "Usuario no encontrado o credenciales incorrectas." });
-})
-.WithOpenApi(opciones =>
-{
-    opciones.Summary = "Validacion de usuarios";
-    opciones.Description = "Devuelve un objeto con el Token y el registro del usuario completo";
-    opciones.Parameters[0].Description = "Email del usuario";
-    opciones.Parameters[1].Description = "Contraseña";
-    return opciones;
-})
-.WithTags("Usuarios")
-.WithName("ValidacionDeUsuarios");
-
+});
 doc.MapPost("/", async (rDocumentos repositorio, Documento documento) =>
 {
 var nuevoDocumento = await repositorio.InsertarDocumentoAsync(documento);
 return Results.Created($"documentos/{nuevoDocumento}", nuevoDocumento);
-}).RequireAuthorization().WithTags("Documentos").WithName("InsertarDocumento");
-
+}).RequireAuthorization();
 doc.MapDelete("/{id:int}", async (rDocumentos repositorio, int id) =>
 {
     var resultado = await repositorio.EliminarDocumentoAsync(id);
@@ -130,25 +118,37 @@ doc.MapDelete("/{id:int}", async (rDocumentos repositorio, int id) =>
         // Si no se encontró el documento para eliminar, devolvemos un estado estado 200 (Ok) con mensaje avisando que no lo encontró
         return Results.Ok(new { Success = false, Message = "No se encontró el documento para eliminar." });
     }
-}).RequireAuthorization()
-.WithTags("Documentos")
-.WithName("EliminarDocumento");
+}).RequireAuthorization();
+doc.MapPost("/rel/", async (rDocumentos repositorio, DocumentoRel rel) =>
+{
+    var nuevoDocumento = await repositorio.InsertarDocumentoRelAsync(rel);
 
+    if (nuevoDocumento)
+    {
+        // Si se eliminó, devolvemos un estado 200 (Ok) con éxito y mensaje
+        return Results.Ok(new { Success = true, Message = "Documento agregado exitosamente." });
+    }
+    else
+    {
+        // Si no se encontró el documento para eliminar, devolvemos un estado estado 200 (Ok) con mensaje avisando que no lo encontró
+        return Results.Ok(new { Success = false, Message = "No se pudo agregar el registro. Posiblemente ya existía" });
+    }
 
+}).RequireAuthorization();
 doc.MapGet("/cuenta/{cuentaID:int}", async (rDocumentos repositorio, int cuentaID) =>
 {
     var documentos = await repositorio.ObtenerDocumentosPorCuentaIDAsync(cuentaID);
     return documentos != null ? Results.Ok(documentos) : Results.NotFound(new { Mensaje = "No se encontraron documentos con el CuentaID proporcionado." });
-})
-.RequireAuthorization()
-.WithTags("Documentos")
-.WithName("ObtenerDocumentosPorCuentaID");
-
-
+}).RequireAuthorization();
+doc.MapGet("/cuenta/rel/{cuentaID:int}", async (rDocumentos repositorio, int superiorID) =>
+{
+    var documentos = await repositorio.ObtenerDocumentosRelPorSuperiorIDAsync(superiorID);
+    return documentos != null ? Results.Ok(documentos) : Results.NotFound(new { Mensaje = "No se encontraron documentos relacionados." });
+}).RequireAuthorization();
 doc.MapGet("/id/{id:int}", async (rDocumentos repositorio, int id) =>
 {
     var documento = await repositorio.ObtenerDocumentosPorIDAsync(id);
-    if(documento != null)
+    if (documento != null)
     {
         // Devuelve el documento buscado
         return Results.Ok(documento);
@@ -158,12 +158,7 @@ doc.MapGet("/id/{id:int}", async (rDocumentos repositorio, int id) =>
         // no lo encontró y devuelve null
         return Results.Ok(null);
     }
-})
-.RequireAuthorization()
-.WithTags("Documentos")
-.WithName("ObtenerDocumentoPorID");
-
-
+}).RequireAuthorization();
 doc.MapPut("/", async (rDocumentos repositorio, Documento documento) =>
 {
     var resultado = await repositorio.ActualizarDocumentoAsync(documento);
@@ -178,10 +173,7 @@ doc.MapPut("/", async (rDocumentos repositorio, Documento documento) =>
         // Si no se encontró el documento para eliminar, devolvemos un estado estado 200 (Ok) con mensaje avisando que no lo encontró
         return Results.Ok(new { Success = false, Message = "No se encontró el documento para modificar." });
     }
-})
-.RequireAuthorization()
-.WithTags("Documentos")
-.WithName("ActualizarDocumento");
+}).RequireAuthorization();
 
 
 

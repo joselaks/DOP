@@ -220,6 +220,7 @@ namespace DataObra.Datos
             }
         }
 
+        // Obtiene documentos por ID
         private async void buscaIDDoc_Click(object sender, RoutedEventArgs e)
         {
             #region Datos para testeo
@@ -242,6 +243,32 @@ namespace DataObra.Datos
 
         }
 
+        // Obtiene las relaciones de un documento desde el superiorID
+        private async void buscaDocRel_Click(object sender, RoutedEventArgs e)
+        {
+            #region Datos para testeo
+            int superiorID = 1; // ID del documento a obtener
+            #endregion
+
+            // Código a utilizar
+            var docBuscado = await consultasAPI.GetDocumentosRelPorSupIDAsync(superiorID);
+
+            // Respuestas
+            bool resultado = docBuscado.Success;
+            string mensaje = docBuscado.Message;
+            List<DocumentoRel> documento = docBuscado.DocumentosRel;
+
+            //Mensaje para testeo
+            if (docBuscado.Success == true)
+            {
+                MessageBox.Show(resultado + " " + mensaje + " Cantidad: " + documento.Count());
+            }
+            else
+            {
+                MessageBox.Show("No hay registros");
+            }
+        }
+
 
         // Busca los documentos de una cuenta 
         private async void buscaCuentaDoc_Click(object sender, RoutedEventArgs e)
@@ -259,17 +286,57 @@ namespace DataObra.Datos
             List<Documento> documento = docBuscado.docs;
 
             //Mensaje para testeo
-            if (docBuscado.Success != null)
+            if (docBuscado.Success == true)
             {
                 MessageBox.Show(resultado + " " + mensaje + " Cantidad: " + documento.Count());
             }
+            else
+            {
+                MessageBox.Show("No hay registros");
+            }
 
+        }
+
+       
+
+        // Agrega una nueva relacion de documentos
+        private async void nuevoDocRel_Click(object sender, RoutedEventArgs e)
+        {
+            #region Datos para testeo 
+
+            var documentoRel = new Biblioteca.DocumentoRel
+            {
+                // Define las propiedades del documento
+                SuperiorID = 1,
+                InferiorID = 2,
+                CuentaID = 3,
+                PorInsumos = true
+            };
+
+            #endregion
+
+
+            // Codigo a utilizar
+            var respuesta = await consultasAPI.PostDocumentoRelAsync(documentoRel);
+            
+            
+            //Respuestas
+            bool resultadoBorrado = respuesta.Success;  // true si lo borró, false si no existia el registro
+            string mensaje = respuesta.Message;
+
+            //Mensaje para testeo
+            if (respuesta.Success != null)
+            {
+                MessageBox.Show(respuesta.Success + " " + respuesta.Message);
+            }
         }
 
         private void limpiaLogin_Click(object sender, RoutedEventArgs e)
         {
             _queueManager.Logs.Clear();
         }
-       
+
+
+
     }
 }

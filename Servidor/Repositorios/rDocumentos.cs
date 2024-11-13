@@ -95,5 +95,33 @@ namespace Servidor.Repositorios
                 return success;
             }
         }
+
+        public async Task<bool> InsertarDocumentoRelAsync(DocumentoRel rel)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters(rel);
+                parameters.Add("Success", dbType: DbType.Boolean, direction: ParameterDirection.Output);
+
+                await db.ExecuteAsync("DocumentosRelPost", parameters, commandType: CommandType.StoredProcedure);
+
+                bool success = parameters.Get<bool>("Success");
+                return success;
+            }
+        }
+
+        public async Task<IEnumerable<DocumentoRel>> ObtenerDocumentosRelPorSuperiorIDAsync(int superiorID)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var documentos = await db.QueryAsync<Documento>(
+                    "DocumentosRelGetBySuperiorID",
+                    new { CuentaID = superiorID },
+                    commandType: CommandType.StoredProcedure
+                );
+                return (IEnumerable<DocumentoRel>)documentos;
+            }
+        }
+
     }
 }
