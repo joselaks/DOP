@@ -116,7 +116,6 @@ namespace DataObra.Datos
             var respuesta = await consultasAPI.ValidarUsuarioAsync(email, pass);
 
             //Respuestas
-            //Respuestas
             Usuario datosusuario = respuesta.Usuario;
             bool conexionExitosa = respuesta.Success;
             string mensaje = respuesta.Message;
@@ -132,9 +131,22 @@ namespace DataObra.Datos
         // Borra un documento
         private async void borraDoc_Click(object sender, RoutedEventArgs e)
         {
-            //int id = 10; // ID del documento a eliminar
-            //var (success, message) = await datosWeb.DeleteDocumentoAsync(id);
-            //MessageBox.Show(message, success ? "Éxito" : "Error");
+            #region Datos para testeo
+            int id = 22;
+            #endregion
+
+            // Codigo a utilizar
+            var respuesta = await consultasAPI.DeleteDocumentoAsync(id);
+
+            //Respuestas
+            bool resultadoBorrado = respuesta.Success;  // true si lo borró, false si no existia el registro
+            string mensaje = respuesta.Message;
+
+            //Mensaje para testeo
+            if (respuesta.Success != null)
+            {
+                MessageBox.Show(respuesta.Success + " " + respuesta.Message);
+            }
 
         }
 

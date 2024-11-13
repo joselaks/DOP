@@ -44,7 +44,7 @@ builder.Services.AddSwaggerGen(c =>
     {
         Title = "Servidor DataObra",
         Version = "v1",
-        Description="Servidor API con los servicios necesarios"
+        Description = "Servidor API con los servicios necesarios"
 
     });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -112,16 +112,25 @@ usu.MapGet("validacion/", async (string email, string pass, rUsuarios repo) =>
 
 doc.MapPost("/", async (rDocumentos repositorio, Documento documento) =>
 {
-    var nuevoDocumento = await repositorio.InsertarDocumentoAsync(documento);
-    return Results.Created($"documentos/{nuevoDocumento}", nuevoDocumento);
+var nuevoDocumento = await repositorio.InsertarDocumentoAsync(documento);
+return Results.Created($"documentos/{nuevoDocumento}", nuevoDocumento);
 }).RequireAuthorization().WithTags("Documentos").WithName("InsertarDocumento");
 
 doc.MapDelete("/{id:int}", async (rDocumentos repositorio, int id) =>
 {
     var resultado = await repositorio.EliminarDocumentoAsync(id);
-    return resultado ? Results.NoContent() : Results.NotFound(new { Mensaje = "No se encontró el documento para eliminar." });
-})
-.RequireAuthorization()
+
+    if (resultado)
+    {
+        // Si se eliminó, devolvemos un estado 200 (Ok) con éxito y mensaje
+        return Results.Ok(new { Success = true, Message = "Documento eliminado exitosamente." });
+    }
+    else
+    {
+        // Si no se encontró el documento para eliminar, devolvemos un estado estado 200 (Ok) con mensaje avisando que no lo encontró
+        return Results.Ok(new { Success = false, Message = "No se encontró el documento para eliminar." });
+    }
+}).RequireAuthorization()
 .WithTags("Documentos")
 .WithName("EliminarDocumento");
 

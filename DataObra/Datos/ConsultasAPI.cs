@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Security.Policy;
+using System.Net;
 
 namespace DataObra.Datos
 {
@@ -83,7 +84,7 @@ namespace DataObra.Datos
             }
         }
 
-        //Procedimiento para crear un nuevo documento
+        //Documento Post
         public async Task<(bool Success, string Message, int? Id)> PostDocumentoAsync(Documento nuevoDoc)
         {
             var item = new QueueItem
@@ -99,7 +100,7 @@ namespace DataObra.Datos
                 var response = await item.ResponseTaskCompletionSource.Task;
                 var responseString = await response.Content.ReadAsStringAsync();
                 var nuevoDocumentoID = JsonSerializer.Deserialize<int>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                return (true, "Documento insertado con ID",nuevoDocumentoID);
+                return (true, "Documento insertado con ID", nuevoDocumentoID);
             }
             catch (Exception ex)
             {
@@ -112,7 +113,7 @@ namespace DataObra.Datos
 
 
 
-        // Procedimiento para obtener todos los documentos de una cuenta
+        // Documentos Get por ID
         public async Task<(bool Success, string Message, List<Documento> Documentos)> GetDocumentosPorCuentaIDAsync(short cuentaID)
         {
             var item = new QueueItem
@@ -137,6 +138,42 @@ namespace DataObra.Datos
         }
 
 
+        public async Task<(bool Success, string Message)> DeleteDocumentoAsync(int id)
+        {
+            var item = new QueueItem
+            {
+                Url = $"{App.BaseUrl}documentos/{id}",
+                Method = HttpMethod.Delete
+            };
+            _queueManager.Enqueue(item);
+
+            try
+            {
+                var response = await item.ResponseTaskCompletionSource.Task;
+                var responseString = await response.Content.ReadAsStringAsync();
+
+                // Deserializar la respuesta JSON
+                var resultado = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                return (resultado.Success, resultado.Message);
+            }
+            catch (HttpRequestException httpEx)
+            {
+                return (false, $"Error HTTP: {httpEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error: {ex.Message}");
+            }
+        }
+
+       
+
+
+
+
+
+
         private void DisplayData(List<Documento> documentos)
         {
             // Lógica para mostrar los datos en la UI
@@ -152,5 +189,11 @@ namespace DataObra.Datos
         //    base.OnClosing(e);
         //    _queueManager.StopProcessing(); // Detiene el procesamiento cuando se cierra la ventana
         //}
+    }
+
+    public class ResultadoOperacion
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
     }
 }

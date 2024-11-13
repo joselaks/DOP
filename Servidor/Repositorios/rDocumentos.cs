@@ -45,12 +45,19 @@ namespace Servidor.Repositorios
         {
             using (var db = new SqlConnection(_connectionString))
             {
-                var affectedRows = await db.ExecuteAsync("DocumentosDelete", new { ID = id }, commandType: CommandType.StoredProcedure);
-                return affectedRows > 0;
+                var parameters = new DynamicParameters();
+                parameters.Add("ID", id, DbType.Int32);
+                parameters.Add("Success", dbType: DbType.Boolean, direction: ParameterDirection.Output);
+
+                await db.ExecuteAsync("DocumentosDelete", parameters, commandType: CommandType.StoredProcedure);
+
+                bool success = parameters.Get<bool>("Success");
+                return success;
             }
-
-
         }
+
+
+
 
         public async Task<IEnumerable<Documento>> ObtenerDocumentosPorCuentaIDAsync(int cuentaID)
         {
