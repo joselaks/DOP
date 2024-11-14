@@ -308,7 +308,7 @@ namespace DataObra
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
-            int seleID = 3;
+            int seleID = 19;
 
             VenDocumento ventanaDoc = new VenDocumento("Facturas", seleID);
             ventanaDoc.Show();

@@ -40,8 +40,6 @@ namespace DataObra.Documentos
 
         private async void ObtenerDocumento(int pID)
         {
-            pID = 19;
-
             var docBuscado = await consultasAPI.ObtenerDocumentoPorID(pID);
 
             if (docBuscado.Success)

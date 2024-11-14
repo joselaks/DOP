@@ -19,7 +19,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="250"/>
+            <RowDefinition Height="200"/>
         </Grid.RowDefinitions>
 
         <syncfusion:TileViewControl x:Name="ControlDocumentos"
