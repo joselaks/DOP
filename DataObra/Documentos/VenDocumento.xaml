@@ -14,11 +14,28 @@
         </DataTemplate>
     </Window.Resources>
     <Grid x:Name="GrillaVenDocumento">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="250"/>
+        </Grid.RowDefinitions>
 
         <syncfusion:TileViewControl x:Name="ControlDocumentos"
-                                    MinimizedItemsOrientation="Right"
-                                    >
+                                    MinimizedItemsOrientation="Right">
         </syncfusion:TileViewControl>
+
+        <syncfusion:TabControlExt Grid.Row="1" >
+            <syncfusion:TabItemExt Header="Listado">
+                <ListBox x:Name="LogListBox" DisplayMemberPath="LogEntryDisplay" Margin="2" Background="Beige" />
+
+            </syncfusion:TabItemExt>
+            <syncfusion:TabItemExt Header="Objetos">
+                <syncfusion:SfDataGrid  x:Name="grillaLogs" AutoGenerateColumns="True" AllowResizingColumns="True"/>
+
+            </syncfusion:TabItemExt>
+        </syncfusion:TabControlExt>
 
     </Grid>
 </Window>

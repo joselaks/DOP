@@ -16,9 +16,6 @@ using System.Windows.Shapes;
 
 namespace DataObra.Datos
 {
-    /// <summary>
-    /// Lógica de interacción para Conectores.xaml
-    /// </summary>
     public partial class Conectores : Window
     {
         ConsultasAPI consultasAPI;

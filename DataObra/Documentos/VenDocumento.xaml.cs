@@ -2,27 +2,26 @@
 using Syncfusion.Windows.Shared;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using Biblioteca;
+using Syncfusion.UI.Xaml.Diagram;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace DataObra.Documentos
 {
-    public static class DocumentosTipos
-    {
-        public static readonly Dictionary<string, string[]> DocumentosPorTipo = new Dictionary<string, string[]>
-        {
-            ["Facturas"] = new[] { "Compra", "Remito 232", "Pago 52", "Pago 22", "Pago 44" },
-            ["Pedidos"] = new[] { "Compra", "Factura" },
-            ["Remitos"] = new[] { "Pedido", "Compra", "Factura" },
-            ["Compras"] = new[] { "Pedido", "Remito", "Factura" },
-        };
-    }
-
     public partial class VenDocumento : Window
     {
         string Tipo;
         public Biblioteca.Documento oActivo = new Biblioteca.Documento();
         DatosWeb datosWeb;
+        ConsultasAPI consultasAPI;
+        private readonly HttpQueueManager _queueManager;
 
         public VenDocumento(string pTipo, int pID)
         {
@@ -32,20 +31,27 @@ namespace DataObra.Documentos
 
             datosWeb = new DatosWeb();
             ObtenerDocumento(pID);
+
+            consultasAPI = new ConsultasAPI();
+            _queueManager = App.QueueManager; // Obtiene el QueueManager de la clase App
+            this.LogListBox.ItemsSource = _queueManager.Logs;
+            this.grillaLogs.ItemsSource = _queueManager.GetLogs();
         }
 
         private async void ObtenerDocumento(int pID)
         {
-            var (success, message, documento) = await datosWeb.ObtenerDocumentoPorIDAsync(pID);
+            pID = 19;
 
-            if (success)
+            var docBuscado = await consultasAPI.ObtenerDocumentoPorID(pID);
+
+            if (docBuscado.Success)
             {
-                // Convierte DocumentoBibloteca a Documento
-                AbreDoc(documento);
+                // Convierte DocumentoBiblioteca a Documento
+                AbreDoc(docBuscado.doc);
             }
             else
             {
-                MessageBox.Show("No encontrado en servidor");
+                MessageBox.Show(docBuscado.Success + " " + docBuscado.Message);
             }
         }
 
@@ -82,7 +88,7 @@ namespace DataObra.Documentos
                 Height = 800,
                 Margin = new Thickness(5),
                 Header = header,
-                Content = maximizado ? (object)new MaxDocumento(documento,datosWeb) : new MinDocumento(documento),
+                Content = maximizado ? (object)new MaxDocumento(documento, datosWeb) : new MinDocumento(documento),
                 TileViewItemState = maximizado ? TileViewItemState.Maximized : TileViewItemState.Normal
             };
 
@@ -91,16 +97,27 @@ namespace DataObra.Documentos
             return tileViewItem;
         }
 
-        private void TileViewItem_StateChanged(TileViewItem tileViewItem, Biblioteca.Documento documento) 
-        { 
-            if (tileViewItem.TileViewItemState == TileViewItemState.Maximized) 
+        private void TileViewItem_StateChanged(TileViewItem tileViewItem, Biblioteca.Documento documento)
+        {
+            if (tileViewItem.TileViewItemState == TileViewItemState.Maximized)
             {
-                tileViewItem.Content = new MaxDocumento(documento,datosWeb); 
+                tileViewItem.Content = new MaxDocumento(documento, datosWeb);
             }
             else
             {
-                tileViewItem.Content = new MinDocumento(documento); 
+                tileViewItem.Content = new MinDocumento(documento);
             }
         }
+    }
+
+    public static class DocumentosTipos
+    {
+        public static readonly Dictionary<string, string[]> DocumentosPorTipo = new Dictionary<string, string[]>
+        {
+            ["Facturas"] = new[] { "Compra", "Remito 232", "Pago 52", "Pago 22", "Pago 44" },
+            ["Pedidos"] = new[] { "Compra", "Factura" },
+            ["Remitos"] = new[] { "Pedido", "Compra", "Factura" },
+            ["Compras"] = new[] { "Pedido", "Remito", "Factura" },
+        };
     }
 }
