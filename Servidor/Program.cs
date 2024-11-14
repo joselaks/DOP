@@ -93,6 +93,7 @@ app.UseAuthorization();
 
 var usu = app.MapGroup("/usuarios");
 var doc = app.MapGroup("/documentos");
+var agr = app.MapGroup("/agrupadores");
 
 usu.MapGet("validacion/", async (string email, string pass, rUsuarios repo) =>
 {
@@ -190,9 +191,46 @@ doc.MapPut("/", async (rDocumentos repositorio, Documento documento) =>
     }
 }).RequireAuthorization();
 
+agr.MapPost("/", async (rDocumentos repositorio, AgrupadorAPI agrupador) =>
+{
+    var nuevoAgrupador = await repositorio.InsertarAgrupadorAsync(agrupador);
+    return Results.Created($"agrupador/{nuevoAgrupador}", nuevoAgrupador);
+}).RequireAuthorization();
+agr.MapPut("/", async (rDocumentos repositorio, AgrupadorAPI agrupador) =>
+{
+    var resultado = await repositorio.ActualizarAgrupadorAsync(agrupador);
 
+    if (resultado)
+    {
+        // Si se eliminó, devolvemos un estado 200 (Ok) con éxito y mensaje
+        return Results.Ok(new { Success = true, Message = "Agrupador modificado exitosamente." });
+    }
+    else
+    {
+        // Si no se encontró el documento para eliminar, devolvemos un estado estado 200 (Ok) con mensaje avisando que no lo encontró
+        return Results.Ok(new { Success = false, Message = "No se encontró el agrupador para modificar." });
+    }
+}).RequireAuthorization();
+agr.MapGet("/cuenta/{cuentaID:int}", async (rDocumentos repositorio, int cuentaID) =>
+{
+    var documentos = await repositorio.ObtenerAgrupadorPorCuentaIDAsync(cuentaID);
+    return documentos != null ? Results.Ok(documentos) : Results.NotFound(new { Mensaje = "No se encontraron agrupadores con el CuentaID proporcionado." });
+}).RequireAuthorization();
+agr.MapDelete("/{id:int}", async (rDocumentos repositorio, int id) =>
+{
+    var resultado = await repositorio.EliminarAgrupadorAsync(id);
 
-
+    if (resultado)
+    {
+        // Si se eliminó, devolvemos un estado 200 (Ok) con éxito y mensaje
+        return Results.Ok(new { Success = true, Message = "Agrupador eliminado exitosamente." });
+    }
+    else
+    {
+        // Si no se encontró el documento para eliminar, devolvemos un estado estado 200 (Ok) con mensaje avisando que no lo encontró
+        return Results.Ok(new { Success = false, Message = "No se encontró agrupador para eliminar." });
+    }
+}).RequireAuthorization();
 
 app.Run();
 

@@ -17,15 +17,10 @@ namespace Servidor.Repositorios
             _connectionString = connectionString;
         }
 
-        //public async Task<IEnumerable<Documento>> ObtenerDocumentosAsync()
-        //{
-        //    using (var db = new SqlConnection(_connectionString))
-        //    {
-        //        var documentos = await db.QueryAsync<Documento>("sp_GetDocumentos", commandType: CommandType.StoredProcedure);
-        //        return documentos;
-        //    }
-        //}
 
+        #region Post
+
+        // Nuevo documento (encabezado)
         public async Task<int> InsertarDocumentoAsync(Documento documento)
         {
             int respuesta = 0;
@@ -41,6 +36,135 @@ namespace Servidor.Repositorios
             return respuesta;
         }
 
+        // Nueva Relación documentoRel
+        public async Task<bool> InsertarDocumentoRelAsync(DocumentoRel rel)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters(rel);
+                parameters.Add("Success", dbType: DbType.Boolean, direction: ParameterDirection.Output);
+
+                await db.ExecuteAsync("DocumentosRelPost", parameters, commandType: CommandType.StoredProcedure);
+
+                bool success = parameters.Get<bool>("Success");
+                return success;
+            }
+        }
+
+
+        // Nuevo Agrupador
+        public async Task<int> InsertarAgrupadorAsync(AgrupadorAPI agrupador)
+        {
+            int respuesta = 0;
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters(agrupador);
+                parameters.Add("@ID", dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+                await db.ExecuteAsync("AgrupadorPost", parameters, commandType: CommandType.StoredProcedure);
+                respuesta = parameters.Get<int>("@ID");
+
+            }
+            return respuesta;
+        }
+
+        #endregion
+
+        #region Get
+
+        // Obtener encabezado de documento por cuenta
+        public async Task<IEnumerable<Documento>> ObtenerDocumentosPorCuentaIDAsync(int cuentaID)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var documentos = await db.QueryAsync<Documento>(
+                    "DocumentosGetCuenta",
+                    new { CuentaID = cuentaID },
+                    commandType: CommandType.StoredProcedure
+                );
+                return documentos;
+            }
+        }
+
+        // Obtener documento por ID
+        public async Task<Documento> ObtenerDocumentosPorIDAsync(int id)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var documento = await db.QueryFirstAsync<Documento>(
+                    "DocumentosGetID",
+                    new { ID = id },
+                    commandType: CommandType.StoredProcedure
+                );
+                return documento;
+            }
+        }
+
+        // Obtener relacion de documento 
+        public async Task<IEnumerable<DocumentoRel>> ObtenerDocumentosRelPorSuperiorIDAsync(int superiorID)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var documentosRel = await db.QueryAsync<DocumentoRel>(
+                    "DocumentosRelGetBySuperiorID",
+                    new { SuperiorID = superiorID },
+                    commandType: CommandType.StoredProcedure
+                );
+                return documentosRel;
+            }
+        }
+
+        // Obtener agrupadores por cuenta
+        public async Task<IEnumerable<AgrupadorAPI>> ObtenerAgrupadorPorCuentaIDAsync(int cuentaID)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var documentos = await db.QueryAsync<AgrupadorAPI>(
+                    "AgrupadoresGetCuenta",
+                    new { CuentaID = cuentaID },
+                    commandType: CommandType.StoredProcedure
+                );
+                return documentos;
+            }
+        }
+
+        #endregion
+
+        #region Put
+
+        public async Task<bool> ActualizarDocumentoAsync(Documento documento)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters(documento);
+                parameters.Add("Success", dbType: DbType.Boolean, direction: ParameterDirection.Output);
+
+                await db.ExecuteAsync("DocumentosPut", parameters, commandType: CommandType.StoredProcedure);
+
+                bool success = parameters.Get<bool>("Success");
+                return success;
+            }
+        }
+
+        public async Task<bool> ActualizarAgrupadorAsync(AgrupadorAPI agrupador)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters(agrupador);
+                parameters.Add("Success", dbType: DbType.Boolean, direction: ParameterDirection.Output);
+
+                await db.ExecuteAsync("AgrupadoresPut", parameters, commandType: CommandType.StoredProcedure);
+
+                bool success = parameters.Get<bool>("Success");
+                return success;
+            }
+        }
+
+        #endregion
+
+        #region Delete
+
+        //Borrar un encabezado de documento
         public async Task<bool> EliminarDocumentoAsync(int id)
         {
             using (var db = new SqlConnection(_connectionString))
@@ -56,6 +180,7 @@ namespace Servidor.Repositorios
             }
         }
 
+        //Borrar una relación de documento
         public async Task<bool> EliminarDocumentoRelAsync(int superiorID, int inferiorID)
         {
             using (var db = new SqlConnection(_connectionString))
@@ -72,72 +197,23 @@ namespace Servidor.Repositorios
             }
         }
 
-        public async Task<IEnumerable<Documento>> ObtenerDocumentosPorCuentaIDAsync(int cuentaID)
+        //Borrar Agrupador
+        public async Task<bool> EliminarAgrupadorAsync(int id)
         {
             using (var db = new SqlConnection(_connectionString))
             {
-                var documentos = await db.QueryAsync<Documento>(
-                    "DocumentosGetCuenta",
-                    new { CuentaID = cuentaID },
-                    commandType: CommandType.StoredProcedure
-                );
-                return documentos;
-            }
-        }
-
-        public async Task<Documento> ObtenerDocumentosPorIDAsync(int id)
-        {
-            using (var db = new SqlConnection(_connectionString))
-            {
-                var documento = await db.QueryFirstAsync<Documento>(
-                    "DocumentosGetID",
-                    new { ID = id },
-                    commandType: CommandType.StoredProcedure
-                );
-                return documento;
-            }
-        }
-
-        public async Task<bool> ActualizarDocumentoAsync(Documento documento)
-        {
-            using (var db = new SqlConnection(_connectionString))
-            {
-                var parameters = new DynamicParameters(documento);
+                var parameters = new DynamicParameters();
+                parameters.Add("ID", id, DbType.Int32);
                 parameters.Add("Success", dbType: DbType.Boolean, direction: ParameterDirection.Output);
 
-                await db.ExecuteAsync("DocumentosPut", parameters, commandType: CommandType.StoredProcedure);
+                await db.ExecuteAsync("AgrupadorDelete", parameters, commandType: CommandType.StoredProcedure);
 
                 bool success = parameters.Get<bool>("Success");
                 return success;
             }
         }
 
-        public async Task<bool> InsertarDocumentoRelAsync(DocumentoRel rel)
-        {
-            using (var db = new SqlConnection(_connectionString))
-            {
-                var parameters = new DynamicParameters(rel);
-                parameters.Add("Success", dbType: DbType.Boolean, direction: ParameterDirection.Output);
-
-                await db.ExecuteAsync("DocumentosRelPost", parameters, commandType: CommandType.StoredProcedure);
-
-                bool success = parameters.Get<bool>("Success");
-                return success;
-            }
-        }
-
-        public async Task<IEnumerable<DocumentoRel>> ObtenerDocumentosRelPorSuperiorIDAsync(int superiorID)
-        {
-            using (var db = new SqlConnection(_connectionString))
-            {
-                var documentosRel = await db.QueryAsync<DocumentoRel>(
-                    "DocumentosRelGetBySuperiorID",
-                    new { SuperiorID = superiorID },
-                    commandType: CommandType.StoredProcedure
-                );
-                return documentosRel;
-            }
-        }
+        #endregion
 
     }
 }
