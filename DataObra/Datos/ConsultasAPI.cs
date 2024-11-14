@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Security.Policy;
 using System.Net;
+using Syncfusion.UI.Xaml.Diagram;
 
 namespace DataObra.Datos
 {
@@ -219,6 +220,38 @@ namespace DataObra.Datos
             }
         }
 
+
+        // DocumentoRel Delete
+        public async Task<(bool Success, string Message)> DeleteDocumentoRelAsync(int supID,int infID)
+        {
+            var item = new QueueItem
+            {
+                Id = evento,
+                Url = $"{App.BaseUrl}documentos/rel/{supID}/{infID}",
+                Method = HttpMethod.Delete
+            };
+            _queueManager.Enqueue(item);
+            evento++;
+
+            try
+            {
+                var response = await item.ResponseTaskCompletionSource.Task;
+                var responseString = await response.Content.ReadAsStringAsync();
+
+                // Deserializar la respuesta JSON
+                var resultado = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                return (resultado.Success, resultado.Message);
+            }
+            catch (HttpRequestException httpEx)
+            {
+                return (false, $"Error HTTP: {httpEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error: {ex.Message}");
+            }
+        }
 
         // Documento Get por ID
         public async Task<(bool Success, string Message, Documento? doc)> ObtenerDocumentoPorID(int id)

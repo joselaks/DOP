@@ -34,6 +34,7 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1">
             <Button Content="Nuevo" Margin="3,3,3,3" Width="90" x:Name="nuevoDocRel" Click="nuevoDocRel_Click"/>
+            <Button Content="Borrar" Margin="3,3,3,3" Width="90" x:Name="borraDocRel" Click="borraDocRel_Click"/>
             <Button Content="Busca por sup" Margin="3,3,3,3" Width="90" x:Name="buscaDocRel" Click="buscaDocRel_Click"/>
         </StackPanel>
         <syncfusion:TabControlExt Grid.Row="4" Grid.ColumnSpan="2" >

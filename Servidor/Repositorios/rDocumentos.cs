@@ -56,6 +56,22 @@ namespace Servidor.Repositorios
             }
         }
 
+        public async Task<bool> EliminarDocumentoRelAsync(int superiorID, int inferiorID)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@SuperiorID", superiorID, DbType.Int32);
+                parameters.Add("@@InferiorID", inferiorID, DbType.Int32);
+                parameters.Add("Success", dbType: DbType.Boolean, direction: ParameterDirection.Output);
+
+                await db.ExecuteAsync("DocumentosRelDelete", parameters, commandType: CommandType.StoredProcedure);
+
+                bool success = parameters.Get<bool>("Success");
+                return success;
+            }
+        }
+
         public async Task<IEnumerable<Documento>> ObtenerDocumentosPorCuentaIDAsync(int cuentaID)
         {
             using (var db = new SqlConnection(_connectionString))

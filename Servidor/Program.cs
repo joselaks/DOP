@@ -119,6 +119,21 @@ doc.MapDelete("/{id:int}", async (rDocumentos repositorio, int id) =>
         return Results.Ok(new { Success = false, Message = "No se encontró el documento para eliminar." });
     }
 }).RequireAuthorization();
+doc.MapDelete("rel/{supID:int}/{infID:int}", async (rDocumentos repositorio, int supID, int infID) =>
+{
+    var resultado = await repositorio.EliminarDocumentoRelAsync(supID, infID);
+
+    if (resultado)
+    {
+        // Si se eliminó, devolvemos un estado 200 (Ok) con éxito y mensaje
+        return Results.Ok(new { Success = true, Message = "Relación eliminada exitosamente." });
+    }
+    else
+    {
+        // Si no se encontró el documento para eliminar, devolvemos un estado estado 200 (Ok) con mensaje avisando que no lo encontró
+        return Results.Ok(new { Success = false, Message = "No se encontró relación para eliminar." });
+    }
+}).RequireAuthorization();
 doc.MapPost("/rel/", async (rDocumentos repositorio, DocumentoRel rel) =>
 {
     var nuevoDocumento = await repositorio.InsertarDocumentoRelAsync(rel);
@@ -145,7 +160,6 @@ doc.MapGet("/rel/{superiorID:int}", async (rDocumentos repositorio, int superior
     var documentos = await repositorio.ObtenerDocumentosRelPorSuperiorIDAsync(superiorID);
     return documentos != null ? Results.Ok(documentos) : Results.NotFound(new { Mensaje = "No se encontraron documentos relacionados." });
 }).RequireAuthorization();
-;
 doc.MapGet("/id/{id:int}", async (rDocumentos repositorio, int id) =>
 {
     var documento = await repositorio.ObtenerDocumentosPorIDAsync(id);

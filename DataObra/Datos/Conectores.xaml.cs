@@ -147,6 +147,30 @@ namespace DataObra.Datos
 
         }
 
+        //Borra una relación de documentos
+        private async void borraDocRel_Click(object sender, RoutedEventArgs e)
+        {
+            #region Datos para testeo
+            int supID = 1;
+            int infID = 2;
+            #endregion
+
+            // Codigo a utilizar
+            var respuesta = await consultasAPI.DeleteDocumentoRelAsync(supID, infID);
+
+            //Respuestas
+            bool resultadoBorrado = respuesta.Success;  // true si lo borró, false si no existia el registro
+            string mensaje = respuesta.Message;
+
+            //Mensaje para testeo
+            if (respuesta.Success != null)
+            {
+                MessageBox.Show(respuesta.Success + " " + respuesta.Message);
+            }
+
+
+        }
+
         // Edita un documento
         private async void editaDoc_Click(object sender, RoutedEventArgs e)
         {
@@ -333,7 +357,6 @@ namespace DataObra.Datos
             _queueManager.Logs.Clear();
         }
 
-
-
+       
     }
 }
