@@ -26,16 +26,16 @@ namespace DataObra.Documentos
         public VenDocumento(string pTipo, int pID)
         {
             InitializeComponent();
-            Tipo = pTipo;
-            oActivo.Descrip = "RELACIONADO";
-
-            datosWeb = new DatosWeb();
-            ObtenerDocumento(pID);
-
             consultasAPI = new ConsultasAPI();
             _queueManager = App.QueueManager; // Obtiene el QueueManager de la clase App
             this.LogListBox.ItemsSource = _queueManager.Logs;
             this.grillaLogs.ItemsSource = _queueManager.GetLogs();
+
+            Tipo = pTipo;
+            oActivo.Descrip = "RELACIONADO";
+
+            //datosWeb = new DatosWeb();
+            ObtenerDocumento(pID);
         }
 
         private async void ObtenerDocumento(int pID)
