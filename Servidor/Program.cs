@@ -140,11 +140,12 @@ doc.MapGet("/cuenta/{cuentaID:int}", async (rDocumentos repositorio, int cuentaI
     var documentos = await repositorio.ObtenerDocumentosPorCuentaIDAsync(cuentaID);
     return documentos != null ? Results.Ok(documentos) : Results.NotFound(new { Mensaje = "No se encontraron documentos con el CuentaID proporcionado." });
 }).RequireAuthorization();
-doc.MapGet("/cuenta/rel/{cuentaID:int}", async (rDocumentos repositorio, int superiorID) =>
+doc.MapGet("/rel/{superiorID:int}", async (rDocumentos repositorio, int superiorID) =>
 {
     var documentos = await repositorio.ObtenerDocumentosRelPorSuperiorIDAsync(superiorID);
     return documentos != null ? Results.Ok(documentos) : Results.NotFound(new { Mensaje = "No se encontraron documentos relacionados." });
 }).RequireAuthorization();
+;
 doc.MapGet("/id/{id:int}", async (rDocumentos repositorio, int id) =>
 {
     var documento = await repositorio.ObtenerDocumentosPorIDAsync(id);

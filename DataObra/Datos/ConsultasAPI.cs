@@ -176,10 +176,6 @@ namespace DataObra.Datos
                 var documentos = JsonSerializer.Deserialize<List<DocumentoRel>>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                 return (true, "Documentos relacionados obtenidos exitosamente.", documentos);
             }
-            catch (HttpRequestException httpEx)
-            {
-                return (false, $"Error HTTP: {httpEx.Message}", null);
-            }
             catch (Exception ex)
             {
                 return (false, $"Error: {ex.Message}", null);
@@ -336,15 +332,15 @@ namespace DataObra.Datos
             }
         }
 
-        private void DisplayData(List<Documento> documentos)
-        {
-            // Lógica para mostrar los datos en la UI
-            foreach (var documento in documentos)
-            {
-                // Añade cada documento a un control visual, por ejemplo un ListBox
-                //myListBox.Items.Add(documento.Title); // Suponiendo que Documento tiene una propiedad Title
-            }
-        }
+        //private void DisplayData(List<Documento> documentos)
+        //{
+        //    // Lógica para mostrar los datos en la UI
+        //    foreach (var documento in documentos)
+        //    {
+        //        // Añade cada documento a un control visual, por ejemplo un ListBox
+        //        //myListBox.Items.Add(documento.Title); // Suponiendo que Documento tiene una propiedad Title
+        //    }
+        //}
 
         //protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         //{

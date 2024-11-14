@@ -114,12 +114,12 @@ namespace Servidor.Repositorios
         {
             using (var db = new SqlConnection(_connectionString))
             {
-                var documentos = await db.QueryAsync<Documento>(
+                var documentosRel = await db.QueryAsync<DocumentoRel>(
                     "DocumentosRelGetBySuperiorID",
-                    new { CuentaID = superiorID },
+                    new { SuperiorID = superiorID },
                     commandType: CommandType.StoredProcedure
                 );
-                return (IEnumerable<DocumentoRel>)documentos;
+                return documentosRel;
             }
         }
 

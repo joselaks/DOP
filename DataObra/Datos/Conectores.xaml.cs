@@ -247,7 +247,7 @@ namespace DataObra.Datos
         private async void buscaDocRel_Click(object sender, RoutedEventArgs e)
         {
             #region Datos para testeo
-            int superiorID = 1; // ID del documento a obtener
+            int superiorID = 221; // ID del documento a obtener
             #endregion
 
             // Código a utilizar
@@ -274,7 +274,7 @@ namespace DataObra.Datos
         private async void buscaCuentaDoc_Click(object sender, RoutedEventArgs e)
         {
             #region Datos para testeo
-            int id = 1; // ID del documento a obtener
+            int id = 177; // ID del documento a obtener
             #endregion
 
             // Código a utilizar
