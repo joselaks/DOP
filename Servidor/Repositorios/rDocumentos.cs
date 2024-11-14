@@ -61,7 +61,7 @@ namespace Servidor.Repositorios
                 var parameters = new DynamicParameters(agrupador);
                 parameters.Add("@ID", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
-                await db.ExecuteAsync("AgrupadorPost", parameters, commandType: CommandType.StoredProcedure);
+                await db.ExecuteAsync("AgrupadoresPost", parameters, commandType: CommandType.StoredProcedure);
                 respuesta = parameters.Get<int>("@ID");
 
             }
