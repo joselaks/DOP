@@ -204,7 +204,7 @@
                         
                     </syncfusion:TabControlExt>
 
-                    <Button Content="Borrar login" Margin="3,3,3,3" Width="90" x:Name="limpiaLogin" Click="limpiaLogin_Click"  Grid.Row="5" Grid.Column="1" />
+                    <Button Grid.Column="4" Grid.Row="1" Content="Borrar Login" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="69" x:Name="limpiaLogin" Click="limpiaLogin_Click" />
 
 
                     <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5" HorizontalAlignment="Center" Margin="0,25,0,0" >
