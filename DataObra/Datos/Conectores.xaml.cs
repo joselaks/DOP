@@ -1,4 +1,5 @@
 ﻿using Biblioteca;
+using DataObra.Agrupadores;
 using Syncfusion.UI.Xaml.Diagram;
 using System;
 using System.Collections.Generic;
@@ -357,6 +358,37 @@ namespace DataObra.Datos
             _queueManager.Logs.Clear();
         }
 
-       
+        private async void nuevoAgrupador_Click(object sender, RoutedEventArgs e)
+        {
+
+            #region Datos para testeo 
+
+            var agupador = new Agrupador
+            {
+                // Define las propiedades del documento
+                ID = 1,
+                CuentaID = 1,
+                UsuarioID = 1,
+                TipoID = 'B',
+                Editado = DateTime.Now,
+                Descrip = "a",
+                Numero = 1,
+                Active = true,
+            };
+
+            #endregion
+
+            // Codigo a utilizar
+            var respuesta = await consultasAPI.PostAgrupadorAsync(agupador);
+
+            //Respuestas
+            int? nuevodoc = respuesta.Id;
+            bool conexionExitosa = respuesta.Success;
+            string mensaje = respuesta.Message;
+
+            //Mensaje para testeo
+            MessageBox.Show(respuesta.Success + " " + mensaje + " " + nuevodoc.ToString());
+
+        }
     }
 }

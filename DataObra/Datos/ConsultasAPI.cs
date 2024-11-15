@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Security.Policy;
 using System.Net;
 using Syncfusion.UI.Xaml.Diagram;
+using DataObra.Agrupadores;
 
 namespace DataObra.Datos
 {
@@ -31,51 +32,14 @@ namespace DataObra.Datos
             return result == MessageBoxResult.Yes;
         }
 
-        // Usuario Get y validación
-        public async Task<(bool Success, string Message, Usuario? Usuario)> ValidarUsuarioAsync(string email, string pass)
-        {
-            var item = new QueueItem
-            {
-                Id = evento,
-                Url = $"{App.BaseUrl}usuarios/validacion",
-                Method = HttpMethod.Get,
-                Parameters = new Dictionary<string, string>
-                {
-                    { "email", email },
-                    { "pass", pass }
-                }
-            };
-            _queueManager.Enqueue(item);
-            evento++;
-
-            try
-            {
-                var response = await item.ResponseTaskCompletionSource.Task;
-                var responseString = await response.Content.ReadAsStringAsync();
-                var usuario = JsonSerializer.Deserialize<CredencialesUsuario>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-                if (usuario.Token != null)
-                {
-                    _queueManager.HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", usuario.Token);
-                    return (true, "Usuario validado exitosamente.", usuario.DatosUsuario);
-                }
-                else
-                {
-                    return (false, "No pudo validarse el usuario", null);
-                }
-            }
-            catch (Exception ex)
-            {
-                return (false, $"Error: {ex.Message}", null);
-            }
-        }
+        #region Post
 
         //Documento Post
         public async Task<(bool Success, string Message, int? Id)> PostDocumentoAsync(Documento nuevoDoc)
         {
             var item = new QueueItem
             {
-                Id= evento,
+                Id = evento,
                 Url = $"{App.BaseUrl}documentos/",
                 Method = HttpMethod.Post,
                 Data = nuevoDoc
@@ -130,6 +94,81 @@ namespace DataObra.Datos
             }
 
         }
+
+        //Agrupador rel Post
+        public async Task<(bool Success, string Message, int? Id)> PostAgrupadorAsync(Agrupador nuevaRel)
+        {
+            var item = new QueueItem
+            {
+                Id = evento,
+                Url = $"{App.BaseUrl}agrupadores",
+                Method = HttpMethod.Post,
+                Data = nuevaRel
+            };
+            _queueManager.Enqueue(item);
+            evento++;
+
+            try
+            {
+                var response = await item.ResponseTaskCompletionSource.Task;
+                var responseString = await response.Content.ReadAsStringAsync();
+                var nuevoAgrpador = JsonSerializer.Deserialize<int>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                return (true, "Documento insertado con ID", nuevoAgrpador);
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error: {ex.Message}", null);
+            }
+
+        }
+
+        #endregion
+
+
+
+
+        // Usuario Get y validación
+        public async Task<(bool Success, string Message, Usuario? Usuario)> ValidarUsuarioAsync(string email, string pass)
+        {
+            var item = new QueueItem
+            {
+                Id = evento,
+                Url = $"{App.BaseUrl}usuarios/validacion",
+                Method = HttpMethod.Get,
+                Parameters = new Dictionary<string, string>
+                {
+                    { "email", email },
+                    { "pass", pass }
+                }
+            };
+            _queueManager.Enqueue(item);
+            evento++;
+
+            try
+            {
+                var response = await item.ResponseTaskCompletionSource.Task;
+                var responseString = await response.Content.ReadAsStringAsync();
+                var usuario = JsonSerializer.Deserialize<CredencialesUsuario>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                if (usuario.Token != null)
+                {
+                    _queueManager.HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", usuario.Token);
+                    return (true, "Usuario validado exitosamente.", usuario.DatosUsuario);
+                }
+                else
+                {
+                    return (false, "No pudo validarse el usuario", null);
+                }
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error: {ex.Message}", null);
+            }
+        }
+
+
+
+        
 
         // Documentos Get por Cuenta
         public async Task<(bool Success, string Message, List<Documento> Documentos)> GetDocumentosPorCuentaIDAsync(int ID)
