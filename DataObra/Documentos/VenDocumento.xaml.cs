@@ -20,19 +20,13 @@ namespace DataObra.Documentos
         string Tipo;
         public Biblioteca.Documento oActivo = new Biblioteca.Documento();
         DatosWeb datosWeb;
-        ConsultasAPI consultasAPI;
-        private readonly HttpQueueManager _queueManager;
+        ConsultasAPI ConsultasAPI;
 
-        public VenDocumento(string pTipo, int pID)
+        public VenDocumento(string pTipo, int pID, ConsultasAPI pConsultasAPI)
         {
             InitializeComponent();
-            consultasAPI = new ConsultasAPI();
-            _queueManager = App.QueueManager; // Obtiene el QueueManager de la clase App
-            this.LogListBox.ItemsSource = _queueManager.Logs;
-            this.grillaLogs.ItemsSource = _queueManager.GetLogs();
-
             Tipo = pTipo;
-            oActivo.Descrip = "RELACIONADO";
+            ConsultasAPI = pConsultasAPI;
 
             //datosWeb = new DatosWeb();
             ObtenerDocumento(pID);
@@ -40,7 +34,7 @@ namespace DataObra.Documentos
 
         private async void ObtenerDocumento(int pID)
         {
-            var docBuscado = await consultasAPI.ObtenerDocumentoPorID(pID);
+            var docBuscado = await ConsultasAPI.ObtenerDocumentoPorID(pID);
 
             if (docBuscado.Success)
             {

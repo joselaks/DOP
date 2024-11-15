@@ -26,6 +26,7 @@ namespace DataObra.Documentos
             InitializeComponent();
             this.FechaDesde.SelectedDate = DateTime.Today.AddDays(-30);
             this.FechaHasta.SelectedDate = DateTime.Today;
+        
 
             azure = new Servidor();
 
@@ -98,7 +99,7 @@ namespace DataObra.Documentos
                 switch (button.Name)
                 {
                     case "nuevo":
-                        VenDocumento nueva = new VenDocumento("Facturas", 0);
+                        VenDocumento nueva = new VenDocumento("Facturas", 0, null);
                         //nueva.DocumentoModified += FichaWindow_DocumentoModified;
                         nueva.Show();
                         break;
@@ -108,7 +109,7 @@ namespace DataObra.Documentos
                         
                         if (sele != null)
                         {
-                            VenDocumento fichaWindow = new VenDocumento("Facturas", seleID);
+                            VenDocumento fichaWindow = new VenDocumento("Facturas", seleID, null);
                             //fichaWindow.DocumentoModified += FichaWindow_DocumentoModified;
                             fichaWindow.Show();
                         }

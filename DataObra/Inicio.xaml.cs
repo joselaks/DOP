@@ -30,11 +30,21 @@ namespace DataObra
         NavDocumento navDocumentos;
         NavInsumo navInsumos;
         DatosWeb datosWeb;
+
+        public ConsultasAPI InicioConsultasAPI;
+        public readonly HttpQueueManager Inicio_QueueManager;
+
         ////NavTareas navTareas;
 
         public Inicio()
         {
             InitializeComponent();
+            InicioConsultasAPI = new ConsultasAPI();
+            Inicio_QueueManager = App.QueueManager; // Obtiene el QueueManager de la clase App
+            this.InicioLogListBox.ItemsSource = Inicio_QueueManager.Logs;
+            this.InicioGrillaLogs.ItemsSource = Inicio_QueueManager.GetLogs();
+
+
             datosWeb = new DatosWeb();
             Solapa = "Inicio";
 
@@ -310,7 +320,7 @@ namespace DataObra
         {
             int seleID = 19;
 
-            VenDocumento ventanaDoc = new VenDocumento("Facturas", seleID);
+            VenDocumento ventanaDoc = new VenDocumento("Facturas", seleID, InicioConsultasAPI);
             ventanaDoc.Show();
         }
        
@@ -326,6 +336,11 @@ namespace DataObra
             ventanaPres.Owner = this; 
             ventanaPres.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             ventanaPres.Show();
+        }
+
+        private void limpiaLogin_Click(object sender, RoutedEventArgs e)
+        {
+            Inicio_QueueManager.Logs.Clear();
         }
     }
 }
