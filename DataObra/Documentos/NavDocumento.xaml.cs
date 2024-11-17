@@ -14,32 +14,51 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DataObra.Sistema;
+using DataObra.Datos;
 
 namespace DataObra.Documentos
 {
     public partial class NavDocumento : UserControl
     {
+        #region Inicializa
+        ConsultasAPI ConsultasAPI;
+        
         bool angosto = true;
         Servidor azure;
+        #endregion
+
         public NavDocumento(string pModo, string pDoc)
         {
             InitializeComponent();
+            ConsultasAPI = new ConsultasAPI();
             this.FechaDesde.SelectedDate = DateTime.Today.AddDays(-30);
             this.FechaHasta.SelectedDate = DateTime.Today;
-        
-
             azure = new Servidor();
 
-            //this.GrillaDocumentos.ItemsSource = azure.Documentos;
-
-            _ = obtenerDocsAsync();
-            //DataContext = azure.Documentos;
-            
+            ListaDocumentosAsync(1);
         }
 
-        private async Task obtenerDocsAsync()
+        private async void ListaDocumentosAsync(byte pCuentaID)
         {
-            //this.GrillaDocumentos.ItemsSource = await oDatos.ObtenerDocsAsync();
+            // Código a utilizar
+            var docBuscado = await ConsultasAPI.ObtenerDocumentosPorCuentaID(pCuentaID);
+
+            // Respuestas
+            bool resultado = docBuscado.Success;
+            string mensaje = docBuscado.Message;
+            List<Biblioteca.Documento> listaDocumentos = docBuscado.docs;
+
+            //Mensaje para testeo
+            if (docBuscado.Success == true)
+            {
+                MessageBox.Show(resultado + " " + mensaje + " Cantidad: " + listaDocumentos.Count());
+
+                this.GrillaDocumentos.ItemsSource = listaDocumentos;
+            }
+            else
+            {
+                MessageBox.Show("No hay Documentos");
+            }
         }
 
         private void FichaWindow_DocumentoModified(object sender, Documento e)
@@ -86,47 +105,48 @@ namespace DataObra.Documentos
 
         private void MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Button abrirButton = new Button { Name = "abrir" };
+            Button abrirButton = new Button { Name = "Editar" };
             Menu_Click(abrirButton, null);
         }
 
         private void Menu_Click(object sender, RoutedEventArgs e)
         {
-            int seleID = 3;
-
             if (sender is Button button)
             {
                 switch (button.Name)
                 {
-                    case "nuevo":
+                    case "Nuevo":
+                    case "NuevoDoc":
                         VenDocumento nueva = new VenDocumento("Facturas", 0, null);
                         //nueva.DocumentoModified += FichaWindow_DocumentoModified;
                         nueva.Show();
                         break;
 
-                    case "abrir":
-                        Documento sele = this.GrillaDocumentos.SelectedItem as Documento;
+                    case "Editar":
+                    case "EditarDoc":
+                        Biblioteca.Documento sele = this.GrillaDocumentos.SelectedItem as Biblioteca.Documento;
                         
                         if (sele != null)
                         {
-                            VenDocumento fichaWindow = new VenDocumento("Facturas", seleID, null);
+                            VenDocumento fichaWindow = new VenDocumento("Facturas", sele.ID, ConsultasAPI);
                             //fichaWindow.DocumentoModified += FichaWindow_DocumentoModified;
                             fichaWindow.Show();
                         }
                         break;
 
-                    case "borrar":
-                        Documento seleBorrar = this.GrillaDocumentos.SelectedItem as Documento;
-                        
+                    case "Borrar":
+                    case "BorrarDoc":
+                        Biblioteca.Documento seleBorrar = this.GrillaDocumentos.SelectedItem as Biblioteca.Documento;
+
                         if (seleBorrar != null)
                         {
                             var result = MessageBox.Show($"Seguro de borrar {seleBorrar.Descrip}?", "Confirmar", MessageBoxButton.YesNo);
                             if (result == MessageBoxResult.Yes)
                             {
                                 // Procedimiento para borrar del servidor
-                                azure.Documentos.Remove(seleBorrar);
+                                BorrarDocumento(seleBorrar.ID);
                                 this.GrillaDocumentos.ItemsSource = null;
-                                this.GrillaDocumentos.ItemsSource = azure.Documentos;
+                                ListaDocumentosAsync(1);
                             }
                         }
                         break;
@@ -134,5 +154,21 @@ namespace DataObra.Documentos
             }
         }
 
+        private async void BorrarDocumento(int pDocID)
+        {
+            // Codigo a utilizar
+            var respuesta = await ConsultasAPI.DeleteDocumentoAsync(pDocID);
+
+            //Respuestas
+            bool resultadoBorrado = respuesta.Success;  // true si lo borró, false si no existia el registro
+            string mensaje = respuesta.Message;
+
+            //Mensaje para testeo
+            if (respuesta.Success != null)
+            {
+                MessageBox.Show(respuesta.Success + " " + respuesta.Message);
+            }
+
+        }
     }
 }

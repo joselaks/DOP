@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Syncfusion.PMML;
 
 namespace DataObra.Documentos
 {
@@ -28,8 +29,14 @@ namespace DataObra.Documentos
             Tipo = pTipo;
             ConsultasAPI = pConsultasAPI;
 
-            //datosWeb = new DatosWeb();
-            ObtenerDocumento(pID);
+            if (pID != 0)
+            {
+                ObtenerDocumento(pID);
+            }
+            else
+            {
+                AbreDoc(null);
+            }
         }
 
         private async void ObtenerDocumento(int pID)
@@ -49,27 +56,37 @@ namespace DataObra.Documentos
 
         private void AbreDoc(Biblioteca.Documento pDocumento)
         {
-            if (DocumentosTipos.DocumentosPorTipo.TryGetValue(Tipo, out var listaDocumentos))
+            if (pDocumento != null)
             {
-                bool esPrimero = true;
-
-                foreach (var item in listaDocumentos) // Cambiar por la colección de docs relacionados
+                if (DocumentosTipos.DocumentosPorTipo.TryGetValue(Tipo, out var listaDocumentos))
                 {
-                    var documento = new Biblioteca.Documento
+                    bool esPrimero = true;
+
+                    foreach (var item in listaDocumentos) // Cambiar por la colección de docs relacionados
                     {
-                        Descrip = item,
-                        Notas = $"Detalles del documento {item}"
-                    };
+                        var documento = new Biblioteca.Documento
+                        {
+                            Descrip = item,
+                            Notas = $"Detalles del documento {item}"
+                        };
 
-                    var nuevoTile = CrearTileViewItem(item, esPrimero ? pDocumento : oActivo, esPrimero);
+                        var nuevoTile = CrearTileViewItem(item, esPrimero ? pDocumento : oActivo, esPrimero);
 
-                    ControlDocumentos.Items.Add(nuevoTile);
-                    esPrimero = false;
+                        ControlDocumentos.Items.Add(nuevoTile);
+                        esPrimero = false;
+                    }
                 }
-            }
 
-            GrillaVenDocumento.Children.Clear();
-            GrillaVenDocumento.Children.Add(ControlDocumentos);
+                GrillaVenDocumento.Children.Clear();
+                GrillaVenDocumento.Children.Add(ControlDocumentos);
+            }
+            else
+            {
+                var nuevoTile = CrearTileViewItem("Nuevo", true ? pDocumento : oActivo, true);
+                ControlDocumentos.Items.Add(nuevoTile);
+                GrillaVenDocumento.Children.Clear();
+                GrillaVenDocumento.Children.Add(ControlDocumentos);
+            }
         }
 
         private TileViewItem CrearTileViewItem(string header, Biblioteca.Documento documento, bool maximizado = false)
@@ -80,7 +97,7 @@ namespace DataObra.Documentos
                 Height = 800,
                 Margin = new Thickness(5),
                 Header = header,
-                Content = maximizado ? (object)new MaxDocumento(documento, datosWeb) : new MinDocumento(documento),
+                Content = maximizado ? (object)new MaxDocumento(documento) : new MinDocumento(documento),
                 TileViewItemState = maximizado ? TileViewItemState.Maximized : TileViewItemState.Normal
             };
 
@@ -93,7 +110,7 @@ namespace DataObra.Documentos
         {
             if (tileViewItem.TileViewItemState == TileViewItemState.Maximized)
             {
-                tileViewItem.Content = new MaxDocumento(documento, datosWeb);
+                tileViewItem.Content = new MaxDocumento(documento);
             }
             else
             {

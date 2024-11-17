@@ -5,7 +5,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:DataObra.Documentos"
+             xmlns:local="clr-namespace:DataObra.Documentos" Background="White"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1200">
     <Grid x:Name="Grilla">
@@ -24,7 +24,14 @@
             <Label Content="A:"/>
             <DatePicker Name="FechaHasta" Width="91" Margin="-2,0,0,0" />
         </StackPanel>
-       
+
+        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+            <Button x:Name="NuevoDoc" Content="Nuevo" Width="85" Margin="5,5,0,0" Click="Menu_Click" />
+            <Button x:Name="EditarDoc" Content="Editar" Width="85" Margin="15,5,0,0" Click="Menu_Click" />
+            <Button x:Name="BorrarDoc" Content="Borrar" Width="85" Margin="15,5,0,0" Click="Menu_Click" />
+        </StackPanel>
+
+
         <Syncfusion:SfDataGrid Name="GrillaDocumentos" Grid.Column="1" Grid.Row="1" AutoGenerateColumns="False" Margin="4,5,0,0"
                                MouseDoubleClick="MouseDoubleClick" IsReadOnly="True">
             <Syncfusion:SfDataGrid.Columns>

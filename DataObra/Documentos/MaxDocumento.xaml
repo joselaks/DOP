@@ -280,8 +280,9 @@
         </TabControl>
 
         <StackPanel Grid.Row="4" Orientation="Horizontal">
-            <Button Content="Guardar" Width="85" Margin="5,5,0,0" Click="BotonGuardar_Click" />
-            <Button Content="No Guardar" Width="85" Margin="15,5,0,0" Click="CancelButton_Click" />
+            <Button Content="Guardar" Width="85" Margin="5,5,0,0" Click="Guardar_Click" />
+            <Button Content="No Guardar" Width="85" Margin="15,5,0,0" Click="Cancelar_Click" />
+            <Button Content="Borrar" Width="85" Margin="15,5,0,0" Click="Borrar_Click" />
         </StackPanel>
 
     </Grid>
