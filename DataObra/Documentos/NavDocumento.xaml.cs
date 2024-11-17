@@ -48,12 +48,12 @@ namespace DataObra.Documentos
             string mensaje = docBuscado.Message;
             List<Biblioteca.Documento> listaDocumentos = docBuscado.docs;
 
-            //Mensaje para testeo
             if (docBuscado.Success == true)
             {
-                MessageBox.Show(resultado + " " + mensaje + " Cantidad: " + listaDocumentos.Count());
-
                 this.GrillaDocumentos.ItemsSource = listaDocumentos;
+
+                //MessageBox.Show(resultado + " " + mensaje + " Cantidad: " + listaDocumentos.Count());
+                this.BarraEstado.Content = "Se obtuvieron " + listaDocumentos.Count() + " documentos.";
             }
             else
             {
@@ -159,14 +159,15 @@ namespace DataObra.Documentos
             // Codigo a utilizar
             var respuesta = await ConsultasAPI.DeleteDocumentoAsync(pDocID);
 
-            //Respuestas
+            // Respuestas
             bool resultadoBorrado = respuesta.Success;  // true si lo borró, false si no existia el registro
             string mensaje = respuesta.Message;
 
-            //Mensaje para testeo
+            // Mensaje para testeo
             if (respuesta.Success != null)
             {
-                MessageBox.Show(respuesta.Success + " " + respuesta.Message);
+                //MessageBox.Show(respuesta.Success + " " + respuesta.Message);
+                this.BarraEstado.Content = "Se elimino el documento con ID " + pDocID.ToString();
             }
 
         }

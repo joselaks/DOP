@@ -44,12 +44,10 @@ namespace DataObra
             this.InicioLogListBox.ItemsSource = Inicio_QueueManager.Logs;
             this.InicioGrillaLogs.ItemsSource = Inicio_QueueManager.GetLogs();
 
-
             datosWeb = new DatosWeb();
             Solapa = "Inicio";
 
             GrupoAgrupadores();
-
             GrupoDocumentos();
             GrupoInsumos();
 
@@ -64,6 +62,30 @@ namespace DataObra
             this.GrillaDiagramaInsumos.Children.Add(diagInsumos);
 
             this.TabPrincipal.SelectedIndex = 0;
+
+            VerificaUsuario_Click(null, null);
+        }
+
+        private async void VerificaUsuario_Click(object sender, RoutedEventArgs e)
+        {
+            #region Datos para testeo
+            string email = "jose@dataobra.com"; // Email a validar
+            string pass = "contra"; // Contraseña
+            #endregion
+
+            // Codigo a utilizar
+            var respuesta = await InicioConsultasAPI.ValidarUsuarioAsync(email, pass);
+
+            // Respuestas
+            Usuario datosusuario = respuesta.Usuario;
+            bool conexionExitosa = respuesta.Success;
+            string mensaje = respuesta.Message;
+
+            // Mensaje para testeo
+            if (respuesta.Usuario != null)
+            {
+                MessageBox.Show(respuesta.Usuario.Nombre + " " + respuesta.Usuario.Apellido);
+            }
         }
 
         #region Tiles

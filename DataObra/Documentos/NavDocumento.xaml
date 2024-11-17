@@ -12,6 +12,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition x:Name="Columna" Width="230" />
@@ -26,11 +27,12 @@
         </StackPanel>
 
         <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-            <Button x:Name="NuevoDoc" Content="Nuevo" Width="85" Margin="5,5,0,0" Click="Menu_Click" />
+            <Button x:Name="NuevoDoc"  Content="Nuevo"  Width="85" Margin="5,5,0,0"  Click="Menu_Click" />
             <Button x:Name="EditarDoc" Content="Editar" Width="85" Margin="15,5,0,0" Click="Menu_Click" />
             <Button x:Name="BorrarDoc" Content="Borrar" Width="85" Margin="15,5,0,0" Click="Menu_Click" />
         </StackPanel>
 
+        <Label x:Name="BarraEstado" Grid.Row="2" Grid.Column="1" Content="Estado" HorizontalAlignment="Center" />
 
         <Syncfusion:SfDataGrid Name="GrillaDocumentos" Grid.Column="1" Grid.Row="1" AutoGenerateColumns="False" Margin="4,5,0,0"
                                MouseDoubleClick="MouseDoubleClick" IsReadOnly="True">
