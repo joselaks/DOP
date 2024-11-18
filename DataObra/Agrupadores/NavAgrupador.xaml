@@ -21,8 +21,9 @@
             </Kanban:SfKanban.IndicatorColorPalette>
             <Kanban:SfKanban.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Abrir Agrupador" Click="AbrirAgrupador_Click"/>
-                    <MenuItem Header="Editar Ficha" Click="EditarFicha_Click"/>
+                    <MenuItem Header="Nuevo"  Click="MenuNuevo_Click"/>
+                    <MenuItem Header="Editar" Click="MenuEditar_Click"/>
+                    <MenuItem Header="Borrar" Click="MenuBorrar_Click"/>
                 </ContextMenu>
             </Kanban:SfKanban.ContextMenu>
             <Kanban:KanbanColumn Categories="Pendientes" AllowDrop="True" IsExpanded="True" Title="Pendientes"/>

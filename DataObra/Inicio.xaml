@@ -221,8 +221,8 @@
                     </StackPanel>
 
                 </Grid>
-
             </syncfusion:TabItemExt>
+
             <syncfusion:TabItemExt Header="Agrupadores" >
 
                 <syncfusion:TabControlExt x:Name="TabAgrupadores" CloseButtonType="Hide" IsCustomTabItemContextMenuEnabled="True" NewButtonAlignment="First"

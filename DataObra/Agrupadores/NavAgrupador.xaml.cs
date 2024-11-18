@@ -1,4 +1,5 @@
-﻿using DataObra.Documentos;
+﻿using DataObra.Datos;
+using DataObra.Documentos;
 using DataObra.Sistema;
 using Syncfusion.UI.Xaml.Kanban;
 using Syncfusion.Windows.Shared;
@@ -23,10 +24,13 @@ namespace DataObra.Agrupadores.Clases
         #endregion
         TabItemExt TabItemAbierto;
         TabControl TabControlAbierto;
+        ConsultasAPI ConsultasAPI;
 
         public NavAgrupador(string pTipo, TabItemExt pTab, TabControlExt pTabControl)
         {
             InitializeComponent();
+            ConsultasAPI = new ConsultasAPI();
+
             TabItemAbierto = pTab;
             TabControlAbierto = pTabControl;
 
@@ -220,6 +224,46 @@ namespace DataObra.Agrupadores.Clases
         }
 
         #endregion
+
+        private async void MenuNuevo_Click(object sender, RoutedEventArgs e)
+        {
+            #region Datos para testeo 
+
+            var agupador = new Agrupador
+            {
+                // Define las propiedades del Agrupador
+                CuentaID = 1,
+                UsuarioID = 1,
+                TipoID = 'B',
+                Editado = DateTime.Now,
+                Descrip = "Agrupador",
+                Numero = 1,
+                Active = true,
+            };
+
+            #endregion
+
+            // Codigo a utilizar
+            var respuesta = await ConsultasAPI.PostAgrupadorAsync(agupador);
+
+            // Respuestas
+            int? nuevodoc = respuesta.Id;
+            bool conexionExitosa = respuesta.Success;
+            string mensaje = respuesta.Message;
+
+            // Mensaje para testeo
+            MessageBox.Show(respuesta.Success + " " + mensaje + " " + nuevodoc.ToString());
+        }
+
+        private void MenuEditar_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MenuBorrar_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
 
