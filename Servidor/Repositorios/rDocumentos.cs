@@ -206,7 +206,7 @@ namespace Servidor.Repositorios
                 parameters.Add("ID", id, DbType.Int32);
                 parameters.Add("Success", dbType: DbType.Boolean, direction: ParameterDirection.Output);
 
-                await db.ExecuteAsync("AgrupadorDelete", parameters, commandType: CommandType.StoredProcedure);
+                await db.ExecuteAsync("AgrupadoresDelete", parameters, commandType: CommandType.StoredProcedure);
 
                 bool success = parameters.Get<bool>("Success");
                 return success;

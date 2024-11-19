@@ -371,6 +371,77 @@ namespace DataObra.Datos
             }
         }
 
+        // Obtener agrupadores por cuentaID
+        public async Task<(bool Success, string Message, List<Agrupador> agrupadores)> ObtenerAgrupadoresPorCuentaID(int id)
+        {
+            var item = new QueueItem
+            {
+                Id = evento,
+                Url = $"{App.BaseUrl}agrupadores/cuenta/{id}",
+                Method = HttpMethod.Get
+            };
+            _queueManager.Enqueue(item);
+            evento++;
+
+            try
+            {
+                var response = await item.ResponseTaskCompletionSource.Task;
+                var responseString = await response.Content.ReadAsStringAsync();
+
+                // Deserializar la respuesta JSON
+                var resultado = JsonSerializer.Deserialize<List<Agrupador>>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                if (resultado != null)
+                {
+                    return (true, "Se obtuvieron los", resultado);
+                }
+                else
+                {
+                    return (false, "No se obtuvoieron documentos", resultado);
+                }
+
+            }
+            catch (HttpRequestException httpEx)
+            {
+                return (false, $"Error HTTP: {httpEx.Message}", null);
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error: {ex.Message}", null);
+            }
+        }
+
+        // Borrar agrupador
+        public async Task<(bool Success, string Message)> BorrarAgrupador(int id)
+        {
+            var item = new QueueItem
+            {
+                Id = evento,
+                Url = $"{App.BaseUrl}agrupadores/{id}",
+                Method = HttpMethod.Delete
+            };
+            _queueManager.Enqueue(item);
+            evento++;
+
+            try
+            {
+                var response = await item.ResponseTaskCompletionSource.Task;
+                var responseString = await response.Content.ReadAsStringAsync();
+
+                // Deserializar la respuesta JSON
+                var resultado = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                return (resultado.Success, resultado.Message);
+            }
+            catch (HttpRequestException httpEx)
+            {
+                return (false, $"Error HTTP: {httpEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error: {ex.Message}");
+            }
+        }
+
         //Documento Put
         public async Task<(bool Success, string Message)> PutDocumentoAsync(Documento modDoc)
         {
