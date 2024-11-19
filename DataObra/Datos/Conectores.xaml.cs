@@ -460,6 +460,66 @@ namespace DataObra.Datos
             _queueManager.Logs.Clear();
         }
 
-    
+        private async void nuevoDocDet_Click(object sender, RoutedEventArgs e)
+        {
+            #region Datos para testeo
+
+            var nuevoDocDet = new DocumentoDet
+            {
+                CuentaID = 1,
+                UsuarioID = 1,
+                Editado = DateTime.Now,
+                TipoID = 'C',
+                AdminID = null,
+                EntidadID = null,
+                DepositoID = null,
+                AcopioID = null,
+                PedidoID = null,
+                CompraID = null,
+                ContratoID = null,
+                FacturaID = null,
+                RemitoID = null,
+                ParteID = null,
+                ObraID = null,
+                PresupuestoID = null,
+                RubroID = null,
+                TareaID = null,
+                Fecha = null,
+                ArticuloDescrip = null,
+                ArticuloCantSuma = 1,
+                ArticuloCantResta = 1,
+                ArticuloPrecio = 1,
+                SumaPesos = null,
+                RestaPesos = null,
+                SumaDolares = null,
+                RestaDolares = null,
+                Cambio = 1
+
+            };
+
+            #endregion
+
+            // Código a utilizar
+            var respuesta = await consultasAPI.PostDocumentoDetAsync(nuevoDocDet);
+
+            // Respuestas
+            bool conexionExitosa = respuesta.Success;
+            string mensaje = respuesta.Message;
+
+            // Mensaje para testeo
+            MessageBox.Show(conexionExitosa + " " + mensaje);
+        }
+
+
+
+        private void obtenerDocDet_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void modificarDocDet_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

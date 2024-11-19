@@ -68,6 +68,21 @@ namespace Servidor.Repositorios
             return respuesta;
         }
 
+        public async Task<int> InsertarDocumentoDetAsync(DocumentoDet documentoDet)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters(documentoDet);
+                parameters.Add("@ID", dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+                await db.ExecuteAsync("DocumentosDetPost", parameters, commandType: CommandType.StoredProcedure);
+                int id = parameters.Get<int>("@ID");
+
+                return id;
+            }
+        }
+
+
         #endregion
 
         #region Get
@@ -128,6 +143,25 @@ namespace Servidor.Repositorios
             }
         }
 
+        public async Task<IEnumerable<DocumentoDet>> ObtenerDocumentosDetPorCampoAsync(int id, string fieldName)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@ID", id, DbType.Int32);
+                parameters.Add("@FieldName", fieldName, DbType.String);
+
+                var documentosDet = await db.QueryAsync<DocumentoDet>(
+                    "DocumentosDetGetDocumentoID",
+                    parameters,
+                    commandType: CommandType.StoredProcedure
+                );
+
+                return documentosDet;
+            }
+        }
+
+
         #endregion
 
         #region Put
@@ -159,6 +193,23 @@ namespace Servidor.Repositorios
                 return success;
             }
         }
+
+        public async Task<string> ActualizarOEliminarDocumentoDetAsync(DocumentoDet documentoDet)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters(documentoDet);
+                parameters.Add("@Mensaje", dbType: DbType.String, direction: ParameterDirection.Output, size: 50);
+
+                await db.ExecuteAsync("DocumentosDetPut", parameters, commandType: CommandType.StoredProcedure);
+
+                string mensaje = parameters.Get<string>("@Mensaje");
+                return mensaje;
+            }
+        }
+
+
+
 
         #endregion
 

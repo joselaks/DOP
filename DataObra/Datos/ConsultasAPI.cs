@@ -11,6 +11,7 @@ using System.Security.Policy;
 using System.Net;
 using Syncfusion.UI.Xaml.Diagram;
 using DataObra.Agrupadores;
+using System.Text;
 
 namespace DataObra.Datos
 {
@@ -475,6 +476,100 @@ namespace DataObra.Datos
             }
         }
 
+        //DocumentoDet Post
+        public async Task<(bool Success, string Message)> PostDocumentoDetAsync(DocumentoDet nuevoDocDet)
+        {
+            var item = new QueueItem
+            {
+                Id = evento,
+                Url = $"{App.BaseUrl}documentosdet",
+                Method = HttpMethod.Post,
+                Data = nuevoDocDet
+            };
+            _queueManager.Enqueue(item);
+            evento++;
+
+            try
+            {
+                var response = await item.ResponseTaskCompletionSource.Task;
+                var responseString = await response.Content.ReadAsStringAsync();
+
+                // Deserializar la respuesta JSON
+                var resultado = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                return (resultado.Success, resultado.Message);
+            }
+            catch (HttpRequestException httpEx)
+            {
+                return (false, $"Error HTTP: {httpEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error: {ex.Message}");
+            }
+        }
+
+        // DocumentoDet Get por ID y campo
+        public async Task<(bool Success, string Message, List<DocumentoDet> DocumentosDet)> GetDocumentosDetPorCampoAsync(int id, string fieldName)
+        {
+            var item = new QueueItem
+            {
+                Id = evento,
+                Url = $"{App.BaseUrl}documentosdet/{fieldName}/{id}",
+                Method = HttpMethod.Get
+            };
+            _queueManager.Enqueue(item);
+            evento++;
+
+            try
+            {
+                var response = await item.ResponseTaskCompletionSource.Task;
+                var responseString = await response.Content.ReadAsStringAsync();
+                var documentosDet = JsonSerializer.Deserialize<List<DocumentoDet>>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                return (true, "DocumentosDet obtenidos exitosamente.", documentosDet);
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error: {ex.Message}", null);
+            }
+        }
+
+
+        // DocumentoDet Put yncluye borrado cuando no esta vinculado a ningún documento
+        public async Task<(bool Success, string Message)> PutDocumentoDetAsync(DocumentoDet documentoDet)
+        {
+            var item = new QueueItem
+            {
+                Id = evento,
+                Url = $"{App.BaseUrl}documentosdet/put",
+                Method = HttpMethod.Put,
+                Data = new StringContent(JsonSerializer.Serialize(documentoDet), Encoding.UTF8, "application/json")
+            };
+            _queueManager.Enqueue(item);
+            evento++;
+
+            try
+            {
+                var response = await item.ResponseTaskCompletionSource.Task;
+                var responseString = await response.Content.ReadAsStringAsync();
+                var resultado = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                return (resultado.Success, resultado.Message);
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error: {ex.Message}");
+            }
+        }
+
+
+
+
+
+
+
+
+
+
         //private void DisplayData(List<Documento> documentos)
         //{
         //    // Lógica para mostrar los datos en la UI
@@ -491,6 +586,12 @@ namespace DataObra.Datos
         //    _queueManager.StopProcessing(); // Detiene el procesamiento cuando se cierra la ventana
         //}
     }
+
+
+
+
+
+
 
     public class ResultadoOperacion
     {

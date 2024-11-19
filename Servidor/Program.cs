@@ -93,6 +93,7 @@ app.UseAuthorization();
 
 var usu = app.MapGroup("/usuarios");
 var doc = app.MapGroup("/documentos");
+var dod = app.MapGroup("/documentosdet");
 var agr = app.MapGroup("/agrupadores");
 
 usu.MapGet("validacion/", async (string email, string pass, rUsuarios repo) =>
@@ -202,12 +203,12 @@ agr.MapPut("/", async (rDocumentos repositorio, AgrupadorAPI agrupador) =>
 
     if (resultado)
     {
-        // Si se eliminó, devolvemos un estado 200 (Ok) con éxito y mensaje
+        // Si se modificó, devolvemos un estado 200 (Ok) con éxito y mensaje
         return Results.Ok(new { Success = true, Message = "Agrupador modificado exitosamente." });
     }
     else
     {
-        // Si no se encontró el documento para eliminar, devolvemos un estado estado 200 (Ok) con mensaje avisando que no lo encontró
+        // Si no se encontró el documento para modificar, devolvemos un estado estado 200 (Ok) con mensaje avisando que no lo encontró
         return Results.Ok(new { Success = false, Message = "No se encontró el agrupador para modificar." });
     }
 }).RequireAuthorization();
@@ -232,11 +233,43 @@ agr.MapDelete("/{id:int}", async (rDocumentos repositorio, int id) =>
     }
 }).RequireAuthorization();
 
-app.Run();
+dod.MapPost("/", async (rDocumentos repositorio, DocumentoDet documento) =>
+{
+    var nuevoDocumento = await repositorio.InsertarDocumentoDetAsync(documento);
+    return Results.Created($"documentosdet/{nuevoDocumento}", nuevoDocumento);
+}).RequireAuthorization();
+
+
+dod.MapGet("/{id:int}/{fieldName}", async (rDocumentos repositorio, int id, string fieldName) =>
+{
+    var documentos = await repositorio.ObtenerDocumentosDetPorCampoAsync(id, fieldName);
+    return documentos != null ? Results.Ok(documentos) : Results.NotFound(new { Mensaje = "No se encontraron documentos con el CuentaID proporcionado." });
+}).RequireAuthorization();
+
+dod.MapPut("/", async (rDocumentos repositorio, DocumentoDet documento) =>
+{
+    var resultado = await repositorio.ActualizarOEliminarDocumentoDetAsync(documento);
+    if (resultado != null)
+    {
+        // Si se modificó, devolvemos un estado 200 (Ok) con éxito y mensaje
+        return Results.Ok(new { Success = true, Message = resultado });
+    }
+    else
+    {
+        // Si no se encontró el documento para modificar, devolvemos un estado estado 200 (Ok) con mensaje avisando que no lo encontró
+        return Results.Ok(new { Success = false, Message = "No se encontró el registro para modificar." });
+    }
+
+
+}).RequireAuthorization();
+
+
 
 
 
 
 #endregion
 
+
+app.Run();
 
