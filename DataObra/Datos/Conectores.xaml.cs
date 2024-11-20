@@ -503,23 +503,104 @@ namespace DataObra.Datos
             var respuesta = await consultasAPI.PostDocumentoDetAsync(nuevoDocDet);
 
             // Respuestas
+            int? nuevoDetalle = respuesta.id;   
             bool conexionExitosa = respuesta.Success;
             string mensaje = respuesta.Message;
 
             // Mensaje para testeo
-            MessageBox.Show(conexionExitosa + " " + mensaje);
+            MessageBox.Show(conexionExitosa + " " + mensaje + " " + nuevoDetalle.ToString());
         }
 
 
+        // Obtiene el detalle de un documento, especificando el ID y el nombre del tipo de documento ( FacturaID, RemitoID, etc)
+        private async void obtenerDocDet_Click(object sender, RoutedEventArgs e)
+        {
+            
+                #region Datos para testeo
+                int id = 1; // ID del documento a obtener
+                string fieldName = "FacturaID"; // Nombre del campo por el cual se va a filtrar
+                #endregion
 
-        private void obtenerDocDet_Click(object sender, RoutedEventArgs e)
+                // Código a utilizar
+                var respuesta = await consultasAPI.GetDocumentosDetPorCampoAsync(id, fieldName);
+
+                // Respuestas
+                bool resultado = respuesta.Success;
+                string mensaje = respuesta.Message;
+                List<DocumentoDet> documentosDet = respuesta.DocumentosDet;
+
+                // Mensaje para testeo
+                if (respuesta.Success)
+                {
+                    MessageBox.Show(resultado + " " + mensaje + " Cantidad: " + documentosDet.Count());
+                }
+                else
+                {
+                    MessageBox.Show("No hay registros");
+                }
+
+        }
+
+        // Modifica un detalle de documento, pero si todos los campos de ID de tipo de documento son null, borra el registro
+        private async void modificarDocDet_Click(object sender, RoutedEventArgs e)
         {
 
-        }
+            #region Datos para testeo
+            var modificaDocDet = new DocumentoDet
+            {
+                ID = 8,
+                CuentaID = 1,
+                UsuarioID = 1,
+                Editado = DateTime.Now,
+                TipoID = 'C',
+                AdminID = null,
+                EntidadID = null,
+                DepositoID = null,
+                AcopioID = null,
+                PedidoID = null,
+                CompraID = null,
+                ContratoID = null,
+                FacturaID = null,
+                RemitoID = null,
+                ParteID = null,
+                ObraID = null,
+                PresupuestoID = null,
+                RubroID = null,
+                TareaID = null,
+                Fecha = null,
+                ArticuloDescrip = null,
+                ArticuloCantSuma = 1,
+                ArticuloCantResta = 1,
+                ArticuloPrecio = 1,
+                SumaPesos = null,
+                RestaPesos = null,
+                SumaDolares = null,
+                RestaDolares = null,
+                Cambio = 1
 
-        private void modificarDocDet_Click(object sender, RoutedEventArgs e)
-        {
+            };
+            #endregion
 
+            // Código a utilizar
+            var respuesta = await consultasAPI.PutDocumentoDetAsync(modificaDocDet);
+
+            // Respuestas
+            bool resultado = respuesta.Success;
+            string mensaje = respuesta.Message;
+
+            // Mensaje para testeo
+            if (respuesta.Success)
+            {
+                MessageBox.Show("Registro modificado exitosamente: " + mensaje);
+            }
+            else
+            {
+                MessageBox.Show("Error al modificar el documento: " + mensaje);
+            }
         }
+           
+
+
+      
     }
 }

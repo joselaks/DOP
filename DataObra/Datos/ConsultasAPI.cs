@@ -53,7 +53,7 @@ namespace DataObra.Datos
                 var response = await item.ResponseTaskCompletionSource.Task;
                 var responseString = await response.Content.ReadAsStringAsync();
                 var nuevoDocumentoID = JsonSerializer.Deserialize<int>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                return (true, "Documento insertado con ID", nuevoDocumentoID);
+                return (true, "Documento insertado con ID: ", nuevoDocumentoID);
             }
             catch (Exception ex)
             {
@@ -397,7 +397,7 @@ namespace DataObra.Datos
                 }
                 else
                 {
-                    return (false, "No se obtuvoieron documentos", resultado);
+                    return (false, "No se obtuvieron documentos", resultado);
                 }
 
             }
@@ -477,7 +477,7 @@ namespace DataObra.Datos
         }
 
         //DocumentoDet Post
-        public async Task<(bool Success, string Message)> PostDocumentoDetAsync(DocumentoDet nuevoDocDet)
+        public async Task<(bool Success, string Message, int? id)> PostDocumentoDetAsync(DocumentoDet nuevoDocDet)
         {
             var item = new QueueItem
             {
@@ -493,19 +493,12 @@ namespace DataObra.Datos
             {
                 var response = await item.ResponseTaskCompletionSource.Task;
                 var responseString = await response.Content.ReadAsStringAsync();
-
-                // Deserializar la respuesta JSON
-                var resultado = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-                return (resultado.Success, resultado.Message);
-            }
-            catch (HttpRequestException httpEx)
-            {
-                return (false, $"Error HTTP: {httpEx.Message}");
+                var nuevoDocumentoID = JsonSerializer.Deserialize<int>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                return (true, "Documento insertado con ID: ", nuevoDocumentoID);
             }
             catch (Exception ex)
             {
-                return (false, $"Error: {ex.Message}");
+                return (false, $"Error: {ex.Message}", null);
             }
         }
 
@@ -526,7 +519,15 @@ namespace DataObra.Datos
                 var response = await item.ResponseTaskCompletionSource.Task;
                 var responseString = await response.Content.ReadAsStringAsync();
                 var documentosDet = JsonSerializer.Deserialize<List<DocumentoDet>>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                return (true, "DocumentosDet obtenidos exitosamente.", documentosDet);
+                if (documentosDet.Count()>1)
+                {
+                    return (true, "Detalles obtenidos exitosamente.", documentosDet);
+                }
+                else
+                {
+                    return (false, "No hay detalles ", null);
+
+                }
             }
             catch (Exception ex)
             {
@@ -535,15 +536,15 @@ namespace DataObra.Datos
         }
 
 
-        // DocumentoDet Put yncluye borrado cuando no esta vinculado a ningún documento
+        // DocumentoDet Put incluye borrado cuando no esta vinculado a ningún documento
         public async Task<(bool Success, string Message)> PutDocumentoDetAsync(DocumentoDet documentoDet)
         {
             var item = new QueueItem
             {
                 Id = evento,
-                Url = $"{App.BaseUrl}documentosdet/put",
+                Url = $"{App.BaseUrl}documentosdet",
                 Method = HttpMethod.Put,
-                Data = new StringContent(JsonSerializer.Serialize(documentoDet), Encoding.UTF8, "application/json")
+                Data = documentoDet
             };
             _queueManager.Enqueue(item);
             evento++;
