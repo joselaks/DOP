@@ -241,5 +241,51 @@ namespace DataObra.Documentos
         }
 
         #endregion Pantalla
+
+        private async void ListaDocumentosAsync(short pCuentaID)
+        {
+            // Código a utilizar
+            var docBuscado = await ConsultasAPI.ObtenerDocumentosPorCuentaID(pCuentaID);
+
+            // Respuestas
+            bool resultado = docBuscado.Success;
+            string mensaje = docBuscado.Message;
+            List<Biblioteca.Documento> listaDocumentos = docBuscado.docs;
+
+            if (docBuscado.Success == true)
+            {
+                this.GrillaDocumentos.ItemsSource = listaDocumentos;
+            }
+            else
+            {
+                MessageBox.Show("No hay Documentos");
+            }
+        }
+
+        private void GrillaPrincipal_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ListaDocumentosAsync(1);
+        }
+
+        private void Vincular_Click(object sender, RoutedEventArgs e)
+        {
+            // Obtener el ítem seleccionado desde el SfDataGrid
+            var selectedItem = GrillaDocumentos.SelectedItem as Biblioteca.Documento;
+
+            if (selectedItem != null)
+            {
+                // Implementa tu lógica aquí
+                MessageBox.Show($"Seleccionado: ID {selectedItem.ID}, Descripción: {selectedItem.Descrip}");
+            }
+            else
+            {
+                MessageBox.Show("No se ha seleccionado ningún ítem.");
+            }
+        }
+
+        private void DesVincular_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
