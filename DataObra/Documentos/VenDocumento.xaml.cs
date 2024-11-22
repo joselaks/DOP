@@ -58,6 +58,8 @@ namespace DataObra.Documentos
         {
             if (pDocumento != null)
             {
+                BuscaDocRel(pDocumento.ID);
+
                 if (DocumentosTipos.DocumentosPorTipo.TryGetValue(Tipo, out var listaDocumentos))
                 {
                     bool esPrimero = true;
@@ -86,6 +88,28 @@ namespace DataObra.Documentos
                 ControlDocumentos.Items.Add(nuevoTile);
                 GrillaVenDocumento.Children.Clear();
                 GrillaVenDocumento.Children.Add(ControlDocumentos);
+            }
+        }
+
+        // Obtiene las relaciones de un documento desde el superiorID
+        private async void BuscaDocRel(int pSuperiorID)
+        {
+            // Código a utilizar
+            var docBuscado = await ConsultasAPI.GetDocumentosRelPorSupIDAsync(pSuperiorID);
+
+            // Respuestas
+            bool resultado = docBuscado.Success;
+            string mensaje = docBuscado.Message;
+            List<Biblioteca.DocumentoRel> documento = docBuscado.DocumentosRel;
+
+            //Mensaje para testeo
+            if (docBuscado.Success == true)
+            {
+                MessageBox.Show(resultado + " " + mensaje + " Cantidad: " + documento.Count());
+            }
+            else
+            {
+                MessageBox.Show("No hay registros");
             }
         }
 

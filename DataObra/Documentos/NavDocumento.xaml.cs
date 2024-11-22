@@ -38,7 +38,7 @@ namespace DataObra.Documentos
             ListaDocumentosAsync(1);
         }
 
-        private async void ListaDocumentosAsync(byte pCuentaID)
+        private async void ListaDocumentosAsync(short pCuentaID)
         {
             // Código a utilizar
             var docBuscado = await ConsultasAPI.ObtenerDocumentosPorCuentaID(pCuentaID);

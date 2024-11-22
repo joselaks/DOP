@@ -266,7 +266,7 @@
                 </Grid>
             </Border>
 
-        <TabControl Grid.Row="3" Margin="5,0,0,0" Grid.ColumnSpan="{Binding ElementName=GrillaPrincipal, Path=ColumnDefinitions.Count}" >
+        <TabControl SelectionChanged="GrillaPrincipal_SelectionChanged" Grid.Row="3" Margin="5,0,0,0" Grid.ColumnSpan="{Binding ElementName=GrillaPrincipal, Path=ColumnDefinitions.Count}" >
             <TabItem Header="Insumos">
                 
             </TabItem>
@@ -274,6 +274,36 @@
 
             </TabItem>
             <TabItem Header="Impuestos">
+
+            </TabItem>
+
+            <TabItem Header="Documentos">
+                <Syncfusion:SfDataGrid Name="GrillaDocumentos" Grid.Column="1" Grid.Row="1" AutoGenerateColumns="False" Margin="4,5,0,0"
+                        IsReadOnly="True">
+                    
+                    <Syncfusion:SfDataGrid.Columns>
+                        <Syncfusion:GridTextColumn HeaderText="ID" MappingName="ID" Width="92"/>
+                        <Syncfusion:GridTextColumn HeaderText="Tipo" MappingName="Tipo" Width="92"/>
+                        <Syncfusion:GridDateTimeColumn HeaderText="Fecha" MappingName="Fecha1" Width="90"/>
+                        <Syncfusion:GridTextColumn HeaderText="Obra" MappingName="Obra" Width="90"/>
+                        <Syncfusion:GridTextColumn HeaderText="Admin" MappingName="Admin" Width="90"/>
+                        <Syncfusion:GridTextColumn HeaderText="Tipo Ent." MappingName="EntidadTipo" Width="90"/>
+                        <Syncfusion:GridTextColumn HeaderText="Entidad" MappingName="Entidad" Width="90"/>
+                        <Syncfusion:GridTextColumn HeaderText="Descripcion" MappingName="Descripcion" Width="90"/>
+                        <Syncfusion:GridTextColumn HeaderText="Numero" MappingName="Numero" Width="90"/>
+                        <Syncfusion:GridTextColumn HeaderText="Pesos" MappingName="Pesos" Width="90"/>
+                        <Syncfusion:GridTextColumn HeaderText="Dolares" MappingName="Dolares" Width="90"/>
+                        <Syncfusion:GridTextColumn HeaderText="Impuestos" MappingName="Impuestos" Width="90"/>
+                        <Syncfusion:GridTextColumn HeaderText="Usuario" MappingName="Usuario" Width="90"/>
+                        <Syncfusion:GridTextColumn HeaderText="Verifica" MappingName="Verifica" Width="90"/>
+                    </Syncfusion:SfDataGrid.Columns>
+                    <Syncfusion:SfDataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Vincular"    Click="Vincular_Click"/>
+                            <MenuItem Header="DesVincular" Click="DesVincular_Click"/>
+                        </ContextMenu>
+                    </Syncfusion:SfDataGrid.ContextMenu>
+                </Syncfusion:SfDataGrid>
 
             </TabItem>
 

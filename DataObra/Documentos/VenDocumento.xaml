@@ -15,7 +15,8 @@
     </Window.Resources>
     <Grid x:Name="GrillaVenDocumento">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition x:Name="VerDocumento" Width="*"/>
+            <ColumnDefinition x:Name="VincularDoc" Width="10"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
