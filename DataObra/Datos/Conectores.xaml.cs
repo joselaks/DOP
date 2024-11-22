@@ -596,5 +596,6 @@ namespace DataObra.Datos
         {
             _queueManager.Logs.Clear();
         }
+
       }
 }
