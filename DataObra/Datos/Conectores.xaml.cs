@@ -222,7 +222,7 @@ namespace DataObra.Datos
 
         #endregion
 
-        #region GET
+        #region Get
 
 
         //Verifica un usuario, graba el Token y obtiene sus datos
