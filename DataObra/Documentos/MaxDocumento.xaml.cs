@@ -19,6 +19,7 @@ using System.Windows.Shapes;
 using Syncfusion.Windows.Shared;
 using Syncfusion.Windows.Tools.Controls;
 using System.ComponentModel;
+using Syncfusion.Windows.PropertyGrid;
 
 namespace DataObra.Documentos
 {
@@ -294,8 +295,13 @@ namespace DataObra.Documentos
 
         }
 
-        private async void Control_LostFocus(object sender, RoutedEventArgs e)
+        private async void Control_LostFocusOrEnter(object sender, RoutedEventArgs e)
         {
+            if (e is KeyEventArgs keyEventArgs && keyEventArgs.Key != Key.Enter)
+            {
+                return;
+            }
+
             if (sender is TextBox textBox)
             {
                 var binding = textBox.GetBindingExpression(TextBox.TextProperty);
@@ -315,13 +321,37 @@ namespace DataObra.Documentos
             // Agrega más condiciones para otros tipos de controles si es necesario
 
             // Llama a la función para guardar los cambios en el objeto oActivo
-
             Biblioteca.Documento wDoc = new Biblioteca.Documento();
             wDoc = Documento.ConvertirInverso(oActivo);
 
-
             var respuesta = await ConsultasAPI.PutDocumentoAsync(wDoc);
-            
+            MessageBox.Show(respuesta.Message, respuesta.Success ? "Éxito" : "Error");
         }
+
+        private async void DateTimeEdit_DateTimeChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (sender is Syncfusion.Windows.Shared.DateTimeEdit dateTimeEdit)
+            {
+                var binding = dateTimeEdit.GetBindingExpression(Syncfusion.Windows.Shared.DateTimeEdit.TextProperty);
+                if (binding != null)
+                {
+                    binding.UpdateSource();
+                }
+            }
+
+            if (oActivo!=null)
+            {
+
+                // Llama a la función para guardar los cambios en el objeto oActivo
+                Biblioteca.Documento wDoc = new Biblioteca.Documento();
+                wDoc = Documento.ConvertirInverso(oActivo);
+
+                var respuesta = await ConsultasAPI.PutDocumentoAsync(wDoc);
+                MessageBox.Show(respuesta.Message, respuesta.Success ? "Éxito" : "Error");
+
+            }
+
+        }
+
     }
 }
