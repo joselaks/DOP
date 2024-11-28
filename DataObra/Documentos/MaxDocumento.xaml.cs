@@ -18,6 +18,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Syncfusion.Windows.Shared;
 using Syncfusion.Windows.Tools.Controls;
+using System.ComponentModel;
 
 namespace DataObra.Documentos
 {
@@ -99,6 +100,11 @@ namespace DataObra.Documentos
             }
 
             this.DataContext = oActivo;
+        }
+
+        private void OActivo_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            MessageBox.Show("cambio");
         }
 
         #region COMBOS
@@ -286,6 +292,36 @@ namespace DataObra.Documentos
         private void DesVincular_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private async void Control_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (sender is TextBox textBox)
+            {
+                var binding = textBox.GetBindingExpression(TextBox.TextProperty);
+                if (binding != null)
+                {
+                    binding.UpdateSource();
+                }
+            }
+            else if (sender is Syncfusion.Windows.Shared.DateTimeEdit dateTimeEdit)
+            {
+                var binding = dateTimeEdit.GetBindingExpression(Syncfusion.Windows.Shared.DateTimeEdit.TextProperty);
+                if (binding != null)
+                {
+                    binding.UpdateSource();
+                }
+            }
+            // Agrega más condiciones para otros tipos de controles si es necesario
+
+            // Llama a la función para guardar los cambios en el objeto oActivo
+
+            Biblioteca.Documento wDoc = new Biblioteca.Documento();
+            wDoc = Documento.ConvertirInverso(oActivo);
+
+
+            var respuesta = await ConsultasAPI.PutDocumentoAsync(wDoc);
+            
         }
     }
 }
