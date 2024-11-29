@@ -30,12 +30,21 @@ namespace DataObra.Documentos
         Documento oActivo;
         string TextBoxValueAnterior;
         Servidor azure = new Servidor();
+        Documentos.Controles.PresDetalle presDetalle;
         #endregion
 
         public MaxDocumento(Biblioteca.Documento pDoc) 
         {
             InitializeComponent();
             ConsultasAPI = new ConsultasAPI();
+            // si es presupuesto
+            if (pDoc.TipoID==10)
+            {
+                this.grillaDetalle.Children.Clear();
+                presDetalle = new Documentos.Controles.PresDetalle();
+                this.grillaDetalle.Children.Add(presDetalle);
+
+            }
 
             #region COMBOS
             this.ComboObras.ItemsSource = azure.Agrupadores.Where(a => a.TipoID == 1).OrderBy(a => a.Descrip);
