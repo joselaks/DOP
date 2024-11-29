@@ -55,22 +55,21 @@
                 <TextBlock Grid.Row="1" Grid.Column="4" Text="Número: " HorizontalAlignment="Right" VerticalAlignment="Center" />
 
 
-                <!-- este control tienen implementado LostFocus y KeyDown  -->
-                <TextBox x:Name="txtNumero1" Grid.Row="1" Grid.Column="5" Text="{Binding Numero1, Mode=TwoWay, UpdateSourceTrigger=Explicit}" Width="69" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Right" LostFocus="Control_LostFocusOrEnter" KeyDown="Control_LostFocusOrEnter" />
+                <TextBox x:Name="txtNumero1" Grid.Row="1" Grid.Column="5" Text="{Binding Numero1, Mode=TwoWay, UpdateSourceTrigger=Explicit}" Width="69" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Right" LostFocus="Control_LostFocusOrEnter" KeyDown="Control_LostFocusOrEnter" GotFocus="TextBox_GotFocus" />
 
-                <Syncfusion:DateTimeEdit Grid.Column="2" Grid.Row="1" Text="{Binding Fecha1, StringFormat='{}{0:dd/MM/yy}'}" Width="92" Height="21" Pattern="ShortDate" CultureInfo="bs-Latn-BA" HorizontalAlignment="Left" DateTimeChanged="DateTimeEdit_DateTimeChanged" />
+                <Syncfusion:DateTimeEdit Grid.Column="2" Grid.Row="1" Text="{Binding Fecha1, StringFormat='{}{0:dd/MM/yy}'}" Width="92" Height="21" Pattern="ShortDate" CultureInfo="bs-Latn-BA" HorizontalAlignment="Left" x:Name="cFecha1" DateTimeChanged="cFecha_DateTimeChanged" />
 
                 <!--  -->
 
-                <Syncfusion:DateTimeEdit Grid.Column="2" Grid.Row="2" Text="{Binding Fecha2, StringFormat='{}{0:dd/MM/yy}'}" Width="92" Height="21" Pattern="ShortDate" CultureInfo="bs-Latn-BA" HorizontalAlignment="Left"  />
-                <Syncfusion:DateTimeEdit Grid.Column="2" Grid.Row="3" Text="{Binding Fecha3, StringFormat='{}{0:dd/MM/yy}'}" Width="92" Height="21" Pattern="ShortDate" CultureInfo="bs-Latn-BA" HorizontalAlignment="Left"  />
+                <Syncfusion:DateTimeEdit Grid.Column="2" Grid.Row="2" Text="{Binding Fecha2, StringFormat='{}{0:dd/MM/yy}'}" Width="92" Height="21" Pattern="ShortDate" CultureInfo="bs-Latn-BA" HorizontalAlignment="Left"  x:Name="cFecha2" DateTimeChanged="cFecha_DateTimeChanged"/>
+                <Syncfusion:DateTimeEdit Grid.Column="2" Grid.Row="3" Text="{Binding Fecha3, StringFormat='{}{0:dd/MM/yy}'}" Width="92" Height="21" Pattern="ShortDate" CultureInfo="bs-Latn-BA" HorizontalAlignment="Left"  x:Name="cFecha3" DateTimeChanged="cFecha_DateTimeChanged"/>
               
 
 
                 <TextBlock Grid.Row="2" Grid.Column="4" Text="Sucursal: " HorizontalAlignment="Right" VerticalAlignment="Center" />
                 <TextBox Grid.Row="2" Grid.Column="5" Text="{Binding Numero2}" Width="69" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Right" />
-                <TextBlock Grid.Row="3" Grid.Column="4" Text="Archivo: " HorizontalAlignment="Right" VerticalAlignment="Center" />
-                <TextBox Grid.Row="3" Grid.Column="5" Text="{Binding Numero3}" Width="69" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Right" />
+                <TextBlock Grid.Row="3" Grid.Column="4" Text="Archivo: " HorizontalAlignment="Right" VerticalAlignment="Center" LostFocus="Control_LostFocusOrEnter" KeyDown="Control_LostFocusOrEnter" GotFocus="TextBox_GotFocus"/>
+                <TextBox Grid.Row="3" Grid.Column="5" Text="{Binding Numero3}" Width="69" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Right" LostFocus="Control_LostFocusOrEnter" KeyDown="Control_LostFocusOrEnter" GotFocus="TextBox_GotFocus"/>
 
                 <StackPanel Grid.Row="1" Grid.Column="7" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,3,0" >
                     <TextBlock Text="Estado: " Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" />
@@ -143,7 +142,7 @@
 
                 <TextBlock Text="Área Administrativa" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" />
 
-                <TextBlock Text="Admin: " Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" ToolTip="Empresa o Administración asignada" />
+                <TextBlock Text="Admin: " Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" ToolTip="Empresa o Administración asignada" LostFocus="Control_LostFocusOrEnter" KeyDown="Control_LostFocusOrEnter" GotFocus="TextBox_GotFocus"/>
                 <Syncfusion:ComboBoxAdv Grid.Row="1" Grid.Column="1" Name="ComboAdmin" Height="23" HorizontalAlignment="Left" VerticalAlignment="Center" Width="192" DisplayMemberPath="Descrip" SelectedValuePath="ID" SelectionChanged="ComboAdmin_SelectionChanged" >
                 </Syncfusion:ComboBoxAdv>
 
@@ -216,7 +215,7 @@
                 <TextBlock Grid.Row="0" Text="Titulo" TextAlignment="Center" VerticalAlignment="Center" />
                 <TextBox Grid.Row="1" Text="{Binding Descrip}" MaxLength="50" TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Disabled" VerticalContentAlignment="Stretch" />
                 <TextBlock Grid.Row="2" Text="Notas" TextAlignment="Center" VerticalAlignment="Center" />
-                <TextBox Grid.Row="3" Name="Descrip" Text="{Binding Notas}" MaxLength="300" TextAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Visible" VerticalContentAlignment="Stretch" AcceptsReturn="True" />
+                <TextBox Grid.Row="3" Name="Descrip" Text="{Binding Notas}" MaxLength="300" TextAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Visible" VerticalContentAlignment="Stretch" AcceptsReturn="True" LostFocus="Control_LostFocusOrEnter" KeyDown="Control_LostFocusOrEnter" GotFocus="TextBox_GotFocus" />
 
             </Grid>
         </Border>

@@ -28,7 +28,7 @@ namespace DataObra.Documentos
         #region Inicializa
         ConsultasAPI ConsultasAPI;
         Documento oActivo;
-
+        string TextBoxValueAnterior;
         Servidor azure = new Servidor();
         #endregion
 
@@ -295,8 +295,17 @@ namespace DataObra.Documentos
 
         }
 
+        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (sender is TextBox textBox)
+            {
+                TextBoxValueAnterior = textBox.Text;
+            }
+        }
+
         private async void Control_LostFocusOrEnter(object sender, RoutedEventArgs e)
         {
+
             if (e is KeyEventArgs keyEventArgs && keyEventArgs.Key != Key.Enter)
             {
                 return;
@@ -304,54 +313,56 @@ namespace DataObra.Documentos
 
             if (sender is TextBox textBox)
             {
-                var binding = textBox.GetBindingExpression(TextBox.TextProperty);
-                if (binding != null)
+                string newTextBoxValue = textBox.Text;
+                if (newTextBoxValue!= TextBoxValueAnterior) 
                 {
-                    binding.UpdateSource();
+                    var binding = textBox.GetBindingExpression(TextBox.TextProperty);
+                    if (binding != null)
+                    {
+                        binding.UpdateSource();
+                    }
+                    // Agregar más condiciones para otros tipos de controles si es necesario
+
+                    // Llama a la función para guardar los cambios en el objeto oActivo
+                    Biblioteca.Documento wDoc = new Biblioteca.Documento();
+                    wDoc = Documento.ConvertirInverso(oActivo);
+
+                    var respuesta = await ConsultasAPI.PutDocumentoAsync(wDoc);
+                    MessageBox.Show(respuesta.Message, respuesta.Success ? "Éxito" : "Error");
+                    TextBoxValueAnterior = newTextBoxValue;
                 }
             }
-            else if (sender is Syncfusion.Windows.Shared.DateTimeEdit dateTimeEdit)
-            {
-                var binding = dateTimeEdit.GetBindingExpression(Syncfusion.Windows.Shared.DateTimeEdit.TextProperty);
-                if (binding != null)
-                {
-                    binding.UpdateSource();
-                }
-            }
-            // Agrega más condiciones para otros tipos de controles si es necesario
 
-            // Llama a la función para guardar los cambios en el objeto oActivo
-            Biblioteca.Documento wDoc = new Biblioteca.Documento();
-            wDoc = Documento.ConvertirInverso(oActivo);
-
-            var respuesta = await ConsultasAPI.PutDocumentoAsync(wDoc);
-            MessageBox.Show(respuesta.Message, respuesta.Success ? "Éxito" : "Error");
         }
 
-        private async void DateTimeEdit_DateTimeChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private async void cFecha_DateTimeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (sender is Syncfusion.Windows.Shared.DateTimeEdit dateTimeEdit)
+            if (d is FrameworkElement element)
             {
-                var binding = dateTimeEdit.GetBindingExpression(Syncfusion.Windows.Shared.DateTimeEdit.TextProperty);
-                if (binding != null)
+                if (oActivo != null && e.NewValue != e.OldValue)
                 {
-                    binding.UpdateSource();
+                    switch (element.Name)
+                    {
+                        case "cFecha1":
+                            oActivo.Fecha1 = (DateTime)e.NewValue;
+                            break;
+                        case "cFecha2":
+                            oActivo.Fecha2 = (DateTime?)e.NewValue;
+                            break;
+                        case "cFecha3":
+                            oActivo.Fecha3 = (DateTime?)e.NewValue;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    Biblioteca.Documento wDoc = new Biblioteca.Documento();
+                    wDoc = Documento.ConvertirInverso(oActivo);
+
+                    var respuesta = await ConsultasAPI.PutDocumentoAsync(wDoc);
+                    MessageBox.Show(respuesta.Message, respuesta.Success ? "Éxito" : "Error");
                 }
             }
-
-            if (oActivo!=null)
-            {
-
-                // Llama a la función para guardar los cambios en el objeto oActivo
-                Biblioteca.Documento wDoc = new Biblioteca.Documento();
-                wDoc = Documento.ConvertirInverso(oActivo);
-
-                var respuesta = await ConsultasAPI.PutDocumentoAsync(wDoc);
-                MessageBox.Show(respuesta.Message, respuesta.Success ? "Éxito" : "Error");
-
-            }
-
         }
-
     }
 }
