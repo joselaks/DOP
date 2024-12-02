@@ -9,6 +9,15 @@ namespace DataObra.Sistema.Controles
         public Roles()
         {
             InitializeComponent();
+            PreseleccionarPrimerRol();
+        }
+
+        private void PreseleccionarPrimerRol()
+        {
+            if (RolesListBox.Items.Count > 0)
+            {
+                RolesListBox.SelectedIndex = 0; // Selecciona el primer rol
+            }
         }
 
         private void RolesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -66,24 +75,30 @@ namespace DataObra.Sistema.Controles
         private void BorrarSeleccion()
         {
             // Desmarcar todos los CheckBox de Documentos
-            foreach (var child in DocumentosPanel.Children)
+            foreach (var child in ((StackPanel)((ScrollViewer)DocumentosPanel.Children[1]).Content).Children)
             {
                 if (child is CheckBox checkbox)
+                {
                     checkbox.IsChecked = false;
+                }
             }
 
             // Desmarcar todos los CheckBox de Agrupadores
-            foreach (var child in AgrupadoresPanel.Children)
+            foreach (var child in ((StackPanel)((ScrollViewer)AgrupadoresPanel.Children[1]).Content).Children)
             {
                 if (child is CheckBox checkbox)
+                {
                     checkbox.IsChecked = false;
+                }
             }
 
             // Desmarcar todos los CheckBox de Insumos
-            foreach (var child in InsumosPanel.Children)
+            foreach (var child in ((StackPanel)((ScrollViewer)InsumosPanel.Children[1]).Content).Children)
             {
                 if (child is CheckBox checkbox)
+                {
                     checkbox.IsChecked = false;
+                }
             }
         }
 
