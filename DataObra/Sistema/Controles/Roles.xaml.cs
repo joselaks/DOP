@@ -31,7 +31,6 @@ namespace DataObra.Sistema.Controles
 
         private void ActualizaSeleccion(string role)
         {
-            // Limpiar las selecciones
             BorrarSeleccion();
 
             // Configurar selecciones basadas en el rol
@@ -58,19 +57,46 @@ namespace DataObra.Sistema.Controles
                     CheckInsumos("Rubros", "SubContratos");
                     break;
                 case "Socio/Titular":
-                    CheckDocumentos("Contratos", "Certificados");
-                    CheckAgrupadores("Contratistas", "Obreros");
-                    CheckInsumos("Equipos", "Otros");
+                    MarcarTodo();
                     break;
                 case "Otro":
-                    CheckDocumentos("Gastos", "Anticipos");
-                    CheckAgrupadores("Impuestos", "Administraciones");
-                    CheckInsumos("Tareas", "Artículos");
+                    // No seleccionar nada.
                     break;
                 default:
                     break;
             }
         }
+
+        private void MarcarTodo()
+        {
+            // Marcar todos los CheckBox de Documentos
+            foreach (var child in ((StackPanel)((ScrollViewer)DocumentosPanel.Children[1]).Content).Children)
+            {
+                if (child is CheckBox checkbox)
+                {
+                    checkbox.IsChecked = true;
+                }
+            }
+
+            // Marcar todos los CheckBox de Agrupadores
+            foreach (var child in ((StackPanel)((ScrollViewer)AgrupadoresPanel.Children[1]).Content).Children)
+            {
+                if (child is CheckBox checkbox)
+                {
+                    checkbox.IsChecked = true;
+                }
+            }
+
+            // Marcar todos los CheckBox de Insumos
+            foreach (var child in ((StackPanel)((ScrollViewer)InsumosPanel.Children[1]).Content).Children)
+            {
+                if (child is CheckBox checkbox)
+                {
+                    checkbox.IsChecked = true;
+                }
+            }
+        }
+
 
         private void BorrarSeleccion()
         {
