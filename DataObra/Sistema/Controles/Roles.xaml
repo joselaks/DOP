@@ -1,0 +1,86 @@
+﻿<Window x:Class="DataObra.Sistema.Controles.Roles"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:local="clr-namespace:DataObra.Sistema.Controles"
+        mc:Ignorable="d" Background="White"
+        d:DesignHeight="380" d:DesignWidth="600"
+        Height="380" Width="600">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" Margin="5" VerticalAlignment="Top">
+            <TextBlock Text="Seleccione su Rol" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,5,0,5"/>
+            <ListBox x:Name="RolesListBox" SelectionChanged="RolesListBox_SelectionChanged" Height="250">
+                <ListBoxItem Content="Administración"/>
+                <ListBoxItem Content="Compras"/>
+                <ListBoxItem Content="Gestión Depósitos"/>
+                <ListBoxItem Content="Presupuestos"/>
+                <ListBoxItem Content="Socio/Titular"/>
+                <ListBoxItem Content="Otro"/>
+            </ListBox>
+        </StackPanel>
+        <StackPanel x:Name="DocumentosPanel" Grid.Column="1" Margin="5" VerticalAlignment="Top" >
+            <TextBlock Text="Documentos" FontSize="16" FontWeight="SemiBold" Margin="0,5,0,5" HorizontalAlignment="Center" />
+            <ScrollViewer Height="250">
+                <StackPanel>
+                    <CheckBox Content="Precostos"/>
+                    <CheckBox Content="Presupuestos"/>
+                    <CheckBox Content="Pedidos"/>
+                    <CheckBox Content="Planes"/>
+                    <CheckBox Content="Certificados"/>
+                    <CheckBox Content="Partes"/>
+                    <CheckBox Content="Facturas"/>
+                    <CheckBox Content="Compras"/>
+                    <CheckBox Content="Remitos"/>
+                    <CheckBox Content="Pagos"/>
+                    <CheckBox Content="Cobros"/>
+                    <CheckBox Content="Anticipos"/>
+                    <CheckBox Content="Contratos"/>
+                    <CheckBox Content="Sueldos"/>
+                    <CheckBox Content="Gastos"/>
+                    <CheckBox Content="Acopios"/>
+                </StackPanel>
+            </ScrollViewer>
+        </StackPanel>
+        <StackPanel x:Name="AgrupadoresPanel" Grid.Column="2" Margin="5" VerticalAlignment="Top"  >
+            <TextBlock Text="Agrupadores" FontSize="16" FontWeight="SemiBold" Margin="0,5,0,5" HorizontalAlignment="Center" />
+            <ScrollViewer Height="150">
+                <StackPanel>
+                    <CheckBox Content="Obras"/>
+                    <CheckBox Content="Administraciones"/>
+                    <CheckBox Content="Clientes"/>
+                    <CheckBox Content="Proveedores"/>
+                    <CheckBox Content="Contratistas"/>
+                    <CheckBox Content="Obreros"/>
+                    <CheckBox Content="Cuentas"/>
+                    <CheckBox Content="Impuestos"/>
+                    <CheckBox Content="Depósitos"/>
+                </StackPanel>
+            </ScrollViewer>
+        </StackPanel>
+
+        <StackPanel x:Name="InsumosPanel" Grid.Column="3" Margin="5" VerticalAlignment="Top" >
+            <TextBlock Text="Insumos" FontSize="16" FontWeight="SemiBold" Margin="0,5,0,5" HorizontalAlignment="Center"  />
+            <ScrollViewer Height="150">
+                <StackPanel>
+                    <CheckBox Content="Materiales"/>
+                    <CheckBox Content="Mano de Obra"/>
+                    <CheckBox Content="SubContratos"/>
+                    <CheckBox Content="Equipos"/>
+                    <CheckBox Content="Otros"/>
+                    <CheckBox Content="Artículos"/>
+                    <CheckBox Content="Tareas"/>
+                    <CheckBox Content="Rubros"/>
+                </StackPanel>
+            </ScrollViewer>
+        </StackPanel>
+
+        <Button Grid.Column="0" Content="Confirmar" Grid.ColumnSpan="4" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10" Width="100"/>
+    </Grid>
+</Window>

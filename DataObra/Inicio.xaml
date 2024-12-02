@@ -174,7 +174,7 @@
 
                     <StackPanel  Grid.Row="0" HorizontalAlignment="Center" Grid.RowSpan="3">
                         <Button Content="Pantalla Login" Click="Button_Click_2"></Button>
-                        <Button Content="Pantalla Base" Click="Button_Click_1"></Button>
+                        <Button Content="Roles" Click="Button_Click_1"></Button>
                         <Button Content="Documento" Click="Button_Click_4"></Button>
                         <Button Content="Presupuesto" x:Name="vPres" Click="vPres_Click"></Button>
                         <Button Content="Ventana Conectores" x:Name="vConect" Click="vConect_Click"></Button>

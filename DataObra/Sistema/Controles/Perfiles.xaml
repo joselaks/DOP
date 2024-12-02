@@ -1,0 +1,133 @@
+﻿<UserControl x:Class="DataObra.Sistema.Controles.Perfiles"
+                                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DataObra.Base.Controles"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="6" BorderThickness="2" BorderBrush="Violet" />
+
+        <Button x:Name="Obras" Content="Insumo" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="2" Background="Violet" BorderThickness="0" Width="120" Height="60" FontSize="18" FontWeight="Black" Click="BotonDoc_Click" ToolTip="Nueva Obra"  />
+        <Path Grid.Column="2" Grid.Row="1" Stretch="Fill" Fill="Violet" ToolTip="Documentos contenidos en Obras"
+            Data="M 0,110 70,110 45,90 75,90 120,120 75,150 45,150 70,130 0,130 Z" HorizontalAlignment="Center" Width="50" Height="24" Margin="0,0,2,0" RenderTransformOrigin=".5,.5">
+            <Path.RenderTransform>
+                <RotateTransform Angle="90" />
+            </Path.RenderTransform>
+        </Path>
+
+        <Button x:Name="Presupuestos" Content="Presupuestos" HorizontalAlignment="Right" Grid.Row="2" Grid.Column="1" Background="DarkSeaGreen" BorderThickness="0" Width="120" Height="60" FontSize="18" Click="BotonDoc_Click" ToolTip="Nuevo Presupuesto" />
+
+        <Button x:Name="Pedidos" Content="Pedidos" Grid.Row="2" Grid.Column="3" Grid.RowSpan="1" HorizontalAlignment="Left" Background="DarkSeaGreen" BorderThickness="0" Width="120" Height="60" FontSize="18" Click="BotonDoc_Click" ToolTip="Nuevo Pedido" />
+
+        <Path Grid.Column="2" Grid.Row="2" Stretch="Fill" Fill="LimeGreen" Data="M 0,110 70,110 45,90 75,90 120,120 75,150 45,150 70,130 0,130 Z"
+           HorizontalAlignment="Center" Width="50" Height="24" Margin="0,0,2,0" RenderTransformOrigin=".5,.5">
+            <Path.RenderTransform>
+                <RotateTransform Angle="0" />
+            </Path.RenderTransform>
+        </Path>
+
+        <Path Grid.Column="2" Grid.Row="3" Stretch="Fill" Fill="LimeGreen" Data="M 0,110 70,110 45,90 75,90 120,120 75,150 45,150 70,130 0,130 Z"
+            HorizontalAlignment="Center" Width="50" Height="24" Margin="0,0,2,0" RenderTransformOrigin=".5,.5">
+            <Path.RenderTransform>
+                <RotateTransform Angle="325" />
+            </Path.RenderTransform>
+        </Path>
+
+        <Button x:Name="Partes" Content="Partes" Grid.Row="4" Grid.Column="3" HorizontalAlignment="Left" Background="DarkSeaGreen" BorderThickness="0" Width="120" Height="60" FontSize="18" Click="BotonDoc_Click" ToolTip="Nuevo Parte" />
+        <Path Grid.Column="4" Grid.Row="4" Stretch="Fill" Fill="LimeGreen" Data="M 0,110 70,110 45,90 75,90 120,120 75,150 45,150 70,130 0,130 Z"
+            HorizontalAlignment="Center" Width="50" Height="24" Margin="0,0,2,0" RenderTransformOrigin=".5,.5">
+            <Path.RenderTransform>
+                <RotateTransform Angle="180" />
+            </Path.RenderTransform>
+        </Path>
+
+        <Path Grid.Column="3" Grid.Row="5" Stretch="Fill" Fill="LimeGreen" Data="M 0,110 70,110 45,90 75,90 120,120 75,150 45,150 70,130 0,130 Z"
+            HorizontalAlignment="Center" Width="50" Height="24" Margin="0,0,2,0" RenderTransformOrigin=".5,.5">
+            <Path.RenderTransform>
+                <RotateTransform Angle="90" />
+            </Path.RenderTransform>
+        </Path>
+
+        <Border Grid.Row="2" Grid.Column="5" Grid.ColumnSpan="3" Grid.RowSpan="6" BorderThickness="2" BorderBrush="Violet" />
+
+        <Button x:Name="Admin" Content="Admin" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="6" Background="Violet" BorderThickness="0" Width="120" Height="60" FontSize="18" Click="BotonDoc_Click" ToolTip="Nueva Administración" />
+        <Path Grid.Column="6" Grid.Row="1" Stretch="Fill" Fill="Violet" ToolTip="Documentos contenidos en Administración"
+            Data="M 0,110 70,110 45,90 75,90 120,120 75,150 45,150 70,130 0,130 Z" HorizontalAlignment="Center" Width="50" Height="24" Margin="0,0,2,0" RenderTransformOrigin=".5,.5">
+            <Path.RenderTransform>
+                <RotateTransform Angle="90" />
+            </Path.RenderTransform>
+        </Path>
+
+        <Button x:Name="Compras" Content="Compras" HorizontalAlignment="Right" Grid.Row="2" Grid.Column="5" Background="DarkSeaGreen" BorderThickness="0" Width="120" Height="60" FontSize="18" Click="BotonDoc_Click" ToolTip="Nueva Compra" />
+        <Path Grid.Column="5" Grid.Row="3" Stretch="Fill" Fill="LimeGreen" Data="M 0,110 70,110 45,90 75,90 120,120 75,150 45,150 70,130 0,130 Z"
+            HorizontalAlignment="Center" Width="50" Height="24" Margin="0,0,2,0" RenderTransformOrigin=".5,.5">
+            <Path.RenderTransform>
+                <RotateTransform Angle="90" />
+            </Path.RenderTransform>
+        </Path>
+
+        <Button x:Name="Remitos" Content="Remitos" Grid.Row="4" Grid.Column="5" HorizontalAlignment="Right" Background="DarkSeaGreen" BorderThickness="0" Width="120" Height="60" FontSize="18" Click="BotonDoc_Click" ToolTip="Agrega Remito" />
+        <Path Grid.Column="5" Grid.Row="5" Stretch="Fill" Fill="LimeGreen" 
+           Data="M 0,110 70,110 45,90 75,90 120,120 75,150 45,150 70,130 0,130 Z"
+           HorizontalAlignment="Center" Width="50" Height="24" Margin="0,0,2,0"
+           RenderTransformOrigin=".5,.5">
+            <Path.RenderTransform>
+                <RotateTransform Angle="90" />
+            </Path.RenderTransform>
+        </Path>
+        <Path Grid.Column="6" Grid.Row="4" Stretch="Fill" Fill="LimeGreen" Data="M 0,110 70,110 45,90 75,90 120,120 75,150 45,150 70,130 0,130 Z"
+            HorizontalAlignment="Center" Width="50" Height="24" Margin="0,0,2,0" RenderTransformOrigin=".5,.5">
+            <Path.RenderTransform>
+                <RotateTransform Angle="180" />
+            </Path.RenderTransform>
+        </Path>
+
+        <Button x:Name="Facturas" Content="Facturas" Grid.Row="6" Grid.Column="5" HorizontalAlignment="Right" Background="DarkSeaGreen" BorderThickness="0" Width="120" Height="60" FontSize="18" Click="BotonDoc_Click" ToolTip="Agrega Factura" />
+
+        <Path Grid.Column="4" Grid.Row="6" Stretch="Fill" Fill="LimeGreen" Data="M 0,110 70,110 45,90 75,90 120,120 75,150 45,150 70,130 0,130 Z"
+            HorizontalAlignment="Center" Width="50" Height="24" Margin="0,0,2,0" RenderTransformOrigin=".5,.5">
+            <Path.RenderTransform>
+                <RotateTransform Angle="0" />
+            </Path.RenderTransform>
+        </Path>
+
+        <Path Grid.Column="4" Grid.Row="2" Stretch="Fill" Fill="LimeGreen" Data="M 0,110 70,110 45,90 75,90 120,120 75,150 45,150 70,130 0,130 Z"
+            HorizontalAlignment="Center" Width="50" Height="24" Margin="0,0,2,0" RenderTransformOrigin=".5,.5">
+            <Path.RenderTransform>
+                <RotateTransform Angle="0" />
+            </Path.RenderTransform>
+        </Path>
+
+        <Path Grid.Column="1" Grid.Row="3" Stretch="Fill" Fill="LimeGreen" Data="M 0,110 70,110 45,90 75,90 120,120 75,150 45,150 70,130 0,130 Z"
+           HorizontalAlignment="Center" Width="50" Height="24" Margin="0,0,2,0" RenderTransformOrigin=".5,.5">
+            <Path.RenderTransform>
+                <RotateTransform Angle="90" />
+            </Path.RenderTransform>
+        </Path>
+
+    </Grid>
+
+</UserControl>

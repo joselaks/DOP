@@ -328,8 +328,8 @@ namespace DataObra
         
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            PantallaBase pantallaBase = new PantallaBase();
-            pantallaBase.Show();
+            DataObra.Sistema.Controles.Roles pantallaRoles = new Sistema.Controles.Roles();
+            pantallaRoles.Show();
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
