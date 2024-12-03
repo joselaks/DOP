@@ -10,6 +10,19 @@ namespace DataObra.Sistema
         public Principal()
         {
             InitializeComponent();
+            VerificarRol();
+        }
+
+        private void VerificarRol()
+        {
+            if (string.IsNullOrWhiteSpace(RolTexto.Text) || RolTexto.Text == "NombreRol")
+            {
+                SeleccionRol seleccionRolWindow = new SeleccionRol
+                {
+                    ParentWindow = this
+                };
+                seleccionRolWindow.Show();
+            }
         }
 
         private void Boton_Click(object sender, RoutedEventArgs e)
@@ -33,7 +46,10 @@ namespace DataObra.Sistema
 
         private void Hyperlink_Click(object sender, RoutedEventArgs e)
         {
-            SeleccionRol seleccionRolWindow = new SeleccionRol();
+            SeleccionRol seleccionRolWindow = new SeleccionRol
+            {
+                ParentWindow = this
+            };
             seleccionRolWindow.Show();
         }
 

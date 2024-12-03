@@ -67,7 +67,6 @@
             <Button x:Name="BotonPresupuestos" Content="Presupuestos" Background="{StaticResource PresupuestosBackground}" Click="Boton_Click" Grid.Column="2"/>
             <Button x:Name="BotonDepositos" Content="Depositos" Background="{StaticResource DepositosBackground}" Click="Boton_Click" Grid.Column="3"/>
             <Button x:Name="BotonSocio" Content="Socio/Titular" Background="{StaticResource SocioBackground}" Click="Boton_Click" Grid.Column="4"/>
-            <Button x:Name="BotonRestaurar" Content="⬅" Background="{StaticResource RestaurarBackground}" Click="BotonRestaurar_Click" Grid.Column="5" Width="80" Height="50" Visibility="Collapsed"/>
         </Grid>
 
         <ContentControl Grid.Row="1" Grid.ColumnSpan="6" x:Name="AreaContenido" Margin="10"/>
