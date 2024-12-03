@@ -173,6 +173,7 @@
                     <Label Content="DataObra: la Información de tus Obras" Margin="0,0,0,23" FontSize="27" FontStyle="Italic" Grid.ColumnSpan="5" Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontWeight="SemiBold" />
 
                     <StackPanel  Grid.Row="0" HorizontalAlignment="Center" Grid.RowSpan="3">
+                        <Button Content="PRINCIPAL" Click="Button_Click_Principal"></Button>
                         <Button Content="Pantalla Login" Click="Button_Click_2"></Button>
                         <Button Content="Roles" Click="Button_Click_1"></Button>
                         <Button Content="Documento" Click="Button_Click_4"></Button>

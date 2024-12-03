@@ -364,5 +364,12 @@ namespace DataObra
         {
             Inicio_QueueManager.Logs.Clear();
         }
+
+        private void Button_Click_Principal(object sender, RoutedEventArgs e)
+        {
+            DataObra.Sistema.Principal ventana = new Principal();
+
+            ventana.Show();
+        }
     }
 }
