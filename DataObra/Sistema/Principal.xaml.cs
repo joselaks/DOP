@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Media;
 
 namespace DataObra.Sistema
 {
@@ -10,54 +12,40 @@ namespace DataObra.Sistema
             InitializeComponent();
         }
 
-        private void RedimensionarBotones()
+        private void Boton_Click(object sender, RoutedEventArgs e)
         {
-            GridBotones.RowDefinitions.Clear();
-            GridBotones.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-
-            GridBotones.ColumnDefinitions.Clear();
-            GridBotones.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.25, GridUnitType.Star) });
-            GridBotones.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.25, GridUnitType.Star) });
-            GridBotones.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.25, GridUnitType.Star) });
-            GridBotones.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.25, GridUnitType.Star) });
-            GridBotones.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.25, GridUnitType.Star) });
-
-            foreach (Button btn in new[] { BotonRestaurar, BotonPanel, BotonAgrupadores, BotonDocumentos, BotonInsumos })
+            if (sender is Button botonPresionado)
             {
-                btn.Height = 50;
-                btn.HorizontalAlignment = HorizontalAlignment.Stretch;
-                btn.VerticalAlignment = VerticalAlignment.Top;
-                btn.Margin = new Thickness(5);
-                Grid.SetRow(btn, 0);
-            }
+                // Restaurar el color de fondo de todos los botones
+                BotonPanel.Background = (SolidColorBrush)Resources["PanelBackground"];
+                BotonAgrupadores.Background = (SolidColorBrush)Resources["AgrupadoresBackground"];
+                BotonDocumentos.Background = (SolidColorBrush)Resources["DocumentosBackground"];
+                BotonInsumos.Background = (SolidColorBrush)Resources["InsumosBackground"];
 
-            BotonRestaurar.Visibility = Visibility.Visible;
+                // Cambiar el color del botón presionado
+                botonPresionado.Background = (SolidColorBrush)Resources["PressedBackground"];
+
+                // Actualizar el contenido
+                string contenido = botonPresionado.Content.ToString();
+                AreaContenido.Content = new TextBlock { Text = contenido, FontSize = 24, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
+            }
         }
-        private void Boton_Click(object sender, RoutedEventArgs e) { RedimensionarBotones(); if (sender is Button botonPresionado) { string contenido = botonPresionado.Content.ToString(); AreaContenido.Content = new TextBlock { Text = contenido, FontSize = 24, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center }; } }
 
-        private void BotonRestaurar_Click(object sender, RoutedEventArgs e)
+        private void Hyperlink_Click(object sender, RoutedEventArgs e)
         {
-            BotonRestaurar.Visibility = Visibility.Collapsed;
+            SeleccionRol seleccionRolWindow = new SeleccionRol();
+            seleccionRolWindow.Show();
+        }
 
-            GridBotones.RowDefinitions.Clear();
-            GridBotones.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+        // Métodos para actualizar la barra de estado
+        public void ActualizarUsuario(string usuario)
+        {
+            UsuarioTexto.Text = $"Usuario: {usuario}";
+        }
 
-            GridBotones.ColumnDefinitions.Clear();
-            GridBotones.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            GridBotones.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            GridBotones.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            GridBotones.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-
-            foreach (Button btn in new[] { BotonPanel, BotonAgrupadores, BotonDocumentos, BotonInsumos })
-            {
-                btn.Height = double.NaN;
-                btn.HorizontalAlignment = HorizontalAlignment.Stretch;
-                btn.VerticalAlignment = VerticalAlignment.Stretch;
-                btn.Margin = new Thickness(0);
-                Grid.SetRow(btn, 0);
-            }
-
-            AreaContenido.Content = null;
+        public void ActualizarRol(string rol)
+        {
+            RolTexto.Text = rol;
         }
     }
 }

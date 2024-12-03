@@ -371,5 +371,12 @@ namespace DataObra
 
             ventana.Show();
         }
+
+        private void Button_Click_Roles(object sender, RoutedEventArgs e)
+        {
+            DataObra.Sistema.SeleccionRol ventana = new SeleccionRol();
+
+            ventana.Show();
+        }
     }
 }

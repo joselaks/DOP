@@ -1,11 +1,11 @@
-﻿<Window x:Class="DataObra.Sistema.Principal"
+﻿<Window x:Class="DataObra.Sistema.SeleccionRol"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DataObra.Sistema"
         mc:Ignorable="d"
-        Title="." Height="850" Width="1400"
+        Title="Selección de Rol" Height="650" Width="1200"
         Background="#FFFFFF"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
@@ -13,12 +13,11 @@
             <Setter Property="Foreground" Value="White" />
             <Setter Property="BorderBrush" Value="#0063B1" />
             <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="Padding" Value="5" />
-            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="FontSize" Value="24" />
             <Setter Property="FontFamily" Value="Segoe UI" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Height" Value="30" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -43,51 +42,35 @@
             </Setter>
         </Style>
 
-        <SolidColorBrush x:Key="PanelBackground" Color="#007ACC"/>
-        <SolidColorBrush x:Key="AgrupadoresBackground" Color="#006BB6"/>
-        <SolidColorBrush x:Key="DocumentosBackground" Color="#005CA2"/>
-        <SolidColorBrush x:Key="InsumosBackground" Color="#004C8E"/>
+        <SolidColorBrush x:Key="AdministracionBackground" Color="#007ACC"/>
+        <SolidColorBrush x:Key="ComprasBackground" Color="#006BB6"/>
+        <SolidColorBrush x:Key="PresupuestosBackground" Color="#005CA2"/>
+        <SolidColorBrush x:Key="DepositosBackground" Color="#004C8E"/>
+        <SolidColorBrush x:Key="SocioBackground" Color="#003C7A"/>
         <SolidColorBrush x:Key="RestaurarBackground" Color="#005A9E"/>
-        <SolidColorBrush x:Key="PressedBackground" Color="#004482"/>
     </Window.Resources>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-
-        <!-- Menú -->
-        <Grid x:Name="GridBotones" Grid.Row="0" HorizontalAlignment="Stretch">
+        <Grid x:Name="GridBotones">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="BotonPanel" Content="Panel" Background="{StaticResource PanelBackground}" Click="Boton_Click" Grid.Column="0"/>
-            <Button x:Name="BotonAgrupadores" Content="Agrupadores" Background="{StaticResource AgrupadoresBackground}" Click="Boton_Click" Grid.Column="1"/>
-            <Button x:Name="BotonDocumentos" Content="Documentos" Background="{StaticResource DocumentosBackground}" Click="Boton_Click" Grid.Column="2"/>
-            <Button x:Name="BotonInsumos" Content="Insumos" Background="{StaticResource InsumosBackground}" Click="Boton_Click" Grid.Column="3"/>
+            <Button x:Name="BotonAdministracion" Content="Administración" Background="{StaticResource AdministracionBackground}" Click="Boton_Click" Grid.Column="0"/>
+            <Button x:Name="BotonCompras" Content="Compras" Background="{StaticResource ComprasBackground}" Click="Boton_Click" Grid.Column="1"/>
+            <Button x:Name="BotonPresupuestos" Content="Presupuestos" Background="{StaticResource PresupuestosBackground}" Click="Boton_Click" Grid.Column="2"/>
+            <Button x:Name="BotonDepositos" Content="Depositos" Background="{StaticResource DepositosBackground}" Click="Boton_Click" Grid.Column="3"/>
+            <Button x:Name="BotonSocio" Content="Socio/Titular" Background="{StaticResource SocioBackground}" Click="Boton_Click" Grid.Column="4"/>
+            <Button x:Name="BotonRestaurar" Content="⬅" Background="{StaticResource RestaurarBackground}" Click="BotonRestaurar_Click" Grid.Column="5" Width="80" Height="50" Visibility="Collapsed"/>
         </Grid>
 
-        <!-- Contenido -->
-        <ContentControl Grid.Row="1" x:Name="AreaContenido" Margin="10"/>
-
-        <!-- Barra de estado -->
-        <StatusBar Grid.Row="2">
-            <StatusBarItem>
-                <TextBlock x:Name="UsuarioTexto" Text="Usuario: NombreUsuario"/>
-            </StatusBarItem>
-            <StatusBarItem>
-                <TextBlock>
-                    Rol: 
-                    <Hyperlink Click="Hyperlink_Click">
-                        <Run x:Name="RolTexto" Text="NombreRol"/>
-                    </Hyperlink>
-                </TextBlock>
-            </StatusBarItem>
-        </StatusBar>
+        <ContentControl Grid.Row="1" Grid.ColumnSpan="6" x:Name="AreaContenido" Margin="10"/>
     </Grid>
 </Window>
+
