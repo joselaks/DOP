@@ -5,44 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DataObra.Sistema"
         mc:Ignorable="d" WindowState="Maximized"
-        Title="." Height="850" Width="1400"
+        Title="Principal" Height="850" Width="1400"
         Background="#FFFFFF"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
-        <Style TargetType="Button">
-            <Setter Property="Foreground" Value="White" />
-            <Setter Property="BorderBrush" Value="#0063B1" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="Padding" Value="5" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="FontFamily" Value="Segoe UI" />
-            <Setter Property="HorizontalAlignment" Value="Stretch" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Height" Value="30" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" 
-                                BorderBrush="{TemplateBinding BorderBrush}" 
-                                BorderThickness="{TemplateBinding BorderThickness}" 
-                                CornerRadius="2">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#005A9E" />
-                                <Setter Property="BorderBrush" Value="#004882" />
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#004482" />
-                                <Setter Property="BorderBrush" Value="#00315A" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
         <SolidColorBrush x:Key="PanelBackground" Color="#007ACC"/>
         <SolidColorBrush x:Key="AgrupadoresBackground" Color="#006BB6"/>
         <SolidColorBrush x:Key="DocumentosBackground" Color="#005CA2"/>
@@ -56,6 +22,8 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <!-- Fila para el login -->
         </Grid.RowDefinitions>
 
         <!-- Menú -->
@@ -89,5 +57,13 @@
                 </TextBlock>
             </StatusBarItem>
         </StatusBar>
+
+        <!-- Sección de Login -->
+        <StackPanel x:Name="LoginPanel" Grid.Row="3" Background="#F0F0F0" Visibility="Collapsed">
+            <TextBlock Text="Iniciar Sesión" FontSize="20" Margin="10"/>
+            <TextBox Name="txtUsuario" Margin="10" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
+            <PasswordBox Name="txtContraseña" Margin="10" GotFocus="PasswordBox_GotFocus" LostFocus="PasswordBox_LostFocus"/>
+            <Button Content="Acceder" Background="#007ACC" Foreground="White" Margin="10" Click="VerificaUsuario_Click"/>
+        </StackPanel>
     </Grid>
 </Window>
