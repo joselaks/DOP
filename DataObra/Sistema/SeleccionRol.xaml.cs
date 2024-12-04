@@ -25,6 +25,7 @@ namespace DataObra.Sistema
                 }
 
                 // Cerrar la ventana de SeleccionRol
+                this.DialogResult = true;
                 this.Close();
             }
         }

@@ -1,63 +1,47 @@
 ﻿using DataObra.Datos;
-using Syncfusion.XlsIO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.Windows;
+using Biblioteca;
 
 namespace DataObra
 {
     public partial class Login : Window
     {
-        ConsultasAPI Azure;
+        public string Usuario { get; private set; }
+        public string Rol { get; private set; }
+
+        public ConsultasAPI InicioConsultasAPI;
 
         public Login()
         {
             InitializeComponent();
-            Azure = new ConsultasAPI();
+            InicioConsultasAPI = new ConsultasAPI();
+
+            txtUsuario.Text = "jose@dataobra.com";
+            txtContraseña.Password = "contra";
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private async void VerificaUsuario_Click(object sender, RoutedEventArgs e)
         {
-            // Lógica para manejar el inicio de sesión
-            string mail = txtUsuario.Text;
-            string clave = txtContraseña.Password;
+            // Código a utilizar para la validación
+            var respuesta = await InicioConsultasAPI.ValidarUsuarioAsync(txtUsuario.Text, txtContraseña.Password);
 
-            var respuesta = await Azure.ValidarUsuarioAsync(mail, clave);
-
-            if (respuesta.Success) 
+            if (respuesta.Success && respuesta.Usuario != null)
             {
-                if (respuesta.Usuario != null)
-                {
-                    MessageBox.Show(respuesta.Message);
+                Usuario = respuesta.Usuario.Nombre;
+                Rol = "Compras"; // respuesta.Usuario.Rol;
 
-                    LoginSection.Visibility = Visibility.Collapsed;
-                    TextBlock userName = new TextBlock
-                    {
-                        Text = "Bienvenido, " + respuesta.Usuario.Nombre,
-                        FontSize = 20,
-                        Margin = new Thickness(10)
-                    };
-                    MainContent.Children.Add(userName);
-
-                    textodemo.Text = "";
-                }
-                else
-                {
-                    MessageBox.Show("Usuario o contraseña incorrectos");
-                }
-            }else 
+                this.DialogResult = true;
+                this.Close();
+            }
+            else
             {
-                MessageBox.Show("Usuario o contraseña incorrectos");
+                // Demo
+                Usuario = "Demo";
+                Rol = "Demo";
+
+                this.DialogResult = true;
+                this.Close();
             }
         }
 

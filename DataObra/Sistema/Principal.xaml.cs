@@ -10,19 +10,47 @@ namespace DataObra.Sistema
         public Principal()
         {
             InitializeComponent();
-            VerificarRol();
+            VerificarUsuario();
+            PreseleccionarPanel();
+        }
+
+        private void VerificarUsuario()
+        {
+            if (string.IsNullOrWhiteSpace(UsuarioTexto.Text) || UsuarioTexto.Text == "Usuario: NombreUsuario")
+            {
+                Login loginWindow = new Login();
+                if (loginWindow.ShowDialog() == true)
+                {
+                    ActualizarUsuario(loginWindow.Usuario);
+                    ActualizarRol(loginWindow.Rol);
+                }
+                else
+                {
+                    // Si el login falla, cerrar la aplicación.
+                    Application.Current.Shutdown();
+                }
+            }
+            else
+            {
+                VerificarRol();
+            }
         }
 
         private void VerificarRol()
         {
-            if (string.IsNullOrWhiteSpace(RolTexto.Text) || RolTexto.Text == "NombreRol")
+            if (string.IsNullOrWhiteSpace(RolTexto.Text) || RolTexto.Text == "NombreRol" || RolTexto.Text == "Demo")
             {
                 SeleccionRol seleccionRolWindow = new SeleccionRol
                 {
                     ParentWindow = this
                 };
-                seleccionRolWindow.Show();
+                seleccionRolWindow.ShowDialog();
             }
+        }
+
+        private void PreseleccionarPanel()
+        {
+            Boton_Click(BotonPanel, null);
         }
 
         private void Boton_Click(object sender, RoutedEventArgs e)
@@ -50,7 +78,7 @@ namespace DataObra.Sistema
             {
                 ParentWindow = this
             };
-            seleccionRolWindow.Show();
+            seleccionRolWindow.ShowDialog();
         }
 
         // Métodos para actualizar la barra de estado
@@ -62,6 +90,7 @@ namespace DataObra.Sistema
         public void ActualizarRol(string rol)
         {
             RolTexto.Text = rol;
+            VerificarRol();
         }
     }
 }
