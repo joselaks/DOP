@@ -3,10 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DataObra.Sistema"
+        xmlns:local="clr-namespace:DataObra.Sistema" xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
         mc:Ignorable="d" WindowState="Maximized"
         Title="Principal" Height="850" Width="1400"
-        Background="#FFFFFF"
+        Background="#FFFFFF" 
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <SolidColorBrush x:Key="PanelBackground" Color="#007ACC"/>
@@ -34,14 +34,83 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="BotonPanel" Content="Panel" Background="{StaticResource PanelBackground}" Click="Boton_Click" Grid.Column="0"/>
-            <Button x:Name="BotonAgrupadores" Content="Agrupadores" Background="{StaticResource AgrupadoresBackground}" Click="Boton_Click" Grid.Column="1"/>
-            <Button x:Name="BotonDocumentos" Content="Documentos" Background="{StaticResource DocumentosBackground}" Click="Boton_Click" Grid.Column="2"/>
-            <Button x:Name="BotonInsumos" Content="Insumos" Background="{StaticResource InsumosBackground}" Click="Boton_Click" Grid.Column="3"/>
+            <Button x:Name="BotonPanel" Content="Panel" Foreground="White" FontWeight="Bold" Background="{StaticResource PanelBackground}" Click="Boton_Click" Grid.Column="0"/>
+            <Button x:Name="BotonAgrupadores" Content="Agrupadores" Foreground="White" FontWeight="Bold" Background="{StaticResource AgrupadoresBackground}" Click="Boton_Click" Grid.Column="1"/>
+            <Button x:Name="BotonDocumentos" Content="Documentos" Foreground="White" FontWeight="Bold" Background="{StaticResource DocumentosBackground}" Click="Boton_Click" Grid.Column="2"/>
+            <Button x:Name="BotonInsumos" Content="Insumos" Foreground="White" FontWeight="Bold" Background="{StaticResource InsumosBackground}" Click="Boton_Click" Grid.Column="3"/>
         </Grid>
 
-        <!-- Contenido -->
-        <ContentControl Grid.Row="1" x:Name="AreaContenido" Margin="10"/>
+        <!-- Panel -->
+        <Grid Grid.Row="1" x:Name="Panel" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Row="0" Margin="5,5,5,5" BorderThickness="3" BorderBrush="#FF3399FF" >
+                <Label Content="Gráfico" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" />
+            </Border>
+
+            <Border Grid.Row="1" Margin="5,5,5,5" BorderThickness="3" BorderBrush="#FF3399FF" >
+                <Label Content="Informes" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" />
+            </Border>
+
+            <Border Grid.Row="1" Grid.Column="1" Margin="5,5,5,5" BorderThickness="3" BorderBrush="#FF3399FF" >
+                <Label Content="Últimos Agrupadores" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" />
+            </Border>
+
+            <Border Grid.Row="0" Grid.Column="1" Margin="5,5,5,5" BorderThickness="3" BorderBrush="#FF3399FF" >
+                <Label Content="Últimos Documentos" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" />
+            </Border>
+
+        </Grid>
+
+        <syncfusion:TileViewControl Grid.Row="1" x:Name="TilesDocumentos" Visibility="Collapsed"
+            IsVirtualizing="False" Margin="3,9,7,5"
+            AllowItemRepositioning="False"
+            AnimationDuration="00:00:00.700"
+            ClickHeaderToMaximize="False"
+            ColumnCount="4" RowCount="4" 
+            EnableAnimation="False"
+            IsMinMaxButtonOnMouseOverOnly="False"
+            ItemsSource="{Binding BookModelItems}"
+            MinimizedItemsPercentage="55"
+            MouseDoubleClick="ItemTile_Click"
+            SelectedIndex="0" > 
+        </syncfusion:TileViewControl>
+
+        <syncfusion:TileViewControl Grid.Row="1" x:Name="TilesAgrupadores" Visibility="Collapsed"
+       IsVirtualizing="False" Margin="3,9,7,5"
+       AllowItemRepositioning="False"
+       AnimationDuration="00:00:00.700"
+       ClickHeaderToMaximize="False"
+       ColumnCount="4" RowCount="4" 
+       EnableAnimation="False"
+       IsMinMaxButtonOnMouseOverOnly="False"
+       ItemsSource="{Binding BookModelItems}"
+       MinimizedItemsPercentage="55"
+       MouseDoubleClick="ItemTile_Click"
+       SelectedIndex="0" >
+        </syncfusion:TileViewControl>
+
+        <syncfusion:TileViewControl Grid.Row="1" x:Name="TilesInsumos" Visibility="Collapsed"
+       IsVirtualizing="False" Margin="3,9,7,5"
+       AllowItemRepositioning="False"
+       AnimationDuration="00:00:00.700"
+       ClickHeaderToMaximize="False"
+       ColumnCount="4" RowCount="4" 
+       EnableAnimation="False"
+       IsMinMaxButtonOnMouseOverOnly="False"
+       ItemsSource="{Binding BookModelItems}"
+       MinimizedItemsPercentage="55"
+       MouseDoubleClick="ItemTile_Click"
+       SelectedIndex="0" >
+        </syncfusion:TileViewControl>
+
 
         <!-- Barra de estado -->
         <StatusBar Grid.Row="2">
@@ -58,12 +127,6 @@
             </StatusBarItem>
         </StatusBar>
 
-        <!-- Sección de Login -->
-        <StackPanel x:Name="LoginPanel" Grid.Row="3" Background="#F0F0F0" Visibility="Collapsed">
-            <TextBlock Text="Iniciar Sesión" FontSize="20" Margin="10"/>
-            <TextBox Name="txtUsuario" Margin="10" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
-            <PasswordBox Name="txtContraseña" Margin="10" GotFocus="PasswordBox_GotFocus" LostFocus="PasswordBox_LostFocus"/>
-            <Button Content="Acceder" Background="#007ACC" Foreground="White" Margin="10" Click="VerificaUsuario_Click"/>
-        </StackPanel>
+      
     </Grid>
 </Window>
