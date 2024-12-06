@@ -16,6 +16,7 @@ using Biblioteca;
 using DataObra.Datos;
 using DataObra.Presupuestos;
 using System.Windows.Automation;
+using Syncfusion.Windows.Tools;
 
 namespace DataObra
 {
@@ -50,9 +51,6 @@ namespace DataObra
             GrupoAgrupadores();
             GrupoDocumentos();
             GrupoInsumos();
-
-            TileChico tc = new TileChico("Este es el titulo", "La descripción mas detallada del tile");
-            Tile4.Content = tc;
 
             DiagramaDocs diagPrincipal = new DiagramaDocs();
 
@@ -312,20 +310,6 @@ namespace DataObra
 
         #endregion
 
-        #region Pruebas
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Prueba.ColumnCount = 6;
-            Prueba.RowCount = 6;
-
-        }
-        #endregion
-
-        private void TabAgrupadores_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-        
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             DataObra.Sistema.Controles.Roles pantallaRoles = new Sistema.Controles.Roles();
@@ -345,7 +329,7 @@ namespace DataObra
             VenDocumento ventanaDoc = new VenDocumento("Facturas", seleID, InicioConsultasAPI);
             ventanaDoc.Show();
         }
-       
+
         private void vConect_Click(object sender, RoutedEventArgs e)
         {
             Datos.Conectores v1 = new Conectores();
@@ -354,8 +338,8 @@ namespace DataObra
 
         private void vPres_Click(object sender, RoutedEventArgs e)
         {
-            VenPresupuesto ventanaPres= new VenPresupuesto();
-            ventanaPres.Owner = this; 
+            VenPresupuesto ventanaPres = new VenPresupuesto();
+            ventanaPres.Owner = this;
             ventanaPres.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             ventanaPres.Show();
         }
@@ -378,5 +362,41 @@ namespace DataObra
 
             ventana.Show();
         }
+
+        //private void BarraEstado_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (sender is Button botonPresionado)
+        //    {
+        //        string contenido = botonPresionado.Content.ToString();
+
+        //        if (contenido != null)
+        //        {
+        //            switch (contenido)
+        //            {
+        //                case "Btn":
+        //                    SeleccionRol seleccionRolWindow = new SeleccionRol
+        //                    {
+        //                        //ParentWindow = this
+        //                    };
+        //                    seleccionRolWindow.ShowDialog();
+        //                    break;
+        //                default:
+        //                    break;
+        //            }
+        //        }
+        //    }
+        //}
+
+        private void Hyperlink_Click(object sender, RoutedEventArgs e)
+        {
+            SeleccionRol seleccionRolWindow = new SeleccionRol
+            {
+                //ParentWindow = this
+            };
+            seleccionRolWindow.ShowDialog();
+        }
+        private void BtnConexiones_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e) { popupConexiones.IsOpen = true; }
+        private void BtnConexiones_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e) { if (!popupConexiones.IsMouseOver) { popupConexiones.IsOpen = false; } }
+        private void popupConexiones_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e) { if (!BtnConexiones.IsMouseOver) { popupConexiones.IsOpen = false; } }
     }
 }

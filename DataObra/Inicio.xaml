@@ -134,95 +134,58 @@
                 </MultiDataTrigger>
             </Style.Triggers>
         </Style>
+        <SolidColorBrush x:Key="PanelBackground" Color="#007ACC"/>
+        <SolidColorBrush x:Key="AgrupadoresBackground" Color="#006BB6"/>
+        <SolidColorBrush x:Key="DocumentosBackground" Color="#005CA2"/>
+        <SolidColorBrush x:Key="InsumosBackground" Color="#004C8E"/>
+        <SolidColorBrush x:Key="RestaurarBackground" Color="#005A9E"/>
+        <SolidColorBrush x:Key="PressedBackground" Color="#004482"/>
+      
+       
+
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="269*"/>
-            <ColumnDefinition Width="131*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="32"/>
+        </Grid.RowDefinitions>
+        
         <syncfusion:TabControlExt SelectionChanged="TabPrincipal_SelectionChanged" IsCustomTabItemContextMenuEnabled="False" CloseButtonType="Hide" Style="{DynamicResource NewtabControlExtStyle}" x:Name="TabPrincipal" BorderThickness="0" Grid.ColumnSpan="2" >
 
-            <syncfusion:TabItemExt Header="Inicio">
-                <Grid>
+            <syncfusion:TabItemExt Header="Panel">
+                
+                <Grid Grid.Row="1" x:Name="Panel" Margin="10" >
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <syncfusion:TabControlExt TabStripPlacement="Top"  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="3" IsCustomTabItemContextMenuEnabled="False" CloseButtonType="Hide" x:Name="TabDiagramas" BorderThickness="0.3" Margin="0,35,0,0" >
-                        <syncfusion:TabItemExt Header="Flujo Documentos" >
-                            <Grid x:Name="GrillaDiagramaDocs" />
-                        </syncfusion:TabItemExt>
-                        <syncfusion:TabItemExt Header="Flujo Insumos" >
-                            <Grid x:Name="GrillaDiagramaInsumos" />
-                        </syncfusion:TabItemExt>
-                        <syncfusion:TabItemExt Header="Trazabilidad Insumos" >
-                            <Grid x:Name="GrillaDiagramaTrazabilidad" />
-                        </syncfusion:TabItemExt>
-                    </syncfusion:TabControlExt>
+                    <Border Grid.Row="0" Margin="5,5,5,5" BorderBrush="#FF3399FF" Background="AntiqueWhite" >
+                        <Label Content="Gráfico" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" />
+                    </Border>
 
-                    <Label Content="DataObra: la Información de tus Obras" Margin="0,0,0,23" FontSize="27" FontStyle="Italic" Grid.ColumnSpan="5" Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontWeight="SemiBold" />
+                    <Border Grid.Row="1" Margin="5,5,5,5" BorderBrush="#FF3399FF" Background="Beige" >
+                        <Label Content="Informes" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" />
+                    </Border>
 
-                    <StackPanel  Grid.Row="0" HorizontalAlignment="Center" Grid.RowSpan="3">
-                        <Button Content="Roles" Click="Button_Click_Roles"></Button>
-                        <Button Content="Principal" Click="Button_Click_Principal"></Button>
-                        <Button Content="Pantalla Login" Click="Button_Click_2"></Button>
-                        <Button Content="Configura Roles" Click="Button_Click_1"></Button>
-                        <Button Content="Documento" Click="Button_Click_4"></Button>
-                        <Button Content="Presupuesto" x:Name="vPres" Click="vPres_Click"></Button>
-                        <Button Content="Ventana Conectores" x:Name="vConect" Click="vConect_Click"></Button>
-                        <Label Content="Primeros pasos" FontSize="18" Grid.Row="0" HorizontalAlignment="Center" Margin="0,30,0,30"  FontWeight="SemiBold"/>
-                        <Label Content="Concpetos básicos" FontSize="18" HorizontalAlignment="Center" />
-                        <Label Content="Como agregar un agrupador" FontSize="18" HorizontalAlignment="Center" />
-                        <Label Content="Como cargar un documento" FontSize="18" HorizontalAlignment="Center" />
-                    </StackPanel>
+                    <Border Grid.Row="1" Grid.Column="1" Margin="5,5,5,5" BorderBrush="#FF3399FF" Background="Cyan">
+                        <Label Content="Últimos Agrupadores" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" />
+                    </Border>
 
-                    <StackPanel Grid.Row="0" Grid.Column="4" HorizontalAlignment="Center" >
-                        <Label Content="Tutoriales" FontSize="18" Margin="0,50,0,30" FontWeight="SemiBold" HorizontalAlignment="Center"/>
-                        <Label Content="Presupuestación" FontSize="15" HorizontalAlignment="Center" />
-                        <Label Content="Planificación de tareas" FontSize="15" HorizontalAlignment="Center" />
-                        <Label Content="Certificar avance de obra" FontSize="15" HorizontalAlignment="Center" />
-                    </StackPanel>
-
-                    
-                    <syncfusion:TabControlExt Grid.Row="2" Grid.Column="4" Grid.RowSpan="2" >
- 
-                        <syncfusion:TabItemExt Header="Listado">
-                            <ListBox x:Name="InicioLogListBox" DisplayMemberPath="LogEntryDisplay" Margin="2" Background="Beige" />
-                        </syncfusion:TabItemExt>
-
-                        <syncfusion:TabItemExt Header="Objetos">
-                            <syncfusion:SfDataGrid x:Name="InicioGrillaLogs" AutoGenerateColumns="True" AllowResizingColumns="True"/>
-                        </syncfusion:TabItemExt>
-                        
-                    </syncfusion:TabControlExt>
-
-                    <Button Grid.Column="4" Grid.Row="1" Content="Borrar Login" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="69" x:Name="limpiaLogin" Click="limpiaLogin_Click" />
-
-
-                    <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5" HorizontalAlignment="Center" Margin="0,25,0,0" >
-                        <Label Content="Novedades del sistema" FontSize="18" FontWeight="SemiBold"/>
-                        <Label Content="Ahora en DataObra se agrego la funcionalidad que permite hacer todo mejor." FontSize="15" HorizontalAlignment="Center" />
-                    </StackPanel>
-
-                    <StackPanel Grid.Row="0" Grid.Column="5" VerticalAlignment="Top" Margin="0,-20,0,0" HorizontalAlignment="Center" Orientation="Horizontal" ToolTip="Solapa abierta al iniciar DataObra" >
-                        <Label Content="Sel:" />
-                        <RadioButton Content="Inicio" IsChecked="True" />
-                        <RadioButton Content="Agrupadores" />
-                        <RadioButton Content="Documentos" />
-                        <RadioButton Content="Insumos" />
-                    </StackPanel>
+                    <Border Grid.Row="0" Grid.Column="1" Margin="5,5,5,5" BorderBrush="#FF3399FF" Background="FloralWhite" >
+                        <Label Content="Últimos Documentos" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" />
+                    </Border>
 
                 </Grid>
+
             </syncfusion:TabItemExt>
 
             <syncfusion:TabItemExt Header="Agrupadores" >
@@ -305,29 +268,106 @@
 
             </syncfusion:TabItemExt>
 
-            <syncfusion:TabItemExt Visibility="Collapsed" Header="(Pruebas)" IsPinned="True" ShowPin="False" >
-                <syncfusion:TileViewControl x:Name="Prueba"
-                    IsVirtualizing="False" Margin="3,9,7,5"
-                    AllowItemRepositioning="True"
-                    AnimationDuration="00:00:00.700"
-                    ClickHeaderToMaximize="False"
-                    ColumnCount="5" RowCount="5" 
-                    EnableAnimation="False"
-                    IsMinMaxButtonOnMouseOverOnly="False"
-                    ItemsSource="{Binding BookModelItems}"
-                    MinimizedItemsPercentage="55"
-                    MouseDoubleClick="ItemTile_Click"
-                    SelectedIndex="0" >
+            <syncfusion:TabItemExt FontStyle="Italic" Header="Pruebas">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                    <syncfusion:TileViewItem Content="Primera" HeaderVisibility="Collapsed" HorizontalContentAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center" Foreground="White" HeaderForeground="White" Header="Encabezado Primera" MinMaxButtonVisibility="Collapsed" Background="Black" HeaderBackground="Black" />
-                    <syncfusion:TileViewItem Content="Segunda" HeaderVisibility="Collapsed" HorizontalContentAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center" Foreground="White" HeaderForeground="White" Background="Black" HeaderBackground="Black" />
-                    <syncfusion:TileViewItem Content="Tercera" HeaderVisibility="Collapsed" HorizontalContentAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center" Foreground="White" HeaderForeground="White" MinMaxButtonVisibility="Collapsed" Background="Black" HeaderBackground="Black" />
-                    <syncfusion:TileViewItem x:Name="Tile4" Content="Cuarta" HorizontalContentAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center" Foreground="White" HeaderForeground="White" Background="Blue" HeaderBackground="Black" />
-                </syncfusion:TileViewControl>
+                    <syncfusion:TabControlExt TabStripPlacement="Top"  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="3" IsCustomTabItemContextMenuEnabled="False" CloseButtonType="Hide" x:Name="TabDiagramas" BorderThickness="0.3" Margin="0,35,0,0" >
+                        <syncfusion:TabItemExt Header="Flujo Documentos" >
+                            <Grid x:Name="GrillaDiagramaDocs" />
+                        </syncfusion:TabItemExt>
+                        <syncfusion:TabItemExt Header="Flujo Insumos" >
+                            <Grid x:Name="GrillaDiagramaInsumos" />
+                        </syncfusion:TabItemExt>
+                        <syncfusion:TabItemExt Header="Trazabilidad Insumos" >
+                            <Grid x:Name="GrillaDiagramaTrazabilidad" />
+                        </syncfusion:TabItemExt>
+                    </syncfusion:TabControlExt>
 
+                    <Label Content="DataObra: la Información de tus Obras" Margin="0,0,0,23" FontSize="27" FontStyle="Italic" Grid.ColumnSpan="5" Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontWeight="SemiBold" />
+
+                    <StackPanel  Grid.Row="0" HorizontalAlignment="Center" Grid.RowSpan="3">
+                        <Button Content="Roles" Click="Button_Click_Roles"></Button>
+                        <Button Content="Principal" Click="Button_Click_Principal"></Button>
+                        <Button Content="Pantalla Login" Click="Button_Click_2"></Button>
+                        <Button Content="Configura Roles" Click="Button_Click_1"></Button>
+                        <Button Content="Documento" Click="Button_Click_4"></Button>
+                        <Button Content="Presupuesto" x:Name="vPres" Click="vPres_Click"></Button>
+                        <Button Content="Ventana Conectores" x:Name="vConect" Click="vConect_Click"></Button>
+                        <Label Content="Primeros pasos" FontSize="18" Grid.Row="0" HorizontalAlignment="Center" Margin="0,30,0,30"  FontWeight="SemiBold"/>
+                        <Label Content="Concpetos básicos" FontSize="18" HorizontalAlignment="Center" />
+                        <Label Content="Como agregar un agrupador" FontSize="18" HorizontalAlignment="Center" />
+                        <Label Content="Como cargar un documento" FontSize="18" HorizontalAlignment="Center" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="0" Grid.Column="4" HorizontalAlignment="Center" >
+                        <Label Content="Tutoriales" FontSize="18" Margin="0,50,0,30" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                        <Label Content="Presupuestación" FontSize="15" HorizontalAlignment="Center" />
+                        <Label Content="Planificación de tareas" FontSize="15" HorizontalAlignment="Center" />
+                        <Label Content="Certificar avance de obra" FontSize="15" HorizontalAlignment="Center" />
+                    </StackPanel>
+
+                    <Button Grid.Column="4" Grid.Row="1" Content="Borrar Login" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="69" x:Name="limpiaLogin" Click="limpiaLogin_Click" />
+
+                    <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5" HorizontalAlignment="Center" Margin="0,25,0,0" >
+                        <Label Content="Novedades del sistema" FontSize="18" FontWeight="SemiBold"/>
+                        <Label Content="Ahora en DataObra se agrego la funcionalidad que permite hacer todo mejor." FontSize="15" HorizontalAlignment="Center" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="0" Grid.Column="5" VerticalAlignment="Top" Margin="0,-20,0,0" HorizontalAlignment="Center" Orientation="Horizontal" ToolTip="Solapa abierta al iniciar DataObra" >
+                        <Label Content="Sel:" />
+                        <RadioButton Content="Inicio" IsChecked="True" />
+                        <RadioButton Content="Agrupadores" />
+                        <RadioButton Content="Documentos" />
+                        <RadioButton Content="Insumos" />
+                    </StackPanel>
+
+                </Grid>
             </syncfusion:TabItemExt>
 
         </syncfusion:TabControlExt>
+
+        <!-- Barra de estado -->
+        <StatusBar Grid.Row="1" Grid.ColumnSpan="2">
+            <StatusBarItem>
+                <TextBlock x:Name="UsuarioTexto" Text="Usuario: NombreUsuario"/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock> Rol: <Hyperlink Click="Hyperlink_Click"> <Run x:Name="RolTexto" Text="NombreRol"/> </Hyperlink></TextBlock>
+            </StatusBarItem>
+            <StatusBarItem HorizontalAlignment="Right">
+                <Button x:Name="BtnConexiones" Content=" Conexiones Servidor " MouseEnter="BtnConexiones_MouseEnter" MouseLeave="BtnConexiones_MouseLeave" />
+            </StatusBarItem>
+        </StatusBar>
+        <!-- Popup para mostrar al pasar el ratón por el botón -->
+        <Popup x:Name="popupConexiones" Placement="Mouse" StaysOpen="False">
+            <Border Background="LightGray" BorderBrush="Black" BorderThickness="1" CornerRadius="5" Padding="10">
+                <syncfusion:TabControlExt>
+                    <syncfusion:TabItemExt Header="Listado">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <ListBox x:Name="InicioLogListBox" DisplayMemberPath="LogEntryDisplay" Margin="2" Background="Beige"/>
+                        </ScrollViewer>
+                    </syncfusion:TabItemExt>
+                    <syncfusion:TabItemExt Header="Objetos">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <syncfusion:SfDataGrid x:Name="InicioGrillaLogs" AutoGenerateColumns="True" AllowResizingColumns="True"/>
+                        </ScrollViewer>
+                    </syncfusion:TabItemExt>
+                </syncfusion:TabControlExt>
+            </Border>
+        </Popup>
 
     </Grid>
 </Window>
