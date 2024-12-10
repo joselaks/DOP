@@ -332,6 +332,14 @@
                 ExpanderColumn="Descripcion"
                 KeyDown="grillaArbol_KeyDown"
                 SelectionMode="Single">
+                <syncfusion:SfTreeGrid.StackedHeaderRows>
+                    <syncfusion:StackedHeaderRow>
+                        <syncfusion:StackedHeaderRow.StackedColumns>
+                            <syncfusion:StackedColumn ChildColumns="ID,Tipo,Descripcion" HeaderText="" />
+                            <syncfusion:StackedColumn ChildColumns="Unidad,Cantidad,PU,Importe" HeaderText="Ejecución" />
+                        </syncfusion:StackedHeaderRow.StackedColumns>
+                    </syncfusion:StackedHeaderRow>
+                </syncfusion:SfTreeGrid.StackedHeaderRows>
                 <syncfusion:SfTreeGrid.Columns>
                     <syncfusion:TreeGridColumns>
 
@@ -345,7 +353,7 @@
                             MappingName="Tipo" />
 
 
-                        <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="Tipo" />-->
+                        <syncfusion:TreeGridTextColumn Width="50" MappingName="Tipo" />
 
 
                         <syncfusion:TreeGridTextColumn Width="250" MappingName="Descripcion" />
