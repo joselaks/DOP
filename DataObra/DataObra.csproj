@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Interfaz\Ventanas\construccion.png" />
     <None Remove="Presupuestos\abrir.png" />
     <None Remove="Presupuestos\agregar.png" />
     <None Remove="Presupuestos\arbol.png" />
@@ -33,6 +34,7 @@
 
     <ItemGroup>
       <Folder Include="Insumos\Clases\" />
+      <Folder Include="Interfaz\Controles\SubControles\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -40,6 +42,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Resource Include="Interfaz\Imagenes\construccion.png" />
       <Resource Include="Presupuestos\abrir.png" />
       <Resource Include="Presupuestos\agregar.png" />
       <Resource Include="Presupuestos\arbol.png" />
