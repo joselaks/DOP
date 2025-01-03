@@ -1,4 +1,4 @@
-﻿<Window x:Class="DataObra.Interfaz.Ventanas.WiLogin"
+﻿<Window xmlns:syncfusion="http://schemas.syncfusion.com/wpf"  x:Class="DataObra.Interfaz.Ventanas.WiLogin"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,12 +7,13 @@
         mc:Ignorable="d"
         Height="450" Width="800"
         WindowStyle="None">
+    <syncfusion:SfBusyIndicator x:Name="espera" IsBusy="False" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
+       
         <!-- Encabezado -->
         <TextBlock Text="DataObra" Foreground="Orange" FontSize="44" FontWeight="Black"  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20" />
         <TextBlock Text="Versión Constructoras" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20" FontSize="14" FontStyle="Italic" />
@@ -25,6 +26,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- Sección de Inicio de Sesión -->
+            
             <StackPanel Grid.Column="0" Margin="10" Background="#F0F0F0" Name="LoginSection">
                 <TextBlock Text="Iniciar Sesión" FontSize="20" Margin="0,0,0,10"/>
                 <TextBox Name="txtUsuario"  Margin="0,0,0,10" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
@@ -53,4 +55,5 @@
             </StackPanel>
         </Grid>
     </Grid>
+    </syncfusion:SfBusyIndicator>
 </Window>

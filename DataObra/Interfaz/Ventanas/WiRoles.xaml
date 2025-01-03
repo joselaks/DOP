@@ -1,0 +1,74 @@
+﻿<Window x:Class="DataObra.Interfaz.Ventanas.WiRoles"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DataObra.Interfaz.Ventanas"
+        mc:Ignorable="d"
+        Title="WiRoles" Height="450" Width="950"
+        WindowStyle="None">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="BorderBrush" Value="#0063B1" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="FontWeight"  Value="Bold" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                         BorderBrush="{TemplateBinding BorderBrush}" 
+                         BorderThickness="{TemplateBinding BorderThickness}" 
+                         CornerRadius="2">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#005A9E" />
+                                <Setter Property="BorderBrush" Value="#004882" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#004482" />
+                                <Setter Property="BorderBrush" Value="#00315A" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="PresupuestoBackground" Color="#EDAE49"/>
+        <SolidColorBrush x:Key="ComprasBackground" Color="#D1495B"/>
+        <SolidColorBrush x:Key="AdministracionBackground" Color="#00798C"/>
+        <SolidColorBrush x:Key="JefeDeObraBackground" Color="#30638E"/>
+        <SolidColorBrush x:Key="SocioBackground" Color="#003D5B"/>
+    </Window.Resources>
+        <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Elija su Rol" Grid.Row="0" FontSize="20" FontWeight="Bold"  HorizontalAlignment="Center"  VerticalAlignment="Center" />
+        <Grid Grid.Row="1" x:Name="GridBotones">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="BotonPresupuesto" Content="Presupuestos" Background="{StaticResource PresupuestoBackground}" Click="Boton_Click" Grid.Column="0" />
+            <Button x:Name="BotonCompras" Content="Compras" Background="{StaticResource ComprasBackground}" Click="Boton_Click" Grid.Column="1" />
+            <Button x:Name="BotonPresupuestos" Content="Administración" Background="{StaticResource AdministracionBackground}" Click="Boton_Click" Grid.Column="2" Foreground="White"/>
+            <Button x:Name="BotonDepositos" Content="Jefe de Obra" Background="{StaticResource JefeDeObraBackground}" Click="Boton_Click" Grid.Column="3" Foreground="White"/>
+            <Button x:Name="BotonSocio" Content="Socio/Titular" Background="{StaticResource SocioBackground}" Click="Boton_Click" Grid.Column="4" Foreground="White"/>
+        </Grid>
+
+    </Grid>
+</Window>

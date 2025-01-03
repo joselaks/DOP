@@ -28,7 +28,7 @@ namespace DataObra.Interfaz.Ventanas
         private void WiInicio_Loaded(object sender, RoutedEventArgs e)
         {
             // Crear y mostrar la ventana de login
-            WiLogin login = new WiLogin
+            WiLogin login = new WiLogin(this)
             {
                 Owner = this, // Establecer la ventana WiInicio como la propietaria de la ventana de login
                 WindowStartupLocation = WindowStartupLocation.CenterOwner // Centrar la ventana de login en WiInicio

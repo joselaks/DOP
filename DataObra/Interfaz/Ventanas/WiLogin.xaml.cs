@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -10,6 +11,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
@@ -24,14 +26,16 @@ namespace DataObra.Interfaz.Ventanas
         public string Rol { get; private set; }
 
         public ConsultasAPI InicioConsultasAPI;
+        private Window Inicio;
 
-        public WiLogin()
+        public WiLogin(Window inicio)
         {
             InitializeComponent();
             InicioConsultasAPI = new ConsultasAPI();
 
             txtUsuario.Text = "jose@dataobra.com";
             txtContraseña.Password = "contra";
+            Inicio = inicio;
         }
 
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
@@ -45,26 +49,42 @@ namespace DataObra.Interfaz.Ventanas
 
         private async void VerificaUsuario_Click(object sender, RoutedEventArgs e)
         {
-            // Código a utilizar para la validación
-            var respuesta = await InicioConsultasAPI.ValidarUsuarioAsync(txtUsuario.Text, txtContraseña.Password);
+            //this.espera.IsBusy = true;
+            //// Código a utilizar para la validación
+            //var respuesta = await InicioConsultasAPI.ValidarUsuarioAsync(txtUsuario.Text, txtContraseña.Password);
 
-            if (respuesta.Success && respuesta.Usuario != null)
-            {
-                Usuario = respuesta.Usuario.Nombre;
-                Rol = "Compras"; // respuesta.Usuario.Rol;
 
-                this.DialogResult = true;
-                this.Close();
-            }
-            else
-            {
-                // Demo
-                Usuario = "Demo";
-                Rol = "Demo";
+            //if (respuesta.Success && respuesta.Usuario != null)
+            //{
+            //    Usuario = respuesta.Usuario.Nombre;
+            //    Rol = "Compras"; // respuesta.Usuario.Rol;
 
-                this.DialogResult = true;
-                this.Close();
-            }
+            //    this.DialogResult = true;
+            //    this.Close();
+            //}
+            //else
+            //{
+            //    // Demo
+            //    Usuario = "Demo";
+            //    Rol = "Demo";
+
+                // Iniciar la animación de desvanecimiento
+                var fadeOutAnimation = new DoubleAnimation(1, 0, TimeSpan.FromSeconds(0.5));
+                fadeOutAnimation.Completed += (s, a) =>
+                {
+                    this.DialogResult = true;
+                    this.Close();
+
+                    // Abrir la ventana WiRoles después de cerrar WiLogin
+                    WiRoles rolesWindow = new WiRoles
+                    {
+                        Owner = Inicio, // Establecer la ventana WiInicio como la propietaria de la ventana de login
+                        WindowStartupLocation = WindowStartupLocation.CenterOwner // Centrar la ventana de login en WiInicio
+                    };
+                    rolesWindow.ShowDialog();
+                };
+                this.BeginAnimation(Window.OpacityProperty, fadeOutAnimation);
+            //}
         }
 
         private void TextBox_LostFocus(object sender, RoutedEventArgs e)
