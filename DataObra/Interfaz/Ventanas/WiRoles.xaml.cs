@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 
 namespace DataObra.Interfaz.Ventanas
@@ -17,26 +18,47 @@ namespace DataObra.Interfaz.Ventanas
 
         private void Boton_Click(object sender, RoutedEventArgs e)
         {
-            // Iniciar la animación de desvanecimiento
-            var fadeOutAnimation = new DoubleAnimation(1, 0, TimeSpan.FromSeconds(0.5));
-            fadeOutAnimation.Completed += (s, a) =>
+            if (sender is Button boton)
             {
-                this.Close();
+                // Obtener el color de fondo del botón
+                var backgroundBrush = boton.Background as SolidColorBrush;
+                var backgroundColor = backgroundBrush?.Color;
 
-                // Abrir la ventana WiPrincipal después de cerrar WiRoles
-                WiPrincipal principalWindow = new WiPrincipal();
-                principalWindow.Show();
+                // Convertir el color a formato HEX
+                string hexColor = backgroundColor.HasValue ? backgroundColor.Value.ToString() : "#005CA2";
 
-                // Iniciar la animación de desvanecimiento en WiInicio
-                var fadeOutAnimationInicio = new DoubleAnimation(1, 0, TimeSpan.FromSeconds(0.5));
-                fadeOutAnimationInicio.Completed += (s2, a2) =>
+                // Mostrar el color de fondo en un MessageBox (opcional)
+                //MessageBox.Show($"El color de fondo del botón es: {hexColor}");
+
+                // Iniciar la animación de desvanecimiento
+                var fadeOutAnimation = new DoubleAnimation(1, 0, TimeSpan.FromSeconds(0.5));
+                fadeOutAnimation.Completed += (s, a) =>
                 {
-                    // Cerrar la ventana WiInicio después de la animación
-                    Application.Current.MainWindow.Close();
+                    this.Close();
+
+                    // Abrir la ventana WiPrincipal después de cerrar WiRoles
+                    WiPrincipal principalWindow = new WiPrincipal(hexColor);
+                    principalWindow.Show();
+
+                    // Iniciar la animación de desvanecimiento en WiInicio
+                    var fadeOutAnimationInicio = new DoubleAnimation(1, 0, TimeSpan.FromSeconds(0.5));
+                    fadeOutAnimationInicio.Completed += (s2, a2) =>
+                    {
+                        // Cerrar la ventana WiInicio después de la animación
+                        Application.Current.MainWindow.Close();
+                    };
+                    Application.Current.MainWindow.BeginAnimation(Window.OpacityProperty, fadeOutAnimationInicio);
                 };
-                Application.Current.MainWindow.BeginAnimation(Window.OpacityProperty, fadeOutAnimationInicio);
-            };
-            this.BeginAnimation(Window.OpacityProperty, fadeOutAnimation);
+                this.BeginAnimation(Window.OpacityProperty, fadeOutAnimation);
+            }
         }
     }
 }
+
+
+
+
+
+
+
+

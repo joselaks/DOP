@@ -12,18 +12,40 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.ComponentModel;
 
 namespace DataObra.Interfaz.Ventanas
 {
     /// <summary>
     /// Lógica de interacción para WiPrincipal.xaml
     /// </summary>
-    public partial class WiPrincipal : Window
+    public partial class WiPrincipal : Window, INotifyPropertyChanged
     {
-        public WiPrincipal()
+        private SolidColorBrush _primaryColorBrush;
+
+        public SolidColorBrush PrimaryColorBrush
+        {
+            get { return _primaryColorBrush; }
+            set
+            {
+                _primaryColorBrush = value;
+                OnPropertyChanged(nameof(PrimaryColorBrush));
+            }
+        }
+
+        public WiPrincipal(string hexColor)
         {
             InitializeComponent();
+            DataContext = this;
+            PrimaryColorBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(hexColor));
             CargaTabs();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private void CargaTabs()
@@ -72,3 +94,8 @@ namespace DataObra.Interfaz.Ventanas
         }
     }
 }
+
+
+
+
+

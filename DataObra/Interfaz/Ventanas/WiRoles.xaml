@@ -63,7 +63,20 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="BotonPresupuesto" Content="Presupuestos" Background="{StaticResource PresupuestoBackground}" Click="Boton_Click" Grid.Column="0" />
+            <Button x:Name="BotonPresupuesto" Background="{StaticResource PresupuestoBackground}" Click="Boton_Click" Grid.Column="0" >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Image Source="/Interfaz/Ventanas/Presupuesto.png" Grid.Row="0" Stretch="Fill" />
+                    
+                    <TextBlock Text="Presupuesto" Grid.Row="1" FontSize="20" FontWeight="Bold"  HorizontalAlignment="Center"  VerticalAlignment="Center" />
+                    <TextBlock Text="Genera nuevos presupuestos y verifica el costo real a partir de las premisas inciales" Grid.Row="2" FontSize="12" FontWeight="Bold"  HorizontalAlignment="Center"  VerticalAlignment="Center" TextWrapping="Wrap" Margin="5,20,5,5
+                               "/>
+                </Grid>
+            </Button>
             <Button x:Name="BotonCompras" Content="Compras" Background="{StaticResource ComprasBackground}" Click="Boton_Click" Grid.Column="1" />
             <Button x:Name="BotonPresupuestos" Content="Administración" Background="{StaticResource AdministracionBackground}" Click="Boton_Click" Grid.Column="2" Foreground="White"/>
             <Button x:Name="BotonDepositos" Content="Jefe de Obra" Background="{StaticResource JefeDeObraBackground}" Click="Boton_Click" Grid.Column="3" Foreground="White"/>

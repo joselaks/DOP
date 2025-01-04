@@ -54,21 +54,6 @@
             <!--  Los RadioButton se agregarán programáticamente aquí  -->
         </StackPanel>
 
-        <Button Content="Filtro" Width="100" Height="30" Click="Button_Click"  HorizontalAlignment="Right"/>
-        <Popup Name="popup" Placement="Mouse" StaysOpen="False" >
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="20" />
-                    <RowDefinition Height="20" />
-                    <RowDefinition Height="20" />
-                </Grid.RowDefinitions>
-                <RadioButton Grid.Row="0" Content="Obra" Style="{StaticResource RoundedRadioButtonStyle}" />
-                <RadioButton Grid.Row="1" Content="Tipo" Style="{StaticResource RoundedRadioButtonStyle}" />
-                <RadioButton Grid.Row="2" Content="Entidad" Style="{StaticResource RoundedRadioButtonStyle}" />
-                
-            </Grid>
-        </Popup>
-
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -93,6 +78,25 @@
             <Grid Grid.Column="2" Background="Azure" />
 
         </Grid>
+        <syncfusion:DropDownButtonAdv SmallIcon="/Interfaz/Controles/Filtro.png" HorizontalAlignment="Left" Height="35" Label="Filtro" Margin="33,0,0,0" SizeMode="Normal" Width="75">
+            <syncfusion:DropDownMenuGroup>
+                <Grid Width="250" Height="150">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal" Height="23" >
+                        <Label Content="DE:" Margin="-3,0,0,0"/>
+                        <DatePicker Name="FechaDesde" Width="91" Margin="-2,0,0,0" />
+                        <Label Content="A:"/>
+                        <DatePicker Name="FechaHasta" Width="91" Margin="-2,0,0,0" />
+                    </StackPanel>
+
+                </Grid>
+            </syncfusion:DropDownMenuGroup>
+        </syncfusion:DropDownButtonAdv>
     </Grid>
 </UserControl>
 

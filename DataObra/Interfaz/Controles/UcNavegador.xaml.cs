@@ -33,11 +33,6 @@ namespace DataObra.Interfaz.Controles
             RadioButton radioButton = sender as RadioButton;
             MessageBox.Show($"RadioButton {radioButton.Content} seleccionado");
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            popup.IsOpen = true;
-        }
     }
 }
 

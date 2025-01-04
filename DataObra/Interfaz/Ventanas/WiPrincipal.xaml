@@ -8,13 +8,14 @@
     Height="800" Width="1200"
     AllowsTransparency="True"
     Background="Transparent"
-    ResizeMode="CanResize"
+    ResizeMode="CanResizeWithGrip"
     WindowStyle="None"
-    WindowStartupLocation="CenterScreen">
+    WindowStartupLocation="CenterScreen"
+    MinWidth="800">
 
     <Border
         Margin="10"
-        Background="#005CA2"
+        Background="{Binding PrimaryColorBrush}"
         BorderBrush="White"
         BorderThickness="2"
         CornerRadius="5">
@@ -35,7 +36,7 @@
             <!--  Encabezado personalizado  -->
             <Border
                 Grid.Row="0"
-                Background="#005CA2"
+                Background="{Binding PrimaryColorBrush}"
                 BorderBrush="White"
                 BorderThickness="0"
                 CornerRadius="20,20,0,0"
@@ -106,7 +107,7 @@
                                             <Setter Property="Foreground" Value="Black" />
                                         </Trigger>
                                         <Trigger Property="IsSelected" Value="False">
-                                            <Setter TargetName="Border" Property="Background" Value="#005CA2" />
+                                            <Setter TargetName="Border" Property="Background" Value="{Binding PrimaryColorBrush}" />
                                             <Setter TargetName="Border" Property="BorderBrush" Value="White" />
                                             <Setter Property="Foreground" Value="White" />
                                         </Trigger>
@@ -185,3 +186,8 @@
     </Border>
 
 </Window>
+
+
+
+
+
