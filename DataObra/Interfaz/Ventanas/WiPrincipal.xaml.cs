@@ -10,9 +10,11 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace DataObra.Interfaz.Ventanas
 {
@@ -33,9 +35,12 @@ namespace DataObra.Interfaz.Ventanas
             }
         }
 
-        public WiPrincipal(string hexColor)
+        string Rol;
+
+        public WiPrincipal(string hexColor, string rol)
         {
             InitializeComponent();
+            Rol = rol;
             DataContext = this;
             PrimaryColorBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(hexColor));
             CargaTabs();
@@ -50,8 +55,10 @@ namespace DataObra.Interfaz.Ventanas
 
         private void CargaTabs()
         {
-            Interfaz.Controles.UcNavegador ucNavegador = new Controles.UcNavegador();
-            contenidoDocumentos.Children.Add(ucNavegador);
+            Interfaz.Controles.UcNavegador ucNavegador1 = new Controles.UcNavegador(Rol, "Documentos");
+            contenidoDocumentos.Children.Add(ucNavegador1);
+            Interfaz.Controles.UcNavegador ucNavegador2 = new Controles.UcNavegador(Rol, "Agrupadores");
+            contenidoAgrupadores.Children.Add(ucNavegador2);
         }
 
         private void Minimize_Click(object sender, RoutedEventArgs e)
@@ -90,10 +97,22 @@ namespace DataObra.Interfaz.Ventanas
 
         private void hRol_Click(object sender, RoutedEventArgs e)
         {
-
+            // Preguntar al usuario si quiere ejecutar la orden
+            var result = MessageBox.Show("¿Está seguro de que quiere reingresar al sistema con un nuevo rol?", "Confirmación", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                // Reiniciar la aplicación
+                var currentProcess = Process.GetCurrentProcess();
+                Process.Start(currentProcess.MainModule.FileName);
+                Application.Current.Shutdown();
+            }
         }
     }
 }
+
+
+
+
 
 
 

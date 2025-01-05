@@ -147,7 +147,7 @@
                             <TextBlock VerticalAlignment="Center" Text="Agrupadores" />
                         </StackPanel>
                     </TabItem.Header>
-                    <TextBlock Padding="10" Text="Contenido del Tab 3" />
+                    <Grid x:Name="contenidoAgrupadores"/>
                 </TabItem>
                 <TabItem>
                     <TabItem.Header>

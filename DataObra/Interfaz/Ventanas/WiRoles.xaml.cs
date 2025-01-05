@@ -37,7 +37,7 @@ namespace DataObra.Interfaz.Ventanas
                     this.Close();
 
                     // Abrir la ventana WiPrincipal después de cerrar WiRoles
-                    WiPrincipal principalWindow = new WiPrincipal(hexColor);
+                    WiPrincipal principalWindow = new WiPrincipal(hexColor, boton.Name);
                     principalWindow.Show();
 
                     // Iniciar la animación de desvanecimiento en WiInicio

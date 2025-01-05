@@ -63,7 +63,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="BotonPresupuesto" Background="{StaticResource PresupuestoBackground}" Click="Boton_Click" Grid.Column="0" >
+            <Button x:Name="BotonPresupuestos" Background="{StaticResource PresupuestoBackground}" Click="Boton_Click" Grid.Column="0" >
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -78,8 +78,8 @@
                 </Grid>
             </Button>
             <Button x:Name="BotonCompras" Content="Compras" Background="{StaticResource ComprasBackground}" Click="Boton_Click" Grid.Column="1" />
-            <Button x:Name="BotonPresupuestos" Content="Administración" Background="{StaticResource AdministracionBackground}" Click="Boton_Click" Grid.Column="2" Foreground="White"/>
-            <Button x:Name="BotonDepositos" Content="Jefe de Obra" Background="{StaticResource JefeDeObraBackground}" Click="Boton_Click" Grid.Column="3" Foreground="White"/>
+            <Button x:Name="BotonAdministracion" Content="Administración" Background="{StaticResource AdministracionBackground}" Click="Boton_Click" Grid.Column="2" Foreground="White"/>
+            <Button x:Name="BotonJefeDeObra" Content="Jefe de Obra" Background="{StaticResource JefeDeObraBackground}" Click="Boton_Click" Grid.Column="3" Foreground="White"/>
             <Button x:Name="BotonSocio" Content="Socio/Titular" Background="{StaticResource SocioBackground}" Click="Boton_Click" Grid.Column="4" Foreground="White"/>
         </Grid>
 
