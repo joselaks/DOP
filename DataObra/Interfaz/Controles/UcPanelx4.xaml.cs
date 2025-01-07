@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Syncfusion.SfSkinManager;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,12 +17,13 @@ using System.Windows.Shapes;
 namespace DataObra.Interfaz.Controles
 {
     /// <summary>
-    /// Lógica de interacción para UcPanel.xaml
+    /// Lógica de interacción para UcPanelx4.xaml
     /// </summary>
-    public partial class UcPanel : UserControl
+    public partial class UcPanelx4 : UserControl
     {
-        public UcPanel()
+        public UcPanelx4()
         {
+            SfSkinManager.SetTheme(this, new Theme("MaterialLight", new string[] { "TabNavigationControl", "TabControlExt" }));
             InitializeComponent();
         }
     }

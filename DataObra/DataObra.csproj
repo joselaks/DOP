@@ -2,14 +2,15 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net9.0-windows7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Interfaz\Controles\Filtro.png" />
+    <None Remove="Interfaz\Imagenes\Filtro.png" />
+    <None Remove="Interfaz\Imagenes\Mas.png" />
     <None Remove="Interfaz\Ventanas\construccion.png" />
     <None Remove="Interfaz\Ventanas\Presupuesto.png" />
     <None Remove="Presupuestos\abrir.png" />
@@ -30,13 +31,12 @@
   </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
-        <PackageReference Include="Syncfusion.UI.WPF.NET" Version="27.1.51" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0" />
+        <PackageReference Include="Syncfusion.UI.WPF.NET" Version="27.2.5" />
 </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Insumos\Clases\" />
-      <Folder Include="Interfaz\Controles\SubControles\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -44,8 +44,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Resource Include="Interfaz\Controles\Filtro.png" />
       <Resource Include="Interfaz\Imagenes\construccion.png" />
+      <Resource Include="Interfaz\Imagenes\Filtro.png" />
+      <Resource Include="Interfaz\Imagenes\Mas.png" />
       <Resource Include="Interfaz\Ventanas\Presupuesto.png" />
       <Resource Include="Presupuestos\abrir.png" />
       <Resource Include="Presupuestos\agregar.png" />

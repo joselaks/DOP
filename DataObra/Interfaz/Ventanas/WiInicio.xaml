@@ -11,7 +11,7 @@
         AllowsTransparency="True"
         ResizeMode="CanResize"
         WindowStartupLocation="CenterScreen"
-        Topmost="True">
+        >
     <Border Margin="10" BorderBrush="White" BorderThickness="2" Background="WhiteSmoke"  CornerRadius="5">
         <Border.Effect>
             <DropShadowEffect Color="Black" BlurRadius="20" ShadowDepth="0" Opacity="0.5"/>

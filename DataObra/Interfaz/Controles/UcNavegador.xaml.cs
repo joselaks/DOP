@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using DataObra.Interfaz.Controles.SubControles;
+using Syncfusion.UI.Xaml.TreeGrid;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace DataObra.Interfaz.Controles
@@ -14,6 +16,16 @@ namespace DataObra.Interfaz.Controles
             Rol = rol;
             Tab = tab;
             CrearBotones();
+            llenaGrilla();
+        }
+
+        private void llenaGrilla()
+        {
+            grillaArbol.Columns.Add(new TreeGridTextColumn() { MappingName = "Tipo", HeaderText = "Tipo de documento" });
+            grillaArbol.Columns.Add(new TreeGridTextColumn() { MappingName = "Nombre", HeaderText = "Nombre" });
+            grillaArbol.Columns.Add(new TreeGridTextColumn() { MappingName = "ID", HeaderText = "ID" });
+            grillaArbol.Columns.Add(new TreeGridDateTimeColumn() { MappingName = "Fecha" });
+            grillaArbol.Columns.Add(new TreeGridNumericColumn() { MappingName = "Importe" });
         }
 
         private void CrearBotones()
@@ -77,7 +89,7 @@ namespace DataObra.Interfaz.Controles
         {
             RadioButton radioButton = new RadioButton
             {
-                Width = 50,
+                Width = 100,
                 Height = 35,
                 Content = item,
                 Margin = new Thickness(5),
@@ -91,6 +103,16 @@ namespace DataObra.Interfaz.Controles
         {
             RadioButton radioButton = sender as RadioButton;
             MessageBox.Show($"RadioButton {radioButton.Content} seleccionado");
+
+            switch (radioButton.Content)
+            {
+                case "Obras":
+
+                    break;
+                default:
+                    break;
+            }
+
         }
     }
 }

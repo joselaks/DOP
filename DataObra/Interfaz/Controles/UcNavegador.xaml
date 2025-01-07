@@ -15,7 +15,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type RadioButton}">
                         <Border
-                            Width="50"
+                            Width="100"
                             Height="35"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
@@ -41,7 +41,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
-            <RowDefinition Height="20" />
+            <RowDefinition Height="30" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -61,11 +61,8 @@
                 <ColumnDefinition x:Name="panelBuscador" Width="300" />
             </Grid.ColumnDefinitions>
             <Grid Grid.Row="0">
-                <syncfusion:GridControl
-                    x:Name="listado"
-                    Grid.Column="0"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch" />
+                
+                <syncfusion:SfTreeGrid Grid.Column="0" x:Name="grillaArbol"/>
             </Grid>
             <syncfusion:SfGridSplitter
                 Grid.Column="1"
@@ -75,10 +72,12 @@
                 EnableCollapseButton="True"
                 ResizeBehavior="PreviousAndNext"
                 ShowsPreview="True" />
-            <Grid Grid.Column="2" Background="Azure" />
+            <Grid Grid.Column="2" >
+                <TextBlock Margin="15,20,0,0" >Ficha</TextBlock>
 
+            </Grid>
         </Grid>
-        <syncfusion:DropDownButtonAdv SmallIcon="/Interfaz/Controles/Filtro.png" HorizontalAlignment="Left" Height="35" Label="Filtro" Margin="33,0,0,0" SizeMode="Normal" Width="75">
+        <syncfusion:DropDownButtonAdv SmallIcon="/Interfaz/Imagenes/Filtro.png" HorizontalAlignment="Left" Height="35" Label="Filtro" Margin="33,0,0,0" SizeMode="Normal" Width="75">
             <syncfusion:DropDownMenuGroup>
                 <Grid Width="250" Height="150">
                     <Grid.RowDefinitions>
@@ -97,6 +96,11 @@
                 </Grid>
             </syncfusion:DropDownMenuGroup>
         </syncfusion:DropDownButtonAdv>
+        <syncfusion:ToolBarAdv Height="30" Grid.Row="1" >
+            <Button Content="Cut" Height="20" Width="30"/>
+            <Button Content="Copy" Height="20" Width="30"/>
+            <Button Content="Paste" Height="20" Width="40"/>
+        </syncfusion:ToolBarAdv>
     </Grid>
 </UserControl>
 
