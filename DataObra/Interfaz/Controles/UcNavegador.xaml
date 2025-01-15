@@ -96,11 +96,17 @@
                 </Grid>
             </syncfusion:DropDownMenuGroup>
         </syncfusion:DropDownButtonAdv>
-        <syncfusion:ToolBarAdv Height="30" Grid.Row="1" >
-            <Button Content="Cut" Height="20" Width="30"/>
-            <Button Content="Copy" Height="20" Width="30"/>
-            <Button Content="Paste" Height="20" Width="40"/>
-        </syncfusion:ToolBarAdv>
+        
+        
+       <syncfusion:ToolBarAdv Height="30" Grid.Row="1">
+    <DockPanel LastChildFill="True">
+        <Button Content="Nuevo" Height="20" Width="80" DockPanel.Dock="Left"/>
+        <Button Content="Abrir" Height="20" Width="80" DockPanel.Dock="Left"/>
+        <Button Content="Borrar" Height="20" Width="80" DockPanel.Dock="Left"/>
+    </DockPanel>
+</syncfusion:ToolBarAdv>
+
+       
     </Grid>
 </UserControl>
 
