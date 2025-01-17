@@ -12,7 +12,25 @@
     WindowStyle="None"
     WindowStartupLocation="CenterScreen"
     MinWidth="800">
-
+    <Window.Resources>
+        <Style x:Key="RoundedRadioButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border
+                         Width="100"
+                         Height="100"
+                         Background="{TemplateBinding Background}"
+                         BorderBrush="{TemplateBinding BorderBrush}"
+                         BorderThickness="1"
+                         CornerRadius="17.5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Border
         Margin="10"
         Background="{Binding PrimaryColorBrush}"

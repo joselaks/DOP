@@ -26,9 +26,9 @@ namespace DataObra.Interfaz.Ventanas
         public string Rol { get; private set; }
 
         public ConsultasAPI InicioConsultasAPI;
-        private Window Inicio;
+        private WiInicio Inicio;
 
-        public WiLogin(Window inicio)
+        public WiLogin(WiInicio inicio)
         {
             InitializeComponent();
             InicioConsultasAPI = new ConsultasAPI();
@@ -49,42 +49,46 @@ namespace DataObra.Interfaz.Ventanas
 
         private async void VerificaUsuario_Click(object sender, RoutedEventArgs e)
         {
-            //this.espera.IsBusy = true;
-            ////Código a utilizar para la validación
-            //var respuesta = await InicioConsultasAPI.ValidarUsuarioAsync(txtUsuario.Text, txtContraseña.Password);
+                Inicio.espera.IsBusy = true;
+                Inicio.espera.Header = "Verificando usuario....";
 
+            // Código a utilizar para la validación
+            // var respuesta = await InicioConsultasAPI.ValidarUsuarioAsync(txtUsuario.Text, txtContraseña.Password);
 
-            //if (respuesta.Success && respuesta.Usuario != null)
-            //{
-            //    Usuario = respuesta.Usuario.Nombre;
-            //    Rol = "Compras"; // respuesta.Usuario.Rol;
+            // if (respuesta.Success && respuesta.Usuario != null)
+            // {
+            //     Usuario = respuesta.Usuario.Nombre;
+            //     Rol = "Compras"; // respuesta.Usuario.Rol;
 
-            //    this.DialogResult = true;
-            //    this.Close();
-            //}
-            //else
-            //{
-            //    // Demo
-            //    Usuario = "Demo";
-            //    Rol = "Demo";
+            //     this.DialogResult = true;
+            //     this.Close();
+            // }
+            // else
+            // {
+            //     // Demo
+            //     Usuario = "Demo";
+            //     Rol = "Demo";
 
-                // Iniciar la animación de desvanecimiento
-                var fadeOutAnimation = new DoubleAnimation(1, 0, TimeSpan.FromSeconds(0.5));
-                fadeOutAnimation.Completed += (s, a) =>
-                {
-                    this.DialogResult = true;
-                    this.Close();
+            // Cerrar la ventana WiLogin
+            this.DialogResult = true;
+            this.Close();
 
-                    // Abrir la ventana WiRoles después de cerrar WiLogin
-                    WiRoles rolesWindow = new WiRoles
-                    {
-                        Owner = Inicio, // Establecer la ventana WiInicio como la propietaria de la ventana de login
-                        WindowStartupLocation = WindowStartupLocation.CenterOwner // Centrar la ventana de login en WiInicio
-                    };
-                    rolesWindow.ShowDialog();
-                };
-                this.BeginAnimation(Window.OpacityProperty, fadeOutAnimation);
-            //}
+            // Abrir la ventana WiRoles después de cerrar WiLogin
+            WiRoles rolesWindow = new WiRoles(Inicio)
+            {
+                Owner = Inicio, // Establecer la ventana WiInicio como la propietaria de la ventana de login
+                WindowStartupLocation = WindowStartupLocation.CenterOwner // Centrar la ventana de login en WiInicio
+            };
+
+            // Simular un retraso de 2 segundos simulando una consulta a la base de datos
+            await Task.Delay(2000);
+           
+            // Desactivar el SfBusyIndicator
+            Inicio.espera.IsBusy = false;
+            Inicio.espera.Header = "";
+           
+            rolesWindow.ShowDialog();
+
         }
 
         private void TextBox_LostFocus(object sender, RoutedEventArgs e)
@@ -120,3 +124,8 @@ namespace DataObra.Interfaz.Ventanas
         }
     }
 }
+
+
+
+
+

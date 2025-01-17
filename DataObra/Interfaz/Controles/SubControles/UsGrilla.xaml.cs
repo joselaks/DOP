@@ -26,28 +26,6 @@ namespace DataObra.Interfaz.Controles.SubControles
         {
             SfSkinManager.SetTheme(this, new Theme("MaterialLight", new string[] { "ToolBarAdv", "SfTreeGrid" }));
             InitializeComponent();
-            ConfiguraGrilla();
-            LlenaGrilla();
-           
-        }
-
-        private void LlenaGrilla()
-        {
-            
-        }
-
-        private void ConfiguraGrilla()
-        {
-            grilla.Columns.Add(new TreeGridTextColumn() { MappingName = "Tipo", HeaderText = "Tipo de documento" });
-            grilla.Columns.Add(new TreeGridTextColumn() { MappingName = "Nombre", HeaderText = "Nombre" });
-            grilla.Columns.Add(new TreeGridTextColumn() { MappingName = "ID", HeaderText = "ID" });
-            grilla.Columns.Add(new TreeGridDateTimeColumn() { MappingName = "Fecha" });
-            grilla.Columns.Add(new TreeGridNumericColumn() { MappingName = "Importe" });
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

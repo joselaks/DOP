@@ -11,49 +11,35 @@ namespace DataObra.Interfaz.Ventanas
     /// </summary>
     public partial class WiRoles : Window
     {
-        public WiRoles()
+        private Window _inicio;
+
+        public WiRoles(Window inicio)
         {
             InitializeComponent();
+            _inicio = inicio;
         }
 
         private void Boton_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button boton)
             {
-                // Obtener el color de fondo del botón
-                var backgroundBrush = boton.Background as SolidColorBrush;
-                var backgroundColor = backgroundBrush?.Color;
-
-                // Convertir el color a formato HEX
-                string hexColor = backgroundColor.HasValue ? backgroundColor.Value.ToString() : "#005CA2";
-
-                // Mostrar el color de fondo en un MessageBox (opcional)
-                //MessageBox.Show($"El color de fondo del botón es: {hexColor}");
-
-                // Iniciar la animación de desvanecimiento
-                var fadeOutAnimation = new DoubleAnimation(1, 0, TimeSpan.FromSeconds(0.5));
-                fadeOutAnimation.Completed += (s, a) =>
+                // Configurar el SfBusyIndicator como activo
+                if (_inicio is WiInicio inicioWindow)
                 {
-                    this.Close();
+                    inicioWindow.espera.IsBusy = true;
+                    inicioWindow.espera.Header = "Configurando su espacio de trabajo......";
+                }
 
-                    // Abrir la ventana WiPrincipal después de cerrar WiRoles
-                    WiPrincipal principalWindow = new WiPrincipal(hexColor, boton.Name);
-                    principalWindow.Show();
-
-                    // Iniciar la animación de desvanecimiento en WiInicio
-                    var fadeOutAnimationInicio = new DoubleAnimation(1, 0, TimeSpan.FromSeconds(0.5));
-                    fadeOutAnimationInicio.Completed += (s2, a2) =>
-                    {
-                        // Cerrar la ventana WiInicio después de la animación
-                        Application.Current.MainWindow.Close();
-                    };
-                    Application.Current.MainWindow.BeginAnimation(Window.OpacityProperty, fadeOutAnimationInicio);
-                };
-                this.BeginAnimation(Window.OpacityProperty, fadeOutAnimation);
+                // Crear una instancia de GeRoles y llamar al procedimiento
+                GeRoles geRoles = new GeRoles();
+                geRoles.EjecutarProcedimiento(boton, this);
             }
         }
     }
 }
+
+
+
 
 
 

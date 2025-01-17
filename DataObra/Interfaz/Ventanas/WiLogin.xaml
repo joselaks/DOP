@@ -80,9 +80,12 @@
                         Foreground="White" />
                     <TextBlock
                         x:Name="texalta"
+                        Width="282"
                         Margin="0,20,0,5"
                         HorizontalAlignment="Center"
-                        Text="Puede comenzar a usar una versión gratuita, dandose de alta como nuevo usuario" TextWrapping="Wrap" TextAlignment="Center" Width="282"/>
+                        Text="Puede comenzar a usar una versión gratuita, dandose de alta como nuevo usuario"
+                        TextAlignment="Center"
+                        TextWrapping="Wrap" />
                     <Button
                         Height="20"
                         Background="#007ACC"
