@@ -98,8 +98,17 @@ namespace DataObra.Interfaz.Ventanas
 
         public void Boton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("accionaBoton");
+            if (sender is Button button)
+            {
+                string buttonName = button.Name;
+                MessageBox.Show($"El nombre del botón es: {buttonName}");
+            }
+            else
+            {
+                MessageBox.Show("El evento no fue disparado por un botón.");
+            }
         }
+
 
 
 

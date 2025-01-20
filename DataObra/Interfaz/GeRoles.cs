@@ -11,6 +11,8 @@ using System.Windows.Media.Imaging;
 using Syncfusion.Windows.Controls.Input;
 using Syncfusion.UI.Xaml.Grid;
 using Syncfusion.UI.Xaml.TreeGrid;
+using System.Windows.Media.Animation;
+using Syncfusion.DocIO.DLS;
 
 public class GeRoles
 {
@@ -55,7 +57,7 @@ public class GeRoles
         switch (Rol)
         {
             case "BotonPresupuestos":
-                
+
                 //zona00
                 UsGraficoBarras grafico1 = new UsGraficoBarras();
                 // Crear un nuevo TabNavigationItem
@@ -90,15 +92,19 @@ public class GeRoles
                 StackPanel stackPanel = new StackPanel
                 {
                     Orientation = Orientation.Horizontal,
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    VerticalAlignment = VerticalAlignment.Center
+                    HorizontalAlignment = System.Windows.HorizontalAlignment.Center, // Especificar el espacio de nombres completo
+                    VerticalAlignment = System.Windows.VerticalAlignment.Center // Especificar el espacio de nombres completo
+                };
+                var botones = new Dictionary<string, string>
+                {
+                    { "Presupuesto", "Presupuesto" },
+                    { "Pedido", "Pedido" },
+                    { "ID", "ID" },
+                    { "Fecha", "Fecha" },
+                    { "Importe", "Importe" }
                 };
 
-                for (int i = 1; i <= 4; i++)
-                {
-                    agregaBoton("Boton " + i, stackPanel);
-                   
-                }
+                agregaBoton(botones, stackPanel);
 
                 tabItemConBotones.Content = stackPanel;
                 ucPanelx4.zona11.Items.Add(tabItemConBotones);
@@ -107,9 +113,6 @@ public class GeRoles
                 break;
         }
     }
-
-
-
 
     private void GeneraInformes()
     {
@@ -123,18 +126,22 @@ public class GeRoles
     {
     }
 
-    private void agregaBoton(string item, StackPanel contenedor)
+    private void agregaBoton(Dictionary<string, string> botones, StackPanel contenedor)
     {
-        Button button = new Button
+        foreach (var item in botones)
         {
-            Width = 100,
-            Height = 100,
-            Content = item,
-            Margin = new Thickness(5),
-            Style = (Style)principalWindow.FindResource("RoundedRadioButtonStyle")
-        };
-        button.Click += principalWindow.Boton_Click;
-        contenedor.Children.Add(button);
+            Button button = new Button
+            {
+                Width = 100,
+                Height = 100,
+                Content = item.Key,
+                Name = item.Value,
+                Margin = new Thickness(5),
+                Style = (System.Windows.Style)principalWindow.FindResource("RoundedRadioButtonStyle")
+            };
+            button.Click += principalWindow.Boton_Click;
+            contenedor.Children.Add(button);
+        }
     }
 
     private void ConfiguraGrilla(Dictionary<string, string> campos, SfTreeGrid grilla)
@@ -150,6 +157,4 @@ public class GeRoles
             grilla.Columns.Add(textColumn);
         }
     }
-
-
 }
