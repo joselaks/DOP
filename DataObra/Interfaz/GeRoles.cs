@@ -47,7 +47,10 @@ public class GeRoles
         principalWindow.Show();
 
         // Cerrar la ventana WiInicio (si es necesario)
-        Application.Current.MainWindow.Close();
+        if (Application.Current.Windows.OfType<WiInicio>().FirstOrDefault() is WiInicio wiInicioWindow)
+        {
+            wiInicioWindow.Close();
+        }
     }
 
     private void GeneraPanel()
