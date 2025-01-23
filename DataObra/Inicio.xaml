@@ -1,11 +1,17 @@
-﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-        xmlns:local="clr-namespace:DataObra" 
-        xmlns:syncfusion="http://schemas.syncfusion.com/wpf" 
-        xmlns:controles="clr-namespace:DataObra.Sistema.Controles" 
-        x:Class="DataObra.Inicio" mc:Ignorable="d" Title="Inicio" Height="450" Width="800" WindowState="Maximized">
+﻿<Window
+    x:Class="DataObra.Inicio"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controles="clr-namespace:DataObra.Sistema.Controles"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:DataObra"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    Title="Inicio"
+    Width="800"
+    Height="450"
+    WindowState="Maximized"
+    mc:Ignorable="d">
 
     <Window.Resources>
         <Style x:Key="NewtabControlExtStyle" TargetType="{x:Type syncfusion:TabControlExt}">
@@ -14,118 +20,149 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type syncfusion:TabControlExt}">
-                                <Grid x:Name="TabControlGrid" Background="{TemplateBinding Background}"
-                            ClipToBounds="False" SnapsToDevicePixels="True" 
-                            KeyboardNavigation.TabNavigation="Local">
+                                <Grid
+                                    x:Name="TabControlGrid"
+                                    Background="{TemplateBinding Background}"
+                                    ClipToBounds="False"
+                                    KeyboardNavigation.TabNavigation="Local"
+                                    SnapsToDevicePixels="True">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition x:Name="ColumnDefinition0"/>
-                                        <ColumnDefinition x:Name="ColumnDefinition1" Width="0"/>
+                                        <ColumnDefinition x:Name="ColumnDefinition0" />
+                                        <ColumnDefinition x:Name="ColumnDefinition1" Width="0" />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition x:Name="RowDefinition0" Height="Auto"/>
-                                        <RowDefinition x:Name="RowDefinition1" Height="*"/>
+                                        <RowDefinition x:Name="RowDefinition0" Height="Auto" />
+                                        <RowDefinition x:Name="RowDefinition1" Height="*" />
                                     </Grid.RowDefinitions>
-                                    <syncfusion:HeaderPanel x:Name="HeaderPanel" Background="{TemplateBinding TabPanelBackground}"
-                                                  Grid.Column="0" Focusable="False" HorizontalAlignment="Stretch"
-                                                  Grid.Row="0" VerticalAlignment="Stretch" Panel.ZIndex="1">
-                                        <syncfusion:TabPanelAdv x:Name="PART_TabPanel" DockPanel.Dock="Right"
-                                                      Focusable="False" HorizontalAlignment="Center"
-                                                      Style="{TemplateBinding TabPanelStyle}" VerticalAlignment="Stretch">
-                                            <syncfusion:TabScrollViewer x:Name="PART_ScrollViewer" Focusable="False"
-                                                              HorizontalScrollBarVisibility="Hidden" 
-                                                              Margin="{Binding Margin, 
-                                      RelativeSource={RelativeSource FindAncestor, AncestorLevel=1,
-                                      AncestorType={x:Type ContentPresenter}}}" PanningMode="HorizontalFirst" VerticalScrollBarVisibility="Hidden">
-                                                <syncfusion:TabLayoutPanel x:Name="PART_TabLayoutPanel" AllowDrop="True"
-                                                                 ClipToBounds="True" HorizontalAlignment="Left"
-                                                                 IsItemsHost="True" Margin="0,2,2,-1"
-                                                                 KeyboardNavigation.TabIndex="1" VerticalAlignment="Top"/>
+                                    <syncfusion:HeaderPanel
+                                        x:Name="HeaderPanel"
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        Panel.ZIndex="1"
+                                        Background="{TemplateBinding TabPanelBackground}"
+                                        Focusable="False">
+                                        <syncfusion:TabPanelAdv
+                                            x:Name="PART_TabPanel"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Stretch"
+                                            DockPanel.Dock="Right"
+                                            Focusable="False"
+                                            Style="{TemplateBinding TabPanelStyle}">
+                                            <syncfusion:TabScrollViewer
+                                                x:Name="PART_ScrollViewer"
+                                                Margin="{Binding Margin, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ContentPresenter}}}"
+                                                Focusable="False"
+                                                HorizontalScrollBarVisibility="Hidden"
+                                                PanningMode="HorizontalFirst"
+                                                VerticalScrollBarVisibility="Hidden">
+                                                <syncfusion:TabLayoutPanel
+                                                    x:Name="PART_TabLayoutPanel"
+                                                    Margin="0,2,2,-1"
+                                                    HorizontalAlignment="Left"
+                                                    VerticalAlignment="Top"
+                                                    AllowDrop="True"
+                                                    ClipToBounds="True"
+                                                    IsItemsHost="True"
+                                                    KeyboardNavigation.TabIndex="1" />
                                             </syncfusion:TabScrollViewer>
                                         </syncfusion:TabPanelAdv>
                                     </syncfusion:HeaderPanel>
-                                    <syncfusion:Border3D x:Name="ContentPanel" AllowDrop="True"
-                                               BorderBrush="{TemplateBinding BorderBrush}" 
-                                               BorderThickness="{TemplateBinding BorderThickness}"
-                                               Grid.Column="0" CornerRadius="2" 
-                                               KeyboardNavigation.DirectionalNavigation="Contained" 
-                                               Margin="0,1,0,0" Grid.Row="1" KeyboardNavigation.TabIndex="2"
-                                               KeyboardNavigation.TabNavigation="Local">
-                                        <Border x:Name="PART_ContentPanelBorder" 
-                                      BorderBrush="#FF69A1BF"
-                                      BorderThickness="0" 
-                                      CornerRadius="2">
-                                            <Border x:Name="PART_ContentPanelInnerBorder"
-                                          BorderBrush="{TemplateBinding BorderBrush}" 
-                                          BorderThickness="{TemplateBinding BorderThickness}" 
-                                          Background="{TemplateBinding Background}" CornerRadius="2"
-                                          Margin="3">
-                                                <ContentPresenter x:Name="PART_SelectedContentHost"
-                                                        AllowDrop="True" ContentTemplate="{TemplateBinding SelectedContentTemplate}" 
-                                                        Content="{TemplateBinding SelectedContent}" ContentSource="SelectedContent" 
-                                                        Margin="{TemplateBinding Padding}" 
-                                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                    <syncfusion:Border3D
+                                        x:Name="ContentPanel"
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Margin="0,1,0,0"
+                                        AllowDrop="True"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        CornerRadius="2"
+                                        KeyboardNavigation.DirectionalNavigation="Contained"
+                                        KeyboardNavigation.TabIndex="2"
+                                        KeyboardNavigation.TabNavigation="Local">
+                                        <Border
+                                            x:Name="PART_ContentPanelBorder"
+                                            BorderBrush="#FF69A1BF"
+                                            BorderThickness="0"
+                                            CornerRadius="2">
+                                            <Border
+                                                x:Name="PART_ContentPanelInnerBorder"
+                                                Margin="3"
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="2">
+                                                <ContentPresenter
+                                                    x:Name="PART_SelectedContentHost"
+                                                    Margin="{TemplateBinding Padding}"
+                                                    AllowDrop="True"
+                                                    Content="{TemplateBinding SelectedContent}"
+                                                    ContentSource="SelectedContent"
+                                                    ContentTemplate="{TemplateBinding SelectedContentTemplate}"
+                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                                             </Border>
                                         </Border>
                                     </syncfusion:Border3D>
                                 </Grid>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="syncfusion:SkinStorage.EnableTouch" Value="True">
-                                        <Setter Property="FontSize" Value="18"/>
+                                        <Setter Property="FontSize" Value="18" />
                                     </Trigger>
                                     <Trigger Property="TabStripPlacement" Value="Bottom">
-                                        <Setter Property="LayoutTransform" TargetName="HeaderPanel">
+                                        <Setter TargetName="HeaderPanel" Property="LayoutTransform">
                                             <Setter.Value>
-                                                <RotateTransform Angle="-180"/>
+                                                <RotateTransform Angle="-180" />
                                             </Setter.Value>
                                         </Setter>
-                                        <Setter Property="Grid.Row" TargetName="HeaderPanel" Value="1"/>
-                                        <Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
-                                        <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
-                                        <Setter Property="Height" TargetName="RowDefinition1" Value="Auto"/>
-                                        <Setter Property="FlowDirection" TargetName="HeaderPanel" Value="RightToLeft"/>
+                                        <Setter TargetName="HeaderPanel" Property="Grid.Row" Value="1" />
+                                        <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0" />
+                                        <Setter TargetName="RowDefinition0" Property="Height" Value="*" />
+                                        <Setter TargetName="RowDefinition1" Property="Height" Value="Auto" />
+                                        <Setter TargetName="HeaderPanel" Property="FlowDirection" Value="RightToLeft" />
                                     </Trigger>
                                     <Trigger Property="TabStripPlacement" Value="Left">
-                                        <Setter Property="LayoutTransform" TargetName="HeaderPanel">
+                                        <Setter TargetName="HeaderPanel" Property="LayoutTransform">
                                             <Setter.Value>
-                                                <RotateTransform Angle="-90"/>
+                                                <RotateTransform Angle="-90" />
                                             </Setter.Value>
                                         </Setter>
-                                        <Setter Property="Grid.Row" TargetName="HeaderPanel" Value="0"/>
-                                        <Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
-                                        <Setter Property="Grid.Column" TargetName="HeaderPanel" Value="0"/>
-                                        <Setter Property="Grid.Column" TargetName="ContentPanel" Value="1"/>
-                                        <Setter Property="Width" TargetName="ColumnDefinition0" Value="Auto"/>
-                                        <Setter Property="Width" TargetName="ColumnDefinition1" Value="*"/>
-                                        <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
-                                        <Setter Property="Height" TargetName="RowDefinition1" Value="0"/>
-                                        <Setter Property="VerticalAlignment" TargetName="HeaderPanel" Value="Stretch"/>
-                                        <Setter Property="FlowDirection" TargetName="HeaderPanel" Value="RightToLeft"/>
+                                        <Setter TargetName="HeaderPanel" Property="Grid.Row" Value="0" />
+                                        <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0" />
+                                        <Setter TargetName="HeaderPanel" Property="Grid.Column" Value="0" />
+                                        <Setter TargetName="ContentPanel" Property="Grid.Column" Value="1" />
+                                        <Setter TargetName="ColumnDefinition0" Property="Width" Value="Auto" />
+                                        <Setter TargetName="ColumnDefinition1" Property="Width" Value="*" />
+                                        <Setter TargetName="RowDefinition0" Property="Height" Value="*" />
+                                        <Setter TargetName="RowDefinition1" Property="Height" Value="0" />
+                                        <Setter TargetName="HeaderPanel" Property="VerticalAlignment" Value="Stretch" />
+                                        <Setter TargetName="HeaderPanel" Property="FlowDirection" Value="RightToLeft" />
                                     </Trigger>
                                     <Trigger Property="TabStripPlacement" Value="Right">
-                                        <Setter Property="LayoutTransform" TargetName="HeaderPanel">
+                                        <Setter TargetName="HeaderPanel" Property="LayoutTransform">
                                             <Setter.Value>
-                                                <RotateTransform Angle="90"/>
+                                                <RotateTransform Angle="90" />
                                             </Setter.Value>
                                         </Setter>
-                                        <Setter Property="Grid.Row" TargetName="HeaderPanel" Value="0"/>
-                                        <Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
-                                        <Setter Property="Grid.Column" TargetName="HeaderPanel" Value="1"/>
-                                        <Setter Property="Grid.Column" TargetName="ContentPanel" Value="0"/>
-                                        <Setter Property="Width" TargetName="ColumnDefinition0" Value="*"/>
-                                        <Setter Property="Width" TargetName="ColumnDefinition1" Value="Auto"/>
-                                        <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
-                                        <Setter Property="Height" TargetName="RowDefinition1" Value="0"/>
+                                        <Setter TargetName="HeaderPanel" Property="Grid.Row" Value="0" />
+                                        <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0" />
+                                        <Setter TargetName="HeaderPanel" Property="Grid.Column" Value="1" />
+                                        <Setter TargetName="ContentPanel" Property="Grid.Column" Value="0" />
+                                        <Setter TargetName="ColumnDefinition0" Property="Width" Value="*" />
+                                        <Setter TargetName="ColumnDefinition1" Property="Width" Value="Auto" />
+                                        <Setter TargetName="RowDefinition0" Property="Height" Value="*" />
+                                        <Setter TargetName="RowDefinition1" Property="Height" Value="0" />
                                     </Trigger>
                                     <MultiTrigger>
                                         <MultiTrigger.Conditions>
-                                            <Condition Property="TabStripPlacement" Value="Left"/>
-                                            <Condition Property="RotateTextWhenVertical" Value="True"/>
-                                            <Condition Property="FlowDirection" Value="RightToLeft"/>
+                                            <Condition Property="TabStripPlacement" Value="Left" />
+                                            <Condition Property="RotateTextWhenVertical" Value="True" />
+                                            <Condition Property="FlowDirection" Value="RightToLeft" />
                                         </MultiTrigger.Conditions>
-                                        <Setter Property="FlowDirection" TargetName="HeaderPanel" Value="LeftToRight"/>
+                                        <Setter TargetName="HeaderPanel" Property="FlowDirection" Value="LeftToRight" />
                                     </MultiTrigger>
                                     <Trigger Property="IsEnabled" Value="False">
-                                        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
@@ -134,31 +171,41 @@
                 </MultiDataTrigger>
             </Style.Triggers>
         </Style>
-        <SolidColorBrush x:Key="PanelBackground" Color="#007ACC"/>
-        <SolidColorBrush x:Key="AgrupadoresBackground" Color="#006BB6"/>
-        <SolidColorBrush x:Key="DocumentosBackground" Color="#005CA2"/>
-        <SolidColorBrush x:Key="InsumosBackground" Color="#004C8E"/>
-        <SolidColorBrush x:Key="RestaurarBackground" Color="#005A9E"/>
-        <SolidColorBrush x:Key="PressedBackground" Color="#004482"/>
+        <SolidColorBrush x:Key="PanelBackground" Color="#007ACC" />
+        <SolidColorBrush x:Key="AgrupadoresBackground" Color="#006BB6" />
+        <SolidColorBrush x:Key="DocumentosBackground" Color="#005CA2" />
+        <SolidColorBrush x:Key="InsumosBackground" Color="#004C8E" />
+        <SolidColorBrush x:Key="RestaurarBackground" Color="#005A9E" />
+        <SolidColorBrush x:Key="PressedBackground" Color="#004482" />
 
 
 
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="32"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="32" />
         </Grid.RowDefinitions>
 
-        <syncfusion:TabControlExt SelectionChanged="TabPrincipal_SelectionChanged" IsCustomTabItemContextMenuEnabled="False" CloseButtonType="Hide" Style="{DynamicResource NewtabControlExtStyle}" x:Name="TabPrincipal" BorderThickness="0" Grid.ColumnSpan="2" >
+        <syncfusion:TabControlExt
+            x:Name="TabPrincipal"
+            Grid.ColumnSpan="2"
+            BorderThickness="0"
+            CloseButtonType="Hide"
+            IsCustomTabItemContextMenuEnabled="False"
+            SelectionChanged="TabPrincipal_SelectionChanged"
+            Style="{DynamicResource NewtabControlExtStyle}">
 
             <syncfusion:TabItemExt Header="Panel">
 
-                <Grid Grid.Row="1" x:Name="Panel" Margin="10" >
+                <Grid
+                    x:Name="Panel"
+                    Grid.Row="1"
+                    Margin="10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
@@ -168,50 +215,96 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Border Grid.Row="0" Margin="5,5,5,5" BorderBrush="#FF3399FF" Background="AntiqueWhite" >
-                        <controles:GraficoTorta Grid.Row="0" Grid.Column="0"/>
+                    <Border
+                        Grid.Row="0"
+                        Margin="5,5,5,5"
+                        Background="AntiqueWhite"
+                        BorderBrush="#FF3399FF">
+                        <controles:GraficoTorta Grid.Row="0" Grid.Column="0" />
                     </Border>
 
-                    <Border Grid.Row="1" Margin="5,5,5,5" BorderBrush="#FF3399FF" Background="Beige" >
-                        <Label Content="Informes" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" />
+                    <Border
+                        Grid.Row="1"
+                        Margin="5,5,5,5"
+                        Background="Beige"
+                        BorderBrush="#FF3399FF">
+                        <Label
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="Informes"
+                            FontSize="18"
+                            FontWeight="Bold" />
                     </Border>
 
-                    <Border Grid.Row="1" Grid.Column="1" Margin="5,5,5,5" BorderBrush="#FF3399FF" Background="Cyan">
-                        <Label Content="Últimos Agrupadores" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" />
+                    <Border
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="5,5,5,5"
+                        Background="Cyan"
+                        BorderBrush="#FF3399FF">
+                        <Label
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="Últimos Agrupadores"
+                            FontSize="18"
+                            FontWeight="Bold" />
                     </Border>
 
-                    <Border Grid.Row="0" Grid.Column="1" Margin="5,5,5,5" BorderBrush="#FF3399FF" Background="FloralWhite" >
-                        <Label Content="Últimos Documentos" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" />
+                    <Border
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Margin="5,5,5,5"
+                        Background="FloralWhite"
+                        BorderBrush="#FF3399FF">
+                        <Label
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="Últimos Documentos"
+                            FontSize="18"
+                            FontWeight="Bold" />
                     </Border>
 
                 </Grid>
 
             </syncfusion:TabItemExt>
 
-            <syncfusion:TabItemExt Header="Agrupadores" >
+            <syncfusion:TabItemExt Header="Agrupadores">
 
-                <syncfusion:TabControlExt x:Name="TabAgrupadores" CloseButtonType="Hide" IsCustomTabItemContextMenuEnabled="True" NewButtonAlignment="First"
-                    SelectOnCreatingNewItem="True" IsNewButtonEnabled="True" NewButtonClick="TabAgrupadorNuevo_Click">
+                <syncfusion:TabControlExt
+                    x:Name="TabAgrupadores"
+                    CloseButtonType="Hide"
+                    IsCustomTabItemContextMenuEnabled="True"
+                    IsNewButtonEnabled="True"
+                    NewButtonAlignment="First"
+                    NewButtonClick="TabAgrupadorNuevo_Click"
+                    SelectOnCreatingNewItem="True">
                     <syncfusion:TabControlExt.Resources>
                         <Style TargetType="{x:Type syncfusion:TabPanelAdv}">
                             <Setter Property="HorizontalAlignment" Value="Center" />
                         </Style>
                     </syncfusion:TabControlExt.Resources>
 
-                    <syncfusion:TabItemExt Header="." Visibility="Hidden" AllowPin="False" IsPinned="True" ShowPin="False" >
-                        <syncfusion:TileViewControl x:Name="TilesAgrupadores"
-                            IsVirtualizing="False" Margin="3,9,7,5"
+                    <syncfusion:TabItemExt
+                        AllowPin="False"
+                        Header="."
+                        IsPinned="True"
+                        ShowPin="False"
+                        Visibility="Hidden">
+                        <syncfusion:TileViewControl
+                            x:Name="TilesAgrupadores"
+                            Margin="3,9,7,5"
                             AllowItemRepositioning="False"
                             AnimationDuration="00:00:00.700"
                             ClickHeaderToMaximize="False"
-                            ColumnCount="3" RowCount="4" 
+                            ColumnCount="3"
                             EnableAnimation="False"
                             IsMinMaxButtonOnMouseOverOnly="False"
+                            IsVirtualizing="False"
                             ItemsSource="{Binding BookModelItems}"
                             MinimizedItemsPercentage="55"
                             MouseDoubleClick="ItemTile_Click"
-                            SelectedIndex="0" >
-                        </syncfusion:TileViewControl>
+                            RowCount="4"
+                            SelectedIndex="0" />
 
                     </syncfusion:TabItemExt>
 
@@ -221,23 +314,37 @@
 
             <syncfusion:TabItemExt Header="Documentos">
 
-                <syncfusion:TabControlExt x:Name="TabDocumentos" CloseButtonType="Hide" IsCustomTabItemContextMenuEnabled="True" NewButtonAlignment="First"
-                    SelectOnCreatingNewItem="True" IsNewButtonEnabled="True" NewButtonClick="TabDocumentoNuevo_Click" >
+                <syncfusion:TabControlExt
+                    x:Name="TabDocumentos"
+                    CloseButtonType="Hide"
+                    IsCustomTabItemContextMenuEnabled="True"
+                    IsNewButtonEnabled="True"
+                    NewButtonAlignment="First"
+                    NewButtonClick="TabDocumentoNuevo_Click"
+                    SelectOnCreatingNewItem="True">
 
-                    <syncfusion:TabItemExt Header="." Visibility="Hidden" AllowPin="False" IsPinned="True" ShowPin="False" CloseButtonState="Visible">
-                        <syncfusion:TileViewControl x:Name="TilesDocumentos"
-                            IsVirtualizing="False" Margin="3,9,7,5"
+                    <syncfusion:TabItemExt
+                        AllowPin="False"
+                        CloseButtonState="Visible"
+                        Header="."
+                        IsPinned="True"
+                        ShowPin="False"
+                        Visibility="Hidden">
+                        <syncfusion:TileViewControl
+                            x:Name="TilesDocumentos"
+                            Margin="3,9,7,5"
                             AllowItemRepositioning="False"
                             AnimationDuration="00:00:00.700"
                             ClickHeaderToMaximize="False"
-                            ColumnCount="4" RowCount="4" 
+                            ColumnCount="4"
                             EnableAnimation="False"
                             IsMinMaxButtonOnMouseOverOnly="False"
+                            IsVirtualizing="False"
                             ItemsSource="{Binding BookModelItems}"
                             MinimizedItemsPercentage="55"
                             MouseDoubleClick="ItemTile_Click"
-                            SelectedIndex="0" >
-                        </syncfusion:TileViewControl>
+                            RowCount="4"
+                            SelectedIndex="0" />
 
                     </syncfusion:TabItemExt>
                 </syncfusion:TabControlExt>
@@ -245,23 +352,36 @@
 
             <syncfusion:TabItemExt Header="Insumos">
 
-                <syncfusion:TabControlExt x:Name="TabInsumos" CloseButtonType="Hide" IsCustomTabItemContextMenuEnabled="True" NewButtonAlignment="First"
-                    SelectOnCreatingNewItem="True" IsNewButtonEnabled="True" NewButtonClick="TabInsumoNuevo_Click">
+                <syncfusion:TabControlExt
+                    x:Name="TabInsumos"
+                    CloseButtonType="Hide"
+                    IsCustomTabItemContextMenuEnabled="True"
+                    IsNewButtonEnabled="True"
+                    NewButtonAlignment="First"
+                    NewButtonClick="TabInsumoNuevo_Click"
+                    SelectOnCreatingNewItem="True">
 
-                    <syncfusion:TabItemExt Header="." Visibility="Hidden" AllowPin="False" IsPinned="True" ShowPin="False">
-                        <syncfusion:TileViewControl x:Name="TilesInsumos"
-                              IsVirtualizing="False" Margin="3,9,7,5"
-                              AllowItemRepositioning="False"
-                              AnimationDuration="00:00:00.700"
-                              ClickHeaderToMaximize="False"
-                              ColumnCount="3" RowCount="3" 
-                              EnableAnimation="False"
-                              IsMinMaxButtonOnMouseOverOnly="False"
-                              ItemsSource="{Binding BookModelItems}"
-                              MinimizedItemsPercentage="55"
-                              MouseDoubleClick="ItemTile_Click"
-                              SelectedIndex="0" >
-                        </syncfusion:TileViewControl>
+                    <syncfusion:TabItemExt
+                        AllowPin="False"
+                        Header="."
+                        IsPinned="True"
+                        ShowPin="False"
+                        Visibility="Hidden">
+                        <syncfusion:TileViewControl
+                            x:Name="TilesInsumos"
+                            Margin="3,9,7,5"
+                            AllowItemRepositioning="False"
+                            AnimationDuration="00:00:00.700"
+                            ClickHeaderToMaximize="False"
+                            ColumnCount="3"
+                            EnableAnimation="False"
+                            IsMinMaxButtonOnMouseOverOnly="False"
+                            IsVirtualizing="False"
+                            ItemsSource="{Binding BookModelItems}"
+                            MinimizedItemsPercentage="55"
+                            MouseDoubleClick="ItemTile_Click"
+                            RowCount="3"
+                            SelectedIndex="0" />
 
                     </syncfusion:TabItemExt>
                 </syncfusion:TabControlExt>
@@ -271,63 +391,148 @@
             <syncfusion:TabItemExt FontStyle="Italic" Header="Pruebas">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="79*"/>
-                        <ColumnDefinition Width="21*"/>
-                        <ColumnDefinition Width="58*"/>
-                        <ColumnDefinition Width="79*"/>
-                        <ColumnDefinition Width="79*"/>
-                        <ColumnDefinition Width="79*"/>
+                        <ColumnDefinition Width="79*" />
+                        <ColumnDefinition Width="21*" />
+                        <ColumnDefinition Width="58*" />
+                        <ColumnDefinition Width="79*" />
+                        <ColumnDefinition Width="79*" />
+                        <ColumnDefinition Width="79*" />
                     </Grid.ColumnDefinitions>
 
-                    <syncfusion:TabControlExt TabStripPlacement="Top"  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" Grid.RowSpan="3" IsCustomTabItemContextMenuEnabled="False" CloseButtonType="Hide" x:Name="TabDiagramas" BorderThickness="0.3" Margin="0,35,0,0" >
-                        <syncfusion:TabItemExt Header="Flujo Documentos" >
+                    <syncfusion:TabControlExt
+                        x:Name="TabDiagramas"
+                        Grid.Row="0"
+                        Grid.RowSpan="3"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="4"
+                        Margin="0,35,0,0"
+                        BorderThickness="0.3"
+                        CloseButtonType="Hide"
+                        IsCustomTabItemContextMenuEnabled="False"
+                        TabStripPlacement="Top">
+                        <syncfusion:TabItemExt Header="Flujo Documentos">
                             <Grid x:Name="GrillaDiagramaDocs" />
                         </syncfusion:TabItemExt>
-                        <syncfusion:TabItemExt Header="Flujo Insumos" >
+                        <syncfusion:TabItemExt Header="Flujo Insumos">
                             <Grid x:Name="GrillaDiagramaInsumos" />
                         </syncfusion:TabItemExt>
-                        <syncfusion:TabItemExt Header="Trazabilidad Insumos" >
+                        <syncfusion:TabItemExt Header="Trazabilidad Insumos">
                             <Grid x:Name="GrillaDiagramaTrazabilidad" />
                         </syncfusion:TabItemExt>
                     </syncfusion:TabControlExt>
 
-                    <Label Content="DataObra: la Información de tus Obras" FontSize="27" FontStyle="Italic" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="SemiBold" Grid.Column="3" />
+                    <Label
+                        Grid.Row="3"
+                        Grid.Column="3"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Content="DataObra: la Información de tus Obras"
+                        FontSize="27"
+                        FontStyle="Italic"
+                        FontWeight="SemiBold" />
 
-                    <StackPanel  Grid.Row="0" HorizontalAlignment="Center" Grid.RowSpan="3">
-                        <Button Content="Roles" Click="Button_Click_Roles"></Button>
-                        <Button Content="Principal" Click="Button_Click_Principal"></Button>
-                        <Button Content="Pantalla Login" Click="Button_Click_2"></Button>
-                        <Button Content="Configura Roles" Click="Button_Click_1"></Button>
-                        <Button Content="Documento" Click="Button_Click_4"></Button>
-                        <Button Content="Presupuesto" x:Name="vPres" Click="vPres_Click"></Button>
-                        <Button Content="Ventana Conectores" x:Name="vConect" Click="vConect_Click"></Button>
-                        <Label Content="Primeros pasos" FontSize="18" Grid.Row="0" HorizontalAlignment="Center" Margin="0,30,0,30"  FontWeight="SemiBold"/>
-                        <Label Content="Concpetos básicos" FontSize="18" HorizontalAlignment="Center" />
-                        <Label Content="Como agregar un agrupador" FontSize="18" HorizontalAlignment="Center" />
-                        <Label Content="Como cargar un documento" FontSize="18" HorizontalAlignment="Center" />
+                    <StackPanel
+                        Grid.Row="0"
+                        Grid.RowSpan="3"
+                        HorizontalAlignment="Center">
+                        <Button Click="Button_Click_Roles" Content="Roles" />
+                        <Button Click="Button_Click_Principal" Content="Principal" />
+                        <Button Click="Button_Click_2" Content="Pantalla Login" />
+                        <Button Click="Button_Click_1" Content="Configura Roles" />
+                        <Button Click="Button_Click_4" Content="Documento" />
+                        <Button
+                            x:Name="vPres"
+                            Click="vPres_Click"
+                            Content="Presupuesto" />
+                        <Button
+                            x:Name="vConect"
+                            Click="vConect_Click"
+                            Content="Ventana Conectores" />
+                        <Label
+                            Grid.Row="0"
+                            Margin="0,30,0,30"
+                            HorizontalAlignment="Center"
+                            Content="Primeros pasos"
+                            FontSize="18"
+                            FontWeight="SemiBold" />
+                        <Label
+                            HorizontalAlignment="Center"
+                            Content="Concpetos básicos"
+                            FontSize="18" />
+                        <Label
+                            HorizontalAlignment="Center"
+                            Content="Como agregar un agrupador"
+                            FontSize="18" />
+                        <Label
+                            HorizontalAlignment="Center"
+                            Content="Como cargar un documento"
+                            FontSize="18" />
                     </StackPanel>
 
-                    <StackPanel Grid.Row="0" Grid.Column="5" HorizontalAlignment="Center" >
-                        <Label Content="Tutoriales" FontSize="18" Margin="0,50,0,30" FontWeight="SemiBold" HorizontalAlignment="Center"/>
-                        <Label Content="Presupuestación" FontSize="15" HorizontalAlignment="Center" />
-                        <Label Content="Planificación de tareas" FontSize="15" HorizontalAlignment="Center" />
-                        <Label Content="Certificar avance de obra" FontSize="15" HorizontalAlignment="Center" />
+                    <StackPanel
+                        Grid.Row="0"
+                        Grid.Column="5"
+                        HorizontalAlignment="Center">
+                        <Label
+                            Margin="0,50,0,30"
+                            HorizontalAlignment="Center"
+                            Content="Tutoriales"
+                            FontSize="18"
+                            FontWeight="SemiBold" />
+                        <Label
+                            HorizontalAlignment="Center"
+                            Content="Presupuestación"
+                            FontSize="15" />
+                        <Label
+                            HorizontalAlignment="Center"
+                            Content="Planificación de tareas"
+                            FontSize="15" />
+                        <Label
+                            HorizontalAlignment="Center"
+                            Content="Certificar avance de obra"
+                            FontSize="15" />
                     </StackPanel>
 
-                    <Button Grid.Column="5" Grid.Row="1" Content="Borrar Login" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="69" x:Name="limpiaLogin" Click="limpiaLogin_Click" />
+                    <Button
+                        x:Name="limpiaLogin"
+                        Grid.Row="1"
+                        Grid.Column="5"
+                        Width="69"
+                        Height="25"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Click="limpiaLogin_Click"
+                        Content="Borrar Login" />
 
-                    <StackPanel Grid.Row="3" Grid.Column="3" HorizontalAlignment="Center" Margin="0,25,0,0" >
-                        <Label Content="Novedades del sistema" FontSize="18" FontWeight="SemiBold"/>
-                        <Label Content="Ahora en DataObra se agrego la funcionalidad que permite hacer todo mejor." FontSize="15" HorizontalAlignment="Center" />
+                    <StackPanel
+                        Grid.Row="3"
+                        Grid.Column="3"
+                        Margin="0,25,0,0"
+                        HorizontalAlignment="Center">
+                        <Label
+                            Content="Novedades del sistema"
+                            FontSize="18"
+                            FontWeight="SemiBold" />
+                        <Label
+                            HorizontalAlignment="Center"
+                            Content="Ahora en DataObra se agrego la funcionalidad que permite hacer todo mejor."
+                            FontSize="15" />
                     </StackPanel>
 
-                    <StackPanel Grid.Row="0" Grid.Column="5" VerticalAlignment="Top" Margin="0,-20,0,0" HorizontalAlignment="Center" Orientation="Horizontal" ToolTip="Solapa abierta al iniciar DataObra" >
+                    <StackPanel
+                        Grid.Row="0"
+                        Grid.Column="5"
+                        Margin="0,-20,0,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top"
+                        Orientation="Horizontal"
+                        ToolTip="Solapa abierta al iniciar DataObra">
                         <Label Content="Sel:" />
                         <RadioButton Content="Inicio" IsChecked="True" />
                         <RadioButton Content="Agrupadores" />
@@ -340,30 +545,52 @@
 
         </syncfusion:TabControlExt>
 
-        <!-- Barra de estado -->
+        <!--  Barra de estado  -->
         <StatusBar Grid.Row="1" Grid.ColumnSpan="2">
             <StatusBarItem>
-                <TextBlock x:Name="UsuarioTexto" Text="Usuario: NombreUsuario"/>
+                <TextBlock x:Name="UsuarioTexto" Text="Usuario: NombreUsuario" />
             </StatusBarItem>
             <StatusBarItem>
-                <TextBlock> Rol: <Hyperlink Click="Hyperlink_Click"> <Run x:Name="RolTexto" Text="NombreRol"/> </Hyperlink></TextBlock>
+                <TextBlock>
+                    Rol:<Hyperlink Click="Hyperlink_Click"> 
+                        <Run x:Name="RolTexto" Text="NombreRol" /> 
+                    </Hyperlink></TextBlock>
             </StatusBarItem>
             <StatusBarItem HorizontalAlignment="Right">
-                <Button x:Name="BtnConexiones" Content=" Conexiones Servidor " MouseEnter="BtnConexiones_MouseEnter" MouseLeave="BtnConexiones_MouseLeave" />
+                <Button
+                    x:Name="BtnConexiones"
+                    Content=" Conexiones Servidor "
+                    MouseEnter="BtnConexiones_MouseEnter"
+                    MouseLeave="BtnConexiones_MouseLeave" />
             </StatusBarItem>
         </StatusBar>
-        <!-- Popup para mostrar al pasar el ratón por el botón -->
-        <Popup x:Name="popupConexiones" Placement="Mouse" StaysOpen="False">
-            <Border Background="LightGray" BorderBrush="Black" BorderThickness="1" CornerRadius="5" Padding="10">
+        <!--  Popup para mostrar al pasar el ratón por el botón  -->
+        <Popup
+            x:Name="popupConexiones"
+            Placement="Mouse"
+            StaysOpen="False">
+            <Border
+                Padding="10"
+                Background="LightGray"
+                BorderBrush="Black"
+                BorderThickness="1"
+                CornerRadius="5">
                 <syncfusion:TabControlExt>
                     <syncfusion:TabItemExt Header="Listado">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
-                            <ListBox x:Name="InicioLogListBox" DisplayMemberPath="LogEntryDisplay" Margin="2" Background="Beige"/>
+                            <ListBox
+                                x:Name="InicioLogListBox"
+                                Margin="2"
+                                Background="Beige"
+                                DisplayMemberPath="LogEntryDisplay" />
                         </ScrollViewer>
                     </syncfusion:TabItemExt>
                     <syncfusion:TabItemExt Header="Objetos">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
-                            <syncfusion:SfDataGrid x:Name="InicioGrillaLogs" AutoGenerateColumns="True" AllowResizingColumns="True"/>
+                            <syncfusion:SfDataGrid
+                                x:Name="InicioGrillaLogs"
+                                AllowResizingColumns="True"
+                                AutoGenerateColumns="True" />
                         </ScrollViewer>
                     </syncfusion:TabItemExt>
                 </syncfusion:TabControlExt>

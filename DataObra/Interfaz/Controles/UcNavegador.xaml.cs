@@ -1,4 +1,5 @@
 ﻿using DataObra.Interfaz.Controles.SubControles;
+using DataObra.Sistema;
 using Syncfusion.UI.Xaml.TreeGrid;
 using System.Windows;
 using System.Windows.Controls;
@@ -113,6 +114,13 @@ namespace DataObra.Interfaz.Controles
                     break;
             }
 
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            DataObra.Presupuestos.VenPresupuesto ventana = new DataObra.Presupuestos.VenPresupuesto();
+
+            ventana.Show();
         }
     }
 }

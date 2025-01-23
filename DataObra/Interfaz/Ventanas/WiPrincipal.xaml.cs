@@ -25,6 +25,11 @@ namespace DataObra.Interfaz.Ventanas
     public partial class WiPrincipal : Window, INotifyPropertyChanged
     {
         private SolidColorBrush _primaryColorBrush;
+        private double _previousLeft;
+        private double _previousTop;
+        private double _previousWidth;
+        private double _previousHeight;
+        private bool _isCustomMaximized = false;
 
         public SolidColorBrush PrimaryColorBrush
         {
@@ -69,13 +74,35 @@ namespace DataObra.Interfaz.Ventanas
 
         private void Maximize_Click(object sender, RoutedEventArgs e)
         {
-            if (WindowState == WindowState.Maximized)
+            if (_isCustomMaximized)
             {
+                // Restaurar el tamaño, la posición y la sombra anteriores
                 WindowState = WindowState.Normal;
+                Left = _previousLeft;
+                Top = _previousTop;
+                Width = _previousWidth;
+                Height = _previousHeight;
+                MainBorder.Margin = new Thickness(10);
+                WindowShadow.Opacity = 0.5;
+                _isCustomMaximized = false;
             }
             else
             {
-                WindowState = WindowState.Maximized;
+                // Almacenar el tamaño y la posición actuales
+                _previousLeft = Left;
+                _previousTop = Top;
+                _previousWidth = Width;
+                _previousHeight = Height;
+
+                // Maximizar la ventana y eliminar la sombra
+                var screen = System.Windows.SystemParameters.WorkArea;
+                Left = screen.Left;
+                Top = screen.Top;
+                Width = screen.Width;
+                Height = screen.Height;
+                MainBorder.Margin = new Thickness(0);
+                WindowShadow.Opacity = 0;
+                _isCustomMaximized = true;
             }
         }
 
@@ -109,9 +136,6 @@ namespace DataObra.Interfaz.Ventanas
             }
         }
 
-
-
-
         private void hRol_Click(object sender, RoutedEventArgs e)
         {
             // Preguntar al usuario si quiere ejecutar la orden
@@ -126,12 +150,4 @@ namespace DataObra.Interfaz.Ventanas
         }
     }
 }
-
-
-
-
-
-
-
-
 
