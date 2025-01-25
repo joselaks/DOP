@@ -1,47 +1,86 @@
-﻿<Window x:Class="DataObra.Sistema.Principal"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DataObra.Sistema" xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-        mc:Ignorable="d" WindowState="Maximized"
-        Title="Principal" Height="850" Width="1400"
-        Background="#FFFFFF" 
-        WindowStartupLocation="CenterScreen">
+﻿<Window
+    x:Class="DataObra.Sistema.Principal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:DataObra.Sistema"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    Title="Principal"
+    Width="1400"
+    Height="850"
+    Background="#FFFFFF"
+    WindowStartupLocation="CenterScreen"
+    WindowState="Maximized"
+    mc:Ignorable="d">
     <Window.Resources>
-        <SolidColorBrush x:Key="PanelBackground" Color="#007ACC"/>
-        <SolidColorBrush x:Key="AgrupadoresBackground" Color="#006BB6"/>
-        <SolidColorBrush x:Key="DocumentosBackground" Color="#005CA2"/>
-        <SolidColorBrush x:Key="InsumosBackground" Color="#004C8E"/>
-        <SolidColorBrush x:Key="RestaurarBackground" Color="#005A9E"/>
-        <SolidColorBrush x:Key="PressedBackground" Color="#004482"/>
+        <SolidColorBrush x:Key="PanelBackground" Color="#007ACC" />
+        <SolidColorBrush x:Key="AgrupadoresBackground" Color="#006BB6" />
+        <SolidColorBrush x:Key="DocumentosBackground" Color="#005CA2" />
+        <SolidColorBrush x:Key="InsumosBackground" Color="#004C8E" />
+        <SolidColorBrush x:Key="RestaurarBackground" Color="#005A9E" />
+        <SolidColorBrush x:Key="PressedBackground" Color="#004482" />
     </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <!-- Fila para el login -->
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <!--  Fila para el login  -->
         </Grid.RowDefinitions>
 
-        <!-- Menú -->
-        <Grid x:Name="GridBotones" Grid.Row="0" HorizontalAlignment="Stretch">
+        <!--  Menú  -->
+        <Grid
+            x:Name="GridBotones"
+            Grid.Row="0"
+            HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button x:Name="BotonPanel" Content="Panel" Foreground="White" FontWeight="Bold" Background="{StaticResource PanelBackground}" Click="Boton_Click" Grid.Column="0"/>
-            <Button x:Name="BotonAgrupadores" Content="Agrupadores" Foreground="White" FontWeight="Bold" Background="{StaticResource AgrupadoresBackground}" Click="Boton_Click" Grid.Column="1"/>
-            <Button x:Name="BotonDocumentos" Content="Documentos" Foreground="White" FontWeight="Bold" Background="{StaticResource DocumentosBackground}" Click="Boton_Click" Grid.Column="2"/>
-            <Button x:Name="BotonInsumos" Content="Insumos" Foreground="White" FontWeight="Bold" Background="{StaticResource InsumosBackground}" Click="Boton_Click" Grid.Column="3"/>
+            <Button
+                x:Name="BotonPanel"
+                Grid.Column="0"
+                Background="{StaticResource PanelBackground}"
+                Click="Boton_Click"
+                Content="Panel"
+                FontWeight="Bold"
+                Foreground="White" />
+            <Button
+                x:Name="BotonAgrupadores"
+                Grid.Column="1"
+                Background="{StaticResource AgrupadoresBackground}"
+                Click="Boton_Click"
+                Content="Agrupadores"
+                FontWeight="Bold"
+                Foreground="White" />
+            <Button
+                x:Name="BotonDocumentos"
+                Grid.Column="2"
+                Background="{StaticResource DocumentosBackground}"
+                Click="Boton_Click"
+                Content="Documentos"
+                FontWeight="Bold"
+                Foreground="White" />
+            <Button
+                x:Name="BotonInsumos"
+                Grid.Column="3"
+                Background="{StaticResource InsumosBackground}"
+                Click="Boton_Click"
+                Content="Insumos"
+                FontWeight="Bold"
+                Foreground="White" />
         </Grid>
 
-        <!-- Panel -->
-        <Grid Grid.Row="1" x:Name="Panel" Margin="10">
+        <!--  Panel  -->
+        <Grid
+            x:Name="Panel"
+            Grid.Row="1"
+            Margin="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
@@ -51,82 +90,131 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Row="0" Margin="5,5,5,5" BorderThickness="3" BorderBrush="#FF3399FF" >
-                <Label Content="Gráfico" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" />
+            <Border
+                Grid.Row="0"
+                Margin="5,5,5,5"
+                BorderBrush="#FF3399FF"
+                BorderThickness="3">
+                <Label
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="Gráfico"
+                    FontSize="18"
+                    FontWeight="Bold" />
             </Border>
 
-            <Border Grid.Row="1" Margin="5,5,5,5" BorderThickness="3" BorderBrush="#FF3399FF" >
-                <Label Content="Informes" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" />
+            <Border
+                Grid.Row="1"
+                Margin="5,5,5,5"
+                BorderBrush="#FF3399FF"
+                BorderThickness="3">
+                <Label
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="Informes"
+                    FontSize="18"
+                    FontWeight="Bold" />
             </Border>
 
-            <Border Grid.Row="1" Grid.Column="1" Margin="5,5,5,5" BorderThickness="3" BorderBrush="#FF3399FF" >
-                <Label Content="Últimos Agrupadores" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" />
+            <Border
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="5,5,5,5"
+                BorderBrush="#FF3399FF"
+                BorderThickness="3">
+                <Label
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="Últimos Agrupadores"
+                    FontSize="18"
+                    FontWeight="Bold" />
             </Border>
 
-            <Border Grid.Row="0" Grid.Column="1" Margin="5,5,5,5" BorderThickness="3" BorderBrush="#FF3399FF" >
-                <Label Content="Últimos Documentos" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" />
+            <Border
+                Grid.Row="0"
+                Grid.Column="1"
+                Margin="5,5,5,5"
+                BorderBrush="#FF3399FF"
+                BorderThickness="3">
+                <Label
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="Últimos Documentos"
+                    FontSize="18"
+                    FontWeight="Bold" />
             </Border>
 
         </Grid>
 
-        <syncfusion:TileViewControl Grid.Row="1" x:Name="TilesDocumentos" Visibility="Collapsed"
-            IsVirtualizing="False" Margin="3,9,7,5"
+        <syncfusion:TileViewControl
+            x:Name="TilesDocumentos"
+            Grid.Row="1"
+            Margin="3,9,7,5"
             AllowItemRepositioning="False"
             AnimationDuration="00:00:00.700"
             ClickHeaderToMaximize="False"
-            ColumnCount="4" RowCount="4" 
+            ColumnCount="4"
             EnableAnimation="False"
             IsMinMaxButtonOnMouseOverOnly="False"
+            IsVirtualizing="False"
             ItemsSource="{Binding BookModelItems}"
             MinimizedItemsPercentage="55"
             MouseDoubleClick="ItemTile_Click"
-            SelectedIndex="0" > 
-        </syncfusion:TileViewControl>
+            RowCount="4"
+            SelectedIndex="0"
+            Visibility="Collapsed" />
 
-        <syncfusion:TileViewControl Grid.Row="1" x:Name="TilesAgrupadores" Visibility="Collapsed"
-       IsVirtualizing="False" Margin="3,9,7,5"
-       AllowItemRepositioning="False"
-       AnimationDuration="00:00:00.700"
-       ClickHeaderToMaximize="False"
-       ColumnCount="4" RowCount="4" 
-       EnableAnimation="False"
-       IsMinMaxButtonOnMouseOverOnly="False"
-       ItemsSource="{Binding BookModelItems}"
-       MinimizedItemsPercentage="55"
-       MouseDoubleClick="ItemTile_Click"
-       SelectedIndex="0" >
-        </syncfusion:TileViewControl>
+        <syncfusion:TileViewControl
+            x:Name="TilesAgrupadores"
+            Grid.Row="1"
+            Margin="3,9,7,5"
+            AllowItemRepositioning="False"
+            AnimationDuration="00:00:00.700"
+            ClickHeaderToMaximize="False"
+            ColumnCount="4"
+            EnableAnimation="False"
+            IsMinMaxButtonOnMouseOverOnly="False"
+            IsVirtualizing="False"
+            ItemsSource="{Binding BookModelItems}"
+            MinimizedItemsPercentage="55"
+            MouseDoubleClick="ItemTile_Click"
+            RowCount="4"
+            SelectedIndex="0"
+            Visibility="Collapsed" />
 
-        <syncfusion:TileViewControl Grid.Row="1" x:Name="TilesInsumos" Visibility="Collapsed"
-       IsVirtualizing="False" Margin="3,9,7,5"
-       AllowItemRepositioning="False"
-       AnimationDuration="00:00:00.700"
-       ClickHeaderToMaximize="False"
-       ColumnCount="4" RowCount="4" 
-       EnableAnimation="False"
-       IsMinMaxButtonOnMouseOverOnly="False"
-       ItemsSource="{Binding BookModelItems}"
-       MinimizedItemsPercentage="55"
-       MouseDoubleClick="ItemTile_Click"
-       SelectedIndex="0" >
-        </syncfusion:TileViewControl>
+        <syncfusion:TileViewControl
+            x:Name="TilesInsumos"
+            Grid.Row="1"
+            Margin="3,9,7,5"
+            AllowItemRepositioning="False"
+            AnimationDuration="00:00:00.700"
+            ClickHeaderToMaximize="False"
+            ColumnCount="4"
+            EnableAnimation="False"
+            IsMinMaxButtonOnMouseOverOnly="False"
+            IsVirtualizing="False"
+            ItemsSource="{Binding BookModelItems}"
+            MinimizedItemsPercentage="55"
+            MouseDoubleClick="ItemTile_Click"
+            RowCount="4"
+            SelectedIndex="0"
+            Visibility="Collapsed" />
 
 
-        <!-- Barra de estado -->
+        <!--  Barra de estado  -->
         <StatusBar Grid.Row="2">
             <StatusBarItem>
-                <TextBlock x:Name="UsuarioTexto" Text="Usuario: NombreUsuario"/>
+                <TextBlock x:Name="UsuarioTexto" Text="Usuario: NombreUsuario" />
             </StatusBarItem>
             <StatusBarItem>
                 <TextBlock>
-                    Rol: 
-                    <Hyperlink Click="Hyperlink_Click">
-                        <Run x:Name="RolTexto" Text="NombreRol"/>
+                    Rol:<Hyperlink Click="Hyperlink_Click">
+                        <Run x:Name="RolTexto" Text="NombreRol" />
                     </Hyperlink>
                 </TextBlock>
             </StatusBarItem>
         </StatusBar>
 
-      
+
     </Grid>
 </Window>

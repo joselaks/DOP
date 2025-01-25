@@ -3,6 +3,7 @@ using DataObra.Sistema;
 using Syncfusion.UI.Xaml.TreeGrid;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Effects;
 
 namespace DataObra.Interfaz.Controles
 {
@@ -118,9 +119,23 @@ namespace DataObra.Interfaz.Controles
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            DataObra.Presupuestos.VenPresupuesto ventana = new DataObra.Presupuestos.VenPresupuesto();
+            DataObra.Interfaz.Ventanas.WiDocumento ventana = new DataObra.Interfaz.Ventanas.WiDocumento();
+            var mainWindow = Window.GetWindow(this);
 
-            ventana.Show();
+            // Aplicar efecto de desenfoque a la ventana principal
+            mainWindow.Effect = new BlurEffect { Radius = 3 };
+
+            //// Calcular el nuevo tamaño y posición de la ventana modal
+            //ventana.Width = mainWindow.ActualWidth - 20;
+            //ventana.Height = mainWindow.ActualHeight - 20;
+            //ventana.Left = mainWindow.Left + 10;
+            //ventana.Top = mainWindow.Top + 10;
+
+            // Mostrar la ventana de manera modal
+            ventana.ShowDialog();
+
+            // Quitar el efecto de desenfoque después de cerrar la ventana modal
+            mainWindow.Effect = null;
         }
     }
 }

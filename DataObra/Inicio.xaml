@@ -552,8 +552,8 @@
             </StatusBarItem>
             <StatusBarItem>
                 <TextBlock>
-                    Rol:<Hyperlink Click="Hyperlink_Click"> 
-                        <Run x:Name="RolTexto" Text="NombreRol" /> 
+                    Rol:<Hyperlink Click="Hyperlink_Click">
+                        <Run x:Name="RolTexto" Text="NombreRol" />
                     </Hyperlink></TextBlock>
             </StatusBarItem>
             <StatusBarItem HorizontalAlignment="Right">
