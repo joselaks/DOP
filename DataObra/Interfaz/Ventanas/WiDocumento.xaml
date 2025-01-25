@@ -90,7 +90,7 @@
             </Border>
             <Grid Grid.Row="1" Background="White" x:Name="espacioPrincipal"/>
 
-            <Grid Grid.Row="2" Background="LightGreen"  x:Name="espacioEstado" Height="30"/>
+            <Grid Grid.Row="2" Background="LightGreen" x:Name="espacioEstado" Height="30" MouseLeftButtonDown="EspacioEstado_MouseLeftButtonDown"/>
 
         </Grid>
     </Border>

@@ -1,17 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.Windows.Media.Animation;
 
 namespace DataObra.Interfaz.Ventanas
 {
@@ -25,10 +16,12 @@ namespace DataObra.Interfaz.Ventanas
         private double _previousWidth;
         private double _previousHeight;
         private bool _isCustomMaximized = false;
+
         public WiDocumento()
         {
             InitializeComponent();
         }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)
@@ -39,23 +32,6 @@ namespace DataObra.Interfaz.Ventanas
         private void Minimize_Click(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
-        }
-
-        private void Header_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ClickCount == 2)
-            {
-                Maximize_Click(sender, e);
-            }
-            else
-            {
-                DragMove();
-            }
-        }
-
-        private void Close_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
         }
 
         private void Maximize_Click(object sender, RoutedEventArgs e)
@@ -92,5 +68,49 @@ namespace DataObra.Interfaz.Ventanas
             }
         }
 
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void Header_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                Maximize_Click(sender, e);
+            }
+            else
+            {
+                DragMove();
+            }
+        }
+
+        private void EspacioEstado_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            double newHeight = espacioEstado.ActualHeight == 100 ? 30 : 100;
+            double windowHeightChange = espacioEstado.ActualHeight == 100 ? -70 : 70;
+
+            // Crear animación para la altura de la grilla
+            DoubleAnimation heightAnimation = new DoubleAnimation
+            {
+                From = espacioEstado.ActualHeight,
+                To = newHeight,
+                Duration = TimeSpan.FromSeconds(1)
+            };
+
+            // Crear animación para la altura de la ventana
+            DoubleAnimation windowHeightAnimation = new DoubleAnimation
+            {
+                From = ActualHeight,
+                To = ActualHeight + windowHeightChange,
+                Duration = TimeSpan.FromSeconds(1)
+            };
+
+            // Iniciar las animaciones
+            espacioEstado.BeginAnimation(HeightProperty, heightAnimation);
+            BeginAnimation(HeightProperty, windowHeightAnimation);
+        }
     }
 }
+
+
