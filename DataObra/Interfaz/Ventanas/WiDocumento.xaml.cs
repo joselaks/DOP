@@ -88,27 +88,17 @@ namespace DataObra.Interfaz.Ventanas
         private void EspacioEstado_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             double newHeight = espacioEstado.ActualHeight == 100 ? 30 : 100;
-            double windowHeightChange = espacioEstado.ActualHeight == 100 ? -70 : 70;
 
             // Crear animación para la altura de la grilla
             DoubleAnimation heightAnimation = new DoubleAnimation
             {
                 From = espacioEstado.ActualHeight,
                 To = newHeight,
-                Duration = TimeSpan.FromSeconds(1)
+                Duration = TimeSpan.FromSeconds(0.5)
             };
 
-            // Crear animación para la altura de la ventana
-            DoubleAnimation windowHeightAnimation = new DoubleAnimation
-            {
-                From = ActualHeight,
-                To = ActualHeight + windowHeightChange,
-                Duration = TimeSpan.FromSeconds(1)
-            };
-
-            // Iniciar las animaciones
+            // Iniciar la animación
             espacioEstado.BeginAnimation(HeightProperty, heightAnimation);
-            BeginAnimation(HeightProperty, windowHeightAnimation);
         }
     }
 }
