@@ -119,7 +119,8 @@ namespace DataObra.Interfaz.Controles
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            DataObra.Interfaz.Ventanas.WiDocumento ventana = new DataObra.Interfaz.Ventanas.WiDocumento();
+            UserControl presup = new DataObra.Presupuestos.UcPresupuesto();
+            DataObra.Interfaz.Ventanas.WiDocumento ventana = new DataObra.Interfaz.Ventanas.WiDocumento("Presupuesto", presup);
             var mainWindow = Window.GetWindow(this);
 
             // Aplicar efecto de desenfoque a la ventana principal

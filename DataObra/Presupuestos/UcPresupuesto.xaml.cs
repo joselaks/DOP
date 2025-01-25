@@ -28,7 +28,7 @@ namespace DataObra.Presupuestos
     /// <summary>
     /// Lógica de interacción para VenPresupuesto.xaml
     /// </summary>
-    public partial class VenPresupuesto : Window
+    public partial class UcPresupuesto : UserControl
     {
         public Presupuesto Objeto;
         private object _originalValue;
@@ -38,7 +38,7 @@ namespace DataObra.Presupuestos
         bool ddeBuscador = false;
         ObservableCollection<Nodo> oBuscador = new ObservableCollection<Nodo>();
         //SfTreeGrid grillaNavegador = new SfTreeGrid();
-        public VenPresupuesto()
+        public UcPresupuesto()
         {
             InitializeComponent();
             Objeto = new Presupuesto();

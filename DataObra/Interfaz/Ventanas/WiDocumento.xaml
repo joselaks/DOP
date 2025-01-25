@@ -63,12 +63,12 @@
                 CornerRadius="5,5,0,0"
                 MouseLeftButtonDown="Header_MouseLeftButtonDown">
                 <Grid>
-                    <TextBlock
+                    <TextBlock x:Name="TituloVentana"
                         Padding="2"
                         VerticalAlignment="Center"
                         FontSize="20"
                         Foreground="Black"
-                        Text="Presupuesto" />
+                        />
                     <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                         <Button
                             Width="20"
@@ -88,7 +88,7 @@
                     </StackPanel>
                 </Grid>
             </Border>
-            <Grid Grid.Row="1" Background="White" x:Name="espacioPrincipal"/>
+            <Grid Grid.Row="1" Name="espacioPrincipal" Background="White"/>
 
             <Grid Grid.Row="2" Background="LightGreen" x:Name="espacioEstado" Height="30" MouseLeftButtonDown="EspacioEstado_MouseLeftButtonDown"/>
 

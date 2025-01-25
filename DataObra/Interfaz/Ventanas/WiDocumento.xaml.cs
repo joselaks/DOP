@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 
@@ -17,9 +18,11 @@ namespace DataObra.Interfaz.Ventanas
         private double _previousHeight;
         private bool _isCustomMaximized = false;
 
-        public WiDocumento()
+        public WiDocumento(string TipoDoc, UserControl userControl)
         {
             InitializeComponent();
+            TituloVentana.Text = TipoDoc;
+            espacioPrincipal.Children.Add(userControl);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
