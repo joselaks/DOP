@@ -119,7 +119,7 @@ namespace DataObra.Interfaz.Controles
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            UserControl presup = new DataObra.Presupuestos.UcPresupuesto();
+            UserControl presup = new DataObra.Presupuestos.UcPresupuesto(null);
             DataObra.Interfaz.Ventanas.WiDocumento ventana = new DataObra.Interfaz.Ventanas.WiDocumento("Presupuesto", presup);
             var mainWindow = Window.GetWindow(this);
 

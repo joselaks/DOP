@@ -102,6 +102,16 @@ namespace DataObra.Interfaz.Ventanas
 
             // Iniciar la animación
             espacioEstado.BeginAnimation(HeightProperty, heightAnimation);
+
+
+            if (espacioEstado.Height == 100)
+            {
+                Estado.Text = "Documentos relacionados";
+            }
+            else
+            {
+                Estado.Text = "No hay documentos relacionados";
+            }
         }
     }
 }

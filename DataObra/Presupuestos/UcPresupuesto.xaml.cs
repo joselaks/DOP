@@ -38,7 +38,7 @@ namespace DataObra.Presupuestos
         bool ddeBuscador = false;
         ObservableCollection<Nodo> oBuscador = new ObservableCollection<Nodo>();
         //SfTreeGrid grillaNavegador = new SfTreeGrid();
-        public UcPresupuesto()
+        public UcPresupuesto(int? id)
         {
             InitializeComponent();
             Objeto = new Presupuesto();
@@ -57,6 +57,16 @@ namespace DataObra.Presupuestos
             var cID = grillaArbol.Columns.FirstOrDefault(c => c.MappingName == "ID");
             cID.IsHidden = true;
             this.colTipo.IsChecked = true;
+
+            if (id == null)
+            {
+                // Presupuesto nuevo
+                
+            }
+            else
+            {
+                // Busco la info del presupuesto existente
+            }
 
 
         }

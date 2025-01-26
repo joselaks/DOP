@@ -63,12 +63,12 @@
                 CornerRadius="5,5,0,0"
                 MouseLeftButtonDown="Header_MouseLeftButtonDown">
                 <Grid>
-                    <TextBlock x:Name="TituloVentana"
+                    <TextBlock
+                        x:Name="TituloVentana"
                         Padding="2"
                         VerticalAlignment="Center"
                         FontSize="20"
-                        Foreground="Black"
-                        />
+                        Foreground="Black" />
                     <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                         <Button
                             Width="20"
@@ -88,9 +88,25 @@
                     </StackPanel>
                 </Grid>
             </Border>
-            <Grid Grid.Row="1" Name="espacioPrincipal" Background="White"/>
+            <Grid
+                Name="espacioPrincipal"
+                Grid.Row="1"
+                Background="White" />
 
-            <Grid Grid.Row="2" Background="LightGreen" x:Name="espacioEstado" Height="30" MouseLeftButtonDown="EspacioEstado_MouseLeftButtonDown"/>
+            <Grid
+                x:Name="espacioEstado"
+                Grid.Row="2"
+                Height="30"
+                Background="LightGray"
+                MouseLeftButtonDown="EspacioEstado_MouseLeftButtonDown">
+                <TextBlock
+                    x:Name="Estado"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="15"
+                    Foreground="Black"
+                    Text="Documentos relacionados" />
+            </Grid>
 
         </Grid>
     </Border>
