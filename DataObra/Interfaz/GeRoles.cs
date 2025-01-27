@@ -45,6 +45,7 @@ public class GeRoles
         GeneraInformes();
 
         principalWindow.Show();
+        
 
         // Cerrar la ventana WiInicio (si es necesario)
         if (Application.Current.Windows.OfType<WiInicio>().FirstOrDefault() is WiInicio wiInicioWindow)

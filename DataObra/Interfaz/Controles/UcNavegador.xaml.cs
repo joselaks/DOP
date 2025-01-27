@@ -124,7 +124,7 @@ namespace DataObra.Interfaz.Controles
             var mainWindow = Window.GetWindow(this);
 
             // Aplicar efecto de desenfoque a la ventana principal
-            mainWindow.Effect = new BlurEffect { Radius = 3 };
+            //mainWindow.Effect = new BlurEffect { Radius = 3 };
 
             //// Calcular el nuevo tamaño y posición de la ventana modal
             //ventana.Width = mainWindow.ActualWidth - 20;

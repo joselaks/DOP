@@ -50,6 +50,7 @@ namespace DataObra.Interfaz.Ventanas
             DataContext = this;
             PrimaryColorBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(hexColor));
             CargaTabs();
+            Maximize_Click(null, null);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
