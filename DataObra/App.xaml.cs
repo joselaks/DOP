@@ -2,20 +2,21 @@
 using System.Data;
 using System.Net.Http;
 using System.Windows;
+using System.Windows.Input;
 using DataObra.Datos;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DataObra
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
         public static HttpQueueManager QueueManager { get; private set; }
         public IServiceProvider ServiceProvider { get; private set; }
         public HttpClient HttpClient { get; private set; }
         public static string BaseUrl { get; private set; }
+
+        public static RoutedCommand OpenConectoresCommand = new RoutedCommand();
+
         public App()
         {
             //Register Syncfusion license
@@ -27,7 +28,11 @@ namespace DataObra
             var servicios = serviceCollection.BuildServiceProvider();
             var httpClientFactory = servicios.GetRequiredService<IHttpClientFactory>();
             HttpClient = httpClientFactory.CreateClient();
+
+            // Agregar el CommandBinding
+            CommandManager.RegisterClassCommandBinding(typeof(App), new CommandBinding(OpenConectoresCommand, OpenConectores));
         }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -40,8 +45,23 @@ namespace DataObra
             // Inicializa QueueManager con HttpClient
             QueueManager = new HttpQueueManager(HttpClient);
 
-           // Otros códigos de inicialización si es necesario
+            // Registrar el evento de teclado
+            EventManager.RegisterClassHandler(typeof(Window), Keyboard.KeyDownEvent, new KeyEventHandler(OnKeyDown));
+        }
+
+        private void OpenConectores(object sender, ExecutedRoutedEventArgs e)
+        {
+            var conectoresWindow = new Conectores();
+            conectoresWindow.Show();
+        }
+
+        private void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.A && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                OpenConectores(this, null);
+            }
         }
     }
-
 }
+

@@ -45,7 +45,7 @@ public class GeRoles
         GeneraInformes();
 
         principalWindow.Show();
-        
+        AnimarApertura(principalWindow);
 
         // Cerrar la ventana WiInicio (si es necesario)
         if (Application.Current.Windows.OfType<WiInicio>().FirstOrDefault() is WiInicio wiInicioWindow)
@@ -160,5 +160,20 @@ public class GeRoles
 
             grilla.Columns.Add(textColumn);
         }
+    }
+
+    private void AnimarApertura(Window window)
+    {
+        Storyboard storyboard = new Storyboard();
+        DoubleAnimation animation = new DoubleAnimation
+        {
+            From = 0,
+            To = 1,
+            Duration = new Duration(TimeSpan.FromSeconds(0.5))
+        };
+        Storyboard.SetTarget(animation, window);
+        Storyboard.SetTargetProperty(animation, new PropertyPath(Window.OpacityProperty));
+        storyboard.Children.Add(animation);
+        storyboard.Begin();
     }
 }

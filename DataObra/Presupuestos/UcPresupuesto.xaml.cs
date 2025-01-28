@@ -1,4 +1,5 @@
 ﻿using Bibioteca.Clases;
+using DataObra.Datos;
 using Microsoft.Win32;
 using Syncfusion.Licensing;
 using Syncfusion.UI.Xaml.Grid;
@@ -37,11 +38,14 @@ namespace DataObra.Presupuestos
         bool ddeInsumos = false;
         bool ddeBuscador = false;
         ObservableCollection<Nodo> oBuscador = new ObservableCollection<Nodo>();
+        ConsultasAPI consultasAPI;
+
         //SfTreeGrid grillaNavegador = new SfTreeGrid();
         public UcPresupuesto(int? id)
         {
             InitializeComponent();
             Objeto = new Presupuesto();
+            consultasAPI = new ConsultasAPI();
             this.grillaArbol.ItemsSource = Objeto.Arbol;
             this.grillaArbol.ChildPropertyName = "Inferiores";
             this.grillaDetalle.ItemsSource = Objeto.Insumos;
@@ -61,7 +65,9 @@ namespace DataObra.Presupuestos
             if (id == null)
             {
                 // Presupuesto nuevo
-                
+                nuevopres();
+
+
             }
             else
             {
@@ -70,7 +76,76 @@ namespace DataObra.Presupuestos
 
 
         }
-       
+
+        private async void nuevopres()
+        {
+
+            #region Datos para testeo 
+
+            var documento = new Biblioteca.Documento
+            {
+                // Define las propiedades del documento
+                CuentaID = 1,
+                TipoID = 10,
+                UsuarioID = 3,
+                CreadoFecha = DateTime.Now,
+                EditadoID = 4,
+                EditadoFecha = DateTime.Now,
+                RevisadoID = 5,
+                RevisadoFecha = DateTime.Now,
+                AdminID = 3,
+                ObraID = 5,
+                PresupuestoID = 6,
+                RubroID = 6,
+                EntidadID = 7,
+                DepositoID = 5,
+                Descrip = "a",
+                Concepto1 = "b",
+                Fecha1 = DateTime.Now,
+                Fecha2 = DateTime.Now,
+
+                Fecha3 = DateTime.Now,
+                Numero1 = 0,
+                Numero2 = 0,
+                Numero3 = 0,
+                Notas = "bb",
+                Active = false,
+                Pesos = 0,
+                Dolares = 0,
+                Impuestos = 0,
+                ImpuestosD = 0,
+                Materiales = 0,
+                ManodeObra = 0,
+                Subcontratos = 0,
+                Equipos = 0,
+                Otros = 0,
+                MaterialesD = 0,
+                ManodeObraD = 0,
+                SubcontratosD = 0,
+                EquiposD = 0,
+                OtrosD = 0,
+                RelDoc = false,
+                RelArt = false,
+                RelMov = false,
+                RelImp = false,
+                RelRub = false,
+                RelTar = false,
+                RelIns = false
+            };
+
+            #endregion
+
+            // Codigo a utilizar
+            var respuesta = await consultasAPI.PostDocumentoAsync(documento);
+
+            //Respuestas
+            int? nuevodoc = respuesta.Id;
+            bool conexionExitosa = respuesta.Success;
+            string mensaje = respuesta.Message;
+
+            //Mensaje para testeo
+            MessageBox.Show(respuesta.Success + " " + mensaje + " " + nuevodoc.ToString());
+        }
 
         private void RowDragDropController_DragStart(object? sender, TreeGridRowDragStartEventArgs e)
         {
