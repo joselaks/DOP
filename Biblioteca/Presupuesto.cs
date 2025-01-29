@@ -583,120 +583,159 @@ namespace Bibioteca.Clases
             }
         }
 
-        public void agregaNodo(string tipo, Nodo superior)
+        public (Nodo, string) agregaNodo(string tipo, Nodo superior)
         {
+            Nodo nuevoNodo = null;
+            string mensaje = string.Empty;
+
             switch (tipo)
             {
                 case "R":
-                    Bibioteca.Clases.Nodo rubro = new Bibioteca.Clases.Nodo();
-                    rubro.Tipo = "R";
-                    rubro.Cantidad = 1;
-                    rubro.Sup = true;
-                    rubro.Inferiores = new ObservableCollection<Bibioteca.Clases.Nodo>();
+                    nuevoNodo = new Nodo
+                    {
+                        Tipo = "R",
+                        Cantidad = 1,
+                        Sup = true,
+                        Inferiores = new ObservableCollection<Nodo>()
+                    };
                     Existe = false;
                     while (verificaCodigo(Arbol, "R" + NumeraRubro.ToString()))
                     {
-                        NumeraRubro = NumeraRubro + 1;
+                        NumeraRubro++;
                     }
-                    rubro.ID = "R" + NumeraRubro.ToString();
-                    rubro.Descripcion = "Rubro " + NumeraRubro.ToString();
-                    Arbol.Add(rubro);
+                    nuevoNodo.ID = "R" + NumeraRubro.ToString();
+                    nuevoNodo.Descripcion = "Rubro " + NumeraRubro.ToString();
+                    Arbol.Add(nuevoNodo);
+                    mensaje = "Rubro agregado exitosamente.";
                     break;
+
                 case "T":
-                    Bibioteca.Clases.Nodo tarea = new Bibioteca.Clases.Nodo();
-                    tarea.Tipo = "T";
-                    tarea.Inferiores = new ObservableCollection<Bibioteca.Clases.Nodo>();
+                    nuevoNodo = new Nodo
+                    {
+                        Tipo = "T",
+                        Inferiores = new ObservableCollection<Nodo>()
+                    };
                     Existe = false;
                     while (verificaCodigo(Arbol, "T" + NumeraTarea.ToString()))
                     {
-                        NumeraTarea = NumeraTarea + 1;
+                        NumeraTarea++;
                     }
-                    tarea.ID = "T" + NumeraTarea.ToString();
-                    tarea.Descripcion = "Tarea " + NumeraTarea.ToString();
-                    superior.Inferiores.Add(tarea);
+                    nuevoNodo.ID = "T" + NumeraTarea.ToString();
+                    nuevoNodo.Descripcion = "Tarea " + NumeraTarea.ToString();
+                    superior.Inferiores.Add(nuevoNodo);
+                    mensaje = "Tarea agregada exitosamente.";
                     break;
+
                 case "M":
-                    Bibioteca.Clases.Nodo material = new Bibioteca.Clases.Nodo();
-                    material.Tipo = "M";
-                    material.Inferiores = new ObservableCollection<Bibioteca.Clases.Nodo>();
+                    nuevoNodo = new Nodo
+                    {
+                        Tipo = "M",
+                        Inferiores = new ObservableCollection<Nodo>()
+                    };
                     Existe = false;
                     while (verificaCodigo(Arbol, "M" + NumeraMaterial.ToString()))
                     {
-                        NumeraMaterial = NumeraMaterial + 1;
+                        NumeraMaterial++;
                     }
-                    material.ID = "M" + NumeraMaterial.ToString();
-                    material.Descripcion = "Material " + NumeraMaterial.ToString();
-                    superior.Inferiores.Add(material);
+                    nuevoNodo.ID = "M" + NumeraMaterial.ToString();
+                    nuevoNodo.Descripcion = "Material " + NumeraMaterial.ToString();
+                    superior.Inferiores.Add(nuevoNodo);
+                    mensaje = "Material agregado exitosamente.";
                     break;
+
                 case "D":
-                    Bibioteca.Clases.Nodo mano = new Bibioteca.Clases.Nodo();
-                    mano.Tipo = "D";
-                    mano.Inferiores = new ObservableCollection<Bibioteca.Clases.Nodo>();
+                    nuevoNodo = new Nodo
+                    {
+                        Tipo = "D",
+                        Inferiores = new ObservableCollection<Nodo>()
+                    };
                     Existe = false;
                     while (verificaCodigo(Arbol, "D" + NumeraManodeObra.ToString()))
                     {
-                        NumeraManodeObra = NumeraManodeObra + 1;
+                        NumeraManodeObra++;
                     }
-                    mano.ID = "O" + NumeraManodeObra.ToString();
-                    mano.Descripcion = "Mano de obra " + NumeraManodeObra.ToString();
-                    superior.Inferiores.Add(mano);
+                    nuevoNodo.ID = "D" + NumeraManodeObra.ToString();
+                    nuevoNodo.Descripcion = "Mano de obra " + NumeraManodeObra.ToString();
+                    superior.Inferiores.Add(nuevoNodo);
+                    mensaje = "Mano de obra agregada exitosamente.";
                     break;
+
                 case "E":
-                    Bibioteca.Clases.Nodo equipo = new Bibioteca.Clases.Nodo();
-                    equipo.Tipo = "E";
-                    equipo.Inferiores = new ObservableCollection<Bibioteca.Clases.Nodo>();
+                    nuevoNodo = new Nodo
+                    {
+                        Tipo = "E",
+                        Inferiores = new ObservableCollection<Nodo>()
+                    };
                     Existe = false;
                     while (verificaCodigo(Arbol, "E" + NumeraEquipo.ToString()))
                     {
-                        NumeraEquipo = NumeraEquipo + 1;
+                        NumeraEquipo++;
                     }
-                    equipo.ID = "E" + NumeraEquipo.ToString();
-                    equipo.Descripcion = "Equipo " + NumeraEquipo.ToString();
-                    superior.Inferiores.Add(equipo);
+                    nuevoNodo.ID = "E" + NumeraEquipo.ToString();
+                    nuevoNodo.Descripcion = "Equipo " + NumeraEquipo.ToString();
+                    superior.Inferiores.Add(nuevoNodo);
+                    mensaje = "Equipo agregado exitosamente.";
                     break;
+
                 case "S":
-                    Bibioteca.Clases.Nodo subcon = new Bibioteca.Clases.Nodo();
-                    subcon.Tipo = "S";
-                    subcon.Inferiores = new ObservableCollection<Bibioteca.Clases.Nodo>();
+                    nuevoNodo = new Nodo
+                    {
+                        Tipo = "S",
+                        Inferiores = new ObservableCollection<Nodo>()
+                    };
                     Existe = false;
                     while (verificaCodigo(Arbol, "S" + NumeraSubcontrato.ToString()))
                     {
-                        NumeraSubcontrato = NumeraSubcontrato + 1;
+                        NumeraSubcontrato++;
                     }
-                    subcon.ID = "S" + NumeraSubcontrato.ToString();
-                    subcon.Descripcion = "Subcontrato " + NumeraSubcontrato.ToString();
-                    superior.Inferiores.Add(subcon);
+                    nuevoNodo.ID = "S" + NumeraSubcontrato.ToString();
+                    nuevoNodo.Descripcion = "Subcontrato " + NumeraSubcontrato.ToString();
+                    superior.Inferiores.Add(nuevoNodo);
+                    mensaje = "Subcontrato agregado exitosamente.";
                     break;
+
                 case "O":
-                    Bibioteca.Clases.Nodo otro = new Bibioteca.Clases.Nodo();
-                    otro.Tipo = "O";
-                    otro.Inferiores = new ObservableCollection<Bibioteca.Clases.Nodo>();
+                    nuevoNodo = new Nodo
+                    {
+                        Tipo = "O",
+                        Inferiores = new ObservableCollection<Nodo>()
+                    };
                     Existe = false;
                     while (verificaCodigo(Arbol, "O" + NumeraOtro.ToString()))
                     {
-                        NumeraOtro = NumeraOtro + 1;
+                        NumeraOtro++;
                     }
-                    otro.ID = "O" + NumeraOtro.ToString();
-                    otro.Descripcion = "Insumo " + NumeraOtro.ToString();
-                    superior.Inferiores.Add(otro);
+                    nuevoNodo.ID = "O" + NumeraOtro.ToString();
+                    nuevoNodo.Descripcion = "Insumo " + NumeraOtro.ToString();
+                    superior.Inferiores.Add(nuevoNodo);
+                    mensaje = "Insumo agregado exitosamente.";
                     break;
+
                 case "A":
-                    Bibioteca.Clases.Nodo aux = new Bibioteca.Clases.Nodo();
-                    aux.Tipo = "A";
-                    aux.Inferiores = new ObservableCollection<Bibioteca.Clases.Nodo>();
+                    nuevoNodo = new Nodo
+                    {
+                        Tipo = "A",
+                        Inferiores = new ObservableCollection<Nodo>()
+                    };
                     Existe = false;
                     while (verificaCodigo(Arbol, "A" + NumeraAux.ToString()))
                     {
-                        NumeraAux = NumeraAux + 1;
+                        NumeraAux++;
                     }
-                    aux.ID = "A" + NumeraAux.ToString();
-                    aux.Descripcion = "Auxiliar " + NumeraAux.ToString();
-                    superior.Inferiores.Add(aux);
+                    nuevoNodo.ID = "A" + NumeraAux.ToString();
+                    nuevoNodo.Descripcion = "Auxiliar " + NumeraAux.ToString();
+                    superior.Inferiores.Add(nuevoNodo);
+                    mensaje = "Auxiliar agregado exitosamente.";
                     break;
+
                 default:
+                    mensaje = "Tipo de nodo no reconocido.";
                     break;
             }
+
+            return (nuevoNodo, mensaje);
         }
+
 
         public void aplanar(IEnumerable<Nodo> items, Nodo parentItem)
         {

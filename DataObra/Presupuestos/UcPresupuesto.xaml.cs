@@ -385,12 +385,22 @@ namespace DataObra.Presupuestos
             //graficoInsumos.recalculo();
         }
 
-        //Agrega Rubro
         private void aRubro_Click(object sender, RoutedEventArgs e)
         {
-            Objeto.agregaNodo("R", null);
+            var (nuevoNodo, mensaje) = Objeto.agregaNodo("R", null);
+            var undoRegistro = new Cambios
+            {
+                TipoCambio = "Nuevo",
+                despuesCambio = nuevoNodo,
+                NodoPadre = null,
+                Posicion = Objeto.Arbol.IndexOf(nuevoNodo)
+            };
+
+            undoStack.Push(undoRegistro);
+            redoStack.Clear(); // Limpiar la pila de rehacer cuando se realiza una nueva operación
         }
-        
+
+
         //Agrega Tarea
         private void aTarea_Click(object sender, RoutedEventArgs e)
         {
@@ -411,29 +421,66 @@ namespace DataObra.Presupuestos
                 }
             }
         }
-       
-        //Agrega Auxiliar
+
+
+        private void DropDownMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            AgregarNodo("M");
+        }
+
+        private void DropDownMenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            AgregarNodo("D");
+        }
+
+        private void DropDownMenuItem_Click_2(object sender, RoutedEventArgs e)
+        {
+            AgregarNodo("E");
+        }
+
+        private void DropDownMenuItem_Click_3(object sender, RoutedEventArgs e)
+        {
+            AgregarNodo("S");
+        }
+
+        private void DropDownMenuItem_Click_4(object sender, RoutedEventArgs e)
+        {
+            AgregarNodo("O");
+        }
+
         private void sAux_Click(object sender, RoutedEventArgs e)
         {
-            if (this.grillaArbol.SelectedItem == null)
-            {
-                MessageBox.Show("debe seleccionar ua tarea para el auxiliar");
-            }
-            else
-            {
-                Bibioteca.Clases.Nodo sele = this.grillaArbol.SelectedItem as Bibioteca.Clases.Nodo; //obtine contenido
-                if (sele.Tipo != "T" && sele.Tipo != "A")
-                {
-                    MessageBox.Show("debe seleccionar una tarea u otro auxiliar para el auxiliar");
-                }
-                else
-                {
-                    Objeto.agregaNodo("A", sele);
-                }
-            }
+            AgregarNodo("A");
         }
 
 
+        private void AgregarNodo(string tipo)
+        {
+            if (this.grillaArbol.SelectedItem == null)
+            {
+                MessageBox.Show("Debe seleccionar un nodo para agregar el nuevo nodo.");
+                return;
+            }
+
+            Nodo sele = this.grillaArbol.SelectedItem as Nodo;
+            if (sele == null || (tipo != "A" && sele.Tipo != "T"))
+            {
+                MessageBox.Show("Debe seleccionar una tarea o auxiliar para agregar el nuevo nodo.");
+                return;
+            }
+
+            (Nodo nuevoNodo, string mensaje) = Objeto.agregaNodo(tipo, sele);
+            var undoRegistro = new Cambios
+            {
+                TipoCambio = "Nuevo",
+                despuesCambio = nuevoNodo,
+                NodoPadre = sele,
+                Posicion = sele.Inferiores.IndexOf(nuevoNodo)
+            };
+
+            undoStack.Push(undoRegistro);
+            redoStack.Clear(); // Limpiar la pila de rehacer cuando se realiza una nueva operación
+        }
 
 
         //Evento cuando se edita una celda del presupuesto
@@ -586,108 +633,6 @@ namespace DataObra.Presupuestos
 
         }
 
-        private void DropDownMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.grillaArbol.SelectedItem == null)
-            {
-                MessageBox.Show("debe seleccionar una tarea o auxiliar para  el material");
-            }
-            else
-            {
-                Bibioteca.Clases.Nodo sele = this.grillaArbol.SelectedItem as Bibioteca.Clases.Nodo; //obtine contenido
-                if (sele.Tipo != "T" && sele.Tipo != "A")
-                {
-                    MessageBox.Show("debe seleccionar una tarea o auxiliar para el material");
-                }
-                else
-                {
-                    Objeto.agregaNodo("M", sele);
-                }
-            }
-        }
-
-        //Agrega mano de obra
-        private void DropDownMenuItem_Click_1(object sender, RoutedEventArgs e)
-        {
-            if (this.grillaArbol.SelectedItem == null)
-            {
-                MessageBox.Show("debe seleccionar ua tarea para la mano de obra");
-            }
-            else
-            {
-                Bibioteca.Clases.Nodo sele = this.grillaArbol.SelectedItem as Bibioteca.Clases.Nodo; //obtine contenido
-                if (sele.Tipo != "T" && sele.Tipo != "A")
-                {
-                    MessageBox.Show("debe seleccionar una tarea para la mano de obra");
-                }
-                else
-                {
-                    Objeto.agregaNodo("D", sele);
-                }
-            }
-        }
-
-        private void DropDownMenuItem_Click_2(object sender, RoutedEventArgs e)
-        {
-            if (this.grillaArbol.SelectedItem == null)
-            {
-                MessageBox.Show("debe seleccionar ua tarea para el equipo");
-            }
-            else
-            {
-                Bibioteca.Clases.Nodo sele = this.grillaArbol.SelectedItem as Bibioteca.Clases.Nodo; //obtine contenido
-                if (sele.Tipo != "T" && sele.Tipo != "A")
-                {
-                    MessageBox.Show("debe seleccionar una tarea para el equipo");
-                }
-                else
-                {
-                    Objeto.agregaNodo("E", sele);
-                }
-            }
-        }
-
-        private void DropDownMenuItem_Click_3(object sender, RoutedEventArgs e)
-        {
-            if (this.grillaArbol.SelectedItem == null)
-            {
-                MessageBox.Show("debe seleccionar ua tarea para la el subcontrato");
-            }
-            else
-            {
-                Bibioteca.Clases.Nodo sele = this.grillaArbol.SelectedItem as Bibioteca.Clases.Nodo; //obtine contenido
-                if (sele.Tipo != "T" && sele.Tipo != "A")
-                {
-                    MessageBox.Show("debe seleccionar una tarea para el subcontrato");
-                }
-                else
-                {
-                    Objeto.agregaNodo("S", sele);
-                }
-            }
-        }
-
-        private void DropDownMenuItem_Click_4(object sender, RoutedEventArgs e)
-        {
-            if (this.grillaArbol.SelectedItem == null)
-            {
-                MessageBox.Show("debe seleccionar ua tarea para el insumo");
-            }
-            else
-            {
-                Bibioteca.Clases.Nodo sele = this.grillaArbol.SelectedItem as Bibioteca.Clases.Nodo; //obtine contenido
-                if (sele.Tipo != "T" && sele.Tipo != "A")
-                {
-                    MessageBox.Show("debe seleccionar una tarea para el insumo");
-                }
-                else
-                {
-                    Objeto.agregaNodo("O", sele);
-                }
-            }
-        }
-
-
         private void recalculo_Click(object sender, RoutedEventArgs e)
         {
             recalculo();
@@ -812,6 +757,9 @@ namespace DataObra.Presupuestos
                     Cambios lastChange = undoStack.Pop();
                     switch (lastChange.TipoCambio)
                     {
+                        case "Nuevo":
+                            Objeto.borraNodo(Objeto.Arbol, lastChange.despuesCambio);
+                            break;
                         case "Borrado":
                             Objeto.RestaurarNodo(lastChange.despuesCambio, lastChange.NodoPadre, lastChange.Posicion);
                             break;
@@ -831,6 +779,9 @@ namespace DataObra.Presupuestos
                     Cambios lastChange = redoStack.Pop();
                     switch (lastChange.TipoCambio)
                     {
+                        case "Nuevo":
+                            Objeto.RestaurarNodo(lastChange.despuesCambio, lastChange.NodoPadre, lastChange.Posicion);
+                            break;
                         case "Borrado":
                             Objeto.borraNodo(Objeto.Arbol, lastChange.despuesCambio);
                             break;
@@ -844,6 +795,7 @@ namespace DataObra.Presupuestos
                 }
             }
         }
+
 
 
     }
