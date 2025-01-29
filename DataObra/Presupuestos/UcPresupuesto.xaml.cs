@@ -783,11 +783,25 @@ namespace DataObra.Presupuestos
 
         private void UndoRedo_Click(object sender, RoutedEventArgs e)
         {
-            if (undoStack.Count > 0)
+            if (sender == hacer)
             {
-                Cambios lastChange = undoStack.Pop();
-                edicion(lastChange.antesCambio, lastChange.PropiedadCambiada);
+                if (undoStack.Count > 0)
+                {
+                    Cambios lastChange = undoStack.Pop();
+                    edicion(lastChange.antesCambio, lastChange.PropiedadCambiada);
+                    redoStack.Push(lastChange);
+                }
             }
+            else if (sender == deshacer)
+            {
+                if (redoStack.Count > 0)
+                {
+                    Cambios lastChange = redoStack.Pop();
+                    edicion(lastChange.despuesCambio, lastChange.PropiedadCambiada);
+                    undoStack.Push(lastChange);
+                }
+            }
+            
         }
     }
 
