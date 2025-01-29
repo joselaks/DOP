@@ -309,6 +309,22 @@
                     SizeMode="Small"
                     SmallIcon="/Presupuestos/Buscador.png"
                     ToolTip="Recalculo" />
+                <syncfusion:ButtonAdv
+                    x:Name="hacer"
+                    Margin="3"
+                    Click="UndoRedo_Click"
+                    Label="Log-in"
+                    SizeMode="Small"
+                    SmallIcon="/Presupuestos/Undo.png"
+                    ToolTip="Recalculo" />
+                <syncfusion:ButtonAdv
+                    x:Name="deshacer"
+                    Margin="3"
+                    Click="UndoRedo_Click"
+                    Label="Log-in"
+                    SizeMode="Small"
+                    SmallIcon="/Presupuestos/Redo.png"
+                    ToolTip="Recalculo" />
 
             </StackPanel>
             <syncfusion:SfTreeGrid

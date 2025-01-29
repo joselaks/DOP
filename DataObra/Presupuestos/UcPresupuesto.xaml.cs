@@ -380,6 +380,13 @@ namespace DataObra.Presupuestos
             //graficoInsumos.recalculo();
         }
 
+        //Agrega Rubro
+        private void aRubro_Click(object sender, RoutedEventArgs e)
+        {
+            Objeto.agregaNodo("R", null);
+        }
+        
+        //Agrega Tarea
         private void aTarea_Click(object sender, RoutedEventArgs e)
         {
             if (this.grillaArbol.SelectedItem == null)
@@ -399,13 +406,42 @@ namespace DataObra.Presupuestos
                 }
             }
         }
+       
+        //Agrega Auxiliar
+        private void sAux_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.grillaArbol.SelectedItem == null)
+            {
+                MessageBox.Show("debe seleccionar ua tarea para el auxiliar");
+            }
+            else
+            {
+                Bibioteca.Clases.Nodo sele = this.grillaArbol.SelectedItem as Bibioteca.Clases.Nodo; //obtine contenido
+                if (sele.Tipo != "T" && sele.Tipo != "A")
+                {
+                    MessageBox.Show("debe seleccionar una tarea u otro auxiliar para el auxiliar");
+                }
+                else
+                {
+                    Objeto.agregaNodo("A", sele);
+                }
+            }
+        }
 
+
+
+
+        //Evento cuando se edita una celda del presupuesto
         private void grillaArbol_CurrentCellEndEdit(object sender, CurrentCellEndEditEventArgs e)
         {
-
-
             var column = grillaArbol.Columns[e.RowColumnIndex.ColumnIndex].MappingName;
             var editado = grillaArbol.GetNodeAtRowIndex(e.RowColumnIndex.RowIndex).Item as Nodo;
+            edicion(editado, column);
+        }
+
+        //Edicion de celdas
+        private void edicion(Nodo? editado, string column)
+        {
             switch (column)
             {
                 case "ID":
@@ -423,11 +459,9 @@ namespace DataObra.Presupuestos
                     break;
             }
             recalculo();
-
         }
 
-
-
+        //Graba el ID antes de editar celdas
         private void grillaArbol_CurrentCellBeginEdit(object sender, TreeGridCurrentCellBeginEditEventArgs e)
         {
             var column = grillaArbol.Columns[e.RowColumnIndex.ColumnIndex].MappingName;
@@ -476,11 +510,6 @@ namespace DataObra.Presupuestos
             {
                 column.IsHidden = !isChecked; // Cambiar la condición IsHidden
             }
-        }
-
-        private void aRubro_Click(object sender, RoutedEventArgs e)
-        {
-            Objeto.agregaNodo("R", null);
         }
 
         private void colMDO_IsCheckedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -558,6 +587,7 @@ namespace DataObra.Presupuestos
             }
         }
 
+        //Agrega mano de obra
         private void DropDownMenuItem_Click_1(object sender, RoutedEventArgs e)
         {
             if (this.grillaArbol.SelectedItem == null)
@@ -638,31 +668,13 @@ namespace DataObra.Presupuestos
             }
         }
 
-        private void sAux_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.grillaArbol.SelectedItem == null)
-            {
-                MessageBox.Show("debe seleccionar ua tarea para el auxiliar");
-            }
-            else
-            {
-                Bibioteca.Clases.Nodo sele = this.grillaArbol.SelectedItem as Bibioteca.Clases.Nodo; //obtine contenido
-                if (sele.Tipo != "T" && sele.Tipo != "A")
-                {
-                    MessageBox.Show("debe seleccionar una tarea u otro auxiliar para el auxiliar");
-                }
-                else
-                {
-                    Objeto.agregaNodo("A", sele);
-                }
-            }
-        }
 
         private void recalculo_Click(object sender, RoutedEventArgs e)
         {
             recalculo();
         }
 
+        //Borra un nodo
         private void grillaArbol_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Delete)
@@ -747,6 +759,13 @@ namespace DataObra.Presupuestos
                 //this.nav.Children.Add(grillaNavegador);
 
             }
+
+        }
+
+       
+
+        private void UndoRedo_Click(object sender, RoutedEventArgs e)
+        {
 
         }
     }

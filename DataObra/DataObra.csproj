@@ -24,10 +24,12 @@
     <None Remove="Presupuestos\mdo.png" />
     <None Remove="Presupuestos\otros.png" />
     <None Remove="Presupuestos\recalculo.png" />
+    <None Remove="Presupuestos\Redo.png" />
     <None Remove="Presupuestos\Rubro.png" />
     <None Remove="Presupuestos\Save.png" />
     <None Remove="Presupuestos\subcontrato.png" />
     <None Remove="Presupuestos\Tarea.png" />
+    <None Remove="Presupuestos\Undo.png" />
   </ItemGroup>
 
     <ItemGroup>
@@ -59,10 +61,12 @@
       <Resource Include="Presupuestos\mdo.png" />
       <Resource Include="Presupuestos\otros.png" />
       <Resource Include="Presupuestos\recalculo.png" />
+      <Resource Include="Presupuestos\Redo.png" />
       <Resource Include="Presupuestos\Rubro.png" />
       <Resource Include="Presupuestos\Save.png" />
       <Resource Include="Presupuestos\subcontrato.png" />
       <Resource Include="Presupuestos\Tarea.png" />
+      <Resource Include="Presupuestos\Undo.png" />
     </ItemGroup>
 		
 </Project>
