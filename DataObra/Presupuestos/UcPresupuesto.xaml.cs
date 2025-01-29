@@ -1,6 +1,7 @@
 ﻿using Bibioteca.Clases;
 using DataObra.Datos;
 using Microsoft.Win32;
+using Syncfusion.DocIO.DLS.XML;
 using Syncfusion.Licensing;
 using Syncfusion.UI.Xaml.Grid;
 using Syncfusion.UI.Xaml.TreeGrid;
@@ -39,11 +40,18 @@ namespace DataObra.Presupuestos
         bool ddeBuscador = false;
         ObservableCollection<Nodo> oBuscador = new ObservableCollection<Nodo>();
         ConsultasAPI consultasAPI;
+        Nodo anterior = new Nodo();
+        private Stack<Cambios> undoStack;
+        private Stack<Cambios> redoStack;
+
 
         //SfTreeGrid grillaNavegador = new SfTreeGrid();
         public UcPresupuesto(int? id)
         {
             InitializeComponent();
+            undoStack = new Stack<Cambios>();
+            redoStack = new Stack<Cambios>();
+
             Objeto = new Presupuesto();
             consultasAPI = new ConsultasAPI();
             this.grillaArbol.ItemsSource = Objeto.Arbol;
@@ -328,10 +336,6 @@ namespace DataObra.Presupuestos
             return new List<object>(collection.Cast<object>());
         }
 
-
-
-
-
         private void Fiebdc_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -437,6 +441,17 @@ namespace DataObra.Presupuestos
             var column = grillaArbol.Columns[e.RowColumnIndex.ColumnIndex].MappingName;
             var editado = grillaArbol.GetNodeAtRowIndex(e.RowColumnIndex.RowIndex).Item as Nodo;
             edicion(editado, column);
+            var undoRegistro = new Cambios
+            {
+                antesCambio = anterior,
+                despuesCambio = Objeto.clonar(editado),
+                PropiedadCambiada = column,
+                OldValue = _originalValue,
+                NewValue = editado.GetType().GetProperty(column).GetValue(editado)
+            };
+            
+            undoStack.Push(undoRegistro);
+
         }
 
         //Edicion de celdas
@@ -466,6 +481,8 @@ namespace DataObra.Presupuestos
         {
             var column = grillaArbol.Columns[e.RowColumnIndex.ColumnIndex].MappingName;
             var record = grillaArbol.GetNodeAtRowIndex(e.RowColumnIndex.RowIndex).Item as Nodo;
+            // Clonar el objeto record y asignarlo a anterior
+            anterior = Objeto.clonar(record);
 
             if (column == "ID")
             {
@@ -766,8 +783,21 @@ namespace DataObra.Presupuestos
 
         private void UndoRedo_Click(object sender, RoutedEventArgs e)
         {
-
+            if (undoStack.Count > 0)
+            {
+                Cambios lastChange = undoStack.Pop();
+                edicion(lastChange.antesCambio, lastChange.PropiedadCambiada);
+            }
         }
+    }
+
+    public class Cambios
+    {
+        public Nodo antesCambio { get; set; }
+        public Nodo despuesCambio { get; set; }
+        public string PropiedadCambiada { get; set; }
+        public object OldValue { get; set; }
+        public object NewValue { get; set; }
     }
 
 }
