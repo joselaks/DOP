@@ -352,6 +352,8 @@
                 <syncfusion:SfTreeGrid.Columns>
                     <syncfusion:TreeGridColumns>
 
+                        <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="OrdenInt" />-->
+
                         <syncfusion:TreeGridTextColumn Width="50" MappingName="ID" />
 
 

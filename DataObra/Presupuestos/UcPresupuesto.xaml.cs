@@ -1,4 +1,5 @@
 ﻿using Bibioteca.Clases;
+using DataObra.Controles;
 using DataObra.Datos;
 using Microsoft.Win32;
 using Syncfusion.DocIO.DLS.XML;
@@ -443,6 +444,7 @@ namespace DataObra.Presupuestos
             edicion(editado, column);
             var undoRegistro = new Cambios
             {
+                TipoCambio = "Tipeo",
                 antesCambio = anterior,
                 despuesCambio = Objeto.clonar(editado),
                 PropiedadCambiada = column,
@@ -691,7 +693,6 @@ namespace DataObra.Presupuestos
             recalculo();
         }
 
-        //Borra un nodo
         private void grillaArbol_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Delete)
@@ -704,28 +705,49 @@ namespace DataObra.Presupuestos
                 }
                 foreach (var item in itemsToRemove)
                 {
-                    RemoveItemRecursively(Objeto.Arbol, item);
+                    var result = RemoveItemRecursively(Objeto.Arbol, item);
+                    if (result.Item1)
+                    {
+                        var undoRegistro = new Cambios
+                        {
+                            TipoCambio = "Borrado",
+                            despuesCambio = item,
+                            NodoPadre = result.Item2,
+                            Posicion = result.Item3
+                        };
+                        undoStack.Push(undoRegistro);
+                    }
                 }
             }
-
-
         }
 
-        private bool RemoveItemRecursively(ObservableCollection<Nodo> collection, Nodo itemToRemove)
+
+
+        private (bool, Nodo, int) RemoveItemRecursively(ObservableCollection<Nodo> collection, Nodo itemToRemove, Nodo parent = null)
         {
-            if (collection.Contains(itemToRemove))
+            int index = collection.IndexOf(itemToRemove);
+            if (index != -1)
             {
-                collection.Remove(itemToRemove); return true;
+                collection.RemoveAt(index);
+                return (true, parent, index);
             }
+
             foreach (var item in collection)
             {
-                if (RemoveItemRecursively(item.inferiores, itemToRemove))
+                if (item.HasItems)
                 {
-                    return true;
+                    var result = RemoveItemRecursively(item.Inferiores, itemToRemove, item);
+                    if (result.Item1)
+                    {
+                        return result;
+                    }
                 }
             }
-            return false;
+
+            return (false, null, -1);
         }
+
+
 
         private void bus_Click(object sender, RoutedEventArgs e)
         {
@@ -779,7 +801,7 @@ namespace DataObra.Presupuestos
 
         }
 
-       
+
 
         private void UndoRedo_Click(object sender, RoutedEventArgs e)
         {
@@ -788,7 +810,17 @@ namespace DataObra.Presupuestos
                 if (undoStack.Count > 0)
                 {
                     Cambios lastChange = undoStack.Pop();
-                    edicion(lastChange.antesCambio, lastChange.PropiedadCambiada);
+                    switch (lastChange.TipoCambio)
+                    {
+                        case "Borrado":
+                            Objeto.RestaurarNodo(lastChange.despuesCambio, lastChange.NodoPadre, lastChange.Posicion);
+                            break;
+                        case "Tipeo":
+                            edicion(lastChange.antesCambio, lastChange.PropiedadCambiada);
+                            break;
+                        default:
+                            break;
+                    }
                     redoStack.Push(lastChange);
                 }
             }
@@ -797,22 +829,37 @@ namespace DataObra.Presupuestos
                 if (redoStack.Count > 0)
                 {
                     Cambios lastChange = redoStack.Pop();
-                    edicion(lastChange.despuesCambio, lastChange.PropiedadCambiada);
+                    switch (lastChange.TipoCambio)
+                    {
+                        case "Borrado":
+                            Objeto.borraNodo(Objeto.Arbol, lastChange.despuesCambio);
+                            break;
+                        case "Tipeo":
+                            edicion(lastChange.despuesCambio, lastChange.PropiedadCambiada);
+                            break;
+                        default:
+                            break;
+                    }
                     undoStack.Push(lastChange);
                 }
             }
-            
         }
+
+
     }
 
     public class Cambios
     {
+        public string TipoCambio { get; set; }
         public Nodo antesCambio { get; set; }
         public Nodo despuesCambio { get; set; }
         public string PropiedadCambiada { get; set; }
         public object OldValue { get; set; }
         public object NewValue { get; set; }
+        public Nodo NodoPadre { get; set; }
+        public int Posicion { get; set; }
     }
+
 
 }
 

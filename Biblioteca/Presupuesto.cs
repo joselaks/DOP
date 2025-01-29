@@ -741,6 +741,7 @@ namespace Bibioteca.Clases
             respuesta.Descripcion = origen.Descripcion;
             respuesta.Unidad = origen.Unidad;
             respuesta.Cantidad = origen.Cantidad;
+            respuesta.OrdenInt = origen.OrdenInt;
             Insumo existe = this.Insumos.FirstOrDefault(a => a.ID == origen.ID);
             if (existe != null)
             {
@@ -800,6 +801,36 @@ namespace Bibioteca.Clases
             }
 
         }
+
+        public void RestaurarNodo(Nodo nodo, Nodo nodoPadre, int posicion)
+        {
+            if (nodoPadre == null)
+            {
+                Arbol.Insert(posicion, nodo);
+            }
+            else
+            {
+                nodoPadre.Inferiores.Insert(posicion, nodo);
+            }
+        }
+
+        public void borraNodo(ObservableCollection<Nodo> collection, Nodo nodoABorrar)
+        {
+            if (collection.Contains(nodoABorrar))
+            {
+                collection.Remove(nodoABorrar);
+                return;
+            }
+
+            foreach (var item in collection)
+            {
+                if (item.HasItems)
+                {
+                    borraNodo(item.Inferiores, nodoABorrar);
+                }
+            }
+        }
+
 
 
 
