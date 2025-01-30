@@ -55,27 +55,37 @@
                 Width="100"
                 Height="35"
                 Margin="5"
-                Content="Presupuestos" />
+                Checked="ToggleButton_Checked"
+                Content="Presupuestos"
+                Unchecked="ToggleButton_Unchecked" />
             <ToggleButton
                 Width="100"
                 Height="35"
                 Margin="5"
-                Content="O. de compra" />
+                Checked="ToggleButton_Checked"
+                Content="O. de compra"
+                Unchecked="ToggleButton_Unchecked" />
             <ToggleButton
                 Width="100"
                 Height="35"
                 Margin="5"
-                Content="Facturas" />
+                Checked="ToggleButton_Checked"
+                Content="Facturas"
+                Unchecked="ToggleButton_Unchecked" />
             <ToggleButton
                 Width="100"
                 Height="35"
                 Margin="5"
-                Content="Remitos" />
+                Checked="ToggleButton_Checked"
+                Content="Remitos"
+                Unchecked="ToggleButton_Unchecked" />
             <ToggleButton
                 Width="100"
                 Height="35"
                 Margin="5"
-                Content="Pagos" />
+                Checked="ToggleButton_Checked"
+                Content="Pagos"
+                Unchecked="ToggleButton_Unchecked" />
         </StackPanel>
 
         <Grid Grid.Row="2">
@@ -206,11 +216,10 @@
                             <Image Source="/Presupuestos/Tarea.png" />
                         </syncfusion:DropDownMenuItem.Icon>
                     </syncfusion:DropDownMenuItem>
-                    
+
                 </syncfusion:DropDownMenuGroup>
             </syncfusion:DropDownButtonAdv>
-           >
-
+            >
         </syncfusion:ToolBarAdv>
 
 

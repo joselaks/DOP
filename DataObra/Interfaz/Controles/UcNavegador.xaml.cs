@@ -89,6 +89,16 @@ namespace DataObra.Interfaz.Controles
             ventanaDocu.ShowDialog();
 
         }
+
+        private void ToggleButton_Checked(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Checked");
+        }
+
+        private void ToggleButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
 
