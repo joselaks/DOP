@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using System.ComponentModel;
 using System.Diagnostics;
 using Syncfusion.Windows.Tools.Controls;
+using DataObra.Interfaz.Controles;
 
 namespace DataObra.Interfaz.Ventanas
 {
@@ -49,8 +50,16 @@ namespace DataObra.Interfaz.Ventanas
             Rol = rol;
             DataContext = this;
             PrimaryColorBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(hexColor));
-            CargaTabs();
             Maximize_Click(null, null);
+            //Cargo lso controles parametrizados con el rol
+            UcNavegador ucNavegador = new UcNavegador(rol);
+            contenidoDocumentos.Children.Add(ucNavegador);
+            UcAgrupador ucAgrupador = new UcAgrupador(rol);
+            contenidoAgrupadores.Children.Add(ucAgrupador);
+            UcInsumos ucInsumos = new UcInsumos(rol);
+            contenidoInsumos.Children.Add(ucInsumos);
+            UcInformes ucInformes = new UcInformes(rol);
+            contenidoInformes.Children.Add(ucInformes);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -58,14 +67,6 @@ namespace DataObra.Interfaz.Ventanas
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private void CargaTabs()
-        {
-            Interfaz.Controles.UcNavegador ucNavegador1 = new Controles.UcNavegador(Rol, "Documentos");
-            contenidoDocumentos.Children.Add(ucNavegador1);
-            Interfaz.Controles.UcNavegador ucNavegador2 = new Controles.UcNavegador(Rol, "Agrupadores");
-            contenidoAgrupadores.Children.Add(ucNavegador2);
         }
 
         private void Minimize_Click(object sender, RoutedEventArgs e)

@@ -51,21 +51,113 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Orientation="Horizontal">
-            <!--  Los RadioButton se agregarán programáticamente aquí  -->
+            <ToggleButton
+                Width="100"
+                Height="35"
+                Margin="5"
+                Content="Presupuestos" />
+            <ToggleButton
+                Width="100"
+                Height="35"
+                Margin="5"
+                Content="O. de compra" />
+            <ToggleButton
+                Width="100"
+                Height="35"
+                Margin="5"
+                Content="Facturas" />
+            <ToggleButton
+                Width="100"
+                Height="35"
+                Margin="5"
+                Content="Remitos" />
+            <ToggleButton
+                Width="100"
+                Height="35"
+                Margin="5"
+                Content="Pagos" />
         </StackPanel>
-            <Grid Grid.Row="2">
-                <syncfusion:SfTreeGrid x:Name="grillaArbol"  />
-            </Grid>
-            
-        <syncfusion:ToolBarAdv Grid.Row="1" Height="30" >
+
+        <Grid Grid.Row="2">
+            <syncfusion:SfDataGrid
+                Name="GrillaDocumentos"
+                AutoGenerateColumns="False"
+                IsReadOnly="True"
+                MouseDoubleClick="GrillaDocumentos_MouseDoubleClick">
+                <syncfusion:SfDataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Click="MenuItem_Click" Header="Nuevo" />
+                        <MenuItem Click="MenuItem_Click_1" Header="Editar" />
+                        <MenuItem Click="MenuItem_Click_2" Header="Borrar" />
+                    </ContextMenu>
+                </syncfusion:SfDataGrid.ContextMenu>
+                <syncfusion:SfDataGrid.Columns>
+                    <syncfusion:GridTextColumn
+                        Width="92"
+                        HeaderText="Documento"
+                        MappingName="TipoDoc" />
+                    <syncfusion:GridDateTimeColumn
+                        Width="90"
+                        HeaderText="Fecha"
+                        MappingName="Fecha1" />
+                    <syncfusion:GridTextColumn
+                        Width="90"
+                        HeaderText="Obra"
+                        MappingName="Obra" />
+                    <syncfusion:GridTextColumn
+                        Width="90"
+                        HeaderText="Admin"
+                        MappingName="Admin" />
+                    <syncfusion:GridTextColumn
+                        Width="90"
+                        HeaderText="Tipo Ent."
+                        MappingName="EntidadTipo" />
+                    <syncfusion:GridTextColumn
+                        Width="90"
+                        HeaderText="Entidad"
+                        MappingName="Entidad" />
+                    <syncfusion:GridTextColumn
+                        Width="90"
+                        HeaderText="Descripción"
+                        MappingName="Descrip" />
+                    <syncfusion:GridTextColumn
+                        Width="90"
+                        HeaderText="Numero"
+                        MappingName="Numero1" />
+                    <syncfusion:GridTextColumn
+                        Width="90"
+                        HeaderText="Pesos"
+                        MappingName="Pesos" />
+                    <syncfusion:GridTextColumn
+                        Width="90"
+                        HeaderText="Dolares"
+                        MappingName="Dolares" />
+                    <syncfusion:GridTextColumn
+                        Width="90"
+                        HeaderText="Impuestos"
+                        MappingName="Impuestos" />
+                    <syncfusion:GridTextColumn
+                        Width="90"
+                        HeaderText="Usuario"
+                        MappingName="Usuario" />
+                    <syncfusion:GridTextColumn
+                        Width="90"
+                        HeaderText="Verifica"
+                        MappingName="Verifica" />
+                </syncfusion:SfDataGrid.Columns>
+            </syncfusion:SfDataGrid>
+
+        </Grid>
+
+        <syncfusion:ToolBarAdv Grid.Row="1" Height="30">
             <syncfusion:DropDownButtonAdv
-           Width="75"
-           Height="25"
-           Margin="5,0,5,0"
-           HorizontalAlignment="Left"
-           Label="Filtro"
-           SizeMode="Normal"
-           SmallIcon="/Interfaz/Imagenes/Filtro.png">
+                Width="75"
+                Height="25"
+                Margin="5,0,5,0"
+                HorizontalAlignment="Left"
+                Label="Filtro"
+                SizeMode="Normal"
+                SmallIcon="/Interfaz/Imagenes/Filtro.png">
                 <syncfusion:DropDownMenuGroup>
                     <Grid Width="250" Height="150">
                         <Grid.RowDefinitions>
@@ -76,37 +168,49 @@
                         <StackPanel Height="23" Orientation="Horizontal">
                             <Label Margin="-3,0,0,0" Content="DE:" />
                             <DatePicker
-                           Name="FechaDesde"
-                           Width="91"
-                           Margin="-2,0,0,0" />
+                                Name="FechaDesde"
+                                Width="91"
+                                Margin="-2,0,0,0" />
                             <Label Content="A:" />
                             <DatePicker
-                           Name="FechaHasta"
-                           Width="91"
-                           Margin="-2,0,0,0" />
+                                Name="FechaHasta"
+                                Width="91"
+                                Margin="-2,0,0,0" />
                         </StackPanel>
 
                     </Grid>
                 </syncfusion:DropDownMenuGroup>
             </syncfusion:DropDownButtonAdv>
-            <Button
-                    Width="80"
-                    Height="20"
-                    Content="Nuevo"
-                    Click="Button_Click" 
-                    />
-                <Button
-                    Width="80"
-                    Height="20"
-                    Content="Abrir"
+            <syncfusion:DropDownButtonAdv
+                x:Name="NuevoDocumento"
+                Width="100"
+                Label="Nuevo"
+                SmallIcon="/Presupuestos/agregar.png"
+                ToolTip="Agregar conceptos">
+                <syncfusion:DropDownMenuGroup IsResizable="True">
+                    <syncfusion:DropDownMenuItem
+                        x:Name="NuevoPresupuesto"
+                        HorizontalAlignment="Left"
+                        Click="NuevoPresupuesto_Click"
+                        Header="Presupuesto">
+                        <syncfusion:DropDownMenuItem.Icon>
+                            <Image Source="/Presupuestos/Rubro.png" />
+                        </syncfusion:DropDownMenuItem.Icon>
+                    </syncfusion:DropDownMenuItem>
+                    <syncfusion:DropDownMenuItem
+                        x:Name="NuevaFactura"
+                        HorizontalAlignment="Left"
+                        Click="NuevaFactura_Click"
+                        Header="Factura">
+                        <syncfusion:DropDownMenuItem.Icon>
+                            <Image Source="/Presupuestos/Tarea.png" />
+                        </syncfusion:DropDownMenuItem.Icon>
+                    </syncfusion:DropDownMenuItem>
                     
-                     />
-                <Button
-                    Width="80"
-                    Height="20"
-                    Content="Borrar"
-                    />
-            
+                </syncfusion:DropDownMenuGroup>
+            </syncfusion:DropDownButtonAdv>
+           >
+
         </syncfusion:ToolBarAdv>
 
 

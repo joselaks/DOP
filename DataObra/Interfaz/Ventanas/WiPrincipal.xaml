@@ -176,7 +176,7 @@
                             <TextBlock VerticalAlignment="Center" Text="Insumos" />
                         </StackPanel>
                     </TabItem.Header>
-                    <TextBlock Padding="10" Text="Contenido del Tab 4" />
+                    <Grid x:Name="contenidoInsumos"/>
                 </TabItem>
                 <TabItem>
                     <TabItem.Header>
@@ -185,7 +185,7 @@
                             <TextBlock VerticalAlignment="Center" Text="Informes" />
                         </StackPanel>
                     </TabItem.Header>
-                    <TextBlock Padding="10" Text="Contenido del Tab 5" />
+                    <Grid x:Name="contenidoInformes"/>
                 </TabItem>
             </TabControl>
             <StackPanel
