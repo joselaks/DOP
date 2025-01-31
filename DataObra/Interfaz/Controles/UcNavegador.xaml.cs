@@ -4,6 +4,8 @@ using Syncfusion.UI.Xaml.TreeGrid;
 using Syncfusion.Windows.Tools.Controls;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using System.Windows.Media.Effects;
 
 namespace DataObra.Interfaz.Controles
@@ -93,15 +95,29 @@ namespace DataObra.Interfaz.Controles
 
         private void ToggleButton_Checked(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Checked");
+            ToggleButton toggleButton = sender as ToggleButton;
+            
+            if (toggleButton != null)
+            {
+                toggleButton.BorderBrush = new SolidColorBrush(Colors.Red);
+                toggleButton.BorderThickness = new Thickness(2);
+            }
         }
 
         private void ToggleButton_Unchecked(object sender, RoutedEventArgs e)
         {
-
+            ToggleButton toggleButton = sender as ToggleButton;
+            
+            if (toggleButton != null)
+            {
+                toggleButton.BorderBrush = new SolidColorBrush(Colors.Transparent);
+                toggleButton.BorderThickness = new Thickness(1);
+            }
         }
+
     }
 }
+
 
 
 

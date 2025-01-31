@@ -55,6 +55,7 @@
                 Width="100"
                 Height="35"
                 Margin="5"
+                
                 Checked="ToggleButton_Checked"
                 Content="Presupuestos"
                 Unchecked="ToggleButton_Unchecked" />

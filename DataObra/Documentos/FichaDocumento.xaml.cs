@@ -16,9 +16,6 @@ using System.Windows.Shapes;
 
 namespace DataObra.Documentos
 {
-    /// <summary>
-    /// Lógica de interacción para Ficha.xaml
-    /// </summary>
     public partial class Ficha : UserControl
     {
         Servidor azure = new Servidor();
