@@ -219,6 +219,15 @@ namespace DataObra.Presupuestos
                 }
             }
 
+            if (e.TargetNode != null)
+            {
+                nodoReceptor = e.TargetNode.Item as Nodo;
+            }
+            else
+            {
+                nodoReceptor = Objeto.Arbol[0];
+            }
+
             // Crear un registro de cambio y agregarlo a undoStack
             var undoRegistro = new Cambios
             {
@@ -230,10 +239,12 @@ namespace DataObra.Presupuestos
             };
 
             undoStack.Push(undoRegistro);
+            redoStack.Clear(); // Limpiar la pila de rehacer cuando se realiza una nueva operación
 
             // Mostrar información de los nodos
             MessageBox.Show($"Nodo Movido: {nodoMovido?.Descripcion}\nNodo Receptor: {nodoReceptor?.Descripcion}\nNodo Padre Original: {nodoPadreOriginal?.Descripcion}\nÍndice del Nodo Movido: {itemIndex}");
         }
+
 
 
 
@@ -682,7 +693,7 @@ namespace DataObra.Presupuestos
                         case "Mover":
                             // Deshacer el movimiento
                             Objeto.borraNodo(Objeto.Arbol, lastChange.NodoMovido);
-                            Objeto.RestaurarNodo(lastChange.NodoPadreAnterior, lastChange.NodoMovido, lastChange.Posicion);
+                            Objeto.RestaurarNodo(lastChange.NodoMovido, lastChange.NodoPadreAnterior,  lastChange.Posicion);
                             break;
                         default:
                             break;
@@ -709,7 +720,7 @@ namespace DataObra.Presupuestos
                         case "Mover":
                             // Rehacer el movimiento
                             Objeto.borraNodo(Objeto.Arbol, lastChange.NodoMovido);
-                            Objeto.RestaurarNodo(lastChange.NodoPadreNuevo, lastChange.NodoMovido, lastChange.Posicion);
+                            Objeto.RestaurarNodo(lastChange.NodoMovido, lastChange.NodoPadreNuevo,  lastChange.Posicion);
                             break;
                         default:
                             break;
