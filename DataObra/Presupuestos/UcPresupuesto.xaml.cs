@@ -197,135 +197,48 @@ namespace DataObra.Presupuestos
 
         }
 
+
         private void RowDragDropController_Drop(object? sender, TreeGridRowDropEventArgs e)
         {
-            Nodo nuevo = null;
-            if (e.IsFromOutSideSource)
+            Nodo nodoMovido = null;
+            Nodo nodoReceptor = null;
+            Nodo nodoPadreOriginal = null;
+            int itemIndex = -1;
+
+            if (e.DraggingNodes != null && e.DraggingNodes.Count > 0)
             {
-                
-                if (ddeInsumos == true || ddeBuscador == true )
+                nodoMovido = e.DraggingNodes[0].Item as Nodo;
+                nodoPadreOriginal = Objeto.FindParentNode(Objeto.Arbol, nodoMovido, null);
+                if (nodoPadreOriginal != null)
                 {
-                    if (ddeInsumos == true)
-                    {
-                        nuevo = new Nodo
-                        {
-                            Descripcion = _copia.Descripcion,
-                            Cantidad = _copia.Cantidad
-                        };
-                    }
-
-                    var dropPosition = e.DropPosition.ToString();
-                    var rowIndex = grillaArbol.ResolveToRowIndex(e.TargetNode.Item);
-                    int nodeIndex = (int)rowIndex;
-
-                    if (dropPosition != "None" && rowIndex != -1)
-                    {
-                        TreeNode treeNode = grillaArbol.GetNodeAtRowIndex(rowIndex);
-
-                        if (treeNode == null)
-                            return;
-
-                        grillaArbol.SelectionController.SuspendUpdates();
-                        var itemIndex = -1;
-                        IList sourceCollection = null;
-
-                        if (dropPosition == "DropBelow" || dropPosition == "DropAbove")
-                        {
-                            TreeNode parentNode = treeNode.ParentNode;
-
-                            if (parentNode == null)
-                            {
-                                // Caso raíz
-                                sourceCollection = grillaArbol.View.SourceCollection as IList;
-                            }
-                            else
-                            {
-                                // Verificar la condición del nodo padre
-                                var parent = parentNode.Item as Nodo;
-                                if (parent.Tipo == "T" || ddeBuscador == true)
-                                {
-                                    // Colección de hijos del nodo padre
-                                    var collection = grillaArbol.View.GetPropertyAccessProvider().GetValue(parentNode.Item, grillaArbol.ChildPropertyName) as IEnumerable;
-                                    sourceCollection = GetSourceListCollection(collection);
-                                }
-                                else
-                                {
-                                    // Mostrar mensaje de error y salir sin insertar
-                                    MessageBox.Show("El nodo padre no cumple con la condición requerida (Tipo = 'T').");
-                                    e.Handled = true; ;
-                                    return;
-                                }
-                            }
-
-                            itemIndex = sourceCollection.IndexOf(treeNode.Item);
-
-                            if (dropPosition == "DropBelow")
-                            {
-                                itemIndex += 1;
-                            }
-                        }
-                        else if (dropPosition == "DropAsChild")
-                        {
-                            var parent = treeNode.Item as Nodo;
-                            if (parent.Tipo == "T")
-                            {
-                                var collection = grillaArbol.View.GetPropertyAccessProvider().GetValue(treeNode.Item, grillaArbol.ChildPropertyName) as IEnumerable;
-                                sourceCollection = GetSourceListCollection(collection);
-
-                                if (sourceCollection == null)
-                                {
-                                    var list = new ObservableCollection<Nodo>();
-                                    grillaArbol.View.GetPropertyAccessProvider().SetValue(treeNode.Item, grillaArbol.ChildPropertyName, list);
-                                    sourceCollection = list;
-                                }
-
-                                itemIndex = sourceCollection.Count;
-
-                                // Expande el nodo para mostrar los hijos
-                                if (!treeNode.IsExpanded)
-                                {
-                                    grillaArbol.ExpandNode(treeNode);
-                                }
-                            }
-                            else
-                            {
-                                // Mostrar mensaje de error y salir sin insertar
-                                MessageBox.Show("El nodo padre no cumple con la condición requerida (Tipo = 'T').");
-                                e.Handled = true;
-                                return;
-                            }
-                        }
-
-                        if (sourceCollection != null && itemIndex >= 0)
-                        {
-                            if (ddeInsumos == true)
-                            {
-                                    sourceCollection.Insert(itemIndex, nuevo);
-                            }
-                            if (ddeBuscador == true) 
-                            {
-                                sourceCollection.Insert(itemIndex, _busca);
-                            }
-                        }
-
-                        grillaArbol.SelectionController.ResumeUpdates();
-                        (grillaArbol.SelectionController as TreeGridRowSelectionController).RefreshSelection();
-                        e.Handled = true;
-                    }
-
-                    //if (grillaDetalle.ItemsSource is ObservableCollection<Insumo> insumos)
-                    //{
-                    //    insumos.Remove(_copia);
-                    //}
+                    itemIndex = nodoPadreOriginal.Inferiores.IndexOf(nodoMovido);
                 }
                 else
                 {
-                    e.Handled = true;
+                    itemIndex = Objeto.Arbol.IndexOf(nodoMovido);
                 }
             }
-            ddeInsumos = false;
-            ddeBuscador = false;
+
+            // Crear un registro de cambio y agregarlo a undoStack
+            var undoRegistro = new Cambios
+            {
+                TipoCambio = "Mover",
+                NodoMovido = nodoMovido,
+                NodoPadreNuevo = nodoReceptor,
+                NodoPadreAnterior = nodoPadreOriginal,
+                Posicion = itemIndex
+            };
+
+            undoStack.Push(undoRegistro);
+
+            // Mostrar información de los nodos
+            MessageBox.Show($"Nodo Movido: {nodoMovido?.Descripcion}\nNodo Receptor: {nodoReceptor?.Descripcion}\nNodo Padre Original: {nodoPadreOriginal?.Descripcion}\nÍndice del Nodo Movido: {itemIndex}");
         }
+
+
+
+
+
 
         private IList GetSourceListCollection(IEnumerable collection)
         {
@@ -498,7 +411,7 @@ namespace DataObra.Presupuestos
                 OldValue = _originalValue,
                 NewValue = editado.GetType().GetProperty(column).GetValue(editado)
             };
-            
+
             undoStack.Push(undoRegistro);
 
         }
@@ -739,7 +652,7 @@ namespace DataObra.Presupuestos
                 }
                 grillaNavegador.ChildPropertyName = "Inferiores";
                 grillaNavegador.ItemsSource = oBuscador;
-               
+
                 //this.nav.Children.Add(grillaNavegador);
 
             }
@@ -766,6 +679,11 @@ namespace DataObra.Presupuestos
                         case "Tipeo":
                             edicion(lastChange.antesCambio, lastChange.PropiedadCambiada);
                             break;
+                        case "Mover":
+                            // Deshacer el movimiento
+                            Objeto.borraNodo(Objeto.Arbol, lastChange.NodoMovido);
+                            Objeto.RestaurarNodo(lastChange.NodoPadreAnterior, lastChange.NodoMovido, lastChange.Posicion);
+                            break;
                         default:
                             break;
                     }
@@ -788,6 +706,11 @@ namespace DataObra.Presupuestos
                         case "Tipeo":
                             edicion(lastChange.despuesCambio, lastChange.PropiedadCambiada);
                             break;
+                        case "Mover":
+                            // Rehacer el movimiento
+                            Objeto.borraNodo(Objeto.Arbol, lastChange.NodoMovido);
+                            Objeto.RestaurarNodo(lastChange.NodoPadreNuevo, lastChange.NodoMovido, lastChange.Posicion);
+                            break;
                         default:
                             break;
                     }
@@ -795,6 +718,7 @@ namespace DataObra.Presupuestos
                 }
             }
         }
+
 
 
 
@@ -809,6 +733,9 @@ namespace DataObra.Presupuestos
         public object OldValue { get; set; }
         public object NewValue { get; set; }
         public Nodo NodoPadre { get; set; }
+        public Nodo NodoMovido { get; set; }
+        public Nodo NodoPadreNuevo { get; set; }
+        public Nodo NodoPadreAnterior { get; set; }
         public int Posicion { get; set; }
     }
 

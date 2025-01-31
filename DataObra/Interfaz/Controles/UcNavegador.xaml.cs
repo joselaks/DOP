@@ -83,8 +83,9 @@ namespace DataObra.Interfaz.Controles
 
         private void NuevaFactura_Click(object sender, RoutedEventArgs e)
         {
-            UserControl docu = new DataObra.Documentos.UcDocumento();
-            DataObra.Interfaz.Ventanas.WiDocumento ventanaDocu = new DataObra.Interfaz.Ventanas.WiDocumento("Factura", docu);
+            Biblioteca.Documento objetoFactura = new Biblioteca.Documento();
+            Documentos.MaxDocumento Docu = new Documentos.MaxDocumento(objetoFactura);
+            DataObra.Interfaz.Ventanas.WiDocumento ventanaDocu = new DataObra.Interfaz.Ventanas.WiDocumento("Factura", Docu);
 
             ventanaDocu.ShowDialog();
 
