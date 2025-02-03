@@ -22,7 +22,7 @@ namespace DataObra
 {
     public partial class Inicio : Window
     {
-        // Listados a descargar al iniciar DO de la Cuenta
+        // Listados a descargar al iniciar DO de la Cuenta.
 
         ObservableCollection<SurUsuario> Usuarios = new ObservableCollection<SurUsuario>();
         public string Solapa;
