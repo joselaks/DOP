@@ -53,7 +53,7 @@ namespace DataObra.Interfaz.Ventanas
                 Inicio.espera.Header = "Verificando usuario....";
 
             // Código a utilizar para la validación
-            // var respuesta = await InicioConsultasAPI.ValidarUsuarioAsync(txtUsuario.Text, txtContraseña.Password);
+            var respuesta = await InicioConsultasAPI.ValidarUsuarioAsync(txtUsuario.Text, txtContraseña.Password);
 
             // if (respuesta.Success && respuesta.Usuario != null)
             // {
