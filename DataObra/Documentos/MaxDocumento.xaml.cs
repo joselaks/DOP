@@ -175,14 +175,82 @@ namespace DataObra.Documentos
             Biblioteca.Documento wDoc = new Biblioteca.Documento();
             wDoc = Documento.ConvertirInverso(oActivo);
 
-            var (success, message) = await ConsultasAPI.PutDocumentoAsync(wDoc);
+            //Si el documento es nuevo.....
 
-            Window ventanaPadre = Window.GetWindow(this);
-            if (ventanaPadre != null)
+            #region Datos para testeo 
+
+            var documento = new Biblioteca.Documento
             {
-                MessageBox.Show(message, success ? "Éxito" : "Error");
-                ventanaPadre.Close();
-            }
+                // Define las propiedades del documento
+                CuentaID = 1,
+                TipoID = 10,
+                UsuarioID = 3,
+                CreadoFecha = DateTime.Now,
+                EditadoID = 4,
+                EditadoFecha = DateTime.Now,
+                RevisadoID = 5,
+                RevisadoFecha = DateTime.Now,
+                AdminID = 3,
+                ObraID = 5,
+                PresupuestoID = 6,
+                RubroID = 6,
+                EntidadID = 7,
+                DepositoID = 5,
+                Descrip = "a",
+                Concepto1 = "b",
+                Fecha1 = DateTime.Now,
+                Fecha2 = DateTime.Now,
+
+                Fecha3 = DateTime.Now,
+                Numero1 = 0,
+                Numero2 = 0,
+                Numero3 = 0,
+                Notas = "bb",
+                Active = false,
+                Pesos = 0,
+                Dolares = 0,
+                Impuestos = 0,
+                ImpuestosD = 0,
+                Materiales = 0,
+                ManodeObra = 0,
+                Subcontratos = 0,
+                Equipos = 0,
+                Otros = 0,
+                MaterialesD = 0,
+                ManodeObraD = 0,
+                SubcontratosD = 0,
+                EquiposD = 0,
+                OtrosD = 0,
+                RelDoc = false,
+                RelArt = false,
+                RelMov = false,
+                RelImp = false,
+                RelRub = false,
+                RelTar = false,
+                RelIns = false
+            };
+
+            #endregion
+
+            var respuesta = await ConsultasAPI.PostDocumentoAsync(documento);
+            //Respuestas
+            int? nuevodoc = respuesta.Id;
+            bool conexionExitosa = respuesta.Success;
+            string mensaje = respuesta.Message;
+
+            //Mensaje para testeo
+            MessageBox.Show(respuesta.Success + " " + mensaje + " " + nuevodoc.ToString());
+
+            //Si es existente
+
+            //var (success, message) = await ConsultasAPI.PutDocumentoAsync(wDoc);
+
+            //Window ventanaPadre = Window.GetWindow(this);
+            //if (ventanaPadre != null)
+            //{
+            //    MessageBox.Show(message, success ? "Éxito" : "Error");
+            //    ventanaPadre.Close();
+            //}
         }
 
         private async void Borrar_Click(object sender, RoutedEventArgs e)
