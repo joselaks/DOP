@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('serviceConnectorResourceGroupName')]/providers/Microsoft.Web/sites/ServidorDataobra/providers/Microsoft.ServiceLinker/linkers/ConnectionStringsconnectionString_BFA5C0740A",
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/ghu95zexx2/databases/DataObraBeta001",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:connectionString"
+    }
+  }
+}

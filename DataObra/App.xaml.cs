@@ -38,10 +38,10 @@ namespace DataObra
             base.OnStartup(e);
             // Aquí puedes decidir cuál URL usar, por ejemplo, basado en una configuración
 
-
-            BaseUrl = "https://localhost:7255/";
+            // cambiar cuando pase a local
+            //BaseUrl = "https://localhost:7255/";
             // cambiar cuando pase a producción
-            //BaseUrl = "https://dataobra.com/";
+            BaseUrl = "https://servidordataobra.azurewebsites.net/";
 
             // Inicializa QueueManager con HttpClient
             QueueManager = new HttpQueueManager(HttpClient);
