@@ -1,4 +1,5 @@
-﻿using DataObra.Interfaz.Controles.SubControles;
+﻿using DataObra.Datos;
+using DataObra.Interfaz.Controles.SubControles;
 using DataObra.Sistema;
 using Syncfusion.UI.Xaml.TreeGrid;
 using Syncfusion.Windows.Tools.Controls;
@@ -13,14 +14,24 @@ namespace DataObra.Interfaz.Controles
     public partial class UcNavegador : UserControl
     {
         string Rol;
-       
+        ConsultasAPI consultasAPI;
+
 
         public UcNavegador(string rol)
         {
             InitializeComponent();
+            consultasAPI = new ConsultasAPI();
             Rol = rol;
             configuraRol(Rol);
+            CargarGrilla();
            
+        }
+
+        private async void CargarGrilla()
+        {
+            var DocumentosUsuario = await consultasAPI.ObtenerDocumentosPorCuentaID(App.IdUsuario);
+            this.GrillaDocumentos.ItemsSource = DocumentosUsuario.docs;
+
         }
 
         private void configuraRol(string rol)

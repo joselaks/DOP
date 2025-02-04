@@ -81,7 +81,7 @@ namespace DataObra.Interfaz.Ventanas
             };
 
             // Simular un retraso de 2 segundos simulando una consulta a la base de datos
-            await Task.Delay(2000);
+            //await Task.Delay(2000);
            
             // Desactivar el SfBusyIndicator
             Inicio.espera.IsBusy = false;

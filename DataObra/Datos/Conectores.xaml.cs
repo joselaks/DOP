@@ -303,7 +303,7 @@ namespace DataObra.Datos
         private async void buscaCuentaDoc_Click(object sender, RoutedEventArgs e)
         {
             #region Datos para testeo
-            int id = 177; // ID del documento a obtener
+            int id = 1; // ID del usuario
             #endregion
 
             // Código a utilizar

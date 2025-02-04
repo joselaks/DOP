@@ -74,7 +74,7 @@ namespace DataObra.Presupuestos
             if (id == null)
             {
                 // Presupuesto nuevo
-                nuevopres();
+                //nuevopres();
 
 
             }

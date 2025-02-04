@@ -15,6 +15,8 @@ namespace DataObra
         public HttpClient HttpClient { get; private set; }
         public static string BaseUrl { get; private set; }
 
+        public static int IdUsuario { get; set; }
+
         public static RoutedCommand OpenConectoresCommand = new RoutedCommand();
 
         public App()

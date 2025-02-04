@@ -154,6 +154,7 @@ namespace DataObra.Datos
                 if (usuario.Token != null)
                 {
                     _queueManager.HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", usuario.Token);
+                    App.IdUsuario = usuario.DatosUsuario.ID;
                     return (true, "Usuario validado exitosamente.", usuario.DatosUsuario);
                 }
                 else
