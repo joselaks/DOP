@@ -21,7 +21,6 @@ namespace DataObra.Documentos
     public partial class NavDocumento : UserControl
     {
         #region Inicializa
-        ConsultasAPI ConsultasAPI;
         
         bool angosto = true;
         Servidor azure;
@@ -30,7 +29,6 @@ namespace DataObra.Documentos
         public NavDocumento(string pModo, string pDoc)
         {
             InitializeComponent();
-            ConsultasAPI = new ConsultasAPI();
             this.FechaDesde.SelectedDate = DateTime.Today.AddDays(-30);
             this.FechaHasta.SelectedDate = DateTime.Today;
             azure = new Servidor();
@@ -117,7 +115,7 @@ namespace DataObra.Documentos
                 {
                     case "Nuevo":
                     case "NuevoDoc":
-                        VenDocumento nueva = new VenDocumento("Facturas", 0, null);
+                        VenDocumento nueva = new VenDocumento("Facturas", 0);
                         //nueva.DocumentoModified += FichaWindow_DocumentoModified;
                         nueva.Show();
                         break;
@@ -128,7 +126,7 @@ namespace DataObra.Documentos
                         
                         if (sele != null)
                         {
-                            VenDocumento fichaWindow = new VenDocumento("Facturas", sele.ID, ConsultasAPI);
+                            VenDocumento fichaWindow = new VenDocumento("Facturas", sele.ID);
                             //fichaWindow.DocumentoModified += FichaWindow_DocumentoModified;
                             fichaWindow.Show();
                         }

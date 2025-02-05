@@ -40,7 +40,6 @@ namespace DataObra.Presupuestos
         bool ddeInsumos = false;
         bool ddeBuscador = false;
         ObservableCollection<Nodo> oBuscador = new ObservableCollection<Nodo>();
-        ConsultasAPI consultasAPI;
         Nodo anterior = new Nodo();
         private Stack<Cambios> undoStack;
         private Stack<Cambios> redoStack;
@@ -54,7 +53,6 @@ namespace DataObra.Presupuestos
             redoStack = new Stack<Cambios>();
 
             Objeto = new Presupuesto();
-            consultasAPI = new ConsultasAPI();
             this.grillaArbol.ItemsSource = Objeto.Arbol;
             this.grillaArbol.ChildPropertyName = "Inferiores";
             this.grillaDetalle.ItemsSource = Objeto.Insumos;
@@ -145,7 +143,7 @@ namespace DataObra.Presupuestos
             #endregion
 
             // Codigo a utilizar
-            var respuesta = await consultasAPI.PostDocumentoAsync(documento);
+            var respuesta = await ConsultasAPI.PostDocumentoAsync(documento);
 
             //Respuestas
             int? nuevodoc = respuesta.Id;

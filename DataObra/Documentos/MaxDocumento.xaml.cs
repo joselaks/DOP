@@ -26,7 +26,6 @@ namespace DataObra.Documentos
     public partial class MaxDocumento : UserControl
     {
         #region Inicializa
-        ConsultasAPI ConsultasAPI;
         Documento oActivo;
         string TextBoxValueAnterior;
         Servidor azure = new Servidor();
@@ -36,7 +35,6 @@ namespace DataObra.Documentos
         public MaxDocumento(Biblioteca.Documento pDoc) 
         {
             InitializeComponent();
-            ConsultasAPI = new ConsultasAPI();
             // si es presupuesto
             if (pDoc.TipoID==10)
             {

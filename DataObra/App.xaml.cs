@@ -41,7 +41,7 @@ namespace DataObra
             // Aquí puedes decidir cuál URL usar, por ejemplo, basado en una configuración
 
             // cambiar cuando pase a local
-            //BaseUrl = "https://localhost:7255/";
+            // BaseUrl = "http://localhost:5000/";
             // cambiar cuando pase a producción
             BaseUrl = "https://servidordataobra.azurewebsites.net/";
 

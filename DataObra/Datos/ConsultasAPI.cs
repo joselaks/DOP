@@ -15,19 +15,19 @@ using System.Text;
 
 namespace DataObra.Datos
 {
-    public partial class ConsultasAPI
+    public static class ConsultasAPI
     {
-        private readonly HttpQueueManager _queueManager;
-        int evento = 1;
+        private static readonly HttpQueueManager _queueManager;
+        private static int evento = 1;
 
-        public ConsultasAPI()
+        static ConsultasAPI()
         {
             _queueManager = App.QueueManager; // Obtiene el QueueManager de la clase App
             _queueManager.RequestRetryConfirmation += OnRequestRetryConfirmation;
         }
 
         // Solicita definición cuando la operación rebotó 3 veces
-        private async Task<bool> OnRequestRetryConfirmation(QueueItem item)
+        private static async Task<bool> OnRequestRetryConfirmation(QueueItem item)
         {
             var result = MessageBox.Show($"La solicitud a {item.Url} ha fallado tres veces. ¿Deseas seguir intentándolo?", "Reintentar Solicitud", MessageBoxButton.YesNo);
             return result == MessageBoxResult.Yes;
@@ -36,7 +36,7 @@ namespace DataObra.Datos
         #region Post
 
         //Documento Post
-        public async Task<(bool Success, string Message, int? Id)> PostDocumentoAsync(Documento nuevoDoc)
+        public static async Task<(bool Success, string Message, int? Id)> PostDocumentoAsync(Documento nuevoDoc)
         {
             var item = new QueueItem
             {
@@ -59,11 +59,10 @@ namespace DataObra.Datos
             {
                 return (false, $"Error: {ex.Message}", null);
             }
-
         }
 
         //Documento rel Post
-        public async Task<(bool Success, string Message)> PostDocumentoRelAsync(DocumentoRel nuevaRel)
+        public static async Task<(bool Success, string Message)> PostDocumentoRelAsync(DocumentoRel nuevaRel)
         {
             var item = new QueueItem
             {
@@ -93,11 +92,10 @@ namespace DataObra.Datos
             {
                 return (false, $"Error: {ex.Message}");
             }
-
         }
 
         //Agrupador rel Post
-        public async Task<(bool Success, string Message, int? Id)> PostAgrupadorAsync(Agrupador nuevaRel)
+        public static async Task<(bool Success, string Message, int? Id)> PostAgrupadorAsync(Agrupador nuevaRel)
         {
             var item = new QueueItem
             {
@@ -120,16 +118,12 @@ namespace DataObra.Datos
             {
                 return (false, $"Error: {ex.Message}", null);
             }
-
         }
 
         #endregion
 
-
-
-
         // Usuario Get y validación
-        public async Task<(bool Success, string Message, Usuario? Usuario)> ValidarUsuarioAsync(string email, string pass)
+        public static async Task<(bool Success, string Message, Usuario? Usuario)> ValidarUsuarioAsync(string email, string pass)
         {
             var item = new QueueItem
             {
@@ -168,12 +162,8 @@ namespace DataObra.Datos
             }
         }
 
-
-
-        
-
         // Documentos Get por Cuenta
-        public async Task<(bool Success, string Message, List<Documento> Documentos)> GetDocumentosPorCuentaIDAsync(int ID)
+        public static async Task<(bool Success, string Message, List<Documento> Documentos)> GetDocumentosPorCuentaIDAsync(int ID)
         {
             var item = new QueueItem
             {
@@ -199,7 +189,7 @@ namespace DataObra.Datos
         }
 
         // DocumentosRel Get por superiorID
-        public async Task<(bool Success, string Message, List<DocumentoRel> DocumentosRel)> GetDocumentosRelPorSupIDAsync(int supID)
+        public static async Task<(bool Success, string Message, List<DocumentoRel> DocumentosRel)> GetDocumentosRelPorSupIDAsync(int supID)
         {
             var item = new QueueItem
             {
@@ -224,13 +214,8 @@ namespace DataObra.Datos
             }
         }
 
-
-
-
-
-
         // Documento Delete
-        public async Task<(bool Success, string Message)> DeleteDocumentoAsync(int id)
+        public static async Task<(bool Success, string Message)> DeleteDocumentoAsync(int id)
         {
             var item = new QueueItem
             {
@@ -261,9 +246,8 @@ namespace DataObra.Datos
             }
         }
 
-
         // DocumentoRel Delete
-        public async Task<(bool Success, string Message)> DeleteDocumentoRelAsync(int supID,int infID)
+        public static async Task<(bool Success, string Message)> DeleteDocumentoRelAsync(int supID, int infID)
         {
             var item = new QueueItem
             {
@@ -295,7 +279,7 @@ namespace DataObra.Datos
         }
 
         // Documento Get por ID
-        public async Task<(bool Success, string Message, Documento? doc)> ObtenerDocumentoPorID(int id)
+        public static async Task<(bool Success, string Message, Documento? doc)> ObtenerDocumentoPorID(int id)
         {
             var item = new QueueItem
             {
@@ -319,9 +303,8 @@ namespace DataObra.Datos
                 }
                 else
                 {
-                    return(false, "No se obtuvo el documento", resultado);
+                    return (false, "No se obtuvo el documento", resultado);
                 }
-               
             }
             catch (HttpRequestException httpEx)
             {
@@ -333,9 +316,8 @@ namespace DataObra.Datos
             }
         }
 
-
         // Documento Get por cuentaID
-        public async Task<(bool Success, string Message, List<Documento> docs)> ObtenerDocumentosPorCuentaID(int id)
+        public static async Task<(bool Success, string Message, List<Documento> docs)> ObtenerDocumentosPorCuentaID(int id)
         {
             var item = new QueueItem
             {
@@ -361,7 +343,6 @@ namespace DataObra.Datos
                 {
                     return (false, "No se obtuvoieron documentos", resultado);
                 }
-
             }
             catch (HttpRequestException httpEx)
             {
@@ -374,7 +355,7 @@ namespace DataObra.Datos
         }
 
         // Obtener agrupadores por cuentaID
-        public async Task<(bool Success, string Message, List<Agrupador> agrupadores)> ObtenerAgrupadoresPorCuentaID(int id)
+        public static async Task<(bool Success, string Message, List<Agrupador> agrupadores)> ObtenerAgrupadoresPorCuentaID(int id)
         {
             var item = new QueueItem
             {
@@ -400,7 +381,6 @@ namespace DataObra.Datos
                 {
                     return (false, "No se obtuvieron documentos", resultado);
                 }
-
             }
             catch (HttpRequestException httpEx)
             {
@@ -413,7 +393,7 @@ namespace DataObra.Datos
         }
 
         // Borrar agrupador
-        public async Task<(bool Success, string Message)> BorrarAgrupador(int id)
+        public static async Task<(bool Success, string Message)> BorrarAgrupador(int id)
         {
             var item = new QueueItem
             {
@@ -445,7 +425,7 @@ namespace DataObra.Datos
         }
 
         //Documento Put
-        public async Task<(bool Success, string Message)> PutDocumentoAsync(Documento modDoc)
+        public static async Task<(bool Success, string Message)> PutDocumentoAsync(Documento modDoc)
         {
             var item = new QueueItem
             {
@@ -478,7 +458,7 @@ namespace DataObra.Datos
         }
 
         //DocumentoDet Post
-        public async Task<(bool Success, string Message, int? id)> PostDocumentoDetAsync(DocumentoDet nuevoDocDet)
+        public static async Task<(bool Success, string Message, int? id)> PostDocumentoDetAsync(DocumentoDet nuevoDocDet)
         {
             var item = new QueueItem
             {
@@ -504,7 +484,7 @@ namespace DataObra.Datos
         }
 
         // DocumentoDet Get por ID y campo
-        public async Task<(bool Success, string Message, List<DocumentoDet> DocumentosDet)> GetDocumentosDetPorCampoAsync(int id, string fieldName)
+        public static async Task<(bool Success, string Message, List<DocumentoDet> DocumentosDet)> GetDocumentosDetPorCampoAsync(int id, string fieldName)
         {
             var item = new QueueItem
             {
@@ -520,14 +500,13 @@ namespace DataObra.Datos
                 var response = await item.ResponseTaskCompletionSource.Task;
                 var responseString = await response.Content.ReadAsStringAsync();
                 var documentosDet = JsonSerializer.Deserialize<List<DocumentoDet>>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                if (documentosDet.Count()>1)
+                if (documentosDet.Count() > 1)
                 {
                     return (true, "Detalles obtenidos exitosamente.", documentosDet);
                 }
                 else
                 {
                     return (false, "No hay detalles ", null);
-
                 }
             }
             catch (Exception ex)
@@ -536,9 +515,8 @@ namespace DataObra.Datos
             }
         }
 
-
         // DocumentoDet Put incluye borrado cuando no esta vinculado a ningún documento
-        public async Task<(bool Success, string Message)> PutDocumentoDetAsync(DocumentoDet documentoDet)
+        public static async Task<(bool Success, string Message)> PutDocumentoDetAsync(DocumentoDet documentoDet)
         {
             var item = new QueueItem
             {
@@ -562,38 +540,7 @@ namespace DataObra.Datos
                 return (false, $"Error: {ex.Message}");
             }
         }
-
-
-
-
-
-
-
-
-
-
-        //private void DisplayData(List<Documento> documentos)
-        //{
-        //    // Lógica para mostrar los datos en la UI
-        //    foreach (var documento in documentos)
-        //    {
-        //        // Añade cada documento a un control visual, por ejemplo un ListBox
-        //        //myListBox.Items.Add(documento.Title); // Suponiendo que Documento tiene una propiedad Title
-        //    }
-        //}
-
-        //protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
-        //{
-        //    base.OnClosing(e);
-        //    _queueManager.StopProcessing(); // Detiene el procesamiento cuando se cierra la ventana
-        //}
     }
-
-
-
-
-
-
 
     public class ResultadoOperacion
     {
@@ -601,3 +548,4 @@ namespace DataObra.Datos
         public string Message { get; set; }
     }
 }
+

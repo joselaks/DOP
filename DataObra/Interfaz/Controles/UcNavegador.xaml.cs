@@ -14,13 +14,11 @@ namespace DataObra.Interfaz.Controles
     public partial class UcNavegador : UserControl
     {
         string Rol;
-        ConsultasAPI consultasAPI;
 
 
         public UcNavegador(string rol)
         {
             InitializeComponent();
-            consultasAPI = new ConsultasAPI();
             Rol = rol;
             configuraRol(Rol);
             CargarGrilla();
@@ -29,7 +27,7 @@ namespace DataObra.Interfaz.Controles
 
         private async void CargarGrilla()
         {
-            var DocumentosUsuario = await consultasAPI.ObtenerDocumentosPorCuentaID(App.IdUsuario);
+            var DocumentosUsuario = await ConsultasAPI.ObtenerDocumentosPorCuentaID(App.IdUsuario);
             this.GrillaDocumentos.ItemsSource = DocumentosUsuario.docs;
 
         }

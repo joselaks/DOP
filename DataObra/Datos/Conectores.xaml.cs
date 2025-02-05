@@ -19,13 +19,11 @@ namespace DataObra.Datos
 {
     public partial class Conectores : Window
     {
-        ConsultasAPI consultasAPI;
-        private readonly HttpQueueManager _queueManager;
+               private readonly HttpQueueManager _queueManager;
 
         public Conectores()
         {
             InitializeComponent();
-            consultasAPI = new ConsultasAPI();
             _queueManager = App.QueueManager; // Obtiene el QueueManager de la clase App
             this.LogListBox.ItemsSource = _queueManager.Logs;
             this.grillaLogs.ItemsSource = _queueManager.GetLogs();
@@ -93,7 +91,7 @@ namespace DataObra.Datos
             #endregion
 
             // Codigo a utilizar
-            var respuesta = await consultasAPI.PostDocumentoAsync(documento);
+            var respuesta = await ConsultasAPI.PostDocumentoAsync(documento);
 
             //Respuestas
             int? nuevodoc = respuesta.Id;
@@ -122,7 +120,7 @@ namespace DataObra.Datos
 
 
             // Codigo a utilizar
-            var respuesta = await consultasAPI.PostDocumentoRelAsync(documentoRel);
+            var respuesta = await ConsultasAPI.PostDocumentoRelAsync(documentoRel);
 
 
             //Respuestas
@@ -157,7 +155,7 @@ namespace DataObra.Datos
             #endregion
 
             // Codigo a utilizar
-            var respuesta = await consultasAPI.PostAgrupadorAsync(agupador);
+            var respuesta = await ConsultasAPI.PostAgrupadorAsync(agupador);
 
             //Respuestas
             int? nuevodoc = respuesta.Id;
@@ -209,7 +207,7 @@ namespace DataObra.Datos
             #endregion
 
             // Código a utilizar
-            var respuesta = await consultasAPI.PostDocumentoDetAsync(nuevoDocDet);
+            var respuesta = await ConsultasAPI.PostDocumentoDetAsync(nuevoDocDet);
 
             // Respuestas
             int? nuevoDetalle = respuesta.id;
@@ -234,7 +232,7 @@ namespace DataObra.Datos
             #endregion
 
             // Codigo a utilizar
-            var respuesta = await consultasAPI.ValidarUsuarioAsync(email, pass);
+            var respuesta = await ConsultasAPI.ValidarUsuarioAsync(email, pass);
 
             //Respuestas
             Usuario datosusuario = respuesta.Usuario;
@@ -257,7 +255,7 @@ namespace DataObra.Datos
             #endregion
 
             // Código a utilizar
-            var docBuscado = await consultasAPI.ObtenerDocumentoPorID(id);
+            var docBuscado = await ConsultasAPI.ObtenerDocumentoPorID(id);
 
             // Respuestas
             bool resultado = docBuscado.Success;
@@ -280,7 +278,7 @@ namespace DataObra.Datos
             #endregion
 
             // Código a utilizar
-            var docBuscado = await consultasAPI.GetDocumentosRelPorSupIDAsync(superiorID);
+            var docBuscado = await ConsultasAPI.GetDocumentosRelPorSupIDAsync(superiorID);
 
             // Respuestas
             bool resultado = docBuscado.Success;
@@ -307,7 +305,7 @@ namespace DataObra.Datos
             #endregion
 
             // Código a utilizar
-            var docBuscado = await consultasAPI.ObtenerDocumentosPorCuentaID(id);
+            var docBuscado = await ConsultasAPI.ObtenerDocumentosPorCuentaID(id);
 
             // Respuestas
             bool resultado = docBuscado.Success;
@@ -335,7 +333,7 @@ namespace DataObra.Datos
             #endregion
 
             // Código a utilizar
-            var docBuscado = await consultasAPI.ObtenerAgrupadoresPorCuentaID(id);
+            var docBuscado = await ConsultasAPI.ObtenerAgrupadoresPorCuentaID(id);
 
             // Respuestas
             bool resultado = docBuscado.Success;
@@ -364,7 +362,7 @@ namespace DataObra.Datos
             #endregion
 
             // Código a utilizar
-            var respuesta = await consultasAPI.GetDocumentosDetPorCampoAsync(id, fieldName);
+            var respuesta = await ConsultasAPI.GetDocumentosDetPorCampoAsync(id, fieldName);
 
             // Respuestas
             bool resultado = respuesta.Success;
@@ -445,7 +443,7 @@ namespace DataObra.Datos
             #endregion
 
             // Codigo a utilizar
-            var respuesta = await consultasAPI.PutDocumentoAsync(documento);
+            var respuesta = await ConsultasAPI.PutDocumentoAsync(documento);
 
             //Respuestas
             bool resultadoBorrado = respuesta.Success;  // true si lo editó, false si no existia el registro
@@ -499,7 +497,7 @@ namespace DataObra.Datos
             #endregion
 
             // Código a utilizar
-            var respuesta = await consultasAPI.PutDocumentoDetAsync(modificaDocDet);
+            var respuesta = await ConsultasAPI.PutDocumentoDetAsync(modificaDocDet);
 
             // Respuestas
             bool resultado = respuesta.Success;
@@ -528,7 +526,7 @@ namespace DataObra.Datos
             #endregion
 
             // Codigo a utilizar
-            var respuesta = await consultasAPI.DeleteDocumentoAsync(id);
+            var respuesta = await ConsultasAPI.DeleteDocumentoAsync(id);
 
             //Respuestas
             bool resultadoBorrado = respuesta.Success;  // true si lo borró, false si no existia el registro
@@ -551,7 +549,7 @@ namespace DataObra.Datos
             #endregion
 
             // Codigo a utilizar
-            var respuesta = await consultasAPI.DeleteDocumentoRelAsync(supID, infID);
+            var respuesta = await ConsultasAPI.DeleteDocumentoRelAsync(supID, infID);
 
             //Respuestas
             bool resultadoBorrado = respuesta.Success;  // true si lo borró, false si no existia el registro
@@ -574,7 +572,7 @@ namespace DataObra.Datos
             #endregion
 
             // Codigo a utilizar
-            var respuesta = await consultasAPI.BorrarAgrupador(id);
+            var respuesta = await ConsultasAPI.BorrarAgrupador(id);
 
             //Respuestas
             bool resultadoBorrado = respuesta.Success;  // true si lo borró, false si no existia el registro

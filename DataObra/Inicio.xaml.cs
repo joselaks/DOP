@@ -32,7 +32,6 @@ namespace DataObra
         NavInsumo navInsumos;
         DatosWeb datosWeb;
 
-        public ConsultasAPI InicioConsultasAPI;
         public readonly HttpQueueManager Inicio_QueueManager;
 
         ////NavTareas navTareas;
@@ -40,7 +39,6 @@ namespace DataObra
         public Inicio()
         {
             InitializeComponent();
-            InicioConsultasAPI = new ConsultasAPI();
             Inicio_QueueManager = App.QueueManager; // Obtiene el QueueManager de la clase App
             this.InicioLogListBox.ItemsSource = Inicio_QueueManager.Logs;
             this.InicioGrillaLogs.ItemsSource = Inicio_QueueManager.GetLogs();
@@ -72,7 +70,7 @@ namespace DataObra
             #endregion
 
             // Codigo a utilizar
-            var respuesta = await InicioConsultasAPI.ValidarUsuarioAsync(email, pass);
+            var respuesta = await ConsultasAPI.ValidarUsuarioAsync(email, pass);
 
             // Respuestas
             Usuario datosusuario = respuesta.Usuario;
@@ -326,7 +324,7 @@ namespace DataObra
         {
             int seleID = 19;
 
-            VenDocumento ventanaDoc = new VenDocumento("Facturas", seleID, InicioConsultasAPI);
+            VenDocumento ventanaDoc = new VenDocumento("Facturas", seleID);
             ventanaDoc.Show();
         }
 

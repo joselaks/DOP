@@ -10,12 +10,10 @@ namespace DataObra
         public string Usuario { get; private set; }
         public string Rol { get; private set; }
 
-        public ConsultasAPI InicioConsultasAPI;
 
         public Login()
         {
             InitializeComponent();
-            InicioConsultasAPI = new ConsultasAPI();
 
             txtUsuario.Text = "jose@dataobra.com";
             txtContraseña.Password = "contra";
@@ -24,7 +22,7 @@ namespace DataObra
         private async void VerificaUsuario_Click(object sender, RoutedEventArgs e)
         {
             // Código a utilizar para la validación
-            var respuesta = await InicioConsultasAPI.ValidarUsuarioAsync(txtUsuario.Text, txtContraseña.Password);
+            var respuesta = await ConsultasAPI.ValidarUsuarioAsync(txtUsuario.Text, txtContraseña.Password);
 
             if (respuesta.Success && respuesta.Usuario != null)
             {

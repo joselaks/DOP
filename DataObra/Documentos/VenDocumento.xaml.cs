@@ -21,13 +21,11 @@ namespace DataObra.Documentos
         string Tipo;
         public Biblioteca.Documento oActivo = new Biblioteca.Documento();
         DatosWeb datosWeb;
-        ConsultasAPI ConsultasAPI;
 
-        public VenDocumento(string pTipo, int pID, ConsultasAPI pConsultasAPI)
+        public VenDocumento(string pTipo, int pID)
         {
             InitializeComponent();
             Tipo = pTipo;
-            ConsultasAPI = pConsultasAPI;
 
             if (pID != 0)
             {

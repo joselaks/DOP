@@ -25,13 +25,11 @@ namespace DataObra.Interfaz.Ventanas
         public string Usuario { get; private set; }
         public string Rol { get; private set; }
 
-        public ConsultasAPI InicioConsultasAPI;
         private WiInicio Inicio;
 
         public WiLogin(WiInicio inicio)
         {
             InitializeComponent();
-            InicioConsultasAPI = new ConsultasAPI();
 
             txtUsuario.Text = "jose@dataobra.com";
             txtContraseña.Password = "contra";
@@ -53,7 +51,7 @@ namespace DataObra.Interfaz.Ventanas
                 Inicio.espera.Header = "Verificando usuario....";
 
             // Código a utilizar para la validación
-            var respuesta = await InicioConsultasAPI.ValidarUsuarioAsync(txtUsuario.Text, txtContraseña.Password);
+            var respuesta = await ConsultasAPI.ValidarUsuarioAsync(txtUsuario.Text, txtContraseña.Password);
 
             // if (respuesta.Success && respuesta.Usuario != null)
             // {

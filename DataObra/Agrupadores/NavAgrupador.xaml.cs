@@ -24,13 +24,11 @@ namespace DataObra.Agrupadores.Clases
         #endregion
         TabItemExt TabItemAbierto;
         TabControl TabControlAbierto;
-        ConsultasAPI ConsultasAPI;
+
 
         public NavAgrupador(string pTipo, TabItemExt pTab, TabControlExt pTabControl)
         {
             InitializeComponent();
-            ConsultasAPI = new ConsultasAPI();
-
             TabItemAbierto = pTab;
             TabControlAbierto = pTabControl;
 
