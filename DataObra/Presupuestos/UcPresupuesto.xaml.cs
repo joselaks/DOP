@@ -13,6 +13,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -34,6 +35,20 @@ namespace DataObra.Presupuestos
     /// </summary>
     public partial class UcPresupuesto : UserControl
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private Biblioteca.Documento _encabezado;
+        public Biblioteca.Documento Encabezado
+        {
+            get { return _encabezado; }
+            set
+            {
+                _encabezado = value;
+                OnPropertyChanged(nameof(Encabezado));
+            }
+        }
+
+
         public Presupuesto Objeto;
         private object _originalValue;
         Insumo _copia;
@@ -53,7 +68,13 @@ namespace DataObra.Presupuestos
             InitializeComponent();
             undoStack = new Stack<Cambios>();
             redoStack = new Stack<Cambios>();
-            ID = encabezado.ID;
+            if (encabezado!= null)
+            {
+                Encabezado = encabezado;
+                ID = Encabezado.ID;
+                this.descripcion.Text = Encabezado.Descrip;
+
+            }
             Objeto = new Presupuesto();
             this.grillaArbol.ItemsSource = Objeto.Arbol;
             this.grillaArbol.ChildPropertyName = "Inferiores";
@@ -70,6 +91,11 @@ namespace DataObra.Presupuestos
             var cID = grillaArbol.Columns.FirstOrDefault(c => c.MappingName == "ID");
             cID.IsHidden = true;
             this.colTipo.IsChecked = true;
+        }
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private void RowDragDropController_DragStart(object? sender, TreeGridRowDragStartEventArgs e)
@@ -720,7 +746,7 @@ namespace DataObra.Presupuestos
             }
             else
             {
-
+                MessageBox.Show(Encabezado.Descrip);
             }
         }
     }
