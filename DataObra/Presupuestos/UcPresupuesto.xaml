@@ -140,14 +140,10 @@
                     Margin="3"
                     Label="Log-in"
                     SizeMode="Small"
-                    SmallIcon="/Presupuestos/abrir.png"
-                    ToolTip="Abrir" />
-                <syncfusion:ButtonAdv
-                    Margin="3"
-                    Label="Log-in"
-                    SizeMode="Small"
-                    SmallIcon="/Presupuestos/base.png"
-                    ToolTip="Guardar" />
+                    SmallIcon="/Presupuestos/save.png"
+                    ToolTip="Abrir" Click="BtnGuardar_Click"
+                    x:Name="BtnGuardar"/>
+              
 
 
 

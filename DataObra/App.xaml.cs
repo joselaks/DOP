@@ -17,6 +17,8 @@ namespace DataObra
 
         public static int IdUsuario { get; set; }
 
+        public static int IdCuenta { get; set; }
+
         public static RoutedCommand OpenConectoresCommand = new RoutedCommand();
 
         public App()
@@ -30,6 +32,7 @@ namespace DataObra
             var servicios = serviceCollection.BuildServiceProvider();
             var httpClientFactory = servicios.GetRequiredService<IHttpClientFactory>();
             HttpClient = httpClientFactory.CreateClient();
+            IdCuenta = 1;
 
             // Agregar el CommandBinding
             CommandManager.RegisterClassCommandBinding(typeof(App), new CommandBinding(OpenConectoresCommand, OpenConectores));

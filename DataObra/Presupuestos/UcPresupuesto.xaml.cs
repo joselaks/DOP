@@ -4,6 +4,7 @@ using DataObra.Datos;
 using Microsoft.Win32;
 using Syncfusion.DocIO.DLS.XML;
 using Syncfusion.Licensing;
+using Syncfusion.UI.Xaml.Diagram;
 using Syncfusion.UI.Xaml.Grid;
 using Syncfusion.UI.Xaml.TreeGrid;
 using Syncfusion.UI.Xaml.TreeView;
@@ -43,6 +44,7 @@ namespace DataObra.Presupuestos
         Nodo anterior = new Nodo();
         private Stack<Cambios> undoStack;
         private Stack<Cambios> redoStack;
+        int? ID;
 
 
         //SfTreeGrid grillaNavegador = new SfTreeGrid();
@@ -51,7 +53,7 @@ namespace DataObra.Presupuestos
             InitializeComponent();
             undoStack = new Stack<Cambios>();
             redoStack = new Stack<Cambios>();
-
+            ID = id;
             Objeto = new Presupuesto();
             this.grillaArbol.ItemsSource = Objeto.Arbol;
             this.grillaArbol.ChildPropertyName = "Inferiores";
@@ -68,90 +70,6 @@ namespace DataObra.Presupuestos
             var cID = grillaArbol.Columns.FirstOrDefault(c => c.MappingName == "ID");
             cID.IsHidden = true;
             this.colTipo.IsChecked = true;
-
-            if (id == null)
-            {
-                // Presupuesto nuevo
-                //nuevopres();
-
-
-            }
-            else
-            {
-                // Busco la info del presupuesto existente
-            }
-
-
-        }
-
-        private async void nuevopres()
-        {
-
-            #region Datos para testeo 
-
-            var documento = new Biblioteca.Documento
-            {
-                // Define las propiedades del documento
-                CuentaID = 1,
-                TipoID = 10,
-                UsuarioID = 3,
-                CreadoFecha = DateTime.Now,
-                EditadoID = 4,
-                EditadoFecha = DateTime.Now,
-                RevisadoID = 5,
-                RevisadoFecha = DateTime.Now,
-                AdminID = 3,
-                ObraID = 5,
-                PresupuestoID = 6,
-                RubroID = 6,
-                EntidadID = 7,
-                DepositoID = 5,
-                Descrip = "a",
-                Concepto1 = "b",
-                Fecha1 = DateTime.Now,
-                Fecha2 = DateTime.Now,
-
-                Fecha3 = DateTime.Now,
-                Numero1 = 0,
-                Numero2 = 0,
-                Numero3 = 0,
-                Notas = "bb",
-                Active = false,
-                Pesos = 0,
-                Dolares = 0,
-                Impuestos = 0,
-                ImpuestosD = 0,
-                Materiales = 0,
-                ManodeObra = 0,
-                Subcontratos = 0,
-                Equipos = 0,
-                Otros = 0,
-                MaterialesD = 0,
-                ManodeObraD = 0,
-                SubcontratosD = 0,
-                EquiposD = 0,
-                OtrosD = 0,
-                RelDoc = false,
-                RelArt = false,
-                RelMov = false,
-                RelImp = false,
-                RelRub = false,
-                RelTar = false,
-                RelIns = false
-            };
-
-            #endregion
-
-            // Codigo a utilizar
-            var respuesta = await ConsultasAPI.PostDocumentoAsync(documento);
-
-            //Respuestas
-            int? nuevodoc = respuesta.Id;
-            bool conexionExitosa = respuesta.Success;
-            string mensaje = respuesta.Message;
-
-            //Mensaje para testeo
-            MessageBox.Show(respuesta.Success + " " + mensaje + " " + nuevodoc.ToString());
         }
 
         private void RowDragDropController_DragStart(object? sender, TreeGridRowDragStartEventArgs e)
@@ -728,9 +646,83 @@ namespace DataObra.Presupuestos
             }
         }
 
+        private async void BtnGuardar_Click(object sender, RoutedEventArgs e)
+        {
 
+            if (ID == null)
+            {
 
+                #region Datos para testeo
 
+                var documento = new Biblioteca.Documento
+                {
+                    // Define las propiedades del documento
+                    CuentaID = 1,
+                    TipoID = 10,
+                    UsuarioID = 3,
+                    CreadoFecha = DateTime.Now,
+                    EditadoID = 4,
+                    EditadoFecha = DateTime.Now,
+                    RevisadoID = 5,
+                    RevisadoFecha = DateTime.Now,
+                    AdminID = 3,
+                    ObraID = 5,
+                    PresupuestoID = 6,
+                    RubroID = 6,
+                    EntidadID = 7,
+                    DepositoID = 5,
+                    Descrip = "Desde boton guardar",
+                    Concepto1 = "b",
+                    Fecha1 = DateTime.Now,
+                    Fecha2 = DateTime.Now,
+
+                    Fecha3 = DateTime.Now,
+                    Numero1 = 0,
+                    Numero2 = 0,
+                    Numero3 = 0,
+                    Notas = "bb",
+                    Active = false,
+                    Pesos = 0,
+                    Dolares = 0,
+                    Impuestos = 0,
+                    ImpuestosD = 0,
+                    Materiales = 0,
+                    ManodeObra = 0,
+                    Subcontratos = 0,
+                    Equipos = 0,
+                    Otros = 0,
+                    MaterialesD = 0,
+                    ManodeObraD = 0,
+                    SubcontratosD = 0,
+                    EquiposD = 0,
+                    OtrosD = 0,
+                    RelDoc = false,
+                    RelArt = false,
+                    RelMov = false,
+                    RelImp = false,
+                    RelRub = false,
+                    RelTar = false,
+                    RelIns = false
+                };
+
+                #endregion
+
+                // Codigo a utilizar
+                var respuesta = await ConsultasAPI.PostDocumentoAsync(documento);
+
+                //Respuestas
+                ID = respuesta.Id;
+                bool conexionExitosa = respuesta.Success;
+                string mensaje = respuesta.Message;
+
+                //Mensaje para testeo
+                MessageBox.Show(respuesta.Success + " " + mensaje + " " + ID.ToString());
+            }
+            else
+            {
+
+            }
+        }
     }
 
     public class Cambios

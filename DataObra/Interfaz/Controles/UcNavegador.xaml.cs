@@ -1,4 +1,5 @@
-﻿using DataObra.Datos;
+﻿using Biblioteca;
+using DataObra.Datos;
 using DataObra.Interfaz.Controles.SubControles;
 using DataObra.Sistema;
 using Syncfusion.UI.Xaml.TreeGrid;
@@ -27,7 +28,7 @@ namespace DataObra.Interfaz.Controles
 
         private async void CargarGrilla()
         {
-            var DocumentosUsuario = await ConsultasAPI.ObtenerDocumentosPorCuentaID(App.IdUsuario);
+            var DocumentosUsuario = await ConsultasAPI.ObtenerDocumentosPorCuentaID(App.IdCuenta);
             this.GrillaDocumentos.ItemsSource = DocumentosUsuario.docs;
 
         }
@@ -64,9 +65,25 @@ namespace DataObra.Interfaz.Controles
 
         }
 
-        private void MenuItem_Click_2(object sender, RoutedEventArgs e)
+        private async void MenuItem_Click_2(object sender, RoutedEventArgs e)
         {
-
+            if (GrillaDocumentos.SelectedItem is Documento documentoSeleccionado)
+            {
+                var respuesta = await ConsultasAPI.DeleteDocumentoAsync(documentoSeleccionado.ID);
+                if (respuesta.Success)
+                {
+                    MessageBox.Show("Documento eliminado exitosamente.");
+                    CargarGrilla(); // Actualizar la grilla después de eliminar el documento
+                }
+                else
+                {
+                    MessageBox.Show($"Error al eliminar el documento: {respuesta.Message}");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Por favor, seleccione un documento para eliminar.");
+            }
         }
 
         private void NuevoPresupuesto_Click(object sender, RoutedEventArgs e)
@@ -124,6 +141,10 @@ namespace DataObra.Interfaz.Controles
             }
         }
 
+        private void actualizaGrilla_Click(object sender, RoutedEventArgs e)
+        {
+            CargarGrilla();
+        }
     }
 }
 

@@ -162,31 +162,31 @@ namespace DataObra.Datos
             }
         }
 
-        // Documentos Get por Cuenta
-        public static async Task<(bool Success, string Message, List<Documento> Documentos)> GetDocumentosPorCuentaIDAsync(int ID)
-        {
-            var item = new QueueItem
-            {
-                Id = evento,
-                Url = $"{App.BaseUrl}documentos/{ID}",
-                Method = HttpMethod.Get
-            };
+        //// Documentos Get por Cuenta
+        //public static async Task<(bool Success, string Message, List<Documento> Documentos)> GetDocumentosPorCuentaIDAsync(int ID)
+        //{
+        //    var item = new QueueItem
+        //    {
+        //        Id = evento,
+        //        Url = $"{App.BaseUrl}documentos/{ID}",
+        //        Method = HttpMethod.Get
+        //    };
 
-            _queueManager.Enqueue(item);
-            evento++;
+        //    _queueManager.Enqueue(item);
+        //    evento++;
 
-            try
-            {
-                var response = await item.ResponseTaskCompletionSource.Task;
-                var responseString = await response.Content.ReadAsStringAsync();
-                var documentos = JsonSerializer.Deserialize<List<Documento>>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                return (true, "Documentos obtenidos exitosamente.", documentos);
-            }
-            catch (Exception ex)
-            {
-                return (false, $"Error: {ex.Message}", null);
-            }
-        }
+        //    try
+        //    {
+        //        var response = await item.ResponseTaskCompletionSource.Task;
+        //        var responseString = await response.Content.ReadAsStringAsync();
+        //        var documentos = JsonSerializer.Deserialize<List<Documento>>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        //        return (true, "Documentos obtenidos exitosamente.", documentos);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return (false, $"Error: {ex.Message}", null);
+        //    }
+        //}
 
         // DocumentosRel Get por superiorID
         public static async Task<(bool Success, string Message, List<DocumentoRel> DocumentosRel)> GetDocumentosRelPorSupIDAsync(int supID)

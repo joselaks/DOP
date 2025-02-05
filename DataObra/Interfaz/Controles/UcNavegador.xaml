@@ -106,7 +106,7 @@
                     <syncfusion:GridTextColumn
                         Width="92"
                         HeaderText="Documento"
-                        MappingName="TipoDoc" />
+                        MappingName="TipoID" />
                     <syncfusion:GridDateTimeColumn
                         Width="90"
                         HeaderText="Fecha"
@@ -114,7 +114,7 @@
                     <syncfusion:GridTextColumn
                         Width="90"
                         HeaderText="Obra"
-                        MappingName="Obra" />
+                        MappingName="ObraID" />
                     <syncfusion:GridTextColumn
                         Width="90"
                         HeaderText="Admin"
@@ -122,7 +122,7 @@
                     <syncfusion:GridTextColumn
                         Width="90"
                         HeaderText="Tipo Ent."
-                        MappingName="EntidadTipo" />
+                        MappingName="EntidadID" />
                     <syncfusion:GridTextColumn
                         Width="90"
                         HeaderText="Entidad"
@@ -188,6 +188,8 @@
                                 Width="91"
                                 Margin="-2,0,0,0" />
                         </StackPanel>
+                        <Button x:Name="actualizaGrilla" Content="Aplica Filtro" Click="actualizaGrilla_Click"/>
+                        
 
                     </Grid>
                 </syncfusion:DropDownMenuGroup>
