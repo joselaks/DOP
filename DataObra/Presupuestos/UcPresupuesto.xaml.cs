@@ -37,18 +37,7 @@ namespace DataObra.Presupuestos
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private Biblioteca.Documento _encabezado;
-        public Biblioteca.Documento Encabezado
-        {
-            get { return _encabezado; }
-            set
-            {
-                _encabezado = value;
-                OnPropertyChanged(nameof(Encabezado));
-            }
-        }
-
-
+        public Biblioteca.Documento Encabezado;
         public Presupuesto Objeto;
         private object _originalValue;
         Insumo _copia;
@@ -746,8 +735,22 @@ namespace DataObra.Presupuestos
             }
             else
             {
-                MessageBox.Show(Encabezado.Descrip);
+                var respuesta = await ConsultasAPI.PutDocumentoAsync(Encabezado);
+                //Respuestas
+                bool resultadoBorrado = respuesta.Success;  // true si lo editó, false si no existia el registro
+                string mensaje = respuesta.Message;
+
+                //Mensaje para testeo
+                if (respuesta.Success != null)
+                {
+                    MessageBox.Show(respuesta.Success + " " + respuesta.Message);
+                }
             }
+        }
+
+        private void descripcion_KeyDown(object sender, KeyEventArgs e)
+        {
+            Encabezado.Descrip = this.descripcion.Text;
         }
     }
 

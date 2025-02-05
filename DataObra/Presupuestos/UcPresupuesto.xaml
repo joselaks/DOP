@@ -321,10 +321,10 @@
                     SizeMode="Small"
                     SmallIcon="/Presupuestos/Redo.png"
                     ToolTip="Recalculo" />
-                <TextBox x:Name="descripcion"
+                <TextBox x:Name="descripcion" 
          Width="200"
          Height="30"
-         Margin="5,0,0,0"/>
+         Margin="5,0,0,0" KeyDown="descripcion_KeyDown"/>
 
             </StackPanel>
             <syncfusion:SfTreeGrid
