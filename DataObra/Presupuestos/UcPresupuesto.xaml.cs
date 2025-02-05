@@ -48,12 +48,12 @@ namespace DataObra.Presupuestos
 
 
         //SfTreeGrid grillaNavegador = new SfTreeGrid();
-        public UcPresupuesto(int? id)
+        public UcPresupuesto(Biblioteca.Documento encabezado)
         {
             InitializeComponent();
             undoStack = new Stack<Cambios>();
             redoStack = new Stack<Cambios>();
-            ID = id;
+            ID = encabezado.ID;
             Objeto = new Presupuesto();
             this.grillaArbol.ItemsSource = Objeto.Arbol;
             this.grillaArbol.ChildPropertyName = "Inferiores";
