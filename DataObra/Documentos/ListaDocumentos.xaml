@@ -17,6 +17,7 @@
                 </ContextMenu>
             </Syncfusion:SfDataGrid.ContextMenu>
             <Syncfusion:SfDataGrid.Columns>
+                <Syncfusion:GridTextColumn HeaderText="ID" MappingName="ID" Width="90"/>
                 <Syncfusion:GridTextColumn HeaderText="Documento" MappingName="TipoDoc" Width="92"/>
                 <Syncfusion:GridDateTimeColumn HeaderText="Fecha" MappingName="Fecha1" Width="90"/>
                 <Syncfusion:GridTextColumn HeaderText="Obra" MappingName="Obra" Width="90"/>
