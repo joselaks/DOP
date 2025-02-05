@@ -378,37 +378,7 @@ namespace DataObra.Documentos
             }
         }
 
-        private async void Control_LostFocusOrEnter(object sender, RoutedEventArgs e)
-        {
-
-            if (e is KeyEventArgs keyEventArgs && keyEventArgs.Key != Key.Enter)
-            {
-                return;
-            }
-
-            if (sender is TextBox textBox)
-            {
-                string newTextBoxValue = textBox.Text;
-                if (newTextBoxValue!= TextBoxValueAnterior) 
-                {
-                    var binding = textBox.GetBindingExpression(TextBox.TextProperty);
-                    if (binding != null)
-                    {
-                        binding.UpdateSource();
-                    }
-                    // Agregar más condiciones para otros tipos de controles si es necesario
-
-                    // Llama a la función para guardar los cambios en el objeto oActivo
-                    Biblioteca.Documento wDoc = new Biblioteca.Documento();
-                    wDoc = Documento.ConvertirInverso(oActivo);
-
-                    var respuesta = await ConsultasAPI.PutDocumentoAsync(wDoc);
-                    MessageBox.Show(respuesta.Message, respuesta.Success ? "Éxito" : "Error");
-                    TextBoxValueAnterior = newTextBoxValue;
-                }
-            }
-
-        }
+     
 
         private async void cFecha_DateTimeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
