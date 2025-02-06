@@ -153,9 +153,41 @@ namespace DataObra.Interfaz.Controles
 
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private async void MenuItem_Click(object sender, RoutedEventArgs e)
         {
+            if (GrillaDocumentos.SelectedItem is Documento documentoSeleccionado)
+            {
+                var mainWindow = Window.GetWindow(this);
+                // Aplicar efecto de desenfoque a la ventana principal
+                mainWindow.Effect = new BlurEffect { Radius = 3 };
 
+                DataObra.Interfaz.Ventanas.WiDocumento ventanaDoc;
+
+                if (documentoSeleccionado.TipoID == 10) // es un presupuesto
+                {
+                    UserControl presup = new DataObra.Presupuestos.UcPresupuesto(null);
+                    ventanaDoc = new DataObra.Interfaz.Ventanas.WiDocumento("Presupuesto", presup);
+
+                }
+                else
+                {
+                    // Agregar manejo para cada tipo de documento
+                    Biblioteca.Documento objetoFactura = new Biblioteca.Documento();
+                    Documentos.MaxDocumento Docu = new Documentos.MaxDocumento(objetoFactura);
+                    ventanaDoc = new DataObra.Interfaz.Ventanas.WiDocumento("Factura", Docu);
+
+                }
+                // Mostrar la ventana de manera modal
+                ventanaDoc.ShowDialog();
+
+                // Quitar el efecto de desenfoque después de cerrar la ventana modal
+                mainWindow.Effect = null;
+
+            }
+            else
+            {
+                MessageBox.Show("Por favor, seleccione un documento para editar.");
+            }
         }
     }
 }

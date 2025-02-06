@@ -47,8 +47,7 @@ namespace DataObra.Interfaz.Ventanas
 
         private async void VerificaUsuario_Click(object sender, RoutedEventArgs e)
         {
-                Inicio.espera.IsBusy = true;
-                Inicio.espera.Header = "Verificando usuario....";
+            this.espera.IsBusy = true;
 
             // Código a utilizar para la validación
             var respuesta = await ConsultasAPI.ValidarUsuarioAsync(txtUsuario.Text, txtContraseña.Password);
