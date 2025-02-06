@@ -750,6 +750,7 @@ namespace DataObra.Presupuestos
 
         private void descripcion_KeyDown(object sender, KeyEventArgs e)
         {
+            //Actualiza el campo porque no uso Inotificable
             Encabezado.Descrip = this.descripcion.Text;
         }
     }
