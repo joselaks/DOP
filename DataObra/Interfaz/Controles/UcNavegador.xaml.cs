@@ -49,7 +49,8 @@ namespace DataObra.Interfaz.Controles
             {
                 if (documentoSeleccionado.TipoID == 10) // es un presupuesto
                 {
-                    var respuesta = await ConsultasAPI.ObtenerDocumentoPorID(documentoSeleccionado.ID);
+                    
+                    var respuesta = await ConsultasAPI.ObtenerDocumentoPorID((int)documentoSeleccionado.ID);
                     var encabezado = respuesta.doc;
                     UserControl presup = new DataObra.Presupuestos.UcPresupuesto(encabezado);
                     DataObra.Interfaz.Ventanas.WiDocumento ventanaPres = new DataObra.Interfaz.Ventanas.WiDocumento("Presupuesto", presup);
@@ -63,9 +64,9 @@ namespace DataObra.Interfaz.Controles
                 }
                 else
                 {
-                    Biblioteca.Documento objetoFactura = new Biblioteca.Documento();
-                    Documentos.MaxDocumento Docu = new Documentos.MaxDocumento(objetoFactura);
-                    DataObra.Interfaz.Ventanas.WiDocumento ventanaDocu = new DataObra.Interfaz.Ventanas.WiDocumento("Factura", Docu);
+                    
+                    Documentos.MaxDocumento Docu = new Documentos.MaxDocumento(documentoSeleccionado);
+                    DataObra.Interfaz.Ventanas.WiDocumento ventanaDocu = new DataObra.Interfaz.Ventanas.WiDocumento(documentoSeleccionado.TipoID.ToString(), Docu);
                     ventanaDocu.ShowDialog();
                 }
             }
@@ -79,7 +80,7 @@ namespace DataObra.Interfaz.Controles
         {
             if (GrillaDocumentos.SelectedItem is Documento documentoSeleccionado)
             {
-                var respuesta = await ConsultasAPI.DeleteDocumentoAsync(documentoSeleccionado.ID);
+                var respuesta = await ConsultasAPI.DeleteDocumentoAsync((int)documentoSeleccionado.ID);
                 if (respuesta.Success)
                 {
                     MessageBox.Show("Documento eliminado exitosamente.");

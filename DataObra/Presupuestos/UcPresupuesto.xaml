@@ -137,13 +137,14 @@
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
                 <syncfusion:ButtonAdv
+                    x:Name="BtnGuardar"
                     Margin="3"
+                    Click="BtnGuardar_Click"
                     Label="Log-in"
                     SizeMode="Small"
                     SmallIcon="/Presupuestos/save.png"
-                    ToolTip="Abrir" Click="BtnGuardar_Click"
-                    x:Name="BtnGuardar"/>
-              
+                    ToolTip="Abrir" />
+
 
 
 
@@ -321,10 +322,12 @@
                     SizeMode="Small"
                     SmallIcon="/Presupuestos/Redo.png"
                     ToolTip="Recalculo" />
-                <TextBox x:Name="descripcion" 
-         Width="200"
-         Height="30"
-         Margin="5,0,0,0" KeyDown="descripcion_KeyDown"/>
+                <TextBox
+                    x:Name="descripcion"
+                    Width="200"
+                    Height="30"
+                    Margin="5,0,0,0"
+                    KeyDown="descripcion_KeyDown" />
 
             </StackPanel>
             <syncfusion:SfTreeGrid

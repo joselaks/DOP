@@ -48,7 +48,6 @@ namespace DataObra.Presupuestos
         Nodo anterior = new Nodo();
         private Stack<Cambios> undoStack;
         private Stack<Cambios> redoStack;
-        int? ID;
 
 
         //SfTreeGrid grillaNavegador = new SfTreeGrid();
@@ -60,7 +59,6 @@ namespace DataObra.Presupuestos
             if (encabezado!= null)
             {
                 Encabezado = encabezado;
-                ID = Encabezado.ID;
                 this.descripcion.Text = Encabezado.Descrip;
 
             }
@@ -664,7 +662,7 @@ namespace DataObra.Presupuestos
         private async void BtnGuardar_Click(object sender, RoutedEventArgs e)
         {
 
-            if (ID == null)
+            if (Encabezado.ID == null)
             {
 
                 #region Datos para testeo
@@ -726,12 +724,12 @@ namespace DataObra.Presupuestos
                 var respuesta = await ConsultasAPI.PostDocumentoAsync(documento);
 
                 //Respuestas
-                ID = respuesta.Id;
+                Encabezado.ID = respuesta.Id;
                 bool conexionExitosa = respuesta.Success;
                 string mensaje = respuesta.Message;
 
                 //Mensaje para testeo
-                MessageBox.Show(respuesta.Success + " " + mensaje + " " + ID.ToString());
+                MessageBox.Show(respuesta.Success + " " + mensaje + " " + Encabezado.ID.ToString());
             }
             else
             {

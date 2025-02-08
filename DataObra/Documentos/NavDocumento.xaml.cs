@@ -126,9 +126,9 @@ namespace DataObra.Documentos
                         
                         if (sele != null)
                         {
-                            VenDocumento fichaWindow = new VenDocumento("Facturas", sele.ID);
-                            //fichaWindow.DocumentoModified += FichaWindow_DocumentoModified;
-                            fichaWindow.Show();
+                            //VenDocumento fichaWindow = new VenDocumento("Facturas", sele.ID);
+                            ////fichaWindow.DocumentoModified += FichaWindow_DocumentoModified;
+                            //fichaWindow.Show();
                         }
                         break;
 
@@ -142,7 +142,7 @@ namespace DataObra.Documentos
                             if (result == MessageBoxResult.Yes)
                             {
                                 // Procedimiento para borrar del servidor
-                                BorrarDocumento(seleBorrar.ID);
+                                //BorrarDocumento(seleBorrar.ID);
                                 this.GrillaDocumentos.ItemsSource = null;
                                 ListaDocumentosAsync(1);
                             }

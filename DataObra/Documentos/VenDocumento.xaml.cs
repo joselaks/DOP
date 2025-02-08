@@ -56,7 +56,7 @@ namespace DataObra.Documentos
         {
             if (pDocumento != null)
             {
-                BuscaDocRel(pDocumento.ID);
+                //BuscaDocRel(pDocumento.ID);
 
                 if (DocumentosTipos.DocumentosPorTipo.TryGetValue(Tipo, out var listaDocumentos))
                 {

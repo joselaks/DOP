@@ -1,11 +1,15 @@
-﻿<UserControl x:Class="DataObra.Documentos.MaxDocumento"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" Background="White"
-             xmlns:local="clr-namespace:DataObra.Documentos" xmlns:Syncfusion="http://schemas.syncfusion.com/wpf"
-             mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="992">
+﻿<UserControl
+    x:Class="DataObra.Documentos.MaxDocumento"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Syncfusion="http://schemas.syncfusion.com/wpf"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:DataObra.Documentos"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="800"
+    d:DesignWidth="992"
+    Background="White"
+    mc:Ignorable="d">
     <Grid x:Name="GrillaPrincipal" Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -23,9 +27,22 @@
             <RowDefinition Height="27" />
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Documento MAXIMIZADO" FontSize="16" FontWeight="Bold" Grid.Row="5" Grid.ColumnSpan="{Binding ElementName=GrillaPrincipal, Path=ColumnDefinitions.Count}" VerticalAlignment="Bottom" HorizontalAlignment="Center" />
+        <TextBlock
+            Grid.Row="5"
+            Grid.ColumnSpan="{Binding ElementName=GrillaPrincipal, Path=ColumnDefinitions.Count}"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            FontSize="16"
+            FontWeight="Bold"
+            Text="Documento MAXIMIZADO" />
 
-        <Border x:Name="FECHAS" Grid.Row="0" Grid.ColumnSpan="3" Margin="5,5,5,5" BorderThickness="3" BorderBrush="#FF3399FF" >
+        <Border
+            x:Name="FECHAS"
+            Grid.Row="0"
+            Grid.ColumnSpan="3"
+            Margin="5,5,5,5"
+            BorderBrush="#FF3399FF"
+            BorderThickness="3">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="5" />
@@ -49,31 +66,128 @@
                     <RowDefinition Height="27" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="1" Grid.Column="1" Text="Fecha: " TextAlignment="Right" VerticalAlignment="Center" />
-                <TextBlock Grid.Row="2" Grid.Column="1" Text="Vence: " TextAlignment="Right" VerticalAlignment="Center" />
-                <TextBlock Grid.Row="3" Grid.Column="1" Text="Contable: " TextAlignment="Right" VerticalAlignment="Center" />
-                <TextBlock Grid.Row="1" Grid.Column="4" Text="Número: " HorizontalAlignment="Right" VerticalAlignment="Center" />
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Text="Fecha: "
+                    TextAlignment="Right" />
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Text="Vence: "
+                    TextAlignment="Right" />
+                <TextBlock
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Text="Contable: "
+                    TextAlignment="Right" />
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="4"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="Número: " />
 
 
-                <TextBox x:Name="txtNumero1" Grid.Row="1" Grid.Column="5" Text="{Binding Numero1, Mode=TwoWay, UpdateSourceTrigger=Explicit}" Width="69" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Right" />
+                <TextBox
+                    x:Name="txtNumero1"
+                    Grid.Row="1"
+                    Grid.Column="5"
+                    Width="69"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Right"
+                    Text="{Binding Numero1, Mode=TwoWay, UpdateSourceTrigger=Explicit}" />
 
-                <Syncfusion:DateTimeEdit Grid.Column="2" Grid.Row="1" Text="{Binding Fecha1, StringFormat='{}{0:dd/MM/yy}'}" Width="92" Height="21" Pattern="ShortDate" CultureInfo="bs-Latn-BA" HorizontalAlignment="Left" x:Name="cFecha1" DateTimeChanged="cFecha_DateTimeChanged" />
+                <Syncfusion:DateTimeEdit
+                    x:Name="cFecha1"
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    Width="92"
+                    Height="21"
+                    HorizontalAlignment="Left"
+                    CultureInfo="bs-Latn-BA"
+                    DateTimeChanged="cFecha_DateTimeChanged"
+                    Pattern="ShortDate"
+                    Text="{Binding Fecha1, StringFormat='{}{0:dd/MM/yy}'}" />
 
-                <!--  -->
+                <!--    -->
 
-                <Syncfusion:DateTimeEdit Grid.Column="2" Grid.Row="2" Text="{Binding Fecha2, StringFormat='{}{0:dd/MM/yy}'}" Width="92" Height="21" Pattern="ShortDate" CultureInfo="bs-Latn-BA" HorizontalAlignment="Left"  x:Name="cFecha2" DateTimeChanged="cFecha_DateTimeChanged"/>
-                <Syncfusion:DateTimeEdit Grid.Column="2" Grid.Row="3" Text="{Binding Fecha3, StringFormat='{}{0:dd/MM/yy}'}" Width="92" Height="21" Pattern="ShortDate" CultureInfo="bs-Latn-BA" HorizontalAlignment="Left"  x:Name="cFecha3" DateTimeChanged="cFecha_DateTimeChanged"/>
-              
+                <Syncfusion:DateTimeEdit
+                    x:Name="cFecha2"
+                    Grid.Row="2"
+                    Grid.Column="2"
+                    Width="92"
+                    Height="21"
+                    HorizontalAlignment="Left"
+                    CultureInfo="bs-Latn-BA"
+                    DateTimeChanged="cFecha_DateTimeChanged"
+                    Pattern="ShortDate"
+                    Text="{Binding Fecha2, StringFormat='{}{0:dd/MM/yy}'}" />
+                <Syncfusion:DateTimeEdit
+                    x:Name="cFecha3"
+                    Grid.Row="3"
+                    Grid.Column="2"
+                    Width="92"
+                    Height="21"
+                    HorizontalAlignment="Left"
+                    CultureInfo="bs-Latn-BA"
+                    DateTimeChanged="cFecha_DateTimeChanged"
+                    Pattern="ShortDate"
+                    Text="{Binding Fecha3, StringFormat='{}{0:dd/MM/yy}'}" />
 
 
-                <TextBlock Grid.Row="2" Grid.Column="4" Text="Sucursal: " HorizontalAlignment="Right" VerticalAlignment="Center" />
-                <TextBox Grid.Row="2" Grid.Column="5" Text="{Binding Numero2}" Width="69" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Right" />
-                <TextBlock Grid.Row="3" Grid.Column="4" Text="Archivo: " HorizontalAlignment="Right" VerticalAlignment="Center" />
-                <TextBox Grid.Row="3" Grid.Column="5" Text="{Binding Numero3}" Width="69" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Right" />
 
-                <StackPanel Grid.Row="1" Grid.Column="7" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,3,0" >
-                    <TextBlock Text="Estado: " Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" />
-                    <Syncfusion:ComboBoxAdv Height="20" Width="112" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="4"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="Sucursal: " />
+                <TextBox
+                    Grid.Row="2"
+                    Grid.Column="5"
+                    Width="69"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Right"
+                    Text="{Binding Numero2}" />
+                <TextBlock
+                    Grid.Row="3"
+                    Grid.Column="4"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="Archivo: " />
+                <TextBox
+                    Grid.Row="3"
+                    Grid.Column="5"
+                    Width="69"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Right"
+                    Text="{Binding Numero3}" />
+
+                <StackPanel
+                    Grid.Row="1"
+                    Grid.Column="7"
+                    Grid.ColumnSpan="2"
+                    Margin="0,0,3,0"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Text="Estado: " />
+                    <Syncfusion:ComboBoxAdv
+                        Width="112"
+                        Height="20"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center">
                         <Syncfusion:ComboBoxItemAdv Content="Factura A" />
                         <Syncfusion:ComboBoxItemAdv Content="Nota de Credito A" />
                         <Syncfusion:ComboBoxItemAdv Content="Nota de Debito A" />
@@ -82,21 +196,47 @@
                     </Syncfusion:ComboBoxAdv>
                 </StackPanel>
 
-                <StackPanel Grid.Row="2" Grid.Column="7" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,3,0" >
-                    <TextBlock Text="C. Contable: " Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" />
-                    <Syncfusion:ComboBoxAdv Height="20" Width="112" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                <StackPanel
+                    Grid.Row="2"
+                    Grid.Column="7"
+                    Grid.ColumnSpan="2"
+                    Margin="0,0,3,0"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Text="C. Contable: " />
+                    <Syncfusion:ComboBoxAdv
+                        Width="112"
+                        Height="20"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center">
                         <Syncfusion:ComboBoxItemAdv Content="Concepto 1" />
                         <Syncfusion:ComboBoxItemAdv Content="Concepto 2" />
                         <Syncfusion:ComboBoxItemAdv Content="Concepto 3" />
                     </Syncfusion:ComboBoxAdv>
                 </StackPanel>
 
-                <CheckBox Visibility="Collapsed" Grid.Row="1" Grid.Column="3" Content="1" VerticalAlignment="Center" IsChecked="{Binding Bandera1, Mode=TwoWay}" />
+                <CheckBox
+                    Grid.Row="1"
+                    Grid.Column="3"
+                    VerticalAlignment="Center"
+                    Content="1"
+                    IsChecked="{Binding Bandera1, Mode=TwoWay}"
+                    Visibility="Collapsed" />
 
             </Grid>
         </Border>
 
-        <Border Grid.Row="1" Margin="5,5,5,5" BorderThickness="3" BorderBrush="#FF3399FF" Grid.ColumnSpan="2" >
+        <Border
+            Grid.Row="1"
+            Grid.ColumnSpan="2"
+            Margin="5,5,5,5"
+            BorderBrush="#FF3399FF"
+            BorderThickness="3">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="92" />
@@ -110,23 +250,72 @@
                     <RowDefinition Height="35" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="Área Técnica" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                <TextBlock Text="Obra: " Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" />
-                <Syncfusion:ComboBoxAdv Grid.Row="1" Grid.Column="1" Name="ComboObras" Height="23" HorizontalAlignment="Left" VerticalAlignment="Center" Width="192" DisplayMemberPath="Descrip" SelectedValuePath="ID" SelectionChanged="ComboObras_SelectionChanged" >
-                </Syncfusion:ComboBoxAdv>
+                <TextBlock
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Text="Área Técnica" />
+                <TextBlock
+                    Grid.Row="1"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="Obra: " />
+                <Syncfusion:ComboBoxAdv
+                    Name="ComboObras"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Width="192"
+                    Height="23"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    DisplayMemberPath="Descrip"
+                    SelectedValuePath="ID"
+                    SelectionChanged="ComboObras_SelectionChanged" />
 
-                <TextBlock Text="Presupuesto: " Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" />
-                <Syncfusion:ComboBoxAdv Grid.Row="2" Grid.Column="1" Name="ComboPresupuestos" Height="23" HorizontalAlignment="Left" VerticalAlignment="Center" Width="192" DisplayMemberPath="Descrip" SelectedValuePath="ID" SelectionChanged="ComboPresupuestos_SelectionChanged" >
-                </Syncfusion:ComboBoxAdv>
+                <TextBlock
+                    Grid.Row="2"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="Presupuesto: " />
+                <Syncfusion:ComboBoxAdv
+                    Name="ComboPresupuestos"
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Width="192"
+                    Height="23"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    DisplayMemberPath="Descrip"
+                    SelectedValuePath="ID"
+                    SelectionChanged="ComboPresupuestos_SelectionChanged" />
 
-                <TextBlock Visibility="Collapsed" Text="Rubro Generico: " Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right" />
-                <Syncfusion:ComboBoxAdv Visibility="Collapsed" Grid.Row="3" Grid.Column="1" Name="ComboRubro" Height="23" HorizontalAlignment="Left" VerticalAlignment="Center" Width="192" DisplayMemberPath="Descrip" SelectedValuePath="ID" >
-                </Syncfusion:ComboBoxAdv>
+                <TextBlock
+                    Grid.Row="3"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="Rubro Generico: "
+                    Visibility="Collapsed" />
+                <Syncfusion:ComboBoxAdv
+                    Name="ComboRubro"
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Width="192"
+                    Height="23"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    DisplayMemberPath="Descrip"
+                    SelectedValuePath="ID"
+                    Visibility="Collapsed" />
 
             </Grid>
         </Border>
 
-        <Border Grid.Row="1" Grid.Column="2" Margin="5,5,5,5" BorderThickness="3" BorderBrush="#FF3399FF" >
+        <Border
+            Grid.Row="1"
+            Grid.Column="2"
+            Margin="5,5,5,5"
+            BorderBrush="#FF3399FF"
+            BorderThickness="3">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="79" />
@@ -140,25 +329,83 @@
                     <RowDefinition Height="35" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="Área Administrativa" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                <TextBlock
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Text="Área Administrativa" />
 
-                <TextBlock Text="Admin: " Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" ToolTip="Empresa o Administración asignada" />
-                <Syncfusion:ComboBoxAdv Grid.Row="1" Grid.Column="1" Name="ComboAdmin" Height="23" HorizontalAlignment="Left" VerticalAlignment="Center" Width="192" DisplayMemberPath="Descrip" SelectedValuePath="ID" SelectionChanged="ComboAdmin_SelectionChanged" >
-                </Syncfusion:ComboBoxAdv>
+                <TextBlock
+                    Grid.Row="1"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="Admin: "
+                    ToolTip="Empresa o Administración asignada" />
+                <Syncfusion:ComboBoxAdv
+                    Name="ComboAdmin"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Width="192"
+                    Height="23"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    DisplayMemberPath="Descrip"
+                    SelectedValuePath="ID"
+                    SelectionChanged="ComboAdmin_SelectionChanged" />
 
-                <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,7,0,3" >
-                    <RadioButton Content="Cliente" Height="16" Name="EsCliente" Checked="EntityType_Checked" />
-                    <RadioButton Content="Proveedor" Height="16" Name="EsProveedor" Checked="EntityType_Checked" />
-                    <RadioButton Content="Contratista" Height="16" Name="EsContratista" Checked="EntityType_Checked" />
-                    <RadioButton Content="Obrero" Height="16" Name="EsPersonal" Checked="EntityType_Checked" />
+                <StackPanel
+                    Grid.Row="2"
+                    Grid.ColumnSpan="2"
+                    Margin="0,7,0,3"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+                    <RadioButton
+                        Name="EsCliente"
+                        Height="16"
+                        Checked="EntityType_Checked"
+                        Content="Cliente" />
+                    <RadioButton
+                        Name="EsProveedor"
+                        Height="16"
+                        Checked="EntityType_Checked"
+                        Content="Proveedor" />
+                    <RadioButton
+                        Name="EsContratista"
+                        Height="16"
+                        Checked="EntityType_Checked"
+                        Content="Contratista" />
+                    <RadioButton
+                        Name="EsPersonal"
+                        Height="16"
+                        Checked="EntityType_Checked"
+                        Content="Obrero" />
                 </StackPanel>
-                <TextBlock Text="Entidad: " Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right" ToolTip="Cliente/Proveedor/Contratista/Obrero" />
-                <Syncfusion:ComboBoxAdv Grid.Row="3" Grid.Column="1" Name="ComboEntidad" Height="23" HorizontalAlignment="Left" VerticalAlignment="Center" Width="192" DisplayMemberPath="Descrip" SelectedValuePath="ID" SelectionChanged="ComboEntidad_SelectionChanged" >
-                </Syncfusion:ComboBoxAdv>
+                <TextBlock
+                    Grid.Row="3"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="Entidad: "
+                    ToolTip="Cliente/Proveedor/Contratista/Obrero" />
+                <Syncfusion:ComboBoxAdv
+                    Name="ComboEntidad"
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Width="192"
+                    Height="23"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    DisplayMemberPath="Descrip"
+                    SelectedValuePath="ID"
+                    SelectionChanged="ComboEntidad_SelectionChanged" />
             </Grid>
         </Border>
 
-        <Border Grid.Row="0" Grid.Column="4" Margin="5,5,5,5" BorderThickness="3" BorderBrush="#FF3399FF">
+        <Border
+            Grid.Row="0"
+            Grid.Column="4"
+            Margin="5,5,5,5"
+            BorderBrush="#FF3399FF"
+            BorderThickness="3">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="69" />
@@ -174,10 +421,33 @@
                     <RowDefinition Height="2" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="1" Grid.ColumnSpan="1" Text="{Binding TipoDoc}" FontSize="14" FontWeight="DemiBold" Width="Auto" VerticalAlignment="Center" Margin="4" HorizontalAlignment="Left" />
-                <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,3,0" >
-                    <TextBlock Text="Estado: " Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" />
-                    <Syncfusion:ComboBoxAdv Height="20" Width="77" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.ColumnSpan="1"
+                    Width="Auto"
+                    Margin="4"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    FontSize="14"
+                    FontWeight="DemiBold"
+                    Text="{Binding TipoDoc}" />
+                <StackPanel
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    Margin="0,0,3,0"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Text="Estado: " />
+                    <Syncfusion:ComboBoxAdv
+                        Width="77"
+                        Height="20"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center">
                         <Syncfusion:ComboBoxItemAdv Content="Borrador" />
                         <Syncfusion:ComboBoxItemAdv Content="Pendiente" />
                         <Syncfusion:ComboBoxItemAdv Content="Ejecutado" />
@@ -185,22 +455,98 @@
                         <Syncfusion:ComboBoxItemAdv Content="Eliminado" />
                     </Syncfusion:ComboBoxAdv>
                 </StackPanel>
-                <TextBlock Text="Creado: " Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" />
-                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding CreadoFecha, StringFormat='{}{0:dd/MM/yy}'}" FontStyle="Italic" Width="63" TextAlignment="Left" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Usuario}" FontStyle="Italic" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="Creado: " />
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Width="63"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontStyle="Italic"
+                    Text="{Binding CreadoFecha, StringFormat='{}{0:dd/MM/yy}'}"
+                    TextAlignment="Left" />
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="2"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    FontStyle="Italic"
+                    Text="{Binding Usuario}"
+                    TextAlignment="Left" />
 
-                <TextBlock Text="Editado: " Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" />
-                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding EditadoFecha, StringFormat='{}{0:dd/MM/yy}'}" FontStyle="Italic" Width="63"  HorizontalAlignment="Center" VerticalAlignment="Center" />
-                <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding Editado, Mode=TwoWay}" FontStyle="Italic" Width="102" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                <TextBlock
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="Editado: " />
+                <TextBlock
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Width="63"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontStyle="Italic"
+                    Text="{Binding EditadoFecha, StringFormat='{}{0:dd/MM/yy}'}" />
+                <TextBlock
+                    Grid.Row="3"
+                    Grid.Column="2"
+                    Width="102"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    FontStyle="Italic"
+                    Text="{Binding Editado, Mode=TwoWay}" />
 
-                <TextBlock Text="Autorizado: " Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" />
-                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding RevisadoFecha, StringFormat='{}{0:dd/MM/yy}'}" x:Name="CelRevisadoFecha" FontStyle="Italic" Width="63"  HorizontalAlignment="Center" VerticalAlignment="Center" />
-                <TextBlock Grid.Row="4" Grid.Column="2" Text="{Binding Revisado}" x:Name="CelRevisado" FontStyle="Italic" Width="102" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Center" />
-                <Button x:Name="BotonVerifica" Grid.Row="4" Grid.Column="2" Content="Autorizar" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,3,0" ToolTip="Agrega o elimina Autorización" Click="BotonVerifica_Click" />
+                <TextBlock
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Text="Autorizado: " />
+                <TextBlock
+                    x:Name="CelRevisadoFecha"
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    Width="63"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontStyle="Italic"
+                    Text="{Binding RevisadoFecha, StringFormat='{}{0:dd/MM/yy}'}" />
+                <TextBlock
+                    x:Name="CelRevisado"
+                    Grid.Row="4"
+                    Grid.Column="2"
+                    Width="102"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    FontStyle="Italic"
+                    Text="{Binding Revisado}"
+                    TextAlignment="Left" />
+                <Button
+                    x:Name="BotonVerifica"
+                    Grid.Row="4"
+                    Grid.Column="2"
+                    Margin="0,0,3,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Click="BotonVerifica_Click"
+                    Content="Autorizar"
+                    ToolTip="Agrega o elimina Autorización" />
             </Grid>
         </Border>
 
-        <Border Name="TEXTOS" Grid.Row="1" Grid.Column="4" Margin="5,5,5,5" BorderThickness="3" BorderBrush="#FF3399FF" >
+        <Border
+            Name="TEXTOS"
+            Grid.Row="1"
+            Grid.Column="4"
+            Margin="5,5,5,5"
+            BorderBrush="#FF3399FF"
+            BorderThickness="3">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -212,15 +558,50 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" Text="Titulo" TextAlignment="Center" VerticalAlignment="Center" />
-                <TextBox Grid.Row="1" Text="{Binding Descrip}" MaxLength="50" TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Disabled" VerticalContentAlignment="Stretch" />
-                <TextBlock Grid.Row="2" Text="Notas" TextAlignment="Center" VerticalAlignment="Center" />
-                <TextBox Grid.Row="3" Name="Descrip" Text="{Binding Notas}" MaxLength="300" TextAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Visible" VerticalContentAlignment="Stretch" AcceptsReturn="True" />
+                <TextBlock
+                    Grid.Row="0"
+                    VerticalAlignment="Center"
+                    Text="Titulo"
+                    TextAlignment="Center" />
+                <TextBox
+                    Grid.Row="1"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    MaxLength="50"
+                    Text="{Binding Descrip}"
+                    TextAlignment="Center"
+                    TextWrapping="Wrap"
+                    VerticalScrollBarVisibility="Disabled" />
+                <TextBlock
+                    Grid.Row="2"
+                    VerticalAlignment="Center"
+                    Text="Notas"
+                    TextAlignment="Center" />
+                <TextBox
+                    Name="Descrip"
+                    Grid.Row="3"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    AcceptsReturn="True"
+                    MaxLength="300"
+                    Text="{Binding Notas}"
+                    TextAlignment="Left"
+                    TextWrapping="Wrap"
+                    VerticalScrollBarVisibility="Visible" />
 
             </Grid>
         </Border>
 
-        <Border Name="TIPOS" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" Margin="5,5,5,5" BorderThickness="3" BorderBrush="#FF3399FF" >
+        <Border
+            Name="TIPOS"
+            Grid.Row="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="5"
+            Margin="5,5,5,5"
+            BorderBrush="#FF3399FF"
+            BorderThickness="3">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="69" />
@@ -240,77 +621,290 @@
 
                 </Grid.RowDefinitions>
 
-                <Label Content="Pesos:" Grid.Row="1" HorizontalAlignment="Right" />
-                <Label Content="Dólares:" Grid.Row="3" HorizontalAlignment="Right" />
+                <Label
+                    Grid.Row="1"
+                    HorizontalAlignment="Right"
+                    Content="Pesos:" />
+                <Label
+                    Grid.Row="3"
+                    HorizontalAlignment="Right"
+                    Content="Dólares:" />
 
-                <TextBlock Grid.Column="1" Name="TxtMateriales" Text="Materiales" TextAlignment="Center" VerticalAlignment="Center" />
-                <Syncfusion:DoubleTextBox Grid.Column="1" Grid.Row="1" Value="{Binding Materiales,Mode=TwoWay,ConverterCulture=es-AR}" x:Name="CelMateriales"  Width="69" Height="25"  VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Right" />
-                <Syncfusion:DoubleTextBox Grid.Column="1" Grid.Row="3" Value="{Binding MaterialesD,Mode=TwoWay,ConverterCulture=es-AR}" x:Name="CelMaterialesD" Width="69" Height="25" HorizontalAlignment="Center" HorizontalContentAlignment="Right" />
+                <TextBlock
+                    Name="TxtMateriales"
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Text="Materiales"
+                    TextAlignment="Center" />
+                <Syncfusion:DoubleTextBox
+                    x:Name="CelMateriales"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Width="69"
+                    Height="25"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Right"
+                    Value="{Binding Materiales, Mode=TwoWay, ConverterCulture=es-AR}" />
+                <Syncfusion:DoubleTextBox
+                    x:Name="CelMaterialesD"
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Width="69"
+                    Height="25"
+                    HorizontalAlignment="Center"
+                    HorizontalContentAlignment="Right"
+                    Value="{Binding MaterialesD, Mode=TwoWay, ConverterCulture=es-AR}" />
 
-                <TextBlock Grid.Column="2" Name="TxtManodeobra" Text="Mano de Obra" TextAlignment="Center" VerticalAlignment="Center" />
-                <Syncfusion:DoubleTextBox Grid.Column="2" Grid.Row="1" Value="{Binding ManodeObra,Mode=TwoWay,ConverterCulture=es-AR}" x:Name="CelManodeObra" Width="69" Height="25" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Right" />
-                <Syncfusion:DoubleTextBox Grid.Column="2" Grid.Row="3" Value="{Binding ManodeObraD,Mode=TwoWay,ConverterCulture=es-AR}" x:Name="CelManodeObraD" Width="69" Height="25" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Right" />
+                <TextBlock
+                    Name="TxtManodeobra"
+                    Grid.Column="2"
+                    VerticalAlignment="Center"
+                    Text="Mano de Obra"
+                    TextAlignment="Center" />
+                <Syncfusion:DoubleTextBox
+                    x:Name="CelManodeObra"
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    Width="69"
+                    Height="25"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Right"
+                    Value="{Binding ManodeObra, Mode=TwoWay, ConverterCulture=es-AR}" />
+                <Syncfusion:DoubleTextBox
+                    x:Name="CelManodeObraD"
+                    Grid.Row="3"
+                    Grid.Column="2"
+                    Width="69"
+                    Height="25"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Right"
+                    Value="{Binding ManodeObraD, Mode=TwoWay, ConverterCulture=es-AR}" />
 
-                <TextBlock Grid.Column="3" Name="TxtSubcontratos" Text="SubContratos" TextAlignment="Center" VerticalAlignment="Center" />
-                <Syncfusion:DoubleTextBox Grid.Column="3" Grid.Row="1" Value="{Binding Subcontratos,Mode=TwoWay,ConverterCulture=es-AR}" x:Name="CelSubcontratos" Width="69" Height="25" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Right" />
-                <Syncfusion:DoubleTextBox Grid.Column="3" Grid.Row="3" Value="{Binding SubcontratosD,Mode=TwoWay,ConverterCulture=es-AR}" x:Name="CelSubcontratosD" Width="69" Height="25" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Right" />
+                <TextBlock
+                    Name="TxtSubcontratos"
+                    Grid.Column="3"
+                    VerticalAlignment="Center"
+                    Text="SubContratos"
+                    TextAlignment="Center" />
+                <Syncfusion:DoubleTextBox
+                    x:Name="CelSubcontratos"
+                    Grid.Row="1"
+                    Grid.Column="3"
+                    Width="69"
+                    Height="25"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Right"
+                    Value="{Binding Subcontratos, Mode=TwoWay, ConverterCulture=es-AR}" />
+                <Syncfusion:DoubleTextBox
+                    x:Name="CelSubcontratosD"
+                    Grid.Row="3"
+                    Grid.Column="3"
+                    Width="69"
+                    Height="25"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Right"
+                    Value="{Binding SubcontratosD, Mode=TwoWay, ConverterCulture=es-AR}" />
 
-                <TextBlock Grid.Column="4" Name="TxtEquipos" Text="Equipos" TextAlignment="Center" VerticalAlignment="Center" />
-                <Syncfusion:DoubleTextBox Grid.Column="4" Grid.Row="1" Value="{Binding Equipos,Mode=TwoWay,ConverterCulture=es-AR}" x:Name="CelEquipos" Width="69" Height="25" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Right" />
-                <Syncfusion:DoubleTextBox Grid.Column="4" Grid.Row="3" Value="{Binding Equipos,Mode=TwoWay,ConverterCulture=es-AR}" x:Name="CelEquiposD" Width="69" Height="25" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Right" />
+                <TextBlock
+                    Name="TxtEquipos"
+                    Grid.Column="4"
+                    VerticalAlignment="Center"
+                    Text="Equipos"
+                    TextAlignment="Center" />
+                <Syncfusion:DoubleTextBox
+                    x:Name="CelEquipos"
+                    Grid.Row="1"
+                    Grid.Column="4"
+                    Width="69"
+                    Height="25"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Right"
+                    Value="{Binding Equipos, Mode=TwoWay, ConverterCulture=es-AR}" />
+                <Syncfusion:DoubleTextBox
+                    x:Name="CelEquiposD"
+                    Grid.Row="3"
+                    Grid.Column="4"
+                    Width="69"
+                    Height="25"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Right"
+                    Value="{Binding Equipos, Mode=TwoWay, ConverterCulture=es-AR}" />
 
-                <TextBlock Grid.Column="5" Name="TxtOtros" Text="Otros" TextAlignment="Center" VerticalAlignment="Center" />
-                <Syncfusion:DoubleTextBox Grid.Column="5" Grid.Row="1" Value="{Binding Otros,Mode=TwoWay,ConverterCulture=es-AR}" x:Name="CelOtros" Width="69" Height="25" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Right" />
-                <Syncfusion:DoubleTextBox Grid.Column="5" Grid.Row="3" Value="{Binding OtrosD,Mode=TwoWay,ConverterCulture=es-AR}" x:Name="CelOtrosD" Width="69" Height="25" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Right" />
+                <TextBlock
+                    Name="TxtOtros"
+                    Grid.Column="5"
+                    VerticalAlignment="Center"
+                    Text="Otros"
+                    TextAlignment="Center" />
+                <Syncfusion:DoubleTextBox
+                    x:Name="CelOtros"
+                    Grid.Row="1"
+                    Grid.Column="5"
+                    Width="69"
+                    Height="25"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Right"
+                    Value="{Binding Otros, Mode=TwoWay, ConverterCulture=es-AR}" />
+                <Syncfusion:DoubleTextBox
+                    x:Name="CelOtrosD"
+                    Grid.Row="3"
+                    Grid.Column="5"
+                    Width="69"
+                    Height="25"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Right"
+                    Value="{Binding OtrosD, Mode=TwoWay, ConverterCulture=es-AR}" />
 
-                <TextBlock Grid.Column="6" Name="TxtImpuestos" Text="Impuestos" TextAlignment="Center" VerticalAlignment="Center" />
-                <Syncfusion:DoubleTextBox Grid.Column="6" Grid.Row="1" Value="{Binding Impuestos,Mode=TwoWay,ConverterCulture=es-AR}" x:Name="CelImpuestos" Width="69" Height="25" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Right" />
-                <Syncfusion:DoubleTextBox Grid.Column="6" Grid.Row="3" Value="{Binding ImpuestosD,Mode=TwoWay,ConverterCulture=es-AR}" x:Name="CelImpuestosD" Width="69" Height="25" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Right" />
+                <TextBlock
+                    Name="TxtImpuestos"
+                    Grid.Column="6"
+                    VerticalAlignment="Center"
+                    Text="Impuestos"
+                    TextAlignment="Center" />
+                <Syncfusion:DoubleTextBox
+                    x:Name="CelImpuestos"
+                    Grid.Row="1"
+                    Grid.Column="6"
+                    Width="69"
+                    Height="25"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Right"
+                    Value="{Binding Impuestos, Mode=TwoWay, ConverterCulture=es-AR}" />
+                <Syncfusion:DoubleTextBox
+                    x:Name="CelImpuestosD"
+                    Grid.Row="3"
+                    Grid.Column="6"
+                    Width="69"
+                    Height="25"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Right"
+                    Value="{Binding ImpuestosD, Mode=TwoWay, ConverterCulture=es-AR}" />
 
-                <TextBlock Grid.Column="7" Text="Total" TextAlignment="Center" FontWeight="SemiBold" VerticalAlignment="Center" />
-                <Syncfusion:DoubleTextBox Grid.Column="7" Grid.Row="1" Value="{Binding Pesos,Mode=TwoWay,ConverterCulture=es-AR}" x:Name="txtTotal" Width="89" IsReadOnly="True" Height="25" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Right" />
-                <Syncfusion:DoubleTextBox Grid.Column="7" Grid.Row="3" Value="{Binding Dolares,Mode=TwoWay,ConverterCulture=es-AR}" x:Name="txtTotalD" Width="89" IsReadOnly="True" Height="25" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Right" />
+                <TextBlock
+                    Grid.Column="7"
+                    VerticalAlignment="Center"
+                    FontWeight="SemiBold"
+                    Text="Total"
+                    TextAlignment="Center" />
+                <Syncfusion:DoubleTextBox
+                    x:Name="txtTotal"
+                    Grid.Row="1"
+                    Grid.Column="7"
+                    Width="89"
+                    Height="25"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Right"
+                    IsReadOnly="True"
+                    Value="{Binding Pesos, Mode=TwoWay, ConverterCulture=es-AR}" />
+                <Syncfusion:DoubleTextBox
+                    x:Name="txtTotalD"
+                    Grid.Row="3"
+                    Grid.Column="7"
+                    Width="89"
+                    Height="25"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Right"
+                    IsReadOnly="True"
+                    Value="{Binding Dolares, Mode=TwoWay, ConverterCulture=es-AR}" />
 
             </Grid>
         </Border>
 
-        <Grid x:Name="grillaDetalle" Grid.Row="3" Margin="5,0,0,0" Grid.ColumnSpan="{Binding ElementName=GrillaPrincipal, Path=ColumnDefinitions.Count}">
+        <Grid
+            x:Name="grillaDetalle"
+            Grid.Row="3"
+            Grid.ColumnSpan="{Binding ElementName=GrillaPrincipal, Path=ColumnDefinitions.Count}"
+            Margin="5,0,0,0">
 
-            <TabControl SelectionChanged="GrillaPrincipal_SelectionChanged"  >
-                <TabItem Header="Insumos">
-
-                </TabItem>
-                <TabItem Header="Movimientos">
-
-                </TabItem>
-                <TabItem Header="Impuestos">
-
-                </TabItem>
+            <TabControl SelectionChanged="GrillaPrincipal_SelectionChanged">
+                <TabItem Header="Insumos" />
+                <TabItem Header="Movimientos" />
+                <TabItem Header="Impuestos" />
 
                 <TabItem Header="Documentos">
-                    <Syncfusion:SfDataGrid Name="GrillaDocumentos" Grid.Column="1" Grid.Row="1" AutoGenerateColumns="False" Margin="4,5,0,0"
-                     IsReadOnly="True">
+                    <Syncfusion:SfDataGrid
+                        Name="GrillaDocumentos"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="4,5,0,0"
+                        AutoGenerateColumns="False"
+                        IsReadOnly="True">
 
                         <Syncfusion:SfDataGrid.Columns>
-                            <Syncfusion:GridTextColumn HeaderText="ID" MappingName="ID" Width="92"/>
-                            <Syncfusion:GridTextColumn HeaderText="Tipo" MappingName="Tipo" Width="92"/>
-                            <Syncfusion:GridDateTimeColumn HeaderText="Fecha" MappingName="Fecha1" Width="90"/>
-                            <Syncfusion:GridTextColumn HeaderText="Obra" MappingName="Obra" Width="90"/>
-                            <Syncfusion:GridTextColumn HeaderText="Admin" MappingName="Admin" Width="90"/>
-                            <Syncfusion:GridTextColumn HeaderText="Tipo Ent." MappingName="EntidadTipo" Width="90"/>
-                            <Syncfusion:GridTextColumn HeaderText="Entidad" MappingName="Entidad" Width="90"/>
-                            <Syncfusion:GridTextColumn HeaderText="Descripcion" MappingName="Descripcion" Width="90"/>
-                            <Syncfusion:GridTextColumn HeaderText="Numero" MappingName="Numero" Width="90"/>
-                            <Syncfusion:GridTextColumn HeaderText="Pesos" MappingName="Pesos" Width="90"/>
-                            <Syncfusion:GridTextColumn HeaderText="Dolares" MappingName="Dolares" Width="90"/>
-                            <Syncfusion:GridTextColumn HeaderText="Impuestos" MappingName="Impuestos" Width="90"/>
-                            <Syncfusion:GridTextColumn HeaderText="Usuario" MappingName="Usuario" Width="90"/>
-                            <Syncfusion:GridTextColumn HeaderText="Verifica" MappingName="Verifica" Width="90"/>
+                            <Syncfusion:GridTextColumn
+                                Width="92"
+                                HeaderText="ID"
+                                MappingName="ID" />
+                            <Syncfusion:GridTextColumn
+                                Width="92"
+                                HeaderText="Tipo"
+                                MappingName="Tipo" />
+                            <Syncfusion:GridDateTimeColumn
+                                Width="90"
+                                HeaderText="Fecha"
+                                MappingName="Fecha1" />
+                            <Syncfusion:GridTextColumn
+                                Width="90"
+                                HeaderText="Obra"
+                                MappingName="Obra" />
+                            <Syncfusion:GridTextColumn
+                                Width="90"
+                                HeaderText="Admin"
+                                MappingName="Admin" />
+                            <Syncfusion:GridTextColumn
+                                Width="90"
+                                HeaderText="Tipo Ent."
+                                MappingName="EntidadTipo" />
+                            <Syncfusion:GridTextColumn
+                                Width="90"
+                                HeaderText="Entidad"
+                                MappingName="Entidad" />
+                            <Syncfusion:GridTextColumn
+                                Width="90"
+                                HeaderText="Descripcion"
+                                MappingName="Descripcion" />
+                            <Syncfusion:GridTextColumn
+                                Width="90"
+                                HeaderText="Numero"
+                                MappingName="Numero" />
+                            <Syncfusion:GridTextColumn
+                                Width="90"
+                                HeaderText="Pesos"
+                                MappingName="Pesos" />
+                            <Syncfusion:GridTextColumn
+                                Width="90"
+                                HeaderText="Dolares"
+                                MappingName="Dolares" />
+                            <Syncfusion:GridTextColumn
+                                Width="90"
+                                HeaderText="Impuestos"
+                                MappingName="Impuestos" />
+                            <Syncfusion:GridTextColumn
+                                Width="90"
+                                HeaderText="Usuario"
+                                MappingName="Usuario" />
+                            <Syncfusion:GridTextColumn
+                                Width="90"
+                                HeaderText="Verifica"
+                                MappingName="Verifica" />
                         </Syncfusion:SfDataGrid.Columns>
                         <Syncfusion:SfDataGrid.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Vincular"    Click="Vincular_Click"/>
-                                <MenuItem Header="DesVincular" Click="DesVincular_Click"/>
+                                <MenuItem Click="Vincular_Click" Header="Vincular" />
+                                <MenuItem Click="DesVincular_Click" Header="DesVincular" />
                             </ContextMenu>
                         </Syncfusion:SfDataGrid.ContextMenu>
                     </Syncfusion:SfDataGrid>
@@ -321,12 +915,24 @@
 
         </Grid>
 
-   
+
 
         <StackPanel Grid.Row="4" Orientation="Horizontal">
-            <Button Content="Guardar" Width="85" Margin="5,5,0,0" Click="Guardar_Click" />
-            <Button Content="No Guardar" Width="85" Margin="15,5,0,0" Click="Cancelar_Click" />
-            <Button Content="Borrar" Width="85" Margin="15,5,0,0" Click="Borrar_Click" />
+            <Button
+                Width="85"
+                Margin="5,5,0,0"
+                Click="Guardar_Click"
+                Content="Guardar" />
+            <Button
+                Width="85"
+                Margin="15,5,0,0"
+                Click="Cancelar_Click"
+                Content="No Guardar" />
+            <Button
+                Width="85"
+                Margin="15,5,0,0"
+                Click="Borrar_Click"
+                Content="Borrar" />
         </StackPanel>
 
     </Grid>

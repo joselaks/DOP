@@ -55,7 +55,6 @@
                 Width="100"
                 Height="35"
                 Margin="5"
-                
                 Checked="ToggleButton_Checked"
                 Content="Presupuestos"
                 Unchecked="ToggleButton_Unchecked" />
@@ -97,7 +96,7 @@
                 MouseDoubleClick="GrillaDocumentos_MouseDoubleClick">
                 <syncfusion:SfDataGrid.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Click="MenuItem_Click"  Header="Nuevo" />
+                        <MenuItem Click="MenuItem_Click" Header="Nuevo" />
                         <MenuItem Click="MenuItem_Click_1" Header="Editar" />
                         <MenuItem Click="MenuItem_Click_2" Header="Borrar" />
                     </ContextMenu>
@@ -188,8 +187,11 @@
                                 Width="91"
                                 Margin="-2,0,0,0" />
                         </StackPanel>
-                        <Button x:Name="actualizaGrilla" Content="Aplica Filtro" Click="actualizaGrilla_Click"/>
-                        
+                        <Button
+                            x:Name="actualizaGrilla"
+                            Click="actualizaGrilla_Click"
+                            Content="Aplica Filtro" />
+
 
                     </Grid>
                 </syncfusion:DropDownMenuGroup>

@@ -8,7 +8,7 @@ namespace Biblioteca
 {
     public class Documento
     {
-        public int ID { get; set; }
+        public int? ID { get; set; }
         public short CuentaID { get; set; }
         public byte TipoID { get; set; }
         public int UsuarioID { get; set; }

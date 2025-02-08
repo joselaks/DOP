@@ -18,7 +18,7 @@ namespace DataObra.Documentos
     public class Documento
     {
         #region SISTEMA
-        public int ID { get; set; }  // Int
+        public int? ID { get; set; }  // Int
         public short CuentaID { get; set; } // SmallInt
         public byte TipoID { get; set; } // TinyInt o 1 Char
         public string? TipoDoc { get; set; } // Tipo en texto para mostrar

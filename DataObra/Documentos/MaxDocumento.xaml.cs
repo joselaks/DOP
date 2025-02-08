@@ -35,7 +35,10 @@ namespace DataObra.Documentos
         public MaxDocumento(Biblioteca.Documento pDoc) 
         {
             InitializeComponent();
+            //Resolver el objeto activo compatible con otras funcoines y con los metodos del servidor
+            //oActivo = pDoc;
             // si es presupuesto
+            
             if (pDoc.TipoID==10)
             {
                 this.grillaDetalle.Children.Clear();
@@ -166,7 +169,27 @@ namespace DataObra.Documentos
 
         private async void Guardar_Click(object sender, RoutedEventArgs e)
         {
-            oActivo.EditadoID = azure.UsuarioID;
+            Biblioteca.Documento wDoc1 = new Biblioteca.Documento();
+            if (oActivo.ID == null)
+            {
+                // Codigo a utilizar
+
+                
+                var respuesta1 = await ConsultasAPI.PostDocumentoAsync(wDoc1);
+                if (respuesta1.Id != null)
+                {
+                    oActivo.ID = respuesta1.Id;
+                }
+
+            }
+            else
+            {
+                var respuesta1 = await ConsultasAPI.PutDocumentoAsync(wDoc1);
+            }
+
+
+
+                oActivo.EditadoID = azure.UsuarioID;
             oActivo.Editado = azure.Usuario;
             oActivo.EditadoFecha = DateTime.Now;
 
@@ -254,17 +277,17 @@ namespace DataObra.Documentos
         private async void Borrar_Click(object sender, RoutedEventArgs e)
         {
             // Codigo a utilizar
-            var respuesta = await ConsultasAPI.DeleteDocumentoAsync(oActivo.ID);
+            //var respuesta = await ConsultasAPI.DeleteDocumentoAsync(oActivo.ID);
 
             //Respuestas
-            bool resultadoBorrado = respuesta.Success;  // true si lo borró, false si no existia el registro
-            string mensaje = respuesta.Message;
+            //bool resultadoBorrado = respuesta.Success;  // true si lo borró, false si no existia el registro
+            //string mensaje = respuesta.Message;
 
             //Mensaje para testeo
-            if (respuesta.Success != null)
-            {
-                MessageBox.Show(respuesta.Success + " " + respuesta.Message);
-            }
+            //if (respuesta.Success != null)
+            //{
+            //    MessageBox.Show(respuesta.Success + " " + respuesta.Message);
+            //}
         }
         
         private void Cancelar_Click(object sender, RoutedEventArgs e)
