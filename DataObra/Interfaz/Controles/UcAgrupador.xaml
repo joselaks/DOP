@@ -1,12 +1,184 @@
 ﻿<UserControl x:Class="DataObra.Interfaz.Controles.UcAgrupador"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:DataObra.Interfaz.Controles"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:DataObra.Interfaz.Controles"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style x:Key="RoundedRadioButtonStyle" TargetType="{x:Type RadioButton}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RadioButton}">
+                        <Border
+                            Width="100"
+                            Height="35"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="17.5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Background" Value="#FF3399FF" />
+                                <Setter Property="BorderBrush" Value="#FF3399FF" />
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter Property="Background" Value="White" />
+                                <Setter Property="BorderBrush" Value="Gray" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel
+            x:Name="items"
+            Grid.Row="0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Orientation="Horizontal">
+            <ToggleButton
+                Width="100"
+                Height="35"
+                Margin="5"
+                Checked="ToggleButton_Checked"
+                Content="Obras"
+                Unchecked="ToggleButton_Unchecked" />
+            <ToggleButton
+                Width="100"
+                Height="35"
+                Margin="5"
+                Checked="ToggleButton_Checked"
+                Content="Proveedores"
+                Unchecked="ToggleButton_Unchecked" />
+        </StackPanel>
+
+        <Grid Grid.Row="2">
+            <syncfusion:SfDataGrid
+                Name="GrillaAgrupadores"
+                AutoGenerateColumns="False"
+                IsReadOnly="True"
+                MouseDoubleClick="GrillaAgrupadores_MouseDoubleClick">
+                <syncfusion:SfDataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Click="MenuItem_Click"  Header="Nuevo" />
+                        <MenuItem Click="MenuItem_Click"  Header="Editar" />
+                        <MenuItem Click="MenuItem_Click_1"  Header="Borrar" />
+                    </ContextMenu>
+                </syncfusion:SfDataGrid.ContextMenu>
+                <syncfusion:SfDataGrid.Columns>
+                    <syncfusion:GridTextColumn
+                        Width="92"
+                        HeaderText="Documento"
+                        MappingName="TipoID" />
+                    <syncfusion:GridDateTimeColumn
+                        Width="90"
+                        HeaderText="Editado"
+                        MappingName="Editado" />
+                    <syncfusion:GridTextColumn
+                        Width="90"
+                        HeaderText="Obra"
+                        MappingName="ObraID" />
+                    <syncfusion:GridTextColumn
+                        Width="90"
+                        HeaderText="Descripción"
+                        MappingName="Descrip" />
+                    <syncfusion:GridTextColumn
+                        Width="90"
+                        HeaderText="Numero"
+                        MappingName="Numero" />
+                    <syncfusion:GridTextColumn
+                        Width="90"
+                        HeaderText="Active"
+                        MappingName="Active" />
+                    
+                    
+                </syncfusion:SfDataGrid.Columns>
+            </syncfusion:SfDataGrid>
+
+        </Grid>
+
+        <syncfusion:ToolBarAdv Grid.Row="1" Height="30">
+            <syncfusion:DropDownButtonAdv
+                Width="75"
+                Height="25"
+                Margin="5,0,5,0"
+                HorizontalAlignment="Left"
+                Label="Filtro"
+                SizeMode="Normal"
+                SmallIcon="/Interfaz/Imagenes/Filtro.png">
+                <syncfusion:DropDownMenuGroup>
+                    <Grid Width="250" Height="150">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <StackPanel Height="23" Orientation="Horizontal">
+                            <Label Margin="-3,0,0,0" Content="DE:" />
+                            <DatePicker
+                                Name="FechaDesde"
+                                Width="91"
+                                Margin="-2,0,0,0" />
+                            <Label Content="A:" />
+                            <DatePicker
+                                Name="FechaHasta"
+                                Width="91"
+                                Margin="-2,0,0,0" />
+                        </StackPanel>
+                        <Button
+                            x:Name="actualizaGrilla"
+                            Click="actualizaGrilla_Click"
+                            Content="Aplica Filtro" />
+
+
+                    </Grid>
+                </syncfusion:DropDownMenuGroup>
+            </syncfusion:DropDownButtonAdv>
+            <syncfusion:DropDownButtonAdv
+                x:Name="NuevoDocumento"
+                Width="100"
+                Label="Nuevo"
+                SmallIcon="/Presupuestos/agregar.png"
+                ToolTip="Agregar conceptos">
+                <syncfusion:DropDownMenuGroup IsResizable="True">
+                    <syncfusion:DropDownMenuItem
+                        x:Name="Obra"
+                        HorizontalAlignment="Left"
+                        Click="Obra_Click"
+                        Header="Obra">
+                        <syncfusion:DropDownMenuItem.Icon>
+                            <Image Source="/Presupuestos/Rubro.png" />
+                        </syncfusion:DropDownMenuItem.Icon>
+                    </syncfusion:DropDownMenuItem>
+                    <syncfusion:DropDownMenuItem
+                        x:Name="NuevoProveedor"
+                        HorizontalAlignment="Left"
+                        Click="NuevoProveedor_Click"
+                        Header="Proveedor">
+                        <syncfusion:DropDownMenuItem.Icon>
+                            <Image Source="/Presupuestos/Tarea.png" />
+                        </syncfusion:DropDownMenuItem.Icon>
+                    </syncfusion:DropDownMenuItem>
+
+                </syncfusion:DropDownMenuGroup>
+            </syncfusion:DropDownButtonAdv>
+            >
+        </syncfusion:ToolBarAdv>
+
+
     </Grid>
 </UserControl>
