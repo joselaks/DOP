@@ -54,7 +54,7 @@ namespace DataObra.Interfaz.Ventanas
             //Cargo lso controles parametrizados con el rol
             UcNavegador ucNavegador = new UcNavegador(rol);
             contenidoDocumentos.Children.Add(ucNavegador);
-            UcAgrupador ucAgrupador = new UcAgrupador(rol);
+            UcAgrupadores ucAgrupador = new UcAgrupadores(rol);
             contenidoAgrupadores.Children.Add(ucAgrupador);
             UcInsumos ucInsumos = new UcInsumos(rol);
             contenidoInsumos.Children.Add(ucInsumos);

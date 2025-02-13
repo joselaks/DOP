@@ -38,6 +38,7 @@
 </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Documentos\Controles\" />
       <Folder Include="Insumos\Clases\" />
     </ItemGroup>
 

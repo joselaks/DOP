@@ -1,0 +1,82 @@
+﻿<Window x:Class="DataObra.Interfaz.Ventanas.WiDialogo"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:DataObra.Interfaz.Ventanas"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    AllowsTransparency="True"
+    Background="Transparent"
+    ResizeMode="NoResize"
+    WindowStartupLocation="CenterScreen"
+    WindowStyle="None">
+    <Window.Resources>
+        <Style x:Key="RoundedRadioButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border
+                            Width="100"
+                            Height="100"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="17.5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Border
+        x:Name="MainBorder"
+        Margin="10"
+        Background="Transparent"
+        BorderBrush="Black"
+        BorderThickness="2"
+        CornerRadius="5">
+        <Border.Effect>
+            <DropShadowEffect
+                x:Name="WindowShadow"
+                BlurRadius="20"
+                Opacity="0.5"
+                ShadowDepth="0"
+                Color="Black" />
+        </Border.Effect>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!--  Encabezado personalizado  -->
+            <Border
+                Grid.Row="0"
+                Background="White"
+                BorderBrush="White"
+                BorderThickness="0"
+                CornerRadius="5,5,0,0"
+                />
+            <Grid>
+                <TextBlock
+                        x:Name="TituloVentana"
+                        Padding="2"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Black" />
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                    <Button
+                            Width="20"
+                            Margin="3"
+                            Click="Button_Click"
+                            Content="X" />
+                </StackPanel>
+            </Grid>
+
+            <Grid
+                Name="espacioPrincipal"
+                Grid.Row="1"
+                Background="White" />
+        </Grid>
+    </Border>
+</Window>

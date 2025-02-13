@@ -29,7 +29,6 @@ namespace DataObra.Documentos
         Documento oActivo;
         string TextBoxValueAnterior;
         Servidor azure = new Servidor();
-        Documentos.Controles.PresDetalle presDetalle;
         #endregion
 
         public MaxDocumento(Biblioteca.Documento pDoc) 
@@ -41,9 +40,6 @@ namespace DataObra.Documentos
             
             if (pDoc.TipoID==10)
             {
-                this.grillaDetalle.Children.Clear();
-                presDetalle = new Documentos.Controles.PresDetalle();
-                this.grillaDetalle.Children.Add(presDetalle);
 
             }
 

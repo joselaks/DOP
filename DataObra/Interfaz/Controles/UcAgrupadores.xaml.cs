@@ -20,11 +20,11 @@ namespace DataObra.Interfaz.Controles
     /// <summary>
     /// Lógica de interacción para UcAgrupador.xaml
     /// </summary>
-    public partial class UcAgrupador : UserControl
+    public partial class UcAgrupadores : UserControl
     {
         string Rol;
 
-        public UcAgrupador(string rol)
+        public UcAgrupadores(string rol)
         {
             InitializeComponent();
             Rol = rol;
@@ -45,7 +45,13 @@ namespace DataObra.Interfaz.Controles
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
+            {
+                SubControles.UcAgrupador Docu = new SubControles.UcAgrupador();
+                DataObra.Interfaz.Ventanas.WiDialogo ventanaDocu = new DataObra.Interfaz.Ventanas.WiDialogo("Agrupador", Docu);
 
+                ventanaDocu.ShowDialog();
+
+            }
         }
 
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)
@@ -70,17 +76,27 @@ namespace DataObra.Interfaz.Controles
 
         private void actualizaGrilla_Click(object sender, RoutedEventArgs e)
         {
-
+            CargarGrilla();
         }
 
         private void Obra_Click(object sender, RoutedEventArgs e)
         {
+            SubControles.UcAgrupador Docu = new SubControles.UcAgrupador();
+            DataObra.Interfaz.Ventanas.WiDialogo ventanaDocu = new DataObra.Interfaz.Ventanas.WiDialogo("Agrupador", Docu);
+
+            ventanaDocu.ShowDialog();
 
         }
 
         private void NuevoProveedor_Click(object sender, RoutedEventArgs e)
         {
+            {
+                SubControles.UcAgrupador Docu = new SubControles.UcAgrupador();
+                DataObra.Interfaz.Ventanas.WiDialogo ventanaDocu = new DataObra.Interfaz.Ventanas.WiDialogo("Agrupador", Docu);
 
+                ventanaDocu.ShowDialog();
+
+            }
         }
     }
 }
