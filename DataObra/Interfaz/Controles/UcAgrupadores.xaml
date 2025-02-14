@@ -1,5 +1,6 @@
-﻿<UserControl x:Class="DataObra.Interfaz.Controles.UcAgrupadores"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<UserControl
+    x:Class="DataObra.Interfaz.Controles.UcAgrupadores"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:DataObra.Interfaz.Controles"
@@ -71,27 +72,29 @@
                 Name="GrillaAgrupadores"
                 AutoGenerateColumns="False"
                 IsReadOnly="True"
+                AllowResizingColumns="True"
+                AllowGrouping="True"
                 MouseDoubleClick="GrillaAgrupadores_MouseDoubleClick">
                 <syncfusion:SfDataGrid.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Click="MenuItem_Click"  Header="Nuevo" />
-                        <MenuItem Click="EditarAgrupador"  Header="Editar" />
-                        <MenuItem Click="MenuItem_Click_1"  Header="Borrar" />
+                        <MenuItem Click="MenuItem_Click" Header="Nuevo" />
+                        <MenuItem Click="EditarAgrupador" Header="Editar" />
+                        <MenuItem Click="MenuItem_Click_1" Header="Borrar" />
                     </ContextMenu>
                 </syncfusion:SfDataGrid.ContextMenu>
                 <syncfusion:SfDataGrid.Columns>
                     <syncfusion:GridTextColumn
+                        Width="30"
+                        HeaderText="ID"
+                        MappingName="ID" />
+                    <syncfusion:GridTextColumn
                         Width="92"
-                        HeaderText="Documento"
+                        HeaderText="Tipo"
                         MappingName="TipoID" />
                     <syncfusion:GridDateTimeColumn
                         Width="90"
                         HeaderText="Editado"
                         MappingName="Editado" />
-                    <syncfusion:GridTextColumn
-                        Width="90"
-                        HeaderText="Obra"
-                        MappingName="ObraID" />
                     <syncfusion:GridTextColumn
                         Width="90"
                         HeaderText="Descripción"
@@ -104,8 +107,8 @@
                         Width="90"
                         HeaderText="Active"
                         MappingName="Active" />
-                    
-                    
+
+
                 </syncfusion:SfDataGrid.Columns>
             </syncfusion:SfDataGrid>
 

@@ -5,23 +5,45 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DataObra.Interfaz.Controles.SubControles"
              mc:Ignorable="d" 
-             Height="200" Width="300">
-    <Grid>
-        <StackPanel Margin="10">
-            <TextBlock Text="Nuevo Agrupador" FontSize="16" FontWeight="Bold" Margin="0,0,0,10"/>
+             Height="300" Width="300">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-            <TextBlock Text="TipoID:"/>
-            <TextBox x:Name="TipoIDTextBox" Width="200" Margin="0,0,0,10"/>
+        <TextBlock x:Name="NuevoEditar" FontSize="16" FontWeight="Bold" Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,10"/>
 
-            <TextBlock Text="Nombre:"/>
-            <TextBox x:Name="NombreTextBox" Width="200" Margin="0,0,0,10"/>
+        <TextBlock Text="TipoID:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
+        <TextBox x:Name="TipoIDTextBox" Width="200" Grid.Row="1" Grid.Column="1" Margin="8,7,8,10"/>
 
-            <TextBlock Text="Descripción:"/>
-            <TextBox x:Name="DescripcionTextBox" Width="200" Margin="0,0,0,10"/>
+        <TextBlock Text="Editado:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
+        <DatePicker x:Name="EditadoDatePicker" Width="200" Grid.Row="2" Grid.Column="1" Margin="8,7,8,10"/>
 
-            <Button Content="Guardar" Width="100" Click="Guardar_Click"/>
-        </StackPanel>
+        <TextBlock Text="Descripción:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"/>
+        <TextBox x:Name="DescripcionTextBox" Width="200" Grid.Row="3" Grid.Column="1" Margin="8,7,8,10"/>
+
+        <TextBlock Text="Número:" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"/>
+        <TextBox x:Name="NumeroTextBox" Width="200" Grid.Row="4" Grid.Column="1" Margin="8,7,8,10"/>
+
+        <TextBlock Text="Activo:" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center"/>
+        <CheckBox x:Name="ActivoCheckBox" Width="200" Grid.Row="5" Grid.Column="1" Margin="8,7,8,10"/>
+
+        <Button Content="Guardar" Width="100" Grid.Row="6" HorizontalAlignment="Left" Click="Guardar_Click" Grid.Column="1" Margin="26,25,0,0"/>
     </Grid>
 </UserControl>
+
+
 
 

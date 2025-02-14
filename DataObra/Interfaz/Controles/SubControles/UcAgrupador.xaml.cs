@@ -17,23 +17,23 @@ namespace DataObra.Interfaz.Controles.SubControles
                 agrup = Agrup;
                 TipoIDTextBox.Text = agrup.TipoID.ToString();
                 DescripcionTextBox.Text = agrup.Descrip;
+                NuevoEditar.Text = "Editar";
 
             }
             else
             {
                 agrup = new Agrupador();
-
+                NuevoEditar.Text = "Nuevo";
             }
         }
 
         private async void Guardar_Click(object sender, RoutedEventArgs e)
         {
             string tipoID = TipoIDTextBox.Text;
-            string nombre = NombreTextBox.Text;
             string descripcion = DescripcionTextBox.Text;
             DateTime fechaCreacion = DateTime.Now;
 
-            if (string.IsNullOrEmpty(tipoID) || tipoID.Length != 1 || string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(descripcion))
+            if (string.IsNullOrEmpty(tipoID) || tipoID.Length != 1 || string.IsNullOrEmpty(descripcion))
             {
                 MessageBox.Show("Por favor, complete todos los campos y asegúrese de que TipoID sea un solo carácter.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
