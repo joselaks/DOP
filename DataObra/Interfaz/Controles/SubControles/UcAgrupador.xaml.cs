@@ -17,6 +17,9 @@ namespace DataObra.Interfaz.Controles.SubControles
                 agrup = Agrup;
                 TipoIDTextBox.Text = agrup.TipoID.ToString();
                 DescripcionTextBox.Text = agrup.Descrip;
+                NumeroTextBox.Text = agrup.Numero.ToString();
+                ActivoCheckBox.IsChecked = agrup.Active;
+
                 NuevoEditar.Text = "Editar";
 
             }
@@ -31,7 +34,6 @@ namespace DataObra.Interfaz.Controles.SubControles
         {
             string tipoID = TipoIDTextBox.Text;
             string descripcion = DescripcionTextBox.Text;
-            DateTime fechaCreacion = DateTime.Now;
 
             if (string.IsNullOrEmpty(tipoID) || tipoID.Length != 1 || string.IsNullOrEmpty(descripcion))
             {
@@ -42,11 +44,21 @@ namespace DataObra.Interfaz.Controles.SubControles
             {
                 agrup.TipoID = tipoID[0]; // Convertir el primer carácter de la cadena a char
                 agrup.Descrip = descripcion;
-                agrup.Editado = fechaCreacion;
+                agrup.Editado = DateTime.Now;
                 agrup.CuentaID = (short)App.IdCuenta; // Conversión explícita de int a short
                 agrup.UsuarioID = App.IdUsuario;
+                agrup.Active = ActivoCheckBox.IsChecked.Value;
+                agrup.Numero = Convert.ToInt32(NumeroTextBox.Text);
 
                 // Agregar la lógica para guardar el nuevo Agrupador
+                if (agrup.ID != null) 
+                {
+                }
+                else
+                {
+                    
+                }
+
                 var respuesta = await ConsultasAPI.PostAgrupadorAsync(agrup);
 
                 //Respuestas
@@ -57,7 +69,6 @@ namespace DataObra.Interfaz.Controles.SubControles
                 //Mensaje para testeo
                 MessageBox.Show(respuesta.Success + " " + mensaje + " " + nuevodoc.ToString());
 
-                MessageBox.Show($"Agrupador guardado exitosamente.\nFecha de Creación: {fechaCreacion}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 // Cerrar la ventana que contiene este UserControl
                 Window parentWindow = Window.GetWindow(this);
