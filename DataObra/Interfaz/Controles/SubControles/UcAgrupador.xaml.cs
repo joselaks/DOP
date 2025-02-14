@@ -9,9 +9,21 @@ namespace DataObra.Interfaz.Controles.SubControles
     public partial class UcAgrupador : UserControl
     {
         Agrupador agrup;
-        public UcAgrupador()
+        public UcAgrupador(Agrupador? Agrup)
         {
             InitializeComponent();
+            if (Agrup != null)
+            {
+                agrup = Agrup;
+                TipoIDTextBox.Text = agrup.TipoID.ToString();
+                DescripcionTextBox.Text = agrup.Descrip;
+
+            }
+            else
+            {
+                agrup = new Agrupador();
+
+            }
         }
 
         private async void Guardar_Click(object sender, RoutedEventArgs e)
@@ -28,7 +40,6 @@ namespace DataObra.Interfaz.Controles.SubControles
             }
             else
             {
-                agrup = new Agrupador();
                 agrup.TipoID = tipoID[0]; // Convertir el primer carácter de la cadena a char
                 agrup.Descrip = descripcion;
                 agrup.Editado = fechaCreacion;

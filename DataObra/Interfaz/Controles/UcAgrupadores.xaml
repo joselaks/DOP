@@ -75,7 +75,7 @@
                 <syncfusion:SfDataGrid.ContextMenu>
                     <ContextMenu>
                         <MenuItem Click="MenuItem_Click"  Header="Nuevo" />
-                        <MenuItem Click="MenuItem_Click"  Header="Editar" />
+                        <MenuItem Click="EditarAgrupador"  Header="Editar" />
                         <MenuItem Click="MenuItem_Click_1"  Header="Borrar" />
                     </ContextMenu>
                 </syncfusion:SfDataGrid.ContextMenu>
