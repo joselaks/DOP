@@ -148,7 +148,7 @@ namespace DataObra.Datos
                 TipoID = 'B',
                 Editado = DateTime.Now,
                 Descrip = "a",
-                Numero = 1,
+                Numero = "1",
                 Active = true,
             };
 

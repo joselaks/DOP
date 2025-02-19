@@ -119,21 +119,21 @@ namespace DataObra.Sistema
         {
             Agrupadores = new ObservableCollection<Agrupador>
             {
-                new() { ID = 1, TipoID = 'O', Descrip = "Obra Vettel", Active = true, Numero = 1 },
-                new() { ID = 2, TipoID = 'O', Descrip = "Obra Russell", Active = true, Numero = 2 },
-                new() { ID = 3, TipoID = 'O', Descrip = "Obra Hamilton", Active = true, Numero = 3 },
-                new() { ID = 4, TipoID = 'O', Descrip = "Obra Laks", Active = true, Numero = 3 },
-                new() { ID = 10, TipoID = 'A', Descrip = "Admin Perez", Active = true, Numero = 4 },
-                new() { ID = 11, TipoID = 'A', Descrip = "Admin Rodriguez", Active = true, Numero = 5 },
-                new() { ID = 12, TipoID = 'A', Descrip = "Admin Hamilton", Active = true, Numero = 6 },
-                new() { ID = 13, TipoID = 'A', Descrip = "Admin Laks", Active = true, Numero = 6 },
-                new() { ID = 101, TipoID = 'C', Descrip = "Rodrigo Diaz", Active = true, Numero = 9 },
-                new() { ID = 102, TipoID = 'C', Descrip = "Carlos Alonso", Active = true, Numero = 10 },
-                new() { ID = 200, TipoID = 'P', Descrip = "Abelson", Active = true, Numero = 7 },
-                new() { ID = 201, TipoID = 'P', Descrip = "Easy", Active = true, Numero = 8 },
-                new() { ID = 202, TipoID = 'P', Descrip = "Matyser", Active = true, Numero = 8 },
-                new() { ID = 301, TipoID = 'C', Descrip = "Electricista Ramon", Active = true, Numero = 9 },
-                new() { ID = 401, TipoID = 'E', Descrip = "Luis Nuñez", Active = true, Numero = 10 },
+                //new() { ID = 1, TipoID = 'O', Descrip = "Obra Vettel", Active = true, Numero = 1 },
+                //new() { ID = 2, TipoID = 'O', Descrip = "Obra Russell", Active = true, Numero = 2 },
+                //new() { ID = 3, TipoID = 'O', Descrip = "Obra Hamilton", Active = true, Numero = 3 },
+                //new() { ID = 4, TipoID = 'O', Descrip = "Obra Laks", Active = true, Numero = 3 },
+                //new() { ID = 10, TipoID = 'A', Descrip = "Admin Perez", Active = true, Numero = 4 },
+                //new() { ID = 11, TipoID = 'A', Descrip = "Admin Rodriguez", Active = true, Numero = 5 },
+                //new() { ID = 12, TipoID = 'A', Descrip = "Admin Hamilton", Active = true, Numero = 6 },
+                //new() { ID = 13, TipoID = 'A', Descrip = "Admin Laks", Active = true, Numero = 6 },
+                //new() { ID = 101, TipoID = 'C', Descrip = "Rodrigo Diaz", Active = true, Numero = 9 },
+                //new() { ID = 102, TipoID = 'C', Descrip = "Carlos Alonso", Active = true, Numero = 10 },
+                //new() { ID = 200, TipoID = 'P', Descrip = "Abelson", Active = true, Numero = 7 },
+                //new() { ID = 201, TipoID = 'P', Descrip = "Easy", Active = true, Numero = 8 },
+                //new() { ID = 202, TipoID = 'P', Descrip = "Matyser", Active = true, Numero = 8 },
+                //new() { ID = 301, TipoID = 'C', Descrip = "Electricista Ramon", Active = true, Numero = 9 },
+                //new() { ID = 401, TipoID = 'E', Descrip = "Luis Nuñez", Active = true, Numero = 10 },
             };
         }
 

@@ -235,7 +235,7 @@ namespace DataObra.Agrupadores.Clases
                 TipoID = 'B',
                 Editado = DateTime.Now,
                 Descrip = "Agrupador",
-                Numero = 1,
+                Numero = "1",
                 Active = true,
             };
 

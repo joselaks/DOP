@@ -8,10 +8,13 @@ namespace DataObra.Interfaz.Controles.SubControles
 {
     public partial class UcAgrupador : UserControl
     {
+        bool edicion;
         Agrupador agrup;
-        public UcAgrupador(Agrupador? Agrup)
+        UcAgrupadores Origen;
+        public UcAgrupador(Agrupador? Agrup, UcAgrupadores origen)
         {
             InitializeComponent();
+            Origen = origen;
             if (Agrup != null)
             {
                 agrup = Agrup;
@@ -21,12 +24,14 @@ namespace DataObra.Interfaz.Controles.SubControles
                 ActivoCheckBox.IsChecked = agrup.Active;
 
                 NuevoEditar.Text = "Editar";
+                edicion = true;
 
             }
             else
             {
                 agrup = new Agrupador();
                 NuevoEditar.Text = "Nuevo";
+                edicion = false;
             }
         }
 
@@ -48,27 +53,35 @@ namespace DataObra.Interfaz.Controles.SubControles
                 agrup.CuentaID = (short)App.IdCuenta; // Conversión explícita de int a short
                 agrup.UsuarioID = App.IdUsuario;
                 agrup.Active = ActivoCheckBox.IsChecked.Value;
-                agrup.Numero = Convert.ToInt32(NumeroTextBox.Text);
+                agrup.Numero = NumeroTextBox.Text;
 
                 // Agregar la lógica para guardar el nuevo Agrupador
-                if (agrup.ID != null) 
+                if (edicion==false) 
                 {
+                    var respuesta = await ConsultasAPI.PostAgrupadorAsync(agrup);
+
+                    //Respuestas
+                    int? nuevodoc = respuesta.Id;
+                    bool conexionExitosa = respuesta.Success;
+                    string mensaje = respuesta.Message;
+
+                    //Mensaje para testeo
+                    MessageBox.Show(respuesta.Success + " " + mensaje + " " + nuevodoc.ToString());
+                    
+
                 }
                 else
                 {
-                    
+                    var respuesta = await ConsultasAPI.PutAgrupadorAsync(agrup);
+                    //Respuestas
+                    bool conexionExitosa = respuesta.Success;
+                    string mensaje = respuesta.Message;
+                    //Mensaje para testeo
+                    MessageBox.Show(respuesta.Success + " " + mensaje);
+
                 }
 
-                var respuesta = await ConsultasAPI.PostAgrupadorAsync(agrup);
-
-                //Respuestas
-                int? nuevodoc = respuesta.Id;
-                bool conexionExitosa = respuesta.Success;
-                string mensaje = respuesta.Message;
-
-                //Mensaje para testeo
-                MessageBox.Show(respuesta.Success + " " + mensaje + " " + nuevodoc.ToString());
-
+                Origen.CargarGrilla();
 
                 // Cerrar la ventana que contiene este UserControl
                 Window parentWindow = Window.GetWindow(this);

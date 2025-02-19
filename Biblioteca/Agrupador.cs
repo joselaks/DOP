@@ -14,7 +14,7 @@ namespace Biblioteca
         public char TipoID { get; set; }
         public DateTime Editado { get; set; }
         public string Descrip { get; set; }
-        public int? Numero { get; set; }
+        public string? Numero { get; set; }
         public bool Active { get; set; }
 
     }

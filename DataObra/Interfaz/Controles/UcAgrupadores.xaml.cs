@@ -35,7 +35,7 @@ namespace DataObra.Interfaz.Controles
 
         }
 
-        private async void CargarGrilla()
+        public async void CargarGrilla()
         {
             var AgrupadoresUsuario = await ConsultasAPI.ObtenerAgrupadoresPorCuentaID(App.IdCuenta);
             this.GrillaAgrupadores.ItemsSource = AgrupadoresUsuario.agrupadores;
@@ -48,7 +48,7 @@ namespace DataObra.Interfaz.Controles
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             {
-                SubControles.UcAgrupador Docu = new SubControles.UcAgrupador(null);
+                SubControles.UcAgrupador Docu = new SubControles.UcAgrupador(null, this);
                 DataObra.Interfaz.Ventanas.WiDialogo ventanaDocu = new DataObra.Interfaz.Ventanas.WiDialogo("Agrupador", Docu);
 
                 ventanaDocu.ShowDialog();
@@ -62,7 +62,7 @@ namespace DataObra.Interfaz.Controles
             {
                 Agrupador agrupador = agrupadorSeleccionado;
 
-                  SubControles.UcAgrupador Docu = new SubControles.UcAgrupador(agrupador);
+                  SubControles.UcAgrupador Docu = new SubControles.UcAgrupador(agrupador, this);
                   DataObra.Interfaz.Ventanas.WiDialogo ventanaAgru = new DataObra.Interfaz.Ventanas.WiDialogo("Agrupador", Docu);
 
 
@@ -83,9 +83,25 @@ namespace DataObra.Interfaz.Controles
         }
 
 
-        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        private async void MenuItem_Click_1(object sender, RoutedEventArgs e)
         {
-
+            if (GrillaAgrupadores.SelectedItem is Agrupador agrupadorSeleccionado)
+            {
+                var respuesta = await ConsultasAPI.BorrarAgrupador((int)agrupadorSeleccionado.ID);
+                if (respuesta.Success)
+                {
+                    MessageBox.Show("Agrupador eliminado exitosamente.");
+                    CargarGrilla(); // Actualizar la grilla después de eliminar el documento
+                }
+                else
+                {
+                    MessageBox.Show($"Error al eliminar el documento: {respuesta.Message}");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Por favor, seleccione un documento para eliminar.");
+            }
         }
 
         private void ToggleButton_Checked(object sender, RoutedEventArgs e)
@@ -110,7 +126,7 @@ namespace DataObra.Interfaz.Controles
 
         private void Obra_Click(object sender, RoutedEventArgs e)
         {
-            SubControles.UcAgrupador Docu = new SubControles.UcAgrupador(null);
+            SubControles.UcAgrupador Docu = new SubControles.UcAgrupador(null, this);
             DataObra.Interfaz.Ventanas.WiDialogo ventanaDocu = new DataObra.Interfaz.Ventanas.WiDialogo("Agrupador", Docu);
 
             ventanaDocu.ShowDialog();
@@ -120,7 +136,7 @@ namespace DataObra.Interfaz.Controles
         private void NuevoProveedor_Click(object sender, RoutedEventArgs e)
         {
             {
-                SubControles.UcAgrupador Docu = new SubControles.UcAgrupador(null);
+                SubControles.UcAgrupador Docu = new SubControles.UcAgrupador(null, this);
                 DataObra.Interfaz.Ventanas.WiDialogo ventanaDocu = new DataObra.Interfaz.Ventanas.WiDialogo("Agrupador", Docu);
 
                 ventanaDocu.ShowDialog();

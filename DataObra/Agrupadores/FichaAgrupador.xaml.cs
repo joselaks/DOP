@@ -32,7 +32,7 @@ namespace DataObra.Agrupadores
                     Editado = System.DateTime.Today,
                     Active = false,
                     Descrip = "La descripcion",
-                    Numero = 1,
+                    Numero = "1",
                     TipoID = pTipoAgrupa
                 };
             }

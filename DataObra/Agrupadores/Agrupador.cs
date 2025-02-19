@@ -17,7 +17,7 @@ namespace DataObra.Agrupadores
         #endregion
         #region USUARIO
         public string Descrip { get; set; } = string.Empty; // varchar(50)
-        public int Numero { get; set; } // Dato opcional ingresado x usuario - null
+        public string? Numero { get; set; } // Dato opcional ingresado x usuario - null
         public bool Active { get; set; } // Si aparece en desplegables, defindo x usuario x cuenta
         #endregion
     }

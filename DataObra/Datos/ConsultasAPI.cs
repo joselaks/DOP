@@ -457,6 +457,40 @@ namespace DataObra.Datos
             }
         }
 
+        //Agrupador Put
+        public static async Task<(bool Success, string Message)> PutAgrupadorAsync(Agrupador agrupador)
+        {
+            var item = new QueueItem
+            {
+                Id = evento,
+                Url = $"{App.BaseUrl}agrupadores/",
+                Method = HttpMethod.Put,
+                Data = agrupador
+            };
+            _queueManager.Enqueue(item);
+            evento++;
+
+            try
+            {
+                var response = await item.ResponseTaskCompletionSource.Task;
+                var responseString = await response.Content.ReadAsStringAsync();
+
+                // Deserializar la respuesta JSON
+                var resultado = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                return (resultado.Success, resultado.Message);
+            }
+            catch (HttpRequestException httpEx)
+            {
+                return (false, $"Error HTTP: {httpEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error: {ex.Message}");
+            }
+        }
+
+
         //DocumentoDet Post
         public static async Task<(bool Success, string Message, int? id)> PostDocumentoDetAsync(DocumentoDet nuevoDocDet)
         {
