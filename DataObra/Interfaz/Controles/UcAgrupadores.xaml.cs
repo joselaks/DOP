@@ -32,13 +32,17 @@ namespace DataObra.Interfaz.Controles
             Rol = rol;
             //configuraRol(Rol);
             CargarGrilla();
-
         }
 
         public async void CargarGrilla()
         {
             var AgrupadoresUsuario = await ConsultasAPI.ObtenerAgrupadoresPorCuentaID(App.IdCuenta);
-            this.GrillaAgrupadores.ItemsSource = AgrupadoresUsuario.agrupadores;
+            
+            App.ListaAgrupadores = AgrupadoresUsuario.agrupadores;
+            //this.GrillaAgrupadores.ItemsSource = AgrupadoresUsuario.agrupadores;
+            this.GrillaAgrupadores.ItemsSource = App.ListaAgrupadores;
+
+            // Los agrupadores se utilizan todo el tiempo y por lo tanto tienen que estar accesibles de todos lados.
         }
 
         private void configuraRol(string rol)
