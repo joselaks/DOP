@@ -44,8 +44,9 @@ namespace DataObra.Documentos
             }
 
             #region COMBOS
-            this.ComboObras.ItemsSource = azure.Agrupadores.Where(a => a.TipoID == 1).OrderBy(a => a.Descrip);
-            this.ComboAdmin.ItemsSource = azure.Agrupadores.Where(a => a.TipoID == 2).OrderBy(a => a.Descrip);
+            this.ComboObras.ItemsSource = App.ListaAgrupadores.Where(a => a.TipoID == 'O');
+            this.ComboAdmin.ItemsSource = App.ListaAgrupadores.Where(a => a.TipoID == 'A');
+            
             #endregion Combos
 
             if (pDoc == null)
@@ -73,27 +74,27 @@ namespace DataObra.Documentos
                 this.ComboAdmin.SelectedItem = azure.Agrupadores.FirstOrDefault(a => a.ID == oActivo.AdminID);
                 var entidad = azure.Agrupadores.FirstOrDefault(a => a.ID == oActivo.EntidadID);
 
-                if (entidad != null)
-                {
-                    switch (entidad.TipoID)
-                    {
-                        case 'C':
-                            this.EsCliente.IsChecked = true;
-                            break;
-                        case 'P':
-                            this.EsProveedor.IsChecked = true;
-                            break;
-                        case 'S':
-                            this.EsContratista.IsChecked = true;
-                            break;
-                        case 'O':
-                            this.EsPersonal.IsChecked = true;
-                            break;
-                        default:
-                            break;
-                    }
-                    this.ComboEntidad.SelectedItem = entidad;
-                }
+                //if (entidad != null)
+                //{
+                //    switch (entidad.TipoID)
+                //    {
+                //        case 'C':
+                //            this.EsCliente.IsChecked = true;
+                //            break;
+                //        case 'P':
+                //            this.EsProveedor.IsChecked = true;
+                //            break;
+                //        case 'S':
+                //            this.EsContratista.IsChecked = true;
+                //            break;
+                //        case 'O':
+                //            this.EsPersonal.IsChecked = true;
+                //            break;
+                //        default:
+                //            break;
+                //    }
+                //    this.ComboEntidad.SelectedItem = entidad;
+                //}
 
                 if (oActivo.RevisadoID != 0)
                 {
@@ -185,7 +186,7 @@ namespace DataObra.Documentos
 
 
 
-                oActivo.EditadoID = azure.UsuarioID;
+            oActivo.EditadoID = azure.UsuarioID;
             oActivo.Editado = azure.Usuario;
             oActivo.EditadoFecha = DateTime.Now;
 
@@ -310,19 +311,9 @@ namespace DataObra.Documentos
         {
             if (sender is RadioButton radioButton)
             {
-                var tipoDiccionario = new Dictionary<string, int>
-                {
-                    { "EsCliente", 10 },
-                    { "EsProveedor", 20 },
-                    { "EsContratista", 30 },
-                    { "EsPersonal", 40 }
-                };
-
-                if (tipoDiccionario.TryGetValue(radioButton.Name, out int tipoID))
-                {
-                    this.ComboEntidad.ItemsSource = azure.Agrupadores.Where(a => a.TipoID == tipoID).OrderBy(a => a.Descrip);
-                    this.ComboEntidad.SelectedItem = azure.GetFirstAgrupadorByTipoIDOrdered(tipoID);
-                }
+                char tipo = Convert.ToChar(radioButton.Name);
+                this.ComboEntidad.ItemsSource = App.ListaAgrupadores.Where(a => a.TipoID == tipo).OrderBy(a => a.Descrip);
+                this.ComboEntidad.SelectedItem = App.ListaAgrupadores.Where(a => a.TipoID == tipo).OrderBy(a => a.Descrip).FirstOrDefault();
             }
         }
 
