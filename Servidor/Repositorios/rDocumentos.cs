@@ -2,6 +2,7 @@
 using Dapper;
 using System.Data;
 using System.Data.SqlClient;
+using System.Text.Json;
 
 
 
@@ -34,6 +35,35 @@ namespace Servidor.Repositorios
 
             }
             return respuesta;
+        }
+
+        //Procesa el documento completo
+        public async Task<int> ProcesarDocumentoAsync(Documento documento)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters();
+
+                // Serializar el objeto Documento y las listas a JSON
+                string jsonDocumento = JsonSerializer.Serialize(documento);
+                string jsonDetalleDocumento = documento.DetalleDocumento != null ? JsonSerializer.Serialize(documento.DetalleDocumento) : null;
+                string jsonDetalleMovimientos = documento.DetalleMovimientos != null ? JsonSerializer.Serialize(documento.DetalleMovimientos) : null;
+                string jsonDetalleImpuestos = documento.DetalleImpuestos != null ? JsonSerializer.Serialize(documento.DetalleImpuestos) : null;
+
+                // Agregar parámetros
+                parameters.Add("@JsonDocumento", jsonDocumento, DbType.String);
+                parameters.Add("@JsonDetalleDocumento", jsonDetalleDocumento, DbType.String);
+                parameters.Add("@JsonDetalleMovimientos", jsonDetalleMovimientos, DbType.String);
+                parameters.Add("@JsonDetalleImpuestos", jsonDetalleImpuestos, DbType.String);
+                parameters.Add("@NuevoID", dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+                // Ejecutar el procedimiento almacenado
+                await db.ExecuteAsync("ProcesarDocumento", parameters, commandType: CommandType.StoredProcedure);
+
+                // Obtener el ID generado
+                int nuevoID = parameters.Get<int>("@NuevoID");
+                return nuevoID;
+            }
         }
 
         // Nueva Relación documentoRel

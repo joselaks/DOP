@@ -13,10 +13,8 @@ using Biblioteca;
 using Servidor.Utilidades;
 using Servidor.Repositorios;
 
-
 var builder = WebApplication.CreateBuilder(args);
 string key = "ESTALLAVEFUNCOINARIASI12345PARARECORDARLAMEJOR=";
-
 
 #region Configuración de la cadena de conexión
 // ------- Azure ------------- 
@@ -45,7 +43,6 @@ builder.Services.AddSwaggerGen(c =>
         Title = "Servidor DataObra",
         Version = "v1",
         Description = "Servidor API con los servicios necesarios"
-
     });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
@@ -56,7 +53,6 @@ builder.Services.AddSwaggerGen(c =>
         In = ParameterLocation.Header
     });
     c.OperationFilter<FiltroAutorizacion>();
-
 });
 builder.Services.AddCors(opciones =>
 {
@@ -76,10 +72,8 @@ builder.Services.AddAuthentication("Bearer").AddJwtBearer(opt =>
         ValidateAudience = false,
         ValidateIssuer = false,
         IssuerSigningKey = signigKey
-
     };
-
-}); ;
+});
 
 #endregion
 
@@ -91,154 +85,126 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.UseAuthorization();
 
+#region Grupo de rutas: /usuarios
+
 var usu = app.MapGroup("/usuarios");
-var doc = app.MapGroup("/documentos");
-var dod = app.MapGroup("/documentosdet");
-var agr = app.MapGroup("/agrupadores");
 
 usu.MapGet("validacion/", async (string email, string pass, rUsuarios repo) =>
 {
     var respuesta = await repo.VerificaUsuario(email, pass);
     return respuesta != null ? Results.Ok(respuesta) : Results.NotFound(new { Mensaje = "Usuario no encontrado o credenciales incorrectas." });
 });
+
+#endregion
+
+#region Grupo de rutas: /documentos
+
+var doc = app.MapGroup("/documentos");
+
 doc.MapPost("/", async (rDocumentos repositorio, Documento documento) =>
 {
-var nuevoDocumento = await repositorio.InsertarDocumentoAsync(documento);
-return Results.Created($"documentos/{nuevoDocumento}", nuevoDocumento);
+    var nuevoDocumento = await repositorio.InsertarDocumentoAsync(documento);
+    return Results.Created($"documentos/{nuevoDocumento}", nuevoDocumento);
 }).RequireAuthorization();
+
+doc.MapPost("/procesar", async (rDocumentos repositorio, Documento documento) =>
+{
+    var nuevoDocumento = await repositorio.ProcesarDocumentoAsync(documento);
+    return Results.Created($"documentos/{nuevoDocumento}", nuevoDocumento);
+}).RequireAuthorization();
+
 doc.MapDelete("/{id:int}", async (rDocumentos repositorio, int id) =>
 {
     var resultado = await repositorio.EliminarDocumentoAsync(id);
 
     if (resultado)
     {
-        // Si se eliminó, devolvemos un estado 200 (Ok) con éxito y mensaje
         return Results.Ok(new { Success = true, Message = "Documento eliminado exitosamente." });
     }
     else
     {
-        // Si no se encontró el documento para eliminar, devolvemos un estado estado 200 (Ok) con mensaje avisando que no lo encontró
         return Results.Ok(new { Success = false, Message = "No se encontró el documento para eliminar." });
     }
 }).RequireAuthorization();
+
 doc.MapDelete("rel/{supID:int}/{infID:int}", async (rDocumentos repositorio, int supID, int infID) =>
 {
     var resultado = await repositorio.EliminarDocumentoRelAsync(supID, infID);
 
     if (resultado)
     {
-        // Si se eliminó, devolvemos un estado 200 (Ok) con éxito y mensaje
         return Results.Ok(new { Success = true, Message = "Relación eliminada exitosamente." });
     }
     else
     {
-        // Si no se encontró el documento para eliminar, devolvemos un estado estado 200 (Ok) con mensaje avisando que no lo encontró
         return Results.Ok(new { Success = false, Message = "No se encontró relación para eliminar." });
     }
 }).RequireAuthorization();
+
 doc.MapPost("/rel/", async (rDocumentos repositorio, DocumentoRel rel) =>
 {
     var nuevoDocumento = await repositorio.InsertarDocumentoRelAsync(rel);
 
     if (nuevoDocumento)
     {
-        // Si se eliminó, devolvemos un estado 200 (Ok) con éxito y mensaje
         return Results.Ok(new { Success = true, Message = "Documento agregado exitosamente." });
     }
     else
     {
-        // Si no se encontró el documento para eliminar, devolvemos un estado estado 200 (Ok) con mensaje avisando que no lo encontró
         return Results.Ok(new { Success = false, Message = "No se pudo agregar el registro. Posiblemente ya existía" });
     }
-
 }).RequireAuthorization();
+
 doc.MapGet("/cuenta/{cuentaID:int}", async (rDocumentos repositorio, int cuentaID) =>
 {
     var documentos = await repositorio.ObtenerDocumentosPorCuentaIDAsync(cuentaID);
     return documentos != null ? Results.Ok(documentos) : Results.NotFound(new { Mensaje = "No se encontraron documentos con el CuentaID proporcionado." });
 }).RequireAuthorization();
+
 doc.MapGet("/rel/{superiorID:int}", async (rDocumentos repositorio, int superiorID) =>
 {
     var documentos = await repositorio.ObtenerDocumentosRelPorSuperiorIDAsync(superiorID);
     return documentos != null ? Results.Ok(documentos) : Results.NotFound(new { Mensaje = "No se encontraron documentos relacionados." });
 }).RequireAuthorization();
+
 doc.MapGet("/id/{id:int}", async (rDocumentos repositorio, int id) =>
 {
     var documento = await repositorio.ObtenerDocumentosPorIDAsync(id);
     if (documento != null)
     {
-        // Devuelve el documento buscado
         return Results.Ok(documento);
     }
     else
     {
-        // no lo encontró y devuelve null
         return Results.Ok(null);
     }
 }).RequireAuthorization();
+
 doc.MapPut("/", async (rDocumentos repositorio, Documento documento) =>
 {
     var resultado = await repositorio.ActualizarDocumentoAsync(documento);
 
     if (resultado)
     {
-        // Si se eliminó, devolvemos un estado 200 (Ok) con éxito y mensaje
         return Results.Ok(new { Success = true, Message = "Documento modificado exitosamente." });
     }
     else
     {
-        // Si no se encontró el documento para eliminar, devolvemos un estado estado 200 (Ok) con mensaje avisando que no lo encontró
         return Results.Ok(new { Success = false, Message = "No se encontró el documento para modificar." });
     }
 }).RequireAuthorization();
 
-agr.MapPost("/", async (rDocumentos repositorio, AgrupadorAPI agrupador) =>
-{
-    var nuevoAgrupador = await repositorio.InsertarAgrupadorAsync(agrupador);
-    return Results.Created($"agrupador/{nuevoAgrupador}", nuevoAgrupador);
-}).RequireAuthorization();
-agr.MapPut("/", async (rDocumentos repositorio, AgrupadorAPI agrupador) =>
-{
-    var resultado = await repositorio.ActualizarAgrupadorAsync(agrupador);
+#endregion
 
-    if (resultado)
-    {
-        // Si se modificó, devolvemos un estado 200 (Ok) con éxito y mensaje
-        return Results.Ok(new { Success = true, Message = "Agrupador modificado exitosamente." });
-    }
-    else
-    {
-        // Si no se encontró el documento para modificar, devolvemos un estado estado 200 (Ok) con mensaje avisando que no lo encontró
-        return Results.Ok(new { Success = false, Message = "No se encontró el agrupador para modificar." });
-    }
-}).RequireAuthorization();
-agr.MapGet("/cuenta/{cuentaID:int}", async (rDocumentos repositorio, int cuentaID) =>
-{
-    var documentos = await repositorio.ObtenerAgrupadorPorCuentaIDAsync(cuentaID);
-    return documentos != null ? Results.Ok(documentos) : Results.NotFound(new { Mensaje = "No se encontraron agrupadores con el CuentaID proporcionado." });
-}).RequireAuthorization();
-agr.MapDelete("/{id:int}", async (rDocumentos repositorio, int id) =>
-{
-    var resultado = await repositorio.EliminarAgrupadorAsync(id);
+#region Grupo de rutas: /documentosdet
 
-    if (resultado)
-    {
-        // Si se eliminó, devolvemos un estado 200 (Ok) con éxito y mensaje
-        return Results.Ok(new { Success = true, Message = "Agrupador eliminado exitosamente." });
-    }
-    else
-    {
-        // Si no se encontró el documento para eliminar, devolvemos un estado estado 200 (Ok) con mensaje avisando que no lo encontró
-        return Results.Ok(new { Success = false, Message = "No se encontró agrupador para eliminar." });
-    }
-}).RequireAuthorization();
+var dod = app.MapGroup("/documentosdet");
 
 dod.MapPost("/", async (rDocumentos repositorio, DocumentoDet documento) =>
 {
     var nuevoDocumento = await repositorio.InsertarDocumentoDetAsync(documento);
     return Results.Created($"documentosdet/{nuevoDocumento}", nuevoDocumento);
 }).RequireAuthorization();
-
 
 dod.MapGet("/{fieldName}/{id:int}", async (rDocumentos repositorio, int id, string fieldName) =>
 {
@@ -251,25 +217,64 @@ dod.MapPut("/", async (rDocumentos repositorio, DocumentoDet documento) =>
     var resultado = await repositorio.ActualizarOEliminarDocumentoDetAsync(documento);
     if (resultado != null)
     {
-        // Si se modificó, devolvemos un estado 200 (Ok) con éxito y mensaje
         return Results.Ok(new { Success = true, Message = resultado });
     }
     else
     {
-        // Si no se encontró el documento para modificar, devolvemos un estado estado 200 (Ok) con mensaje avisando que no lo encontró
         return Results.Ok(new { Success = false, Message = "No se encontró el registro para modificar." });
     }
-
-
 }).RequireAuthorization();
-
-
-
-
-
 
 #endregion
 
+#region Grupo de rutas: /agrupadores
+
+var agr = app.MapGroup("/agrupadores");
+
+agr.MapPost("/", async (rDocumentos repositorio, AgrupadorAPI agrupador) =>
+{
+    var nuevoAgrupador = await repositorio.InsertarAgrupadorAsync(agrupador);
+    return Results.Created($"agrupador/{nuevoAgrupador}", nuevoAgrupador);
+}).RequireAuthorization();
+
+agr.MapPut("/", async (rDocumentos repositorio, AgrupadorAPI agrupador) =>
+{
+    var resultado = await repositorio.ActualizarAgrupadorAsync(agrupador);
+
+    if (resultado)
+    {
+        return Results.Ok(new { Success = true, Message = "Agrupador modificado exitosamente." });
+    }
+    else
+    {
+        return Results.Ok(new { Success = false, Message = "No se encontró el agrupador para modificar." });
+    }
+}).RequireAuthorization();
+
+agr.MapGet("/cuenta/{cuentaID:int}", async (rDocumentos repositorio, int cuentaID) =>
+{
+    var documentos = await repositorio.ObtenerAgrupadorPorCuentaIDAsync(cuentaID);
+    return documentos != null ? Results.Ok(documentos) : Results.NotFound(new { Mensaje = "No se encontraron agrupadores con el CuentaID proporcionado." });
+}).RequireAuthorization();
+
+agr.MapDelete("/{id:int}", async (rDocumentos repositorio, int id) =>
+{
+    var resultado = await repositorio.EliminarAgrupadorAsync(id);
+
+    if (resultado)
+    {
+        return Results.Ok(new { Success = true, Message = "Agrupador eliminado exitosamente." });
+    }
+    else
+    {
+        return Results.Ok(new { Success = false, Message = "No se encontró agrupador para eliminar." });
+    }
+}).RequireAuthorization();
+
+#endregion
+
+#endregion
 
 app.Run();
+
 

@@ -34,6 +34,7 @@
             <Button Content="Edita" Margin="3,3,3,3" Width="90" x:Name="editaDoc" Click="editaDoc_Click" />
             <Button Content="Busca p/ID" Margin="3,3,3,3" Width="90" x:Name="buscaIDDoc" Click="buscaIDDoc_Click" />
             <Button Content="Busca p/cuenta" Margin="3,3,3,3" Width="90" x:Name="buscaCuentaDoc" Click="buscaCuentaDoc_Click" />
+            <Button Content="Procesar" Margin="3,3,3,3" Width="90" x:Name="ProcesarDoc" Click="ProcesarDoc_Click" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1">
             <Button Content="Nuevo" Margin="3,3,3,3" Width="90" x:Name="nuevoDocRel" Click="nuevoDocRel_Click"/>

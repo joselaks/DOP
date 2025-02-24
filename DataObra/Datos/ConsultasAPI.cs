@@ -61,6 +61,32 @@ namespace DataObra.Datos
             }
         }
 
+        public static async Task<(bool Success, string Message, int? Id)> ProcesarDocumentoAsync(Documento documento)
+        {
+            var item = new QueueItem
+            {
+                Id = evento,
+                Url = $"{App.BaseUrl}documentos/procesar",
+                Method = HttpMethod.Post,
+                Data = documento
+            };
+            _queueManager.Enqueue(item);
+            evento++;
+
+            try
+            {
+                var response = await item.ResponseTaskCompletionSource.Task;
+                var responseString = await response.Content.ReadAsStringAsync();
+                var nuevoDocumentoID = JsonSerializer.Deserialize<int>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                return (true, "Documento procesado con ID: ", nuevoDocumentoID);
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error: {ex.Message}", null);
+            }
+        }
+
+
         //Documento rel Post
         public static async Task<(bool Success, string Message)> PostDocumentoRelAsync(DocumentoRel nuevaRel)
         {
