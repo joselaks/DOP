@@ -360,22 +360,22 @@
                     HorizontalAlignment="Center"
                     Orientation="Horizontal">
                     <RadioButton
-                        Name="EsCliente"
+                        Name="C"
                         Height="16"
                         Checked="EntityType_Checked"
                         Content="Cliente" />
                     <RadioButton
-                        Name="EsProveedor"
+                        Name="P"
                         Height="16"
                         Checked="EntityType_Checked"
                         Content="Proveedor" />
                     <RadioButton
-                        Name="EsContratista"
+                        Name="S"
                         Height="16"
                         Checked="EntityType_Checked"
                         Content="Contratista" />
                     <RadioButton
-                        Name="EsPersonal"
+                        Name="E"
                         Height="16"
                         Checked="EntityType_Checked"
                         Content="Obrero" />

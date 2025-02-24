@@ -21,6 +21,8 @@ namespace DataObra
 
         public static RoutedCommand OpenConectoresCommand = new RoutedCommand();
 
+        public static List<Agrupadores.Agrupador>? ListaAgrupadores;
+
         public App()
         {
             //Register Syncfusion license
