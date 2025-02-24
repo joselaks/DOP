@@ -61,7 +61,7 @@ namespace DataObra.Datos
             }
         }
 
-        public static async Task<(bool Success, string Message, int? Id)> ProcesarInfoDocumentoAsync(InfoDocumento documento)
+        public static async Task<(bool Success, string Message)> ProcesarInfoDocumentoAsync(InfoDocumento documento)
         {
             var item = new QueueItem
             {
@@ -83,20 +83,19 @@ namespace DataObra.Datos
 
                 if (resultado.Success)
                 {
-                    // Obtener el ID del nuevo documento procesado
-                    var nuevoDocumentoID = JsonSerializer.Deserialize<int?>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                    return (true, "Documento procesado con ID: ", nuevoDocumentoID);
+                    return (true, "Documento procesado exitosamente.");
                 }
                 else
                 {
-                    return (false, resultado.Message, null);
+                    return (false, resultado.Message);
                 }
             }
             catch (Exception ex)
             {
-                return (false, $"Error: {ex.Message}", null);
+                return (false, $"Error: {ex.Message}");
             }
         }
+
 
 
 

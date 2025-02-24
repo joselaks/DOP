@@ -1,5 +1,6 @@
 ﻿using Biblioteca;
 using DataObra.Agrupadores;
+using DataObra.Documentos;
 using Syncfusion.UI.Xaml.Diagram;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Documento = Biblioteca.Documento;
+using DocumentoDet = Biblioteca.DocumentoDet;
 
 namespace DataObra.Datos
 {
@@ -174,7 +177,7 @@ namespace DataObra.Datos
         {
             #region Datos para testeo
 
-            var nuevoDocDet = new DocumentoDet
+            var nuevoDocDet = new Biblioteca.DocumentoDet
             {
                 CuentaID = 1,
                 UsuarioID = 1,
@@ -263,7 +266,7 @@ namespace DataObra.Datos
             // Respuestas
             bool resultado = docBuscado.Success;
             string mensaje = docBuscado.Message;
-            Documento? documento = docBuscado.doc;
+            Biblioteca.Documento? documento = docBuscado.doc;
 
             //Mensaje para testeo
             if (docBuscado.Success != null)
@@ -286,7 +289,7 @@ namespace DataObra.Datos
             // Respuestas
             bool resultado = docBuscado.Success;
             string mensaje = docBuscado.Message;
-            List<DocumentoRel> documento = docBuscado.DocumentosRel;
+            List<Biblioteca.DocumentoRel> documento = docBuscado.DocumentosRel;
 
             //Mensaje para testeo
             if (docBuscado.Success == true)
@@ -600,8 +603,133 @@ namespace DataObra.Datos
 
         private async void ProcesarDoc_Click(object sender, RoutedEventArgs e)
         {
-           
+            // Crear un ejemplo de datos para InfoDocumento
+            var documentoDet = new DocumentoDet
+            {
+                ID = 1,
+                CuentaID = 1,
+                UsuarioID = 1,
+                Editado = DateTime.Now,
+                TipoID = 'P',
+                AdminID = null,
+                EntidadID = null,
+                DepositoID = null,
+                AcopioID = null,
+                PedidoID = null,
+                CompraID = null,
+                ContratoID = null,
+                FacturaID = null,
+                RemitoID = null,
+                ParteID = null,
+                ObraID = null,
+                PresupuestoID = null,
+                RubroID = null,
+                TareaID = null,
+                Fecha = null,
+                ArticuloDescrip = "Descripción de prueba 1",
+                ArticuloCantSuma = 1,
+                ArticuloCantResta = 0,
+                ArticuloPrecio = 100,
+                SumaPesos = null,
+                RestaPesos = null,
+                SumaDolares = null,
+                RestaDolares = null,
+                Cambio = null,
+                Accion = 'A'
+            };
+
+            var movimiento = new Biblioteca.Movimiento
+            {
+                ID = 1,
+                CuentaID = 1,
+                UsuarioID = 1,
+                Editado = DateTime.Now,
+                TipoID = 1,
+                Descrip = "Movimiento de prueba 1",
+                TesoreriaID = null,
+                AdminID = null,
+                ObraID = null,
+                EntidadID = null,
+                EntidadTipo = null,
+                CompraID = null,
+                ContratoID = null,
+                FacturaID = null,
+                GastoID = null,
+                OrdenID = null,
+                CobroID = null,
+                PagoID = null,
+                Fecha = DateTime.Now,
+                Comprobante = 12345,
+                Numero = null,
+                Notas = "Notas de prueba",
+                ConciliadoFecha = DateTime.Now,
+                ConciliadoUsuario = 1,
+                ChequeProcesado = false,
+                Previsto = false,
+                Desdoblado = false,
+                SumaPesos = 100,
+                RestaPesos = 0,
+                SumaDolares = 0,
+                RestaDolares = 0,
+                Cambio = 1,
+                RelMov = false,
+                ImpuestoID = null,
+                Accion = 'A'
+            };
+
+            var impuesto = new Biblioteca.Impuesto
+            {
+                ID = 1,
+                CuentaID = 1,
+                UsuarioID = 1,
+                Editado = DateTime.Now,
+                TipoID = 1,
+                TesoreriaID = null,
+                AdminID = null,
+                ObraID = null,
+                EntidadID = null,
+                EntidadTipo = null,
+                CompraID = null,
+                ContratoID = null,
+                FacturaID = null,
+                OrdenID = null,
+                CobroID = null,
+                PagoID = null,
+                Fecha = DateTime.Now,
+                Comprobante = null,
+                Descrip = "Impuesto de prueba 1",
+                Notas = "Notas del impuesto",
+                Previsto = true,
+                SumaPesos = 100,
+                RestaPesos = 0,
+                Alicuota = 21,
+                MovimientoID = null,
+                Accion = 'M'
+            };
+
+            var infoDocumento = new InfoDocumento
+            {
+                DetalleDocumento = new List<DocumentoDet> { documentoDet },
+                DetalleMovimientos = new List<Biblioteca.Movimiento> { movimiento },
+                DetalleImpuestos = new List<Biblioteca.Impuesto> { impuesto }
+            };
+
+            // Llamar al método ProcesarInfoDocumentoAsync
+            var resultado = await ConsultasAPI.ProcesarInfoDocumentoAsync(infoDocumento);
+
+            // Manejar el resultado de la llamada
+            if (resultado.Success)
+            {
+                MessageBox.Show($"Documento procesado con éxito.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show($"Error al procesar el documento: {resultado.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
+
+
+
 
 
 
