@@ -217,6 +217,19 @@ dod.MapPost("/", async (rDocumentos repositorio, DocumentoDet documento) =>
     return Results.Created($"documentosdet/{nuevoDocumento}", nuevoDocumento);
 }).RequireAuthorization();
 
+dod.MapPost("/procesar", async (rDocumentos repositorio, List<DocumentoDet> listaDetalleDocumento) =>
+{
+    try
+    {
+        await repositorio.ProcesarListaDetalleDocumentoAsync(listaDetalleDocumento);
+        return Results.Ok(new { Success = true, Message = "Lista de detalles de documentos procesada exitosamente." });
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(new { Success = false, Message = ex.Message });
+    }
+}).RequireAuthorization();
+
 dod.MapGet("/{fieldName}/{id:int}", async (rDocumentos repositorio, int id, string fieldName) =>
 {
     var documentos = await repositorio.ObtenerDocumentosDetPorCampoAsync(id, fieldName);
@@ -237,6 +250,7 @@ dod.MapPut("/", async (rDocumentos repositorio, DocumentoDet documento) =>
 }).RequireAuthorization();
 
 #endregion
+
 
 #region Grupo de rutas: /agrupadores
 

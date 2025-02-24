@@ -96,7 +96,41 @@ namespace DataObra.Datos
             }
         }
 
+        // Nuevo método para procesar la lista de detalles de documentos
+        public static async Task<(bool Success, string Message)> ProcesarListaDetalleDocumentoAsync(List<DocumentoDet> listaDetalleDocumento)
+        {
+            var item = new QueueItem
+            {
+                Id = evento,
+                Url = $"{App.BaseUrl}documentosdet/procesar",
+                Method = HttpMethod.Post,
+                Data = listaDetalleDocumento
+            };
+            _queueManager.Enqueue(item);
+            evento++;
 
+            try
+            {
+                var response = await item.ResponseTaskCompletionSource.Task;
+                var responseString = await response.Content.ReadAsStringAsync();
+
+                // Deserializar la respuesta JSON
+                var resultado = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                if (resultado.Success)
+                {
+                    return (true, "Lista de detalles de documentos procesada exitosamente.");
+                }
+                else
+                {
+                    return (false, resultado.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error: {ex.Message}");
+            }
+        }
 
 
 

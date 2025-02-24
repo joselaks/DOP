@@ -728,11 +728,127 @@ namespace DataObra.Datos
             }
         }
 
+        private async void ProcesaLoteDet_Click(object sender, RoutedEventArgs e)
+        {
+            // Crear tres registros de DocumentoDet
+            var documentoDet1 = new Biblioteca.DocumentoDet
+            {
+                ID = 1,
+                CuentaID = 1,
+                UsuarioID = 1,
+                Editado = DateTime.Now,
+                TipoID = 'A',
+                AdminID = null,
+                EntidadID = null,
+                DepositoID = null,
+                AcopioID = null,
+                PedidoID = null,
+                CompraID = null,
+                ContratoID = null,
+                FacturaID = null,
+                RemitoID = null,
+                ParteID = null,
+                ObraID = null,
+                PresupuestoID = null,
+                RubroID = null,
+                TareaID = null,
+                Fecha = DateTime.Now,
+                ArticuloDescrip = "Artículo 1",
+                ArticuloCantSuma = 10,
+                ArticuloCantResta = 0,
+                ArticuloPrecio = 100,
+                SumaPesos = 1000,
+                RestaPesos = 0,
+                SumaDolares = 10,
+                RestaDolares = 0,
+                Cambio = 1,
+                Accion = 'A'
+            };
 
+            var documentoDet2 = new Biblioteca.DocumentoDet
+            {
+                ID = 2,
+                CuentaID = 2,
+                UsuarioID = 2,
+                Editado = DateTime.Now,
+                TipoID = 'B',
+                AdminID = null,
+                EntidadID = null,
+                DepositoID = null,
+                AcopioID = null,
+                PedidoID = null,
+                CompraID = null,
+                ContratoID = null,
+                FacturaID = null,
+                RemitoID = null,
+                ParteID = null,
+                ObraID = null,
+                PresupuestoID = null,
+                RubroID = null,
+                TareaID = null,
+                Fecha = DateTime.Now,
+                ArticuloDescrip = "Artículo 2",
+                ArticuloCantSuma = 20,
+                ArticuloCantResta = 0,
+                ArticuloPrecio = 200,
+                SumaPesos = 2000,
+                RestaPesos = 0,
+                SumaDolares = 20,
+                RestaDolares = 0,
+                Cambio = 1,
+                Accion = 'A'
+            };
 
+            var documentoDet3 = new Biblioteca.DocumentoDet
+            {
+                ID = 3,
+                CuentaID = 3,
+                UsuarioID = 3,
+                Editado = DateTime.Now,
+                TipoID = 'C',
+                AdminID = null,
+                EntidadID = null,
+                DepositoID = null,
+                AcopioID = null,
+                PedidoID = null,
+                CompraID = null,
+                ContratoID = null,
+                FacturaID = null,
+                RemitoID = null,
+                ParteID = null,
+                ObraID = null,
+                PresupuestoID = null,
+                RubroID = null,
+                TareaID = null,
+                Fecha = DateTime.Now,
+                ArticuloDescrip = "Artículo 3",
+                ArticuloCantSuma = 30,
+                ArticuloCantResta = 0,
+                ArticuloPrecio = 300,
+                SumaPesos = 3000,
+                RestaPesos = 0,
+                SumaDolares = 30,
+                RestaDolares = 0,
+                Cambio = 1,
+                Accion = 'A'
+            };
 
+            // Crear la lista de DocumentoDet
+            var listaDetalleDocumento = new List<Biblioteca.DocumentoDet> { documentoDet1, documentoDet2, documentoDet3 };
 
+            // Llamar al método ProcesarListaDetalleDocumentoAsync
+            var resultado = await ConsultasAPI.ProcesarListaDetalleDocumentoAsync(listaDetalleDocumento);
 
+            // Manejar el resultado de la llamada
+            if (resultado.Success)
+            {
+                MessageBox.Show("Lista de detalles de documentos procesada exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show($"Error al procesar la lista de detalles de documentos: {resultado.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
     }
 }
 

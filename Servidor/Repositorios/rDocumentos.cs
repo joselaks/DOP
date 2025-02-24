@@ -37,6 +37,72 @@ namespace Servidor.Repositorios
             return respuesta;
         }
 
+        //Procesar lote de Detalles de documentos
+        public async Task ProcesarListaDetalleDocumentoAsync(List<DocumentoDet> listaDetalleDocumento)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var table = new DataTable();
+                table.Columns.Add("ID", typeof(int));
+                table.Columns.Add("CuentaID", typeof(short));
+                table.Columns.Add("UsuarioID", typeof(int));
+                table.Columns.Add("Editado", typeof(DateTime));
+                table.Columns.Add("TipoID", typeof(char));
+                table.Columns.Add("AdminID", typeof(int));
+                table.Columns.Add("EntidadID", typeof(int));
+                table.Columns.Add("DepositoID", typeof(int));
+                table.Columns.Add("AcopioID", typeof(int));
+                table.Columns.Add("PedidoID", typeof(int));
+                table.Columns.Add("CompraID", typeof(int));
+                table.Columns.Add("ContratoID", typeof(int));
+                table.Columns.Add("FacturaID", typeof(int));
+                table.Columns.Add("RemitoID", typeof(int));
+                table.Columns.Add("ParteID", typeof(int));
+                table.Columns.Add("ObraID", typeof(int));
+                table.Columns.Add("PresupuestoID", typeof(int));
+                table.Columns.Add("RubroID", typeof(int));
+                table.Columns.Add("TareaID", typeof(int));
+                table.Columns.Add("Fecha", typeof(DateTime));
+                table.Columns.Add("ArticuloDescrip", typeof(string));
+                table.Columns.Add("ArticuloCantSuma", typeof(decimal));
+                table.Columns.Add("ArticuloCantResta", typeof(decimal));
+                table.Columns.Add("ArticuloPrecio", typeof(decimal));
+                table.Columns.Add("SumaPesos", typeof(decimal));
+                table.Columns.Add("RestaPesos", typeof(decimal));
+                table.Columns.Add("SumaDolares", typeof(decimal));
+                table.Columns.Add("RestaDolares", typeof(decimal));
+                table.Columns.Add("Cambio", typeof(decimal));
+                table.Columns.Add("Accion", typeof(char));
+
+                foreach (var item in listaDetalleDocumento)
+                {
+                    table.Rows.Add(
+                        item.ID, item.CuentaID, item.UsuarioID, item.Editado, item.TipoID, item.AdminID,
+                        item.EntidadID, item.DepositoID, item.AcopioID, item.PedidoID, item.CompraID,
+                        item.ContratoID, item.FacturaID, item.RemitoID, item.ParteID, item.ObraID,
+                        item.PresupuestoID, item.RubroID, item.TareaID, item.Fecha, item.ArticuloDescrip,
+                        item.ArticuloCantSuma, item.ArticuloCantResta, item.ArticuloPrecio, item.SumaPesos,
+                        item.RestaPesos, item.SumaDolares, item.RestaDolares, item.Cambio, item.Accion
+                    );
+                }
+
+                var parameters = new DynamicParameters();
+                parameters.Add("@ListaDetalleDocumento", table.AsTableValuedParameter("dbo.DocumentoDet"));
+
+                try
+                {
+                    await db.ExecuteAsync("ProcesaListaDetalleDocumento", parameters, commandType: CommandType.StoredProcedure);
+                }
+                catch (SqlException ex)
+                {
+                    throw new Exception($"Error al procesar la lista de detalles de documentos: {ex.Message}", ex);
+                }
+            }
+        }
+
+
+
+
         //Procesa el documento completo
         public async Task ProcesarInfoDocumentoAsync(InfoDocumento documento)
         {
