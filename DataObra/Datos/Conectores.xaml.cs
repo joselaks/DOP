@@ -4,6 +4,7 @@ using Syncfusion.UI.Xaml.Diagram;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,7 +20,7 @@ namespace DataObra.Datos
 {
     public partial class Conectores : Window
     {
-               private readonly HttpQueueManager _queueManager;
+        private readonly HttpQueueManager _queueManager;
 
         public Conectores()
         {
@@ -599,107 +600,10 @@ namespace DataObra.Datos
 
         private async void ProcesarDoc_Click(object sender, RoutedEventArgs e)
         {
-            #region Datos para testeo
-
-            var documento = new Biblioteca.Documento
-            {
-                // Define las propiedades del documento
-                CuentaID = 1,
-                TipoID = 2,
-                UsuarioID = 3,
-                CreadoFecha = DateTime.Now,
-                EditadoID = 4,
-                EditadoFecha = DateTime.Now,
-                RevisadoID = 5,
-                RevisadoFecha = DateTime.Now,
-                AdminID = 3,
-                ObraID = 5,
-                PresupuestoID = 6,
-                RubroID = 6,
-                EntidadID = 7,
-                DepositoID = 5,
-                Descrip = "Documento de prueba",
-                Concepto1 = "Concepto de prueba",
-                Fecha1 = DateTime.Now,
-                Fecha2 = DateTime.Now,
-                Fecha3 = DateTime.Now,
-                Numero1 = 123,
-                Numero2 = 456,
-                Numero3 = 789,
-                Notas = "Notas de prueba",
-                Active = true,
-                Pesos = 1000,
-                Dolares = 200,
-                Impuestos = 150,
-                ImpuestosD = 50,
-                Materiales = 300,
-                ManodeObra = 400,
-                Subcontratos = 500,
-                Equipos = 600,
-                Otros = 700,
-                MaterialesD = 800,
-                ManodeObraD = 900,
-                SubcontratosD = 1000,
-                EquiposD = 1100,
-                OtrosD = 1200,
-                RelDoc = true,
-                RelArt = true,
-                RelMov = true,
-                RelImp = true,
-                RelRub = true,
-                RelTar = true,
-                RelIns = true,
-                DetalleDocumento = new List<DocumentoDet>
-        {
-            new DocumentoDet
-            {
-                ID = 1,
-                CuentaID = 1,
-                UsuarioID = 1,
-                Editado = DateTime.Now,
-                TipoID = 'A',
-                AdminID = 1,
-                EntidadID = 1,
-                DepositoID = 1,
-                AcopioID = 1,
-                PedidoID = 1,
-                CompraID = 1,
-                ContratoID = 1,
-                FacturaID = 1,
-                RemitoID = 1,
-                ParteID = 1,
-                ObraID = 1,
-                PresupuestoID = 1,
-                RubroID = 1,
-                TareaID = 1,
-                Fecha = DateTime.Now,
-                ArticuloDescrip = "Articulo de prueba",
-                ArticuloCantSuma = 10,
-                ArticuloCantResta = 5,
-                ArticuloPrecio = 100,
-                SumaPesos = 1000,
-                RestaPesos = 500,
-                SumaDolares = 200,
-                RestaDolares = 100,
-                Cambio = 1,
-                Accion = 'A'
-            }
+           
         }
-            };
 
-            #endregion
 
-            // Código a utilizar
-            var respuesta = await ConsultasAPI.ProcesarDocumentoAsync(documento);
-
-            // Respuestas
-            int? nuevoDocID = respuesta.Id;
-            bool conexionExitosa = respuesta.Success;
-            string mensaje = respuesta.Message;
-
-            // Mensaje para testeo
-            MessageBox.Show(conexionExitosa + " " + mensaje + " " + nuevoDocID.ToString());
-        }
 
     }
 }

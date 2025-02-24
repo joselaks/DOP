@@ -38,33 +38,62 @@ namespace Servidor.Repositorios
         }
 
         //Procesa el documento completo
-        public async Task<int> ProcesarDocumentoAsync(Documento documento)
+        public async Task ProcesarInfoDocumentoAsync(InfoDocumento documento)
         {
             using (var db = new SqlConnection(_connectionString))
             {
                 var parameters = new DynamicParameters();
 
-                // Serializar el objeto Documento y las listas a JSON
-                string jsonDocumento = JsonSerializer.Serialize(documento);
-                string jsonDetalleDocumento = documento.DetalleDocumento != null ? JsonSerializer.Serialize(documento.DetalleDocumento) : null;
-                string jsonDetalleMovimientos = documento.DetalleMovimientos != null ? JsonSerializer.Serialize(documento.DetalleMovimientos) : null;
-                string jsonDetalleImpuestos = documento.DetalleImpuestos != null ? JsonSerializer.Serialize(documento.DetalleImpuestos) : null;
+                // Serializar las listas a JSON
+                var jsonOptions = new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                    WriteIndented = true,
+                    Converters = { new System.Text.Json.Serialization.JsonStringEnumConverter() }
+                };
+
+                string jsonDetalleDocumento = documento.DetalleDocumento != null ? JsonSerializer.Serialize(documento.DetalleDocumento, jsonOptions) : null;
+                string jsonDetalleMovimientos = documento.DetalleMovimientos != null ? JsonSerializer.Serialize(documento.DetalleMovimientos, jsonOptions) : null;
+                string jsonDetalleImpuestos = documento.DetalleImpuestos != null ? JsonSerializer.Serialize(documento.DetalleImpuestos, jsonOptions) : null;
 
                 // Agregar parámetros
-                parameters.Add("@JsonDocumento", jsonDocumento, DbType.String);
                 parameters.Add("@JsonDetalleDocumento", jsonDetalleDocumento, DbType.String);
                 parameters.Add("@JsonDetalleMovimientos", jsonDetalleMovimientos, DbType.String);
                 parameters.Add("@JsonDetalleImpuestos", jsonDetalleImpuestos, DbType.String);
-                parameters.Add("@NuevoID", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                parameters.Add("@MensajeError", dbType: DbType.String, direction: ParameterDirection.Output, size: 4000);
 
-                // Ejecutar el procedimiento almacenado
-                await db.ExecuteAsync("ProcesarDocumento", parameters, commandType: CommandType.StoredProcedure);
+                try
+                {
+                    // Ejecutar el procedimiento almacenado
+                    await db.ExecuteAsync("ProcesarInfoDocumento", parameters, commandType: CommandType.StoredProcedure);
 
-                // Obtener el ID generado
-                int nuevoID = parameters.Get<int>("@NuevoID");
-                return nuevoID;
+                    // Verificar si hay un mensaje de error
+                    string mensajeError = parameters.Get<string>("@MensajeError");
+                    if (!string.IsNullOrEmpty(mensajeError))
+                    {
+                        throw new Exception(mensajeError);
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    // Capturar el mensaje de error del procedimiento almacenado
+                    string mensajeError = parameters.Get<string>("@MensajeError");
+                    if (!string.IsNullOrEmpty(mensajeError))
+                    {
+                        throw new Exception(mensajeError, ex);
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
             }
         }
+
+
+
+
+
 
         // Nueva Relación documentoRel
         public async Task<bool> InsertarDocumentoRelAsync(DocumentoRel rel)

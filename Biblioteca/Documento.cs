@@ -62,6 +62,14 @@ namespace Biblioteca
         public List<Impuesto> DetalleImpuestos { get; set; }
     }
 
+    public class InfoDocumento
+    {
+        public List<DocumentoDet> DetalleDocumento { get; set; }
+        public List<Movimiento> DetalleMovimientos { get; set; }
+        public List<Impuesto> DetalleImpuestos { get; set; }
+
+    }
+
     public class DocumentoRel
     {
         public int SuperiorID { get; set; }

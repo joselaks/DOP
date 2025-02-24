@@ -107,11 +107,22 @@ doc.MapPost("/", async (rDocumentos repositorio, Documento documento) =>
     return Results.Created($"documentos/{nuevoDocumento}", nuevoDocumento);
 }).RequireAuthorization();
 
-doc.MapPost("/procesar", async (rDocumentos repositorio, Documento documento) =>
+doc.MapPost("/procesar", async (rDocumentos repositorio, InfoDocumento infodocumento) =>
 {
-    var nuevoDocumento = await repositorio.ProcesarDocumentoAsync(documento);
-    return Results.Created($"documentos/{nuevoDocumento}", nuevoDocumento);
+    try
+    {
+        await repositorio.ProcesarInfoDocumentoAsync(infodocumento);
+        return Results.Ok(new { Success = true, Message = "Documento procesado exitosamente." });
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(new { Success = false, Message = ex.Message });
+    }
 }).RequireAuthorization();
+
+
+
+
 
 doc.MapDelete("/{id:int}", async (rDocumentos repositorio, int id) =>
 {
