@@ -13,6 +13,7 @@ using Biblioteca;
 using Servidor.Utilidades;
 using Servidor.Repositorios;
 using Bibioteca.Clases;
+using ProcesarArbolPresupuestoRequest = Bibioteca.Clases.ProcesarArbolPresupuestoRequest;
 
 var builder = WebApplication.CreateBuilder(args);
 string key = "ESTALLAVEFUNCOINARIASI12345PARARECORDARLAMEJOR=";

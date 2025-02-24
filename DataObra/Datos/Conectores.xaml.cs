@@ -734,7 +734,7 @@ namespace DataObra.Datos
             // Crear tres registros de DocumentoDet
             var documentoDet1 = new Biblioteca.DocumentoDet
             {
-                ID = 1,
+                ID = 25,
                 CuentaID = 1,
                 UsuarioID = 1,
                 Editado = DateTime.Now,
@@ -754,7 +754,7 @@ namespace DataObra.Datos
                 RubroID = null,
                 TareaID = null,
                 Fecha = DateTime.Now,
-                ArticuloDescrip = "Artículo 1",
+                ArticuloDescrip = "Artículo 1111",
                 ArticuloCantSuma = 10,
                 ArticuloCantResta = 0,
                 ArticuloPrecio = 100,
@@ -763,12 +763,12 @@ namespace DataObra.Datos
                 SumaDolares = 10,
                 RestaDolares = 0,
                 Cambio = 1,
-                Accion = 'A'
+                Accion = 'M'
             };
 
             var documentoDet2 = new Biblioteca.DocumentoDet
             {
-                ID = 2,
+                ID = 26,
                 CuentaID = 2,
                 UsuarioID = 2,
                 Editado = DateTime.Now,
@@ -797,7 +797,7 @@ namespace DataObra.Datos
                 SumaDolares = 20,
                 RestaDolares = 0,
                 Cambio = 1,
-                Accion = 'A'
+                Accion = 'D'
             };
 
             var documentoDet3 = new Biblioteca.DocumentoDet
@@ -822,7 +822,7 @@ namespace DataObra.Datos
                 RubroID = null,
                 TareaID = null,
                 Fecha = DateTime.Now,
-                ArticuloDescrip = "Artículo 3",
+                ArticuloDescrip = "Nuevo",
                 ArticuloCantSuma = 30,
                 ArticuloCantResta = 0,
                 ArticuloPrecio = 300,
@@ -858,8 +858,8 @@ namespace DataObra.Datos
             {
                 Codigo = "C001",
                 Descrip = "Concepto 1",
-                Tipo = "Tipo1",
-                Unidad = "Unidad1",
+                Tipo = "M",
+                Unidad = "gl",
                 Accion = "A"
             };
 
@@ -867,8 +867,8 @@ namespace DataObra.Datos
             {
                 Codigo = "C002",
                 Descrip = "Concepto 2",
-                Tipo = "Tipo2",
-                Unidad = "Unidad2",
+                Tipo = "O",
+                Unidad = "kg",
                 Accion = "A"
             };
 
@@ -876,8 +876,8 @@ namespace DataObra.Datos
             {
                 Codigo = "C003",
                 Descrip = "Concepto 3",
-                Tipo = "Tipo3",
-                Unidad = "Unidad3",
+                Tipo = "A",
+                Unidad = "m2",
                 Accion = "A"
             };
 
