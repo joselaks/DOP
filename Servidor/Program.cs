@@ -12,6 +12,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Biblioteca;
 using Servidor.Utilidades;
 using Servidor.Repositorios;
+using Bibioteca.Clases;
 
 var builder = WebApplication.CreateBuilder(args);
 string key = "ESTALLAVEFUNCOINARIASI12345PARARECORDARLAMEJOR=";
@@ -33,6 +34,7 @@ string connectionString = "Server=tcp:ghu95zexx2.database.windows.net,1433;Initi
 //Agrega el servicio del repositorio al contenedor de dependencias
 builder.Services.AddSingleton(new rDocumentos(connectionString));
 builder.Services.AddSingleton(new rUsuarios(connectionString));
+builder.Services.AddSingleton(new rPresupuestos(connectionString));
 
 // Configurar servicios de Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -119,10 +121,6 @@ doc.MapPost("/procesar", async (rDocumentos repositorio, InfoDocumento infodocum
         return Results.BadRequest(new { Success = false, Message = ex.Message });
     }
 }).RequireAuthorization();
-
-
-
-
 
 doc.MapDelete("/{id:int}", async (rDocumentos repositorio, int id) =>
 {
@@ -251,7 +249,6 @@ dod.MapPut("/", async (rDocumentos repositorio, DocumentoDet documento) =>
 
 #endregion
 
-
 #region Grupo de rutas: /agrupadores
 
 var agr = app.MapGroup("/agrupadores");
@@ -293,6 +290,25 @@ agr.MapDelete("/{id:int}", async (rDocumentos repositorio, int id) =>
     else
     {
         return Results.Ok(new { Success = false, Message = "No se encontró agrupador para eliminar." });
+    }
+}).RequireAuthorization();
+
+#endregion
+
+#region Grupo de rutas: /pre
+
+var pre = app.MapGroup("/pre");
+
+pre.MapPost("/procesar", async (rPresupuestos repositorio, ProcesarArbolPresupuestoRequest request) =>
+{
+    try
+    {
+        await repositorio.ProcesarArbolPresupuestoAsync(request.PresupuestoID, request.ListaConceptos, request.ListaRelaciones);
+        return Results.Ok(new { Success = true, Message = "Árbol de presupuesto procesado exitosamente." });
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(new { Success = false, Message = ex.Message });
     }
 }).RequireAuthorization();
 

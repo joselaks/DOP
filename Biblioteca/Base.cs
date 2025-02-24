@@ -50,6 +50,13 @@ namespace Bibioteca.Clases
             set { fecha = value; }
         }
 
+        private string accion;
+        public string Accion
+        {
+            get { return accion; }
+            set { accion = value; }
+        }
+
     }
 
     public class Relacion
@@ -88,6 +95,14 @@ namespace Bibioteca.Clases
             get { return cantidad; }
             set { cantidad = value; }
         }
+
+        private string accion;
+        public string Accion
+        {
+            get { return accion; }
+            set { accion = value; }
+        }   
+        
 
     }
 }

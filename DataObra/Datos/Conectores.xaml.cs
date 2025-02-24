@@ -1,4 +1,5 @@
-﻿using Biblioteca;
+﻿using Bibioteca.Clases;
+using Biblioteca;
 using DataObra.Agrupadores;
 using DataObra.Documentos;
 using Syncfusion.UI.Xaml.Diagram;
@@ -849,6 +850,85 @@ namespace DataObra.Datos
                 MessageBox.Show($"Error al procesar la lista de detalles de documentos: {resultado.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        private async void ProcesaDetallePres_Click(object sender, RoutedEventArgs e)
+        {
+            // Crear ejemplos de datos para Conceptos
+            var concepto1 = new Concepto
+            {
+                Codigo = "C001",
+                Descrip = "Concepto 1",
+                Tipo = "Tipo1",
+                Unidad = "Unidad1",
+                Accion = "A"
+            };
+
+            var concepto2 = new Concepto
+            {
+                Codigo = "C002",
+                Descrip = "Concepto 2",
+                Tipo = "Tipo2",
+                Unidad = "Unidad2",
+                Accion = "A"
+            };
+
+            var concepto3 = new Concepto
+            {
+                Codigo = "C003",
+                Descrip = "Concepto 3",
+                Tipo = "Tipo3",
+                Unidad = "Unidad3",
+                Accion = "A"
+            };
+
+            // Crear ejemplos de datos para Relaciones
+            var relacion1 = new Relacion
+            {
+                Superior = "S001",
+                Inferior = "I001",
+                Descrip = "Relación 1",
+                Accion = "A"
+            };
+
+            var relacion2 = new Relacion
+            {
+                Superior = "S002",
+                Inferior = "I002",
+                Descrip = "Relación 2",
+                Accion = "A"
+            };
+
+            var relacion3 = new Relacion
+            {
+                Superior = "S003",
+                Inferior = "I003",
+                Descrip = "Relación 3",
+                Accion = "A"
+            };
+
+            // Crear la solicitud de procesamiento del árbol de presupuesto
+            var request = new ProcesarArbolPresupuestoRequest
+            {
+                PresupuestoID = 1, // ID de presupuesto de prueba
+                ListaConceptos = new List<Concepto> { concepto1, concepto2, concepto3 },
+                ListaRelaciones = new List<Relacion> { relacion1, relacion2, relacion3 }
+            };
+
+            // Llamar al método ProcesarArbolPresupuestoAsync
+            var resultado = await ConsultasAPI.ProcesarArbolPresupuestoAsync(request);
+
+            // Manejar el resultado de la llamada
+            if (resultado.Success)
+            {
+                MessageBox.Show("Árbol de presupuesto procesado exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show($"Error al procesar el árbol de presupuesto: {resultado.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
     }
 }
 

@@ -17,6 +17,7 @@
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
@@ -25,6 +26,7 @@
         <TextBlock TextAlignment="Center" Margin="10,6,10,3" Grid.Row="2" >DocumentoRelc</TextBlock>
         <TextBlock TextAlignment="Center" Margin="10,6,10,3" Grid.Row="3" >Agrupadores</TextBlock>
         <TextBlock TextAlignment="Center" Margin="10,6,10,3" Grid.Row="4" >DocumentoDet</TextBlock>
+        <TextBlock TextAlignment="Center" Margin="10,6,10,3" Grid.Row="5" >Presupuestos</TextBlock>
         <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Center" Grid.Column="1">
             <Button Content="Verifica" Margin="3,3,3,3" Width="90" x:Name="veriUsu" Click="veriUsu_Click" />
         </StackPanel>
@@ -52,7 +54,11 @@
             <Button Content="Modificar" Margin="3,3,3,3" Width="90" x:Name="modificarDocDet" Click="modificarDocDet_Click"/>
             <Button Content="Procesa Lote" Margin="3,3,3,3" Width="90" x:Name="ProcesaLoteDet" Click="ProcesaLoteDet_Click"/>
         </StackPanel>
-        <syncfusion:TabControlExt Grid.Row="5" Grid.ColumnSpan="2" >
+        <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1">
+            
+            <Button Content="Procesa Lote" Margin="3,3,3,3" Width="90" x:Name="ProcesaDetallePres" Click="ProcesaDetallePres_Click"/>
+        </StackPanel>
+        <syncfusion:TabControlExt Grid.Row="6" Grid.ColumnSpan="2" >
             <syncfusion:TabItemExt Header="Listado">
                 <ListBox x:Name="LogListBox" DisplayMemberPath="LogEntryDisplay" Margin="2" Background="Beige" />
 
@@ -63,6 +69,6 @@
             </syncfusion:TabItemExt>
         </syncfusion:TabControlExt>
         
-        <Button Content="Borrar login" Margin="3,3,3,3" Width="90" x:Name="limpiaLogin" Click="limpiaLogin_Click"  Grid.Row="6" Grid.Column="1" />
+        <Button Content="Borrar login" Margin="3,3,3,3" Width="90" x:Name="limpiaLogin" Click="limpiaLogin_Click"  Grid.Row="7" Grid.Column="1" />
     </Grid>
 </Window>

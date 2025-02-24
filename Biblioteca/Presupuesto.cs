@@ -874,4 +874,11 @@ namespace Bibioteca.Clases
 
 
     }
+
+    public class ProcesarArbolPresupuestoRequest
+    {
+        public int PresupuestoID { get; set; }
+        public List<Concepto> ListaConceptos { get; set; }
+        public List<Relacion> ListaRelaciones { get; set; }
+    }
 }

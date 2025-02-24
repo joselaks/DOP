@@ -12,6 +12,7 @@ using System.Net;
 using Syncfusion.UI.Xaml.Diagram;
 using DataObra.Agrupadores;
 using System.Text;
+using Bibioteca.Clases;
 
 namespace DataObra.Datos
 {
@@ -648,6 +649,42 @@ namespace DataObra.Datos
                 return (false, $"Error: {ex.Message}");
             }
         }
+
+        public static async Task<(bool Success, string Message)> ProcesarArbolPresupuestoAsync(ProcesarArbolPresupuestoRequest request)
+        {
+            var item = new QueueItem
+            {
+                Id = evento,
+                Url = $"{App.BaseUrl}pre/procesar",
+                Method = HttpMethod.Post,
+                Data = request
+            };
+            _queueManager.Enqueue(item);
+            evento++;
+
+            try
+            {
+                var response = await item.ResponseTaskCompletionSource.Task;
+                var responseString = await response.Content.ReadAsStringAsync();
+
+                // Deserializar la respuesta JSON
+                var resultado = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                if (resultado.Success)
+                {
+                    return (true, "Árbol de presupuesto procesado exitosamente.");
+                }
+                else
+                {
+                    return (false, resultado.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error: {ex.Message}");
+            }
+        }
+
     }
 
     public class ResultadoOperacion
