@@ -34,19 +34,14 @@ namespace DataObra.Documentos
         public MaxDocumento(Biblioteca.Documento pDoc) 
         {
             InitializeComponent();
-            //Resolver el objeto activo compatible con otras funcoines y con los metodos del servidor
-            //oActivo = pDoc;
+            // Resolver el objeto activo compatible con otras funcoines y con los metodos del servidor
+            // oActivo = pDoc;
             // si es presupuesto
             
-            if (pDoc.TipoID==10)
-            {
-
-            }
-
             #region COMBOS
-            this.ComboObras.ItemsSource = App.ListaAgrupadores.Where(a => a.TipoID == 'O');
-            this.ComboAdmin.ItemsSource = App.ListaAgrupadores.Where(a => a.TipoID == 'A');
-            
+            this.ComboObras.ItemsSource = App.ListaAgrupadores.Where(a => a.TipoID == 'O' && a.Active);
+            this.ComboAdmin.ItemsSource = App.ListaAgrupadores.Where(a => a.TipoID == 'A' && a.Active);
+
             #endregion Combos
 
             if (pDoc == null)
@@ -70,31 +65,32 @@ namespace DataObra.Documentos
                 // Recibe el Documento a editar bajado del servidor y lo convierte
                 oActivo = Documento.Convertir(pDoc);
 
-                this.ComboObras.SelectedItem = azure.Agrupadores.FirstOrDefault(a => a.ID == oActivo.ObraID);
-                this.ComboAdmin.SelectedItem = azure.Agrupadores.FirstOrDefault(a => a.ID == oActivo.AdminID);
-                var entidad = azure.Agrupadores.FirstOrDefault(a => a.ID == oActivo.EntidadID);
+                this.ComboObras.SelectedItem = App.ListaAgrupadores.FirstOrDefault(a => a.ID == oActivo.ObraID);
+                this.ComboAdmin.SelectedItem = App.ListaAgrupadores.FirstOrDefault(a => a.ID == oActivo.AdminID);
+                
+                var entidad = App.ListaAgrupadores.FirstOrDefault(a => a.ID == oActivo.EntidadID);
 
-                //if (entidad != null)
-                //{
-                //    switch (entidad.TipoID)
-                //    {
-                //        case 'C':
-                //            this.EsCliente.IsChecked = true;
-                //            break;
-                //        case 'P':
-                //            this.EsProveedor.IsChecked = true;
-                //            break;
-                //        case 'S':
-                //            this.EsContratista.IsChecked = true;
-                //            break;
-                //        case 'O':
-                //            this.EsPersonal.IsChecked = true;
-                //            break;
-                //        default:
-                //            break;
-                //    }
-                //    this.ComboEntidad.SelectedItem = entidad;
-                //}
+                if (entidad != null)
+                {
+                    switch (entidad.TipoID)
+                    {
+                        case 'C':
+                            this.C.IsChecked = true;
+                            break;
+                        case 'P':
+                            this.P.IsChecked = true;
+                            break;
+                        case 'S':
+                            this.S.IsChecked = true;
+                            break;
+                        case 'O':
+                            this.E.IsChecked = true;
+                            break;
+                        default:
+                            break;
+                    }
+                    this.ComboEntidad.SelectedItem = entidad;
+                }
 
                 if (oActivo.RevisadoID != 0)
                 {
