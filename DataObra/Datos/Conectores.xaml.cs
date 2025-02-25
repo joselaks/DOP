@@ -364,7 +364,7 @@ namespace DataObra.Datos
         {
 
             #region Datos para testeo
-            int id = 1; // ID del documento a obtener
+            int id = 2; // ID del documento a obtener
             string fieldName = "FacturaID"; // Nombre del campo por el cual se va a filtrar
             #endregion
 

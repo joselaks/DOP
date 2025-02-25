@@ -609,7 +609,7 @@ namespace DataObra.Datos
                 var response = await item.ResponseTaskCompletionSource.Task;
                 var responseString = await response.Content.ReadAsStringAsync();
                 var documentosDet = JsonSerializer.Deserialize<List<DocumentoDet>>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                if (documentosDet.Count() > 1)
+                if (documentosDet.Count() >= 1)
                 {
                     return (true, "Detalles obtenidos exitosamente.", documentosDet);
                 }
