@@ -278,7 +278,6 @@ mov.MapGet("/{fieldName}/{id:int}/{cuentaID:short}", async (rDocumentos reposito
 
 
 
-
 #region Grupo de rutas: /impuestos
 
 var imp = app.MapGroup("/impuestos");
@@ -296,7 +295,14 @@ imp.MapPost("/procesar", async (rDocumentos repositorio, List<Impuesto> listaImp
     }
 }).RequireAuthorization();
 
+imp.MapGet("/{fieldName}/{id:int}/{cuentaID:short}", async (rDocumentos repositorio, int id, string fieldName, short cuentaID) =>
+{
+    var impuestos = await repositorio.ObtenerImpuestosPorCampoAsync(id, fieldName, cuentaID);
+    return impuestos != null ? Results.Ok(impuestos) : Results.NotFound(new { Mensaje = "No se encontraron impuestos con el CuentaID proporcionado." });
+}).RequireAuthorization();
+
 #endregion
+
 
 
 #region Grupo de rutas: /agrupadores

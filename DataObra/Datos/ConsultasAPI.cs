@@ -761,6 +761,38 @@ namespace DataObra.Datos
             }
         }
 
+        public static async Task<(bool Success, string Message, List<Impuesto> Impuestos)> GetImpuestosPorCampoAsync(int id, string fieldName, short cuentaID)
+        {
+            var item = new QueueItem
+            {
+                Id = evento,
+                Url = $"{App.BaseUrl}impuestos/{fieldName}/{id}/{cuentaID}",
+                Method = HttpMethod.Get
+            };
+            _queueManager.Enqueue(item);
+            evento++;
+
+            try
+            {
+                var response = await item.ResponseTaskCompletionSource.Task;
+                var responseString = await response.Content.ReadAsStringAsync();
+                var impuestos = JsonSerializer.Deserialize<List<Impuesto>>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                if (impuestos.Count() >= 1)
+                {
+                    return (true, "Impuestos obtenidos exitosamente.", impuestos);
+                }
+                else
+                {
+                    return (false, "No hay impuestos.", null);
+                }
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error: {ex.Message}", null);
+            }
+        }
+
+
         public static async Task<(bool Success, string Message, List<Movimiento> Movimientos)> GetMovimientosPorCampoAsync(int id, string fieldName, short cuentaID)
         {
             var item = new QueueItem
