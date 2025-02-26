@@ -229,11 +229,12 @@ dod.MapPost("/procesar", async (rDocumentos repositorio, List<DocumentoDet> list
     }
 }).RequireAuthorization();
 
-dod.MapGet("/{fieldName}/{id:int}", async (rDocumentos repositorio, int id, string fieldName) =>
+dod.MapGet("/{fieldName}/{id:int}/{cuentaID:short}", async (rDocumentos repositorio, int id, string fieldName, short cuentaID) =>
 {
-    var documentos = await repositorio.ObtenerDocumentosDetPorCampoAsync(id, fieldName);
+    var documentos = await repositorio.ObtenerDocumentosDetPorCampoAsync(id, fieldName, cuentaID);
     return documentos != null ? Results.Ok(documentos) : Results.NotFound(new { Mensaje = "No se encontraron documentos con el CuentaID proporcionado." });
 });
+
 
 dod.MapPut("/", async (rDocumentos repositorio, DocumentoDet documento) =>
 {

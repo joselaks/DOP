@@ -362,14 +362,14 @@ namespace DataObra.Datos
         // Obtiene el detalle de un documento, especificando el ID y el nombre del tipo de documento ( FacturaID, RemitoID, etc)
         private async void obtenerDocDet_Click(object sender, RoutedEventArgs e)
         {
-
             #region Datos para testeo
             int id = 2; // ID del documento a obtener
             string fieldName = "FacturaID"; // Nombre del campo por el cual se va a filtrar
+            short cuentaID = 1; // ID de la cuenta
             #endregion
 
             // Código a utilizar
-            var respuesta = await ConsultasAPI.GetDocumentosDetPorCampoAsync(id, fieldName);
+            var respuesta = await ConsultasAPI.GetDocumentosDetPorCampoAsync(id, fieldName, cuentaID);
 
             // Respuestas
             bool resultado = respuesta.Success;
@@ -385,8 +385,10 @@ namespace DataObra.Datos
             {
                 MessageBox.Show("No hay registros");
             }
-
         }
+
+
+
 
 
         #endregion

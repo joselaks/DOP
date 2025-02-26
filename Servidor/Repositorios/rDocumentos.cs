@@ -392,14 +392,14 @@ namespace Servidor.Repositorios
                 return documentos;
             }
         }
-
-        public async Task<IEnumerable<DocumentoDet>> ObtenerDocumentosDetPorCampoAsync(int id, string fieldName)
+        public async Task<IEnumerable<DocumentoDet>> ObtenerDocumentosDetPorCampoAsync(int id, string fieldName, short cuentaID)
         {
             using (var db = new SqlConnection(_connectionString))
             {
                 var parameters = new DynamicParameters();
                 parameters.Add("@ID", id, DbType.Int32);
                 parameters.Add("@FieldName", fieldName, DbType.String);
+                parameters.Add("@CuentaID", cuentaID, DbType.Int16);
 
                 var documentosDet = await db.QueryAsync<DocumentoDet>(
                     "DocumentosDetGetDocumentoID",
@@ -410,6 +410,8 @@ namespace Servidor.Repositorios
                 return documentosDet;
             }
         }
+
+
 
 
         #endregion

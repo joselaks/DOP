@@ -667,12 +667,12 @@ namespace DataObra.Datos
         }
 
         // DocumentoDet Get por ID y campo
-        public static async Task<(bool Success, string Message, List<DocumentoDet> DocumentosDet)> GetDocumentosDetPorCampoAsync(int id, string fieldName)
+        public static async Task<(bool Success, string Message, List<DocumentoDet> DocumentosDet)> GetDocumentosDetPorCampoAsync(int id, string fieldName, short cuentaID)
         {
             var item = new QueueItem
             {
                 Id = evento,
-                Url = $"{App.BaseUrl}documentosdet/{fieldName}/{id}",
+                Url = $"{App.BaseUrl}documentosdet/{fieldName}/{id}/{cuentaID}",
                 Method = HttpMethod.Get
             };
             _queueManager.Enqueue(item);
@@ -697,6 +697,8 @@ namespace DataObra.Datos
                 return (false, $"Error: {ex.Message}", null);
             }
         }
+
+
 
         // DocumentoDet Put incluye borrado cuando no esta vinculado a ningún documento
         public static async Task<(bool Success, string Message)> PutDocumentoDetAsync(DocumentoDet documentoDet)
