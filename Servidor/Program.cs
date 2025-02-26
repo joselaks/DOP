@@ -268,7 +268,16 @@ mov.MapPost("/procesar", async (rDocumentos repositorio, List<Movimiento> listaM
     }
 }).RequireAuthorization();
 
+mov.MapGet("/{fieldName}/{id:int}/{cuentaID:short}", async (rDocumentos repositorio, int id, string fieldName, short cuentaID) =>
+{
+    var movimientos = await repositorio.ObtenerMovimientosPorCampoAsync(id, fieldName, cuentaID);
+    return movimientos != null ? Results.Ok(movimientos) : Results.NotFound(new { Mensaje = "No se encontraron movimientos con el CuentaID proporcionado." });
+}).RequireAuthorization();
+
 #endregion
+
+
+
 
 #region Grupo de rutas: /impuestos
 

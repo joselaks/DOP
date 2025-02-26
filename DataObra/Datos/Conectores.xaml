@@ -62,8 +62,8 @@
             <Button Content="Obtener" Margin="3,3,3,3" Width="90" x:Name="obtenerMovimientos" Click="obtenerMovimientos_Click"/>
             <Button Content="Procesa Lote" Margin="3,3,3,3" Width="90" x:Name="ProcesaLoteMov" Click="ProcesaLoteMov_Click"/>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Center" Grid.Row="6" Grid.Column="1">
-            <Button Content="Obtener" Margin="3,3,3,3" Width="90" x:Name="obtenerImpuestos" Click="obtenerImpuestos_Click"/>
+        <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Center" Grid.Row="7" Grid.Column="1">
+            <Button Content="Obtener" Margin="3,3,3,3" Width="90" x:Name="obtenerImpuestos" Click="obtenerImpuestos_Click_1"/>
             <Button Content="Procesa Lote" Margin="3,3,3,3" Width="90" x:Name="ProcesaLoteImp" Click="ProcesaLoteImp_Click"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1">

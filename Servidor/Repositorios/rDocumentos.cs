@@ -411,6 +411,25 @@ namespace Servidor.Repositorios
             }
         }
 
+        public async Task<IEnumerable<Movimiento>> ObtenerMovimientosPorCampoAsync(int id, string fieldName, short cuentaID)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@ID", id, DbType.Int32);
+                parameters.Add("@FieldName", fieldName, DbType.String);
+                parameters.Add("@CuentaID", cuentaID, DbType.Int16);
+
+                var movimientos = await db.QueryAsync<Movimiento>(
+                    "MovimientosGetID",
+                    parameters,
+                    commandType: CommandType.StoredProcedure
+                );
+
+                return movimientos;
+            }
+        }
+
 
 
 

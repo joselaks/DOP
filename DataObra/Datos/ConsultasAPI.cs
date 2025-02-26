@@ -761,6 +761,38 @@ namespace DataObra.Datos
             }
         }
 
+        public static async Task<(bool Success, string Message, List<Movimiento> Movimientos)> GetMovimientosPorCampoAsync(int id, string fieldName, short cuentaID)
+        {
+            var item = new QueueItem
+            {
+                Id = evento,
+                Url = $"{App.BaseUrl}movimientos/{fieldName}/{id}/{cuentaID}",
+                Method = HttpMethod.Get
+            };
+            _queueManager.Enqueue(item);
+            evento++;
+
+            try
+            {
+                var response = await item.ResponseTaskCompletionSource.Task;
+                var responseString = await response.Content.ReadAsStringAsync();
+                var movimientos = JsonSerializer.Deserialize<List<Movimiento>>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                if (movimientos.Count() >= 1)
+                {
+                    return (true, "Movimientos obtenidos exitosamente.", movimientos);
+                }
+                else
+                {
+                    return (false, "No hay movimientos.", null);
+                }
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error: {ex.Message}", null);
+            }
+        }
+
+
     }
 
     public class ResultadoOperacion

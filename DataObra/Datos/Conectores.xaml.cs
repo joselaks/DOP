@@ -930,10 +930,33 @@ namespace DataObra.Datos
             }
         }
 
-        private void obtenerMovimientos_Click(object sender, RoutedEventArgs e)
+        private async void obtenerMovimientos_Click(object sender, RoutedEventArgs e)
         {
+            #region Datos para testeo
+            int id = 2; // ID del movimiento a obtener
+            string fieldName = "FacturaID"; // Nombre del campo por el cual se va a filtrar
+            short cuentaID = 1; // ID de la cuenta
+            #endregion
 
+            // Código a utilizar
+            var respuesta = await ConsultasAPI.GetMovimientosPorCampoAsync(id, fieldName, cuentaID);
+
+            // Respuestas
+            bool resultado = respuesta.Success;
+            string mensaje = respuesta.Message;
+            List<Biblioteca.Movimiento> movimientos = respuesta.Movimientos;
+
+            // Mensaje para testeo
+            if (respuesta.Success)
+            {
+                MessageBox.Show(resultado + " " + mensaje + " Cantidad: " + movimientos.Count());
+            }
+            else
+            {
+                MessageBox.Show("No hay registros");
+            }
         }
+
 
         private async void ProcesaLoteMov_Click(object sender, RoutedEventArgs e)
         {
@@ -1187,6 +1210,10 @@ namespace DataObra.Datos
             }
         }
 
+        private void obtenerImpuestos_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
 
