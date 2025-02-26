@@ -14,9 +14,17 @@ using Servidor.Utilidades;
 using Servidor.Repositorios;
 using Bibioteca.Clases;
 using ProcesarArbolPresupuestoRequest = Bibioteca.Clases.ProcesarArbolPresupuestoRequest;
+using Microsoft.Win32;
+using Servidor;
 
 var builder = WebApplication.CreateBuilder(args);
 string key = "ESTALLAVEFUNCOINARIASI12345PARARECORDARLAMEJOR=";
+
+// Registrar la restricción de ruta personalizada
+builder.Services.Configure<RouteOptions>(options =>
+{
+    options.ConstraintMap.Add("short", typeof(ShortRouteConstraint));
+});
 
 #region Configuración de la cadena de conexión
 // ------- Azure ------------- 
