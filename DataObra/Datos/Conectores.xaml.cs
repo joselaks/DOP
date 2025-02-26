@@ -928,6 +928,262 @@ namespace DataObra.Datos
             }
         }
 
+        private void obtenerMovimientos_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private async void ProcesaLoteMov_Click(object sender, RoutedEventArgs e)
+        {
+            // Crear tres registros de Movimiento
+            var movimiento1 = new Biblioteca.Movimiento
+            {
+                ID = 1,
+                CuentaID = 1,
+                UsuarioID = 1,
+                Editado = DateTime.Now,
+                TipoID = 1,
+                Descrip = "Movimiento de prueba 1",
+                TesoreriaID = null,
+                AdminID = null,
+                ObraID = null,
+                EntidadID = null,
+                EntidadTipo = null,
+                CompraID = null,
+                ContratoID = null,
+                FacturaID = null,
+                GastoID = null,
+                OrdenID = null,
+                CobroID = null,
+                PagoID = null,
+                Fecha = DateTime.Now,
+                Comprobante = 12345,
+                Numero = null,
+                Notas = "Notas de prueba 1",
+                ConciliadoFecha = DateTime.Now,
+                ConciliadoUsuario = 1,
+                ChequeProcesado = false,
+                Previsto = false,
+                Desdoblado = false,
+                SumaPesos = 100,
+                RestaPesos = 0,
+                SumaDolares = 0,
+                RestaDolares = 0,
+                Cambio = 1,
+                RelMov = false,
+                ImpuestoID = null,
+                Accion = 'A'
+            };
+
+            var movimiento2 = new Biblioteca.Movimiento
+            {
+                ID = 2,
+                CuentaID = 2,
+                UsuarioID = 2,
+                Editado = DateTime.Now,
+                TipoID = 2,
+                Descrip = "Movimiento de prueba 2",
+                TesoreriaID = null,
+                AdminID = null,
+                ObraID = null,
+                EntidadID = null,
+                EntidadTipo = null,
+                CompraID = null,
+                ContratoID = null,
+                FacturaID = null,
+                GastoID = null,
+                OrdenID = null,
+                CobroID = null,
+                PagoID = null,
+                Fecha = DateTime.Now,
+                Comprobante = 67890,
+                Numero = null,
+                Notas = "Notas de prueba 2",
+                ConciliadoFecha = DateTime.Now,
+                ConciliadoUsuario = 2,
+                ChequeProcesado = false,
+                Previsto = false,
+                Desdoblado = false,
+                SumaPesos = 200,
+                RestaPesos = 0,
+                SumaDolares = 0,
+                RestaDolares = 0,
+                Cambio = 1,
+                RelMov = false,
+                ImpuestoID = null,
+                Accion = 'M'
+            };
+
+            var movimiento3 = new Biblioteca.Movimiento
+            {
+                ID = 3,
+                CuentaID = 3,
+                UsuarioID = 3,
+                Editado = DateTime.Now,
+                TipoID = 3,
+                Descrip = "Movimiento de prueba 3",
+                TesoreriaID = null,
+                AdminID = null,
+                ObraID = null,
+                EntidadID = null,
+                EntidadTipo = null,
+                CompraID = null,
+                ContratoID = null,
+                FacturaID = null,
+                GastoID = null,
+                OrdenID = null,
+                CobroID = null,
+                PagoID = null,
+                Fecha = DateTime.Now,
+                Comprobante = 11223,
+                Numero = null,
+                Notas = "Notas de prueba 3",
+                ConciliadoFecha = DateTime.Now,
+                ConciliadoUsuario = 3,
+                ChequeProcesado = false,
+                Previsto = false,
+                Desdoblado = false,
+                SumaPesos = 300,
+                RestaPesos = 0,
+                SumaDolares = 0,
+                RestaDolares = 0,
+                Cambio = 1,
+                RelMov = false,
+                ImpuestoID = null,
+                Accion = 'D'
+            };
+
+            // Crear la lista de Movimiento
+            var listaMovimientos = new List<Biblioteca.Movimiento> { movimiento1, movimiento2, movimiento3 };
+
+            // Llamar al método ProcesarMovimientosAsync
+            var resultado = await ConsultasAPI.ProcesarMovimientosAsync(listaMovimientos);
+
+            // Manejar el resultado de la llamada
+            if (resultado.Success)
+            {
+                MessageBox.Show("Lista de movimientos procesada exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show($"Error al procesar la lista de movimientos: {resultado.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void obtenerImpuestos_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private async void ProcesaLoteImp_Click(object sender, RoutedEventArgs e)
+        {
+            // Crear tres registros de Impuesto
+            var impuesto1 = new Biblioteca.Impuesto
+            {
+                ID = 1,
+                CuentaID = 1,
+                UsuarioID = 1,
+                Editado = DateTime.Now,
+                TipoID = 1,
+                TesoreriaID = null,
+                AdminID = null,
+                ObraID = null,
+                EntidadID = null,
+                EntidadTipo = null,
+                CompraID = null,
+                ContratoID = null,
+                FacturaID = null,
+                OrdenID = null,
+                CobroID = null,
+                PagoID = null,
+                Fecha = DateTime.Now,
+                Comprobante = 12345,
+                Descrip = "Impuesto de prueba 1",
+                Notas = "Notas de prueba 1",
+                Previsto = false,
+                SumaPesos = 100,
+                RestaPesos = 0,
+                Alicuota = 21,
+                MovimientoID = null,
+                Accion = 'A'
+            };
+
+            var impuesto2 = new Biblioteca.Impuesto
+            {
+                ID = 2,
+                CuentaID = 2,
+                UsuarioID = 2,
+                Editado = DateTime.Now,
+                TipoID = 2,
+                TesoreriaID = null,
+                AdminID = null,
+                ObraID = null,
+                EntidadID = null,
+                EntidadTipo = null,
+                CompraID = null,
+                ContratoID = null,
+                FacturaID = null,
+                OrdenID = null,
+                CobroID = null,
+                PagoID = null,
+                Fecha = DateTime.Now,
+                Comprobante = 67890,
+                Descrip = "Impuesto de prueba 2",
+                Notas = "Notas de prueba 2",
+                Previsto = false,
+                SumaPesos = 200,
+                RestaPesos = 0,
+                Alicuota = 21,
+                MovimientoID = null,
+                Accion = 'M'
+            };
+
+            var impuesto3 = new Biblioteca.Impuesto
+            {
+                ID = 3,
+                CuentaID = 3,
+                UsuarioID = 3,
+                Editado = DateTime.Now,
+                TipoID = 3,
+                TesoreriaID = null,
+                AdminID = null,
+                ObraID = null,
+                EntidadID = null,
+                EntidadTipo = null,
+                CompraID = null,
+                ContratoID = null,
+                FacturaID = null,
+                OrdenID = null,
+                CobroID = null,
+                PagoID = null,
+                Fecha = DateTime.Now,
+                Comprobante = 11223,
+                Descrip = "Impuesto de prueba 3",
+                Notas = "Notas de prueba 3",
+                Previsto = false,
+                SumaPesos = 300,
+                RestaPesos = 0,
+                Alicuota = 21,
+                MovimientoID = null,
+                Accion = 'D'
+            };
+
+            // Crear la lista de Impuesto
+            var listaImpuestos = new List<Biblioteca.Impuesto> { impuesto1, impuesto2, impuesto3 };
+
+            // Llamar al método ProcesarImpuestosAsync
+            var resultado = await ConsultasAPI.ProcesarImpuestosAsync(listaImpuestos);
+
+            // Manejar el resultado de la llamada
+            if (resultado.Success)
+            {
+                MessageBox.Show("Lista de impuestos procesada exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show($"Error al procesar la lista de impuestos: {resultado.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
     }
 }

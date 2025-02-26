@@ -195,6 +195,80 @@ namespace DataObra.Datos
             }
         }
 
+        public static async Task<(bool Success, string Message)> ProcesarMovimientosAsync(List<Movimiento> listaMovimientos)
+        {
+            var item = new QueueItem
+            {
+                Id = evento,
+                Url = $"{App.BaseUrl}movimientos/procesar",
+                Method = HttpMethod.Post,
+                Data = listaMovimientos
+            };
+            _queueManager.Enqueue(item);
+            evento++;
+
+            try
+            {
+                var response = await item.ResponseTaskCompletionSource.Task;
+                var responseString = await response.Content.ReadAsStringAsync();
+
+                // Deserializar la respuesta JSON
+                var resultado = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                if (resultado.Success)
+                {
+                    return (true, "Lista de movimientos procesada exitosamente.");
+                }
+                else
+                {
+                    return (false, resultado.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error: {ex.Message}");
+            }
+        }
+
+
+        public static async Task<(bool Success, string Message)> ProcesarImpuestosAsync(List<Impuesto> listaImpuestos)
+        {
+            var item = new QueueItem
+            {
+                Id = evento,
+                Url = $"{App.BaseUrl}impuestos/procesar",
+                Method = HttpMethod.Post,
+                Data = listaImpuestos
+            };
+            _queueManager.Enqueue(item);
+            evento++;
+
+            try
+            {
+                var response = await item.ResponseTaskCompletionSource.Task;
+                var responseString = await response.Content.ReadAsStringAsync();
+
+                // Deserializar la respuesta JSON
+                var resultado = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                if (resultado.Success)
+                {
+                    return (true, "Lista de impuestos procesada exitosamente.");
+                }
+                else
+                {
+                    return (false, resultado.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error: {ex.Message}");
+            }
+        }
+
+
+
+
         #endregion
 
         // Usuario Get y validación

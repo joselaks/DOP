@@ -100,6 +100,131 @@ namespace Servidor.Repositorios
             }
         }
 
+        public async Task ProcesarMovimientosAsync(List<Movimiento> listaMovimientos)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var table = new DataTable();
+                table.Columns.Add("ID", typeof(int));
+                table.Columns.Add("CuentaID", typeof(short));
+                table.Columns.Add("UsuarioID", typeof(int));
+                table.Columns.Add("Editado", typeof(DateTime));
+                table.Columns.Add("TipoID", typeof(int));
+                table.Columns.Add("Descrip", typeof(string));
+                table.Columns.Add("TesoreriaID", typeof(int));
+                table.Columns.Add("AdminID", typeof(int));
+                table.Columns.Add("ObraID", typeof(int));
+                table.Columns.Add("EntidadID", typeof(int));
+                table.Columns.Add("EntidadTipo", typeof(int));
+                table.Columns.Add("CompraID", typeof(int));
+                table.Columns.Add("ContratoID", typeof(int));
+                table.Columns.Add("FacturaID", typeof(int));
+                table.Columns.Add("GastoID", typeof(int));
+                table.Columns.Add("OrdenID", typeof(int));
+                table.Columns.Add("CobroID", typeof(int));
+                table.Columns.Add("PagoID", typeof(int));
+                table.Columns.Add("Fecha", typeof(DateTime));
+                table.Columns.Add("Comprobante", typeof(int));
+                table.Columns.Add("Numero", typeof(int));
+                table.Columns.Add("Notas", typeof(string));
+                table.Columns.Add("ConciliadoFecha", typeof(DateTime));
+                table.Columns.Add("ConciliadoUsuario", typeof(int));
+                table.Columns.Add("ChequeProcesado", typeof(bool));
+                table.Columns.Add("Previsto", typeof(bool));
+                table.Columns.Add("Desdoblado", typeof(bool));
+                table.Columns.Add("SumaPesos", typeof(decimal));
+                table.Columns.Add("RestaPesos", typeof(decimal));
+                table.Columns.Add("SumaDolares", typeof(decimal));
+                table.Columns.Add("RestaDolares", typeof(decimal));
+                table.Columns.Add("Cambio", typeof(decimal));
+                table.Columns.Add("RelMov", typeof(bool));
+                table.Columns.Add("ImpuestoID", typeof(int));
+                table.Columns.Add("Accion", typeof(char));
+
+                foreach (var item in listaMovimientos)
+                {
+                    table.Rows.Add(
+                        item.ID, item.CuentaID, item.UsuarioID, item.Editado, item.TipoID, item.Descrip,
+                        item.TesoreriaID, item.AdminID, item.ObraID, item.EntidadID, item.EntidadTipo,
+                        item.CompraID, item.ContratoID, item.FacturaID, item.GastoID, item.OrdenID,
+                        item.CobroID, item.PagoID, item.Fecha, item.Comprobante, item.Numero, item.Notas,
+                        item.ConciliadoFecha, item.ConciliadoUsuario, item.ChequeProcesado, item.Previsto,
+                        item.Desdoblado, item.SumaPesos, item.RestaPesos, item.SumaDolares, item.RestaDolares,
+                        item.Cambio, item.RelMov, item.ImpuestoID, item.Accion
+                    );
+                }
+
+                var parameters = new DynamicParameters();
+                parameters.Add("@ListaMovimientos", table.AsTableValuedParameter("dbo.MovimientoType"));
+
+                try
+                {
+                    await db.ExecuteAsync("ProcesaMovimientos", parameters, commandType: CommandType.StoredProcedure);
+                }
+                catch (SqlException ex)
+                {
+                    throw new Exception($"Error al procesar la lista de movimientos: {ex.Message}", ex);
+                }
+            }
+        }
+
+        public async Task ProcesarImpuestosAsync(List<Impuesto> listaImpuestos)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var table = new DataTable();
+                table.Columns.Add("ID", typeof(int));
+                table.Columns.Add("CuentaID", typeof(short));
+                table.Columns.Add("UsuarioID", typeof(int));
+                table.Columns.Add("Editado", typeof(DateTime));
+                table.Columns.Add("TipoID", typeof(int));
+                table.Columns.Add("TesoreriaID", typeof(int));
+                table.Columns.Add("AdminID", typeof(int));
+                table.Columns.Add("ObraID", typeof(int));
+                table.Columns.Add("EntidadID", typeof(int));
+                table.Columns.Add("EntidadTipo", typeof(char));
+                table.Columns.Add("CompraID", typeof(int));
+                table.Columns.Add("ContratoID", typeof(int));
+                table.Columns.Add("FacturaID", typeof(int));
+                table.Columns.Add("OrdenID", typeof(int));
+                table.Columns.Add("CobroID", typeof(int));
+                table.Columns.Add("PagoID", typeof(int));
+                table.Columns.Add("Fecha", typeof(DateTime));
+                table.Columns.Add("Comprobante", typeof(int));
+                table.Columns.Add("Descrip", typeof(string));
+                table.Columns.Add("Notas", typeof(string));
+                table.Columns.Add("Previsto", typeof(bool));
+                table.Columns.Add("SumaPesos", typeof(decimal));
+                table.Columns.Add("RestaPesos", typeof(decimal));
+                table.Columns.Add("Alicuota", typeof(decimal));
+                table.Columns.Add("MovimientoID", typeof(int));
+                table.Columns.Add("Accion", typeof(char));
+
+                foreach (var item in listaImpuestos)
+                {
+                    table.Rows.Add(
+                        item.ID, item.CuentaID, item.UsuarioID, item.Editado, item.TipoID, item.TesoreriaID,
+                        item.AdminID, item.ObraID, item.EntidadID, item.EntidadTipo, item.CompraID, item.ContratoID,
+                        item.FacturaID, item.OrdenID, item.CobroID, item.PagoID, item.Fecha, item.Comprobante,
+                        item.Descrip, item.Notas, item.Previsto, item.SumaPesos, item.RestaPesos, item.Alicuota,
+                        item.MovimientoID, item.Accion
+                    );
+                }
+
+                var parameters = new DynamicParameters();
+                parameters.Add("@ListaImpuestos", table.AsTableValuedParameter("dbo.ImpuestoType"));
+
+                try
+                {
+                    await db.ExecuteAsync("ProcesaImpuestos", parameters, commandType: CommandType.StoredProcedure);
+                }
+                catch (SqlException ex)
+                {
+                    throw new Exception($"Error al procesar la lista de impuestos: {ex.Message}", ex);
+                }
+            }
+        }
+
 
 
 

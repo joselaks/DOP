@@ -250,6 +250,45 @@ dod.MapPut("/", async (rDocumentos repositorio, DocumentoDet documento) =>
 
 #endregion
 
+#region Grupo de rutas: /movimientos
+
+var mov = app.MapGroup("/movimientos");
+
+mov.MapPost("/procesar", async (rDocumentos repositorio, List<Movimiento> listaMovimientos) =>
+{
+    try
+    {
+        await repositorio.ProcesarMovimientosAsync(listaMovimientos);
+        return Results.Ok(new { Success = true, Message = "Lista de movimientos procesada exitosamente." });
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(new { Success = false, Message = ex.Message });
+    }
+}).RequireAuthorization();
+
+#endregion
+
+#region Grupo de rutas: /impuestos
+
+var imp = app.MapGroup("/impuestos");
+
+imp.MapPost("/procesar", async (rDocumentos repositorio, List<Impuesto> listaImpuestos) =>
+{
+    try
+    {
+        await repositorio.ProcesarImpuestosAsync(listaImpuestos);
+        return Results.Ok(new { Success = true, Message = "Lista de impuestos procesada exitosamente." });
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(new { Success = false, Message = ex.Message });
+    }
+}).RequireAuthorization();
+
+#endregion
+
+
 #region Grupo de rutas: /agrupadores
 
 var agr = app.MapGroup("/agrupadores");
