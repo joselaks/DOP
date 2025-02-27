@@ -359,13 +359,13 @@ namespace DataObra.Datos
 
         }
 
-        // Obtiene el detalle de un documento, especificando el ID y el nombre del tipo de documento ( FacturaID, RemitoID, etc)
+        // Obtiene el detalle de un documento, especificando cuentaID,  el ID y el nombre del tipo de documento ( FacturaID, RemitoID, etc)
         private async void obtenerDocDet_Click(object sender, RoutedEventArgs e)
         {
             #region Datos para testeo
-            int id = 2; // ID del documento a obtener
+            int id = 1; // ID del documento a obtener
             string fieldName = "FacturaID"; // Nombre del campo por el cual se va a filtrar
-            short cuentaID = 1; // ID de la cuenta
+            short cuentaID = 3; // ID de la cuenta
             #endregion
 
             // Código a utilizar
@@ -933,9 +933,9 @@ namespace DataObra.Datos
         private async void obtenerMovimientos_Click(object sender, RoutedEventArgs e)
         {
             #region Datos para testeo
-            int id = 2; // ID del movimiento a obtener
+            int id = 1; // ID del movimiento a obtener
             string fieldName = "FacturaID"; // Nombre del campo por el cual se va a filtrar
-            short cuentaID = 1; // ID de la cuenta
+            short cuentaID = 3; // ID de la cuenta
             #endregion
 
             // Código a utilizar
@@ -963,12 +963,12 @@ namespace DataObra.Datos
             // Crear tres registros de Movimiento
             var movimiento1 = new Biblioteca.Movimiento
             {
-                ID = 1,
+                ID = 4,
                 CuentaID = 1,
                 UsuarioID = 1,
                 Editado = DateTime.Now,
                 TipoID = 1,
-                Descrip = "Movimiento de prueba 1",
+                Descrip = "Movimiento de prueba 1 pero ahora 4",
                 TesoreriaID = null,
                 AdminID = null,
                 ObraID = null,
@@ -997,12 +997,12 @@ namespace DataObra.Datos
                 Cambio = 1,
                 RelMov = false,
                 ImpuestoID = null,
-                Accion = 'A'
+                Accion = 'M'
             };
 
             var movimiento2 = new Biblioteca.Movimiento
             {
-                ID = 2,
+                ID = 5,
                 CuentaID = 2,
                 UsuarioID = 2,
                 Editado = DateTime.Now,
@@ -1036,7 +1036,7 @@ namespace DataObra.Datos
                 Cambio = 1,
                 RelMov = false,
                 ImpuestoID = null,
-                Accion = 'M'
+                Accion = 'D'
             };
 
             var movimiento3 = new Biblioteca.Movimiento
@@ -1062,7 +1062,7 @@ namespace DataObra.Datos
                 Fecha = DateTime.Now,
                 Comprobante = 11223,
                 Numero = null,
-                Notas = "Notas de prueba 3",
+                Notas = "Notas de prueba agregado",
                 ConciliadoFecha = DateTime.Now,
                 ConciliadoUsuario = 3,
                 ChequeProcesado = false,
@@ -1075,7 +1075,7 @@ namespace DataObra.Datos
                 Cambio = 1,
                 RelMov = false,
                 ImpuestoID = null,
-                Accion = 'D'
+                Accion = 'A'
             };
 
             // Crear la lista de Movimiento
@@ -1095,17 +1095,12 @@ namespace DataObra.Datos
             }
         }
 
-        private void obtenerImpuestos_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private async void ProcesaLoteImp_Click(object sender, RoutedEventArgs e)
         {
             // Crear tres registros de Impuesto
             var impuesto1 = new Biblioteca.Impuesto
             {
-                ID = 1,
+                ID = 10,
                 CuentaID = 1,
                 UsuarioID = 1,
                 Editado = DateTime.Now,
@@ -1117,26 +1112,26 @@ namespace DataObra.Datos
                 EntidadTipo = null,
                 CompraID = null,
                 ContratoID = null,
-                FacturaID = null,
+                FacturaID = 1,
                 OrdenID = null,
                 CobroID = null,
                 PagoID = null,
                 Fecha = DateTime.Now,
                 Comprobante = 12345,
-                Descrip = "Impuesto de prueba 1",
+                Descrip = "Impuesto de prueba 10",
                 Notas = "Notas de prueba 1",
                 Previsto = false,
                 SumaPesos = 100,
                 RestaPesos = 0,
                 Alicuota = 21,
                 MovimientoID = null,
-                Accion = 'A'
+                Accion = 'M'
             };
 
             var impuesto2 = new Biblioteca.Impuesto
             {
-                ID = 2,
-                CuentaID = 2,
+                ID = 11,
+                CuentaID = 1,
                 UsuarioID = 2,
                 Editado = DateTime.Now,
                 TipoID = 2,
@@ -1147,7 +1142,7 @@ namespace DataObra.Datos
                 EntidadTipo = null,
                 CompraID = null,
                 ContratoID = null,
-                FacturaID = null,
+                FacturaID = 2,
                 OrdenID = null,
                 CobroID = null,
                 PagoID = null,
@@ -1160,16 +1155,16 @@ namespace DataObra.Datos
                 RestaPesos = 0,
                 Alicuota = 21,
                 MovimientoID = null,
-                Accion = 'M'
+                Accion = 'D'
             };
 
             var impuesto3 = new Biblioteca.Impuesto
             {
                 ID = 3,
-                CuentaID = 3,
+                CuentaID = 2,
                 UsuarioID = 3,
                 Editado = DateTime.Now,
-                TipoID = 3,
+                TipoID = 5,
                 TesoreriaID = null,
                 AdminID = null,
                 ObraID = null,
@@ -1177,20 +1172,20 @@ namespace DataObra.Datos
                 EntidadTipo = null,
                 CompraID = null,
                 ContratoID = null,
-                FacturaID = null,
-                OrdenID = null,
+                FacturaID = 1,
+                OrdenID = 22,
                 CobroID = null,
                 PagoID = null,
                 Fecha = DateTime.Now,
                 Comprobante = 11223,
-                Descrip = "Impuesto de prueba 3",
+                Descrip = "Impuesto de prueba agregado",
                 Notas = "Notas de prueba 3",
                 Previsto = false,
                 SumaPesos = 300,
                 RestaPesos = 0,
                 Alicuota = 21,
                 MovimientoID = null,
-                Accion = 'D'
+                Accion = 'A'
             };
 
             // Crear la lista de Impuesto
@@ -1213,7 +1208,7 @@ namespace DataObra.Datos
         private async void obtenerImpuestos_Click_1(object sender, RoutedEventArgs e)
         {
             #region Datos para testeo
-            int id = 2; // ID del impuesto a obtener
+            int id = 1; // ID del impuesto a obtener
             string fieldName = "FacturaID"; // Nombre del campo por el cual se va a filtrar
             short cuentaID = 1; // ID de la cuenta
             #endregion
