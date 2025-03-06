@@ -30,7 +30,7 @@ namespace DataObra.Datos
         // Solicita definición cuando la operación rebotó 3 veces
         private static async Task<bool> OnRequestRetryConfirmation(QueueItem item)
         {
-            var result = MessageBox.Show($"La solicitud a {item.Url} ha fallado tres veces. ¿Deseas seguir intentándolo?", "Reintentar Solicitud", MessageBoxButton.YesNo);
+            var result = MessageBox.Show($"La solicitud a {item.Url} ha fallado. ¿Deseas seguir intentándolo?", "Reintentar Solicitud", MessageBoxButton.YesNo);
             return result == MessageBoxResult.Yes;
         }
 
@@ -97,7 +97,6 @@ namespace DataObra.Datos
             }
         }
 
-        // Nuevo método para procesar la lista de detalles de documentos
         public static async Task<(bool Success, string Message)> ProcesarListaDetalleDocumentoAsync(List<DocumentoDet> listaDetalleDocumento)
         {
             var item = new QueueItem
@@ -112,26 +111,48 @@ namespace DataObra.Datos
 
             try
             {
+                // Esperar la respuesta
                 var response = await item.ResponseTaskCompletionSource.Task;
+
+                // Leer siempre el contenido de la respuesta, incluso en caso de error
                 var responseString = await response.Content.ReadAsStringAsync();
 
-                // Deserializar la respuesta JSON
-                var resultado = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                // Intentar deserializar la respuesta JSON
+                var resultado = JsonSerializer.Deserialize<ResultadoOperacion>(
+                    responseString,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+                );
 
-                if (resultado.Success)
+                if (response.IsSuccessStatusCode)
                 {
-                    return (true, "Lista de detalles de documentos procesada exitosamente.");
+                    // Retornar el resultado en caso de éxito
+                    return (resultado.Success, resultado.Message);
                 }
                 else
                 {
-                    return (false, resultado.Message);
+                    // Retornar el mensaje del servidor en caso de error
+                    return (false, resultado?.Message ?? "Error desconocido del servidor.");
                 }
+            }
+            catch (HttpRequestException httpEx)
+            {
+                // Manejar errores HTTP específicos
+                return (false, $"Error HTTP: {httpEx.Message}");
             }
             catch (Exception ex)
             {
+                // Manejar cualquier otro error
                 return (false, $"Error: {ex.Message}");
             }
         }
+
+
+
+
+
+
+
+
 
 
 

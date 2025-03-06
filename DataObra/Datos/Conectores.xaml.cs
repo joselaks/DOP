@@ -707,7 +707,7 @@ namespace DataObra.Datos
                 RestaPesos = 0,
                 Alicuota = 21,
                 MovimientoID = null,
-                Accion = 'M'
+                Accion = 'A'
             };
 
             var infoDocumento = new InfoDocumento
@@ -736,7 +736,7 @@ namespace DataObra.Datos
             // Crear tres registros de DocumentoDet
             var documentoDet1 = new Biblioteca.DocumentoDet
             {
-                ID = 25,
+                ID = 250,
                 CuentaID = 1,
                 UsuarioID = 1,
                 Editado = DateTime.Now,
@@ -765,12 +765,12 @@ namespace DataObra.Datos
                 SumaDolares = 10,
                 RestaDolares = 0,
                 Cambio = 1,
-                Accion = 'M'
+                Accion = 'D'
             };
 
             var documentoDet2 = new Biblioteca.DocumentoDet
             {
-                ID = 26,
+                ID = 260,
                 CuentaID = 2,
                 UsuarioID = 2,
                 Editado = DateTime.Now,
@@ -799,7 +799,7 @@ namespace DataObra.Datos
                 SumaDolares = 20,
                 RestaDolares = 0,
                 Cambio = 1,
-                Accion = 'D'
+                Accion = 'M'
             };
 
             var documentoDet3 = new Biblioteca.DocumentoDet
@@ -824,7 +824,7 @@ namespace DataObra.Datos
                 RubroID = null,
                 TareaID = null,
                 Fecha = DateTime.Now,
-                ArticuloDescrip = "Nuevo",
+                ArticuloDescrip = "Nuevo solo",
                 ArticuloCantSuma = 30,
                 ArticuloCantResta = 0,
                 ArticuloPrecio = 300,
@@ -833,7 +833,7 @@ namespace DataObra.Datos
                 SumaDolares = 30,
                 RestaDolares = 0,
                 Cambio = 1,
-                Accion = 'A'
+                Accion = 'M'
             };
 
             // Crear la lista de DocumentoDet

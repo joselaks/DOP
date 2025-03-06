@@ -43,7 +43,7 @@ namespace DataObra.Datos
             {
                 bool success = false;
                 int retryCount = 0;
-                const int maxRetries = 3;
+                const int maxRetries = 1;
 
                 while (!success && retryCount < maxRetries)
                 {
@@ -104,18 +104,29 @@ namespace DataObra.Datos
 
         private async Task<HttpResponseMessage> SendRequest(QueueItem item)
         {
+            HttpResponseMessage response;
             if (item.Method == HttpMethod.Get || item.Method == HttpMethod.Delete)
             {
                 var query = item.Parameters != null ? "?" + string.Join("&", item.Parameters.Select(p => $"{p.Key}={p.Value}")) : string.Empty;
-                return await HttpClient.SendAsync(new HttpRequestMessage(item.Method, item.Url + query));
+                response = await HttpClient.SendAsync(new HttpRequestMessage(item.Method, item.Url + query));
             }
             else
             {
                 var json = JsonSerializer.Serialize(item.Data, jsonSerializerOptions);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                return await HttpClient.SendAsync(new HttpRequestMessage(item.Method, item.Url) { Content = content });
+                response = await HttpClient.SendAsync(new HttpRequestMessage(item.Method, item.Url) { Content = content });
             }
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var responseString = await response.Content.ReadAsStringAsync();
+                var resultado = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, jsonSerializerOptions);
+                throw new HttpRequestException(resultado?.Message ?? "Error desconocido del servidor");
+            }
+
+            return response;
         }
+
 
         private void LogRequest(QueueItem item, bool success, string errorMessage, string status)
         {

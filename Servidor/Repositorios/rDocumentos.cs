@@ -95,7 +95,7 @@ namespace Servidor.Repositorios
                 }
                 catch (SqlException ex)
                 {
-                    throw new Exception($"Error al procesar la lista de detalles de documentos: {ex.Message}", ex);
+                    throw new Exception($"{ex.Message}", ex);
                 }
             }
         }
