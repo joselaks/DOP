@@ -50,7 +50,12 @@ namespace DataObra.Interfaz.Ventanas
             this.espera.IsBusy = true;
 
             // Código a utilizar para la validación
-            var respuesta = await ConsultasAPI.ValidarUsuarioAsync(txtUsuario.Text, txtContraseña.Password);
+            // En este caso no usa la cola de envios al servidor. Se conecta directamente
+            var respuesta = await DatosWeb.ValidarUsuarioAsync(txtUsuario.Text, txtContraseña.Password);
+
+
+
+            //var respuesta = await ConsultasAPI.ValidarUsuarioAsync(txtUsuario.Text, txtContraseña.Password);
 
             // if (respuesta.Success && respuesta.Usuario != null)
             // {

@@ -20,7 +20,6 @@ namespace DataObra.Documentos
     {
         string Tipo;
         public Biblioteca.Documento oActivo = new Biblioteca.Documento();
-        DatosWeb datosWeb;
 
         public VenDocumento(string pTipo, int pID)
         {

@@ -13,21 +13,21 @@ using System.Windows;
 
 namespace DataObra.Datos
 {
-    public class DatosWeb
+    public static class DatosWeb
     {
-        public HttpClient httpClient;
-        public JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
-        public DatosWeb()
+        private static readonly HttpClient httpClient;
+        private static readonly JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
+
+        static DatosWeb()
         {
             // En cualquier parte de tu aplicación
             httpClient = ((App)Application.Current).HttpClient;
-
         }
 
         // Procedimiento para validar usuario. Una vez verificado graba el Token en el httpClient para las próximas consultas
-        public async Task<(bool Success, string Message, CredencialesUsuario Usuario)> ValidarUsuarioAsync(string email, string pass)
+        public static async Task<(bool Success, string Message, CredencialesUsuario Usuario)> ValidarUsuarioAsync(string email, string pass)
         {
-            string url = $"https://localhost:7255/usuarios/validacion?email={email}&pass={pass}";
+            string url = $"{App.BaseUrl}usuarios/validacion?email={email}&pass={pass}";
             try
             {
                 var response = await httpClient.GetAsync(url);
@@ -38,9 +38,8 @@ namespace DataObra.Datos
                 {
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", usuario.Token);
                     return (true, "Usuario validado exitosamente.", usuario);
-
                 }
-                return (true, "Usuario inexistene.", usuario);
+                return (true, "Usuario inexistente.", usuario);
             }
             catch (HttpRequestException httpEx)
             {
@@ -53,9 +52,8 @@ namespace DataObra.Datos
         }
 
         // Procedimiento para obtener todos los documentos de una cuenta
-        public async Task<(bool Success, string Message, List<Documento> Documentos)> GetDocumentosPorCuentaIDAsync(short cuentaID)
+        public static async Task<(bool Success, string Message, List<Documento> Documentos)> GetDocumentosPorCuentaIDAsync(short cuentaID)
         {
-            //var url = $"https://localhost:7255/documentos/cuenta/{cuentaID}";
             var url = $"{App.BaseUrl}documentos/cuenta/{cuentaID}";
 
             try
@@ -77,7 +75,7 @@ namespace DataObra.Datos
         }
 
         // Procedimiento que inserta un nuevo documento en la base de datos
-        public async Task<(bool Success, string Message)> PostDocumentoAsync(Documento documento)
+        public static async Task<(bool Success, string Message)> PostDocumentoAsync(Documento documento)
         {
             var url = "https://localhost:7255/documentos/";
             var content = new StringContent(JsonSerializer.Serialize(documento), Encoding.UTF8, "application/json");
@@ -102,8 +100,8 @@ namespace DataObra.Datos
             }
         }
 
-        // Procedimiento que modifica un docuemnto existente en la base de datos
-        public async Task<(bool Success, string Message)> PutDocumentoAsync(Documento documento)
+        // Procedimiento que modifica un documento existente en la base de datos
+        public static async Task<(bool Success, string Message)> PutDocumentoAsync(Documento documento)
         {
             var url = $"https://localhost:7255/documentos/{documento.ID}";
             var content = new StringContent(JsonSerializer.Serialize(documento), Encoding.UTF8, "application/json");
@@ -125,7 +123,7 @@ namespace DataObra.Datos
         }
 
         // Procedimiento que borra un documento de la base de datos
-        public async Task<(bool Success, string Message)> DeleteDocumentoAsync(int id)
+        public static async Task<(bool Success, string Message)> DeleteDocumentoAsync(int id)
         {
             var url = $"https://localhost:7255/documentos/{id}";
 
@@ -146,7 +144,7 @@ namespace DataObra.Datos
         }
 
         // Procedimiento que obtiene un documento con su ID
-        public async Task<(bool Success, string Message, Documento Documento)> ObtenerDocumentoPorIDAsync(int id)
+        public static async Task<(bool Success, string Message, Documento Documento)> ObtenerDocumentoPorIDAsync(int id)
         {
             var url = $"https://localhost:7255/documentos/id/{id}";
 
@@ -166,7 +164,6 @@ namespace DataObra.Datos
             {
                 return (false, $"Error: {ex.Message}", null);
             }
-
         }
     }
 }

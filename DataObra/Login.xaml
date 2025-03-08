@@ -1,44 +1,96 @@
-﻿<Window x:Class="DataObra.Login"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Login Usuario" Height="450" Width="880">
+﻿<Window
+    x:Class="DataObra.Login"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Login Usuario"
+    Width="880"
+    Height="450">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="80"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="80" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <!-- Encabezado -->
-        <TextBlock Text="DataObra" Foreground="Orange" FontSize="44" FontWeight="Black"  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20" />
-        <TextBlock Text="Versión Constructoras" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20" FontSize="14" FontStyle="Italic" />
+        <!--  Encabezado  -->
+        <TextBlock
+            Margin="20"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            FontSize="44"
+            FontWeight="Black"
+            Foreground="Orange"
+            Text="DataObra" />
+        <TextBlock
+            Margin="20"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            FontSize="14"
+            FontStyle="Italic"
+            Text="Versión Constructoras" />
 
-        <!-- Contenido Principal -->
-        <Grid Grid.Row="1" Margin="10" Name="MainContent">
+        <!--  Contenido Principal  -->
+        <Grid
+            Name="MainContent"
+            Grid.Row="1"
+            Margin="10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="3*" />
             </Grid.ColumnDefinitions>
 
-            <!-- Sección de Inicio de Sesión -->
-            <StackPanel Grid.Column="0" Margin="10" Background="#F0F0F0" Name="LoginSection">
-                <TextBlock Text="Iniciar Sesión" FontSize="20" Margin="0,0,0,10"/>
-                <TextBox Name="txtUsuario"  Margin="0,0,0,10" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
-                <PasswordBox Name="txtContraseña"  Margin="0,0,0,10" GotFocus="PasswordBox_GotFocus" LostFocus="PasswordBox_LostFocus"/>
-                <Button Content="Acceder" Background="#007ACC" Foreground="White" Click="VerificaUsuario_Click"/>
-                <TextBlock x:Name="textodemo" Text="Si no esta registrado ingresa como Demo" Margin="0,20,0,5" HorizontalAlignment="Center"/>
+            <!--  Sección de Inicio de Sesión  -->
+            <StackPanel
+                Name="LoginSection"
+                Grid.Column="0"
+                Margin="10"
+                Background="#F0F0F0">
+                <TextBlock
+                    Margin="0,0,0,10"
+                    FontSize="20"
+                    Text="Iniciar Sesión" />
+                <TextBox
+                    Name="txtUsuario"
+                    Margin="0,0,0,10"
+                    GotFocus="TextBox_GotFocus"
+                    LostFocus="TextBox_LostFocus" />
+                <PasswordBox
+                    Name="txtContraseña"
+                    Margin="0,0,0,10"
+                    GotFocus="PasswordBox_GotFocus"
+                    LostFocus="PasswordBox_LostFocus" />
+                <Button
+                    Background="#007ACC"
+                    Click="VerificaUsuario_Click"
+                    Content="Acceder"
+                    Foreground="White" />
+                <TextBlock
+                    x:Name="textodemo"
+                    Margin="0,20,0,5"
+                    HorizontalAlignment="Center"
+                    Text="Si no esta registrado ingresa como Demo" />
             </StackPanel>
 
-            <!-- Sección de Novedades -->
-            <StackPanel Grid.Column="1" Margin="10" Background="#FFFFFF"  Name="NewsSection">
-                <TextBlock Text="Últimas Novedades del Mercado de la Construcción" FontSize="20" Margin="0,0,0,10"/>
-                <TextBlock Text="1. Innovación en materiales: Nuevos tipos de materiales sostenibles y la impresión 3D están revolucionando el mercado." Margin="0,0,0,5"/>
-                <TextBlock Text="2. Edificación modular: La construcción fuera del sitio está ganando popularidad." Margin="0,0,0,5"/>
-                <TextBlock Text="3. Software de gestión: Herramientas como Oracle Construction Intelligence Cloud Analytics están mejorando la gestión de proyectos." Margin="0,0,0,5"/>
+            <!--  Sección de Novedades  -->
+            <StackPanel
+                Name="NewsSection"
+                Grid.Column="1"
+                Margin="10"
+                Background="#FFFFFF">
+                <TextBlock
+                    Margin="0,0,0,10"
+                    FontSize="20"
+                    Text="Últimas Novedades del Mercado de la Construcción" />
+                <TextBlock Margin="0,0,0,5" Text="1. Innovación en materiales: Nuevos tipos de materiales sostenibles y la impresión 3D están revolucionando el mercado." />
+                <TextBlock Margin="0,0,0,5" Text="2. Edificación modular: La construcción fuera del sitio está ganando popularidad." />
+                <TextBlock Margin="0,0,0,5" Text="3. Software de gestión: Herramientas como Oracle Construction Intelligence Cloud Analytics están mejorando la gestión de proyectos." />
 
-                <TextBlock Text="Novedades del Software" FontSize="20" Margin="0,10,0,10"/>
-                <TextBlock Text="1. Actualización de seguridad: Nueva versión con mejoras en la seguridad de datos." Margin="0,0,0,5"/>
-                <TextBlock Text="2. Integración con BIM: Ahora compatible con modelos de información de construcción." Margin="0,0,0,5"/>
-                <TextBlock Text="3. Mejora en la interfaz: Diseño más intuitivo y fácil de usar." Margin="0,0,0,5"/>
+                <TextBlock
+                    Margin="0,10,0,10"
+                    FontSize="20"
+                    Text="Novedades del Software" />
+                <TextBlock Margin="0,0,0,5" Text="1. Actualización de seguridad: Nueva versión con mejoras en la seguridad de datos." />
+                <TextBlock Margin="0,0,0,5" Text="2. Integración con BIM: Ahora compatible con modelos de información de construcción." />
+                <TextBlock Margin="0,0,0,5" Text="3. Mejora en la interfaz: Diseño más intuitivo y fácil de usar." />
             </StackPanel>
         </Grid>
     </Grid>

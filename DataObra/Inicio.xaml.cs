@@ -30,7 +30,6 @@ namespace DataObra
         NavAgrupador navAgrupador;
         NavDocumento navDocumentos;
         NavInsumo navInsumos;
-        DatosWeb datosWeb;
 
         public readonly HttpQueueManager Inicio_QueueManager;
 
@@ -43,7 +42,6 @@ namespace DataObra
             this.InicioLogListBox.ItemsSource = Inicio_QueueManager.Logs;
             this.InicioGrillaLogs.ItemsSource = Inicio_QueueManager.GetLogs();
 
-            datosWeb = new DatosWeb();
             Solapa = "Inicio";
 
             GrupoAgrupadores();
