@@ -50,7 +50,7 @@
 
             <!--  Sección de Inicio de Sesión  -->
 
-            <syncfusion:SfBusyIndicator x:Name="espera" IsBusy="False">
+            <syncfusion:SfBusyIndicator x:Name="esperaLogin" IsBusy="False">
                 <StackPanel
                     Name="LoginSection"
                     Grid.Column="0"

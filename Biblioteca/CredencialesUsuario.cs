@@ -8,7 +8,7 @@ namespace Biblioteca
 {
     public class CredencialesUsuario
     {
-        public string Token { get; set; }
+        public string? Token { get; set; }
         //public DateTime Expiracion { get; set; }
         public Usuario? DatosUsuario { get; set; }
 
