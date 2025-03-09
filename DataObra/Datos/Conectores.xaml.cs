@@ -157,19 +157,7 @@ namespace DataObra.Datos
             #endregion
 
 
-            // Codigo a utilizar
-            //var respuesta = await ConsultasAPI.PostDocumentoRelAsync(documentoRel);
-
-
-            //Respuestas
-            //bool resultadoBorrado = respuesta.Success;  // true si lo borró, false si no existia el registro
-            //string mensaje = respuesta.Message;
-
-            ////Mensaje para testeo
-            //if (respuesta.Success != null)
-            //{
-            //    MessageBox.Show(respuesta.Success + " " + respuesta.Message);
-            //}
+            
         }
 
         private async void nuevoAgrupador_Click(object sender, RoutedEventArgs e)
@@ -192,16 +180,7 @@ namespace DataObra.Datos
 
             #endregion
 
-            // Codigo a utilizar
-            //var respuesta = await ConsultasAPI.PostAgrupadorAsync(agupador);
-
-            //Respuestas
-            //int? nuevodoc = respuesta.Id;
-            //bool conexionExitosa = respuesta.Success;
-            //string mensaje = respuesta.Message;
-
-            ////Mensaje para testeo
-            //MessageBox.Show(respuesta.Success + " " + mensaje + " " + nuevodoc.ToString());
+            
 
         }
 
@@ -244,16 +223,7 @@ namespace DataObra.Datos
 
             #endregion
 
-            // Código a utilizar
-            //var respuesta = await ConsultasAPI.PostDocumentoDetAsync(nuevoDocDet);
-
-            // Respuestas
-            //int? nuevoDetalle = respuesta.id;
-            //bool conexionExitosa = respuesta.Success;
-            //string mensaje = respuesta.Message;
-
-            // Mensaje para testeo
-            //MessageBox.Show(conexionExitosa + " " + mensaje + " " + nuevoDetalle.ToString());
+            
         }
 
        
@@ -270,19 +240,6 @@ namespace DataObra.Datos
             int id = 19; // ID del documento a obtener
             #endregion
 
-            // Código a utilizar
-            //var docBuscado = await ConsultasAPI.ObtenerDocumentoPorID(id);
-
-            // Respuestas
-            //bool resultado = docBuscado.Success;
-            //string mensaje = docBuscado.Message;
-            //Biblioteca.Documento? documento = docBuscado.doc;
-
-            ////Mensaje para testeo
-            //if (docBuscado.Success != null)
-            //{
-            //    MessageBox.Show(docBuscado.Success + " " + docBuscado.Message);
-            //}
 
         }
 
@@ -293,23 +250,6 @@ namespace DataObra.Datos
             int superiorID = 221; // ID del documento a obtener
             #endregion
 
-            // Código a utilizar
-            //var docBuscado = await ConsultasAPI.GetDocumentosRelPorSupIDAsync(superiorID);
-
-            // Respuestas
-            //bool resultado = docBuscado.Success;
-            //string mensaje = docBuscado.Message;
-            //List<Biblioteca.DocumentoRel> documento = docBuscado.DocumentosRel;
-
-            //Mensaje para testeo
-            //if (docBuscado.Success == true)
-            //{
-            //    MessageBox.Show(resultado + " " + mensaje + " Cantidad: " + documento.Count());
-            //}
-            //else
-            //{
-            //    MessageBox.Show("No hay registros");
-            //}
         }
 
 
