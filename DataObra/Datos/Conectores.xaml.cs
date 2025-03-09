@@ -30,23 +30,48 @@ namespace DataObra.Datos
         {
             InitializeComponent();
             _queueManager = App.QueueManager; // Obtiene el QueueManager de la clase App
-            this.LogListBox.ItemsSource = _queueManager.Logs;
+            this.LogListBox.ItemsSource = DatosWeb.LogEntries; // Asigna la lista de logs a la ListBox
             this.grillaLogs.ItemsSource = _queueManager.GetLogs();
         }
 
-        #region Post
+        //Verifica un usuario, Obtiene sus datos y el Token
+        private async void veriUsu_Click(object sender, RoutedEventArgs e)
+        {
+            #region Datos para testeo
+            string email = "jose@dataobra.com"; // Email a validar
+            string pass = "contra"; // Contraseña
+            #endregion
+
+            // Codigo a utilizar
+            var respuesta = await DatosWeb.ValidarUsuarioAsync(email, pass);
+
+            //Respuestas
+            Usuario datosusuario = respuesta.Usuario.DatosUsuario;
+            String Token = respuesta.Usuario.Token;
+            bool conexionExitosa = respuesta.Success;
+            string mensaje = respuesta.Message;
+
+            //Mensaje para testeo
+            if (conexionExitosa)
+            {
+                MessageBox.Show(datosusuario.Nombre + " " + datosusuario.Apellido);
+            }
+            else
+            {
+                MessageBox.Show("Error al conectar");
+
+            }
+        }
 
 
 
         // Crea un nuevo documento
         private async void nuevoDoc_Click(object sender, RoutedEventArgs e)
         {
-
             #region Datos para testeo 
 
-            var documento = new Biblioteca.Documento
+            var documento = new Biblioteca.DTO.DocumentoDTO
             {
-                // Define las propiedades del documento
                 CuentaID = 1,
                 TipoID = 2,
                 UsuarioID = 3,
@@ -65,7 +90,6 @@ namespace DataObra.Datos
                 Concepto1 = "b",
                 Fecha1 = DateTime.Now,
                 Fecha2 = DateTime.Now,
-
                 Fecha3 = DateTime.Now,
                 Numero1 = 0,
                 Numero2 = 0,
@@ -97,17 +121,26 @@ namespace DataObra.Datos
 
             #endregion
 
-            // Codigo a utilizar
-            var respuesta = await ConsultasAPI.PostDocumentoAsync(documento);
+            // Llamar al método CrearDocumentoAsync
+            var (success, message, id) = await DatosWeb.CrearDocumentoAsync(documento);
 
-            //Respuestas
-            int? nuevodoc = respuesta.Id;
-            bool conexionExitosa = respuesta.Success;
-            string mensaje = respuesta.Message;
-
-            //Mensaje para testeo
-            MessageBox.Show(respuesta.Success + " " + mensaje + " " + nuevodoc.ToString());
+            // Manejar la respuesta
+            if (success && id.HasValue)
+            {
+                MessageBox.Show($"Documento creado con éxito. ID: {id.Value}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show($"Error al crear el documento: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
+
+
+
+
+
+
+
 
         // Agrega una nueva relacion de documentos
         private async void nuevoDocRel_Click(object sender, RoutedEventArgs e)
@@ -225,34 +258,12 @@ namespace DataObra.Datos
             MessageBox.Show(conexionExitosa + " " + mensaje + " " + nuevoDetalle.ToString());
         }
 
-        #endregion
+       
 
         #region Get
 
 
-        //Verifica un usuario, graba el Token y obtiene sus datos
-        private async void veriUsu_Click(object sender, RoutedEventArgs e)
-        {
-            #region Datos para testeo
-            string email = "jose@dataobra.com"; // Email a validar
-            string pass = "contra"; // Contraseña
-            #endregion
-
-            // Codigo a utilizar
-            var respuesta = await ConsultasAPI.ValidarUsuarioAsync(email, pass);
-
-            //Respuestas
-            Usuario datosusuario = respuesta.Usuario;
-            bool conexionExitosa = respuesta.Success;
-            string mensaje = respuesta.Message;
-
-            //Mensaje para testeo
-            if (respuesta.Usuario != null)
-            {
-                MessageBox.Show(respuesta.Usuario.Nombre + " " + respuesta.Usuario.Apellido);
-            }
-
-        }
+       
 
         // Obtiene documentos por ID
         private async void buscaIDDoc_Click(object sender, RoutedEventArgs e)

@@ -16,6 +16,7 @@ using Bibioteca.Clases;
 using ProcesarArbolPresupuestoRequest = Bibioteca.Clases.ProcesarArbolPresupuestoRequest;
 using Microsoft.Win32;
 using Servidor;
+using Biblioteca.DTO;
 
 var builder = WebApplication.CreateBuilder(args);
 string key = "ESTALLAVEFUNCOINARIASI12345PARARECORDARLAMEJOR=";
@@ -112,11 +113,20 @@ usu.MapGet("validacion/", async (string email, string pass, rUsuarios repo) =>
 
 var doc = app.MapGroup("/documentos");
 
-doc.MapPost("/", async (rDocumentos repositorio, Documento documento) =>
+doc.MapPost("/", async (rDocumentos repositorio, DocumentoDTO documento) =>
 {
-    var nuevoDocumento = await repositorio.InsertarDocumentoAsync(documento);
-    return Results.Created($"documentos/{nuevoDocumento}", nuevoDocumento);
+    var (id, errorMessage) = await repositorio.InsertarDocumentoAsync(documento);
+    if (id != 0)
+    {
+        return Results.Created($"documentos/{id}", new { Id = id, Message = "Documento creado exitosamente." });
+    }
+    else
+    {
+        return Results.BadRequest(new { Message = errorMessage });
+    }
 }).RequireAuthorization();
+
+
 
 doc.MapPost("/procesar", async (rDocumentos repositorio, InfoDocumento infodocumento) =>
 {

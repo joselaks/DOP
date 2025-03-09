@@ -1,4 +1,5 @@
 ﻿using Biblioteca;
+using Biblioteca.DTO;
 using Dapper;
 using System.Data;
 using System.Data.SqlClient;
@@ -16,26 +17,40 @@ namespace Servidor.Repositorios
         public rDocumentos(string connectionString)
         {
             _connectionString = connectionString;
+
         }
 
 
         #region Post
 
         // Nuevo documento (encabezado)
-        public async Task<int> InsertarDocumentoAsync(Documento documento)
+        public async Task<(int Id, string ErrorMessage)> InsertarDocumentoAsync(DocumentoDTO documento)
         {
-            int respuesta = 0;
             using (var db = new SqlConnection(_connectionString))
             {
                 var parameters = new DynamicParameters(documento);
                 parameters.Add("@ID", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                parameters.Add("@MensajeError", dbType: DbType.String, direction: ParameterDirection.Output, size: 4000);
 
-                await db.ExecuteAsync("DocumentosPost", parameters, commandType: CommandType.StoredProcedure);
-                respuesta = parameters.Get<int>("@ID");
+                try
+                {
+                    await db.ExecuteAsync("DocumentosPost", parameters, commandType: CommandType.StoredProcedure);
+                    int id = parameters.Get<int>("@ID");
+                    string mensajeError = parameters.Get<string>("@MensajeError");
 
+                    return (id, mensajeError);
+                }
+                catch (SqlException ex)
+                {
+                    return (0, ex.Message);
+                }
             }
-            return respuesta;
         }
+
+
+
+
+
 
         //Procesar lote de Detalles de documentos
         public async Task ProcesarListaDetalleDocumentoAsync(List<DocumentoDet> listaDetalleDocumento)
