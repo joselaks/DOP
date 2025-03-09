@@ -47,6 +47,54 @@ namespace Servidor.Repositorios
             }
         }
 
+        //Borrar un encabezado de documento
+        public async Task<(bool Success, string Message)> EliminarDocumentoAsync(int id)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("ID", id, DbType.Int32);
+                parameters.Add("Success", dbType: DbType.Boolean, direction: ParameterDirection.Output);
+                parameters.Add("MensajeError", dbType: DbType.String, direction: ParameterDirection.Output, size: 4000);
+
+                await db.ExecuteAsync("DocumentosDelete", parameters, commandType: CommandType.StoredProcedure);
+
+                bool success = parameters.Get<bool>("Success");
+                string mensajeError = parameters.Get<string>("MensajeError");
+
+                if (success)
+                {
+                    return (true, "Documento eliminado exitosamente.");
+                }
+                else
+                {
+                    return (false, $"No se pudo eliminar el documento con ID {id}. Error: {mensajeError}");
+                }
+            }
+        }
+
+        public async Task<(bool Success, string Message)> ActualizarDocumentoAsync(DocumentoDTO documento)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters(documento);
+                parameters.Add("ID", documento.ID, DbType.Int32);
+                parameters.Add("Success", dbType: DbType.Boolean, direction: ParameterDirection.Output);
+                parameters.Add("Mensaje", dbType: DbType.String, direction: ParameterDirection.Output, size: 4000);
+
+                await db.ExecuteAsync("DocumentosPut", parameters, commandType: CommandType.StoredProcedure);
+
+                bool success = parameters.Get<bool>("Success");
+                string mensaje = parameters.Get<string>("Mensaje");
+
+                return (success, mensaje);
+            }
+        }
+
+
+
+        //Hasta aqui actualizado
+
 
 
 
@@ -521,21 +569,7 @@ namespace Servidor.Repositorios
 
         #region Delete
 
-        //Borrar un encabezado de documento
-        public async Task<bool> EliminarDocumentoAsync(int id)
-        {
-            using (var db = new SqlConnection(_connectionString))
-            {
-                var parameters = new DynamicParameters();
-                parameters.Add("ID", id, DbType.Int32);
-                parameters.Add("Success", dbType: DbType.Boolean, direction: ParameterDirection.Output);
-
-                await db.ExecuteAsync("DocumentosDelete", parameters, commandType: CommandType.StoredProcedure);
-
-                bool success = parameters.Get<bool>("Success");
-                return success;
-            }
-        }
+        
 
         //Borrar una relación de documento
         public async Task<bool> EliminarDocumentoRelAsync(int superiorID, int inferiorID)

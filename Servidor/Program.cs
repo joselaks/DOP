@@ -143,17 +143,21 @@ doc.MapPost("/procesar", async (rDocumentos repositorio, InfoDocumento infodocum
 
 doc.MapDelete("/{id:int}", async (rDocumentos repositorio, int id) =>
 {
-    var resultado = await repositorio.EliminarDocumentoAsync(id);
+    var (success, message) = await repositorio.EliminarDocumentoAsync(id);
 
-    if (resultado)
+    if (success)
     {
         return Results.Ok(new { Success = true, Message = "Documento eliminado exitosamente." });
     }
     else
     {
-        return Results.Ok(new { Success = false, Message = "No se encontró el documento para eliminar." });
+        return Results.Ok(new { Success = false, Message = message });
     }
 }).RequireAuthorization();
+
+
+
+
 
 doc.MapDelete("rel/{supID:int}/{infID:int}", async (rDocumentos repositorio, int supID, int infID) =>
 {
@@ -208,19 +212,21 @@ doc.MapGet("/id/{id:int}", async (rDocumentos repositorio, int id) =>
     }
 }).RequireAuthorization();
 
-doc.MapPut("/", async (rDocumentos repositorio, Documento documento) =>
+doc.MapPut("/", async (rDocumentos repositorio, DocumentoDTO documento) =>
 {
-    var resultado = await repositorio.ActualizarDocumentoAsync(documento);
+    var (success, message) = await repositorio.ActualizarDocumentoAsync(documento);
 
-    if (resultado)
+    if (success)
     {
-        return Results.Ok(new { Success = true, Message = "Documento modificado exitosamente." });
+        return Results.Ok(new { Success = true, Message = message });
     }
     else
     {
-        return Results.Ok(new { Success = false, Message = "No se encontró el documento para modificar." });
+        return Results.Ok(new { Success = false, Message = message });
     }
 }).RequireAuthorization();
+
+
 
 #endregion
 

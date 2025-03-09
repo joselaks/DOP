@@ -8,6 +8,7 @@ namespace Biblioteca.DTO
 {
     public class DocumentoDTO
     {
+        public int ID { get; set; }
         public short? CuentaID { get; set; }
         public byte TipoID { get; set; }
         public int UsuarioID { get; set; }

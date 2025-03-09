@@ -1,5 +1,6 @@
 ﻿using Bibioteca.Clases;
 using Biblioteca;
+using Biblioteca.DTO;
 using DataObra.Agrupadores;
 using DataObra.Documentos;
 using Syncfusion.UI.Xaml.Diagram;
@@ -46,7 +47,7 @@ namespace DataObra.Datos
             var respuesta = await DatosWeb.ValidarUsuarioAsync(email, pass);
 
             //Respuestas
-            Usuario datosusuario = respuesta.Usuario.DatosUsuario;
+            UsuarioDTO datosusuario = respuesta.Usuario.DatosUsuario;
             String Token = respuesta.Usuario.Token;
             bool conexionExitosa = respuesta.Success;
             string mensaje = respuesta.Message;
@@ -315,32 +316,8 @@ namespace DataObra.Datos
         }
 
 
-        // Busca los documentos de una cuenta 
-        private async void buscaCuentaDoc_Click(object sender, RoutedEventArgs e)
-        {
-            #region Datos para testeo
-            int id = 1; // ID del usuario
-            #endregion
-
-            // Código a utilizar
-            var docBuscado = await ConsultasAPI.ObtenerDocumentosPorCuentaID(id);
-
-            // Respuestas
-            bool resultado = docBuscado.Success;
-            string mensaje = docBuscado.Message;
-            List<Documento> documento = docBuscado.docs;
-
-            //Mensaje para testeo
-            if (docBuscado.Success == true)
-            {
-                MessageBox.Show(resultado + " " + mensaje + " Cantidad: " + documento.Count());
-            }
-            else
-            {
-                MessageBox.Show("No hay registros");
-            }
-
-        }
+        
+       
 
 
         // Obtener agrupadores por CuentaID
@@ -410,7 +387,7 @@ namespace DataObra.Datos
         private async void editaDoc_Click(object sender, RoutedEventArgs e)
         {
             #region Datos para testeo
-            var documento = new Biblioteca.Documento
+            var documento = new Biblioteca.DTO.DocumentoDTO
             {
                 ID = 19,
                 CuentaID = 55,
@@ -431,7 +408,6 @@ namespace DataObra.Datos
                 Concepto1 = "b",
                 Fecha1 = DateTime.Now,
                 Fecha2 = DateTime.Now,
-
                 Fecha3 = DateTime.Now,
                 Numero1 = 0,
                 Numero2 = 0,
@@ -462,19 +438,20 @@ namespace DataObra.Datos
             };
             #endregion
 
-            // Codigo a utilizar
-            var respuesta = await ConsultasAPI.PutDocumentoAsync(documento);
+            // Llamar al método ActualizarDocumentoAsync
+            var (success, message) = await DatosWeb.ActualizarDocumentoAsync(documento);
 
-            //Respuestas
-            bool resultadoBorrado = respuesta.Success;  // true si lo editó, false si no existia el registro
-            string mensaje = respuesta.Message;
-
-            //Mensaje para testeo
-            if (respuesta.Success != null)
+            // Manejar la respuesta
+            if (success)
             {
-                MessageBox.Show(respuesta.Success + " " + respuesta.Message);
+                MessageBox.Show($"Documento actualizado con éxito. ID: {documento.ID}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show($"Error al actualizar el documento: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
 
         // Modifica un detalle de documento, pero si todos los campos de ID de tipo de documento son null, borra el registro
         private async void modificarDocDet_Click(object sender, RoutedEventArgs e)
@@ -542,20 +519,20 @@ namespace DataObra.Datos
         private async void borraDoc_Click(object sender, RoutedEventArgs e)
         {
             #region Datos para testeo
-            int id = 13;
+            int id = 18;
             #endregion
 
-            // Codigo a utilizar
-            var respuesta = await ConsultasAPI.DeleteDocumentoAsync(id);
+            // Llamar al método EliminarDocumentoAsync
+            var (success, message) = await DatosWeb.EliminarDocumentoAsync(id);
 
-            //Respuestas
-            bool resultadoBorrado = respuesta.Success;  // true si lo borró, false si no existia el registro
-            string mensaje = respuesta.Message;
-
-            //Mensaje para testeo
-            if (respuesta.Success != null)
+            // Manejar la respuesta
+            if (success)
             {
-                MessageBox.Show(respuesta.Success + " " + respuesta.Message);
+                MessageBox.Show($"Documento eliminado con éxito. ID: {id}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show($"Error al eliminar el documento: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
         }
@@ -1236,6 +1213,29 @@ namespace DataObra.Datos
             if (respuesta.Success)
             {
                 MessageBox.Show(resultado + " " + mensaje + " Cantidad: " + impuestos.Count());
+            }
+            else
+            {
+                MessageBox.Show("No hay registros");
+            }
+        }
+
+        private async void buscaCuentaDoc_Click(object sender, RoutedEventArgs e)
+        {
+            #region Datos para testeo
+            int CuentaId = 1; // ID del impuesto a obtener
+            #endregion
+
+            var result = await DatosWeb.ObtenerDocumentosPorCuentaIDAsync(CuentaId);
+            // Respuestas
+            bool resultado = result.Success;
+            string mensaje = result.Message;
+            List<DocumentoDTO> documentos = result.Documentos;
+
+            //Mensaje para testeo
+            if (resultado == true)
+            {
+                MessageBox.Show(resultado + " " + mensaje + " Cantidad: " + documentos.Count());
             }
             else
             {
