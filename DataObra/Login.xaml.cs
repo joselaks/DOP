@@ -22,25 +22,25 @@ namespace DataObra
         private async void VerificaUsuario_Click(object sender, RoutedEventArgs e)
         {
             // Código a utilizar para la validación
-            var respuesta = await ConsultasAPI.ValidarUsuarioAsync(txtUsuario.Text, txtContraseña.Password);
+            //var respuesta = await ConsultasAPI.ValidarUsuarioAsync(txtUsuario.Text, txtContraseña.Password);
 
-            if (respuesta.Success && respuesta.Usuario != null)
-            {
-                Usuario = respuesta.Usuario.Nombre;
-                Rol = "Compras"; // respuesta.Usuario.Rol;
+            //if (respuesta.Success && respuesta.Usuario != null)
+            //{
+            //    Usuario = respuesta.Usuario.Nombre;
+            //    Rol = "Compras"; // respuesta.Usuario.Rol;
 
-                this.DialogResult = true;
-                this.Close();
-            }
-            else
-            {
-                // Demo
-                Usuario = "Demo";
-                Rol = "Demo";
+            //    this.DialogResult = true;
+            //    this.Close();
+            //}
+            //else
+            //{
+            //    // Demo
+            //    Usuario = "Demo";
+            //    Rol = "Demo";
 
-                this.DialogResult = true;
-                this.Close();
-            }
+            //    this.DialogResult = true;
+            //    this.Close();
+            //}
         }
 
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)

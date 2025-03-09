@@ -31,16 +31,12 @@ namespace DataObra
         NavDocumento navDocumentos;
         NavInsumo navInsumos;
 
-        public readonly HttpQueueManager Inicio_QueueManager;
 
         ////NavTareas navTareas;
 
         public Inicio()
         {
             InitializeComponent();
-            Inicio_QueueManager = App.QueueManager; // Obtiene el QueueManager de la clase App
-            this.InicioLogListBox.ItemsSource = Inicio_QueueManager.Logs;
-            this.InicioGrillaLogs.ItemsSource = Inicio_QueueManager.GetLogs();
 
             Solapa = "Inicio";
 
@@ -67,19 +63,19 @@ namespace DataObra
             string pass = "contra"; // Contraseña
             #endregion
 
-            // Codigo a utilizar
-            var respuesta = await ConsultasAPI.ValidarUsuarioAsync(email, pass);
+            //// Codigo a utilizar
+            //var respuesta = await ConsultasAPI.ValidarUsuarioAsync(email, pass);
 
-            // Respuestas
-            Usuario datosusuario = respuesta.Usuario;
-            bool conexionExitosa = respuesta.Success;
-            string mensaje = respuesta.Message;
+            //// Respuestas
+            //Usuario datosusuario = respuesta.Usuario;
+            //bool conexionExitosa = respuesta.Success;
+            //string mensaje = respuesta.Message;
 
-            // Mensaje para testeo
-            if (respuesta.Usuario != null)
-            {
-                MessageBox.Show(respuesta.Usuario.Nombre + " " + respuesta.Usuario.Apellido);
-            }
+            //// Mensaje para testeo
+            //if (respuesta.Usuario != null)
+            //{
+            //    MessageBox.Show(respuesta.Usuario.Nombre + " " + respuesta.Usuario.Apellido);
+            //}
         }
 
         #region Tiles
@@ -342,7 +338,6 @@ namespace DataObra
 
         private void limpiaLogin_Click(object sender, RoutedEventArgs e)
         {
-            Inicio_QueueManager.Logs.Clear();
         }
 
         private void Button_Click_Principal(object sender, RoutedEventArgs e)

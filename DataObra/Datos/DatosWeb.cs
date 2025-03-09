@@ -228,15 +228,11 @@ namespace DataObra.Datos
             }
         }
 
-
-
-
-
-
-
-
-
-
+        public class ResultadoOperacion
+        {
+            public bool Success { get; set; }
+            public string Message { get; set; }
+        }
 
         // Clase para deserializar la respuesta de CrearDocumentoAsync
         private class CrearDocumentoResponse

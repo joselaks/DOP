@@ -36,11 +36,11 @@ namespace DataObra.Interfaz.Controles
 
         public async void CargarGrilla()
         {
-            var AgrupadoresUsuario = await ConsultasAPI.ObtenerAgrupadoresPorCuentaID(App.IdCuenta);
+            //var AgrupadoresUsuario = await ConsultasAPI.ObtenerAgrupadoresPorCuentaID(App.IdCuenta);
             
-            App.ListaAgrupadores = AgrupadoresUsuario.agrupadores;
-            //this.GrillaAgrupadores.ItemsSource = AgrupadoresUsuario.agrupadores;
-            this.GrillaAgrupadores.ItemsSource = App.ListaAgrupadores;
+            //App.ListaAgrupadores = AgrupadoresUsuario.agrupadores;
+            ////this.GrillaAgrupadores.ItemsSource = AgrupadoresUsuario.agrupadores;
+            //this.GrillaAgrupadores.ItemsSource = App.ListaAgrupadores;
 
             // Los agrupadores se utilizan todo el tiempo y por lo tanto tienen que estar accesibles de todos lados.
         }
@@ -89,23 +89,23 @@ namespace DataObra.Interfaz.Controles
 
         private async void MenuItem_Click_1(object sender, RoutedEventArgs e)
         {
-            if (GrillaAgrupadores.SelectedItem is Agrupador agrupadorSeleccionado)
-            {
-                var respuesta = await ConsultasAPI.BorrarAgrupador((int)agrupadorSeleccionado.ID);
-                if (respuesta.Success)
-                {
-                    MessageBox.Show("Agrupador eliminado exitosamente.");
-                    CargarGrilla(); // Actualizar la grilla después de eliminar el documento
-                }
-                else
-                {
-                    MessageBox.Show($"Error al eliminar el documento: {respuesta.Message}");
-                }
-            }
-            else
-            {
-                MessageBox.Show("Por favor, seleccione un documento para eliminar.");
-            }
+            //if (GrillaAgrupadores.SelectedItem is Agrupador agrupadorSeleccionado)
+            //{
+            //    //var respuesta = await ConsultasAPI.BorrarAgrupador((int)agrupadorSeleccionado.ID);
+            //    //if (respuesta.Success)
+            //    //{
+            //    //    MessageBox.Show("Agrupador eliminado exitosamente.");
+            //    //    CargarGrilla(); // Actualizar la grilla después de eliminar el documento
+            //    }
+            //    else
+            //    {
+            //        MessageBox.Show($"Error al eliminar el documento: {respuesta.Message}");
+            //    }
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Por favor, seleccione un documento para eliminar.");
+            //}
         }
 
         private void ToggleButton_Checked(object sender, RoutedEventArgs e)

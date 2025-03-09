@@ -38,17 +38,17 @@ namespace DataObra.Documentos
 
         private async void ObtenerDocumento(int pID)
         {
-            var docBuscado = await ConsultasAPI.ObtenerDocumentoPorID(pID);
+            //var docBuscado = await ConsultasAPI.ObtenerDocumentoPorID(pID);
 
-            if (docBuscado.Success)
-            {
-                // Convierte DocumentoBiblioteca a Documento
-                AbreDoc(docBuscado.doc);
-            }
-            else
-            {
-                MessageBox.Show(docBuscado.Success + " " + docBuscado.Message);
-            }
+            //if (docBuscado.Success)
+            //{
+            //    // Convierte DocumentoBiblioteca a Documento
+            //    AbreDoc(docBuscado.doc);
+            //}
+            //else
+            //{
+            //    MessageBox.Show(docBuscado.Success + " " + docBuscado.Message);
+            //}
         }
 
         private void AbreDoc(Biblioteca.Documento pDocumento)
@@ -92,22 +92,22 @@ namespace DataObra.Documentos
         private async void BuscaDocRel(int pSuperiorID)
         {
             // Código a utilizar
-            var docBuscado = await ConsultasAPI.GetDocumentosRelPorSupIDAsync(pSuperiorID);
+            //var docBuscado = await ConsultasAPI.GetDocumentosRelPorSupIDAsync(pSuperiorID);
 
-            // Respuestas
-            bool resultado = docBuscado.Success;
-            string mensaje = docBuscado.Message;
-            List<Biblioteca.DocumentoRel> documento = docBuscado.DocumentosRel;
+            //// Respuestas
+            //bool resultado = docBuscado.Success;
+            //string mensaje = docBuscado.Message;
+            //List<Biblioteca.DocumentoRel> documento = docBuscado.DocumentosRel;
 
-            //Mensaje para testeo
-            if (docBuscado.Success == true)
-            {
-                MessageBox.Show(resultado + " " + mensaje + " Cantidad: " + documento.Count());
-            }
-            else
-            {
-                MessageBox.Show("No hay registros");
-            }
+            ////Mensaje para testeo
+            //if (docBuscado.Success == true)
+            //{
+            //    MessageBox.Show(resultado + " " + mensaje + " Cantidad: " + documento.Count());
+            //}
+            //else
+            //{
+            //    MessageBox.Show("No hay registros");
+            //}
         }
 
         private TileViewItem CrearTileViewItem(string header, Biblioteca.Documento documento, bool maximizado = false)

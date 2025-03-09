@@ -39,24 +39,24 @@ namespace DataObra.Documentos
         private async void ListaDocumentosAsync(short pCuentaID)
         {
             // Código a utilizar
-            var docBuscado = await ConsultasAPI.ObtenerDocumentosPorCuentaID(pCuentaID);
+            //var docBuscado = await ConsultasAPI.ObtenerDocumentosPorCuentaID(pCuentaID);
 
             // Respuestas
-            bool resultado = docBuscado.Success;
-            string mensaje = docBuscado.Message;
-            List<Biblioteca.Documento> listaDocumentos = docBuscado.docs;
+            //bool resultado = docBuscado.Success;
+            //string mensaje = docBuscado.Message;
+            //List<Biblioteca.Documento> listaDocumentos = docBuscado.docs;
 
-            if (docBuscado.Success == true)
-            {
-                this.GrillaDocumentos.ItemsSource = listaDocumentos;
+            //if (docBuscado.Success == true)
+            //{
+            //    this.GrillaDocumentos.ItemsSource = listaDocumentos;
 
-                //MessageBox.Show(resultado + " " + mensaje + " Cantidad: " + listaDocumentos.Count());
-                this.BarraEstado.Content = "Se obtuvieron " + listaDocumentos.Count() + " documentos.";
-            }
-            else
-            {
-                MessageBox.Show("No hay Documentos");
-            }
+            //    //MessageBox.Show(resultado + " " + mensaje + " Cantidad: " + listaDocumentos.Count());
+            //    this.BarraEstado.Content = "Se obtuvieron " + listaDocumentos.Count() + " documentos.";
+            //}
+            //else
+            //{
+            //    MessageBox.Show("No hay Documentos");
+            //}
         }
 
         private void FichaWindow_DocumentoModified(object sender, Documento e)
@@ -155,18 +155,18 @@ namespace DataObra.Documentos
         private async void BorrarDocumento(int pDocID)
         {
             // Codigo a utilizar
-            var respuesta = await ConsultasAPI.DeleteDocumentoAsync(pDocID);
+            //var respuesta = await ConsultasAPI.DeleteDocumentoAsync(pDocID);
 
             // Respuestas
-            bool resultadoBorrado = respuesta.Success;  // true si lo borró, false si no existia el registro
-            string mensaje = respuesta.Message;
+            //bool resultadoBorrado = respuesta.Success;  // true si lo borró, false si no existia el registro
+            //string mensaje = respuesta.Message;
 
-            // Mensaje para testeo
-            if (respuesta.Success != null)
-            {
-                //MessageBox.Show(respuesta.Success + " " + respuesta.Message);
-                this.BarraEstado.Content = "Se elimino el documento con ID " + pDocID.ToString();
-            }
+            //// Mensaje para testeo
+            //if (respuesta.Success != null)
+            //{
+            //    //MessageBox.Show(respuesta.Success + " " + respuesta.Message);
+            //    this.BarraEstado.Content = "Se elimino el documento con ID " + pDocID.ToString();
+            //}
 
         }
     }

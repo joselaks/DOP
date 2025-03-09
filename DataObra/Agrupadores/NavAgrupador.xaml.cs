@@ -242,15 +242,15 @@ namespace DataObra.Agrupadores.Clases
             #endregion
 
             // Codigo a utilizar
-            var respuesta = await ConsultasAPI.PostAgrupadorAsync(agupador);
+            //var respuesta = await ConsultasAPI.PostAgrupadorAsync(agupador);
 
-            // Respuestas
-            int? nuevodoc = respuesta.Id;
-            bool conexionExitosa = respuesta.Success;
-            string mensaje = respuesta.Message;
+            //// Respuestas
+            //int? nuevodoc = respuesta.Id;
+            //bool conexionExitosa = respuesta.Success;
+            //string mensaje = respuesta.Message;
 
-            // Mensaje para testeo
-            MessageBox.Show(respuesta.Success + " " + mensaje + " " + nuevodoc.ToString());
+            //// Mensaje para testeo
+            //MessageBox.Show(respuesta.Success + " " + mensaje + " " + nuevodoc.ToString());
         }
 
         private void MenuEditar_Click(object sender, RoutedEventArgs e)

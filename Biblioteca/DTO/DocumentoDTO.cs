@@ -23,7 +23,7 @@ namespace Biblioteca.DTO
         public int? RubroID { get; set; }
         public int? EntidadID { get; set; }
         public int? DepositoID { get; set; }
-        public string Descrip { get; set; }
+        public string? Descrip { get; set; }
         public string Concepto1 { get; set; }
         public DateTime Fecha1 { get; set; }
         public DateTime? Fecha2 { get; set; }

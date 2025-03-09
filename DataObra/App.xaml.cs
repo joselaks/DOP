@@ -10,7 +10,6 @@ namespace DataObra
 {
     public partial class App : Application
     {
-        public static HttpQueueManager QueueManager { get; private set; }
         public IServiceProvider ServiceProvider { get; private set; }
         public HttpClient HttpClient { get; private set; }
         public static string BaseUrl { get; private set; }
@@ -50,8 +49,6 @@ namespace DataObra
             // cambiar cuando pase a producción
             // BaseUrl = "https://servidordataobra.azurewebsites.net/";
 
-            // Inicializa QueueManager con HttpClient
-            QueueManager = new HttpQueueManager(HttpClient);
 
             // Registrar el evento de teclado
             EventManager.RegisterClassHandler(typeof(Window), Keyboard.KeyDownEvent, new KeyEventHandler(OnKeyDown));

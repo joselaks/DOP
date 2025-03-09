@@ -25,14 +25,11 @@ namespace DataObra.Datos
 {
     public partial class Conectores : Window
     {
-        private readonly HttpQueueManager _queueManager;
 
         public Conectores()
         {
             InitializeComponent();
-            _queueManager = App.QueueManager; // Obtiene el QueueManager de la clase App
             this.LogListBox.ItemsSource = DatosWeb.LogEntries; // Asigna la lista de logs a la ListBox
-            this.grillaLogs.ItemsSource = _queueManager.GetLogs();
         }
 
         //Verifica un usuario, Obtiene sus datos y el Token
@@ -161,18 +158,18 @@ namespace DataObra.Datos
 
 
             // Codigo a utilizar
-            var respuesta = await ConsultasAPI.PostDocumentoRelAsync(documentoRel);
+            //var respuesta = await ConsultasAPI.PostDocumentoRelAsync(documentoRel);
 
 
             //Respuestas
-            bool resultadoBorrado = respuesta.Success;  // true si lo borró, false si no existia el registro
-            string mensaje = respuesta.Message;
+            //bool resultadoBorrado = respuesta.Success;  // true si lo borró, false si no existia el registro
+            //string mensaje = respuesta.Message;
 
-            //Mensaje para testeo
-            if (respuesta.Success != null)
-            {
-                MessageBox.Show(respuesta.Success + " " + respuesta.Message);
-            }
+            ////Mensaje para testeo
+            //if (respuesta.Success != null)
+            //{
+            //    MessageBox.Show(respuesta.Success + " " + respuesta.Message);
+            //}
         }
 
         private async void nuevoAgrupador_Click(object sender, RoutedEventArgs e)
@@ -196,15 +193,15 @@ namespace DataObra.Datos
             #endregion
 
             // Codigo a utilizar
-            var respuesta = await ConsultasAPI.PostAgrupadorAsync(agupador);
+            //var respuesta = await ConsultasAPI.PostAgrupadorAsync(agupador);
 
             //Respuestas
-            int? nuevodoc = respuesta.Id;
-            bool conexionExitosa = respuesta.Success;
-            string mensaje = respuesta.Message;
+            //int? nuevodoc = respuesta.Id;
+            //bool conexionExitosa = respuesta.Success;
+            //string mensaje = respuesta.Message;
 
-            //Mensaje para testeo
-            MessageBox.Show(respuesta.Success + " " + mensaje + " " + nuevodoc.ToString());
+            ////Mensaje para testeo
+            //MessageBox.Show(respuesta.Success + " " + mensaje + " " + nuevodoc.ToString());
 
         }
 
@@ -248,15 +245,15 @@ namespace DataObra.Datos
             #endregion
 
             // Código a utilizar
-            var respuesta = await ConsultasAPI.PostDocumentoDetAsync(nuevoDocDet);
+            //var respuesta = await ConsultasAPI.PostDocumentoDetAsync(nuevoDocDet);
 
             // Respuestas
-            int? nuevoDetalle = respuesta.id;
-            bool conexionExitosa = respuesta.Success;
-            string mensaje = respuesta.Message;
+            //int? nuevoDetalle = respuesta.id;
+            //bool conexionExitosa = respuesta.Success;
+            //string mensaje = respuesta.Message;
 
             // Mensaje para testeo
-            MessageBox.Show(conexionExitosa + " " + mensaje + " " + nuevoDetalle.ToString());
+            //MessageBox.Show(conexionExitosa + " " + mensaje + " " + nuevoDetalle.ToString());
         }
 
        
@@ -274,18 +271,18 @@ namespace DataObra.Datos
             #endregion
 
             // Código a utilizar
-            var docBuscado = await ConsultasAPI.ObtenerDocumentoPorID(id);
+            //var docBuscado = await ConsultasAPI.ObtenerDocumentoPorID(id);
 
             // Respuestas
-            bool resultado = docBuscado.Success;
-            string mensaje = docBuscado.Message;
-            Biblioteca.Documento? documento = docBuscado.doc;
+            //bool resultado = docBuscado.Success;
+            //string mensaje = docBuscado.Message;
+            //Biblioteca.Documento? documento = docBuscado.doc;
 
-            //Mensaje para testeo
-            if (docBuscado.Success != null)
-            {
-                MessageBox.Show(docBuscado.Success + " " + docBuscado.Message);
-            }
+            ////Mensaje para testeo
+            //if (docBuscado.Success != null)
+            //{
+            //    MessageBox.Show(docBuscado.Success + " " + docBuscado.Message);
+            //}
 
         }
 
@@ -297,22 +294,22 @@ namespace DataObra.Datos
             #endregion
 
             // Código a utilizar
-            var docBuscado = await ConsultasAPI.GetDocumentosRelPorSupIDAsync(superiorID);
+            //var docBuscado = await ConsultasAPI.GetDocumentosRelPorSupIDAsync(superiorID);
 
             // Respuestas
-            bool resultado = docBuscado.Success;
-            string mensaje = docBuscado.Message;
-            List<Biblioteca.DocumentoRel> documento = docBuscado.DocumentosRel;
+            //bool resultado = docBuscado.Success;
+            //string mensaje = docBuscado.Message;
+            //List<Biblioteca.DocumentoRel> documento = docBuscado.DocumentosRel;
 
             //Mensaje para testeo
-            if (docBuscado.Success == true)
-            {
-                MessageBox.Show(resultado + " " + mensaje + " Cantidad: " + documento.Count());
-            }
-            else
-            {
-                MessageBox.Show("No hay registros");
-            }
+            //if (docBuscado.Success == true)
+            //{
+            //    MessageBox.Show(resultado + " " + mensaje + " Cantidad: " + documento.Count());
+            //}
+            //else
+            //{
+            //    MessageBox.Show("No hay registros");
+            //}
         }
 
 
@@ -328,22 +325,22 @@ namespace DataObra.Datos
             #endregion
 
             // Código a utilizar
-            var docBuscado = await ConsultasAPI.ObtenerAgrupadoresPorCuentaID(id);
+            //var docBuscado = await ConsultasAPI.ObtenerAgrupadoresPorCuentaID(id);
 
             // Respuestas
-            bool resultado = docBuscado.Success;
-            string mensaje = docBuscado.Message;
-            List<Agrupador> documento = docBuscado.agrupadores;
+            //bool resultado = docBuscado.Success;
+            //string mensaje = docBuscado.Message;
+            //List<Agrupador> documento = docBuscado.agrupadores;
 
-            //Mensaje para testeo
-            if (docBuscado.Success == true)
-            {
-                MessageBox.Show(resultado + " " + mensaje + " Cantidad: " + documento.Count());
-            }
-            else
-            {
-                MessageBox.Show("No hay registros");
-            }
+            ////Mensaje para testeo
+            //if (docBuscado.Success == true)
+            //{
+            //    MessageBox.Show(resultado + " " + mensaje + " Cantidad: " + documento.Count());
+            //}
+            //else
+            //{
+            //    MessageBox.Show("No hay registros");
+            //}
 
         }
 
@@ -357,22 +354,22 @@ namespace DataObra.Datos
             #endregion
 
             // Código a utilizar
-            var respuesta = await ConsultasAPI.GetDocumentosDetPorCampoAsync(id, fieldName, cuentaID);
+            //var respuesta = await ConsultasAPI.GetDocumentosDetPorCampoAsync(id, fieldName, cuentaID);
 
             // Respuestas
-            bool resultado = respuesta.Success;
-            string mensaje = respuesta.Message;
-            List<DocumentoDet> documentosDet = respuesta.DocumentosDet;
+            //bool resultado = respuesta.Success;
+            //string mensaje = respuesta.Message;
+            //List<DocumentoDet> documentosDet = respuesta.DocumentosDet;
 
-            // Mensaje para testeo
-            if (respuesta.Success)
-            {
-                MessageBox.Show(resultado + " " + mensaje + " Cantidad: " + documentosDet.Count());
-            }
-            else
-            {
-                MessageBox.Show("No hay registros");
-            }
+            //// Mensaje para testeo
+            //if (respuesta.Success)
+            //{
+            //    MessageBox.Show(resultado + " " + mensaje + " Cantidad: " + documentosDet.Count());
+            //}
+            //else
+            //{
+            //    MessageBox.Show("No hay registros");
+            //}
         }
 
 
@@ -493,22 +490,22 @@ namespace DataObra.Datos
             };
             #endregion
 
-            // Código a utilizar
-            var respuesta = await ConsultasAPI.PutDocumentoDetAsync(modificaDocDet);
+            //// Código a utilizar
+            //var respuesta = await ConsultasAPI.PutDocumentoDetAsync(modificaDocDet);
 
             // Respuestas
-            bool resultado = respuesta.Success;
-            string mensaje = respuesta.Message;
+            //bool resultado = respuesta.Success;
+            //string mensaje = respuesta.Message;
 
-            // Mensaje para testeo
-            if (respuesta.Success)
-            {
-                MessageBox.Show("Registro modificado exitosamente: " + mensaje);
-            }
-            else
-            {
-                MessageBox.Show("Error al modificar el documento: " + mensaje);
-            }
+            //// Mensaje para testeo
+            //if (respuesta.Success)
+            //{
+            //    MessageBox.Show("Registro modificado exitosamente: " + mensaje);
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Error al modificar el documento: " + mensaje);
+            //}
         }
 
         #endregion
@@ -546,17 +543,17 @@ namespace DataObra.Datos
             #endregion
 
             // Codigo a utilizar
-            var respuesta = await ConsultasAPI.DeleteDocumentoRelAsync(supID, infID);
+            //var respuesta = await ConsultasAPI.DeleteDocumentoRelAsync(supID, infID);
 
-            //Respuestas
-            bool resultadoBorrado = respuesta.Success;  // true si lo borró, false si no existia el registro
-            string mensaje = respuesta.Message;
+            ////Respuestas
+            //bool resultadoBorrado = respuesta.Success;  // true si lo borró, false si no existia el registro
+            //string mensaje = respuesta.Message;
 
-            //Mensaje para testeo
-            if (respuesta.Success != null)
-            {
-                MessageBox.Show(respuesta.Success + " " + respuesta.Message);
-            }
+            ////Mensaje para testeo
+            //if (respuesta.Success != null)
+            //{
+            //    MessageBox.Show(respuesta.Success + " " + respuesta.Message);
+            //}
 
 
         }
@@ -569,17 +566,17 @@ namespace DataObra.Datos
             #endregion
 
             // Codigo a utilizar
-            var respuesta = await ConsultasAPI.BorrarAgrupador(id);
+            //var respuesta = await ConsultasAPI.BorrarAgrupador(id);
 
             //Respuestas
-            bool resultadoBorrado = respuesta.Success;  // true si lo borró, false si no existia el registro
-            string mensaje = respuesta.Message;
+            //bool resultadoBorrado = respuesta.Success;  // true si lo borró, false si no existia el registro
+            //string mensaje = respuesta.Message;
 
-            //Mensaje para testeo
-            if (respuesta.Success != null)
-            {
-                MessageBox.Show(respuesta.Success + " " + respuesta.Message);
-            }
+            ////Mensaje para testeo
+            //if (respuesta.Success != null)
+            //{
+            //    MessageBox.Show(respuesta.Success + " " + respuesta.Message);
+            //}
 
         }
 
@@ -589,7 +586,7 @@ namespace DataObra.Datos
 
         private void limpiaLogin_Click(object sender, RoutedEventArgs e)
         {
-            _queueManager.Logs.Clear();
+            DatosWeb.LogEntries.Clear();
         }
 
         private async void ProcesarDoc_Click(object sender, RoutedEventArgs e)
@@ -706,17 +703,17 @@ namespace DataObra.Datos
             };
 
             // Llamar al método ProcesarInfoDocumentoAsync
-            var resultado = await ConsultasAPI.ProcesarInfoDocumentoAsync(infoDocumento);
+            //var resultado = await ConsultasAPI.ProcesarInfoDocumentoAsync(infoDocumento);
 
             // Manejar el resultado de la llamada
-            if (resultado.Success)
-            {
-                MessageBox.Show($"Documento procesado con éxito.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
-            {
-                MessageBox.Show($"Error al procesar el documento: {resultado.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            //if (resultado.Success)
+            //{
+            //    MessageBox.Show($"Documento procesado con éxito.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            //}
+            //else
+            //{
+            //    MessageBox.Show($"Error al procesar el documento: {resultado.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
         }
 
         private async void ProcesaLoteDet_Click(object sender, RoutedEventArgs e)
@@ -828,17 +825,17 @@ namespace DataObra.Datos
             var listaDetalleDocumento = new List<Biblioteca.DocumentoDet> { documentoDet1, documentoDet2, documentoDet3 };
 
             // Llamar al método ProcesarListaDetalleDocumentoAsync
-            var resultado = await ConsultasAPI.ProcesarListaDetalleDocumentoAsync(listaDetalleDocumento);
+            //var resultado = await ConsultasAPI.ProcesarListaDetalleDocumentoAsync(listaDetalleDocumento);
 
             // Manejar el resultado de la llamada
-            if (resultado.Success)
-            {
-                MessageBox.Show("Lista de detalles de documentos procesada exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
-            {
-                MessageBox.Show($"Error al procesar la lista de detalles de documentos: {resultado.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            //if (resultado.Success)
+            //{
+            //    MessageBox.Show("Lista de detalles de documentos procesada exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            //}
+            //else
+            //{
+            //    MessageBox.Show($"Error al procesar la lista de detalles de documentos: {resultado.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
         }
 
         private async void ProcesaDetallePres_Click(object sender, RoutedEventArgs e)
@@ -905,17 +902,17 @@ namespace DataObra.Datos
             };
 
             // Llamar al método ProcesarArbolPresupuestoAsync
-            var resultado = await ConsultasAPI.ProcesarArbolPresupuestoAsync(request);
+            //var resultado = await ConsultasAPI.ProcesarArbolPresupuestoAsync(request);
 
             // Manejar el resultado de la llamada
-            if (resultado.Success)
-            {
-                MessageBox.Show("Árbol de presupuesto procesado exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
-            {
-                MessageBox.Show($"Error al procesar el árbol de presupuesto: {resultado.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            //if (resultado.Success)
+            //{
+            //    MessageBox.Show("Árbol de presupuesto procesado exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            //}
+            //else
+            //{
+            //    MessageBox.Show($"Error al procesar el árbol de presupuesto: {resultado.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
         }
 
         private async void obtenerMovimientos_Click(object sender, RoutedEventArgs e)
@@ -927,22 +924,22 @@ namespace DataObra.Datos
             #endregion
 
             // Código a utilizar
-            var respuesta = await ConsultasAPI.GetMovimientosPorCampoAsync(id, fieldName, cuentaID);
+            //var respuesta = await ConsultasAPI.GetMovimientosPorCampoAsync(id, fieldName, cuentaID);
 
             // Respuestas
-            bool resultado = respuesta.Success;
-            string mensaje = respuesta.Message;
-            List<Biblioteca.Movimiento> movimientos = respuesta.Movimientos;
+            //bool resultado = respuesta.Success;
+            //string mensaje = respuesta.Message;
+            //List<Biblioteca.Movimiento> movimientos = respuesta.Movimientos;
 
-            // Mensaje para testeo
-            if (respuesta.Success)
-            {
-                MessageBox.Show(resultado + " " + mensaje + " Cantidad: " + movimientos.Count());
-            }
-            else
-            {
-                MessageBox.Show("No hay registros");
-            }
+            //// Mensaje para testeo
+            //if (respuesta.Success)
+            //{
+            //    MessageBox.Show(resultado + " " + mensaje + " Cantidad: " + movimientos.Count());
+            //}
+            //else
+            //{
+            //    MessageBox.Show("No hay registros");
+            //}
         }
 
 
@@ -1070,17 +1067,17 @@ namespace DataObra.Datos
             var listaMovimientos = new List<Biblioteca.Movimiento> { movimiento1, movimiento2, movimiento3 };
 
             // Llamar al método ProcesarMovimientosAsync
-            var resultado = await ConsultasAPI.ProcesarMovimientosAsync(listaMovimientos);
+            //var resultado = await ConsultasAPI.ProcesarMovimientosAsync(listaMovimientos);
 
             // Manejar el resultado de la llamada
-            if (resultado.Success)
-            {
-                MessageBox.Show("Lista de movimientos procesada exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
-            {
-                MessageBox.Show($"Error al procesar la lista de movimientos: {resultado.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            //if (resultado.Success)
+            //{
+            //    MessageBox.Show("Lista de movimientos procesada exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            //}
+            //else
+            //{
+            //    MessageBox.Show($"Error al procesar la lista de movimientos: {resultado.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
         }
 
         private async void ProcesaLoteImp_Click(object sender, RoutedEventArgs e)
@@ -1180,17 +1177,17 @@ namespace DataObra.Datos
             var listaImpuestos = new List<Biblioteca.Impuesto> { impuesto1, impuesto2, impuesto3 };
 
             // Llamar al método ProcesarImpuestosAsync
-            var resultado = await ConsultasAPI.ProcesarImpuestosAsync(listaImpuestos);
+            //var resultado = await ConsultasAPI.ProcesarImpuestosAsync(listaImpuestos);
 
             // Manejar el resultado de la llamada
-            if (resultado.Success)
-            {
-                MessageBox.Show("Lista de impuestos procesada exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
-            {
-                MessageBox.Show($"Error al procesar la lista de impuestos: {resultado.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            //if (resultado.Success)
+            //{
+            //    MessageBox.Show("Lista de impuestos procesada exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            //}
+            //else
+            //{
+            //    MessageBox.Show($"Error al procesar la lista de impuestos: {resultado.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
         }
 
         private async void obtenerImpuestos_Click_1(object sender, RoutedEventArgs e)
@@ -1202,22 +1199,22 @@ namespace DataObra.Datos
             #endregion
 
             // Código a utilizar
-            var respuesta = await ConsultasAPI.GetImpuestosPorCampoAsync(id, fieldName, cuentaID);
+            //var respuesta = await ConsultasAPI.GetImpuestosPorCampoAsync(id, fieldName, cuentaID);
 
             // Respuestas
-            bool resultado = respuesta.Success;
-            string mensaje = respuesta.Message;
-            List<Biblioteca.Impuesto> impuestos = respuesta.Impuestos;
+            //bool resultado = respuesta.Success;
+            //string mensaje = respuesta.Message;
+            //List<Biblioteca.Impuesto> impuestos = respuesta.Impuestos;
 
-            // Mensaje para testeo
-            if (respuesta.Success)
-            {
-                MessageBox.Show(resultado + " " + mensaje + " Cantidad: " + impuestos.Count());
-            }
-            else
-            {
-                MessageBox.Show("No hay registros");
-            }
+            //// Mensaje para testeo
+            //if (respuesta.Success)
+            //{
+            //    MessageBox.Show(resultado + " " + mensaje + " Cantidad: " + impuestos.Count());
+            //}
+            //else
+            //{
+            //    MessageBox.Show("No hay registros");
+            //}
         }
 
         private async void buscaCuentaDoc_Click(object sender, RoutedEventArgs e)

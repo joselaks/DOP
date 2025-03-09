@@ -721,28 +721,28 @@ namespace DataObra.Presupuestos
                 #endregion
 
                 // Codigo a utilizar
-                var respuesta = await ConsultasAPI.PostDocumentoAsync(documento);
+                //var respuesta = await ConsultasAPI.PostDocumentoAsync(documento);
 
-                //Respuestas
-                Encabezado.ID = respuesta.Id;
-                bool conexionExitosa = respuesta.Success;
-                string mensaje = respuesta.Message;
+                ////Respuestas
+                //Encabezado.ID = respuesta.Id;
+                //bool conexionExitosa = respuesta.Success;
+                //string mensaje = respuesta.Message;
 
-                //Mensaje para testeo
-                MessageBox.Show(respuesta.Success + " " + mensaje + " " + Encabezado.ID.ToString());
+                ////Mensaje para testeo
+                //MessageBox.Show(respuesta.Success + " " + mensaje + " " + Encabezado.ID.ToString());
             }
             else
             {
-                var respuesta = await ConsultasAPI.PutDocumentoAsync(Encabezado);
-                //Respuestas
-                bool resultadoBorrado = respuesta.Success;  // true si lo editó, false si no existia el registro
-                string mensaje = respuesta.Message;
+                //var respuesta = await ConsultasAPI.PutDocumentoAsync(Encabezado);
+                ////Respuestas
+                //bool resultadoBorrado = respuesta.Success;  // true si lo editó, false si no existia el registro
+                //string mensaje = respuesta.Message;
 
-                //Mensaje para testeo
-                if (respuesta.Success != null)
-                {
-                    MessageBox.Show(respuesta.Success + " " + respuesta.Message);
-                }
+                ////Mensaje para testeo
+                //if (respuesta.Success != null)
+                //{
+                //    MessageBox.Show(respuesta.Success + " " + respuesta.Message);
+                //}
             }
         }
 

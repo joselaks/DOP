@@ -168,16 +168,16 @@ namespace DataObra.Documentos
                 // Codigo a utilizar
 
                 
-                var respuesta1 = await ConsultasAPI.PostDocumentoAsync(wDoc1);
-                if (respuesta1.Id != null)
-                {
-                    oActivo.ID = respuesta1.Id;
-                }
+                ////var respuesta1 = await ConsultasAPI.PostDocumentoAsync(wDoc1);
+                //if (respuesta1.Id != null)
+                //{
+                //    oActivo.ID = respuesta1.Id;
+                //}
 
             }
             else
             {
-                var respuesta1 = await ConsultasAPI.PutDocumentoAsync(wDoc1);
+                //var respuesta1 = await ConsultasAPI.PutDocumentoAsync(wDoc1);
             }
 
 
@@ -246,14 +246,14 @@ namespace DataObra.Documentos
 
             #endregion
 
-            var respuesta = await ConsultasAPI.PostDocumentoAsync(documento);
-            //Respuestas
-            int? nuevodoc = respuesta.Id;
-            bool conexionExitosa = respuesta.Success;
-            string mensaje = respuesta.Message;
+            //var respuesta = await ConsultasAPI.PostDocumentoAsync(documento);
+            ////Respuestas
+            //int? nuevodoc = respuesta.Id;
+            //bool conexionExitosa = respuesta.Success;
+            //string mensaje = respuesta.Message;
 
             //Mensaje para testeo
-            MessageBox.Show(respuesta.Success + " " + mensaje + " " + nuevodoc.ToString());
+            //MessageBox.Show(respuesta.Success + " " + mensaje + " " + nuevodoc.ToString());
 
             //Si es existente
 
@@ -333,21 +333,21 @@ namespace DataObra.Documentos
         private async void ListaDocumentosAsync(short pCuentaID)
         {
             // Código a utilizar
-            var docBuscado = await ConsultasAPI.ObtenerDocumentosPorCuentaID(pCuentaID);
+            //var docBuscado = await ConsultasAPI.ObtenerDocumentosPorCuentaID(pCuentaID);
 
             // Respuestas
-            bool resultado = docBuscado.Success;
-            string mensaje = docBuscado.Message;
-            List<Biblioteca.Documento> listaDocumentos = docBuscado.docs;
+            //bool resultado = docBuscado.Success;
+            //string mensaje = docBuscado.Message;
+            //List<Biblioteca.Documento> listaDocumentos = docBuscado.docs;
 
-            if (docBuscado.Success == true)
-            {
-                this.GrillaDocumentos.ItemsSource = listaDocumentos;
-            }
-            else
-            {
-                MessageBox.Show("No hay Documentos");
-            }
+            //if (docBuscado.Success == true)
+            //{
+            //    this.GrillaDocumentos.ItemsSource = listaDocumentos;
+            //}
+            //else
+            //{
+            //    MessageBox.Show("No hay Documentos");
+            //}
         }
 
         private void GrillaPrincipal_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -410,8 +410,8 @@ namespace DataObra.Documentos
                     Biblioteca.Documento wDoc = new Biblioteca.Documento();
                     wDoc = Documento.ConvertirInverso(oActivo);
 
-                    var respuesta = await ConsultasAPI.PutDocumentoAsync(wDoc);
-                    MessageBox.Show(respuesta.Message, respuesta.Success ? "Éxito" : "Error");
+                    //var respuesta = await ConsultasAPI.PutDocumentoAsync(wDoc);
+                    //MessageBox.Show(respuesta.Message, respuesta.Success ? "Éxito" : "Error");
                 }
             }
         }

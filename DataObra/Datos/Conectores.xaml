@@ -51,9 +51,7 @@
             <Button Content="Obtener" Margin="3,3,3,3" Width="90" x:Name="obtenerAgrupador" Click="buscaAgrupador_Click"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Center" Grid.Row="4" Grid.Column="1">
-            <Button Content="Nuevo" Margin="3,3,3,3" Width="90" x:Name="nuevoDocDet" Click="nuevoDocDet_Click"/>
             <Button Content="Obtener" Margin="3,3,3,3" Width="90" x:Name="obtenerDocDet" Click="obtenerDocDet_Click"/>
-            <Button Content="Modificar" Margin="3,3,3,3" Width="90" x:Name="modificarDocDet" Click="modificarDocDet_Click"/>
             <Button Content="Procesa Lote" Margin="3,3,3,3" Width="90" x:Name="ProcesaLoteDet" Click="ProcesaLoteDet_Click"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Center" Grid.Row="6" Grid.Column="1">
@@ -72,10 +70,6 @@
             <syncfusion:TabItemExt Header="Listado">
                 <ListBox x:Name="LogListBox" Margin="2" Background="Beige" />
 
-
-            </syncfusion:TabItemExt>
-            <syncfusion:TabItemExt Header="Objetos">
-                <syncfusion:SfDataGrid  x:Name="grillaLogs" AutoGenerateColumns="True" AllowResizingColumns="True"/>
 
             </syncfusion:TabItemExt>
         </syncfusion:TabControlExt>

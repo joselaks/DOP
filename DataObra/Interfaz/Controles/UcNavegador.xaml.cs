@@ -26,8 +26,8 @@ namespace DataObra.Interfaz.Controles
 
         private async void CargarGrilla()
         {
-            var DocumentosUsuario = await ConsultasAPI.ObtenerDocumentosPorCuentaID(App.IdCuenta);
-            this.GrillaDocumentos.ItemsSource = DocumentosUsuario.docs;
+            var DocumentosUsuario = await DatosWeb.ObtenerDocumentosPorCuentaIDAsync(App.IdCuenta);
+            this.GrillaDocumentos.ItemsSource = DocumentosUsuario.Documentos;
         }
 
         private void configuraRol(string rol)
@@ -50,8 +50,7 @@ namespace DataObra.Interfaz.Controles
                 if (documentoSeleccionado.TipoID == 10) // es un presupuesto
                 {
                     
-                    var respuesta = await ConsultasAPI.ObtenerDocumentoPorID((int)documentoSeleccionado.ID);
-                    var encabezado = respuesta.doc;
+                    var encabezado = documentoSeleccionado;
                     UserControl presup = new DataObra.Presupuestos.UcPresupuesto(encabezado);
                     DataObra.Interfaz.Ventanas.WiDocumento ventanaPres = new DataObra.Interfaz.Ventanas.WiDocumento("Presupuesto", presup);
                     var mainWindow = Window.GetWindow(this);
@@ -80,16 +79,16 @@ namespace DataObra.Interfaz.Controles
         {
             if (GrillaDocumentos.SelectedItem is Documento documentoSeleccionado)
             {
-                var respuesta = await ConsultasAPI.DeleteDocumentoAsync((int)documentoSeleccionado.ID);
-                if (respuesta.Success)
-                {
-                    MessageBox.Show("Documento eliminado exitosamente.");
-                    CargarGrilla(); // Actualizar la grilla después de eliminar el documento
-                }
-                else
-                {
-                    MessageBox.Show($"Error al eliminar el documento: {respuesta.Message}");
-                }
+                //var respuesta = await ConsultasAPI.DeleteDocumentoAsync((int)documentoSeleccionado.ID);
+                //if (respuesta.Success)
+                //{
+                //    MessageBox.Show("Documento eliminado exitosamente.");
+                //    CargarGrilla(); // Actualizar la grilla después de eliminar el documento
+                //}
+                //else
+                //{
+                //    MessageBox.Show($"Error al eliminar el documento: {respuesta.Message}");
+                //}
             }
             else
             {

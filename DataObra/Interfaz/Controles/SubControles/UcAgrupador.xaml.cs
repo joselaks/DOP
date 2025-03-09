@@ -58,26 +58,26 @@ namespace DataObra.Interfaz.Controles.SubControles
                 // Agregar la lógica para guardar el nuevo Agrupador
                 if (edicion==false) 
                 {
-                    var respuesta = await ConsultasAPI.PostAgrupadorAsync(agrup);
+                    //var respuesta = await ConsultasAPI.PostAgrupadorAsync(agrup);
 
-                    //Respuestas
-                    int? nuevodoc = respuesta.Id;
-                    bool conexionExitosa = respuesta.Success;
-                    string mensaje = respuesta.Message;
+                    ////Respuestas
+                    //int? nuevodoc = respuesta.Id;
+                    //bool conexionExitosa = respuesta.Success;
+                    //string mensaje = respuesta.Message;
 
-                    //Mensaje para testeo
-                    MessageBox.Show(respuesta.Success + " " + mensaje + " " + nuevodoc.ToString());
+                    ////Mensaje para testeo
+                    //MessageBox.Show(respuesta.Success + " " + mensaje + " " + nuevodoc.ToString());
                     
 
                 }
                 else
                 {
-                    var respuesta = await ConsultasAPI.PutAgrupadorAsync(agrup);
-                    //Respuestas
-                    bool conexionExitosa = respuesta.Success;
-                    string mensaje = respuesta.Message;
-                    //Mensaje para testeo
-                    MessageBox.Show(respuesta.Success + " " + mensaje);
+                    //var respuesta = await ConsultasAPI.PutAgrupadorAsync(agrup);
+                    ////Respuestas
+                    //bool conexionExitosa = respuesta.Success;
+                    //string mensaje = respuesta.Message;
+                    ////Mensaje para testeo
+                    //MessageBox.Show(respuesta.Success + " " + mensaje);
 
                 }
 
