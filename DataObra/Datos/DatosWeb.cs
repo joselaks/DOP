@@ -48,25 +48,25 @@ namespace DataObra.Datos
                 if (usuario.Token != null)
                 {
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", usuario.Token);
-                    LogEntries.Add($"{receiveTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Validar Usuario - Éxito - Duración: {duration.TotalMilliseconds} ms");
+                    LogEntries.Add($"{receiveTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Validar Usuario - Éxito - Duración: {duration.TotalSeconds:F3} s");
                     return (true, "Usuario validado exitosamente.", usuario);
                 }
 
-                LogEntries.Add($"{receiveTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Validar Usuario - Usuario inexistente - Duración: {duration.TotalMilliseconds} ms");
+                LogEntries.Add($"{receiveTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Validar Usuario - Usuario inexistente - Duración: {duration.TotalSeconds:F3} s");
                 return (true, "Usuario inexistente.", usuario);
             }
             catch (HttpRequestException httpEx)
             {
                 DateTime errorTime = DateTime.Now;
                 TimeSpan duration = errorTime - sendTime;
-                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Validar Usuario - Error HTTP: {httpEx.Message} - Duración: {duration.TotalMilliseconds} ms");
+                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Validar Usuario - Error HTTP: {httpEx.Message} - Duración: {duration.TotalSeconds:F3} s");
                 return (false, $"Error HTTP: {httpEx.Message}", null);
             }
             catch (Exception ex)
             {
                 DateTime errorTime = DateTime.Now;
                 TimeSpan duration = errorTime - sendTime;
-                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Validar Usuario - Error: {ex.Message} - Duración: {duration.TotalMilliseconds} ms");
+                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Validar Usuario - Error: {ex.Message} - Duración: {duration.TotalSeconds:F3} s");
                 return (false, $"Error: {ex.Message}", null);
             }
         }
@@ -93,7 +93,7 @@ namespace DataObra.Datos
                 var nuevoDocumentoID = responseObject.Id;
 
                 // Agregar entrada de log con el ID del documento creado
-                LogEntries.Add($"{receiveTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Crear Documento - ID del documento creado: {nuevoDocumentoID} - Duración: {duration.TotalMilliseconds} ms");
+                LogEntries.Add($"{receiveTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Crear Documento - ID del documento creado: {nuevoDocumentoID} - Duración: {duration.TotalSeconds:F3} s");
 
                 return (true, $"Documento insertado con ID: {nuevoDocumentoID}", nuevoDocumentoID);
             }
@@ -101,14 +101,14 @@ namespace DataObra.Datos
             {
                 DateTime errorTime = DateTime.Now;
                 TimeSpan duration = errorTime - sendTime;
-                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Crear Documento - Error HTTP: {httpEx.Message} - Duración: {duration.TotalMilliseconds} ms");
+                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Crear Documento - Error HTTP: {httpEx.Message} - Duración: {duration.TotalSeconds:F3} s");
                 return (false, $"Error HTTP: {httpEx.Message}", null);
             }
             catch (Exception ex)
             {
                 DateTime errorTime = DateTime.Now;
                 TimeSpan duration = errorTime - sendTime;
-                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Crear Documento - Error: {ex.Message} - Duración: {duration.TotalMilliseconds} ms");
+                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Crear Documento - Error: {ex.Message} - Duración: {duration.TotalSeconds:F3} s");
                 return (false, $"Error: {ex.Message}", null);
             }
         }
@@ -132,7 +132,7 @@ namespace DataObra.Datos
                 var resultado = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, jsonSerializerOptions);
 
                 // Agregar entrada de log con el resultado de la operación
-                LogEntries.Add($"{receiveTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Eliminar Documento - {resultado.Message} - Duración: {duration.TotalMilliseconds} ms");
+                LogEntries.Add($"{receiveTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Eliminar Documento - {resultado.Message} - Duración: {duration.TotalSeconds:F3} s");
 
                 return (resultado.Success, resultado.Message);
             }
@@ -140,14 +140,14 @@ namespace DataObra.Datos
             {
                 DateTime errorTime = DateTime.Now;
                 TimeSpan duration = errorTime - sendTime;
-                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Eliminar Documento - Error HTTP: {httpEx.Message} - Duración: {duration.TotalMilliseconds} ms");
+                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Eliminar Documento - Error HTTP: {httpEx.Message} - Duración: {duration.TotalSeconds:F3} s");
                 return (false, $"Error HTTP: {httpEx.Message}");
             }
             catch (Exception ex)
             {
                 DateTime errorTime = DateTime.Now;
                 TimeSpan duration = errorTime - sendTime;
-                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Eliminar Documento - Error: {ex.Message} - Duración: {duration.TotalMilliseconds} ms");
+                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Eliminar Documento - Error: {ex.Message} - Duración: {duration.TotalSeconds:F3} s");
                 return (false, $"Error: {ex.Message}");
             }
         }
@@ -173,7 +173,7 @@ namespace DataObra.Datos
                 var resultado = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, jsonSerializerOptions);
 
                 // Agregar entrada de log con el resultado de la operación
-                LogEntries.Add($"{receiveTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Actualizar Documento - {resultado.Message} - Duración: {duration.TotalMilliseconds} ms");
+                LogEntries.Add($"{receiveTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Actualizar Documento - {resultado.Message} - Duración: {duration.TotalSeconds:F3} s");
 
                 return (resultado.Success, resultado.Message);
             }
@@ -181,14 +181,14 @@ namespace DataObra.Datos
             {
                 DateTime errorTime = DateTime.Now;
                 TimeSpan duration = errorTime - sendTime;
-                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Actualizar Documento - Error HTTP: {httpEx.Message} - Duración: {duration.TotalMilliseconds} ms");
+                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Actualizar Documento - Error HTTP: {httpEx.Message} - Duración: {duration.TotalSeconds:F3} s");
                 return (false, $"Error HTTP: {httpEx.Message}");
             }
             catch (Exception ex)
             {
                 DateTime errorTime = DateTime.Now;
                 TimeSpan duration = errorTime - sendTime;
-                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Actualizar Documento - Error: {ex.Message} - Duración: {duration.TotalMilliseconds} ms");
+                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Actualizar Documento - Error: {ex.Message} - Duración: {duration.TotalSeconds:F3} s");
                 return (false, $"Error: {ex.Message}");
             }
         }
@@ -209,21 +209,21 @@ namespace DataObra.Datos
                 var responseString = await response.Content.ReadAsStringAsync();
                 var documentos = JsonSerializer.Deserialize<List<DocumentoDTO>>(responseString, jsonSerializerOptions);
 
-                LogEntries.Add($"{receiveTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Obtener Documentos por CuentaID - Duración: {duration.TotalMilliseconds} ms");
+                LogEntries.Add($"{receiveTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Obtener Documentos por CuentaID - Duración: {duration.TotalSeconds:F3} s");
                 return (true, "Documentos obtenidos exitosamente.", documentos);
             }
             catch (HttpRequestException httpEx)
             {
                 DateTime errorTime = DateTime.Now;
                 TimeSpan duration = errorTime - sendTime;
-                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Obtener Documentos por CuentaID - Error HTTP: {httpEx.Message} - Duración: {duration.TotalMilliseconds} ms");
+                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Obtener Documentos por CuentaID - Error HTTP: {httpEx.Message} - Duración: {duration.TotalSeconds:F3} s");
                 return (false, $"Error HTTP: {httpEx.Message}", null);
             }
             catch (Exception ex)
             {
                 DateTime errorTime = DateTime.Now;
                 TimeSpan duration = errorTime - sendTime;
-                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Obtener Documentos por CuentaID - Error: {ex.Message} - Duración: {duration.TotalMilliseconds} ms");
+                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Obtener Documentos por CuentaID - Error: {ex.Message} - Duración: {duration.TotalSeconds:F3} s");
                 return (false, $"Error: {ex.Message}", null);
             }
         }
@@ -241,4 +241,5 @@ namespace DataObra.Datos
             public string Message { get; set; }
         }
     }
+
 }
