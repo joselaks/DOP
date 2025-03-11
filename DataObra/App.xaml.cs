@@ -29,10 +29,21 @@ namespace DataObra
 
             // Configurar HttpClient
             var serviceCollection = new ServiceCollection();
-            serviceCollection.AddHttpClient();
+            serviceCollection.AddHttpClient("default", client =>
+            {
+                client.Timeout = TimeSpan.FromSeconds(30); // Establecer un tiempo de espera adecuado
+                client.DefaultRequestHeaders.ConnectionClose = false; // Mantener viva la conexión
+            })
+            .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                UseCookies = true,
+                AllowAutoRedirect = true,
+                AutomaticDecompression = System.Net.DecompressionMethods.GZip | System.Net.DecompressionMethods.Deflate
+            });
+
             var servicios = serviceCollection.BuildServiceProvider();
             var httpClientFactory = servicios.GetRequiredService<IHttpClientFactory>();
-            HttpClient = httpClientFactory.CreateClient();
+            HttpClient = httpClientFactory.CreateClient("default");
             IdCuenta = 1;
 
             // Agregar el CommandBinding
@@ -48,7 +59,6 @@ namespace DataObra
             // BaseUrl = "https://localhost:5000/";
             // cambiar cuando pase a producción
             BaseUrl = "https://servidordataobra.azurewebsites.net/";
-
 
             // Registrar el evento de teclado
             EventManager.RegisterClassHandler(typeof(Window), Keyboard.KeyDownEvent, new KeyEventHandler(OnKeyDown));
@@ -69,4 +79,5 @@ namespace DataObra
         }
     }
 }
+
 
