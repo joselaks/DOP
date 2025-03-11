@@ -92,14 +92,6 @@ namespace Servidor.Repositorios
         }
 
 
-
-        //Hasta aqui actualizado
-
-
-
-
-
-
         //Procesar lote de Detalles de documentos
         public async Task ProcesarListaDetalleDocumentoAsync(List<DocumentoDet> listaDetalleDocumento)
         {
@@ -230,6 +222,27 @@ namespace Servidor.Repositorios
                 }
             }
         }
+
+        public async Task<IEnumerable<DocumentoDet>> ObtenerDocumentosDetPorCampoAsync(int id, string fieldName, short cuentaID)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@ID", id, DbType.Int32);
+                parameters.Add("@FieldName", fieldName, DbType.String);
+                parameters.Add("@CuentaID", cuentaID, DbType.Int16);
+
+                var documentosDet = await db.QueryAsync<DocumentoDet>(
+                    "DocumentosDetGetDocumentoID",
+                    parameters,
+                    commandType: CommandType.StoredProcedure
+                );
+
+                return documentosDet;
+            }
+        }
+
+        //Hasta aqui actualizado ---------------------------------------------------------------------
 
         public async Task ProcesarImpuestosAsync(List<Impuesto> listaImpuestos)
         {
@@ -455,24 +468,7 @@ namespace Servidor.Repositorios
                 return documentos;
             }
         }
-        public async Task<IEnumerable<DocumentoDet>> ObtenerDocumentosDetPorCampoAsync(int id, string fieldName, short cuentaID)
-        {
-            using (var db = new SqlConnection(_connectionString))
-            {
-                var parameters = new DynamicParameters();
-                parameters.Add("@ID", id, DbType.Int32);
-                parameters.Add("@FieldName", fieldName, DbType.String);
-                parameters.Add("@CuentaID", cuentaID, DbType.Int16);
-
-                var documentosDet = await db.QueryAsync<DocumentoDet>(
-                    "DocumentosDetGetDocumentoID",
-                    parameters,
-                    commandType: CommandType.StoredProcedure
-                );
-
-                return documentosDet;
-            }
-        }
+        
 
         public async Task<IEnumerable<Impuesto>> ObtenerImpuestosPorCampoAsync(int id, string fieldName, short cuentaID)
         {
