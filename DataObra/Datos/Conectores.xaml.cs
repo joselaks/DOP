@@ -40,24 +40,19 @@ namespace DataObra.Datos
             string pass = "contra"; // Contraseña
             #endregion
 
-            // Codigo a utilizar
-            var respuesta = await DatosWeb.ValidarUsuarioAsync(email, pass);
+            // Llamar al método ValidarUsuarioAsync
+            var (success, message, usuario) = await DatosWeb.ValidarUsuarioAsync(email, pass);
+            // usuario es un objeto UsuarioDTO que contiene los datos del usuario y el token
 
-            //Respuestas
-            UsuarioDTO datosusuario = respuesta.Usuario.DatosUsuario;
-            String Token = respuesta.Usuario.Token;
-            bool conexionExitosa = respuesta.Success;
-            string mensaje = respuesta.Message;
 
-            //Mensaje para testeo
-            if (conexionExitosa)
+            // Manejar la respuesta
+            if (success)
             {
-                MessageBox.Show(datosusuario.Nombre + " " + datosusuario.Apellido);
+                MessageBox.Show(usuario.DatosUsuario.Nombre + " " + usuario.DatosUsuario.Apellido);
             }
             else
             {
-                MessageBox.Show("Error al conectar");
-
+                MessageBox.Show($"Error al conectar: {message}");
             }
         }
 
@@ -133,30 +128,26 @@ namespace DataObra.Datos
             }
         }
 
-
-        // Obtiene el detalle de un documento, especificando cuentaID,  el ID y el nombre del tipo de documento ( FacturaID, RemitoID, etc)
-        private async void obtenerDocDet_Click(object sender, RoutedEventArgs e)
+        // Borra un documento
+        private async void borraDoc_Click(object sender, RoutedEventArgs e)
         {
             #region Datos para testeo
-            int id = 1; // ID del documento a obtener
-            string fieldName = "FacturaID"; // Nombre del campo por el cual se va a filtrar
-            short cuentaID = 3; // ID de la cuenta
+            int id = 19;
             #endregion
 
-            // Llamar al método ObtenerDocumentosDetPorCampoAsync
-            var respuesta = await DatosWeb.ObtenerDocumentosDetPorCampoAsync(id, fieldName, cuentaID);
+            // Llamar al método EliminarDocumentoAsync
+            var (success, message) = await DatosWeb.EliminarDocumentoAsync(id);
 
             // Manejar la respuesta
-            if (respuesta.Success)
+            if (success)
             {
-                string mensaje = $"Documentos obtenidos exitosamente. Cantidad: {respuesta.Documentos.Count}";
-                MessageBox.Show(mensaje, "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show($"Documento eliminado con éxito. ID: {id}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
-                string mensaje = $"Error al obtener los documentos: {respuesta.Message}";
-                MessageBox.Show(mensaje, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Error al eliminar el documento: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
         }
 
         // Edita un documento
@@ -228,32 +219,56 @@ namespace DataObra.Datos
             }
         }
 
-        // Borra un documento
-        private async void borraDoc_Click(object sender, RoutedEventArgs e)
+        private async void buscaCuentaDoc_Click(object sender, RoutedEventArgs e)
         {
             #region Datos para testeo
-            int id = 19;
+            int CuentaId = 1; // ID del impuesto a obtener
             #endregion
 
-            // Llamar al método EliminarDocumentoAsync
-            var (success, message) = await DatosWeb.EliminarDocumentoAsync(id);
+            // Llamar al método ObtenerDocumentosPorCuentaIDAsync
+            var (success, message, documentos) = await DatosWeb.ObtenerDocumentosPorCuentaIDAsync(CuentaId);
+            // documentos es una lista de DocumentoDTO
 
             // Manejar la respuesta
             if (success)
             {
-                MessageBox.Show($"Documento eliminado con éxito. ID: {id}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                string mensaje = $"Documentos obtenidos exitosamente. Cantidad: {documentos.Count}";
+                MessageBox.Show(mensaje, "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
-                MessageBox.Show($"Error al eliminar el documento: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                string mensaje = $"Error al obtener los documentos: {message}";
+                MessageBox.Show(mensaje, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
         }
 
-        private void limpiaLogin_Click(object sender, RoutedEventArgs e)
+
+        private async void obtenerDocDet_Click(object sender, RoutedEventArgs e)
         {
-            DatosWeb.LogEntries.Clear();
+            #region Datos para testeo
+            int id = 1; // ID del documento a obtener
+            string fieldName = "FacturaID"; // Nombre del campo por el cual se va a filtrar
+            short cuentaID = 3; // ID de la cuenta
+            #endregion
+
+            // Llamar al método ObtenerDocumentosDetPorCampoAsync
+            var (success, message, documentos) = await DatosWeb.ObtenerDocumentosDetPorCampoAsync(id, fieldName, cuentaID);
+            // documentos es una lista de DocumentoDetDTO
+
+            // Manejar la respuesta
+            if (success)
+            {
+                string mensaje = $"Documentos obtenidos exitosamente. Cantidad: {documentos.Count}";
+                MessageBox.Show(mensaje, "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                string mensaje = $"Error al obtener los documentos: {message}";
+                MessageBox.Show(mensaje, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
+
+
 
         // Procesar un lote de documentosDetalle
         private async void ProcesaLoteDet_Click(object sender, RoutedEventArgs e)
@@ -365,42 +380,30 @@ namespace DataObra.Datos
             var listaDetalleDocumento = new List<DocumentoDetDTO> { documentoDet1, documentoDet2, documentoDet3 };
 
             // Llamar al método ProcesarListaDetalleDocumentoAsync
-            var resultado = await DatosWeb.ProcesarListaDetalleDocumentoAsync(listaDetalleDocumento);
+            var (success, message) = await DatosWeb.ProcesarListaDetalleDocumentoAsync(listaDetalleDocumento);
 
             // Manejar el resultado de la llamada
-            if (resultado.Success)
+            if (success)
             {
                 MessageBox.Show("Lista de detalles de documentos procesada exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
-                MessageBox.Show($"Error al procesar la lista de detalles de documentos: {resultado.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Error al procesar la lista de detalles de documentos: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
 
-        private async void buscaCuentaDoc_Click(object sender, RoutedEventArgs e)
+
+        private void limpiaLogin_Click(object sender, RoutedEventArgs e)
         {
-            #region Datos para testeo
-            int CuentaId = 1; // ID del impuesto a obtener
-            #endregion
-
-            var result = await DatosWeb.ObtenerDocumentosPorCuentaIDAsync(CuentaId);
-            // Respuestas
-            bool resultado = result.Success;
-            string mensaje = result.Message;
-            List<DocumentoDTO> documentos = result.Documentos;
-
-            //Mensaje para testeo
-            if (resultado == true)
-            {
-                MessageBox.Show(resultado + " " + mensaje + " Cantidad: " + documentos.Count());
-            }
-            else
-            {
-                MessageBox.Show("No hay registros");
-            }
+            DatosWeb.LogEntries.Clear();
         }
+
+
+
+
+
     }
 }
 

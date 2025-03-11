@@ -157,8 +157,22 @@ doc.MapDelete("/{id:int}", async (rDocumentos repositorio, int id) =>
     }
 }).RequireAuthorization();
 
+doc.MapPut("/", async (rDocumentos repositorio, DocumentoDTO documento) =>
+{
+    var (success, message) = await repositorio.ActualizarDocumentoAsync(documento);
 
-//
+    if (success)
+    {
+        return Results.Ok(new { Success = true, Message = message });
+    }
+    else
+    {
+        return Results.BadRequest(new { Success = false, Message = message });
+    }
+}).RequireAuthorization();
+
+
+// hasta acá actualizados
 
 
 
@@ -175,6 +189,13 @@ doc.MapDelete("rel/{supID:int}/{infID:int}", async (rDocumentos repositorio, int
         return Results.Ok(new { Success = false, Message = "No se encontró relación para eliminar." });
     }
 }).RequireAuthorization();
+
+
+
+
+
+
+
 
 doc.MapPost("/rel/", async (rDocumentos repositorio, DocumentoRel rel) =>
 {
@@ -215,19 +236,6 @@ doc.MapGet("/id/{id:int}", async (rDocumentos repositorio, int id) =>
     }
 }).RequireAuthorization();
 
-doc.MapPut("/", async (rDocumentos repositorio, DocumentoDTO documento) =>
-{
-    var (success, message) = await repositorio.ActualizarDocumentoAsync(documento);
-
-    if (success)
-    {
-        return Results.Ok(new { Success = true, Message = message });
-    }
-    else
-    {
-        return Results.Ok(new { Success = false, Message = message });
-    }
-}).RequireAuthorization();
 
 
 
