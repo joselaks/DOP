@@ -141,6 +141,8 @@ doc.MapPost("/procesar", async (rDocumentos repositorio, InfoDocumento infodocum
     }
 }).RequireAuthorization();
 
+/// ajustar
+
 doc.MapDelete("/{id:int}", async (rDocumentos repositorio, int id) =>
 {
     var (success, message) = await repositorio.EliminarDocumentoAsync(id);
@@ -151,11 +153,12 @@ doc.MapDelete("/{id:int}", async (rDocumentos repositorio, int id) =>
     }
     else
     {
-        return Results.Ok(new { Success = false, Message = message });
+        return Results.BadRequest(new { Success = false, Message = message });
     }
 }).RequireAuthorization();
 
 
+//
 
 
 

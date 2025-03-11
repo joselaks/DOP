@@ -28,217 +28,14 @@ namespace DataObra.Datos
             httpClient = ((App)Application.Current).HttpClient;
         }
 
-        // Procedimiento para validar usuario. Una vez verificado graba el Token en el httpClient para las próximas consultas
-        public static async Task<(bool Success, string Message, CredencialesUsuarioDTO Usuario)> ValidarUsuarioAsync(string email, string pass)
+        private static async Task<(bool Success, string Message, T Data)> ExecuteRequestAsync<T>(Func<Task<HttpResponseMessage>> httpRequest, string logMessage)
         {
-            string url = $"{App.BaseUrl}usuarios/validacion?email={email}&pass={pass}";
             DateTime sendTime = DateTime.Now;
-            LogEntries.Add($"{sendTime:yyyy-MM-dd HH:mm:ss.fff} - Enviado - Validar Usuario");
+            LogEntries.Add($"{sendTime:yyyy-MM-dd HH:mm:ss.fff} - Enviado - {logMessage}");
 
             try
             {
-                var response = await httpClient.GetAsync(url);
-                DateTime receiveTime = DateTime.Now;
-                TimeSpan duration = receiveTime - sendTime;
-
-                response.EnsureSuccessStatusCode();
-                var responseString = await response.Content.ReadAsStringAsync();
-                var usuario = JsonSerializer.Deserialize<CredencialesUsuarioDTO>(responseString, jsonSerializerOptions);
-
-                if (usuario.Token != null)
-                {
-                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", usuario.Token);
-                    LogEntries.Add($"{receiveTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Validar Usuario - Éxito - Duración: {duration.TotalSeconds:F3} s");
-                    return (true, "Usuario validado exitosamente.", usuario);
-                }
-
-                LogEntries.Add($"{receiveTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Validar Usuario - Usuario inexistente - Duración: {duration.TotalSeconds:F3} s");
-                return (true, "Usuario inexistente.", usuario);
-            }
-            catch (HttpRequestException httpEx)
-            {
-                DateTime errorTime = DateTime.Now;
-                TimeSpan duration = errorTime - sendTime;
-                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Validar Usuario - Error HTTP: {httpEx.Message} - Duración: {duration.TotalSeconds:F3} s");
-                return (false, $"Error HTTP: {httpEx.Message}", null);
-            }
-            catch (Exception ex)
-            {
-                DateTime errorTime = DateTime.Now;
-                TimeSpan duration = errorTime - sendTime;
-                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Validar Usuario - Error: {ex.Message} - Duración: {duration.TotalSeconds:F3} s");
-                return (false, $"Error: {ex.Message}", null);
-            }
-        }
-
-        public static async Task<(bool Success, string Message, int? Id)> CrearDocumentoAsync(DocumentoDTO documento)
-        {
-            string url = $"{App.BaseUrl}documentos/";
-            DateTime sendTime = DateTime.Now;
-            LogEntries.Add($"{sendTime:yyyy-MM-dd HH:mm:ss.fff} - Enviado - Crear Documento");
-
-            var content = new StringContent(JsonSerializer.Serialize(documento), Encoding.UTF8, "application/json");
-
-            try
-            {
-                var response = await httpClient.PostAsync(url, content);
-                DateTime receiveTime = DateTime.Now;
-                TimeSpan duration = receiveTime - sendTime;
-
-                response.EnsureSuccessStatusCode();
-                var responseString = await response.Content.ReadAsStringAsync();
-
-                // Suponiendo que el responseString es un objeto JSON con una propiedad "Id"
-                var responseObject = JsonSerializer.Deserialize<CrearDocumentoResponse>(responseString, jsonSerializerOptions);
-                var nuevoDocumentoID = responseObject.Id;
-
-                // Agregar entrada de log con el ID del documento creado
-                LogEntries.Add($"{receiveTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Crear Documento - ID del documento creado: {nuevoDocumentoID} - Duración: {duration.TotalSeconds:F3} s");
-
-                return (true, $"Documento insertado con ID: {nuevoDocumentoID}", nuevoDocumentoID);
-            }
-            catch (HttpRequestException httpEx)
-            {
-                DateTime errorTime = DateTime.Now;
-                TimeSpan duration = errorTime - sendTime;
-                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Crear Documento - Error HTTP: {httpEx.Message} - Duración: {duration.TotalSeconds:F3} s");
-                return (false, $"Error HTTP: {httpEx.Message}", null);
-            }
-            catch (Exception ex)
-            {
-                DateTime errorTime = DateTime.Now;
-                TimeSpan duration = errorTime - sendTime;
-                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Crear Documento - Error: {ex.Message} - Duración: {duration.TotalSeconds:F3} s");
-                return (false, $"Error: {ex.Message}", null);
-            }
-        }
-
-        public static async Task<(bool Success, string Message)> EliminarDocumentoAsync(int id)
-        {
-            string url = $"{App.BaseUrl}documentos/{id}";
-            DateTime sendTime = DateTime.Now;
-            LogEntries.Add($"{sendTime:yyyy-MM-dd HH:mm:ss.fff} - Enviado - Eliminar Documento");
-
-            try
-            {
-                var response = await httpClient.DeleteAsync(url);
-                DateTime receiveTime = DateTime.Now;
-                TimeSpan duration = receiveTime - sendTime;
-
-                response.EnsureSuccessStatusCode();
-                var responseString = await response.Content.ReadAsStringAsync();
-
-                // Deserializar la respuesta JSON
-                var resultado = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, jsonSerializerOptions);
-
-                // Agregar entrada de log con el resultado de la operación
-                LogEntries.Add($"{receiveTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Eliminar Documento - {resultado.Message} - Duración: {duration.TotalSeconds:F3} s");
-
-                return (resultado.Success, resultado.Message);
-            }
-            catch (HttpRequestException httpEx)
-            {
-                DateTime errorTime = DateTime.Now;
-                TimeSpan duration = errorTime - sendTime;
-                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Eliminar Documento - Error HTTP: {httpEx.Message} - Duración: {duration.TotalSeconds:F3} s");
-                return (false, $"Error HTTP: {httpEx.Message}");
-            }
-            catch (Exception ex)
-            {
-                DateTime errorTime = DateTime.Now;
-                TimeSpan duration = errorTime - sendTime;
-                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Eliminar Documento - Error: {ex.Message} - Duración: {duration.TotalSeconds:F3} s");
-                return (false, $"Error: {ex.Message}");
-            }
-        }
-
-        public static async Task<(bool Success, string Message)> ActualizarDocumentoAsync(DocumentoDTO documento)
-        {
-            string url = $"{App.BaseUrl}documentos/";
-            DateTime sendTime = DateTime.Now;
-            LogEntries.Add($"{sendTime:yyyy-MM-dd HH:mm:ss.fff} - Enviado - Actualizar Documento");
-
-            var content = new StringContent(JsonSerializer.Serialize(documento), Encoding.UTF8, "application/json");
-
-            try
-            {
-                var response = await httpClient.PutAsync(url, content);
-                DateTime receiveTime = DateTime.Now;
-                TimeSpan duration = receiveTime - sendTime;
-
-                response.EnsureSuccessStatusCode();
-                var responseString = await response.Content.ReadAsStringAsync();
-
-                // Deserializar la respuesta JSON
-                var resultado = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, jsonSerializerOptions);
-
-                // Agregar entrada de log con el resultado de la operación
-                LogEntries.Add($"{receiveTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Actualizar Documento - {resultado.Message} - Duración: {duration.TotalSeconds:F3} s");
-
-                return (resultado.Success, resultado.Message);
-            }
-            catch (HttpRequestException httpEx)
-            {
-                DateTime errorTime = DateTime.Now;
-                TimeSpan duration = errorTime - sendTime;
-                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Actualizar Documento - Error HTTP: {httpEx.Message} - Duración: {duration.TotalSeconds:F3} s");
-                return (false, $"Error HTTP: {httpEx.Message}");
-            }
-            catch (Exception ex)
-            {
-                DateTime errorTime = DateTime.Now;
-                TimeSpan duration = errorTime - sendTime;
-                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Actualizar Documento - Error: {ex.Message} - Duración: {duration.TotalSeconds:F3} s");
-                return (false, $"Error: {ex.Message}");
-            }
-        }
-
-        public static async Task<(bool Success, string Message, List<DocumentoDTO> Documentos)> ObtenerDocumentosPorCuentaIDAsync(int cuentaID)
-        {
-            string url = $"{App.BaseUrl}documentos/cuenta/{cuentaID}";
-            DateTime sendTime = DateTime.Now;
-            LogEntries.Add($"{sendTime:yyyy-MM-dd HH:mm:ss.fff} - Enviado - Obtener Documentos por CuentaID");
-
-            try
-            {
-                var response = await httpClient.GetAsync(url);
-                DateTime receiveTime = DateTime.Now;
-                TimeSpan duration = receiveTime - sendTime;
-
-                response.EnsureSuccessStatusCode();
-                var responseString = await response.Content.ReadAsStringAsync();
-                var documentos = JsonSerializer.Deserialize<List<DocumentoDTO>>(responseString, jsonSerializerOptions);
-
-                LogEntries.Add($"{receiveTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Obtener Documentos por CuentaID - Duración: {duration.TotalSeconds:F3} s");
-                return (true, "Documentos obtenidos exitosamente.", documentos);
-            }
-            catch (HttpRequestException httpEx)
-            {
-                DateTime errorTime = DateTime.Now;
-                TimeSpan duration = errorTime - sendTime;
-                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Obtener Documentos por CuentaID - Error HTTP: {httpEx.Message} - Duración: {duration.TotalSeconds:F3} s");
-                return (false, $"Error HTTP: {httpEx.Message}", null);
-            }
-            catch (Exception ex)
-            {
-                DateTime errorTime = DateTime.Now;
-                TimeSpan duration = errorTime - sendTime;
-                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Obtener Documentos por CuentaID - Error: {ex.Message} - Duración: {duration.TotalSeconds:F3} s");
-                return (false, $"Error: {ex.Message}", null);
-            }
-        }
-
-        public static async Task<(bool Success, string Message)> ProcesarListaDetalleDocumentoAsync(List<DocumentoDetDTO> listaDetalleDocumento)
-        {
-            string url = $"{App.BaseUrl}documentosdet/procesar";
-            DateTime sendTime = DateTime.Now;
-            LogEntries.Add($"{sendTime:yyyy-MM-dd HH:mm:ss.fff} - Enviado - Procesar Lista Detalle Documento");
-
-            var content = new StringContent(JsonSerializer.Serialize(listaDetalleDocumento), Encoding.UTF8, "application/json");
-
-            try
-            {
-                var response = await httpClient.PostAsync(url, content);
+                var response = await httpRequest();
                 DateTime receiveTime = DateTime.Now;
                 TimeSpan duration = receiveTime - sendTime;
 
@@ -246,21 +43,16 @@ namespace DataObra.Datos
 
                 if (response.IsSuccessStatusCode)
                 {
-                    // Deserializar la respuesta JSON
-                    var resultado = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, jsonSerializerOptions);
-
-                    // Agregar entrada de log con el resultado de la operación
-                    LogEntries.Add($"{receiveTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Procesar Lista Detalle Documento - {resultado.Message} - Duración: {duration.TotalSeconds:F3} s");
-
-                    return (resultado.Success, resultado.Message);
+                    var data = JsonSerializer.Deserialize<T>(responseString, jsonSerializerOptions);
+                    LogEntries.Add($"{receiveTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - {logMessage} - Éxito - Duración: {duration.TotalSeconds:F3} s");
+                    return (true, "Operación exitosa.", data);
                 }
                 else
                 {
-                    // Capturar y registrar el mensaje de error detallado
                     var errorResponse = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, jsonSerializerOptions);
                     string errorMessage = $"Error: {errorResponse.Message}";
-                    LogEntries.Add($"{receiveTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Procesar Lista Detalle Documento - {errorMessage} - Duración: {duration.TotalSeconds:F3} s");
-                    return (false, errorMessage);
+                    LogEntries.Add($"{receiveTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - {logMessage} - {errorMessage} - Duración: {duration.TotalSeconds:F3} s");
+                    return (false, errorMessage, default);
                 }
             }
             catch (HttpRequestException httpEx)
@@ -268,55 +60,82 @@ namespace DataObra.Datos
                 DateTime errorTime = DateTime.Now;
                 TimeSpan duration = errorTime - sendTime;
                 string errorMessage = $"Error HTTP: {httpEx.Message}";
-                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Procesar Lista Detalle Documento - {errorMessage} - Duración: {duration.TotalSeconds:F3} s");
-                return (false, errorMessage);
+                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - {logMessage} - {errorMessage} - Duración: {duration.TotalSeconds:F3} s");
+                return (false, errorMessage, default);
             }
             catch (Exception ex)
             {
                 DateTime errorTime = DateTime.Now;
                 TimeSpan duration = errorTime - sendTime;
                 string errorMessage = $"Error: {ex.Message}";
-                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Procesar Lista Detalle Documento - {errorMessage} - Duración: {duration.TotalSeconds:F3} s");
-                return (false, errorMessage);
+                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - {logMessage} - {errorMessage} - Duración: {duration.TotalSeconds:F3} s");
+                return (false, errorMessage, default);
             }
         }
 
+        public static async Task<(bool Success, string Message, CredencialesUsuarioDTO Usuario)> ValidarUsuarioAsync(string email, string pass)
+        {
+            string url = $"{App.BaseUrl}usuarios/validacion?email={email}&pass={pass}";
+            var result = await ExecuteRequestAsync<CredencialesUsuarioDTO>(() => httpClient.GetAsync(url), "Validar Usuario");
+
+            if (result.Success && result.Data.Token != null)
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", result.Data.Token);
+            }
+
+            return (result.Success, result.Message, result.Data);
+        }
+
+        public static async Task<(bool Success, string Message, int? Id)> CrearDocumentoAsync(DocumentoDTO documento)
+        {
+            string url = $"{App.BaseUrl}documentos/";
+            var content = new StringContent(JsonSerializer.Serialize(documento), Encoding.UTF8, "application/json");
+            var result = await ExecuteRequestAsync<CrearDocumentoResponse>(() => httpClient.PostAsync(url, content), "Crear Documento");
+
+            return (result.Success, result.Message, result.Data?.Id);
+        }
+
+        public static async Task<(bool Success, string Message)> EliminarDocumentoAsync(int id)
+        {
+            string url = $"{App.BaseUrl}documentos/{id}";
+            var result = await ExecuteRequestAsync<ResultadoOperacion>(() => httpClient.DeleteAsync(url), "Eliminar Documento");
+
+            return (result.Success, result.Message);
+        }
+
+        public static async Task<(bool Success, string Message)> ActualizarDocumentoAsync(DocumentoDTO documento)
+        {
+            string url = $"{App.BaseUrl}documentos/";
+            var content = new StringContent(JsonSerializer.Serialize(documento), Encoding.UTF8, "application/json");
+            var result = await ExecuteRequestAsync<ResultadoOperacion>(() => httpClient.PutAsync(url, content), "Actualizar Documento");
+
+            return (result.Success, result.Message);
+        }
+
+        public static async Task<(bool Success, string Message, List<DocumentoDTO> Documentos)> ObtenerDocumentosPorCuentaIDAsync(int cuentaID)
+        {
+            string url = $"{App.BaseUrl}documentos/cuenta/{cuentaID}";
+            var result = await ExecuteRequestAsync<List<DocumentoDTO>>(() => httpClient.GetAsync(url), "Obtener Documentos por CuentaID");
+
+            return (result.Success, result.Message, result.Data);
+        }
+
+        public static async Task<(bool Success, string Message)> ProcesarListaDetalleDocumentoAsync(List<DocumentoDetDTO> listaDetalleDocumento)
+        {
+            string url = $"{App.BaseUrl}documentosdet/procesar";
+            var content = new StringContent(JsonSerializer.Serialize(listaDetalleDocumento), Encoding.UTF8, "application/json");
+            var result = await ExecuteRequestAsync<ResultadoOperacion>(() => httpClient.PostAsync(url, content), "Procesar Lista Detalle Documento");
+
+            return (result.Success, result.Message);
+        }
 
         public static async Task<(bool Success, string Message, List<DocumentoDetDTO> Documentos)> ObtenerDocumentosDetPorCampoAsync(int id, string fieldName, short cuentaID)
         {
             string url = $"{App.BaseUrl}documentosdet/{fieldName}/{id}/{cuentaID}";
-            DateTime sendTime = DateTime.Now;
-            LogEntries.Add($"{sendTime:yyyy-MM-dd HH:mm:ss.fff} - Enviado - Obtener Documentos Det por Campo");
+            var result = await ExecuteRequestAsync<List<DocumentoDetDTO>>(() => httpClient.GetAsync(url), "Obtener Documentos Det por Campo");
 
-            try
-            {
-                var response = await httpClient.GetAsync(url);
-                DateTime receiveTime = DateTime.Now;
-                TimeSpan duration = receiveTime - sendTime;
-
-                response.EnsureSuccessStatusCode();
-                var responseString = await response.Content.ReadAsStringAsync();
-                var documentos = JsonSerializer.Deserialize<List<DocumentoDetDTO>>(responseString, jsonSerializerOptions);
-
-                LogEntries.Add($"{receiveTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Obtener Documentos Det por Campo - Duración: {duration.TotalSeconds:F3} s");
-                return (true, "Documentos obtenidos exitosamente.", documentos);
-            }
-            catch (HttpRequestException httpEx)
-            {
-                DateTime errorTime = DateTime.Now;
-                TimeSpan duration = errorTime - sendTime;
-                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Obtener Documentos Det por Campo - Error HTTP: {httpEx.Message} - Duración: {duration.TotalSeconds:F3} s");
-                return (false, $"Error HTTP: {httpEx.Message}", null);
-            }
-            catch (Exception ex)
-            {
-                DateTime errorTime = DateTime.Now;
-                TimeSpan duration = errorTime - sendTime;
-                LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - Obtener Documentos Det por Campo - Error: {ex.Message} - Duración: {duration.TotalSeconds:F3} s");
-                return (false, $"Error: {ex.Message}", null);
-            }
+            return (result.Success, result.Message, result.Data);
         }
-
 
         public class ResultadoOperacion
         {
@@ -332,5 +151,6 @@ namespace DataObra.Datos
         }
     }
 }
+
 
 

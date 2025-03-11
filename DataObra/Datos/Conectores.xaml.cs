@@ -232,7 +232,7 @@ namespace DataObra.Datos
         private async void borraDoc_Click(object sender, RoutedEventArgs e)
         {
             #region Datos para testeo
-            int id = 18;
+            int id = 19;
             #endregion
 
             // Llamar al método EliminarDocumentoAsync
