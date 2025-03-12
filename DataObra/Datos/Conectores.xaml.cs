@@ -400,8 +400,259 @@ namespace DataObra.Datos
             DatosWeb.LogEntries.Clear();
         }
 
+        private async void obtenerMovimientos_Click(object sender, RoutedEventArgs e)
+        {
+            #region Datos para testeo
+            int id = 1; // ID del movimiento a obtener
+            string fieldName = "FacturaID"; // Nombre del campo por el cual se va a filtrar
+            short cuentaID = 1; // ID de la cuenta
+            #endregion
+
+            // Llamar al método ObtenerMovimientosPorCampoAsync
+            var (success, message, movimientos) = await DatosWeb.ObtenerMovimientosPorCampoAsync(id, fieldName, cuentaID);
+            // movimientos es una lista de Movimiento
+
+            // Manejar la respuesta
+            if (success)
+            {
+                string mensaje = $"Movimientos obtenidos exitosamente. Cantidad: {movimientos.Count}";
+                MessageBox.Show(mensaje, "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                string mensaje = $"Error al obtener los movimientos: {message}";
+                MessageBox.Show(mensaje, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
 
+        private async void ProcesaLoteMov_Click(object sender, RoutedEventArgs e)
+        {
+            // Crear tres registros de Movimiento
+            var movimiento1 = new MovimientoDTO
+            {
+                ID = 1,
+                CuentaID = 1,
+                UsuarioID = 1,
+                TipoID = 1,
+                TesoreriaID = null,
+                AdminID = null,
+                ObraID = null,
+                EntidadID = null,
+                CompraID = null,
+                ContratoID = null,
+                FacturaID = null,
+                GastoID = null,
+                OrdenID = null,
+                CobroID = null,
+                PagoID = null,
+                ImpuestoID = null,
+                Descrip = "Movimiento 1",
+                Comprobante = 123,
+                Numero = 1,
+                Notas = "Notas del movimiento 1",
+                ChequeProcesado = false,
+                Previsto = false,
+                Desdoblado = false,
+                Cambio = 1.0m,
+                RelMov = false,
+                Accion = 'A'
+            };
+
+            var movimiento2 = new MovimientoDTO
+            {
+                ID = 2,
+                CuentaID = 2,
+                UsuarioID = 2,
+                TipoID = 2,
+                TesoreriaID = null,
+                AdminID = null,
+                ObraID = null,
+                EntidadID = null,
+                CompraID = null,
+                ContratoID = null,
+                FacturaID = null,
+                GastoID = null,
+                OrdenID = null,
+                CobroID = null,
+                PagoID = null,
+                ImpuestoID = null,
+                Descrip = "Movimiento 2",
+                Comprobante = 456,
+                Numero = 2,
+                Notas = "Notas del movimiento 2",
+                ChequeProcesado = false,
+                Previsto = false,
+                Desdoblado = false,
+                Cambio = 1.0m,
+                RelMov = false,
+                Accion = 'M'
+            };
+
+            var movimiento3 = new MovimientoDTO
+            {
+                ID = 3,
+                CuentaID = 3,
+                UsuarioID = 3,
+                TipoID = 3,
+                TesoreriaID = null,
+                AdminID = null,
+                ObraID = null,
+                EntidadID = null,
+                CompraID = null,
+                ContratoID = null,
+                FacturaID = null,
+                GastoID = null,
+                OrdenID = null,
+                CobroID = null,
+                PagoID = null,
+                ImpuestoID = null,
+                Descrip = "Movimiento 3",
+                Comprobante = 789,
+                Numero = 3,
+                Notas = "Notas del movimiento 3",
+                ChequeProcesado = false,
+                Previsto = false,
+                Desdoblado = false,
+                Cambio = 1.0m,
+                RelMov = false,
+                Accion = 'D'
+            };
+
+            // Crear la lista de Movimiento
+            var listaMovimientos = new List<MovimientoDTO> { movimiento1, movimiento2, movimiento3 };
+
+            // Llamar al método ProcesarMovimientosAsync
+            var (success, message) = await DatosWeb.ProcesarMovimientosAsync(listaMovimientos);
+
+            // Manejar el resultado de la llamada
+            if (success)
+            {
+                MessageBox.Show("Lista de movimientos procesada exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show($"Error al procesar la lista de movimientos: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
+        private async void obtenerImpuestos_Click(object sender, RoutedEventArgs e)
+        {
+            #region Datos para testeo
+            int id = 1; // ID del impuesto a obtener
+            string fieldName = "FacturaID"; // Nombre del campo por el cual se va a filtrar
+            short cuentaID = 1; // ID de la cuenta
+            #endregion
+
+            // Llamar al método ObtenerImpuestosPorCampoAsync
+            var (success, message, impuestos) = await DatosWeb.ObtenerImpuestosPorCampoAsync(id, fieldName, cuentaID);
+            // impuestos es una lista de Impuesto
+
+            // Manejar la respuesta
+            if (success)
+            {
+                string mensaje = $"Impuestos obtenidos exitosamente. Cantidad: {impuestos.Count}";
+                MessageBox.Show(mensaje, "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                string mensaje = $"Error al obtener los impuestos: {message}";
+                MessageBox.Show(mensaje, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private async void ProcesaLoteImp_Click(object sender, RoutedEventArgs e)
+        {
+            // Crear tres registros de ImpuestoDTO
+            var impuesto1 = new ImpuestoDTO
+            {
+                ID = 1,
+                CuentaID = 1,
+                UsuarioID = 1,
+                TipoID = 1,
+                TesoreriaID = null,
+                AdminID = null,
+                ObraID = null,
+                EntidadID = null,
+                CompraID = null,
+                ContratoID = null,
+                FacturaID = null,
+                OrdenID = null,
+                CobroID = null,
+                PagoID = null,
+                MovimientoID = null,
+                Descrip = "Impuesto 1",
+                Notas = "Notas del impuesto 1",
+                Previsto = false,
+                Alicuota = 0.21m,
+                Accion = 'A'
+            };
+
+            var impuesto2 = new ImpuestoDTO
+            {
+                ID = 2,
+                CuentaID = 2,
+                UsuarioID = 2,
+                TipoID = 2,
+                TesoreriaID = null,
+                AdminID = null,
+                ObraID = null,
+                EntidadID = null,
+                CompraID = null,
+                ContratoID = null,
+                FacturaID = null,
+                OrdenID = null,
+                CobroID = null,
+                PagoID = null,
+                MovimientoID = null,
+                Descrip = "Impuesto 2",
+                Notas = "Notas del impuesto 2",
+                Previsto = false,
+                Alicuota = 0.10m,
+                Accion = 'M'
+            };
+
+            var impuesto3 = new ImpuestoDTO
+            {
+                ID = 3,
+                CuentaID = 3,
+                UsuarioID = 3,
+                TipoID = 3,
+                TesoreriaID = null,
+                AdminID = null,
+                ObraID = null,
+                EntidadID = null,
+                CompraID = null,
+                ContratoID = null,
+                FacturaID = null,
+                OrdenID = null,
+                CobroID = null,
+                PagoID = null,
+                MovimientoID = null,
+                Descrip = "Impuesto 3",
+                Notas = "Notas del impuesto 3",
+                Previsto = false,
+                Alicuota = 0.05m,
+                Accion = 'D'
+            };
+
+            // Crear la lista de ImpuestoDTO
+            var listaImpuestos = new List<ImpuestoDTO> { impuesto1, impuesto2, impuesto3 };
+
+            // Llamar al método ProcesarImpuestosAsync
+            var (success, message) = await DatosWeb.ProcesarImpuestosAsync(listaImpuestos);
+
+            // Manejar el resultado de la llamada
+            if (success)
+            {
+                MessageBox.Show("Lista de impuestos procesada exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show($"Error al procesar la lista de impuestos: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
 
     }

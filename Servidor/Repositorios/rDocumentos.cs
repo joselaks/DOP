@@ -242,8 +242,6 @@ namespace Servidor.Repositorios
             }
         }
 
-        //Hasta aqui actualizado ---------------------------------------------------------------------
-
         public async Task ProcesarImpuestosAsync(List<Impuesto> listaImpuestos)
         {
             using (var db = new SqlConnection(_connectionString))
@@ -300,6 +298,48 @@ namespace Servidor.Repositorios
                 }
             }
         }
+
+        public async Task<IEnumerable<ImpuestoDTO>> ObtenerImpuestosPorCampoAsync(int id, string fieldName, short cuentaID)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@ID", id, DbType.Int32);
+                parameters.Add("@FieldName", fieldName, DbType.String);
+                parameters.Add("@CuentaID", cuentaID, DbType.Int16);
+
+                var impuestos = await db.QueryAsync<ImpuestoDTO>(
+                    "ImpuestosGetByField",
+                    parameters,
+                    commandType: CommandType.StoredProcedure
+                );
+
+                return impuestos;
+            }
+        }
+
+        public async Task<IEnumerable<MovimientoDTO>> ObtenerMovimientosPorCampoAsync(int id, string fieldName, short cuentaID)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@ID", id, DbType.Int32);
+                parameters.Add("@FieldName", fieldName, DbType.String);
+                parameters.Add("@CuentaID", cuentaID, DbType.Int16);
+
+                var movimientos = await db.QueryAsync<MovimientoDTO>(
+                    "MovimientosGetID",
+                    parameters,
+                    commandType: CommandType.StoredProcedure
+                );
+
+                return movimientos;
+            }
+        }
+
+        //Hasta aqui actualizado ---------------------------------------------------------------------
+
+
 
 
 
@@ -470,44 +510,9 @@ namespace Servidor.Repositorios
         }
         
 
-        public async Task<IEnumerable<Impuesto>> ObtenerImpuestosPorCampoAsync(int id, string fieldName, short cuentaID)
-        {
-            using (var db = new SqlConnection(_connectionString))
-            {
-                var parameters = new DynamicParameters();
-                parameters.Add("@ID", id, DbType.Int32);
-                parameters.Add("@FieldName", fieldName, DbType.String);
-                parameters.Add("@CuentaID", cuentaID, DbType.Int16);
-
-                var impuestos = await db.QueryAsync<Impuesto>(
-                    "ImpuestosGetByField",
-                    parameters,
-                    commandType: CommandType.StoredProcedure
-                );
-
-                return impuestos;
-            }
-        }
 
 
-        public async Task<IEnumerable<Movimiento>> ObtenerMovimientosPorCampoAsync(int id, string fieldName, short cuentaID)
-        {
-            using (var db = new SqlConnection(_connectionString))
-            {
-                var parameters = new DynamicParameters();
-                parameters.Add("@ID", id, DbType.Int32);
-                parameters.Add("@FieldName", fieldName, DbType.String);
-                parameters.Add("@CuentaID", cuentaID, DbType.Int16);
-
-                var movimientos = await db.QueryAsync<Movimiento>(
-                    "MovimientosGetID",
-                    parameters,
-                    commandType: CommandType.StoredProcedure
-                );
-
-                return movimientos;
-            }
-        }
+        
 
 
 

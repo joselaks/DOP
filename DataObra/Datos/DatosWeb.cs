@@ -137,6 +137,42 @@ namespace DataObra.Datos
             return (result.Success, result.Message, result.Data);
         }
 
+        public static async Task<(bool Success, string Message, List<Movimiento> Movimientos)> ObtenerMovimientosPorCampoAsync(int id, string fieldName, short cuentaID)
+        {
+            string url = $"{App.BaseUrl}movimientos/{fieldName}/{id}/{cuentaID}";
+            var result = await ExecuteRequestAsync<List<Movimiento>>(() => httpClient.GetAsync(url), "Obtener Movimientos por Campo");
+
+            return (result.Success, result.Message, result.Data);
+        }
+
+        public static async Task<(bool Success, string Message)> ProcesarMovimientosAsync(List<MovimientoDTO> listaMovimientos)
+        {
+            string url = $"{App.BaseUrl}movimientos/procesar";
+            var content = new StringContent(JsonSerializer.Serialize(listaMovimientos), Encoding.UTF8, "application/json");
+            var result = await ExecuteRequestAsync<ResultadoOperacion>(() => httpClient.PostAsync(url, content), "Procesar Movimientos");
+
+            return (result.Success, result.Message);
+        }
+
+        public static async Task<(bool Success, string Message, List<Impuesto> Impuestos)> ObtenerImpuestosPorCampoAsync(int id, string fieldName, short cuentaID)
+        {
+            string url = $"{App.BaseUrl}impuestos/{fieldName}/{id}/{cuentaID}";
+            var result = await ExecuteRequestAsync<List<Impuesto>>(() => httpClient.GetAsync(url), "Obtener Impuestos por Campo");
+
+            return (result.Success, result.Message, result.Data);
+        }
+
+        public static async Task<(bool Success, string Message)> ProcesarImpuestosAsync(List<ImpuestoDTO> listaImpuestos)
+        {
+            string url = $"{App.BaseUrl}impuestos/procesar";
+            var content = new StringContent(JsonSerializer.Serialize(listaImpuestos), Encoding.UTF8, "application/json");
+            var result = await ExecuteRequestAsync<ResultadoOperacion>(() => httpClient.PostAsync(url, content), "Procesar Impuestos");
+
+            return (result.Success, result.Message);
+        }
+
+
+
         public class ResultadoOperacion
         {
             public bool Success { get; set; }
