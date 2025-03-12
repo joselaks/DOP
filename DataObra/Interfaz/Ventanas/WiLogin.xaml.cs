@@ -49,48 +49,58 @@ namespace DataObra.Interfaz.Ventanas
         {
             this.esperaLogin.IsBusy = true;
 
-            // Código a utilizar para la validación
-            // En este caso no usa la cola de envios al servidor. Se conecta directamente
-            var respuesta = await DatosWeb.ValidarUsuarioAsync(txtUsuario.Text, txtContraseña.Password);
+            int maxRetries = 3;
+            int delay = 2000; // 2 segundos
 
-            if (respuesta.Success)
+            for (int i = 0; i < maxRetries; i++)
             {
-                if (respuesta.Usuario.DatosUsuario != null)
+                DateTime startTime = DateTime.Now;
+                var respuesta = await DatosWeb.ValidarUsuarioAsync(txtUsuario.Text, txtContraseña.Password);
+                DateTime endTime = DateTime.Now;
+                TimeSpan duration = endTime - startTime;
+
+                if (respuesta.Success)
                 {
-                    //Existe el usuario. puede verificarse abono, etc
-
-                    this.DialogResult = true;
-                    this.Close();
-
-                    // Abrir la ventana WiRoles después de cerrar WiLogin
-                    WiRoles rolesWindow = new WiRoles(Inicio)
+                    if (respuesta.Usuario.DatosUsuario != null)
                     {
-                        Owner = Inicio, // Establecer la ventana WiInicio como la propietaria de la ventana de login
-                        WindowStartupLocation = WindowStartupLocation.CenterOwner // Centrar la ventana de login en WiInicio
-                    };
-                    rolesWindow.ShowDialog();
+                        //Existe el usuario. puede verificarse abono, etc
+
+                        this.DialogResult = true;
+                        this.Close();
+
+                        // Abrir la ventana WiRoles después de cerrar WiLogin
+                        WiRoles rolesWindow = new WiRoles(Inicio)
+                        {
+                            Owner = Inicio, // Establecer la ventana WiInicio como la propietaria de la ventana de login
+                            WindowStartupLocation = WindowStartupLocation.CenterOwner // Centrar la ventana de login en WiInicio
+                        };
+                        rolesWindow.ShowDialog();
+                        return;
+                    }
+                    else
+                    {
+                        this.esperaLogin.IsBusy = false;
+                        MessageBox.Show("Usuario o contraseña incorrectos", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
                 }
                 else
                 {
-                    this.esperaLogin.IsBusy = false;
-
-                    MessageBox.Show("Usuario o contraseña incorrectos", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
-            else
-            {
-                this.esperaLogin.IsBusy = false;
-                var result = MessageBox.Show("\n¿Error de conexión. Desea intentar nuevamente?", "Error", MessageBoxButton.YesNo, MessageBoxImage.Error);
-                if (result == MessageBoxResult.Yes)
-                {
-                    VerificaUsuario_Click(sender, e);
+                    if (i == maxRetries - 1)
+                    {
+                        this.esperaLogin.IsBusy = false;
+                        var result = MessageBox.Show("\n¿Error de conexión. Desea intentar nuevamente?", "Error", MessageBoxButton.YesNo, MessageBoxImage.Error);
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            VerificaUsuario_Click(sender, e);
+                        }
+                        return;
+                    }
                 }
 
+                await Task.Delay(delay);
             }
         }
-
-
-
 
         private void TextBox_LostFocus(object sender, RoutedEventArgs e)
         {
