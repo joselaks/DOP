@@ -171,7 +171,14 @@ namespace DataObra.Datos
             return (result.Success, result.Message);
         }
 
+        public static async Task<(bool Success, string Message, int? Id)> InsertarAgrupadorAsync(AgrupadorAPI agrupador)
+        {
+            string url = $"{App.BaseUrl}agrupadores/";
+            var content = new StringContent(JsonSerializer.Serialize(agrupador), Encoding.UTF8, "application/json");
+            var result = await ExecuteRequestAsync<CrearDocumentoResponse>(() => httpClient.PostAsync(url, content), "Insertar Agrupador");
 
+            return (result.Success, result.Message, result.Data?.Id);
+        }
 
         public class ResultadoOperacion
         {

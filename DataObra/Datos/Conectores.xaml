@@ -141,23 +141,29 @@
             Grid.Column="1"
             Height="30"
             VerticalAlignment="Center"
-            IsEnabled="False"
+            
             Orientation="Horizontal">
             <Button
                 x:Name="nuevoAgrupador"
                 Width="90"
                 Margin="3,3,3,3"
-                Content="Nuevo" />
+                Content="Nuevo" IsEnabled="True" Click="nuevoAgrupador_Click"/>
             <Button
                 x:Name="borrarrAgrupador"
                 Width="90"
                 Margin="3,3,3,3"
-                Content="Borrar" />
+                Content="Borrar" IsEnabled="False"/>
+            <Button
+     x:Name="editaAgrup"
+     Width="90"
+     Margin="3,3,3,3"
+     Click="editaDoc_Click"
+     Content="Edita" IsEnabled="False" />
             <Button
                 x:Name="obtenerAgrupador"
                 Width="90"
                 Margin="3,3,3,3"
-                Content="Obtener" />
+                Content="Buscar p/cuenta" IsEnabled="False"/>
         </StackPanel>
         <StackPanel
             Grid.Row="4"

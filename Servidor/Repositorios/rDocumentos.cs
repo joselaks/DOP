@@ -337,6 +337,31 @@ namespace Servidor.Repositorios
             }
         }
 
+        public async Task<(int Id, string ErrorMessage)> InsertarAgrupadorAsync(AgrupadorAPI agrupador)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters(agrupador);
+                parameters.Add("@ID", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                parameters.Add("@MensajeError", dbType: DbType.String, direction: ParameterDirection.Output, size: 4000);
+
+                try
+                {
+                    await db.ExecuteAsync("AgrupadoresPost", parameters, commandType: CommandType.StoredProcedure);
+                    int id = parameters.Get<int>("@ID");
+                    string mensajeError = parameters.Get<string>("@MensajeError");
+
+                    return (id, mensajeError);
+                }
+                catch (SqlException ex)
+                {
+                    return (0, ex.Message);
+                }
+            }
+        }
+
+
+
         //Hasta aqui actualizado ---------------------------------------------------------------------
 
 
@@ -418,21 +443,7 @@ namespace Servidor.Repositorios
         }
 
 
-        // Nuevo Agrupador
-        public async Task<int> InsertarAgrupadorAsync(AgrupadorAPI agrupador)
-        {
-            int respuesta = 0;
-            using (var db = new SqlConnection(_connectionString))
-            {
-                var parameters = new DynamicParameters(agrupador);
-                parameters.Add("@ID", dbType: DbType.Int32, direction: ParameterDirection.Output);
-
-                await db.ExecuteAsync("AgrupadoresPost", parameters, commandType: CommandType.StoredProcedure);
-                respuesta = parameters.Get<int>("@ID");
-
-            }
-            return respuesta;
-        }
+       
 
         public async Task<int> InsertarDocumentoDetAsync(DocumentoDet documentoDet)
         {

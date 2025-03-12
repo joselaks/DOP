@@ -654,6 +654,36 @@ namespace DataObra.Datos
             }
         }
 
+        private async void nuevoAgrupador_Click(object sender, RoutedEventArgs e)
+        {
+            #region Datos para testeo
+
+            var agrupador = new AgrupadorAPI
+            {
+                CuentaID = 1,
+                UsuarioID = 1,
+                TipoID = 'A',
+                Descrip = "Nuevo Agrupador",
+                Numero = "12345",
+                Active = true
+            };
+
+            #endregion
+
+            // Llamar al método InsertarAgrupadorAsync
+            var (success, message, id) = await DatosWeb.InsertarAgrupadorAsync(agrupador);
+
+            // Manejar la respuesta
+            if (success && id.HasValue)
+            {
+                MessageBox.Show($"Agrupador creado con éxito. ID: {id.Value}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show($"Error al crear el agrupador: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
 
     }
 }

@@ -346,9 +346,18 @@ var agr = app.MapGroup("/agrupadores");
 
 agr.MapPost("/", async (rDocumentos repositorio, AgrupadorAPI agrupador) =>
 {
-    var nuevoAgrupador = await repositorio.InsertarAgrupadorAsync(agrupador);
-    return Results.Created($"agrupador/{nuevoAgrupador}", nuevoAgrupador);
+    var (id, errorMessage) = await repositorio.InsertarAgrupadorAsync(agrupador);
+    if (id != 0)
+    {
+        return Results.Created($"agrupador/{id}", new { Id = id, Message = "Agrupador creado exitosamente." });
+    }
+    else
+    {
+        return Results.BadRequest(new { Message = errorMessage });
+    }
 }).RequireAuthorization();
+
+
 
 agr.MapPut("/", async (rDocumentos repositorio, AgrupadorAPI agrupador) =>
 {
