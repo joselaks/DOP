@@ -132,7 +132,7 @@ namespace DataObra.Datos
         private async void borraDoc_Click(object sender, RoutedEventArgs e)
         {
             #region Datos para testeo
-            int id = 19;
+            int id = 20;
             #endregion
 
             // Llamar al método EliminarDocumentoAsync
@@ -156,7 +156,7 @@ namespace DataObra.Datos
             #region Datos para testeo
             var documento = new Biblioteca.DTO.DocumentoDTO
             {
-                ID = 19,
+                ID = 21,
                 CuentaID = 55,
                 TipoID = 5,
                 UsuarioID = 1,
@@ -246,9 +246,9 @@ namespace DataObra.Datos
         private async void obtenerDocDet_Click(object sender, RoutedEventArgs e)
         {
             #region Datos para testeo
-            int id = 1; // ID del documento a obtener
+            int id = 303; // ID del documento a obtener
             string fieldName = "FacturaID"; // Nombre del campo por el cual se va a filtrar
-            short cuentaID = 3; // ID de la cuenta
+            short cuentaID = 4000; // ID de la cuenta
             #endregion
 
             // Llamar al método ObtenerDocumentosDetPorCampoAsync
@@ -296,7 +296,7 @@ namespace DataObra.Datos
                 RubroID = null,
                 TareaID = null,
                 Fecha = DateTime.Now,
-                ArticuloDescrip = "Artículo 1111",
+                ArticuloDescrip = "Artículo 444",
                 ArticuloCantSuma = 10,
                 ArticuloCantResta = 0,
                 ArticuloPrecio = 100,
@@ -310,7 +310,7 @@ namespace DataObra.Datos
 
             var documentoDet2 = new DocumentoDetDTO
             {
-                ID = 260,
+                ID = 1,
                 CuentaID = 2,
                 UsuarioID = 2,
                 Editado = DateTime.Now,
@@ -339,12 +339,12 @@ namespace DataObra.Datos
                 SumaDolares = 20,
                 RestaDolares = 0,
                 Cambio = 1,
-                Accion = 'A'
+                Accion = 'M'
             };
 
             var documentoDet3 = new DocumentoDetDTO
             {
-                ID = 3000,
+                ID = 2,
                 CuentaID = 3,
                 UsuarioID = 3,
                 Editado = DateTime.Now,
@@ -373,7 +373,7 @@ namespace DataObra.Datos
                 SumaDolares = 30,
                 RestaDolares = 0,
                 Cambio = 1,
-                Accion = 'M'
+                Accion = 'D'
             };
 
             // Crear la lista de DocumentoDetDTO

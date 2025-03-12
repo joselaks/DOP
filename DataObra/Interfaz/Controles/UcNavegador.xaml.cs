@@ -26,11 +26,11 @@ namespace DataObra.Interfaz.Controles
 
         private async void CargarGrilla()
         {
-            var DocumentosUsuario = await DatosWeb.ObtenerDocumentosPorCuentaIDAsync(App.IdCuenta);
+            var (success, message, documentos) = await DatosWeb.ObtenerDocumentosPorCuentaIDAsync(App.IdCuenta);
             // Lo que se obtiene es una lista de DocumentoDTO. Habria que convertirlos en Documentos.
 
 
-            this.GrillaDocumentos.ItemsSource = DocumentosUsuario.Documentos;
+            this.GrillaDocumentos.ItemsSource = documentos;
         }
 
         private void configuraRol(string rol)
