@@ -290,7 +290,7 @@ dod.MapPut("/", async (rDocumentos repositorio, DocumentoDet documento) =>
 
 var mov = app.MapGroup("/movimientos");
 
-mov.MapPost("/procesar", async (rDocumentos repositorio, List<Movimiento> listaMovimientos) =>
+mov.MapPost("/procesar", async (rDocumentos repositorio, List<MovimientoDTO> listaMovimientos) =>
 {
     try
     {

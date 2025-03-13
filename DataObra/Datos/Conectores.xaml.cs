@@ -428,17 +428,20 @@ namespace DataObra.Datos
 
         private async void ProcesaLoteMov_Click(object sender, RoutedEventArgs e)
         {
-            // Crear tres registros de Movimiento
+            // Crear tres registros de MovimientoDTO
             var movimiento1 = new MovimientoDTO
             {
                 ID = 1,
                 CuentaID = 1,
                 UsuarioID = 1,
+                Editado = DateTime.Now,
                 TipoID = 1,
+                Descrip = "Movimiento 1",
                 TesoreriaID = null,
                 AdminID = null,
                 ObraID = null,
                 EntidadID = null,
+                EntidadTipo = null,
                 CompraID = null,
                 ContratoID = null,
                 FacturaID = null,
@@ -446,16 +449,22 @@ namespace DataObra.Datos
                 OrdenID = null,
                 CobroID = null,
                 PagoID = null,
-                ImpuestoID = null,
-                Descrip = "Movimiento 1",
+                Fecha = DateTime.Now,
                 Comprobante = 123,
                 Numero = 1,
                 Notas = "Notas del movimiento 1",
+                ConciliadoFecha = null,
+                ConciliadoUsuario = null,
                 ChequeProcesado = false,
                 Previsto = false,
                 Desdoblado = false,
+                SumaPesos = 1000,
+                RestaPesos = 0,
+                SumaDolares = 10,
+                RestaDolares = 0,
                 Cambio = 1.0m,
                 RelMov = false,
+                ImpuestoID = null,
                 Accion = 'A'
             };
 
@@ -464,11 +473,14 @@ namespace DataObra.Datos
                 ID = 2,
                 CuentaID = 2,
                 UsuarioID = 2,
+                Editado = DateTime.Now,
                 TipoID = 2,
+                Descrip = "Movimiento 2",
                 TesoreriaID = null,
                 AdminID = null,
                 ObraID = null,
                 EntidadID = null,
+                EntidadTipo = null,
                 CompraID = null,
                 ContratoID = null,
                 FacturaID = null,
@@ -476,17 +488,23 @@ namespace DataObra.Datos
                 OrdenID = null,
                 CobroID = null,
                 PagoID = null,
-                ImpuestoID = null,
-                Descrip = "Movimiento 2",
+                Fecha = DateTime.Now,
                 Comprobante = 456,
                 Numero = 2,
                 Notas = "Notas del movimiento 2",
+                ConciliadoFecha = null,
+                ConciliadoUsuario = null,
                 ChequeProcesado = false,
                 Previsto = false,
                 Desdoblado = false,
+                SumaPesos = 2000,
+                RestaPesos = 0,
+                SumaDolares = 20,
+                RestaDolares = 0,
                 Cambio = 1.0m,
                 RelMov = false,
-                Accion = 'M'
+                ImpuestoID = null,
+                Accion = 'A'
             };
 
             var movimiento3 = new MovimientoDTO
@@ -494,11 +512,14 @@ namespace DataObra.Datos
                 ID = 3,
                 CuentaID = 3,
                 UsuarioID = 3,
+                Editado = DateTime.Now,
                 TipoID = 3,
+                Descrip = "Movimiento 3",
                 TesoreriaID = null,
                 AdminID = null,
                 ObraID = null,
                 EntidadID = null,
+                EntidadTipo = null,
                 CompraID = null,
                 ContratoID = null,
                 FacturaID = null,
@@ -506,20 +527,26 @@ namespace DataObra.Datos
                 OrdenID = null,
                 CobroID = null,
                 PagoID = null,
-                ImpuestoID = null,
-                Descrip = "Movimiento 3",
+                Fecha = DateTime.Now,
                 Comprobante = 789,
                 Numero = 3,
                 Notas = "Notas del movimiento 3",
+                ConciliadoFecha = null,
+                ConciliadoUsuario = null,
                 ChequeProcesado = false,
                 Previsto = false,
                 Desdoblado = false,
+                SumaPesos = 3000,
+                RestaPesos = 0,
+                SumaDolares = 30,
+                RestaDolares = 0,
                 Cambio = 1.0m,
                 RelMov = false,
-                Accion = 'D'
+                ImpuestoID = null,
+                Accion = 'A'
             };
 
-            // Crear la lista de Movimiento
+            // Crear la lista de MovimientoDTO
             var listaMovimientos = new List<MovimientoDTO> { movimiento1, movimiento2, movimiento3 };
 
             // Llamar al método ProcesarMovimientosAsync
@@ -535,6 +562,8 @@ namespace DataObra.Datos
                 MessageBox.Show($"Error al procesar la lista de movimientos: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+
 
 
         private async void obtenerImpuestos_Click(object sender, RoutedEventArgs e)

@@ -155,7 +155,7 @@ namespace Servidor.Repositorios
             }
         }
 
-        public async Task ProcesarMovimientosAsync(List<Movimiento> listaMovimientos)
+        public async Task ProcesarMovimientosAsync(List<MovimientoDTO> listaMovimientos)
         {
             using (var db = new SqlConnection(_connectionString))
             {
