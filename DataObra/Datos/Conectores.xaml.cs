@@ -687,7 +687,7 @@ namespace DataObra.Datos
         {
             #region Datos para testeo
 
-            var agrupador = new AgrupadorAPI
+            var agrupador = new AgrupadorDTO
             {
                 CuentaID = 1,
                 UsuarioID = 1,
@@ -712,6 +712,82 @@ namespace DataObra.Datos
                 MessageBox.Show($"Error al crear el agrupador: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        private async void obtenerAgrupador_Click(object sender, RoutedEventArgs e)
+        {
+            #region Datos para testeo
+            short cuentaID = 1; // ID de la cuenta a obtener
+            #endregion
+
+            // Llamar al método ObtenerAgrupadoresPorCuentaIDAsync
+            var (success, message, agrupadores) = await DatosWeb.ObtenerAgrupadoresPorCuentaIDAsync(cuentaID);
+
+            // Manejar la respuesta
+            if (success)
+            {
+                string mensaje = $"Agrupadores obtenidos exitosamente. Cantidad: {agrupadores.Count}";
+                MessageBox.Show(mensaje, "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                string mensaje = $"Error al obtener los agrupadores: {message}";
+                MessageBox.Show(mensaje, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private async void borrarrAgrupador_Click(object sender, RoutedEventArgs e)
+        {
+            #region Datos para testeo
+            int id = 1; // ID del agrupador a eliminar
+            #endregion
+
+            // Llamar al método EliminarAgrupadorAsync
+            var (success, message) = await DatosWeb.EliminarAgrupadorAsync(id);
+
+            // Manejar la respuesta
+            if (success)
+            {
+                MessageBox.Show($"Agrupador eliminado con éxito. ID: {id}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show($"Error al eliminar el agrupador: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
+
+        private async void editaAgrup_Click(object sender, RoutedEventArgs e)
+        {
+            #region Datos para testeo
+
+            var agrupador = new AgrupadorDTO
+            {
+                ID = 1, // ID del agrupador a actualizar
+                CuentaID = 1,
+                UsuarioID = 1,
+                TipoID = 'A',
+                Editado = DateTime.Now,
+                Descrip = "Agrupador Actualizado",
+                Numero = "12345",
+                Active = true
+            };
+
+            #endregion
+
+            // Llamar al método ActualizarAgrupadorAsync
+            var (success, message) = await DatosWeb.ActualizarAgrupadorAsync(agrupador);
+
+            // Manejar la respuesta
+            if (success)
+            {
+                MessageBox.Show($"Agrupador actualizado con éxito. ID: {agrupador.ID}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show($"Error al actualizar el agrupador: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
 
 
     }

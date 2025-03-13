@@ -337,7 +337,7 @@ namespace Servidor.Repositorios
             }
         }
 
-        public async Task<(int Id, string ErrorMessage)> InsertarAgrupadorAsync(AgrupadorAPI agrupador)
+        public async Task<(int Id, string ErrorMessage)> InsertarAgrupadorAsync(AgrupadorDTO agrupador)
         {
             using (var db = new SqlConnection(_connectionString))
             {
@@ -360,12 +360,51 @@ namespace Servidor.Repositorios
             }
         }
 
+        // Obtener agrupadores por cuenta
+        public async Task<IEnumerable<AgrupadorDTO>> ObtenerAgrupadorPorCuentaIDAsync(int cuentaID)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var documentos = await db.QueryAsync<AgrupadorDTO>(
+                    "AgrupadoresGetCuenta",
+                    new { CuentaID = cuentaID },
+                    commandType: CommandType.StoredProcedure
+                );
+                return documentos;
+            }
+        }
 
+        public async Task<bool> ActualizarAgrupadorAsync(AgrupadorDTO agrupador)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters(agrupador);
+                parameters.Add("Success", dbType: DbType.Boolean, direction: ParameterDirection.Output);
+
+                await db.ExecuteAsync("AgrupadoresPut", parameters, commandType: CommandType.StoredProcedure);
+
+                bool success = parameters.Get<bool>("Success");
+                return success;
+            }
+        }
+
+        //Borrar Agrupador
+        public async Task<bool> EliminarAgrupadorAsync(int id)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("ID", id, DbType.Int32);
+                parameters.Add("Success", dbType: DbType.Boolean, direction: ParameterDirection.Output);
+
+                await db.ExecuteAsync("AgrupadoresDelete", parameters, commandType: CommandType.StoredProcedure);
+
+                bool success = parameters.Get<bool>("Success");
+                return success;
+            }
+        }
 
         //Hasta aqui actualizado ---------------------------------------------------------------------
-
-
-
 
 
 
@@ -506,26 +545,6 @@ namespace Servidor.Repositorios
             }
         }
 
-        // Obtener agrupadores por cuenta
-        public async Task<IEnumerable<AgrupadorAPI>> ObtenerAgrupadorPorCuentaIDAsync(int cuentaID)
-        {
-            using (var db = new SqlConnection(_connectionString))
-            {
-                var documentos = await db.QueryAsync<AgrupadorAPI>(
-                    "AgrupadoresGetCuenta",
-                    new { CuentaID = cuentaID },
-                    commandType: CommandType.StoredProcedure
-                );
-                return documentos;
-            }
-        }
-        
-
-
-
-        
-
-
 
 
         #endregion
@@ -546,19 +565,7 @@ namespace Servidor.Repositorios
             }
         }
 
-        public async Task<bool> ActualizarAgrupadorAsync(AgrupadorAPI agrupador)
-        {
-            using (var db = new SqlConnection(_connectionString))
-            {
-                var parameters = new DynamicParameters(agrupador);
-                parameters.Add("Success", dbType: DbType.Boolean, direction: ParameterDirection.Output);
-
-                await db.ExecuteAsync("AgrupadoresPut", parameters, commandType: CommandType.StoredProcedure);
-
-                bool success = parameters.Get<bool>("Success");
-                return success;
-            }
-        }
+       
 
         public async Task<string> ActualizarOEliminarDocumentoDetAsync(DocumentoDet documentoDet)
         {
@@ -600,21 +607,7 @@ namespace Servidor.Repositorios
             }
         }
 
-        //Borrar Agrupador
-        public async Task<bool> EliminarAgrupadorAsync(int id)
-        {
-            using (var db = new SqlConnection(_connectionString))
-            {
-                var parameters = new DynamicParameters();
-                parameters.Add("ID", id, DbType.Int32);
-                parameters.Add("Success", dbType: DbType.Boolean, direction: ParameterDirection.Output);
-
-                await db.ExecuteAsync("AgrupadoresDelete", parameters, commandType: CommandType.StoredProcedure);
-
-                bool success = parameters.Get<bool>("Success");
-                return success;
-            }
-        }
+        
 
         #endregion
 

@@ -171,7 +171,7 @@ namespace DataObra.Datos
             return (result.Success, result.Message);
         }
 
-        public static async Task<(bool Success, string Message, int? Id)> InsertarAgrupadorAsync(AgrupadorAPI agrupador)
+        public static async Task<(bool Success, string Message, int? Id)> InsertarAgrupadorAsync(AgrupadorDTO agrupador)
         {
             string url = $"{App.BaseUrl}agrupadores/";
             var content = new StringContent(JsonSerializer.Serialize(agrupador), Encoding.UTF8, "application/json");
@@ -179,6 +179,30 @@ namespace DataObra.Datos
 
             return (result.Success, result.Message, result.Data?.Id);
         }
+        
+        public static async Task<(bool Success, string Message, List<AgrupadorDTO> Agrupadores)> ObtenerAgrupadoresPorCuentaIDAsync(short cuentaID)
+        {
+            string url = $"{App.BaseUrl}agrupadores/cuenta/{cuentaID}";
+            var result = await ExecuteRequestAsync<List<AgrupadorDTO>>(() => httpClient.GetAsync(url), "Obtener Agrupadores por CuentaID");
+            return (result.Success, result.Message, result.Data);
+        }
+
+
+        public static async Task<(bool Success, string Message)> ActualizarAgrupadorAsync(AgrupadorDTO agrupador)
+        {
+            string url = $"{App.BaseUrl}agrupadores/";
+            var content = new StringContent(JsonSerializer.Serialize(agrupador), Encoding.UTF8, "application/json");
+            var result = await ExecuteRequestAsync<ResultadoOperacion>(() => httpClient.PutAsync(url, content), "Actualizar Agrupador");
+            return (result.Success, result.Message);
+        }
+
+        public static async Task<(bool Success, string Message)> EliminarAgrupadorAsync(int id)
+        {
+            string url = $"{App.BaseUrl}agrupadores/{id}";
+            var result = await ExecuteRequestAsync<ResultadoOperacion>(() => httpClient.DeleteAsync(url), "Eliminar Agrupador");
+            return (result.Success, result.Message);
+        }
+
 
         public class ResultadoOperacion
         {

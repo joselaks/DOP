@@ -344,7 +344,7 @@ imp.MapGet("/{fieldName}/{id:int}/{cuentaID:short}", async (rDocumentos reposito
 
 var agr = app.MapGroup("/agrupadores");
 
-agr.MapPost("/", async (rDocumentos repositorio, AgrupadorAPI agrupador) =>
+agr.MapPost("/", async (rDocumentos repositorio, AgrupadorDTO agrupador) =>
 {
     var (id, errorMessage) = await repositorio.InsertarAgrupadorAsync(agrupador);
     if (id != 0)
@@ -359,7 +359,7 @@ agr.MapPost("/", async (rDocumentos repositorio, AgrupadorAPI agrupador) =>
 
 
 
-agr.MapPut("/", async (rDocumentos repositorio, AgrupadorAPI agrupador) =>
+agr.MapPut("/", async (rDocumentos repositorio, AgrupadorDTO agrupador) =>
 {
     var resultado = await repositorio.ActualizarAgrupadorAsync(agrupador);
 

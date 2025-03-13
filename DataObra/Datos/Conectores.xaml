@@ -152,18 +152,18 @@
                 x:Name="borrarrAgrupador"
                 Width="90"
                 Margin="3,3,3,3"
-                Content="Borrar" IsEnabled="False"/>
+                Content="Borrar" Click="borrarrAgrupador_Click" />
             <Button
      x:Name="editaAgrup"
      Width="90"
      Margin="3,3,3,3"
-     Click="editaDoc_Click"
-     Content="Edita" IsEnabled="False" />
+    
+     Content="Edita" Click="editaAgrup_Click"  />
             <Button
                 x:Name="obtenerAgrupador"
                 Width="90"
                 Margin="3,3,3,3"
-                Content="Buscar p/cuenta" IsEnabled="False"/>
+                Content="Buscar p/cuenta" Click="obtenerAgrupador_Click"/>
         </StackPanel>
         <StackPanel
             Grid.Row="4"
