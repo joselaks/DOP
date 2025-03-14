@@ -36,11 +36,14 @@ namespace DataObra.Interfaz.Controles
 
         public async void CargarGrilla()
         {
-            //var AgrupadoresUsuario = await ConsultasAPI.ObtenerAgrupadoresPorCuentaID(App.IdCuenta);
-            
-            //App.ListaAgrupadores = AgrupadoresUsuario.agrupadores;
-            ////this.GrillaAgrupadores.ItemsSource = AgrupadoresUsuario.agrupadores;
+            var AgrupadoresUsuario = await DatosWeb.ObtenerAgrupadoresPorCuentaIDAsync(App.IdCuenta);
+            // Posiblemente haya que convertir AgrupadorDTO en Agrupador
+            this.GrillaAgrupadores.ItemsSource = AgrupadoresUsuario.Agrupadores;
+
+
             //this.GrillaAgrupadores.ItemsSource = App.ListaAgrupadores;
+            //App.ListaAgrupadores = AgrupadoresUsuario.agrupadores;
+
 
             // Los agrupadores se utilizan todo el tiempo y por lo tanto tienen que estar accesibles de todos lados.
         }

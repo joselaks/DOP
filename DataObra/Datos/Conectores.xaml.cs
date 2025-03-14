@@ -132,7 +132,7 @@ namespace DataObra.Datos
         private async void borraDoc_Click(object sender, RoutedEventArgs e)
         {
             #region Datos para testeo
-            int id = 20;
+            int id = 33;
             #endregion
 
             // Llamar al método EliminarDocumentoAsync
@@ -453,8 +453,8 @@ namespace DataObra.Datos
                 Comprobante = 123,
                 Numero = 1,
                 Notas = "Notas del movimiento 1",
-                ConciliadoFecha = null,
-                ConciliadoUsuario = null,
+                ConciliadoFecha = DateTime.Now,
+                ConciliadoUsuario = 1,
                 ChequeProcesado = false,
                 Previsto = false,
                 Desdoblado = false,
@@ -470,12 +470,12 @@ namespace DataObra.Datos
 
             var movimiento2 = new MovimientoDTO
             {
-                ID = 2,
+                ID = 4,
                 CuentaID = 2,
                 UsuarioID = 2,
                 Editado = DateTime.Now,
                 TipoID = 2,
-                Descrip = "Movimiento 2",
+                Descrip = "Movimiento 4",
                 TesoreriaID = null,
                 AdminID = null,
                 ObraID = null,
@@ -492,8 +492,8 @@ namespace DataObra.Datos
                 Comprobante = 456,
                 Numero = 2,
                 Notas = "Notas del movimiento 2",
-                ConciliadoFecha = null,
-                ConciliadoUsuario = null,
+                ConciliadoFecha = DateTime.Now,
+                ConciliadoUsuario = 1,
                 ChequeProcesado = false,
                 Previsto = false,
                 Desdoblado = false,
@@ -504,12 +504,12 @@ namespace DataObra.Datos
                 Cambio = 1.0m,
                 RelMov = false,
                 ImpuestoID = null,
-                Accion = 'A'
+                Accion = 'M'
             };
 
             var movimiento3 = new MovimientoDTO
             {
-                ID = 3,
+                ID = 6,
                 CuentaID = 3,
                 UsuarioID = 3,
                 Editado = DateTime.Now,
@@ -531,8 +531,8 @@ namespace DataObra.Datos
                 Comprobante = 789,
                 Numero = 3,
                 Notas = "Notas del movimiento 3",
-                ConciliadoFecha = null,
-                ConciliadoUsuario = null,
+                ConciliadoFecha = DateTime.Now,
+                ConciliadoUsuario = 1,
                 ChequeProcesado = false,
                 Previsto = false,
                 Desdoblado = false,
@@ -620,7 +620,7 @@ namespace DataObra.Datos
 
             var impuesto2 = new ImpuestoDTO
             {
-                ID = 2,
+                ID = 12,
                 CuentaID = 2,
                 UsuarioID = 2,
                 TipoID = 2,
@@ -636,7 +636,7 @@ namespace DataObra.Datos
                 PagoID = null,
                 MovimientoID = null,
                 Descrip = "Impuesto 2",
-                Notas = "Notas del impuesto 2",
+                Notas = "Notas del impuesto 12",
                 Previsto = false,
                 Alicuota = 0.10m,
                 Accion = 'M'
@@ -644,7 +644,7 @@ namespace DataObra.Datos
 
             var impuesto3 = new ImpuestoDTO
             {
-                ID = 3,
+                ID = 10,
                 CuentaID = 3,
                 UsuarioID = 3,
                 TipoID = 3,
@@ -692,7 +692,8 @@ namespace DataObra.Datos
                 CuentaID = 1,
                 UsuarioID = 1,
                 TipoID = 'A',
-                Descrip = "Nuevo Agrupador",
+                Editado = DateTime.Now, // Asegurarse de que el campo Editado se inicialice correctamente
+                Descrip = "Nuevo Agrupador A",
                 Numero = "12345",
                 Active = true
             };
@@ -737,7 +738,7 @@ namespace DataObra.Datos
         private async void borrarrAgrupador_Click(object sender, RoutedEventArgs e)
         {
             #region Datos para testeo
-            int id = 1; // ID del agrupador a eliminar
+            int id = 40; // ID del agrupador a eliminar
             #endregion
 
             // Llamar al método EliminarAgrupadorAsync
@@ -762,12 +763,12 @@ namespace DataObra.Datos
 
             var agrupador = new AgrupadorDTO
             {
-                ID = 1, // ID del agrupador a actualizar
+                ID = 40, // ID del agrupador a actualizar
                 CuentaID = 1,
                 UsuarioID = 1,
-                TipoID = 'A',
+                TipoID = 'B',
                 Editado = DateTime.Now,
-                Descrip = "Agrupador Actualizado",
+                Descrip = "Agrupador Actualizado B111",
                 Numero = "12345",
                 Active = true
             };

@@ -180,7 +180,7 @@ namespace DataObra.Datos
             return (result.Success, result.Message, result.Data?.Id);
         }
         
-        public static async Task<(bool Success, string Message, List<AgrupadorDTO> Agrupadores)> ObtenerAgrupadoresPorCuentaIDAsync(short cuentaID)
+        public static async Task<(bool Success, string Message, List<AgrupadorDTO> Agrupadores)> ObtenerAgrupadoresPorCuentaIDAsync(int cuentaID)
         {
             string url = $"{App.BaseUrl}agrupadores/cuenta/{cuentaID}";
             var result = await ExecuteRequestAsync<List<AgrupadorDTO>>(() => httpClient.GetAsync(url), "Obtener Agrupadores por CuentaID");

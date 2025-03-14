@@ -380,29 +380,46 @@ namespace Servidor.Repositorios
             {
                 var parameters = new DynamicParameters(agrupador);
                 parameters.Add("Success", dbType: DbType.Boolean, direction: ParameterDirection.Output);
+                parameters.Add("Mensaje", dbType: DbType.String, direction: ParameterDirection.Output, size: 4000);
 
                 await db.ExecuteAsync("AgrupadoresPut", parameters, commandType: CommandType.StoredProcedure);
 
                 bool success = parameters.Get<bool>("Success");
+                string mensaje = parameters.Get<string>("Mensaje");
+
                 return success;
             }
         }
 
+
+
         //Borrar Agrupador
-        public async Task<bool> EliminarAgrupadorAsync(int id)
+        public async Task<(bool Success, string Message)> EliminarAgrupadorAsync(int id)
         {
             using (var db = new SqlConnection(_connectionString))
             {
                 var parameters = new DynamicParameters();
                 parameters.Add("ID", id, DbType.Int32);
                 parameters.Add("Success", dbType: DbType.Boolean, direction: ParameterDirection.Output);
+                parameters.Add("MensajeError", dbType: DbType.String, direction: ParameterDirection.Output, size: 4000);
 
                 await db.ExecuteAsync("AgrupadoresDelete", parameters, commandType: CommandType.StoredProcedure);
 
                 bool success = parameters.Get<bool>("Success");
-                return success;
+                string mensajeError = parameters.Get<string>("MensajeError");
+
+                if (success)
+                {
+                    return (true, "Agrupador eliminado exitosamente.");
+                }
+                else
+                {
+                    return (false, $"No se pudo eliminar el agrupador con ID {id}. Error: {mensajeError}");
+                }
             }
         }
+
+
 
         //Hasta aqui actualizado ---------------------------------------------------------------------
 

@@ -381,17 +381,19 @@ agr.MapGet("/cuenta/{cuentaID:int}", async (rDocumentos repositorio, int cuentaI
 
 agr.MapDelete("/{id:int}", async (rDocumentos repositorio, int id) =>
 {
-    var resultado = await repositorio.EliminarAgrupadorAsync(id);
+    var (success, message) = await repositorio.EliminarAgrupadorAsync(id);
 
-    if (resultado)
+    if (success)
     {
         return Results.Ok(new { Success = true, Message = "Agrupador eliminado exitosamente." });
     }
     else
     {
-        return Results.Ok(new { Success = false, Message = "No se encontró agrupador para eliminar." });
+        return Results.BadRequest(new { Success = false, Message = message });
     }
 }).RequireAuthorization();
+
+
 
 #endregion
 

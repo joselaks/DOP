@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Biblioteca.DTO
 {
@@ -12,10 +8,10 @@ namespace Biblioteca.DTO
         public short CuentaID { get; set; }
         public int UsuarioID { get; set; }
         public char TipoID { get; set; }
-        public DateTime Editado { get; set; }
+        public DateTime Editado { get; set; } // Cambiado a DateTime para coincidir con la tabla
         public string Descrip { get; set; }
         public string? Numero { get; set; }
         public bool Active { get; set; }
-
     }
 }
+
