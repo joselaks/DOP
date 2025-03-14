@@ -97,6 +97,9 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.UseAuthorization();
 
+app.MapGet("/health", () => Results.Ok(new { Status = "Healthy" }));
+
+
 #region Grupo de rutas: /usuarios
 
 var usu = app.MapGroup("/usuarios");

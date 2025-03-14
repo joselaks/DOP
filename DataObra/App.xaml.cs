@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Input;
 using DataObra.Datos;
 using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 
 namespace DataObra
 {
@@ -21,6 +22,9 @@ namespace DataObra
         public static RoutedCommand OpenConectoresCommand = new RoutedCommand();
 
         public static List<Agrupadores.Agrupador>? ListaAgrupadores;
+
+        // Propiedad estática para almacenar el estado de la conexión
+        public static bool IsConnectionSuccessful { get; private set; }
 
         public App()
         {
@@ -44,6 +48,7 @@ namespace DataObra
             var servicios = serviceCollection.BuildServiceProvider();
             var httpClientFactory = servicios.GetRequiredService<IHttpClientFactory>();
             HttpClient = httpClientFactory.CreateClient("default");
+
             IdCuenta = 1;
 
             // Agregar el CommandBinding
@@ -64,6 +69,43 @@ namespace DataObra
             EventManager.RegisterClassHandler(typeof(Window), Keyboard.KeyDownEvent, new KeyEventHandler(OnKeyDown));
         }
 
+        public static async Task<bool> TryConnect()
+        {
+            // Realizar una solicitud HTTP GET a un endpoint ligero para precalentar la conexión
+            while (true)
+            {
+                try
+                {
+                    var response = await ((App)Application.Current).HttpClient.GetAsync($"{BaseUrl}health");
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // La solicitud fue exitosa, la conexión está precalentada
+                        IsConnectionSuccessful = true;
+                        Console.WriteLine("Conexion exitosa");
+                        return true;
+                    }
+                    else
+                    {
+                        // La solicitud no fue exitosa
+                        IsConnectionSuccessful = false;
+                        Console.WriteLine("Conexion no exitosa");
+                        //hasta que actualice el servidor, lo doy por conectado
+                        await Task.Delay(3000);
+                        return true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Manejar cualquier error que ocurra durante la solicitud
+                    IsConnectionSuccessful = false;
+                    Console.WriteLine($"Error al precalentar la conexión: {ex.Message}");
+                }
+
+                // Esperar antes de reintentar
+                await Task.Delay(2000); // Esperar 2 segundos antes de reintentar
+            }
+        }
+
         private void OpenConectores(object sender, ExecutedRoutedEventArgs e)
         {
             var conectoresWindow = new Conectores();
@@ -79,5 +121,4 @@ namespace DataObra
         }
     }
 }
-
 
