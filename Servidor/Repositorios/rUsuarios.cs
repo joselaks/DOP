@@ -1,4 +1,5 @@
 ﻿using Biblioteca;
+using Biblioteca.DTO;
 using Dapper;
 using Microsoft.IdentityModel.Tokens;
 using System.Data;
@@ -17,35 +18,42 @@ namespace Servidor.Repositorios
             _connectionString = connectionString;
         }
 
-
-        public async Task<CredencialesUsuario> VerificaUsuario(string email, string pass)
+        public async Task<CredencialesUsuarioDTO> VerificaUsuario(string email, string pass)
         {
-            var respuesta = new CredencialesUsuario();
+            var respuesta = new CredencialesUsuarioDTO();
             string key = "ESTALLAVEFUNCOINARIASI12345PARARECORDARLAMEJOR=";
             using (var db = new SqlConnection(_connectionString))
             {
-                var verificado = await db.QuerySingleOrDefaultAsync<Usuario>("UsuariosGet", new { email, pass },
-                                                        commandType: CommandType.StoredProcedure);
-                if (verificado != null)
+                try
                 {
-                    var tokenHandler = new JwtSecurityTokenHandler();
-                    var byteKey = Encoding.UTF8.GetBytes(key);
-
-                    var tokenDes = new SecurityTokenDescriptor
+                    var verificado = await db.QuerySingleOrDefaultAsync<UsuarioDTO>("UsuariosGet", new { email, pass },
+                                                        commandType: CommandType.StoredProcedure);
+                    if (verificado != null)
                     {
-                        Expires = DateTime.UtcNow.AddMonths(1),
-                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(byteKey),
-                        SecurityAlgorithms.HmacSha256Signature)
-                    };
-                    var token = tokenHandler.CreateToken(tokenDes);
+                        var tokenHandler = new JwtSecurityTokenHandler();
+                        var byteKey = Encoding.UTF8.GetBytes(key);
 
-                    respuesta.Token = tokenHandler.WriteToken(token);
-                    respuesta.DatosUsuario = verificado;
+                        var tokenDes = new SecurityTokenDescriptor
+                        {
+                            Expires = DateTime.UtcNow.AddMonths(1),
+                            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(byteKey),
+                            SecurityAlgorithms.HmacSha256Signature)
+                        };
+                        var token = tokenHandler.CreateToken(tokenDes);
 
+                        respuesta.Token = tokenHandler.WriteToken(token);
+                        respuesta.DatosUsuario = verificado;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    // Capturar el mensaje de error del procedimiento almacenado
+                    respuesta.DatosUsuario = null;
+                    respuesta.Token = null;
+                    respuesta.ErrorMessage = $"Error al verificar usuario: {ex.Message}";
                 }
                 return respuesta;
             }
-
         }
     }
 }

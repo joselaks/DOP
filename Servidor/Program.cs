@@ -107,8 +107,21 @@ var usu = app.MapGroup("/usuarios");
 usu.MapGet("validacion/", async (string email, string pass, rUsuarios repo) =>
 {
     var respuesta = await repo.VerificaUsuario(email, pass);
-    return respuesta != null ? Results.Ok(respuesta) : Results.NotFound(new { Mensaje = "Usuario no encontrado o credenciales incorrectas." });
+    if (respuesta.DatosUsuario != null)
+    {
+        return Results.Ok(respuesta);
+    }
+    else if (!string.IsNullOrEmpty(respuesta.ErrorMessage))
+    {
+        return Results.BadRequest(new { Mensaje = respuesta.ErrorMessage });
+    }
+    else
+    {
+        return Results.NotFound(new { Mensaje = "Usuario no encontrado o credenciales incorrectas." });
+    }
 });
+
+
 
 #endregion
 

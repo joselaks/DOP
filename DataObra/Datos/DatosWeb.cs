@@ -78,13 +78,15 @@ namespace DataObra.Datos
             string url = $"{App.BaseUrl}usuarios/validacion?email={email}&pass={pass}";
             var result = await ExecuteRequestAsync<CredencialesUsuarioDTO>(() => httpClient.GetAsync(url), "Validar Usuario");
 
-            if (result.Success && result.Data.Token != null)
+            if (result.Success && result.Data?.Token != null)
             {
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", result.Data.Token);
             }
 
             return (result.Success, result.Message, result.Data);
         }
+
+
 
         public static async Task<(bool Success, string Message, int? Id)> CrearDocumentoAsync(DocumentoDTO documento)
         {

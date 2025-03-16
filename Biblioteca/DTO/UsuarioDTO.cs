@@ -31,8 +31,8 @@ namespace Biblioteca.DTO
     public class CredencialesUsuarioDTO
     {
         public string? Token { get; set; }
-        //public DateTime Expiracion { get; set; }
         public UsuarioDTO? DatosUsuario { get; set; }
+        public string? ErrorMessage { get; set; }
 
     }
 }

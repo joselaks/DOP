@@ -89,7 +89,7 @@ namespace DataObra.Interfaz.Ventanas
                     if (i == maxRetries - 1)
                     {
                         this.esperaLogin.IsBusy = false;
-                        var result = MessageBox.Show("\n¿Error de conexión. Desea intentar nuevamente?", "Error", MessageBoxButton.YesNo, MessageBoxImage.Error);
+                        var result = MessageBox.Show($"\n{respuesta.Message}\n¿Desea intentar nuevamente?", "Error", MessageBoxButton.YesNo, MessageBoxImage.Error);
                         if (result == MessageBoxResult.Yes)
                         {
                             VerificaUsuario_Click(sender, e);
@@ -101,6 +101,7 @@ namespace DataObra.Interfaz.Ventanas
                 await Task.Delay(delay);
             }
         }
+
 
         private void TextBox_LostFocus(object sender, RoutedEventArgs e)
         {
