@@ -71,17 +71,25 @@ namespace DataObra
 
         public static async Task<bool> TryConnect()
         {
-            // Realizar una solicitud HTTP GET a un endpoint ligero para precalentar la conexión
             while (true)
             {
+                DateTime sendTime = DateTime.Now;
+                DatosWeb.LogEntries.Add($"{sendTime:yyyy-MM-dd HH:mm:ss.fff} - Enviado - {BaseUrl}health");
+
                 try
                 {
                     var response = await ((App)Application.Current).HttpClient.GetAsync($"{BaseUrl}health");
+                    var responseContent = await response.Content.ReadAsStringAsync(); // Leer el contenido de la respuesta
+
+                    DateTime receiveTime = DateTime.Now;
+                    TimeSpan duration = receiveTime - sendTime;
+                    double elapsedSeconds = duration.TotalSeconds;
+
                     if (response.IsSuccessStatusCode)
                     {
                         // La solicitud fue exitosa, la conexión está precalentada
                         IsConnectionSuccessful = true;
-                        Console.WriteLine("Conexion exitosa");
+                        DatosWeb.LogEntries.Add($"{receiveTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - {responseContent} - Tiempo transcurrido: {elapsedSeconds:F3} segundos");
                         return true;
                     }
                     else
@@ -89,22 +97,27 @@ namespace DataObra
                         // La solicitud no fue exitosa
                         IsConnectionSuccessful = false;
                         Console.WriteLine("Conexion no exitosa");
-                        //hasta que actualice el servidor, lo doy por conectado
-                        await Task.Delay(3000);
-                        return true;
+                        DatosWeb.LogEntries.Add($"{receiveTime:yyyy-MM-dd HH:mm:ss.fff} - Recibido - {responseContent} - Tiempo transcurrido: {elapsedSeconds:F3} segundos");
                     }
                 }
                 catch (Exception ex)
                 {
                     // Manejar cualquier error que ocurra durante la solicitud
+                    DateTime errorTime = DateTime.Now;
+                    TimeSpan errorDuration = errorTime - sendTime;
+                    double errorElapsedSeconds = errorDuration.TotalSeconds;
+
                     IsConnectionSuccessful = false;
                     Console.WriteLine($"Error al precalentar la conexión: {ex.Message}");
+                    DatosWeb.LogEntries.Add($"{errorTime:yyyy-MM-dd HH:mm:ss.fff} - Error - {ex.Message} - Tiempo transcurrido: {errorElapsedSeconds:F3} segundos");
                 }
 
                 // Esperar antes de reintentar
                 await Task.Delay(2000); // Esperar 2 segundos antes de reintentar
             }
         }
+
+
 
         private void OpenConectores(object sender, ExecutedRoutedEventArgs e)
         {

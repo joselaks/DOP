@@ -97,7 +97,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.UseAuthorization();
 
-app.MapGet("/health", () => Results.Ok(new { Status = "Healthy" }));
+app.MapGet("/health", () => Results.Ok(new { Status = "Conexión establecida" }));
 
 
 #region Grupo de rutas: /usuarios
