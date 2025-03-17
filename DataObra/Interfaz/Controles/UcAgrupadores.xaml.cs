@@ -65,27 +65,27 @@ namespace DataObra.Interfaz.Controles
 
         private void EditarAgrupador(object sender, RoutedEventArgs e)
         {
-            if (GrillaAgrupadores.SelectedItem is Agrupador agrupadorSeleccionado)
-            {
-                Agrupador agrupador = agrupadorSeleccionado;
+            //if (GrillaAgrupadores.SelectedItem is Agrupador agrupadorSeleccionado)
+            //{
+            //    Agrupador agrupador = agrupadorSeleccionado;
 
-                  SubControles.UcAgrupador Docu = new SubControles.UcAgrupador(agrupador, this);
-                  DataObra.Interfaz.Ventanas.WiDialogo ventanaAgru = new DataObra.Interfaz.Ventanas.WiDialogo("Agrupador", Docu);
+            //      SubControles.UcAgrupador Docu = new SubControles.UcAgrupador(agrupador, this);
+            //      DataObra.Interfaz.Ventanas.WiDialogo ventanaAgru = new DataObra.Interfaz.Ventanas.WiDialogo("Agrupador", Docu);
 
 
-                  var mainWindow = Window.GetWindow(this);
-                    // Aplicar efecto de desenfoque a la ventana principal
-                    mainWindow.Effect = new BlurEffect { Radius = 3 };
-                // Mostrar la ventana de manera modal
-                ventanaAgru.ShowDialog();
-                    // Quitar el efecto de desenfoque después de cerrar la ventana modal
-                    mainWindow.Effect = null;
+            //      var mainWindow = Window.GetWindow(this);
+            //        // Aplicar efecto de desenfoque a la ventana principal
+            //        mainWindow.Effect = new BlurEffect { Radius = 3 };
+            //    // Mostrar la ventana de manera modal
+            //    ventanaAgru.ShowDialog();
+            //        // Quitar el efecto de desenfoque después de cerrar la ventana modal
+            //        mainWindow.Effect = null;
                 
-            }
-            else
-            {
-                MessageBox.Show("Por favor, seleccione un Agrupador para editar.");
-            }
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Por favor, seleccione un Agrupador para editar.");
+            //}
 
         }
 

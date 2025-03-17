@@ -1,4 +1,5 @@
-﻿using DataObra.Agrupadores;
+﻿using Biblioteca.DTO;
+using DataObra.Agrupadores;
 using DataObra.Datos;
 using System;
 using System.Windows;
@@ -9,19 +10,21 @@ namespace DataObra.Interfaz.Controles.SubControles
     public partial class UcAgrupador : UserControl
     {
         bool edicion;
-        Agrupador agrup;
+        AgrupadorDTO agrupador;
         UcAgrupadores Origen;
-        public UcAgrupador(Agrupador? Agrup, UcAgrupadores origen)
+
+        public UcAgrupador(AgrupadorDTO? Agrup, UcAgrupadores origen)
         {
             InitializeComponent();
             Origen = origen;
+
             if (Agrup != null)
             {
-                agrup = Agrup;
-                TipoIDTextBox.Text = agrup.TipoID.ToString();
-                DescripcionTextBox.Text = agrup.Descrip;
-                NumeroTextBox.Text = agrup.Numero.ToString();
-                ActivoCheckBox.IsChecked = agrup.Active;
+                agrupador = Agrup;
+                TipoIDTextBox.Text = agrupador.TipoID.ToString();
+                DescripcionTextBox.Text = agrupador.Descrip;
+                NumeroTextBox.Text = agrupador.Numero.ToString();
+                ActivoCheckBox.IsChecked = agrupador.Active;
 
                 NuevoEditar.Text = "Editar";
                 edicion = true;
@@ -29,7 +32,8 @@ namespace DataObra.Interfaz.Controles.SubControles
             }
             else
             {
-                agrup = new Agrupador();
+                agrupador = new AgrupadorDTO();
+
                 NuevoEditar.Text = "Nuevo";
                 edicion = false;
             }
@@ -47,39 +51,31 @@ namespace DataObra.Interfaz.Controles.SubControles
             }
             else
             {
-                agrup.TipoID = tipoID[0]; // Convertir el primer carácter de la cadena a char
-                agrup.Descrip = descripcion;
-                agrup.Editado = DateTime.Now;
-                agrup.CuentaID = (short)App.IdCuenta; // Conversión explícita de int a short
-                agrup.UsuarioID = App.IdUsuario;
-                agrup.Active = ActivoCheckBox.IsChecked.Value;
-                agrup.Numero = NumeroTextBox.Text;
+                agrupador.TipoID = tipoID[0]; // Convertir el primer carácter de la cadena a char
+                agrupador.Descrip = descripcion;
+                agrupador.Editado = DateTime.Now;
+                agrupador.CuentaID = (short)App.IdCuenta; // Conversión explícita de int a short
+                agrupador.UsuarioID = App.IdUsuario;
+                agrupador.Active = ActivoCheckBox.IsChecked.Value;
+                agrupador.Numero = NumeroTextBox.Text;
 
-                // Agregar la lógica para guardar el nuevo Agrupador
-                if (edicion==false) 
+                if (edicion)
                 {
-                    //var respuesta = await ConsultasAPI.PostAgrupadorAsync(agrup);
+                    // Llamar al método InsertarAgrupadorAsync
+                    var (success, message, id) = await DatosWeb.InsertarAgrupadorAsync(agrupador);
 
-                    ////Respuestas
-                    //int? nuevodoc = respuesta.Id;
-                    //bool conexionExitosa = respuesta.Success;
-                    //string mensaje = respuesta.Message;
-
-                    ////Mensaje para testeo
-                    //MessageBox.Show(respuesta.Success + " " + mensaje + " " + nuevodoc.ToString());
-                    
-
+                    // Manejar la respuesta
+                    if (success && id.HasValue)
+                        MessageBox.Show($"Agrupador creado con éxito. ID: {id.Value}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                    else
+                        MessageBox.Show($"Error al crear el agrupador: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 else
                 {
-                    //var respuesta = await ConsultasAPI.PutAgrupadorAsync(agrup);
-                    ////Respuestas
-                    //bool conexionExitosa = respuesta.Success;
-                    //string mensaje = respuesta.Message;
-                    ////Mensaje para testeo
-                    //MessageBox.Show(respuesta.Success + " " + mensaje);
 
                 }
+
+
 
                 Origen.CargarGrilla();
 
