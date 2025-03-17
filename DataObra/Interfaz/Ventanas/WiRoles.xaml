@@ -50,6 +50,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
         <TextBlock Text="Elija su Rol" Grid.Row="0" FontSize="20" FontWeight="Bold"  HorizontalAlignment="Center"  VerticalAlignment="Center" />
         <Grid Grid.Row="1" x:Name="GridBotones">
@@ -70,18 +71,60 @@
                         <RowDefinition Height="20" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <Image Source="/Interfaz/Ventanas/Presupuesto.png" Grid.Row="0" Stretch="Fill" />
-                    
+                    <Image Source="/Imagenes/Interface/Presupuesto.png" Grid.Row="0" Stretch="Fill" />
                     <TextBlock Text="Presupuesto" Grid.Row="1" FontSize="20" FontWeight="Bold"  HorizontalAlignment="Center"  VerticalAlignment="Center" />
-                    <TextBlock Text="Genera nuevos presupuestos y verifica el costo real a partir de las premisas inciales" Grid.Row="2" FontSize="12" FontWeight="Bold"  HorizontalAlignment="Center"  VerticalAlignment="Center" TextWrapping="Wrap" Margin="5,20,5,5
-                               "/>
                 </Grid>
             </Button>
-            <Button x:Name="Compras" Content="Compras" Background="{StaticResource ComprasBackground}" Click="Boton_Click" Grid.Column="1" />
-            <Button x:Name="Administracion" Content="Administración" Background="{StaticResource AdministracionBackground}" Click="Boton_Click" Grid.Column="2" Foreground="White"/>
-            <Button x:Name="JefeDeObra" Content="Jefe de Obra" Background="{StaticResource JefeDeObraBackground}" Click="Boton_Click" Grid.Column="3" Foreground="White"/>
-            <Button x:Name="Socio" Content="Socio/Titular" Background="{StaticResource SocioBackground}" Click="Boton_Click" Grid.Column="4" Foreground="White"/>
-        </Grid>
+            <Button x:Name="Compras" Background="{StaticResource ComprasBackground}" Click="Boton_Click" Grid.Column="1" >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Image Source="/Imagenes/Interface/Compras.png" Grid.Row="0" Stretch="Fill" />
+                    <TextBlock Text="Compras" Grid.Row="1" FontSize="20" FontWeight="Bold"  HorizontalAlignment="Center"  VerticalAlignment="Center" />
+                </Grid>
 
+            </Button>
+            <Button x:Name="Administracion" Background="{StaticResource AdministracionBackground}" Click="Boton_Click" Grid.Column="2" Foreground="White">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Image Source="/Imagenes/Interface/Admin.png" Grid.Row="0" Stretch="Fill" />
+                    <TextBlock Text="Administración" Grid.Row="1" FontSize="20" FontWeight="Bold"  HorizontalAlignment="Center"  VerticalAlignment="Center" />
+                </Grid>
+            </Button>
+            <Button x:Name="JefeDeObra" Background="{StaticResource JefeDeObraBackground}" Click="Boton_Click" Grid.Column="3" Foreground="White">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Image Source="/Imagenes/Interface/Jefe.png" Grid.Row="0" Stretch="Fill" />
+                    <TextBlock Text="Jefe de Obra" Grid.Row="1" FontSize="20" FontWeight="Bold"  HorizontalAlignment="Center"  VerticalAlignment="Center" />
+                </Grid>
+
+            </Button>
+            <Button x:Name="Socio" Background="{StaticResource SocioBackground}" Click="Boton_Click" Grid.Column="4" Foreground="White">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Image Source="/Imagenes/Interface/Socio.png" Grid.Row="0" Stretch="Fill" />
+                    <TextBlock Text="Socio / Titular" Grid.Row="1" FontSize="20" FontWeight="Bold"  HorizontalAlignment="Center"  VerticalAlignment="Center" />
+                </Grid>
+
+            </Button>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Button x:Name="Salir" Content="Salir" Click="Salir_Click" VerticalAlignment="Center" />
+        </Grid>
     </Grid>
 </Window>

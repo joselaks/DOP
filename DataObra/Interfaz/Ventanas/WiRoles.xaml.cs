@@ -35,6 +35,14 @@ namespace DataObra.Interfaz.Ventanas
                 geRoles.EjecutarProcedimiento(boton, this);
             }
         }
+
+        private void Salir_Click(object sender, RoutedEventArgs e)
+        {
+           
+                
+                Application.Current.Shutdown();
+           
+        }
     }
 }
 

@@ -135,17 +135,7 @@ namespace Bibioteca.Clases
         {
             get
             {
-                if (this.HasItems)
-                {
-                    pu = (from c in this.Inferiores
-                          select c.Importe).Sum();
-
-                    return pu;
-                }
-                else
-                {
-                    return pu;
-                }
+                return pu;
             }
             set
             {
@@ -153,6 +143,29 @@ namespace Bibioteca.Clases
                 OnPropertyChanged("PU");
             }
         }
+
+        //public decimal PU
+        //{
+        //    get
+        //    {
+        //        if (this.HasItems)
+        //        {
+        //            pu = (from c in this.Inferiores
+        //                  select c.Importe).Sum();
+
+        //            return pu;
+        //        }
+        //        else
+        //        {
+        //            return pu;
+        //        }
+        //    }
+        //    set
+        //    {
+        //        pu = value;
+        //        OnPropertyChanged("PU");
+        //    }
+        //}
 
         decimal importe;
 
