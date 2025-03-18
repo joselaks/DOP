@@ -398,6 +398,15 @@
                             NumberGroupSizes="3" />
 
                         <syncfusion:TreeGridNumericColumn
+                            Width="80"
+                            CellStyle="{StaticResource CantidadCellStyle}"
+                            MappingName="Factor"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3" />
+
+                        <syncfusion:TreeGridNumericColumn
                             Width="120"
                             CellStyle="{StaticResource TipoCellStyle}"
                             MappingName="Importe"

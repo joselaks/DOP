@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
+using Biblioteca;
+using Biblioteca.DTO;
 
 namespace Bibioteca.Clases
 {
@@ -12,38 +14,12 @@ namespace Bibioteca.Clases
 
         #region Estructura
 
+        public DocumentoDTO encabezado;
         public List<Concepto> listaConceptosLeer;
         public List<Relacion> listaRelacionesLeer;
         public List<Concepto> listaConceptosGrabar;
         public List<Relacion> listaRelacionesGrabar;
 
-        string nombre { get; set; }
-        public string Nombre
-        {
-            get
-            {
-                return nombre;
-            }
-            set
-            {
-                nombre = value;
-                OnPropertyChanged("Nombre");
-            }
-        }
-
-        string direccion { get; set; }
-        public string Direccion
-        {
-            get
-            {
-                return direccion;
-            }
-            set
-            {
-                direccion = value;
-                OnPropertyChanged("Direccion");
-            }
-        }
 
         ObservableCollection<Nodo> arbol;
         bool existe;
