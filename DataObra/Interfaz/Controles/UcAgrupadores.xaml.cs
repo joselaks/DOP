@@ -34,12 +34,16 @@ namespace DataObra.Interfaz.Controles
 
         private readonly Dictionary<char, string> tiposAgrupadores = new()
         {
-            { 'C', "Clientes" },
-            { 'P', "Proveedores" },
-            { 'E', "Empleados" },
-            { 'S', "SubContratistas" },
-            { 'O', "Obras" },
-            { 'A', "Administración" }
+            { 'O', "Obra" },
+            { 'A', "Administración" },
+            { 'C', "Cliente" },
+            { 'P', "Proveedor" },
+            { 'E', "Empleado" },
+            { 'S', "SubContratista" },
+            { 'U', "Cuenta" },
+            { 'D', "Deposito" },
+            { 'I', "Impuesto" },
+            { 'T', "Tema" }
         };
 
         private readonly Dictionary<int, string> usuarios = new()
