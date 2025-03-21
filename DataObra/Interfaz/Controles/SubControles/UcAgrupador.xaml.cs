@@ -31,7 +31,8 @@ namespace DataObra.Interfaz.Controles.SubControles
             if (Agrup != null)
             {
                 agrupador = Agrup;
-                TipoIDTextBox.Text = agrupador.TipoID.ToString();
+                //TipoIDTextBox.Text = agrupador.TipoID.ToString();
+                TipoComboBox.SelectedValue = agrupador.TipoID;
                 DescripcionTextBox.Text = agrupador.Descrip;
                 NumeroTextBox.Text = agrupador.Numero.ToString();
                 ActivoCheckBox.IsChecked = agrupador.Active;
