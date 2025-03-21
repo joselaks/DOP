@@ -1,6 +1,6 @@
 ﻿using Biblioteca.DTO;
-using DataObra.Agrupadores;
 using DataObra.Datos;
+using Syncfusion.Windows.Controls;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,21 +18,18 @@ namespace DataObra.Interfaz.Controles.SubControles
             InitializeComponent();
             Origen = origen;
 
-            var tipos = new Dictionary<char, string>
-            {
-                { 'P', "Proveedor" },
-                { 'O', "Obra" },
-                { 'A', "Administración" },
-                { 'C', "Cliente" }
-            };
-
-            TipoComboBox.ItemsSource = tipos;
+            CargarTipos();
 
             if (Agrup != null)
             {
                 agrupador = Agrup;
                 //TipoIDTextBox.Text = agrupador.TipoID.ToString();
-                TipoComboBox.SelectedValue = agrupador.TipoID;
+                Dispatcher.Invoke(() =>
+                {
+                    TipoComboBox.SelectedValue = agrupador.TipoID;
+                }, System.Windows.Threading.DispatcherPriority.Loaded);
+
+
                 DescripcionTextBox.Text = agrupador.Descrip;
                 NumeroTextBox.Text = agrupador.Numero.ToString();
                 ActivoCheckBox.IsChecked = agrupador.Active;
@@ -50,19 +47,31 @@ namespace DataObra.Interfaz.Controles.SubControles
             }
         }
 
+        private void CargarTipos()
+        {
+            var tipos = new Dictionary<char, string>
+        {
+            { 'P', "Proveedor" },
+            { 'O', "Obra" },
+            { 'A', "Administración" },
+            { 'C', "Cliente" }
+        };
+            TipoComboBox.ItemsSource = tipos;
+        }
+
         private async void Guardar_Click(object sender, RoutedEventArgs e)
         {
-            string tipoID = TipoIDTextBox.Text;
+            
             string descripcion = DescripcionTextBox.Text;
 
-            if (string.IsNullOrEmpty(tipoID) || tipoID.Length != 1 || string.IsNullOrEmpty(descripcion))
+            if (agrupador.TipoID == '\0' || descripcion.Length == 0)
             {
-                MessageBox.Show("Por favor, complete todos los campos y asegúrese de que TipoID sea un solo carácter.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Por favor, complete todos los campos y asegúrese de que TipoID sea válido.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             else
             {
-                agrupador.TipoID = tipoID[0]; // Convertir el primer carácter de la cadena a char
+                agrupador.TipoID = agrupador.TipoID; // Convertir el primer carácter de la cadena a char
                 agrupador.Descrip = descripcion;
                 agrupador.Editado = DateTime.Now;
                 agrupador.CuentaID = (short)App.IdCuenta; // Conversión explícita de int a short
@@ -104,6 +113,14 @@ namespace DataObra.Interfaz.Controles.SubControles
                 {
                     parentWindow.Close();
                 }
+            }
+        }
+
+        private void TipoComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (TipoComboBox.SelectedValue != null)
+            {
+                agrupador.TipoID = (char)TipoComboBox.SelectedValue;
             }
         }
     }
