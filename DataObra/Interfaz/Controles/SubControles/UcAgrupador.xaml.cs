@@ -18,6 +18,16 @@ namespace DataObra.Interfaz.Controles.SubControles
             InitializeComponent();
             Origen = origen;
 
+            var tipos = new Dictionary<char, string>
+            {
+                { 'P', "Proveedor" },
+                { 'O', "Obra" },
+                { 'A', "Administración" },
+                { 'C', "Cliente" }
+            };
+
+            TipoComboBox.ItemsSource = tipos;
+
             if (Agrup != null)
             {
                 agrupador = Agrup;
@@ -28,11 +38,11 @@ namespace DataObra.Interfaz.Controles.SubControles
 
                 NuevoEditar.Text = "Editar";
                 edicion = true;
-
             }
             else
             {
                 agrupador = new AgrupadorDTO();
+                ActivoCheckBox.IsChecked = true;
 
                 NuevoEditar.Text = "Nuevo";
                 edicion = false;
@@ -61,21 +71,29 @@ namespace DataObra.Interfaz.Controles.SubControles
 
                 if (edicion)
                 {
+                    var (success, message) = await DatosWeb.ActualizarAgrupadorAsync(agrupador);
+
+                    // Manejar la respuesta
+                    if (success)
+                    {
+                        MessageBox.Show($"Agrupador actualizado con éxito. ID: {agrupador.ID}  Descripción: {agrupador.Descrip}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Error al actualizar el agrupador: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+                else
+                {
                     // Llamar al método InsertarAgrupadorAsync
                     var (success, message, id) = await DatosWeb.InsertarAgrupadorAsync(agrupador);
 
                     // Manejar la respuesta
                     if (success && id.HasValue)
-                        MessageBox.Show($"Agrupador creado con éxito. ID: {id.Value}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                        MessageBox.Show($"Agrupador creado con éxito. ID: {id.Value}  Descripción: {agrupador.Descrip}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
                     else
                         MessageBox.Show($"Error al crear el agrupador: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-                else
-                {
-
-                }
-
-
 
                 Origen.CargarGrilla();
 

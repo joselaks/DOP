@@ -77,38 +77,44 @@
                 MouseDoubleClick="GrillaAgrupadores_MouseDoubleClick">
                 <syncfusion:SfDataGrid.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Click="MenuItem_Click" Header="Nuevo" />
+                        <MenuItem Click="NuevoAgrupador" Header="Nuevo" />
                         <MenuItem Click="EditarAgrupador" Header="Editar" />
-                        <MenuItem Click="MenuItem_Click_1" Header="Borrar" />
+                        <MenuItem Click="BorrarAgrupador" Header="Borrar" />
                     </ContextMenu>
                 </syncfusion:SfDataGrid.ContextMenu>
                 <syncfusion:SfDataGrid.Columns>
                     <syncfusion:GridTextColumn
                         Width="30"
                         HeaderText="ID"
-                        MappingName="ID" />
+                        MappingName="ID" 
+                        IsHidden="True" />
                     <syncfusion:GridTextColumn
-                        Width="92"
+                        Width="112"
                         HeaderText="Tipo"
-                        MappingName="TipoID" />
-                    <syncfusion:GridDateTimeColumn
-                        Width="90"
-                        HeaderText="Editado"
-                        MappingName="Editado" />
+                        MappingName="Tipo" />
                     <syncfusion:GridTextColumn
-                        Width="90"
+                        Width="180"
                         HeaderText="Descripción"
                         MappingName="Descrip" />
                     <syncfusion:GridTextColumn
-                        Width="90"
+                        Width="69"
                         HeaderText="Numero"
-                        MappingName="Numero" />
-                    <syncfusion:GridTextColumn
-                        Width="90"
+                        MappingName="Numero"
+                        TextAlignment="Right" />
+                    <syncfusion:GridCheckBoxColumn
+                        Width="51"
                         HeaderText="Active"
                         MappingName="Active" />
-
-
+                    <syncfusion:GridDateTimeColumn
+                        Width="90"
+                        HeaderText="Editado"
+                        MappingName="Editado"
+                        TextAlignment="Center"/>
+                    <syncfusion:GridTextColumn
+                        Width="112"
+                        HeaderText="Usuario"
+                        MappingName="Usuario"
+                        TextAlignment="Center"/>
                 </syncfusion:SfDataGrid.Columns>
             </syncfusion:SfDataGrid>
 
@@ -161,7 +167,6 @@
                     <syncfusion:DropDownMenuItem
                         x:Name="Obra"
                         HorizontalAlignment="Left"
-                        Click="Obra_Click"
                         Header="Obra">
                         <syncfusion:DropDownMenuItem.Icon>
                             <Image Source="/Presupuestos/Rubro.png" />
@@ -170,7 +175,6 @@
                     <syncfusion:DropDownMenuItem
                         x:Name="NuevoProveedor"
                         HorizontalAlignment="Left"
-                        Click="NuevoProveedor_Click"
                         Header="Proveedor">
                         <syncfusion:DropDownMenuItem.Icon>
                             <Image Source="/Presupuestos/Tarea.png" />
