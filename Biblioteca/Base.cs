@@ -29,6 +29,13 @@ namespace Bibioteca.Clases
             set { precio = value; }
         }
 
+        private string moneda;
+        public string Moneda
+        {
+            get { return moneda; }
+            set { moneda = value; }
+        }
+
         private string tipo;
         public string Tipo
         {

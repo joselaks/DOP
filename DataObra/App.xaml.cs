@@ -6,6 +6,7 @@ using System.Windows.Input;
 using DataObra.Datos;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace DataObra
 {
@@ -75,11 +76,23 @@ namespace DataObra
             conectoresWindow.Show();
         }
 
+        private void testPresupuesto(object sender, ExecutedRoutedEventArgs e)
+        {
+            UserControl presup = new DataObra.Presupuestos.UcPresupuesto(null);
+            DataObra.Interfaz.Ventanas.WiDocumento ventanaPres = new DataObra.Interfaz.Ventanas.WiDocumento("Presupuesto", presup);
+            ventanaPres.ShowDialog();
+        }
+
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.A && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
                 OpenConectores(this, null);
+
+            }
+            if (e.Key == Key.P && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                testPresupuesto(this, null);
             }
         }
     }

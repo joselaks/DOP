@@ -206,6 +206,15 @@ namespace Bibioteca.Clases
                 registro.ID = rubro.Codigo;
                 registro.Descripcion = rubro.Descrip;
                 registro.Tipo = (rubro.Tipo == "0") ? "R" : rubro.Tipo;
+                //if (rubro.Moneda == "1")
+                //{
+                //    registro.PU = rubro.Precio;
+                //}
+                //else
+                //{
+                //    //registro.PU2 = rubro.Precio;
+                //}
+                
                 registro.PU = rubro.Precio;
                 registro.Unidad = rubro.Unidad;
                 registro.Cantidad = item.Cantidad;
