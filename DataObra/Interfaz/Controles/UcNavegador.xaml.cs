@@ -1,14 +1,12 @@
 ﻿using Biblioteca;
+using Biblioteca.DTO;
 using DataObra.Datos;
-using DataObra.Interfaz.Controles.SubControles;
-using DataObra.Sistema;
-using Syncfusion.UI.Xaml.TreeGrid;
-using Syncfusion.Windows.Tools.Controls;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
+using Documento = Biblioteca.Documento;
 
 namespace DataObra.Interfaz.Controles
 {
@@ -46,37 +44,40 @@ namespace DataObra.Interfaz.Controles
             }
         }
 
-        private async void MenuItem_Click_1(object sender, RoutedEventArgs e)
-        {
-            if (GrillaDocumentos.SelectedItem is Documento documentoSeleccionado)
-            {
-                if (documentoSeleccionado.TipoID == 10) // es un presupuesto
-                {
+        //private async void EditaDocClick(object sender, RoutedEventArgs e)
+        //{
+        //    if (GrillaDocumentos.SelectedItem is DocumentoDTO documentoSeleccionado)
+        //    {
+                
+
+
+        //        if (documentoSeleccionado.TipoID == 10) // es un presupuesto
+        //        {
                     
-                    var encabezado = documentoSeleccionado;
-                    UserControl presup = new DataObra.Presupuestos.UcPresupuesto(encabezado);
-                    DataObra.Interfaz.Ventanas.WiDocumento ventanaPres = new DataObra.Interfaz.Ventanas.WiDocumento("Presupuesto", presup);
-                    var mainWindow = Window.GetWindow(this);
-                    // Aplicar efecto de desenfoque a la ventana principal
-                    mainWindow.Effect = new BlurEffect { Radius = 3 };
-                    // Mostrar la ventana de manera modal
-                    ventanaPres.ShowDialog();
-                    // Quitar el efecto de desenfoque después de cerrar la ventana modal
-                    mainWindow.Effect = null;
-                }
-                else
-                {
-                    
-                    Documentos.MaxDocumento Docu = new Documentos.MaxDocumento(documentoSeleccionado);
-                    DataObra.Interfaz.Ventanas.WiDocumento ventanaDocu = new DataObra.Interfaz.Ventanas.WiDocumento(documentoSeleccionado.TipoID.ToString(), Docu);
-                    ventanaDocu.ShowDialog();
-                }
-            }
-            else
-            {
-                MessageBox.Show("Por favor, seleccione un documento para editar.");
-            }
-        }
+        //            var encabezado = documentoSeleccionado;
+        //            UserControl presup = new DataObra.Presupuestos.UcPresupuesto(docActivo);
+        //            DataObra.Interfaz.Ventanas.WiDocumento ventanaPres = new DataObra.Interfaz.Ventanas.WiDocumento("Presupuesto", presup);
+        //            var mainWindow = Window.GetWindow(this);
+        //            // Aplicar efecto de desenfoque a la ventana principal
+        //            mainWindow.Effect = new BlurEffect { Radius = 3 };
+        //            // Mostrar la ventana de manera modal
+        //            ventanaPres.ShowDialog();
+        //            // Quitar el efecto de desenfoque después de cerrar la ventana modal
+        //            mainWindow.Effect = null;
+        //        }
+        //        else
+        //        {
+
+        //            Documentos.MaxDocumento Docu = new Documentos.MaxDocumento(docActivo);
+        //            DataObra.Interfaz.Ventanas.WiDocumento ventanaDocu = new DataObra.Interfaz.Ventanas.WiDocumento(documentoSeleccionado.TipoID.ToString(), Docu);
+        //            ventanaDocu.ShowDialog();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("Por favor, seleccione un documento para editar.");
+        //    }
+        //}
 
         private async void MenuItem_Click_2(object sender, RoutedEventArgs e)
         {
@@ -135,6 +136,64 @@ namespace DataObra.Interfaz.Controles
             }
         }
 
+        public static Documento ConvertirDesdeDTO(DocumentoDTO dto)
+        {
+            return new Documento
+            {
+                ID = dto.ID,
+                CuentaID = dto.CuentaID ?? 0,  // Si es null, asigna 0
+                TipoID = dto.TipoID,
+                UsuarioID = dto.UsuarioID,
+                CreadoFecha = dto.CreadoFecha,
+                EditadoID = dto.EditadoID,
+                EditadoFecha = dto.EditadoFecha,
+                RevisadoID = dto.RevisadoID,
+                RevisadoFecha = dto.RevisadoFecha,
+                AdminID = dto.AdminID,
+                ObraID = dto.ObraID,
+                PresupuestoID = dto.PresupuestoID,
+                RubroID = dto.RubroID,
+                EntidadID = dto.EntidadID,
+                DepositoID = dto.DepositoID,
+                Descrip = dto.Descrip ?? string.Empty, // Evita valores null
+                Concepto1 = dto.Concepto1,
+                Fecha1 = dto.Fecha1,
+                Fecha2 = dto.Fecha2,
+                Fecha3 = dto.Fecha3,
+                Numero1 = dto.Numero1,
+                Numero2 = dto.Numero2,
+                Numero3 = dto.Numero3,
+                Notas = dto.Notas ?? string.Empty,
+                Active = dto.Active,
+                Pesos = dto.Pesos,
+                Dolares = dto.Dolares,
+                Impuestos = dto.Impuestos,
+                ImpuestosD = dto.ImpuestosD,
+                Materiales = dto.Materiales,
+                ManodeObra = dto.ManodeObra,
+                Subcontratos = dto.Subcontratos,
+                Equipos = dto.Equipos,
+                Otros = dto.Otros,
+                MaterialesD = dto.MaterialesD,
+                ManodeObraD = dto.ManodeObraD,
+                SubcontratosD = dto.SubcontratosD,
+                EquiposD = dto.EquiposD,
+                OtrosD = dto.OtrosD,
+                RelDoc = dto.RelDoc,
+                RelArt = dto.RelArt,
+                RelMov = dto.RelMov,
+                RelImp = dto.RelImp,
+                RelRub = dto.RelRub,
+                RelTar = dto.RelTar,
+                RelIns = dto.RelIns,
+                Accion = 'M', // Asignación por defecto (Modificar)
+                DetalleDocumento = new List<DocumentoDet>(),  // Inicializa listas vacías
+                DetalleMovimientos = new List<Movimiento>(),
+                DetalleImpuestos = new List<Impuesto>()
+            };
+        }
+
+
         private void ToggleButton_Unchecked(object sender, RoutedEventArgs e)
         {
             ToggleButton toggleButton = sender as ToggleButton;
@@ -156,10 +215,14 @@ namespace DataObra.Interfaz.Controles
 
         }
 
-        private async void MenuItem_Click(object sender, RoutedEventArgs e)
+
+        private async void NuevoDoc_Click(object sender, RoutedEventArgs e)
         {
-            if (GrillaDocumentos.SelectedItem is Documento documentoSeleccionado)
+            if (GrillaDocumentos.SelectedItem is DocumentoDTO sele)
             {
+
+                var documentoSeleccionado = ConvertirDesdeDTO(sele);
+
                 var mainWindow = Window.GetWindow(this);
                 // Aplicar efecto de desenfoque a la ventana principal
                 mainWindow.Effect = new BlurEffect { Radius = 3 };
@@ -192,6 +255,8 @@ namespace DataObra.Interfaz.Controles
                 MessageBox.Show("Por favor, seleccione un documento para editar.");
             }
         }
+
+     
     }
 }
 

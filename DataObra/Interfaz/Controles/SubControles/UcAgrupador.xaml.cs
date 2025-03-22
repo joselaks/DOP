@@ -50,11 +50,17 @@ namespace DataObra.Interfaz.Controles.SubControles
         private void CargarTipos()
         {
             var tipos = new Dictionary<char, string>
-        {
-            { 'P', "Proveedor" },
+            {
             { 'O', "Obra" },
             { 'A', "Administración" },
-            { 'C', "Cliente" }
+            { 'C', "Cliente" },
+            { 'P', "Proveedor" },
+            { 'E', "Empleado" },
+            { 'S', "SubContratista" },
+            { 'U', "Cuenta" },
+            { 'D', "Deposito" },
+            { 'I', "Impuesto" },
+            { 'T', "Tema" }
         };
             TipoComboBox.ItemsSource = tipos;
         }
