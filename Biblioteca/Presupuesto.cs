@@ -194,14 +194,19 @@ namespace Bibioteca.Clases
 
         #endregion
 
+        // Procedimiento que en base a una lista de conceptos y relaciones, genera un presupuesto arbol.
         public void generaPresupuesto(string origen, List<Clases.Concepto> listaConceptos, List<Clases.Relacion> listaRelaciones)
         {
-            Arbol = new ObservableCollection<Nodo>();
+            // No es necesario generar un nuevo objeto, se puede reutilizar el existente.
+            //Arbol = new ObservableCollection<Nodo>();
+            //Obtengo lista de relaciones con superior null, que son los rubros.
             var relaciones = listaRelaciones.Where(a => a.Superior == null).OrderBy(b => b.OrdenInt).ToList(); //Nodos Raiz
+            // Recorro los rubros
             foreach (var item in relaciones)
             {
+                //Obtengo el concepto del rubro
                 Clases.Concepto rubro = listaConceptos.FirstOrDefault(a => a.Codigo == item.Inferior); //Concepto de los rubros raiz
-
+                //Genero el nodo Rubro
                 Nodo registro = new Nodo();
                 registro.ID = rubro.Codigo;
                 registro.Descripcion = rubro.Descrip;
@@ -215,12 +220,14 @@ namespace Bibioteca.Clases
                 //    //registro.PU2 = rubro.Precio;
                 //}
                 
-                registro.PU = rubro.Precio;
+                //registro.PU = 0;
                 registro.Unidad = rubro.Unidad;
-                registro.Cantidad = item.Cantidad;
+                registro.Cantidad = 1;
                 registro.Sup = true;
                 this.Arbol.Add(registro);
+                //Obtengo los elementos bajo el rubro
                 var bajoRubro = GetElementosHijos(registro, listaConceptos, listaRelaciones, 1); //Rama del rubro
+                // Si hay inferiores, los agrego al rubro.
                 if (bajoRubro != null)
                 {
                     registro.Inferiores = new ObservableCollection<Nodo>();
@@ -256,6 +263,7 @@ namespace Bibioteca.Clases
                     //newItem.Tipo = (concepto.Tipo == "0") ? _nivel.ToString() : concepto.Tipo;
                     newItem.Tipo = concepto.Tipo;
                     newItem.Inferiores = new ObservableCollection<Nodo>();
+                    // Recurrencia para obtener los elementos hijos de este elemento.
                     var subelementosHijos = GetElementosHijos(newItem, listaConceptos, listaRelaciones, _nivel + 1);
                     if (subelementosHijos != null && subelementosHijos.Count > 0)
                     {

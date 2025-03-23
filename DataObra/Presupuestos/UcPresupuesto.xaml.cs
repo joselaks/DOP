@@ -751,6 +751,50 @@ namespace DataObra.Presupuestos
             //Actualiza el campo porque no uso Inotificable
             Encabezado.Descrip = this.descripcion.Text;
         }
+
+        private void ejemplo_Click(object sender, RoutedEventArgs e)
+        {
+            // Crear una lista de conceptos
+            var listaConceptos = new List<Concepto>
+    {
+        new Concepto { Codigo = "R01", Descrip = "Rubro 1", Precio = 100, Tipo = "R", Unidad = "Gl", Fecha = DateTime.Now },
+        new Concepto { Codigo = "T01", Descrip = "Tarea 1", Precio = 100, Tipo = "T", Unidad = "Gl", Fecha = DateTime.Now },
+        new Concepto { Codigo = "M01", Descrip = "Material 1", Precio = 100, Moneda = "1", Tipo = "M", Unidad = "Gl", Fecha = DateTime.Now },
+        new Concepto { Codigo = "Aux", Descrip = "Auxiliar", Precio = 100, Tipo = "A", Unidad = "Gl", Fecha = DateTime.Now },
+        new Concepto { Codigo = "T02", Descrip = "Tarea 2", Precio = 200,  Tipo = "T", Unidad = "Gl", Fecha = DateTime.Now },
+        new Concepto { Codigo = "M02", Descrip = "Material 2", Precio = 200, Moneda = "2", Tipo = "M", Unidad = "Gl", Fecha = DateTime.Now },
+        new Concepto { Codigo = "T03", Descrip = "Tarea 3", Precio = 300, Tipo = "T", Unidad = "Gl", Fecha = DateTime.Now },
+        new Concepto { Codigo = "M03", Descrip = "Material 3", Precio = 300, Moneda = "1", Tipo = "M", Unidad = "Gl", Fecha = DateTime.Now },
+        new Concepto { Codigo = "T04", Descrip = "Tarea 4", Precio = 400, Tipo = "T", Unidad = "Gl", Fecha = DateTime.Now },
+        new Concepto { Codigo = "M04", Descrip = "Material 4", Precio = 400, Moneda = "2", Tipo = "M", Unidad = "Gl", Fecha = DateTime.Now },
+        new Concepto { Codigo = "M05", Descrip = "Mano de obra 1", Precio = 400, Moneda = "1", Tipo = "O", Unidad = "Gl", Fecha = DateTime.Now }
+    };
+
+            // Crear una lista de relaciones
+            var listaRelaciones = new List<Relacion>
+    {
+        new Relacion { Superior = null, Inferior = "R01", Cantidad = 1 },
+        new Relacion { Superior = "R01", Inferior = "T01", Cantidad = 1 },
+        new Relacion { Superior = "T01", Inferior = "M01", Cantidad = 10 },
+        new Relacion { Superior = "T01", Inferior = "M02", Cantidad = 10 },
+        new Relacion { Superior = "T01", Inferior = "M05", Cantidad = 10 },
+        new Relacion { Superior = "T01", Inferior = "Aux", Cantidad = 10 },
+        new Relacion { Superior = "Aux", Inferior = "M01", Cantidad = 10 },
+        new Relacion { Superior = "R01", Inferior = "T02", Cantidad = 1 },
+        new Relacion { Superior = "T02", Inferior = "M02", Cantidad = 10 },
+        new Relacion { Superior = "R01", Inferior = "T03", Cantidad = 1 },
+        new Relacion { Superior = "T03", Inferior = "M03", Cantidad = 10 },
+        new Relacion { Superior = "R01", Inferior = "T04", Cantidad = 1 }
+    };
+
+            // Generar el presupuesto con los conceptos y relaciones creados
+            Objeto.generaPresupuesto(null, listaConceptos, listaRelaciones);
+
+            // Asignar el árbol generado a la grilla
+            //this.grillaArbol.ItemsSource = Objeto.Arbol;
+            recalculo();
+        }
+
     }
 
     public class Cambios

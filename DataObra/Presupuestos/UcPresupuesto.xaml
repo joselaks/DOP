@@ -328,6 +328,12 @@
                     Height="30"
                     Margin="5,0,0,0"
                     KeyDown="descripcion_KeyDown" />
+                <syncfusion:ButtonAdv
+                    x:Name="ejemplo"
+                    Margin="3"
+                    Click="ejemplo_Click"
+                    Content="H"
+                    SizeMode="Small" />
 
             </StackPanel>
             <syncfusion:SfTreeGrid
