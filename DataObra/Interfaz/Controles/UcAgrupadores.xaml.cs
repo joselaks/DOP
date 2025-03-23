@@ -63,6 +63,8 @@ namespace DataObra.Interfaz.Controles
             {
                 var AgrupadoresUsuario = await DatosWeb.ObtenerAgrupadoresPorCuentaIDAsync(App.IdCuenta);
 
+                App.ListaAgrupadores = AgrupadoresUsuario.Agrupadores;
+
                 foreach (var item in AgrupadoresUsuario.Agrupadores)
                 {
                     item.Tipo = tiposAgrupadores.GetValueOrDefault(item.TipoID, "Otros");

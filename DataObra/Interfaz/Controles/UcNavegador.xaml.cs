@@ -13,6 +13,7 @@ namespace DataObra.Interfaz.Controles
     public partial class UcNavegador : UserControl
     {
         string Rol;
+        List<Documento> ListaDocumentos;
 
         public UcNavegador(string rol)
         {
@@ -24,9 +25,18 @@ namespace DataObra.Interfaz.Controles
 
         private async void CargarGrilla()
         {
+            ListaDocumentos = new List<Documento>();
+
             var (success, message, documentos) = await DatosWeb.ObtenerDocumentosPorCuentaIDAsync(App.IdCuenta);
             // Lo que se obtiene es una lista de DocumentoDTO. Habria que convertirlos en Documentos.
 
+            foreach (var item in documentos)
+            {
+                Documento doc = new Documento();
+                doc = Biblioteca.ConvierteDoc.Convertir(item);
+
+                ListaDocumentos.Add(doc);
+            }
 
             this.GrillaDocumentos.ItemsSource = documentos;
         }
@@ -215,7 +225,6 @@ namespace DataObra.Interfaz.Controles
 
         }
 
-
         private async void NuevoDoc_Click(object sender, RoutedEventArgs e)
         {
             if (GrillaDocumentos.SelectedItem is DocumentoDTO sele)
@@ -255,8 +264,6 @@ namespace DataObra.Interfaz.Controles
                 MessageBox.Show("Por favor, seleccione un documento para editar.");
             }
         }
-
-     
     }
 }
 

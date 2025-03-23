@@ -6,6 +6,7 @@ using System.Windows.Input;
 using DataObra.Datos;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
+using Biblioteca.DTO;
 using System.Windows.Controls;
 
 namespace DataObra
@@ -15,14 +16,12 @@ namespace DataObra
         public IServiceProvider ServiceProvider { get; private set; }
         public HttpClient HttpClient { get; private set; }
         public static string BaseUrl { get; private set; }
-
         public static int IdUsuario { get; set; }
-
         public static int IdCuenta { get; set; }
 
         public static RoutedCommand OpenConectoresCommand = new RoutedCommand();
 
-        public static List<Agrupadores.Agrupador>? ListaAgrupadores;
+        public static List<AgrupadorDTO>? ListaAgrupadores;
 
         // Propiedad estática para almacenar el estado de la conexión
         public static bool IsConnectionSuccessful { get; private set; }

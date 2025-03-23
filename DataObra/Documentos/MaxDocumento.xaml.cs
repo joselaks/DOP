@@ -34,7 +34,7 @@ namespace DataObra.Documentos
         public MaxDocumento(Biblioteca.Documento pDoc) 
         {
             InitializeComponent();
-            // Resolver el objeto activo compatible con otras funcoines y con los metodos del servidor
+            // Resolver el objeto activo compatible con otras funciones y con los metodos del servidor
             // oActivo = pDoc;
             // si es presupuesto
             

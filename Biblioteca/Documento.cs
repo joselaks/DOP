@@ -1,4 +1,4 @@
-﻿using Bibioteca.Clases;
+﻿using Biblioteca.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,27 +12,38 @@ namespace Biblioteca
         public int? ID { get; set; }
         public short CuentaID { get; set; }
         public byte TipoID { get; set; }
+        public string? Tipo { get; set; }
         public int UsuarioID { get; set; }
+        public string? Usuario { get; set; }
         public DateTime CreadoFecha { get; set; }
         public int EditadoID { get; set; }
+        public string? Editado { get; set; }
         public DateTime EditadoFecha { get; set; }
         public int RevisadoID { get; set; }
+        public string? Revisado { get; set; }
         public DateTime RevisadoFecha { get; set; }
         public int? AdminID { get; set; }
+        public string? Admin { get; set; }
         public int? ObraID { get; set; }
+        public string? Obra { get; set; }
         public int? PresupuestoID { get; set; }
+        public string? Presupuesto { get; set; }
         public int? RubroID { get; set; }
+        public string? Rubro { get; set; }
         public int? EntidadID { get; set; }
+        public string? Entidad { get; set; }
+        public string? EntidadTipo { get; set; }
         public int? DepositoID { get; set; }
+        public string? Deposito { get; set; }
         public string Descrip { get; set; }
-        public string Concepto1 { get; set; }
+        public string? Concepto1 { get; set; }
         public DateTime Fecha1 { get; set; }
         public DateTime? Fecha2 { get; set; }
         public DateTime? Fecha3 { get; set; }
         public int Numero1 { get; set; }
         public int Numero2 { get; set; }
         public int Numero3 { get; set; }
-        public string Notas { get; set; }
+        public string? Notas { get; set; }
         public bool Active { get; set; }
         public decimal Pesos { get; set; }
         public decimal Dolares { get; set; }
@@ -171,8 +182,8 @@ namespace Biblioteca
         public int? PagoID { get; set; }
         public DateTime Fecha { get; set; }
         public int? Comprobante { get; set; }
-        public string Descrip { get; set; }
-        public string Notas { get; set; }
+        public string? Descrip { get; set; }
+        public string? Notas { get; set; }
         public bool Previsto { get; set; }
         public decimal SumaPesos { get; set; }
         public decimal RestaPesos { get; set; }
@@ -180,6 +191,7 @@ namespace Biblioteca
         public int? MovimientoID { get; set; }
         public char Accion { get; set; }
     }
+      
 }
 
 
