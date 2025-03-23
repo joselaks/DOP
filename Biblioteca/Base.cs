@@ -22,12 +22,20 @@ namespace Bibioteca.Clases
             set { descrip = value; }
         }
 
-        private decimal precio;
-        public decimal Precio
+        private decimal precio1;
+        public decimal Precio1
         {
-            get { return precio; }
-            set { precio = value; }
+            get { return precio1; }
+            set { precio1 = value; }
         }
+
+        private decimal precio2;
+        public decimal Precio2
+        {
+            get { return precio2; }
+            set { precio2 = value; }
+        }
+        
 
         private string moneda;
         public string Moneda

@@ -154,12 +154,12 @@ namespace Bibioteca.Clases
                     vLinea[4] = vLinea[4].Replace(".", ",");
                     try
                     {
-                        registro.Precio = Convert.ToDecimal(vLinea[4]);
+                        registro.Precio1 = Convert.ToDecimal(vLinea[4]);
 
                     }
                     catch (Exception)
                     {
-                        registro.Precio = 0;
+                        registro.Precio1 = 0;
                     }
                     listaConceptos.Add(registro);
                 }

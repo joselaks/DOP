@@ -226,12 +226,12 @@ namespace DataObra.Presupuestos
 
             Objeto.sinCero();
 
-            totMateriales.Value = Objeto.Arbol.Sum(i => i.Materiales);
-            totMDO.Value = Objeto.Arbol.Sum(i => i.ManodeObra);
-            totEquipos.Value = Objeto.Arbol.Sum(i => i.Equipos);
-            totSubcontratos.Value = Objeto.Arbol.Sum(i => i.Subcontratos);
-            totOtros.Value = Objeto.Arbol.Sum(i => i.Otros);
-            totGeneral.Value = Objeto.Arbol.Sum(i => i.Importe);
+            totMateriales1.Value = Objeto.Arbol.Sum(i => i.Materiales1);
+            totMDO1.Value = Objeto.Arbol.Sum(i => i.ManodeObra1);
+            totEquipos1.Value = Objeto.Arbol.Sum(i => i.Equipos1);
+            totSubcontratos1.Value = Objeto.Arbol.Sum(i => i.Subcontratos1);
+            totOtros1.Value = Objeto.Arbol.Sum(i => i.Otros1);
+            totGeneral1.Value = Objeto.Arbol.Sum(i => i.Importe1);
             //Totales grillas
             //listaInsumos.grillaInsumos.CalculateAggregates();
             //this.GrillaArbol.CalculateAggregates();
@@ -560,7 +560,7 @@ namespace DataObra.Presupuestos
         private void grillaDetalle_CurrentCellEndEdit(object sender, CurrentCellEndEditEventArgs e)
         {
             var editado = grillaDetalle.GetNodeAtRowIndex(e.RowColumnIndex.RowIndex).Item as Insumo;
-            Objeto.cambioDesdeInsumo(Objeto.Arbol, editado.ID, editado.PU);
+            Objeto.cambioDesdeInsumo(Objeto.Arbol, editado.ID, editado.PU1, editado.PU2);
             recalculo();
         }
 
@@ -757,17 +757,17 @@ namespace DataObra.Presupuestos
             // Crear una lista de conceptos
             var listaConceptos = new List<Concepto>
     {
-        new Concepto { Codigo = "R01", Descrip = "Rubro 1", Precio = 100, Tipo = "R", Unidad = "Gl", Fecha = DateTime.Now },
-        new Concepto { Codigo = "T01", Descrip = "Tarea 1", Precio = 100, Tipo = "T", Unidad = "Gl", Fecha = DateTime.Now },
-        new Concepto { Codigo = "M01", Descrip = "Material 1", Precio = 100, Moneda = "1", Tipo = "M", Unidad = "Gl", Fecha = DateTime.Now },
-        new Concepto { Codigo = "Aux", Descrip = "Auxiliar", Precio = 100, Tipo = "A", Unidad = "Gl", Fecha = DateTime.Now },
-        new Concepto { Codigo = "T02", Descrip = "Tarea 2", Precio = 200,  Tipo = "T", Unidad = "Gl", Fecha = DateTime.Now },
-        new Concepto { Codigo = "M02", Descrip = "Material 2", Precio = 200, Moneda = "2", Tipo = "M", Unidad = "Gl", Fecha = DateTime.Now },
-        new Concepto { Codigo = "T03", Descrip = "Tarea 3", Precio = 300, Tipo = "T", Unidad = "Gl", Fecha = DateTime.Now },
-        new Concepto { Codigo = "M03", Descrip = "Material 3", Precio = 300, Moneda = "1", Tipo = "M", Unidad = "Gl", Fecha = DateTime.Now },
-        new Concepto { Codigo = "T04", Descrip = "Tarea 4", Precio = 400, Tipo = "T", Unidad = "Gl", Fecha = DateTime.Now },
-        new Concepto { Codigo = "M04", Descrip = "Material 4", Precio = 400, Moneda = "2", Tipo = "M", Unidad = "Gl", Fecha = DateTime.Now },
-        new Concepto { Codigo = "M05", Descrip = "Mano de obra 1", Precio = 400, Moneda = "1", Tipo = "O", Unidad = "Gl", Fecha = DateTime.Now }
+        new Concepto { Codigo = "R01", Descrip = "Rubro 1", Precio1 = 100, Tipo = "R", Unidad = "Gl", Fecha = DateTime.Now },
+        new Concepto { Codigo = "T01", Descrip = "Tarea 1", Precio1 = 100, Tipo = "T", Unidad = "Gl", Fecha = DateTime.Now },
+        new Concepto { Codigo = "M01", Descrip = "Material 1", Precio1 = 100, Moneda = "1", Tipo = "M", Unidad = "Gl", Fecha = DateTime.Now },
+        new Concepto { Codigo = "Aux", Descrip = "Auxiliar", Precio1 = 100, Tipo = "A", Unidad = "Gl", Fecha = DateTime.Now },
+        new Concepto { Codigo = "T02", Descrip = "Tarea 2", Precio1 = 200,  Tipo = "T", Unidad = "Gl", Fecha = DateTime.Now },
+        new Concepto { Codigo = "M02", Descrip = "Material 2", Precio1 = 200, Precio2 = 0, Tipo = "M", Unidad = "Gl", Fecha = DateTime.Now },
+        new Concepto { Codigo = "T03", Descrip = "Tarea 3", Precio1 = 300, Tipo = "T", Unidad = "Gl", Fecha = DateTime.Now },
+        new Concepto { Codigo = "M03", Descrip = "Material 3", Precio1 = 0, Precio2 = 300, Tipo = "M", Unidad = "Gl", Fecha = DateTime.Now },
+        new Concepto { Codigo = "T04", Descrip = "Tarea 4", Precio1 = 400, Tipo = "T", Unidad = "Gl", Fecha = DateTime.Now },
+        new Concepto { Codigo = "M04", Descrip = "Material 4", Precio1 = 400, Precio2 = 0, Tipo = "M", Unidad = "Gl", Fecha = DateTime.Now },
+        new Concepto { Codigo = "M05", Descrip = "Mano de obra 1", Precio1 = 0, Precio2 = 400, Tipo = "O", Unidad = "Gl", Fecha = DateTime.Now }
     };
 
             // Crear una lista de relaciones

@@ -81,33 +81,64 @@ namespace Bibioteca.Clases
         }
 
 
-        decimal pu { get; set; }
-        public decimal PU
+        decimal pu1 { get; set; }
+        public decimal PU1
         {
             get
             {
-                return pu;
+                return pu1;
             }
             set
             {
-                pu = value;
-                OnPropertyChanged("PU");
+                pu1 = value;
+                OnPropertyChanged("PU1");
+            }
+        }
+        
+
+        decimal pu2 { get; set; }
+        public decimal PU2
+        {
+            get
+            {
+                return pu2;
+            }
+            set
+            {
+                pu2 = value;
+                OnPropertyChanged("PU2");
+            }
+        }
+        
+
+        decimal importe1;
+        public decimal Importe1
+        {
+            get
+            {
+                return importe1;
+            }
+            set
+            {
+                importe1 = value;
+                OnPropertyChanged("Importe1");
             }
         }
 
-        decimal importe;
-        public decimal Importe
+        decimal importe2;
+        public decimal Importe2
         {
             get
             {
-                return importe;
+                return importe2;
             }
             set
             {
-                importe = value;
-                OnPropertyChanged("Importe");
+                importe2 = value;
+                OnPropertyChanged("Importe2");
             }
         }
+
 
     }
 }

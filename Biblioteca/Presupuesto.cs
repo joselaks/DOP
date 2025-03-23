@@ -256,7 +256,8 @@ namespace Bibioteca.Clases
                     Nodo newItem = new Nodo();
                     newItem.ID = concepto.Codigo;
                     newItem.Descripcion = concepto.Descrip;
-                    newItem.PU = concepto.Precio;
+                    newItem.PU1 = concepto.Precio1;
+                    newItem.PU2 = concepto.Precio2;
                     newItem.Cantidad = item.Cantidad;
                     newItem.Sup = false;
                     newItem.Unidad = concepto.Unidad;
@@ -304,7 +305,8 @@ namespace Bibioteca.Clases
                 {
                     item.Descripcion = editado.Descripcion;
                     item.Unidad = editado.Unidad;
-                    item.PU = editado.PU;
+                    item.PU1 = editado.PU1;
+                    item.PU2 = editado.PU2;
                     item.Tipo = editado.Tipo;
                 }
                 if (item.HasItems)
@@ -351,17 +353,18 @@ namespace Bibioteca.Clases
             return respuesta;
         }
 
-        public void cambioDesdeInsumo(IEnumerable<Nodo> items, string id, decimal nuevoPU)
+        public void cambioDesdeInsumo(IEnumerable<Nodo> items, string id, decimal nuevoPU1, decimal nuevoPU2)
         {
             foreach (var item in items)
             {
                 if (item.ID == id)
                 {
-                    item.PU = nuevoPU;
+                    item.PU1 = nuevoPU1;
+                    item.PU2 = nuevoPU2;
                 }
                 if (item.HasItems)
                 {
-                    cambioDesdeInsumo(item.Inferiores, id, nuevoPU);
+                    cambioDesdeInsumo(item.Inferiores, id, nuevoPU1, nuevoPU2);
                 }
             }
         }
@@ -388,13 +391,15 @@ namespace Bibioteca.Clases
             {
                 if (tipo == "todo")
                 {
-                    item.PU = item.PU * coef;
+                    item.PU1 = item.PU1 * coef;
+                    item.PU2 = item.PU2 * coef;
                 }
                 else
                 {
                     if (item.Tipo == tipo)
                     {
-                        item.PU = item.PU * coef;
+                        item.PU1 = item.PU1 * coef;
+                        item.PU2 = item.PU2 * coef;
                     }
 
                 }
@@ -420,9 +425,11 @@ namespace Bibioteca.Clases
                     foreach (var item in Insumos)
                     {
                         item.Cantidad = 0;
-                        item.PU = 0;
+                        item.PU1 = 0;
+                        item.PU2 = 0;
                         item.Unidad = null;
-                        item.Importe = 0;
+                        item.Importe1 = 0;
+                        item.Importe2 = 0;
                     }
                 }
                 ordenint = 1;
@@ -448,19 +455,35 @@ namespace Bibioteca.Clases
 
                     item.Factor = FactorSup;
 
-                    item.PU = (from c in item.Inferiores
-                               select c.Importe).Sum();
+                    item.PU1 = (from c in item.Inferiores
+                               select c.Importe1).Sum();
 
-                    item.Materiales = (from c in item.Inferiores
-                                       select c.Materiales).Sum() * item.Cantidad;
-                    item.ManodeObra = (from c in item.Inferiores
-                                       select c.ManodeObra).Sum() * item.Cantidad;
-                    item.Equipos = (from c in item.Inferiores
-                                    select c.Equipos).Sum() * item.Cantidad;
-                    item.Subcontratos = (from c in item.Inferiores
-                                         select c.Subcontratos).Sum() * item.Cantidad;
-                    item.Otros = (from c in item.Inferiores
-                                  select c.Otros).Sum() * item.Cantidad;
+                    item.Materiales1 = (from c in item.Inferiores
+                                       select c.Materiales1).Sum() * item.Cantidad;
+                    item.ManodeObra1 = (from c in item.Inferiores
+                                       select c.ManodeObra1).Sum() * item.Cantidad;
+                    item.Equipos1 = (from c in item.Inferiores
+                                    select c.Equipos1).Sum() * item.Cantidad;
+                    item.Subcontratos1 = (from c in item.Inferiores
+                                         select c.Subcontratos1).Sum() * item.Cantidad;
+                    item.Otros1 = (from c in item.Inferiores
+                                  select c.Otros1).Sum() * item.Cantidad;
+
+
+
+                    item.PU2 = (from c in item.Inferiores
+                                select c.Importe2).Sum();
+
+                    item.Materiales2 = (from c in item.Inferiores
+                                        select c.Materiales2).Sum() * item.Cantidad;
+                    item.ManodeObra2 = (from c in item.Inferiores
+                                        select c.ManodeObra2).Sum() * item.Cantidad;
+                    item.Equipos2 = (from c in item.Inferiores
+                                     select c.Equipos2).Sum() * item.Cantidad;
+                    item.Subcontratos2 = (from c in item.Inferiores
+                                          select c.Subcontratos2).Sum() * item.Cantidad;
+                    item.Otros2 = (from c in item.Inferiores
+                                   select c.Otros2).Sum() * item.Cantidad;
 
                     #endregion
                 }
@@ -471,42 +494,66 @@ namespace Bibioteca.Clases
                     switch (item.Tipo)
                     {
                         case "M":
-                            item.Materiales = item.Cantidad * item.PU;
-                            item.ManodeObra = 0;
-                            item.Equipos = 0;
-                            item.Subcontratos = 0;
-                            item.Otros = 0;
+                            item.Materiales1 = item.Cantidad * item.PU1;
+                            item.ManodeObra1 = 0;
+                            item.Equipos1 = 0;
+                            item.Subcontratos1 = 0;
+                            item.Otros1 = 0;
+                            item.Materiales2 = item.Cantidad * item.PU2;
+                            item.ManodeObra2 = 0;
+                            item.Equipos2 = 0;
+                            item.Subcontratos2 = 0;
+                            item.Otros2 = 0;
                             break;
                         case "D":
-                            item.ManodeObra = item.Cantidad * item.PU;
-                            item.Materiales = 0;
-                            item.Equipos = 0;
-                            item.Subcontratos = 0;
-                            item.Otros = 0;
-
+                            item.ManodeObra1 = item.Cantidad * item.PU1;
+                            item.Materiales1 = 0;
+                            item.Equipos1 = 0;
+                            item.Subcontratos1 = 0;
+                            item.Otros1 = 0;
+                            item.ManodeObra2 = item.Cantidad * item.PU2;
+                            item.Materiales2 = 0;
+                            item.Equipos2 = 0;
+                            item.Subcontratos2 = 0;
+                            item.Otros2 = 0;
                             break;
                         case "E":
-                            item.Equipos = item.Cantidad * item.PU;
-                            item.ManodeObra = 0;
-                            item.Materiales = 0;
-                            item.Subcontratos = 0;
-                            item.Otros = 0;
+                            item.Equipos1 = item.Cantidad * item.PU1;
+                            item.ManodeObra1 = 0;
+                            item.Materiales1 = 0;
+                            item.Subcontratos1 = 0;
+                            item.Otros1 = 0;
+                            item.Equipos2 = item.Cantidad * item.PU2;
+                            item.ManodeObra2 = 0;
+                            item.Materiales2 = 0;
+                            item.Subcontratos2 = 0;
+                            item.Otros2 = 0;
 
                             break;
                         case "S":
-                            item.Subcontratos = item.Cantidad * item.PU;
-                            item.Materiales = 0;
-                            item.ManodeObra = 0;
-                            item.Equipos = 0;
-                            item.Otros = 0;
+                            item.Subcontratos1 = item.Cantidad * item.PU1;
+                            item.Materiales1 = 0;
+                            item.ManodeObra1 = 0;
+                            item.Equipos1 = 0;
+                            item.Otros1 = 0;
+                            item.Subcontratos2 = item.Cantidad * item.PU2;
+                            item.Materiales2 = 0;
+                            item.ManodeObra2 = 0;
+                            item.Equipos2 = 0;
+                            item.Otros2 = 0;
 
                             break;
                         case "O":
-                            item.Otros = item.Cantidad * item.PU;
-                            item.ManodeObra = 0;
-                            item.Equipos = 0;
-                            item.Subcontratos = 0;
-                            item.Equipos = 0;
+                            item.Otros1 = item.Cantidad * item.PU1;
+                            item.ManodeObra1 = 0;
+                            item.Equipos1 = 0;
+                            item.Subcontratos1 = 0;
+                            item.Equipos1 = 0;
+                            item.Otros2 = item.Cantidad * item.PU2;
+                            item.ManodeObra2 = 0;
+                            item.Equipos2 = 0;
+                            item.Subcontratos2 = 0;
+                            item.Equipos2 = 0;
 
                             break;
                         default:
@@ -523,8 +570,10 @@ namespace Bibioteca.Clases
                         registro.Descripcion = item.Descripcion;
                         registro.Cantidad = item.Cantidad * FactorSup;
                         registro.Unidad = item.Unidad;
-                        registro.PU = item.PU;
-                        registro.Importe = registro.Cantidad * registro.PU;
+                        registro.PU1 = item.PU1;
+                        registro.PU2 = item.PU2;
+                        registro.Importe1 = registro.Cantidad * registro.PU1;
+                        registro.Importe2 = registro.Cantidad * registro.PU2;
                         registro.Tipo = item.Tipo;
                         Insumos.Add(registro);
                     }
@@ -532,14 +581,17 @@ namespace Bibioteca.Clases
                     {
                         sele.Descripcion = item.Descripcion;
                         sele.Unidad = item.Unidad;
-                        sele.PU = item.PU;
+                        sele.PU1 = item.PU1;
+                        sele.PU2 = item.PU2;
                         sele.Cantidad = sele.Cantidad + (item.Cantidad * FactorSup);
                         sele.Tipo = item.Tipo;
-                        sele.Importe = sele.PU * sele.Cantidad;
+                        sele.Importe1 = sele.PU1 * sele.Cantidad;
+                        sele.Importe2 = sele.PU2 * sele.Cantidad;
                     }
                 }
 
-                item.Importe = item.Cantidad * item.PU;
+                item.Importe1 = item.Cantidad * item.PU1;
+                item.Importe2 = item.Cantidad * item.PU2;
                 item.Factor = FactorSup;
             }
         }
@@ -741,7 +793,8 @@ namespace Bibioteca.Clases
                     registroC.Codigo = item.ID;
                     registroC.Descrip = item.Descripcion;
                     registroC.Tipo = item.Tipo;
-                    registroC.Precio = item.PU;
+                    registroC.Precio1 = item.PU1;
+                    registroC.Precio2 = item.PU2;
                     registroC.Unidad = item.Unidad;
                     listaConceptosGrabar.Add(registroC);
                 }
@@ -777,11 +830,13 @@ namespace Bibioteca.Clases
             Insumo existe = this.Insumos.FirstOrDefault(a => a.ID == origen.ID);
             if (existe != null)
             {
-                respuesta.PU = existe.PU;
+                respuesta.PU1 = existe.PU1;
+                respuesta.PU2 = existe.PU2;
             }
             else
             {
-                respuesta.PU = origen.PU;
+                respuesta.PU1 = origen.PU1;
+                respuesta.PU2 = origen.PU2;
             }
             respuesta.Tipo = origen.Tipo;
             respuesta.Inferiores = GetClonesInferiores(origen);
@@ -813,11 +868,14 @@ namespace Bibioteca.Clases
                     Insumo existe = this.Insumos.FirstOrDefault(a => a.ID == item.ID);
                     if (existe != null)
                     {
-                        respuesta.PU = existe.PU;
+                        respuesta.PU1 = existe.PU1;
+                        respuesta.PU2 = existe.PU2;
                     }
                     else
                     {
-                        respuesta.PU = item.PU;
+
+                        respuesta.PU1 = item.PU1;
+                        respuesta.PU2 = item.PU2;
                     }
                     respuesta.Tipo = item.Tipo;
                     respuesta.Inferiores = GetClonesInferiores(item);

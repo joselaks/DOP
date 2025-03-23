@@ -127,7 +127,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="auto" />
-            <ColumnDefinition x:Name="panelBuscador" Width="300" />
+            <ColumnDefinition x:Name="panelBuscador" Width="50" />
         </Grid.ColumnDefinitions>
         <Grid Grid.Row="0" Grid.Column="0">
             <Grid.RowDefinitions>
@@ -397,7 +397,7 @@
                         <syncfusion:TreeGridNumericColumn
                             Width="80"
                             CellStyle="{StaticResource CantidadCellStyle}"
-                            MappingName="PU"
+                            MappingName="PU1"
                             NumberDecimalDigits="2"
                             NumberDecimalSeparator=","
                             NumberGroupSeparator="."
@@ -406,16 +406,33 @@
                         <syncfusion:TreeGridNumericColumn
                             Width="80"
                             CellStyle="{StaticResource CantidadCellStyle}"
+                            MappingName="PU2"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3" />
+
+                        <!--<syncfusion:TreeGridNumericColumn
+                            Width="80"
+                            CellStyle="{StaticResource CantidadCellStyle}"
                             MappingName="Factor"
                             NumberDecimalDigits="2"
                             NumberDecimalSeparator=","
                             NumberGroupSeparator="."
-                            NumberGroupSizes="3" />
+                            NumberGroupSizes="3" />-->
 
                         <syncfusion:TreeGridNumericColumn
                             Width="120"
                             CellStyle="{StaticResource TipoCellStyle}"
-                            MappingName="Importe"
+                            MappingName="Importe1"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3" />
+                        <syncfusion:TreeGridNumericColumn
+                            Width="120"
+                            CellStyle="{StaticResource TipoCellStyle}"
+                            MappingName="Importe2"
                             NumberDecimalDigits="2"
                             NumberDecimalSeparator=","
                             NumberGroupSeparator="."
@@ -425,7 +442,7 @@
                             Width="120"
                             CellStyle="{StaticResource TipoCellStyle}"
                             IsHidden="True"
-                            MappingName="Materiales"
+                            MappingName="Materiales1"
                             NumberDecimalDigits="2"
                             NumberDecimalSeparator=","
                             NumberGroupSeparator="."
@@ -435,7 +452,7 @@
                             Width="120"
                             CellStyle="{StaticResource TipoCellStyle}"
                             IsHidden="True"
-                            MappingName="ManodeObra"
+                            MappingName="ManodeObra1"
                             NumberDecimalDigits="2"
                             NumberDecimalSeparator=","
                             NumberGroupSeparator="."
@@ -445,7 +462,7 @@
                             Width="120"
                             CellStyle="{StaticResource TipoCellStyle}"
                             IsHidden="True"
-                            MappingName="Equipos"
+                            MappingName="Equipos1"
                             NumberDecimalDigits="2"
                             NumberDecimalSeparator=","
                             NumberGroupSeparator="."
@@ -455,7 +472,7 @@
                             Width="120"
                             CellStyle="{StaticResource TipoCellStyle}"
                             IsHidden="True"
-                            MappingName="Subcontratos"
+                            MappingName="Subcontratos1"
                             NumberDecimalDigits="2"
                             NumberDecimalSeparator=","
                             NumberGroupSeparator="."
@@ -465,7 +482,7 @@
                             Width="120"
                             CellStyle="{StaticResource TipoCellStyle}"
                             IsHidden="True"
-                            MappingName="Otros"
+                            MappingName="Otros1"
                             NumberDecimalDigits="2"
                             NumberDecimalSeparator=","
                             NumberGroupSeparator="."
@@ -488,7 +505,7 @@
                         Content="Materiales"
                         FontWeight="DemiBold" />
                     <syncfusion:CurrencyTextBox
-                        x:Name="totMateriales"
+                        x:Name="totMateriales1"
                         Width="100"
                         Height="24"
                         Margin="2"
@@ -507,7 +524,7 @@
                         Content="Mano de &gt;Obra"
                         FontWeight="DemiBold" />
                     <syncfusion:CurrencyTextBox
-                        x:Name="totMDO"
+                        x:Name="totMDO1"
                         Width="100"
                         Height="24"
                         Margin="2"
@@ -526,7 +543,7 @@
                         Content="Equipos"
                         FontWeight="DemiBold" />
                     <syncfusion:CurrencyTextBox
-                        x:Name="totEquipos"
+                        x:Name="totEquipos1"
                         Width="100"
                         Height="24"
                         Margin="2"
@@ -545,7 +562,7 @@
                         Content="Subcontratos"
                         FontWeight="DemiBold" />
                     <syncfusion:CurrencyTextBox
-                        x:Name="totSubcontratos"
+                        x:Name="totSubcontratos1"
                         Width="100"
                         Height="24"
                         Margin="2"
@@ -564,7 +581,7 @@
                         Content="Otros"
                         FontWeight="DemiBold" />
                     <syncfusion:CurrencyTextBox
-                        x:Name="totOtros"
+                        x:Name="totOtros1"
                         Width="100"
                         Height="24"
                         Margin="2"
@@ -583,7 +600,7 @@
                         Content="Total"
                         FontWeight="DemiBold" />
                     <syncfusion:CurrencyTextBox
-                        x:Name="totGeneral"
+                        x:Name="totGeneral1"
                         Width="100"
                         Height="24"
                         Margin="2"
@@ -708,7 +725,7 @@
                     <syncfusion:TreeGridNumericColumn
                         Width="80"
                         HeaderText="P.U"
-                        MappingName="PU"
+                        MappingName="PU1"
                         NumberDecimalDigits="2"
                         NumberDecimalSeparator=","
                         NumberGroupSeparator="."
@@ -717,7 +734,24 @@
                         Width="150"
                         HeaderText="Importe"
                         IsReadOnly="True"
-                        MappingName="Importe"
+                        MappingName="Importe1"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3" />
+                    <syncfusion:TreeGridNumericColumn
+                        Width="80"
+                        HeaderText="P.U 2"
+                        MappingName="PU2"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3" />
+                    <syncfusion:TreeGridNumericColumn
+                        Width="150"
+                        HeaderText="Importe2"
+                        IsReadOnly="True"
+                        MappingName="Importe2"
                         NumberDecimalDigits="2"
                         NumberDecimalSeparator=","
                         NumberGroupSeparator="."
