@@ -205,6 +205,22 @@ namespace DataObra.Datos
             return (result.Success, result.Message);
         }
 
+        public static async Task<(bool Success, string Message, (List<ConceptoDTO> Conceptos, List<RelacionDTO> Relaciones))> ObtenerRegistrosPorPresupuestoIDAsync(int presupuestoID)
+        {
+            string url = $"{App.BaseUrl}presupuestos/{presupuestoID}";
+            var result = await ExecuteRequestAsync<(List<ConceptoDTO> Conceptos, List<RelacionDTO> Relaciones)>(() => httpClient.GetAsync(url), "Obtener Registros por PresupuestoID");
+
+            return (result.Success, result.Message, result.Data);
+        }
+
+        public static async Task<(bool Success, string Message)> ProcesarArbolPresupuestoAsync(int presupuestoID, List<ConceptoDTO> listaConceptos, List<RelacionDTO> listaRelaciones)
+        {
+            string url = $"{App.BaseUrl}presupuestos/procesar";
+            var content = new StringContent(JsonSerializer.Serialize(new { presupuestoID, listaConceptos, listaRelaciones }), Encoding.UTF8, "application/json");
+            var result = await ExecuteRequestAsync<ResultadoOperacion>(() => httpClient.PostAsync(url, content), "Procesar Árbol de Presupuesto");
+
+            return (result.Success, result.Message);
+        }
 
         public class ResultadoOperacion
         {

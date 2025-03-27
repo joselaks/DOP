@@ -415,13 +415,26 @@ agr.MapDelete("/{id:int}", async (rDocumentos repositorio, int id) =>
 
 #region Grupo de rutas: /pre
 
-var pre = app.MapGroup("/pre");
+var pre = app.MapGroup("/presupuestos");
 
-pre.MapPost("/procesar", async (rPresupuestos repositorio, ProcesarArbolPresupuestoRequest request) =>
+pre.MapGet("/{presupuestoID:int}", async (int presupuestoID, rPresupuestos repo) =>
 {
     try
     {
-        await repositorio.ProcesarArbolPresupuestoAsync(request.PresupuestoID, request.ListaConceptos, request.ListaRelaciones);
+        var (conceptos, relaciones) = await repo.ObtenerRegistrosPorPresupuestoIDAsync(presupuestoID);
+        return Results.Ok(new { Conceptos = conceptos, Relaciones = relaciones });
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(new { Message = ex.Message });
+    }
+}).RequireAuthorization();
+
+pre.MapPost("/procesar", async (int presupuestoID, List<ConceptoDTO> listaConceptos, List<RelacionDTO> listaRelaciones, rPresupuestos repo) =>
+{
+    try
+    {
+        await repo.ProcesarArbolPresupuestoAsync(presupuestoID, listaConceptos, listaRelaciones);
         return Results.Ok(new { Success = true, Message = "Árbol de presupuesto procesado exitosamente." });
     }
     catch (Exception ex)
