@@ -15,10 +15,10 @@ namespace Bibioteca.Clases
         #region Estructura
 
         public DocumentoDTO encabezado;
-        public List<Concepto> listaConceptosLeer;
-        public List<Relacion> listaRelacionesLeer;
-        public List<Concepto> listaConceptosGrabar;
-        public List<Relacion> listaRelacionesGrabar;
+        public List<ConceptoDTO> listaConceptosLeer;
+        public List<RelacionDTO> listaRelacionesLeer;
+        public List<ConceptoDTO> listaConceptosGrabar;
+        public List<RelacionDTO> listaRelacionesGrabar;
 
 
         ObservableCollection<Nodo> arbol;
@@ -193,6 +193,20 @@ namespace Bibioteca.Clases
 
 
         #endregion
+
+        public Presupuesto(DocumentoDTO? _encabezado)
+        {
+            if (_encabezado == null)
+            {
+                encabezado = new DocumentoDTO();
+            }
+            else
+            {
+                encabezado = _encabezado;
+                //Tomar los datos del encabezado para los campos editables.
+                //Obtener el detalle del presupuesto.
+            }
+        }
 
         // Procedimiento que en base a una lista de conceptos y relaciones, genera un presupuesto arbol.
         public void generaPresupuesto(string origen, List<Clases.Concepto> listaConceptos, List<Clases.Relacion> listaRelaciones)
@@ -789,16 +803,16 @@ namespace Bibioteca.Clases
                 bool existe = listaConceptosGrabar.Any(a => a.Codigo == item.ID);
                 if (existe == false)
                 {
-                    Concepto registroC = new Concepto();
+                    ConceptoDTO registroC = new ConceptoDTO();
                     registroC.Codigo = item.ID;
                     registroC.Descrip = item.Descripcion;
-                    registroC.Tipo = item.Tipo;
+                    registroC.Tipo = item.Tipo[0];
                     registroC.Precio1 = item.PU1;
                     registroC.Precio2 = item.PU2;
                     registroC.Unidad = item.Unidad;
                     listaConceptosGrabar.Add(registroC);
                 }
-                Relacion registroR = new Relacion();
+                RelacionDTO registroR = new RelacionDTO();
                 if (parentItem != null)
                 {
                     registroR.Superior = parentItem.ID;

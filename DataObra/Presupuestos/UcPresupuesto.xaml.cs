@@ -1,4 +1,5 @@
 ﻿using Bibioteca.Clases;
+using Biblioteca.DTO;
 using DataObra.Controles;
 using DataObra.Datos;
 using Microsoft.Win32;
@@ -62,7 +63,7 @@ namespace DataObra.Presupuestos
                 this.descripcion.Text = Encabezado.Descrip;
 
             }
-            Objeto = new Presupuesto();
+            Objeto = new Presupuesto(null);
             this.grillaArbol.ItemsSource = Objeto.Arbol;
             this.grillaArbol.ChildPropertyName = "Inferiores";
             this.grillaDetalle.ItemsSource = Objeto.Insumos;
@@ -208,9 +209,9 @@ namespace DataObra.Presupuestos
                     string txtNombre = stream.Name;
                 }
                 Bibioteca.Clases.Fiebdc fie = new Bibioteca.Clases.Fiebdc(textoFie);
-                Bibioteca.Clases.Presupuesto pres = new Bibioteca.Clases.Presupuesto();
+                Bibioteca.Clases.Presupuesto pres = new Bibioteca.Clases.Presupuesto(null);
 
-                Bibioteca.Clases.Presupuesto objetofieb = new Bibioteca.Clases.Presupuesto();
+                Bibioteca.Clases.Presupuesto objetofieb = new Bibioteca.Clases.Presupuesto(null);
                 objetofieb.generaPresupuesto("fie", fie.listaConceptos, fie.listaRelaciones);
                 foreach (var item in objetofieb.Arbol)
                 {
@@ -582,9 +583,9 @@ namespace DataObra.Presupuestos
                     string txtNombre = stream.Name;
                 }
                 Bibioteca.Clases.Fiebdc fie = new Bibioteca.Clases.Fiebdc(textoFie);
-                Bibioteca.Clases.Presupuesto pres = new Bibioteca.Clases.Presupuesto();
+                Bibioteca.Clases.Presupuesto pres = new Bibioteca.Clases.Presupuesto(null);
 
-                Bibioteca.Clases.Presupuesto objetofieb = new Bibioteca.Clases.Presupuesto();
+                Bibioteca.Clases.Presupuesto objetofieb = new Bibioteca.Clases.Presupuesto(null);
                 objetofieb.generaPresupuesto("fie", fie.listaConceptos, fie.listaRelaciones);
                 foreach (var item in objetofieb.Arbol)
                 {
