@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DataObra.Sistema;
 using DataObra.Datos;
+using Biblioteca;
 
 namespace DataObra.Documentos
 {

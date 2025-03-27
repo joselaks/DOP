@@ -33,12 +33,12 @@ namespace DataObra.Interfaz.Controles
             foreach (var item in documentos)
             {
                 Documento doc = new Documento();
-                doc = Biblioteca.ConvierteDoc.Convertir(item);
+                doc = Documento.Convertir(item);
 
                 ListaDocumentos.Add(doc);
             }
 
-            this.GrillaDocumentos.ItemsSource = documentos;
+            this.GrillaDocumentos.ItemsSource = ListaDocumentos;
         }
 
         private void configuraRol(string rol)
@@ -151,7 +151,7 @@ namespace DataObra.Interfaz.Controles
             return new Documento
             {
                 ID = dto.ID,
-                CuentaID = dto.CuentaID ?? 0,  // Si es null, asigna 0
+                CuentaID = dto.CuentaID,  // Si es null, asigna 0
                 TipoID = dto.TipoID,
                 UsuarioID = dto.UsuarioID,
                 CreadoFecha = dto.CreadoFecha,

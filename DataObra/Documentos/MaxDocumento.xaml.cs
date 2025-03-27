@@ -63,7 +63,7 @@ namespace DataObra.Documentos
             {
                 #region EDITA
                 // Recibe el Documento a editar bajado del servidor y lo convierte
-                oActivo = Documento.Convertir(pDoc);
+                oActivo = pDoc;
 
                 this.ComboObras.SelectedItem = App.ListaAgrupadores.FirstOrDefault(a => a.ID == oActivo.ObraID);
                 this.ComboAdmin.SelectedItem = App.ListaAgrupadores.FirstOrDefault(a => a.ID == oActivo.AdminID);
