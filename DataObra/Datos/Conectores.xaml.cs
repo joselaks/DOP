@@ -814,45 +814,44 @@ namespace DataObra.Datos
 
 
         private async void ProcesaDetallePres_Click(object sender, RoutedEventArgs e)
-            {
+        {
             #region Datos para testeo
             int presupuestoID = 1; // ID del presupuesto a procesar
             var listaConceptos = new List<ConceptoDTO>
-                    {
-                        new ConceptoDTO { Codigo = "C01", Descrip = "Rubro 1", Precio1 = 100, Precio2 = 0, Tipo = 'A', Unidad = "Gl", FechaPrecio = DateTime.Now,  Accion = 'A' },
-                        new ConceptoDTO { Codigo = "C02", Descrip = "Tarea 2", Precio1 = 100, Precio2 = 0 , Tipo = 'A', Unidad = "Gl", FechaPrecio = DateTime.Now , Accion = 'A'},
-        
-        
-                    };
+    {
+        new ConceptoDTO { PresupuestoID = presupuestoID, Codigo = "C01", Descrip = "Rubro 1", Precio1 = 100, Precio2 = 0, Tipo = 'A', Unidad = "Gl", FechaPrecio = DateTime.Now, Accion = 'A' },
+        new ConceptoDTO { PresupuestoID = presupuestoID, Codigo = "C02", Descrip = "Tarea 2", Precio1 = 100, Precio2 = 0, Tipo = 'A', Unidad = "Gl", FechaPrecio = DateTime.Now, Accion = 'A' }
+    };
 
             var listaRelaciones = new List<RelacionDTO>
-                    {
-                        new RelacionDTO { PresupuestoID = presupuestoID, Superior = "C01", Inferior = "R03", Cantidad=200, OrdenInt=12, Accion = 'A' }
-                    };
+    {
+        new RelacionDTO { PresupuestoID = presupuestoID, Superior = "C01", Inferior = "R03", Cantidad = 200, OrdenInt = 12, Accion = 'A' }
+    };
             #endregion
 
             // Crear el objeto ProcesaPresupuestoDTO
             var request = new ProcesaPresupuestoDTO
-                {
+            {
                 PresupuestoID = presupuestoID,
                 ListaConceptos = listaConceptos,
                 ListaRelaciones = listaRelaciones
-                };
+            };
 
             // Llamar al método ProcesarArbolPresupuestoAsync
             var (success, message) = await DatosWeb.ProcesarArbolPresupuestoAsync(request);
 
             // Manejar la respuesta
             if (success)
-                {
+            {
                 MessageBox.Show("Árbol de presupuesto procesado exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-            else
-                {
-                MessageBox.Show($"Error al procesar el árbol de presupuesto: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
             }
-
+            else
+            {
+                MessageBox.Show($"Error al procesar el árbol de presupuesto: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
+
+
     }
+}
 
