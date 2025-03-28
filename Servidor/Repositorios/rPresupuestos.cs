@@ -41,17 +41,16 @@ namespace Servidor.Repositorios
 
 
         public async Task ProcesarArbolPresupuestoAsync(int presupuestoID, List<ConceptoDTO> listaConceptos, List<RelacionDTO> listaRelaciones)
-            {
+        {
             using (var db = new SqlConnection(_connectionString))
-                {
+            {
                 var tableConceptos = new DataTable();
-                tableConceptos.Columns.Add("PresupuestoID", typeof(int));
                 tableConceptos.Columns.Add("Codigo", typeof(string));
                 tableConceptos.Columns.Add("Descrip", typeof(string));
                 tableConceptos.Columns.Add("Tipo", typeof(char));
                 tableConceptos.Columns.Add("Precio1", typeof(decimal));
                 tableConceptos.Columns.Add("Precio2", typeof(decimal));
-                tableConceptos.Columns.Add("FechaPrecio", typeof(DateTime)); // Cambiar a FechaPrecio
+                tableConceptos.Columns.Add("FechaPrecio", typeof(DateTime));
                 tableConceptos.Columns.Add("Unidad", typeof(string));
                 tableConceptos.Columns.Add("CanPr", typeof(decimal));
                 tableConceptos.Columns.Add("CanPe", typeof(decimal));
@@ -67,26 +66,25 @@ namespace Servidor.Repositorios
                 tableConceptos.Columns.Add("Accion", typeof(char));
 
                 foreach (var item in listaConceptos)
-                    {
+                {
                     tableConceptos.Rows.Add(
-                        presupuestoID, item.Codigo, item.Descrip, item.Tipo, item.Precio1, item.Precio2, item.FechaPrecio, item.Unidad, item.CanPr, item.CanPe, item.CanCo, item.CanEn, item.CanFa, item.CanEj, item.UltimoPrecio1, item.UltimoPrecio2, item.FechaUltimoPrecio, item.DocumentoID, item.InsumoID, item.Accion
+                        item.Codigo, item.Descrip, item.Tipo, item.Precio1, item.Precio2, item.FechaPrecio, item.Unidad, item.CanPr, item.CanPe, item.CanCo, item.CanEn, item.CanFa, item.CanEj, item.UltimoPrecio1, item.UltimoPrecio2, item.FechaUltimoPrecio, item.DocumentoID, item.InsumoID, item.Accion
                     );
-                    }
+                }
 
                 var tableRelaciones = new DataTable();
-                tableRelaciones.Columns.Add("PresupuestoID", typeof(int));
-                tableRelaciones.Columns.Add("OrdenInt", typeof(int));
                 tableRelaciones.Columns.Add("Superior", typeof(string));
                 tableRelaciones.Columns.Add("Inferior", typeof(string));
                 tableRelaciones.Columns.Add("Cantidad", typeof(decimal));
+                tableRelaciones.Columns.Add("OrdenInt", typeof(int));
                 tableRelaciones.Columns.Add("Accion", typeof(char));
 
                 foreach (var item in listaRelaciones)
-                    {
+                {
                     tableRelaciones.Rows.Add(
-                        presupuestoID, item.OrdenInt, item.Superior, item.Inferior, item.Cantidad, item.Accion
+                        item.Superior, item.Inferior, item.Cantidad, item.OrdenInt, item.Accion
                     );
-                    }
+                }
 
                 var parameters = new DynamicParameters();
                 parameters.Add("@PresupuestoID", presupuestoID, DbType.Int32);
@@ -94,18 +92,18 @@ namespace Servidor.Repositorios
                 parameters.Add("@ListaRelaciones", tableRelaciones.AsTableValuedParameter("dbo.RelacionType"));
 
                 try
-                    {
+                {
                     await db.ExecuteAsync("ProcesaArbolPresupuesto", parameters, commandType: CommandType.StoredProcedure);
-                    }
+                }
                 catch (SqlException ex)
-                    {
+                {
                     throw new Exception($"Error al procesar el árbol de presupuesto: {ex.Message}", ex);
-                    }
                 }
             }
-
-
-
         }
+
     }
+}
+
+ 
 

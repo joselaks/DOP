@@ -819,15 +819,15 @@ namespace DataObra.Datos
             int presupuestoID = 1; // ID del presupuesto a procesar
             var listaConceptos = new List<ConceptoDTO>
                     {
-                        new ConceptoDTO { Codigo = "R01", Descrip = "Rubro 1", Precio1 = 100, Precio2 = 0, Tipo = 'A', Unidad = "Gl", FechaPrecio = DateTime.Now,  Accion = 'A' },
-                        new ConceptoDTO { Codigo = "T01", Descrip = "Tarea 1", Precio1 = 100, Precio2 = 0 , Tipo = 'A', Unidad = "Gl", FechaPrecio = DateTime.Now , Accion = 'A'},
+                        new ConceptoDTO { Codigo = "C01", Descrip = "Rubro 1", Precio1 = 100, Precio2 = 0, Tipo = 'A', Unidad = "Gl", FechaPrecio = DateTime.Now,  Accion = 'A' },
+                        new ConceptoDTO { Codigo = "C02", Descrip = "Tarea 2", Precio1 = 100, Precio2 = 0 , Tipo = 'A', Unidad = "Gl", FechaPrecio = DateTime.Now , Accion = 'A'},
         
         
                     };
 
             var listaRelaciones = new List<RelacionDTO>
                     {
-                        new RelacionDTO { PresupuestoID = presupuestoID, Superior = "C01", Inferior = "C02", Cantidad=1, OrdenInt=1, Accion = 'A' }
+                        new RelacionDTO { PresupuestoID = presupuestoID, Superior = "C01", Inferior = "R03", Cantidad=200, OrdenInt=12, Accion = 'A' }
                     };
             #endregion
 
