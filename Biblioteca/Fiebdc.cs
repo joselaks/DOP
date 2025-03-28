@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Biblioteca.DTO;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -7,15 +9,15 @@ namespace Bibioteca.Clases
 {
     public class Fiebdc
     {
-        public List<Concepto> listaConceptos;
-        public List<Relacion> listaRelaciones;
+        public List<ConceptoDTO> listaConceptos;
+        public List<RelacionDTO> listaRelaciones;
         string[] lineas;
         string origenFiebdc = "";
 
         public Fiebdc(string _fiebdc)
         {
-            listaConceptos = new List<Concepto>();
-            listaRelaciones = new List<Relacion>();
+            listaConceptos = new List<ConceptoDTO>();
+            listaRelaciones = new List<RelacionDTO>();
             llenaConceptos(_fiebdc);
             llenaRelaciones(_fiebdc);
         }
@@ -40,7 +42,7 @@ namespace Bibioteca.Clases
                         CantInfe = (vInferiores.Length - 1) / 3;
                         for (int z = 1; z <= CantInfe; z++)
                         {
-                            Relacion rel = new Relacion();
+                            RelacionDTO rel = new RelacionDTO();
                             CodInfe = vInferiores[((z * 3) - 3)];
                             rel.Inferior = vInferiores[((z * 3) - 3)];
                             Cant = vInferiores[((z * 3) - 1)];
@@ -72,7 +74,7 @@ namespace Bibioteca.Clases
 
                             try
                             {
-                                rel.Cantidad = Convert.ToDecimal(Cant);
+                                rel.Cantidad = Convert.ToDecimal(Cant, new CultureInfo("es-ES"));
                             }
                             catch (Exception)
                             {
@@ -102,7 +104,7 @@ namespace Bibioteca.Clases
                 {
                     string[] vLinea = linea.Split("|".ToCharArray());
 
-                    Concepto registro = new Concepto();
+                    ConceptoDTO registro = new ConceptoDTO();
                     registro.Codigo = Convert.ToString(vLinea[1]);
                     if (registro.Codigo.EndsWith("#"))
                     {
@@ -115,19 +117,55 @@ namespace Bibioteca.Clases
                     switch (Convert.ToString(vLinea[6]))
                     {
                         case "0": //Rubro o tarea...no viene por niveles en Fiebdc
-                            registro.Tipo = "0";
+                            switch (Convert.ToString(vLinea[6]))
+                            {
+                                case "0": //Rubro o tarea...no viene por niveles en Fiebdc
+                                    registro.Tipo = '0';
+                                    break;
+                                case "1": //Mano de obra
+                                    registro.Tipo = 'D';
+                                    break;
+                                case "2":  // Equipos
+                                    registro.Tipo = 'E';
+                                    break;
+                                case "3": //Materiales
+                                    registro.Tipo = 'M';
+                                    break;
+                                default: // Otros
+                                    registro.Tipo = 'O';
+                                    break;
+                            }
+                            switch (Convert.ToString(vLinea[6]))
+                            {
+                                case "0": //Rubro o tarea...no viene por niveles en Fiebdc
+                                    registro.Tipo = '0';
+                                    break;
+                                case "1": //Mano de obra
+                                    registro.Tipo = 'D';
+                                    break;
+                                case "2":  // Equipos
+                                    registro.Tipo = 'E';
+                                    break;
+                                case "3": //Materiales
+                                    registro.Tipo = 'M';
+                                    break;
+                                default: // Otros
+                                    registro.Tipo = 'O';
+                                    break;
+                            }
+                            registro.Tipo = '0';
                             break;
                         case "1": //Mano de obra
-                            registro.Tipo = "D";
+                            registro.Tipo = 'D';
                             break;
                         case "2":  // Equipos
-                            registro.Tipo = "E";
+                            registro.Tipo = 'E';
                             break;
                         case "3": //Materiales
-                            registro.Tipo = "M";
+                            registro.Tipo = 'M';
                             break;
                         default: // Otros
-                            registro.Tipo = "O";
+                            registro.Tipo = 'O';
                             //registro.Tipo = Convert.ToString(vLinea[6]);
                             break;
                     }
@@ -154,7 +192,8 @@ namespace Bibioteca.Clases
                     vLinea[4] = vLinea[4].Replace(".", ",");
                     try
                     {
-                        registro.Precio1 = Convert.ToDecimal(vLinea[4]);
+                        registro.Precio1 = Convert.ToDecimal(vLinea[4], new CultureInfo("es-ES"));
+                        registro.Precio2 = 0;
 
                     }
                     catch (Exception)

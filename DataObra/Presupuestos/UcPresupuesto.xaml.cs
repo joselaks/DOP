@@ -684,43 +684,8 @@ namespace DataObra.Presupuestos
                 MessageBox.Show($"Error al obtener los registros: {message}");
                 return;
             }
-
-            // Crear una lista de conceptos
-            var listaConceptos = new List<Concepto>();
-
-            foreach (var item in data.Conceptos)
-            {
-                var concepto = new Concepto
-                {
-                    Codigo = item.Codigo,
-                    Descrip = item.Descrip,
-                    Precio1 = item.Precio1 ?? 0, // Verificar si Precio1 es nulo
-                    Precio2 = item.Precio2 ?? 0, // Verificar si Precio2 es nulo
-                    Tipo = item.Tipo.ToString(),
-                    Unidad = item.Unidad,
-                    Fecha = item.FechaPrecio ?? DateTime.MinValue // Verificar si FechaPrecio es nulo
-                };
-
-                listaConceptos.Add(concepto);
-            }
-
-            // Crear una lista de relaciones
-            var listaRelaciones = new List<Relacion>();
-
-            foreach (var item in data.Relaciones)
-            {
-                var relacion = new Relacion
-                {
-                    Superior = item.Superior,
-                    Inferior = item.Inferior,
-                    Cantidad = item.Cantidad
-                };
-
-                listaRelaciones.Add(relacion);
-            }
-
             // Generar el presupuesto con los conceptos y relaciones creados
-            Objeto.generaPresupuesto(null, listaConceptos, listaRelaciones);
+            Objeto.generaPresupuesto(null, data.Conceptos, data.Relaciones);
 
             // Asignar el árbol generado a la grilla
             recalculo();
