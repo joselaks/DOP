@@ -423,13 +423,14 @@ pre.MapGet("/{presupuestoID:int}", async (int presupuestoID, rPresupuestos repo)
     try
         {
         var (conceptos, relaciones) = await repo.ObtenerRegistrosPorPresupuestoIDAsync(presupuestoID);
-        return Results.Ok((Conceptos: conceptos, Relaciones: relaciones));
+        return Results.Ok(new { Conceptos = conceptos, Relaciones = relaciones });
         }
     catch (Exception ex)
         {
         return Results.BadRequest(new { Message = ex.Message });
         }
 }).RequireAuthorization();
+
 
 
 pre.MapPost("/procesar", async (ProcesaPresupuestoDTO request, rPresupuestos repo) =>
