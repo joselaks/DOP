@@ -206,6 +206,8 @@ namespace Bibioteca.Clases
                 //Tomar los datos del encabezado para los campos editables.
                 //Obtener el detalle del presupuesto.
             }
+            listaConceptosGrabar = new List<ConceptoDTO>();
+            listaRelacionesGrabar = new List<RelacionDTO>();
         }
 
         // Procedimiento que en base a una lista de conceptos y relaciones, genera un presupuesto arbol.
@@ -214,7 +216,7 @@ namespace Bibioteca.Clases
             // No es necesario generar un nuevo objeto, se puede reutilizar el existente.
             //Arbol = new ObservableCollection<Nodo>();
             //Obtengo lista de relaciones con superior null, que son los rubros.
-            var relaciones = listaRelaciones.Where(a => a.Superior == null).OrderBy(b => b.OrdenInt).ToList(); //Nodos Raiz
+            var relaciones = listaRelaciones.Where(a => a.Superior == "0").OrderBy(b => b.OrdenInt).ToList(); //Nodos Raiz
             // Recorro los rubros
             foreach (var item in relaciones)
             {
@@ -831,7 +833,10 @@ namespace Bibioteca.Clases
                     }
                 }
             }
+
+            // Mostrar mensaje con las cantidades de registros
         }
+
 
         public Nodo clonar(Nodo origen)
         {

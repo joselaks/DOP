@@ -663,88 +663,10 @@ namespace DataObra.Presupuestos
         private async void BtnGuardar_Click(object sender, RoutedEventArgs e)
         {
 
-            if (Encabezado.ID == null)
-            {
+            Objeto.aplanar(Objeto.Arbol, null);
+            MessageBox.Show($"Cantidad de registros en listaConceptosGrabar: {Objeto.listaConceptosGrabar.Count}\nCantidad de registros en listaRelacionesGrabar: {Objeto.listaRelacionesGrabar.Count}");
 
-                #region Datos para testeo
 
-                var documento = new Biblioteca.Documento
-                {
-                    // Define las propiedades del documento
-                    CuentaID = 1,
-                    TipoID = 10,
-                    UsuarioID = 3,
-                    CreadoFecha = DateTime.Now,
-                    EditadoID = 4,
-                    EditadoFecha = DateTime.Now,
-                    RevisadoID = 5,
-                    RevisadoFecha = DateTime.Now,
-                    AdminID = 3,
-                    ObraID = 5,
-                    PresupuestoID = 6,
-                    RubroID = 6,
-                    EntidadID = 7,
-                    DepositoID = 5,
-                    Descrip = "Desde boton guardar",
-                    Concepto1 = "b",
-                    Fecha1 = DateTime.Now,
-                    Fecha2 = DateTime.Now,
-
-                    Fecha3 = DateTime.Now,
-                    Numero1 = 0,
-                    Numero2 = 0,
-                    Numero3 = 0,
-                    Notas = "bb",
-                    Active = false,
-                    Pesos = 0,
-                    Dolares = 0,
-                    Impuestos = 0,
-                    ImpuestosD = 0,
-                    Materiales = 0,
-                    ManodeObra = 0,
-                    Subcontratos = 0,
-                    Equipos = 0,
-                    Otros = 0,
-                    MaterialesD = 0,
-                    ManodeObraD = 0,
-                    SubcontratosD = 0,
-                    EquiposD = 0,
-                    OtrosD = 0,
-                    RelDoc = false,
-                    RelArt = false,
-                    RelMov = false,
-                    RelImp = false,
-                    RelRub = false,
-                    RelTar = false,
-                    RelIns = false
-                };
-
-                #endregion
-
-                // Codigo a utilizar
-                //var respuesta = await ConsultasAPI.PostDocumentoAsync(documento);
-
-                ////Respuestas
-                //Encabezado.ID = respuesta.Id;
-                //bool conexionExitosa = respuesta.Success;
-                //string mensaje = respuesta.Message;
-
-                ////Mensaje para testeo
-                //MessageBox.Show(respuesta.Success + " " + mensaje + " " + Encabezado.ID.ToString());
-            }
-            else
-            {
-                //var respuesta = await ConsultasAPI.PutDocumentoAsync(Encabezado);
-                ////Respuestas
-                //bool resultadoBorrado = respuesta.Success;  // true si lo editó, false si no existia el registro
-                //string mensaje = respuesta.Message;
-
-                ////Mensaje para testeo
-                //if (respuesta.Success != null)
-                //{
-                //    MessageBox.Show(respuesta.Success + " " + respuesta.Message);
-                //}
-            }
         }
 
         private void descripcion_KeyDown(object sender, KeyEventArgs e)
@@ -753,48 +675,59 @@ namespace DataObra.Presupuestos
             Encabezado.Descrip = this.descripcion.Text;
         }
 
-        private void ejemplo_Click(object sender, RoutedEventArgs e)
+        private async void ejemplo_Click(object sender, RoutedEventArgs e)
         {
+            var (success, message, data) = await DatosWeb.ObtenerRegistrosPorPresupuestoIDAsync(1);
+
+            if (!success)
+            {
+                MessageBox.Show($"Error al obtener los registros: {message}");
+                return;
+            }
+
             // Crear una lista de conceptos
-            var listaConceptos = new List<Concepto>
-    {
-        new Concepto { Codigo = "R01", Descrip = "Rubro 1", Precio1 = 100, Tipo = "R", Unidad = "Gl", Fecha = DateTime.Now },
-        new Concepto { Codigo = "T01", Descrip = "Tarea 1", Precio1 = 100, Tipo = "T", Unidad = "Gl", Fecha = DateTime.Now },
-        new Concepto { Codigo = "M01", Descrip = "Material 1", Precio1 = 100, Moneda = "1", Tipo = "M", Unidad = "Gl", Fecha = DateTime.Now },
-        new Concepto { Codigo = "Aux", Descrip = "Auxiliar", Precio1 = 100, Tipo = "A", Unidad = "Gl", Fecha = DateTime.Now },
-        new Concepto { Codigo = "T02", Descrip = "Tarea 2", Precio1 = 200,  Tipo = "T", Unidad = "Gl", Fecha = DateTime.Now },
-        new Concepto { Codigo = "M02", Descrip = "Material 2", Precio1 = 200, Precio2 = 0, Tipo = "M", Unidad = "Gl", Fecha = DateTime.Now },
-        new Concepto { Codigo = "T03", Descrip = "Tarea 3", Precio1 = 300, Tipo = "T", Unidad = "Gl", Fecha = DateTime.Now },
-        new Concepto { Codigo = "M03", Descrip = "Material 3", Precio1 = 0, Precio2 = 300, Tipo = "M", Unidad = "Gl", Fecha = DateTime.Now },
-        new Concepto { Codigo = "T04", Descrip = "Tarea 4", Precio1 = 400, Tipo = "T", Unidad = "Gl", Fecha = DateTime.Now },
-        new Concepto { Codigo = "M04", Descrip = "Material 4", Precio1 = 400, Precio2 = 0, Tipo = "M", Unidad = "Gl", Fecha = DateTime.Now },
-        new Concepto { Codigo = "M05", Descrip = "Mano de obra 1", Precio1 = 0, Precio2 = 400, Tipo = "O", Unidad = "Gl", Fecha = DateTime.Now }
-    };
+            var listaConceptos = new List<Concepto>();
+
+            foreach (var item in data.Conceptos)
+            {
+                var concepto = new Concepto
+                {
+                    Codigo = item.Codigo,
+                    Descrip = item.Descrip,
+                    Precio1 = item.Precio1 ?? 0, // Verificar si Precio1 es nulo
+                    Precio2 = item.Precio2 ?? 0, // Verificar si Precio2 es nulo
+                    Tipo = item.Tipo.ToString(),
+                    Unidad = item.Unidad,
+                    Fecha = item.FechaPrecio ?? DateTime.MinValue // Verificar si FechaPrecio es nulo
+                };
+
+                listaConceptos.Add(concepto);
+            }
 
             // Crear una lista de relaciones
-            var listaRelaciones = new List<Relacion>
-    {
-        new Relacion { Superior = null, Inferior = "R01", Cantidad = 1 },
-        new Relacion { Superior = "R01", Inferior = "T01", Cantidad = 1 },
-        new Relacion { Superior = "T01", Inferior = "M01", Cantidad = 10 },
-        new Relacion { Superior = "T01", Inferior = "M02", Cantidad = 10 },
-        new Relacion { Superior = "T01", Inferior = "M05", Cantidad = 10 },
-        new Relacion { Superior = "T01", Inferior = "Aux", Cantidad = 10 },
-        new Relacion { Superior = "Aux", Inferior = "M01", Cantidad = 10 },
-        new Relacion { Superior = "R01", Inferior = "T02", Cantidad = 1 },
-        new Relacion { Superior = "T02", Inferior = "M02", Cantidad = 10 },
-        new Relacion { Superior = "R01", Inferior = "T03", Cantidad = 1 },
-        new Relacion { Superior = "T03", Inferior = "M03", Cantidad = 10 },
-        new Relacion { Superior = "R01", Inferior = "T04", Cantidad = 1 }
-    };
+            var listaRelaciones = new List<Relacion>();
+
+            foreach (var item in data.Relaciones)
+            {
+                var relacion = new Relacion
+                {
+                    Superior = item.Superior,
+                    Inferior = item.Inferior,
+                    Cantidad = item.Cantidad
+                };
+
+                listaRelaciones.Add(relacion);
+            }
 
             // Generar el presupuesto con los conceptos y relaciones creados
             Objeto.generaPresupuesto(null, listaConceptos, listaRelaciones);
 
             // Asignar el árbol generado a la grilla
-            //this.grillaArbol.ItemsSource = Objeto.Arbol;
             recalculo();
         }
+
+
+
 
     }
 
