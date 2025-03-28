@@ -484,19 +484,19 @@ namespace Servidor.Repositorios
 
 
         // Nueva Relación documentoRel
-        public async Task<bool> InsertarDocumentoRelAsync(DocumentoRel rel)
-        {
-            using (var db = new SqlConnection(_connectionString))
-            {
-                var parameters = new DynamicParameters(rel);
-                parameters.Add("Success", dbType: DbType.Boolean, direction: ParameterDirection.Output);
+        //public async Task<bool> InsertarDocumentoRelAsync(DocumentoRel rel)
+        //{
+        //    using (var db = new SqlConnection(_connectionString))
+        //    {
+        //        var parameters = new DynamicParameters(rel);
+        //        parameters.Add("Success", dbType: DbType.Boolean, direction: ParameterDirection.Output);
 
-                await db.ExecuteAsync("DocumentosRelPost", parameters, commandType: CommandType.StoredProcedure);
+        //        await db.ExecuteAsync("DocumentosRelPost", parameters, commandType: CommandType.StoredProcedure);
 
-                bool success = parameters.Get<bool>("Success");
-                return success;
-            }
-        }
+        //        bool success = parameters.Get<bool>("Success");
+        //        return success;
+        //    }
+        //}
 
 
        
@@ -548,19 +548,19 @@ namespace Servidor.Repositorios
             }
         }
 
-        // Obtener relacion de documento 
-        public async Task<IEnumerable<DocumentoRel>> ObtenerDocumentosRelPorSuperiorIDAsync(int superiorID)
-        {
-            using (var db = new SqlConnection(_connectionString))
-            {
-                var documentosRel = await db.QueryAsync<DocumentoRel>(
-                    "DocumentosRelGetBySuperiorID",
-                    new { SuperiorID = superiorID },
-                    commandType: CommandType.StoredProcedure
-                );
-                return documentosRel;
-            }
-        }
+        //// Obtener relacion de documento 
+        //public async Task<IEnumerable<DocumentoRel>> ObtenerDocumentosRelPorSuperiorIDAsync(int superiorID)
+        //{
+        //    using (var db = new SqlConnection(_connectionString))
+        //    {
+        //        var documentosRel = await db.QueryAsync<DocumentoRel>(
+        //            "DocumentosRelGetBySuperiorID",
+        //            new { SuperiorID = superiorID },
+        //            commandType: CommandType.StoredProcedure
+        //        );
+        //        return documentosRel;
+        //    }
+        //}
 
 
 

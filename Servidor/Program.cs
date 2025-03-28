@@ -17,6 +17,7 @@ using ProcesarArbolPresupuestoRequest = Bibioteca.Clases.ProcesarArbolPresupuest
 using Microsoft.Win32;
 using Servidor;
 using Biblioteca.DTO;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 string key = "ESTALLAVEFUNCOINARIASI12345PARARECORDARLAMEJOR=";
@@ -213,19 +214,19 @@ doc.MapDelete("rel/{supID:int}/{infID:int}", async (rDocumentos repositorio, int
 
 
 
-doc.MapPost("/rel/", async (rDocumentos repositorio, DocumentoRel rel) =>
-{
-    var nuevoDocumento = await repositorio.InsertarDocumentoRelAsync(rel);
+//doc.MapPost("/rel/", async (rDocumentos repositorio, DocumentoRel rel) =>
+//{
+//    var nuevoDocumento = await repositorio.InsertarDocumentoRelAsync(rel);
 
-    if (nuevoDocumento)
-    {
-        return Results.Ok(new { Success = true, Message = "Documento agregado exitosamente." });
-    }
-    else
-    {
-        return Results.Ok(new { Success = false, Message = "No se pudo agregar el registro. Posiblemente ya existía" });
-    }
-}).RequireAuthorization();
+//    if (nuevoDocumento)
+//    {
+//        return Results.Ok(new { Success = true, Message = "Documento agregado exitosamente." });
+//    }
+//    else
+//    {
+//        return Results.Ok(new { Success = false, Message = "No se pudo agregar el registro. Posiblemente ya existía" });
+//    }
+//}).RequireAuthorization();
 
 doc.MapGet("/cuenta/{cuentaID:int}", async (rDocumentos repositorio, int cuentaID) =>
 {
@@ -233,11 +234,11 @@ doc.MapGet("/cuenta/{cuentaID:int}", async (rDocumentos repositorio, int cuentaI
     return documentos != null ? Results.Ok(documentos) : Results.NotFound(new { Mensaje = "No se encontraron documentos con el CuentaID proporcionado." });
 }).RequireAuthorization();
 
-doc.MapGet("/rel/{superiorID:int}", async (rDocumentos repositorio, int superiorID) =>
-{
-    var documentos = await repositorio.ObtenerDocumentosRelPorSuperiorIDAsync(superiorID);
-    return documentos != null ? Results.Ok(documentos) : Results.NotFound(new { Mensaje = "No se encontraron documentos relacionados." });
-}).RequireAuthorization();
+//doc.MapGet("/rel/{superiorID:int}", async (rDocumentos repositorio, int superiorID) =>
+//{
+//    var documentos = await repositorio.ObtenerDocumentosRelPorSuperiorIDAsync(superiorID);
+//    return documentos != null ? Results.Ok(documentos) : Results.NotFound(new { Mensaje = "No se encontraron documentos relacionados." });
+//}).RequireAuthorization();
 
 doc.MapGet("/id/{id:int}", async (rDocumentos repositorio, int id) =>
 {
@@ -420,28 +421,32 @@ var pre = app.MapGroup("/presupuestos");
 pre.MapGet("/{presupuestoID:int}", async (int presupuestoID, rPresupuestos repo) =>
 {
     try
-    {
+        {
         var (conceptos, relaciones) = await repo.ObtenerRegistrosPorPresupuestoIDAsync(presupuestoID);
-        return Results.Ok(new { Conceptos = conceptos, Relaciones = relaciones });
-    }
+        return Results.Ok((Conceptos: conceptos, Relaciones: relaciones));
+        }
     catch (Exception ex)
-    {
+        {
         return Results.BadRequest(new { Message = ex.Message });
-    }
+        }
 }).RequireAuthorization();
 
-pre.MapPost("/procesar", async (int presupuestoID, List<ConceptoDTO> listaConceptos, List<RelacionDTO> listaRelaciones, rPresupuestos repo) =>
+
+pre.MapPost("/procesar", async (ProcesaPresupuestoDTO request, rPresupuestos repo) =>
 {
     try
-    {
-        await repo.ProcesarArbolPresupuestoAsync(presupuestoID, listaConceptos, listaRelaciones);
+        {
+        await repo.ProcesarArbolPresupuestoAsync(request.PresupuestoID, request.ListaConceptos, request.ListaRelaciones);
         return Results.Ok(new { Success = true, Message = "Árbol de presupuesto procesado exitosamente." });
-    }
+        }
     catch (Exception ex)
-    {
+        {
         return Results.BadRequest(new { Success = false, Message = ex.Message });
-    }
+        }
 }).RequireAuthorization();
+
+
+
 
 #endregion
 
