@@ -4,6 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
+
 
 namespace Biblioteca
 {
@@ -99,25 +106,37 @@ namespace Biblioteca
         #endregion
 
         #region METODOS
-        public static Documento Convertir(Biblioteca.DTO.DocumentoDTO docDTO)
+        public static Documento Convertir(Biblioteca.DTO.DocumentoDTO docDTO, List<AgrupadorDTO>? listaAgrupadores)
         {
             return new Documento
             {
                 ID = docDTO.ID,
+                
                 CuentaID = docDTO.CuentaID,
                 TipoID = docDTO.TipoID,
+                TipoDoc = "Documento Tipo", //docDTO.TipoDoc,
                 UsuarioID = docDTO.UsuarioID,
+                Usuario = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.UsuarioID).Descrip,
                 CreadoFecha = docDTO.CreadoFecha,
                 EditadoID = docDTO.EditadoID,
+                Editado = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.EditadoID).Descrip,
                 EditadoFecha = docDTO.EditadoFecha,
                 RevisadoID = docDTO.RevisadoID,
+                Revisado = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.RevisadoID).Descrip,
                 RevisadoFecha = docDTO.RevisadoFecha,
                 AdminID = docDTO.AdminID,
+                Admin = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.AdminID).Descrip,
                 ObraID = docDTO.ObraID,
+                Obra = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.ObraID).Descrip,
                 PresupuestoID = docDTO.PresupuestoID,
-                RubroID = docDTO.RubroID,
+                Presupuesto = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.PresupuestoID).Descrip,
+                //RubroID = docDTO.RubroID,
+                //Rubro = docDTO.Rubro,
                 EntidadID = docDTO.EntidadID,
+                Entidad = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.EntidadID).Descrip,
+                EntidadTipo = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.EntidadID).Tipo,
                 DepositoID = docDTO.DepositoID,
+                Deposito = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.DepositoID).Descrip,
                 Descrip = docDTO.Descrip,
                 Concepto1 = docDTO.Concepto1,
                 Fecha1 = docDTO.Fecha1,
@@ -148,7 +167,8 @@ namespace Biblioteca
                 RelImp = docDTO.RelImp,
                 RelRub = docDTO.RelRub,
                 RelTar = docDTO.RelTar,
-                RelIns = docDTO.RelIns
+                RelIns = docDTO.RelIns,
+                Accion = 'A',
             };
         }
 

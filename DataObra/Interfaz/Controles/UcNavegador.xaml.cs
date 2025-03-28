@@ -32,10 +32,14 @@ namespace DataObra.Interfaz.Controles
 
             foreach (var item in documentos)
             {
-                Documento doc = new Documento();
-                doc = Documento.Convertir(item);
+                var doc = Documento.Convertir(item, App.ListaAgrupadores);
 
                 ListaDocumentos.Add(doc);
+
+                if (doc.ObraID == 5)
+                {
+                    MessageBox.Show("Obra 5");
+                }
             }
 
             this.GrillaDocumentos.ItemsSource = ListaDocumentos;
@@ -146,62 +150,62 @@ namespace DataObra.Interfaz.Controles
             }
         }
 
-        public static Documento ConvertirDesdeDTO(DocumentoDTO dto)
-        {
-            return new Documento
-            {
-                ID = dto.ID,
-                CuentaID = dto.CuentaID,  // Si es null, asigna 0
-                TipoID = dto.TipoID,
-                UsuarioID = dto.UsuarioID,
-                CreadoFecha = dto.CreadoFecha,
-                EditadoID = dto.EditadoID,
-                EditadoFecha = dto.EditadoFecha,
-                RevisadoID = dto.RevisadoID,
-                RevisadoFecha = dto.RevisadoFecha,
-                AdminID = dto.AdminID,
-                ObraID = dto.ObraID,
-                PresupuestoID = dto.PresupuestoID,
-                RubroID = dto.RubroID,
-                EntidadID = dto.EntidadID,
-                DepositoID = dto.DepositoID,
-                Descrip = dto.Descrip ?? string.Empty, // Evita valores null
-                Concepto1 = dto.Concepto1,
-                Fecha1 = dto.Fecha1,
-                Fecha2 = dto.Fecha2,
-                Fecha3 = dto.Fecha3,
-                Numero1 = dto.Numero1,
-                Numero2 = dto.Numero2,
-                Numero3 = dto.Numero3,
-                Notas = dto.Notas ?? string.Empty,
-                Active = dto.Active,
-                Pesos = dto.Pesos,
-                Dolares = dto.Dolares,
-                Impuestos = dto.Impuestos,
-                ImpuestosD = dto.ImpuestosD,
-                Materiales = dto.Materiales,
-                ManodeObra = dto.ManodeObra,
-                Subcontratos = dto.Subcontratos,
-                Equipos = dto.Equipos,
-                Otros = dto.Otros,
-                MaterialesD = dto.MaterialesD,
-                ManodeObraD = dto.ManodeObraD,
-                SubcontratosD = dto.SubcontratosD,
-                EquiposD = dto.EquiposD,
-                OtrosD = dto.OtrosD,
-                RelDoc = dto.RelDoc,
-                RelArt = dto.RelArt,
-                RelMov = dto.RelMov,
-                RelImp = dto.RelImp,
-                RelRub = dto.RelRub,
-                RelTar = dto.RelTar,
-                RelIns = dto.RelIns,
-                Accion = 'M', // Asignación por defecto (Modificar)
-                DetalleDocumento = new List<DocumentoDet>(),  // Inicializa listas vacías
-                DetalleMovimientos = new List<Movimiento>(),
-                DetalleImpuestos = new List<Impuesto>()
-            };
-        }
+        //public static Documento ConvertirDesdeDTO(DocumentoDTO dto)
+        //{
+        //    return new Documento
+        //    {
+        //        ID = dto.ID,
+        //        CuentaID = dto.CuentaID,  // Si es null, asigna 0
+        //        TipoID = dto.TipoID,
+        //        UsuarioID = dto.UsuarioID,
+        //        CreadoFecha = dto.CreadoFecha,
+        //        EditadoID = dto.EditadoID,
+        //        EditadoFecha = dto.EditadoFecha,
+        //        RevisadoID = dto.RevisadoID,
+        //        RevisadoFecha = dto.RevisadoFecha,
+        //        AdminID = dto.AdminID,
+        //        ObraID = dto.ObraID,
+        //        PresupuestoID = dto.PresupuestoID,
+        //        RubroID = dto.RubroID,
+        //        EntidadID = dto.EntidadID,
+        //        DepositoID = dto.DepositoID,
+        //        Descrip = dto.Descrip ?? string.Empty, // Evita valores null
+        //        Concepto1 = dto.Concepto1,
+        //        Fecha1 = dto.Fecha1,
+        //        Fecha2 = dto.Fecha2,
+        //        Fecha3 = dto.Fecha3,
+        //        Numero1 = dto.Numero1,
+        //        Numero2 = dto.Numero2,
+        //        Numero3 = dto.Numero3,
+        //        Notas = dto.Notas ?? string.Empty,
+        //        Active = dto.Active,
+        //        Pesos = dto.Pesos,
+        //        Dolares = dto.Dolares,
+        //        Impuestos = dto.Impuestos,
+        //        ImpuestosD = dto.ImpuestosD,
+        //        Materiales = dto.Materiales,
+        //        ManodeObra = dto.ManodeObra,
+        //        Subcontratos = dto.Subcontratos,
+        //        Equipos = dto.Equipos,
+        //        Otros = dto.Otros,
+        //        MaterialesD = dto.MaterialesD,
+        //        ManodeObraD = dto.ManodeObraD,
+        //        SubcontratosD = dto.SubcontratosD,
+        //        EquiposD = dto.EquiposD,
+        //        OtrosD = dto.OtrosD,
+        //        RelDoc = dto.RelDoc,
+        //        RelArt = dto.RelArt,
+        //        RelMov = dto.RelMov,
+        //        RelImp = dto.RelImp,
+        //        RelRub = dto.RelRub,
+        //        RelTar = dto.RelTar,
+        //        RelIns = dto.RelIns,
+        //        Accion = 'M', // Asignación por defecto (Modificar)
+        //        DetalleDocumento = new List<DocumentoDet>(),  // Inicializa listas vacías
+        //        DetalleMovimientos = new List<Movimiento>(),
+        //        DetalleImpuestos = new List<Impuesto>()
+        //    };
+        //}
 
 
         private void ToggleButton_Unchecked(object sender, RoutedEventArgs e)
@@ -227,18 +231,16 @@ namespace DataObra.Interfaz.Controles
 
         private async void NuevoDoc_Click(object sender, RoutedEventArgs e)
         {
-            if (GrillaDocumentos.SelectedItem is DocumentoDTO sele)
+            if (GrillaDocumentos.SelectedItem is Documento sele)
             {
-
-                var documentoSeleccionado = ConvertirDesdeDTO(sele);
-
                 var mainWindow = Window.GetWindow(this);
+
                 // Aplicar efecto de desenfoque a la ventana principal
                 mainWindow.Effect = new BlurEffect { Radius = 3 };
 
                 DataObra.Interfaz.Ventanas.WiDocumento ventanaDoc;
 
-                if (documentoSeleccionado.TipoID == 10) // es un presupuesto
+                if (sele.TipoID == 10) // es un presupuesto
                 {
                     UserControl presup = new DataObra.Presupuestos.UcPresupuesto(null);
                     ventanaDoc = new DataObra.Interfaz.Ventanas.WiDocumento("Presupuesto", presup);

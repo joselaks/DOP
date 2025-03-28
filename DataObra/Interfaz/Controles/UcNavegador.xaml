@@ -105,15 +105,19 @@
                     <syncfusion:GridTextColumn
                         Width="92"
                         HeaderText="Documento"
-                        MappingName="TipoID" />
+                        MappingName="TipoDoc" />
                     <syncfusion:GridDateTimeColumn
                         Width="90"
                         HeaderText="Fecha"
                         MappingName="Fecha1" />
                     <syncfusion:GridTextColumn
                         Width="90"
-                        HeaderText="Obra"
+                        HeaderText="ObraID"
                         MappingName="ObraID" />
+                    <syncfusion:GridTextColumn
+                        Width="90"
+                        HeaderText="Obra"
+                        MappingName="Obra" />
                     <syncfusion:GridTextColumn
                         Width="90"
                         HeaderText="Admin"
@@ -121,7 +125,7 @@
                     <syncfusion:GridTextColumn
                         Width="90"
                         HeaderText="Tipo Ent."
-                        MappingName="EntidadID" />
+                        MappingName="TipoEntidad" />
                     <syncfusion:GridTextColumn
                         Width="90"
                         HeaderText="Entidad"
