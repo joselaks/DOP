@@ -35,83 +35,25 @@ namespace DataObra.Interfaz.Controles
                 MessageBox.Show($"Error al obtener documentos: {message}");
                 return;
             }
+            else
+            {
+                // Validar si App.ListaAgrupadores no es null y tiene elementos antes del foreach
+                if (App.ListaAgrupadores?.Any() == true)
+                {
+                    foreach (var item in documentosDTO)
+                    {
+                        ListaDocumentos.Add(Convertir(item));
+                    }
 
-            // Llamando a un método estático
-            ListaDocumentos = documentosDTO.Select(dto => Convertir(dto, App.ListaAgrupadores)).ToList();
-
-            this.GrillaDocumentos.ItemsSource = ListaDocumentos;
+                    this.GrillaDocumentos.ItemsSource = ListaDocumentos;
+                }
+                else
+                    MessageBox.Show("Lista de agrupadores vacia");
+            }
         }
-        //private static Documento Convertir(Biblioteca.DTO.DocumentoDTO docDTO, List<AgrupadorDTO>? listaAgrupadores)
-        //{
-        //    var agrupadoresDict = listaAgrupadores?.ToDictionary(a => a.ID, a => a) ?? new Dictionary<int, AgrupadorDTO>();
-
-        //    AgrupadorDTO agrupador;
-
-        //    return new Documento
-        //    {
-        //        ID = docDTO.ID,
-        //        CuentaID = docDTO.CuentaID,
-        //        TipoID = docDTO.TipoID,
-        //        TipoDoc = "Documento Tipo",
-        //        UsuarioID = docDTO.UsuarioID,
-        //        Usuario = agrupadoresDict.GetValueOrDefault(docDTO.UsuarioID)?.Descrip,
-        //        CreadoFecha = docDTO.CreadoFecha,
-        //        EditadoID = docDTO.EditadoID,
-        //        Editado = agrupadoresDict.GetValueOrDefault(docDTO.EditadoID)?.Descrip,
-        //        EditadoFecha = docDTO.EditadoFecha,
-        //        RevisadoID = docDTO.RevisadoID,
-        //        Revisado = agrupadoresDict.GetValueOrDefault(docDTO.RevisadoID)?.Descrip,
-        //        RevisadoFecha = docDTO.RevisadoFecha,
-        //        AdminID = docDTO.AdminID,
-        //        Deposito = agrupadoresDict.TryGetValue((int)docDTO.DepositoID, out agrupador) ? agrupador.Descrip : null,
-        //        Admin = agrupadoresDict.TryGetValue((int)docDTO.AdminID, out agrupador) ? agrupador.Descrip : null,
-        //        ObraID = docDTO.ObraID,
-        //        Obra = agrupadoresDict.TryGetValue((int)docDTO.ObraID, out agrupador) ? agrupador.Descrip : null,
-        //        PresupuestoID = docDTO.PresupuestoID,
-        //        Presupuesto = agrupadoresDict.TryGetValue((int)docDTO.PresupuestoID, out agrupador) ? agrupador.Descrip : null,
-        //        EntidadID = docDTO.EntidadID,
-        //        Entidad = agrupadoresDict.TryGetValue((int)docDTO.EntidadID, out agrupador) ? agrupador.Descrip : null,
-        //        EntidadTipo = agrupadoresDict.TryGetValue((int)docDTO.EntidadID, out agrupador) ? agrupador.Tipo : null,
-        //        DepositoID = docDTO.DepositoID,
-        //        Deposito = agrupadoresDict.TryGetValue((int)docDTO.DepositoID, out agrupador) ? agrupador.Descrip : null,
-        //        Descrip = docDTO.Descrip,
-        //        Concepto1 = docDTO.Concepto1,
-        //        Fecha1 = docDTO.Fecha1,
-        //        Fecha2 = docDTO.Fecha2,
-        //        Fecha3 = docDTO.Fecha3,
-        //        Numero1 = docDTO.Numero1,
-        //        Numero2 = docDTO.Numero2,
-        //        Numero3 = docDTO.Numero3,
-        //        Notas = docDTO.Notas,
-        //        Active = docDTO.Active,
-        //        Pesos = docDTO.Pesos,
-        //        Dolares = docDTO.Dolares,
-        //        Impuestos = docDTO.Impuestos,
-        //        ImpuestosD = docDTO.ImpuestosD,
-        //        Materiales = docDTO.Materiales,
-        //        ManodeObra = docDTO.ManodeObra,
-        //        Subcontratos = docDTO.Subcontratos,
-        //        Equipos = docDTO.Equipos,
-        //        Otros = docDTO.Otros,
-        //        MaterialesD = docDTO.MaterialesD,
-        //        ManodeObraD = docDTO.ManodeObraD,
-        //        SubcontratosD = docDTO.SubcontratosD,
-        //        EquiposD = docDTO.EquiposD,
-        //        OtrosD = docDTO.OtrosD,
-        //        RelDoc = docDTO.RelDoc,
-        //        RelArt = docDTO.RelArt,
-        //        RelMov = docDTO.RelMov,
-        //        RelImp = docDTO.RelImp,
-        //        RelRub = docDTO.RelRub,
-        //        RelTar = docDTO.RelTar,
-        //        RelIns = docDTO.RelIns,
-        //        Accion = 'A',
-        //    };
-        //}
-
-        private static Documento Convertir(Biblioteca.DTO.DocumentoDTO docDTO, List<AgrupadorDTO>? listaAgrupadores)
+        private static Documento Convertir(Biblioteca.DTO.DocumentoDTO docDTO)
         {
-            var agrupadoresDict = listaAgrupadores?.ToDictionary(a => a.ID, a => a) ?? new Dictionary<int, AgrupadorDTO>();
+            var agrupadoresDict = App.ListaAgrupadores?.ToDictionary(a => a.ID, a => a) ?? new Dictionary<int, AgrupadorDTO>();
 
             return new Documento
             {
@@ -119,8 +61,7 @@ namespace DataObra.Interfaz.Controles
                 ID = docDTO.ID,
                 CuentaID = docDTO.CuentaID,
                 TipoID = docDTO.TipoID,
-                //TipoDoc = docDTO.TipoID,
-
+                TipoDoc = "Documento Tipo", // Se puede cambiar si se obtiene de docDTO
                 #endregion
 
                 #region USUARIOS
@@ -142,7 +83,7 @@ namespace DataObra.Interfaz.Controles
                 Admin = docDTO.AdminID.HasValue && agrupadoresDict.TryGetValue(docDTO.AdminID.Value, out var admin) ? admin.Descrip : null,
 
                 ObraID = docDTO.ObraID,
-                Obra = "La Obra", // docDTO.ObraID.HasValue && agrupadoresDict.TryGetValue(docDTO.ObraID.Value, out var obra) ? obra.Descrip : null,
+                Obra = docDTO.ObraID.HasValue && agrupadoresDict.TryGetValue(docDTO.ObraID.Value, out var obra) ? obra.Descrip : null,
 
                 PresupuestoID = docDTO.PresupuestoID,
                 Presupuesto = docDTO.PresupuestoID.HasValue && agrupadoresDict.TryGetValue(docDTO.PresupuestoID.Value, out var presupuesto) ? presupuesto.Descrip : null,
@@ -397,6 +338,27 @@ namespace DataObra.Interfaz.Controles
 
         private async void NuevoDoc_Click(object sender, RoutedEventArgs e)
         {
+                var mainWindow = Window.GetWindow(this);
+
+                // Aplicar efecto de desenfoque a la ventana principal
+                mainWindow.Effect = new BlurEffect { Radius = 3 };
+
+                DataObra.Interfaz.Ventanas.WiDocumento ventanaDoc;
+
+                // Agregar manejo para cada tipo de documento
+                Biblioteca.Documento objetoFactura = new Biblioteca.Documento();
+                Documentos.MaxDocumento Docu = new Documentos.MaxDocumento(objetoFactura);
+                ventanaDoc = new DataObra.Interfaz.Ventanas.WiDocumento("Factura", Docu);
+
+                // Mostrar la ventana de manera modal
+                ventanaDoc.ShowDialog();
+
+                // Quitar el efecto de desenfoque después de cerrar la ventana modal
+                mainWindow.Effect = null;
+        }
+
+        private async void EditaDoc_Click(object sender, RoutedEventArgs e)
+        {
             if (GrillaDocumentos.SelectedItem is Documento sele)
             {
                 var mainWindow = Window.GetWindow(this);
@@ -432,6 +394,7 @@ namespace DataObra.Interfaz.Controles
                 MessageBox.Show("Por favor, seleccione un documento para editar.");
             }
         }
+
     }
 }
 

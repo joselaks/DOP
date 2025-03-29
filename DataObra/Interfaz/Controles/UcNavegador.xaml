@@ -164,6 +164,7 @@
         </Grid>
 
         <syncfusion:ToolBarAdv Grid.Row="1" Height="30">
+            <Button Content="Act" Grid.Row="1" Width="60" HorizontalAlignment="Left" Height="25" Margin="2,2,0,0" ToolTip="Act." Click="actualizaGrilla_Click" />
             <syncfusion:DropDownButtonAdv
                 Width="75"
                 Height="25"
