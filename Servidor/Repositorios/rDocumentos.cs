@@ -338,27 +338,35 @@ namespace Servidor.Repositorios
         }
 
         public async Task<(int Id, string ErrorMessage)> InsertarAgrupadorAsync(AgrupadorDTO agrupador)
-        {
-            using (var db = new SqlConnection(_connectionString))
             {
-                var parameters = new DynamicParameters(agrupador);
+            using (var db = new SqlConnection(_connectionString))
+                {
+                var parameters = new DynamicParameters();
+                parameters.Add("@CuentaID", agrupador.CuentaID);
+                parameters.Add("@UsuarioID", agrupador.UsuarioID);
+                parameters.Add("@TipoID", agrupador.TipoID);
+                parameters.Add("@Editado", agrupador.Editado);
+                parameters.Add("@Descrip", agrupador.Descrip);
+                parameters.Add("@Numero", agrupador.Numero);
+                parameters.Add("@Active", agrupador.Active);
                 parameters.Add("@ID", dbType: DbType.Int32, direction: ParameterDirection.Output);
                 parameters.Add("@MensajeError", dbType: DbType.String, direction: ParameterDirection.Output, size: 4000);
 
                 try
-                {
+                    {
                     await db.ExecuteAsync("AgrupadoresPost", parameters, commandType: CommandType.StoredProcedure);
                     int id = parameters.Get<int>("@ID");
                     string mensajeError = parameters.Get<string>("@MensajeError");
 
                     return (id, mensajeError);
-                }
+                    }
                 catch (SqlException ex)
-                {
+                    {
                     return (0, ex.Message);
+                    }
                 }
             }
-        }
+
 
         // Obtener agrupadores por cuenta
         public async Task<IEnumerable<AgrupadorDTO>> ObtenerAgrupadorPorCuentaIDAsync(int cuentaID)
@@ -375,10 +383,18 @@ namespace Servidor.Repositorios
         }
 
         public async Task<bool> ActualizarAgrupadorAsync(AgrupadorDTO agrupador)
-        {
-            using (var db = new SqlConnection(_connectionString))
             {
-                var parameters = new DynamicParameters(agrupador);
+            using (var db = new SqlConnection(_connectionString))
+                {
+                var parameters = new DynamicParameters();
+                parameters.Add("@ID", agrupador.ID);
+                parameters.Add("@CuentaID", agrupador.CuentaID);
+                parameters.Add("@UsuarioID", agrupador.UsuarioID);
+                parameters.Add("@TipoID", agrupador.TipoID);
+                parameters.Add("@Editado", agrupador.Editado);
+                parameters.Add("@Descrip", agrupador.Descrip);
+                parameters.Add("@Numero", agrupador.Numero);
+                parameters.Add("@Active", agrupador.Active);
                 parameters.Add("Success", dbType: DbType.Boolean, direction: ParameterDirection.Output);
                 parameters.Add("Mensaje", dbType: DbType.String, direction: ParameterDirection.Output, size: 4000);
 
@@ -388,8 +404,10 @@ namespace Servidor.Repositorios
                 string mensaje = parameters.Get<string>("Mensaje");
 
                 return success;
+                }
             }
-        }
+
+
 
 
 
