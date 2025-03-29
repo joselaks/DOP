@@ -44,17 +44,60 @@ namespace DataObra.Documentos
 
             #endregion Combos
 
+            Random random = new Random();
+
             if (pDoc == null)
             {
                 #region NUEVO
                 oActivo = new Documento()
                 {
-                    Fecha1 = System.DateTime.Today,
-                    CreadoFecha = System.DateTime.Today,
-                    Usuario = azure.Usuario,
-                    EditadoFecha = System.DateTime.Today,
-                    EntidadID = 1
+                    CuentaID = 1,
+                    TipoID = 2,
+                    UsuarioID = 3,
+                    CreadoFecha = DateTime.Now,
+                    EditadoID = 1,
+                    EditadoFecha = DateTime.Now,
+                    RevisadoID = 1,
+                    RevisadoFecha = DateTime.Now,
+                    AdminID = 63,
+                    ObraID = 60,
+                    PresupuestoID = 6,
+                    RubroID = 6,
+                    EntidadID = 64,
+                    DepositoID = 5,
+                    Descrip = "Descripcion " + DateTime.Today.DayOfYear,
+                    Concepto1 = "Concepto",
+                    Fecha1 = DateTime.Now,
+                    Fecha2 = DateTime.Now,
+                    Fecha3 = DateTime.Now,
+                    Numero1 = random.Next(1, 1000),
+                    Numero2 = random.Next(1, 1000),
+                    Numero3 = random.Next(1, 1000),
+                    Notas = "bb",
+                    Active = false,
+                    Pesos = random.Next(1, 1000),
+                    Dolares = random.Next(1, 1000),
+                    Impuestos = random.Next(1, 1000),
+                    ImpuestosD = random.Next(1, 1000),
+                    Materiales = random.Next(1, 1000),
+                    ManodeObra = random.Next(1, 1000),
+                    Subcontratos = 0,
+                    Equipos = 0,
+                    Otros = 0,
+                    MaterialesD = 0,
+                    ManodeObraD = 0,
+                    SubcontratosD = 0,
+                    EquiposD = 0,
+                    OtrosD = 0,
+                    RelDoc = false,
+                    RelArt = false,
+                    RelMov = false,
+                    RelImp = false,
+                    RelRub = false,
+                    RelTar = false,
+                    RelIns = false
                 };
+
                 this.ComboObras.SelectedItem = azure.GetFirstAgrupadorByTipoIDOrdered(1);
                 this.ComboAdmin.SelectedItem = azure.GetFirstAgrupadorByTipoIDOrdered(2);
                 #endregion Nuevo
@@ -162,109 +205,20 @@ namespace DataObra.Documentos
 
         private async void Guardar_Click(object sender, RoutedEventArgs e)
         {
-            Biblioteca.Documento wDoc1 = new Biblioteca.Documento();
-            if (oActivo.ID == null)
+            Biblioteca.DTO.DocumentoDTO documento = new Biblioteca.DTO.DocumentoDTO();
+
+            // Llamar al método CrearDocumentoAsync
+            var (success, message, id) = await DatosWeb.CrearDocumentoAsync(documento);
+
+            // Manejar la respuesta
+            if (success && id.HasValue)
             {
-                // Codigo a utilizar
-
-                
-                ////var respuesta1 = await ConsultasAPI.PostDocumentoAsync(wDoc1);
-                //if (respuesta1.Id != null)
-                //{
-                //    oActivo.ID = respuesta1.Id;
-                //}
-
+                MessageBox.Show($"Documento creado con éxito. ID: {id.Value}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
-                //var respuesta1 = await ConsultasAPI.PutDocumentoAsync(wDoc1);
+                MessageBox.Show($"Error al crear el documento: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
-
-
-            oActivo.EditadoID = azure.UsuarioID;
-            oActivo.Editado = azure.Usuario;
-            oActivo.EditadoFecha = DateTime.Now;
-
-            Biblioteca.Documento wDoc = new Biblioteca.Documento();
-            wDoc = Documento.ConvertirInverso(oActivo);
-
-            //Si el documento es nuevo.....
-
-            #region Datos para testeo 
-
-            var documento = new Biblioteca.Documento
-            {
-                // Define las propiedades del documento
-                CuentaID = 1,
-                TipoID = 10,
-                UsuarioID = 3,
-                CreadoFecha = DateTime.Now,
-                EditadoID = 4,
-                EditadoFecha = DateTime.Now,
-                RevisadoID = 5,
-                RevisadoFecha = DateTime.Now,
-                AdminID = 3,
-                ObraID = 5,
-                PresupuestoID = 6,
-                RubroID = 6,
-                EntidadID = 7,
-                DepositoID = 5,
-                Descrip = "a",
-                Concepto1 = "b",
-                Fecha1 = DateTime.Now,
-                Fecha2 = DateTime.Now,
-
-                Fecha3 = DateTime.Now,
-                Numero1 = 0,
-                Numero2 = 0,
-                Numero3 = 0,
-                Notas = "bb",
-                Active = false,
-                Pesos = 0,
-                Dolares = 0,
-                Impuestos = 0,
-                ImpuestosD = 0,
-                Materiales = 0,
-                ManodeObra = 0,
-                Subcontratos = 0,
-                Equipos = 0,
-                Otros = 0,
-                MaterialesD = 0,
-                ManodeObraD = 0,
-                SubcontratosD = 0,
-                EquiposD = 0,
-                OtrosD = 0,
-                RelDoc = false,
-                RelArt = false,
-                RelMov = false,
-                RelImp = false,
-                RelRub = false,
-                RelTar = false,
-                RelIns = false
-            };
-
-            #endregion
-
-            //var respuesta = await ConsultasAPI.PostDocumentoAsync(documento);
-            ////Respuestas
-            //int? nuevodoc = respuesta.Id;
-            //bool conexionExitosa = respuesta.Success;
-            //string mensaje = respuesta.Message;
-
-            //Mensaje para testeo
-            //MessageBox.Show(respuesta.Success + " " + mensaje + " " + nuevodoc.ToString());
-
-            //Si es existente
-
-            //var (success, message) = await ConsultasAPI.PutDocumentoAsync(wDoc);
-
-            //Window ventanaPadre = Window.GetWindow(this);
-            //if (ventanaPadre != null)
-            //{
-            //    MessageBox.Show(message, success ? "Éxito" : "Error");
-            //    ventanaPadre.Close();
-            //}
         }
 
         private async void Borrar_Click(object sender, RoutedEventArgs e)
