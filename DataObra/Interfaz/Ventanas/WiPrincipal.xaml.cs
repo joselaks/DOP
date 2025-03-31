@@ -150,6 +150,11 @@ namespace DataObra.Interfaz.Ventanas
                 Application.Current.Shutdown();
             }
         }
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }
 

@@ -107,56 +107,59 @@
                         HeaderText="Documento"
                         MappingName="TipoDoc" />
                     <syncfusion:GridDateTimeColumn
-                        Width="90"
+                        Width="69"
                         HeaderText="Fecha"
-                        MappingName="Fecha1" />
+                        MappingName="Fecha1"
+                        TextAlignment="Center"/>
                     <syncfusion:GridTextColumn
-                        Width="90"
-                        HeaderText="ObraID"
-                        MappingName="ObraID" />
-                    <syncfusion:GridTextColumn
-                        Width="90"
+                        Width="120"
                         HeaderText="Obra"
                         MappingName="Obra" />
                     <syncfusion:GridTextColumn
-                        Width="90"
+                        Width="120"
                         HeaderText="Admin"
                         MappingName="Admin" />
                     <syncfusion:GridTextColumn
-                        Width="90"
+                        Width="69"
                         HeaderText="Tipo Ent."
-                        MappingName="TipoEntidad" />
+                        MappingName="TipoEntidad"
+                        />
                     <syncfusion:GridTextColumn
-                        Width="90"
+                        Width="120"
                         HeaderText="Entidad"
                         MappingName="Entidad" />
                     <syncfusion:GridTextColumn
-                        Width="90"
+                        Width="120"
                         HeaderText="Descripción"
                         MappingName="Descrip" />
                     <syncfusion:GridTextColumn
-                        Width="90"
+                        Width="69"
                         HeaderText="Numero"
-                        MappingName="Numero1" />
+                        MappingName="Numero1"
+                        TextAlignment="Right"/>
                     <syncfusion:GridTextColumn
                         Width="90"
                         HeaderText="Pesos"
-                        MappingName="Pesos" />
+                        MappingName="Pesos"
+                        TextAlignment="Right"/>
                     <syncfusion:GridTextColumn
                         Width="90"
                         HeaderText="Dolares"
-                        MappingName="Dolares" />
+                        MappingName="Dolares"
+                        TextAlignment="Right"/>
                     <syncfusion:GridTextColumn
                         Width="90"
                         HeaderText="Impuestos"
-                        MappingName="Impuestos" />
+                        MappingName="Impuestos"
+                        TextAlignment="Right"/>
                     <syncfusion:GridTextColumn
                         Width="90"
                         HeaderText="Usuario"
-                        MappingName="Usuario" />
+                        MappingName="Usuario"
+                        TextAlignment="Center"/>
                     <syncfusion:GridTextColumn
                         Width="90"
-                        HeaderText="Verifica"
+                        HeaderText="Verificado"
                         MappingName="Verifica" />
                 </syncfusion:SfDataGrid.Columns>
             </syncfusion:SfDataGrid>

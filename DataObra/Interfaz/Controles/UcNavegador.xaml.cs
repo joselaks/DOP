@@ -48,9 +48,40 @@ namespace DataObra.Interfaz.Controles
                     this.GrillaDocumentos.ItemsSource = ListaDocumentos;
                 }
                 else
-                    MessageBox.Show("Lista de agrupadores vacia");
+                {
+                    //MessageBox.Show("Lista de agrupadores vacia");
+                }
+
             }
         }
+
+        private static string ConvertirTipo(byte pID)
+        {
+            return pID switch
+            {
+                1 => "Factura",
+                10 => "Presupuesto",
+                2 => "Plan",
+                3 => "Certificado",
+                4 => "Parte",
+                5 => "Remito",
+                6 => "Cobro",
+                7 => "Acopio",
+                8 => "Compra",
+                9 => "Pago",
+                11 => "Contrato",
+                12 => "Sueldo",
+                13 => "Pedido",
+                14 => "Ingreso",
+                15 => "Egreso",
+                16 => "Entrada",
+                17 => "Salida",
+                18 => "Impuesto",
+                19 => "Tema",
+                _ => "Otro"
+            };
+        }
+
         private static Documento Convertir(Biblioteca.DTO.DocumentoDTO docDTO)
         {
             var agrupadoresDict = App.ListaAgrupadores?.ToDictionary(a => a.ID, a => a) ?? new Dictionary<int, AgrupadorDTO>();
@@ -61,7 +92,7 @@ namespace DataObra.Interfaz.Controles
                 ID = docDTO.ID,
                 CuentaID = docDTO.CuentaID,
                 TipoID = docDTO.TipoID,
-                TipoDoc = "Documento Tipo", // Se puede cambiar si se obtiene de docDTO
+                TipoDoc = ConvertirTipo(docDTO. TipoID),
                 #endregion
 
                 #region USUARIOS
@@ -256,64 +287,6 @@ namespace DataObra.Interfaz.Controles
                 toggleButton.BorderThickness = new Thickness(2);
             }
         }
-
-        //public static Documento ConvertirDesdeDTO(DocumentoDTO dto)
-        //{
-        //    return new Documento
-        //    {
-        //        ID = dto.ID,
-        //        CuentaID = dto.CuentaID,  // Si es null, asigna 0
-        //        TipoID = dto.TipoID,
-        //        UsuarioID = dto.UsuarioID,
-        //        CreadoFecha = dto.CreadoFecha,
-        //        EditadoID = dto.EditadoID,
-        //        EditadoFecha = dto.EditadoFecha,
-        //        RevisadoID = dto.RevisadoID,
-        //        RevisadoFecha = dto.RevisadoFecha,
-        //        AdminID = dto.AdminID,
-        //        ObraID = dto.ObraID,
-        //        PresupuestoID = dto.PresupuestoID,
-        //        RubroID = dto.RubroID,
-        //        EntidadID = dto.EntidadID,
-        //        DepositoID = dto.DepositoID,
-        //        Descrip = dto.Descrip ?? string.Empty, // Evita valores null
-        //        Concepto1 = dto.Concepto1,
-        //        Fecha1 = dto.Fecha1,
-        //        Fecha2 = dto.Fecha2,
-        //        Fecha3 = dto.Fecha3,
-        //        Numero1 = dto.Numero1,
-        //        Numero2 = dto.Numero2,
-        //        Numero3 = dto.Numero3,
-        //        Notas = dto.Notas ?? string.Empty,
-        //        Active = dto.Active,
-        //        Pesos = dto.Pesos,
-        //        Dolares = dto.Dolares,
-        //        Impuestos = dto.Impuestos,
-        //        ImpuestosD = dto.ImpuestosD,
-        //        Materiales = dto.Materiales,
-        //        ManodeObra = dto.ManodeObra,
-        //        Subcontratos = dto.Subcontratos,
-        //        Equipos = dto.Equipos,
-        //        Otros = dto.Otros,
-        //        MaterialesD = dto.MaterialesD,
-        //        ManodeObraD = dto.ManodeObraD,
-        //        SubcontratosD = dto.SubcontratosD,
-        //        EquiposD = dto.EquiposD,
-        //        OtrosD = dto.OtrosD,
-        //        RelDoc = dto.RelDoc,
-        //        RelArt = dto.RelArt,
-        //        RelMov = dto.RelMov,
-        //        RelImp = dto.RelImp,
-        //        RelRub = dto.RelRub,
-        //        RelTar = dto.RelTar,
-        //        RelIns = dto.RelIns,
-        //        Accion = 'M', // Asignación por defecto (Modificar)
-        //        DetalleDocumento = new List<DocumentoDet>(),  // Inicializa listas vacías
-        //        DetalleMovimientos = new List<Movimiento>(),
-        //        DetalleImpuestos = new List<Impuesto>()
-        //    };
-        //}
-
 
         private void ToggleButton_Unchecked(object sender, RoutedEventArgs e)
         {
