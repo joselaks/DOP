@@ -662,12 +662,147 @@ namespace DataObra.Presupuestos
 
         private async void BtnGuardar_Click(object sender, RoutedEventArgs e)
         {
-
+            Objeto.listaConceptosGrabar.Clear();
+            Objeto.listaRelacionesGrabar.Clear();
             Objeto.aplanar(Objeto.Arbol, null);
             MessageBox.Show($"Cantidad de registros en listaConceptosGrabar: {Objeto.listaConceptosGrabar.Count}\nCantidad de registros en listaRelacionesGrabar: {Objeto.listaRelacionesGrabar.Count}");
-
+            ProcesarArbolPresupuestoRequest();
 
         }
+
+        private async void ProcesarArbolPresupuestoRequest()
+        {
+            // Comparar listaConceptosLeer y listaConceptosGrabar
+            foreach (var conceptoLeer in Objeto.listaConceptosLeer)
+            {
+                var conceptoGrabar = Objeto.listaConceptosGrabar.FirstOrDefault(c => c.Codigo == conceptoLeer.Codigo);
+                if (conceptoGrabar == null)
+                {
+                    // Si el concepto de listaConceptosLeer no existe en listaConceptosGrabar, agregar "D" al campo acción
+                    conceptoLeer.Accion = 'D';
+                    Objeto.listaConceptosGrabar.Add(conceptoLeer);
+                }
+            }
+
+            foreach (var conceptoGrabar in Objeto.listaConceptosGrabar)
+            {
+                var conceptoLeer = Objeto.listaConceptosLeer.FirstOrDefault(c => c.Codigo == conceptoGrabar.Codigo);
+                if (conceptoLeer == null)
+                {
+                    // Si el concepto de listaConceptosGrabar no existe en listaConceptosLeer, agregar "A" al campo acción
+                    conceptoGrabar.Accion = 'A';
+                }
+                else
+                {
+                    // Al resto de los registros de listaConceptosGrabar, agregar "M" al campo acción
+                    conceptoGrabar.Accion = 'M';
+                }
+            }
+
+            // Comparar listaRelacionesLeer y listaRelacionesGrabar
+            foreach (var relacionLeer in Objeto.listaRelacionesLeer)
+            {
+                var relacionGrabar = Objeto.listaRelacionesGrabar.FirstOrDefault(r => r.Superior == relacionLeer.Superior && r.Inferior == relacionLeer.Inferior);
+                if (relacionGrabar == null)
+                {
+                    // Si la relación de listaRelacionesLeer no existe en listaRelacionesGrabar, agregar "D" al campo acción
+                    relacionLeer.Accion = 'D';
+                    Objeto.listaRelacionesGrabar.Add(relacionLeer);
+                }
+            }
+
+            foreach (var relacionGrabar in Objeto.listaRelacionesGrabar)
+            {
+                var relacionLeer = Objeto.listaRelacionesLeer.FirstOrDefault(r => r.Superior == relacionGrabar.Superior && r.Inferior == relacionGrabar.Inferior);
+                if (relacionLeer == null)
+                {
+                    // Si la relación de listaRelacionesGrabar no existe en listaRelacionesLeer, agregar "A" al campo acción
+                    relacionGrabar.Accion = 'A';
+                }
+                else
+                {
+                    // Al resto de los registros de listaRelacionesGrabar, agregar "M" al campo acción
+                    relacionGrabar.Accion = 'M';
+                }
+            }
+
+            // Verificar que estén completos todos los campos que requiere ProcesarArbolPresupuestoAsync
+            foreach (var concepto in Objeto.listaConceptosGrabar)
+            {
+                var missingFields = new List<string>();
+                if (concepto.PresupuestoID == 0) missingFields.Add(nameof(concepto.PresupuestoID));
+                if (string.IsNullOrEmpty(concepto.Codigo)) missingFields.Add(nameof(concepto.Codigo));
+                if (string.IsNullOrEmpty(concepto.Descrip)) missingFields.Add(nameof(concepto.Descrip));
+                if (concepto.Tipo == '\0') missingFields.Add(nameof(concepto.Tipo));
+                if (concepto.Precio1 == null) missingFields.Add(nameof(concepto.Precio1));
+                if (concepto.Precio2 == null) missingFields.Add(nameof(concepto.Precio2));
+                if (concepto.FechaPrecio == null) missingFields.Add(nameof(concepto.FechaPrecio));
+                if (string.IsNullOrEmpty(concepto.Unidad)) missingFields.Add(nameof(concepto.Unidad));
+
+                if (missingFields.Any())
+                {
+                    throw new InvalidOperationException($"Faltan campos requeridos en el concepto con Código {concepto.Codigo}: {string.Join(", ", missingFields)}");
+                }
+            }
+
+            // Crear el objeto ProcesaPresupuestoDTO
+            var request = new ProcesaPresupuestoDTO
+            {
+                //PresupuestoID = Encabezado?.ID ?? 0,
+                PresupuestoID = 1, //Por ahora, solo trabaja con uno
+                ListaConceptos = Objeto.listaConceptosGrabar.Select(c => new ConceptoDTO
+                {
+                    PresupuestoID = c.PresupuestoID,
+                    Codigo = c.Codigo,
+                    Descrip = c.Descrip,
+                    Tipo = c.Tipo,
+                    Precio1 = c.Precio1 ?? 0,
+                    Precio2 = c.Precio2 ?? 0,
+                    FechaPrecio = c.FechaPrecio ?? DateTime.MinValue,
+                    Unidad = c.Unidad,
+                    CanPr = c.CanPr ?? 0,
+                    CanPe = c.CanPe ?? 0,
+                    CanCo = c.CanCo ?? 0,
+                    CanEn = c.CanEn ?? 0,
+                    CanFa = c.CanFa ?? 0,
+                    CanEj = c.CanEj ?? 0,
+                    UltimoPrecio1 = c.UltimoPrecio1 ?? 0,
+                    UltimoPrecio2 = c.UltimoPrecio2 ?? 0,
+                    FechaUltimoPrecio = c.FechaUltimoPrecio ?? DateTime.MinValue,
+                    DocumentoID = c.DocumentoID ?? 0,
+                    InsumoID = c.InsumoID ?? 0,
+                    Accion = c.Accion
+                }).ToList(),
+                ListaRelaciones = Objeto.listaRelacionesGrabar.Select(r => new RelacionDTO
+                {
+                    PresupuestoID = r.PresupuestoID,
+                    Superior = r.Superior ,
+                    Inferior = r.Inferior,
+                    Cantidad = r.Cantidad,
+                    OrdenInt = r.OrdenInt ?? 0,
+                    Accion = r.Accion
+                }).ToList()
+            };
+
+            // Llamar al método ProcesarArbolPresupuestoAsync
+            var result = await DatosWeb.ProcesarArbolPresupuestoAsync(request);
+
+            // Manejar la respuesta
+            if (result.Success)
+            {
+                MessageBox.Show("Árbol de presupuesto procesado exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show($"Error al procesar el árbol de presupuesto: {result.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
+
+
+
+
 
         private void descripcion_KeyDown(object sender, KeyEventArgs e)
         {

@@ -214,7 +214,10 @@ namespace Bibioteca.Clases
         public void generaPresupuesto(string origen, List<ConceptoDTO> listaConceptos, List<RelacionDTO> listaRelaciones)
             {
             // No es necesario generar un nuevo objeto, se puede reutilizar el existente.
-            //Arbol = new ObservableCollection<Nodo>();
+            Arbol.Clear();
+            //instanciar los lostados de origen
+            listaConceptosLeer = listaConceptos;
+            listaRelacionesLeer = listaRelaciones;
             //Obtengo lista de relaciones con superior 0, que son los rubros.
             string? raiz;
             if (origen == "fie")
@@ -813,20 +816,19 @@ namespace Bibioteca.Clases
                 if (existe == false)
                     {
                     ConceptoDTO registroC = new ConceptoDTO();
+                    registroC.PresupuestoID = 1;
                     registroC.Codigo = item.ID;
                     registroC.Descrip = item.Descripcion;
                     registroC.Tipo = item.Tipo[0];
                     registroC.Precio1 = item.PU1;
                     registroC.Precio2 = item.PU2;
                     registroC.Unidad = item.Unidad;
+                    registroC.FechaPrecio = DateTime.Now;
                     listaConceptosGrabar.Add(registroC);
                     }
                 RelacionDTO registroR = new RelacionDTO();
-                if (parentItem != null)
-                    {
-                    registroR.Superior = parentItem.ID;
-                    }
-
+                registroR.PresupuestoID = 1;
+                registroR.Superior = parentItem==null?"0": parentItem.ID;
                 registroR.Inferior = item.ID;
                 registroR.Cantidad = item.Cantidad;
                 listaRelacionesGrabar.Add(registroR);
