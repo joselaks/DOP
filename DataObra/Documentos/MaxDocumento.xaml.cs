@@ -41,46 +41,49 @@ namespace DataObra.Documentos
             #region COMBOS
             this.ComboObras.ItemsSource = App.ListaAgrupadores.Where(a => a.TipoID == 'O' && a.Active);
             this.ComboAdmin.ItemsSource = App.ListaAgrupadores.Where(a => a.TipoID == 'A' && a.Active);
+            this.ComboEntidad.ItemsSource = App.ListaAgrupadores.Where(a => new[] { 'C', 'P', 'S', 'O' }.Contains(a.TipoID) && a.Active);
 
             #endregion Combos
 
             Random random = new Random();
 
-            if (pDoc == null)
+            if (pDoc.ID == null)
             {
                 #region NUEVO
-                oActivo = new Documento()
+                #region Datos para testeo 
+
+                var documento = new Biblioteca.DTO.DocumentoDTO
                 {
                     CuentaID = 1,
                     TipoID = 2,
                     UsuarioID = 3,
                     CreadoFecha = DateTime.Now,
-                    EditadoID = 1,
+                    EditadoID = 4,
                     EditadoFecha = DateTime.Now,
-                    RevisadoID = 1,
+                    RevisadoID = 5,
                     RevisadoFecha = DateTime.Now,
-                    AdminID = 63,
-                    ObraID = 60,
+                    AdminID = 3,
+                    ObraID = 5,
                     PresupuestoID = 6,
                     RubroID = 6,
-                    EntidadID = 64,
+                    EntidadID = 7,
                     DepositoID = 5,
-                    Descrip = "Descripcion " + DateTime.Today.DayOfYear,
-                    Concepto1 = "Concepto",
+                    Descrip = "a",
+                    Concepto1 = "b",
                     Fecha1 = DateTime.Now,
                     Fecha2 = DateTime.Now,
                     Fecha3 = DateTime.Now,
-                    Numero1 = random.Next(1, 1000),
-                    Numero2 = random.Next(1, 1000),
-                    Numero3 = random.Next(1, 1000),
+                    Numero1 = 0,
+                    Numero2 = 0,
+                    Numero3 = 0,
                     Notas = "bb",
                     Active = false,
-                    Pesos = random.Next(1, 1000),
-                    Dolares = random.Next(1, 1000),
-                    Impuestos = random.Next(1, 1000),
-                    ImpuestosD = random.Next(1, 1000),
-                    Materiales = random.Next(1, 1000),
-                    ManodeObra = random.Next(1, 1000),
+                    Pesos = 0,
+                    Dolares = 0,
+                    Impuestos = 0,
+                    ImpuestosD = 0,
+                    Materiales = 0,
+                    ManodeObra = 0,
                     Subcontratos = 0,
                     Equipos = 0,
                     Otros = 0,
@@ -98,19 +101,66 @@ namespace DataObra.Documentos
                     RelIns = false
                 };
 
-                this.ComboObras.SelectedItem = azure.GetFirstAgrupadorByTipoIDOrdered(1);
-                this.ComboAdmin.SelectedItem = azure.GetFirstAgrupadorByTipoIDOrdered(2);
+                #endregion
+                //oActivo = new Documento()
+                //{
+                //    CuentaID = 1,
+                //    TipoID = 2,
+                //    UsuarioID = 3,
+                //    CreadoFecha = DateTime.Now,
+                //    EditadoID = 1,
+                //    EditadoFecha = DateTime.Now,
+                //    RevisadoID = 1,
+                //    RevisadoFecha = DateTime.Now,
+                //    AdminID = 63,
+                //    ObraID = 60,
+                //    PresupuestoID = 6,
+                //    RubroID = 6,
+                //    EntidadID = 64,
+                //    DepositoID = 5,
+                //    Descrip = "Descripcion " + DateTime.Today.DayOfYear,
+                //    Concepto1 = "Concepto",
+                //    Fecha1 = DateTime.Now,
+                //    Fecha2 = DateTime.Now.AddDays(2),
+                //    Fecha3 = DateTime.Now.AddDays(4),
+                //    Numero1 = random.Next(1, 1000),
+                //    Numero2 = random.Next(1001, 2000),
+                //    Numero3 = random.Next(2001, 3000),
+                //    Notas = "bb",
+                //    Active = false,
+                //    Pesos = random.Next(5000, 19000),
+                //    Dolares = random.Next(32, 999),
+                //    Impuestos = random.Next(1200, 4999),
+                //    ImpuestosD = random.Next(19, 32),
+                //    Materiales = random.Next(500, 32000),
+                //    ManodeObra = random.Next(900, 1900),
+                //    Subcontratos = 0,
+                //    Equipos = 0,
+                //    Otros = 0,
+                //    MaterialesD = 0,
+                //    ManodeObraD = 0,
+                //    SubcontratosD = 0,
+                //    EquiposD = 0,
+                //    OtrosD = 0,
+                //    RelDoc = false,
+                //    RelArt = false,
+                //    RelMov = false,
+                //    RelImp = false,
+                //    RelRub = false,
+                //    RelTar = false,
+                //    RelIns = false
+                //};
                 #endregion Nuevo
+
+                this.P.IsChecked = true;
             }
             else
             {
                 #region EDITA
-                // Recibe el Documento a editar bajado del servidor y lo convierte
                 oActivo = pDoc;
 
                 this.ComboObras.SelectedItem = App.ListaAgrupadores.FirstOrDefault(a => a.ID == oActivo.ObraID);
                 this.ComboAdmin.SelectedItem = App.ListaAgrupadores.FirstOrDefault(a => a.ID == oActivo.AdminID);
-                
                 var entidad = App.ListaAgrupadores.FirstOrDefault(a => a.ID == oActivo.EntidadID);
 
                 if (entidad != null)
@@ -137,11 +187,24 @@ namespace DataObra.Documentos
 
                 if (oActivo.RevisadoID != 0)
                 {
-                    //this.CelRevisadoFecha.Visibility = Visibility.Visible;
+                    this.CelRevisadoFecha.Visibility = Visibility.Visible;
+                    var revisado = App.ListaAgrupadores.FirstOrDefault(a => a.ID == oActivo.EntidadID);
+                    if (revisado != null) { oActivo.Revisado = revisado.Descrip; }
                 }
                 else
                 {
-                    //this.CelRevisadoFecha.Visibility = Visibility.Collapsed;
+                    this.CelRevisadoFecha.Visibility = Visibility.Collapsed;
+                }
+
+                if (oActivo.EditadoID != 0)
+                {
+                    this.CelEditadoFecha.Visibility = Visibility.Visible;
+                    var editado = App.ListaAgrupadores.FirstOrDefault(a => a.ID == oActivo.EntidadID);
+                    if (editado != null) { oActivo.Revisado = editado.Descrip; }
+                }
+                else
+                {
+                    this.CelEditadoFecha.Visibility = Visibility.Collapsed;
                 }
                 #endregion Nuevo
             }
@@ -203,9 +266,55 @@ namespace DataObra.Documentos
 
         #region PANTALLA
 
+
         private async void Guardar_Click(object sender, RoutedEventArgs e)
         {
-            Biblioteca.DTO.DocumentoDTO documento = new Biblioteca.DTO.DocumentoDTO();
+            var documento = new Biblioteca.DTO.DocumentoDTO();
+
+            documento.CuentaID = (byte)App.IdCuenta;
+            documento.TipoID = 1; // ver
+            documento.UsuarioID = App.IdUsuario;
+            documento.CreadoFecha = oActivo.CreadoFecha;
+            documento.EditadoID = App.IdUsuario;
+            documento.EditadoFecha = DateTime.Now;
+            documento.AdminID = oActivo.AdminID;
+            documento.ObraID = oActivo.ObraID;
+            documento.PresupuestoID = oActivo.PresupuestoID;
+            documento.RubroID = oActivo.RubroID;
+            documento.EntidadID = oActivo.EntidadID;
+            documento.DepositoID = oActivo.DepositoID;
+            documento.Descrip = oActivo.Descrip;
+            documento.Concepto1 = oActivo.Concepto1;
+            documento.Fecha1 = oActivo.Fecha1;
+            documento.Fecha2 = oActivo.Fecha2;
+            documento.Fecha3 = oActivo.Fecha3;
+            documento.Numero1 = oActivo.Numero1;
+            documento.Numero2 = oActivo.Numero2;
+            documento.Numero3 = oActivo.Numero3;
+            documento.Notas = oActivo.Notas;
+            documento.Active = oActivo.Active;
+            documento.Pesos = oActivo.Pesos;
+            documento.Dolares = oActivo.Dolares;
+            documento.Impuestos = oActivo.Impuestos;
+            documento.ImpuestosD = oActivo.ImpuestosD;
+            documento.Materiales = oActivo.Materiales;
+            documento.ManodeObra = oActivo.ManodeObra;
+            documento.Subcontratos = oActivo.Subcontratos;
+            documento.Equipos = oActivo.Equipos;
+            documento.Otros = oActivo.Otros;
+            documento.MaterialesD = oActivo.MaterialesD;
+            documento.ManodeObraD = oActivo.ManodeObraD;
+            documento.SubcontratosD = oActivo.SubcontratosD;
+            documento.EquiposD = oActivo.EquiposD;
+            documento.OtrosD = oActivo.OtrosD;
+            documento.RelDoc = oActivo.RelDoc;
+            documento.RelArt = oActivo.RelArt;
+            documento.RelMov = oActivo.RelMov;
+            documento.RelImp = oActivo.RelImp;
+            documento.RelRub = oActivo.RelRub;
+            documento.RelTar = oActivo.RelTar;
+            documento.RelIns = oActivo.RelIns;
+
 
             // Llamar al método CrearDocumentoAsync
             var (success, message, id) = await DatosWeb.CrearDocumentoAsync(documento);

@@ -323,10 +323,8 @@ namespace DataObra.Interfaz.Controles
                 Documentos.MaxDocumento Docu = new Documentos.MaxDocumento(objetoFactura);
                 ventanaDoc = new DataObra.Interfaz.Ventanas.WiDocumento("Factura", Docu);
 
-                // Mostrar la ventana de manera modal
+                // Ventana de manera modal y quitar el efecto de desenfoque
                 ventanaDoc.ShowDialog();
-
-                // Quitar el efecto de desenfoque después de cerrar la ventana modal
                 mainWindow.Effect = null;
         }
 
@@ -350,9 +348,10 @@ namespace DataObra.Interfaz.Controles
                 else
                 {
                     // Agregar manejo para cada tipo de documento
-                    Biblioteca.Documento objetoFactura = new Biblioteca.Documento();
-                    Documentos.MaxDocumento Docu = new Documentos.MaxDocumento(objetoFactura);
-                    ventanaDoc = new DataObra.Interfaz.Ventanas.WiDocumento("Factura", Docu);
+                    // Biblioteca.Documento objetoFactura = new Biblioteca.Documento();
+
+                    Documentos.MaxDocumento Docu = new Documentos.MaxDocumento(sele);
+                    ventanaDoc = new DataObra.Interfaz.Ventanas.WiDocumento(" "+sele.TipoDoc, Docu);
 
                 }
                 // Mostrar la ventana de manera modal
@@ -360,14 +359,12 @@ namespace DataObra.Interfaz.Controles
 
                 // Quitar el efecto de desenfoque después de cerrar la ventana modal
                 mainWindow.Effect = null;
-
             }
             else
             {
                 MessageBox.Show("Por favor, seleccione un documento para editar.");
             }
         }
-
     }
 }
 

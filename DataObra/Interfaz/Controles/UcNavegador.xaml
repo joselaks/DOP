@@ -97,7 +97,7 @@
                 <syncfusion:SfDataGrid.ContextMenu>
                     <ContextMenu>
                         <MenuItem Click="NuevoDoc_Click" Header="Nuevo" />
-                        <MenuItem Click="NuevoDoc_Click" Header="Editar" />
+                        <MenuItem Click="EditaDoc_Click" Header="Editar" />
                         <MenuItem Click="MenuItem_Click_2" Header="Borrar" />
                     </ContextMenu>
                 </syncfusion:SfDataGrid.ContextMenu>

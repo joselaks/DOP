@@ -50,6 +50,7 @@ namespace DataObra
             HttpClient = httpClientFactory.CreateClient("default");
 
             IdCuenta = 1;
+            IdUsuario = 1;
 
             // Agregar el CommandBinding
             CommandManager.RegisterClassCommandBinding(typeof(App), new CommandBinding(OpenConectoresCommand, OpenConectores));

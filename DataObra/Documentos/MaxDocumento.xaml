@@ -368,7 +368,8 @@
                         Name="P"
                         Height="16"
                         Checked="EntityType_Checked"
-                        Content="Proveedor" />
+                        Content="Proveedor"
+                        />
                     <RadioButton
                         Name="S"
                         Height="16"
@@ -486,6 +487,7 @@
                     VerticalAlignment="Center"
                     Text="Editado: " />
                 <TextBlock
+                    x:Name="CelEditadoFecha"
                     Grid.Row="3"
                     Grid.Column="1"
                     Width="63"
