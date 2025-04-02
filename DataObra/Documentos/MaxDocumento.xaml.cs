@@ -330,6 +330,74 @@ namespace DataObra.Documentos
             }
         }
 
+        private async void Actualizar_Click(object sender, RoutedEventArgs e)
+            {
+            var documento = new Biblioteca.DTO.DocumentoDTO();
+            documento.ID = (int)oActivo.ID;
+            documento.CuentaID = (byte)App.IdCuenta;
+            documento.TipoID = 1; // ver
+            documento.UsuarioID = App.IdUsuario;
+            documento.CreadoFecha = oActivo.CreadoFecha;
+            documento.EditadoID = App.IdUsuario;
+            documento.EditadoFecha = DateTime.Now;
+            documento.AdminID = oActivo.AdminID;
+            documento.RevisadoID = oActivo.RevisadoID;
+            documento.RevisadoFecha = oActivo.RevisadoFecha;
+            documento.ObraID = oActivo.ObraID;
+            documento.PresupuestoID = oActivo.PresupuestoID;
+            documento.RubroID = oActivo.RubroID;
+            documento.EntidadID = oActivo.EntidadID;
+            documento.DepositoID = oActivo.DepositoID;
+            documento.Descrip = oActivo.Descrip;
+            documento.Concepto1 = oActivo.Concepto1;
+            documento.Fecha1 = oActivo.Fecha1;
+            documento.Fecha2 = oActivo.Fecha2;
+            documento.Fecha3 = oActivo.Fecha3;
+            documento.Numero1 = oActivo.Numero1;
+            documento.Numero2 = oActivo.Numero2;
+            documento.Numero3 = oActivo.Numero3;
+            documento.Notas = oActivo.Notas;
+            documento.Active = oActivo.Active;
+            documento.Pesos = oActivo.Pesos;
+            documento.Dolares = oActivo.Dolares;
+            documento.Impuestos = oActivo.Impuestos;
+            documento.ImpuestosD = oActivo.ImpuestosD;
+            documento.Materiales = oActivo.Materiales;
+            documento.ManodeObra = oActivo.ManodeObra;
+            documento.Subcontratos = oActivo.Subcontratos;
+            documento.Equipos = oActivo.Equipos;
+            documento.Otros = oActivo.Otros;
+            documento.MaterialesD = oActivo.MaterialesD;
+            documento.ManodeObraD = oActivo.ManodeObraD;
+            documento.SubcontratosD = oActivo.SubcontratosD;
+            documento.EquiposD = oActivo.EquiposD;
+            documento.OtrosD = oActivo.OtrosD;
+            documento.RelDoc = oActivo.RelDoc;
+            documento.RelArt = oActivo.RelArt;
+            documento.RelMov = oActivo.RelMov;
+            documento.RelImp = oActivo.RelImp;
+            documento.RelRub = oActivo.RelRub;
+            documento.RelTar = oActivo.RelTar;
+            documento.RelIns = oActivo.RelIns;
+
+
+            // Llamar al método ActualizarDocumentoAsync
+            var (success, message) = await DatosWeb.ActualizarDocumentoAsync(documento);
+
+            // Manejar la respuesta
+            if (success)
+                {
+                MessageBox.Show($"Documento actualizado con éxito. ID: {documento.ID}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            else
+                {
+                MessageBox.Show($"Error al actualizar el documento: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
+
+
+
         private async void Borrar_Click(object sender, RoutedEventArgs e)
         {
             // Codigo a utilizar

@@ -74,22 +74,31 @@ namespace Servidor.Repositorios
         }
 
         public async Task<(bool Success, string Message)> ActualizarDocumentoAsync(DocumentoDTO documento)
-        {
-            using (var db = new SqlConnection(_connectionString))
             {
+            using (var db = new SqlConnection(_connectionString))
+                {
                 var parameters = new DynamicParameters(documento);
                 parameters.Add("ID", documento.ID, DbType.Int32);
                 parameters.Add("Success", dbType: DbType.Boolean, direction: ParameterDirection.Output);
                 parameters.Add("Mensaje", dbType: DbType.String, direction: ParameterDirection.Output, size: 4000);
 
-                await db.ExecuteAsync("DocumentosPut", parameters, commandType: CommandType.StoredProcedure);
+                try
+                    {
+                    await db.ExecuteAsync("DocumentosPut", parameters, commandType: CommandType.StoredProcedure);
 
-                bool success = parameters.Get<bool>("Success");
-                string mensaje = parameters.Get<string>("Mensaje");
+                    bool success = parameters.Get<bool>("Success");
+                    string mensaje = parameters.Get<string>("Mensaje");
 
-                return (success, mensaje);
+                    return (success, mensaje);
+                    }
+                catch (SqlException ex)
+                    {
+                    string mensajeError = parameters.Get<string>("Mensaje");
+                    return (false, !string.IsNullOrEmpty(mensajeError) ? mensajeError : ex.Message);
+                    }
+                }
             }
-        }
+
 
 
         //Procesar lote de Detalles de documentos

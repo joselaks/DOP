@@ -156,8 +156,8 @@ namespace DataObra.Datos
             #region Datos para testeo
             var documento = new Biblioteca.DTO.DocumentoDTO
                 {
-                ID = 21,
-                CuentaID = 55,
+                ID = 99,
+                CuentaID = 1,
                 TipoID = 5,
                 UsuarioID = 1,
                 CreadoFecha = DateTime.Now,

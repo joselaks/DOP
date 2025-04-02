@@ -100,7 +100,7 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     HorizontalContentAlignment="Right"
-                    Text="{Binding Numero1, Mode=TwoWay, UpdateSourceTrigger=Explicit}" />
+                    Text="{Binding Numero1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                 <Syncfusion:DateTimeEdit
                     x:Name="cFecha1"
@@ -368,8 +368,7 @@
                         Name="P"
                         Height="16"
                         Checked="EntityType_Checked"
-                        Content="Proveedor"
-                        />
+                        Content="Proveedor" />
                     <RadioButton
                         Name="S"
                         Height="16"
@@ -925,6 +924,11 @@
                 Margin="5,5,0,0"
                 Click="Guardar_Click"
                 Content="Guardar" />
+            <Button
+                Width="85"
+                Margin="15,5,0,0"
+                Click="Actualizar_Click"
+                Content="Actualizar" />
             <Button
                 Width="85"
                 Margin="15,5,0,0"
