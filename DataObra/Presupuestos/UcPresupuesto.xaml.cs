@@ -740,7 +740,7 @@ namespace DataObra.Presupuestos
                 if (concepto.Precio1 == null) missingFields.Add(nameof(concepto.Precio1));
                 if (concepto.Precio2 == null) missingFields.Add(nameof(concepto.Precio2));
                 if (concepto.FechaPrecio == null) missingFields.Add(nameof(concepto.FechaPrecio));
-                if (string.IsNullOrEmpty(concepto.Unidad)) missingFields.Add(nameof(concepto.Unidad));
+                //if (string.IsNullOrEmpty(concepto.Unidad)) missingFields.Add(nameof(concepto.Unidad));
 
                 if (missingFields.Any())
                 {
@@ -762,7 +762,7 @@ namespace DataObra.Presupuestos
                     Precio1 = c.Precio1 ?? 0,
                     Precio2 = c.Precio2 ?? 0,
                     FechaPrecio = c.FechaPrecio ?? DateTime.MinValue,
-                    Unidad = c.Unidad,
+                    Unidad = c.Unidad ?? "Gl",
                     CanPr = c.CanPr ?? 0,
                     CanPe = c.CanPe ?? 0,
                     CanCo = c.CanCo ?? 0,

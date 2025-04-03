@@ -181,9 +181,9 @@ namespace Bibioteca.Clases
                     }
 
                     string descrip = Convert.ToString(vLinea[3]);
-                    if (descrip.Length > 250)
+                    if (descrip.Length > 50)
                     {
-                        registro.Descrip = descrip.Substring(0, 250);
+                        registro.Descrip = descrip.Substring(0,50);
                     }
                     else
                     {

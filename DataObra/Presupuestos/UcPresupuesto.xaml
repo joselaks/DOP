@@ -375,6 +375,8 @@
 
                         <syncfusion:TreeGridTextColumn Width="50" MappingName="Tipo" />
 
+                        <syncfusion:TreeGridTextColumn Width="50" MappingName="OrdenInt" />
+
 
                         <syncfusion:TreeGridTextColumn Width="250" MappingName="Descripcion" />
 

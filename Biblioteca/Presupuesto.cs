@@ -199,6 +199,8 @@ namespace Bibioteca.Clases
             if (_encabezado == null)
                 {
                 encabezado = new DocumentoDTO();
+                listaConceptosLeer = new List<ConceptoDTO>();
+                listaRelacionesLeer = new List<RelacionDTO>();
                 }
             else
                 {
@@ -462,20 +464,21 @@ namespace Bibioteca.Clases
                 }
             foreach (var item in items)
                 {
-                if (item.Tipo == "R" || item.Tipo == "T")
-                    {
+                //if (item.Tipo == "R" || item.Tipo == "T")
+                //    {
                     item.OrdenInt = ordenint;
                     ordenint = ordenint + 1;
 
-                    }
+                    //}
                 if (item.HasItems) //tiene inferiores
                     {
                     if (item.Sup == true) //es el rubro o nodo superior
                         {
                         FactorSup = item.Cantidad;
+
                         }
 
-                    recalculo(item.Inferiores, false, FactorSup * item.Cantidad, true); //Primero digo hasta abajo
+                    recalculo(item.Inferiores, false, FactorSup * item.Cantidad, true); //Primero sigo hasta abajo
 
                     #region Calculo de PU y suma de importes por tipo
 
@@ -831,6 +834,7 @@ namespace Bibioteca.Clases
                 registroR.Superior = parentItem==null?"0": parentItem.ID;
                 registroR.Inferior = item.ID;
                 registroR.Cantidad = item.Cantidad;
+                registroR.OrdenInt = item.OrdenInt;
                 listaRelacionesGrabar.Add(registroR);
                 if (item.HasItems == true)
                     {
