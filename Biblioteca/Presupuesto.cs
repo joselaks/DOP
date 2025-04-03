@@ -258,6 +258,10 @@ namespace Bibioteca.Clases
                         }
                     }
                 }
+            if (origen == "fie")
+                {
+                DetectaAuxilarRecursivo(this.Arbol);
+                }
             }
 
         private ObservableCollection<Nodo> GetElementosHijos(Nodo elemento, List<ConceptoDTO> listaConceptos, List<RelacionDTO> listaRelaciones, int _nivel)
@@ -325,6 +329,8 @@ namespace Bibioteca.Clases
 
 
 
+
+
         public void mismoCodigo(IEnumerable<Nodo> items, Nodo editado)
             {
             foreach (var item in items)
@@ -340,6 +346,28 @@ namespace Bibioteca.Clases
                 if (item.HasItems)
                     {
                     mismoCodigo(item.Inferiores, editado);
+                    }
+                }
+            }
+
+        private void DetectaAuxilarRecursivo(ObservableCollection<Nodo> nodos)
+            {
+            foreach (var nodo in nodos)
+                {
+                if (nodo.Tipo == "T" || nodo.Tipo == "A")
+                    {
+                    foreach (var inferior in nodo.Inferiores)
+                        {
+                        if (inferior.Tipo == "T")
+                            {
+                            inferior.Tipo = "A";
+                            }
+                        DetectaAuxilarRecursivo(inferior.Inferiores);
+                        }
+                    }
+                else
+                    {
+                    DetectaAuxilarRecursivo(nodo.Inferiores);
                     }
                 }
             }
