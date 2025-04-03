@@ -672,17 +672,7 @@ namespace DataObra.Presupuestos
 
         private async void ProcesarArbolPresupuestoRequest()
         {
-            // Comparar listaConceptosLeer y listaConceptosGrabar
-            foreach (var conceptoLeer in Objeto.listaConceptosLeer)
-            {
-                var conceptoGrabar = Objeto.listaConceptosGrabar.FirstOrDefault(c => c.Codigo == conceptoLeer.Codigo);
-                if (conceptoGrabar == null)
-                {
-                    // Si el concepto de listaConceptosLeer no existe en listaConceptosGrabar, agregar "D" al campo acción
-                    conceptoLeer.Accion = 'D';
-                    Objeto.listaConceptosGrabar.Add(conceptoLeer);
-                }
-            }
+           
 
             foreach (var conceptoGrabar in Objeto.listaConceptosGrabar)
             {
@@ -699,18 +689,19 @@ namespace DataObra.Presupuestos
                 }
             }
 
-            // Comparar listaRelacionesLeer y listaRelacionesGrabar
-            foreach (var relacionLeer in Objeto.listaRelacionesLeer)
-            {
-                var relacionGrabar = Objeto.listaRelacionesGrabar.FirstOrDefault(r => r.Superior == relacionLeer.Superior && r.Inferior == relacionLeer.Inferior);
-                if (relacionGrabar == null)
+            // Comparar listaConceptosLeer y listaConceptosGrabar
+            foreach (var conceptoLeer in Objeto.listaConceptosLeer)
                 {
-                    // Si la relación de listaRelacionesLeer no existe en listaRelacionesGrabar, agregar "D" al campo acción
-                    relacionLeer.Accion = 'D';
-                    Objeto.listaRelacionesGrabar.Add(relacionLeer);
+                var conceptoGrabar = Objeto.listaConceptosGrabar.FirstOrDefault(c => c.Codigo == conceptoLeer.Codigo);
+                if (conceptoGrabar == null)
+                    {
+                    // Si el concepto de listaConceptosLeer no existe en listaConceptosGrabar, agregar "D" al campo acción
+                    conceptoLeer.Accion = 'D';
+                    Objeto.listaConceptosGrabar.Add(conceptoLeer);
+                    }
                 }
-            }
 
+            
             foreach (var relacionGrabar in Objeto.listaRelacionesGrabar)
             {
                 var relacionLeer = Objeto.listaRelacionesLeer.FirstOrDefault(r => r.Superior == relacionGrabar.Superior && r.Inferior == relacionGrabar.Inferior);
@@ -725,6 +716,18 @@ namespace DataObra.Presupuestos
                     relacionGrabar.Accion = 'M';
                 }
             }
+
+            // Comparar listaRelacionesLeer y listaRelacionesGrabar
+            foreach (var relacionLeer in Objeto.listaRelacionesLeer)
+                {
+                var relacionGrabar = Objeto.listaRelacionesGrabar.FirstOrDefault(r => r.Superior == relacionLeer.Superior && r.Inferior == relacionLeer.Inferior);
+                if (relacionGrabar == null)
+                    {
+                    // Si la relación de listaRelacionesLeer no existe en listaRelacionesGrabar, agregar "D" al campo acción
+                    relacionLeer.Accion = 'D';
+                    Objeto.listaRelacionesGrabar.Add(relacionLeer);
+                    }
+                }
 
             // Verificar que estén completos todos los campos que requiere ProcesarArbolPresupuestoAsync
             foreach (var concepto in Objeto.listaConceptosGrabar)
