@@ -20,6 +20,7 @@ using Syncfusion.Windows.Shared;
 using Syncfusion.Windows.Tools.Controls;
 using System.ComponentModel;
 using Syncfusion.Windows.PropertyGrid;
+using Biblioteca.DTO;
 
 namespace DataObra.Documentos
 {
@@ -232,7 +233,7 @@ namespace DataObra.Documentos
 
         private void ComboObras_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var sele = ComboObras.SelectedItem as Agrupador;
+            var sele = ComboObras.SelectedItem as AgrupadorDTO;
 
             if (sele != null)
             {
@@ -242,7 +243,7 @@ namespace DataObra.Documentos
         }
         private void ComboAdmin_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var sele = ComboAdmin.SelectedItem as Agrupador;
+            var sele = ComboAdmin.SelectedItem as AgrupadorDTO;
 
             if (sele != null)
             {
@@ -252,13 +253,13 @@ namespace DataObra.Documentos
         }
         private void ComboEntidad_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var sele = ComboEntidad.SelectedItem as Agrupador;
+            var sele = ComboEntidad.SelectedItem as AgrupadorDTO;
 
             if (sele != null)
             {
                 oActivo.EntidadID = sele.ID;
                 oActivo.Entidad = sele.Descrip;
-                oActivo.EntidadTipo = EntidadTipoHelper.GetEntidadTipo(sele.ID);
+                oActivo.EntidadTipo = sele.Tipo;
             }
         }
 
