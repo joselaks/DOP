@@ -51,11 +51,13 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Orientation="Horizontal">
-            <ToggleButton
+            <!--<ToggleButton
                 Tag="10"  
                 Width="100"
                 Height="35"
                 Margin="5"
+                BorderThickness="1"
+                BorderBrush="Beige"
                 Checked="ToggleButton_Checked"
                 Content="Presupuestos"
                 Unchecked="ToggleButton_Unchecked" />
@@ -64,6 +66,8 @@
                 Width="100"
                 Height="35"
                 Margin="5"
+                BorderThickness="1"
+                BorderBrush="Beige"
                 Checked="ToggleButton_Checked"
                 Content="O. de compra"
                 Unchecked="ToggleButton_Unchecked" />
@@ -72,6 +76,8 @@
                 Width="100"
                 Height="35"
                 Margin="5"
+                BorderThickness="1"
+                BorderBrush="Beige"
                 Checked="ToggleButton_Checked"
                 Content="Facturas"
                 Unchecked="ToggleButton_Unchecked" />
@@ -80,6 +86,8 @@
                 Width="100"
                 Height="35"
                 Margin="5"
+                BorderThickness="1"
+                BorderBrush="Beige"
                 Checked="ToggleButton_Checked"
                 Content="Remitos"
                 Unchecked="ToggleButton_Unchecked" />
@@ -88,9 +96,11 @@
                 Width="100"
                 Height="35"
                 Margin="5"
+                BorderThickness="1"
+                BorderBrush="Beige"
                 Checked="ToggleButton_Checked"
                 Content="Pagos"
-                Unchecked="ToggleButton_Unchecked" />
+                Unchecked="ToggleButton_Unchecked" />-->
         </StackPanel>
 
         <Grid Grid.Row="2">

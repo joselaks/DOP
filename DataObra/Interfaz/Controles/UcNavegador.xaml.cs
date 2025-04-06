@@ -2,6 +2,7 @@
 using Biblioteca.DTO;
 using DataObra.Agrupadores;
 using DataObra.Datos;
+using DataObra.Interfaz.Ventanas;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -14,22 +15,39 @@ namespace DataObra.Interfaz.Controles
 {
     public partial class UcNavegador : UserControl
     {
+        #region Campos y Diccionario
+
         string Rol;
         List<Documento> ListaDocumentos;
+
+        private static readonly Dictionary<byte, string> TiposDeDocumento = new()
+        {
+            { 1, "Factura" }, { 2, "Plan" }, { 3, "Certificado" }, { 4, "Parte" }, { 5, "Remito" },
+            { 6, "Cobro" }, { 7, "Acopio" }, { 8, "Compra" }, { 9, "Pago" }, { 10, "Presupuesto" },
+            { 11, "Contrato" }, { 12, "Sueldo" }, { 13, "Pedido" }, { 14, "Ingreso" }, { 15, "Egreso" },
+            { 16, "Entrada" }, { 17, "Salida" }, { 18, "Impuesto" }, { 19, "Tema" }
+        };
+
+        #endregion
+
+        #region Constructor
 
         public UcNavegador(string rol)
         {
             InitializeComponent();
             Rol = rol;
-            configuraRol(Rol);
+            ConfiguraRol(Rol);
             CargarGrilla();
+            CrearBotonesDinamicamente();
         }
 
-        // Lee documentos del servidor
+        #endregion
+
+        #region Métodos de Carga
+
         private async void CargarGrilla()
         {
-            ListaDocumentos = new List<Documento>();
-
+            ListaDocumentos = new();
             var (success, message, documentosDTO) = await DatosWeb.ObtenerDocumentosPorCuentaIDAsync(App.IdCuenta);
 
             if (!success)
@@ -37,67 +55,56 @@ namespace DataObra.Interfaz.Controles
                 MessageBox.Show($"Error al obtener documentos: {message}");
                 return;
             }
-            else
+
+            if (App.ListaAgrupadores?.Any() == true)
             {
-                // Validar si App.ListaAgrupadores no es null y tiene elementos antes del foreach
-                if (App.ListaAgrupadores?.Any() == true)
-                {
-                    foreach (var item in documentosDTO)
-                    {
-                        ListaDocumentos.Add(Convertir(item));
-                    }
+                foreach (var item in documentosDTO)
+                    ListaDocumentos.Add(Convertir(item));
 
-                    this.GrillaDocumentos.ItemsSource = ListaDocumentos;
-                }
-                else
-                {
-                    //MessageBox.Show("Lista de agrupadores vacia");
-                }
-
+                GrillaDocumentos.ItemsSource = ListaDocumentos;
             }
         }
 
-        private static string ConvertirTipo(byte pID)
+        private void CrearBotonesDinamicamente()
         {
-            return pID switch
+            foreach (var kvp in TiposDeDocumento.OrderBy(k => k.Value))
             {
-                1 => "Factura",
-                10 => "Presupuesto",
-                2 => "Plan",
-                3 => "Certificado",
-                4 => "Parte",
-                5 => "Remito",
-                6 => "Cobro",
-                7 => "Acopio",
-                8 => "Compra",
-                9 => "Pago",
-                11 => "Contrato",
-                12 => "Sueldo",
-                13 => "Pedido",
-                14 => "Ingreso",
-                15 => "Egreso",
-                16 => "Entrada",
-                17 => "Salida",
-                18 => "Impuesto",
-                19 => "Tema",
-                _ => "Otro"
-            };
+                var boton = new ToggleButton
+                {
+                    Tag = kvp.Key,
+                    Content = kvp.Value + "s",
+                    Width = 85,
+                    Height = 35,
+                    Margin = new Thickness(3),
+                    BorderThickness = new Thickness(1),
+                    BorderBrush = Brushes.Beige
+                };
+
+                boton.Checked += ToggleButton_Checked;
+                boton.Unchecked += ToggleButton_Unchecked;
+
+                items.Children.Add(boton);
+            }
         }
 
-        private static Documento Convertir(Biblioteca.DTO.DocumentoDTO docDTO)
+        #endregion
+
+        #region Conversión
+
+        private static string ConvertirTipo(byte pID) =>
+            TiposDeDocumento.TryGetValue(pID, out var nombre) ? nombre : "Otro";
+
+        private static Documento Convertir(DocumentoDTO docDTO)
         {
-            var agrupadoresDict = App.ListaAgrupadores?.ToDictionary(a => a.ID, a => a) ?? new Dictionary<int, AgrupadorDTO>();
+            var agrupadoresDict = App.ListaAgrupadores?.ToDictionary(a => a.ID, a => a) ?? new();
 
             return new Documento
             {
-                #region SISTEMA
                 ID = docDTO.ID,
                 CuentaID = docDTO.CuentaID,
                 TipoID = docDTO.TipoID,
-                TipoDoc = ConvertirTipo(docDTO. TipoID),
-                #endregion
+                TipoDoc = ConvertirTipo(docDTO.TipoID),
 
-                #region USUARIOS
                 UsuarioID = docDTO.UsuarioID,
                 Usuario = agrupadoresDict.GetValueOrDefault(docDTO.UsuarioID)?.Descrip,
                 CreadoFecha = docDTO.CreadoFecha,
@@ -109,9 +116,7 @@ namespace DataObra.Interfaz.Controles
                 RevisadoID = docDTO.RevisadoID,
                 Revisado = agrupadoresDict.GetValueOrDefault(docDTO.RevisadoID)?.Descrip,
                 RevisadoFecha = docDTO.RevisadoFecha,
-                #endregion
 
-                #region AGRUPADORES
                 AdminID = docDTO.AdminID,
                 Admin = docDTO.AdminID.HasValue && agrupadoresDict.TryGetValue(docDTO.AdminID.Value, out var admin) ? admin.Descrip : null,
 
@@ -131,9 +136,6 @@ namespace DataObra.Interfaz.Controles
                 DepositoID = docDTO.DepositoID,
                 Deposito = docDTO.DepositoID.HasValue && agrupadoresDict.TryGetValue(docDTO.DepositoID.Value, out var deposito) ? deposito.Descrip : null,
 
-                #endregion
-
-                #region DATOS
                 Descrip = docDTO.Descrip,
                 Concepto1 = docDTO.Concepto1,
                 Fecha1 = docDTO.Fecha1,
@@ -144,16 +146,12 @@ namespace DataObra.Interfaz.Controles
                 Numero3 = docDTO.Numero3,
                 Notas = docDTO.Notas,
                 Active = docDTO.Active,
-                #endregion
 
-                #region TOTALES
                 Pesos = docDTO.Pesos,
                 Dolares = docDTO.Dolares,
                 Impuestos = docDTO.Impuestos,
                 ImpuestosD = docDTO.ImpuestosD,
-                #endregion
 
-                #region Por Tipo
                 Materiales = docDTO.Materiales,
                 ManodeObra = docDTO.ManodeObra,
                 Subcontratos = docDTO.Subcontratos,
@@ -165,9 +163,7 @@ namespace DataObra.Interfaz.Controles
                 SubcontratosD = docDTO.SubcontratosD,
                 EquiposD = docDTO.EquiposD,
                 OtrosD = docDTO.OtrosD,
-                #endregion
 
-                #region RELACIONES
                 RelDoc = docDTO.RelDoc,
                 RelArt = docDTO.RelArt,
                 RelMov = docDTO.RelMov,
@@ -175,76 +171,51 @@ namespace DataObra.Interfaz.Controles
                 RelRub = docDTO.RelRub,
                 RelTar = docDTO.RelTar,
                 RelIns = docDTO.RelIns,
-                #endregion
 
-                #region COLECCIONES
                 Accion = 'A',
                 DetalleDocumento = new List<DocumentoDet>(),
                 DetalleMovimientos = new List<Movimiento>(),
                 DetalleImpuestos = new List<Impuesto>()
-                #endregion
             };
         }
 
-        private void configuraRol(string rol)
+        #endregion
+
+        #region Eventos
+
+        private void ToggleButton_Checked(object sender, RoutedEventArgs e)
         {
-            switch (rol)
+            if (sender is ToggleButton toggleButton)
             {
-                case "Presupuestos":
-                    break;
-                case "Compras":
-                    break;
-                default:
-                    break;
+                toggleButton.BorderBrush = Brushes.Red;
+                toggleButton.BorderThickness = new Thickness(2);
+                FiltrarGrilla();
             }
         }
 
-        //private async void EditaDocClick(object sender, RoutedEventArgs e)
-        //{
-        //    if (GrillaDocumentos.SelectedItem is DocumentoDTO documentoSeleccionado)
-        //    {
+        private void ToggleButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (sender is ToggleButton toggleButton)
+            {
+                toggleButton.BorderBrush = Brushes.Beige;
+                toggleButton.BorderThickness = new Thickness(1);
+                FiltrarGrilla();
+            }
+        }
 
+        private void GrillaDocumentos_MouseDoubleClick(object sender, MouseButtonEventArgs e) => EditaDoc_Click(sender, e);
 
+        #endregion
 
-        //        if (documentoSeleccionado.TipoID == 10) // es un presupuesto
-        //        {
+        #region Acciones
 
-        //            var encabezado = documentoSeleccionado;
-        //            UserControl presup = new DataObra.Presupuestos.UcPresupuesto(docActivo);
-        //            DataObra.Interfaz.Ventanas.WiDocumento ventanaPres = new DataObra.Interfaz.Ventanas.WiDocumento("Presupuesto", presup);
-        //            var mainWindow = Window.GetWindow(this);
-        //            // Aplicar efecto de desenfoque a la ventana principal
-        //            mainWindow.Effect = new BlurEffect { Radius = 3 };
-        //            // Mostrar la ventana de manera modal
-        //            ventanaPres.ShowDialog();
-        //            // Quitar el efecto de desenfoque después de cerrar la ventana modal
-        //            mainWindow.Effect = null;
-        //        }
-        //        else
-        //        {
-
-        //            Documentos.MaxDocumento Docu = new Documentos.MaxDocumento(docActivo);
-        //            DataObra.Interfaz.Ventanas.WiDocumento ventanaDocu = new DataObra.Interfaz.Ventanas.WiDocumento(documentoSeleccionado.TipoID.ToString(), Docu);
-        //            ventanaDocu.ShowDialog();
-        //        }
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Por favor, seleccione un documento para editar.");
-        //    }
-        //}
-
+        private void ActualizaGrilla_Click(object sender, RoutedEventArgs e) => CargarGrilla();
 
         private async void BorraDoc_Click(object sender, RoutedEventArgs e)
         {
-            var sele = GrillaDocumentos.SelectedItem as Documento;
-
-            if (sele != null)
+            if (GrillaDocumentos.SelectedItem is Documento sele)
             {
-                // Llamar al método EliminarDocumentoAsync
                 var (success, message) = await DatosWeb.EliminarDocumentoAsync((int)sele.ID);
-
-                // Manejar la respuesta
                 if (success)
                 {
                     MessageBox.Show($"Documento eliminado con éxito. ID: {sele.ID}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -259,58 +230,48 @@ namespace DataObra.Interfaz.Controles
                 MessageBox.Show("Seleccione un documento para eliminar.");
         }
 
-        private void NuevoPresupuesto_Click(object sender, RoutedEventArgs e)
+        private async void EditaDoc_Click(object sender, RoutedEventArgs e)
         {
-            UserControl presup = new DataObra.Presupuestos.UcPresupuesto(null);
-            DataObra.Interfaz.Ventanas.WiDocumento ventanaPres = new DataObra.Interfaz.Ventanas.WiDocumento("Presupuesto", presup);
-            var mainWindow = Window.GetWindow(this);
+            if (GrillaDocumentos.SelectedItem is not Documento sele)
+            {
+                MessageBox.Show("Por favor, seleccione un documento para editar.");
+                return;
+            }
 
-            // Aplicar efecto de desenfoque a la ventana principal
+            var mainWindow = Window.GetWindow(this);
             mainWindow.Effect = new BlurEffect { Radius = 3 };
 
-            // Mostrar la ventana de manera modal
-            ventanaPres.ShowDialog();
+            WiDocumento ventanaDoc = sele.TipoID == 10
+                ? new WiDocumento("Presupuesto", new Presupuestos.UcPresupuesto(null))
+                : new WiDocumento(" " + sele.TipoDoc, new Documentos.MaxDocumento(sele));
 
-            // Quitar el efecto de desenfoque después de cerrar la ventana modal
+            ventanaDoc.ShowDialog();
             mainWindow.Effect = null;
         }
 
-        //private void NuevaFactura_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Biblioteca.Documento objetoFactura = new Biblioteca.Documento();
-        //    Documentos.MaxDocumento Docu = new Documentos.MaxDocumento(objetoFactura);
-        //    DataObra.Interfaz.Ventanas.WiDocumento ventanaDocu = new DataObra.Interfaz.Ventanas.WiDocumento("Factura", Docu);
-
-        //    ventanaDocu.ShowDialog();
-        //}
-
-        private void ToggleButton_Checked(object sender, RoutedEventArgs e)
+        private async void NuevoDoc_Click(object sender, RoutedEventArgs e)
         {
-            ToggleButton toggleButton = sender as ToggleButton;
+            var mainWindow = Window.GetWindow(this);
+            mainWindow.Effect = new BlurEffect { Radius = 3 };
 
-            if (toggleButton != null)
-            {
-                toggleButton.BorderBrush = new SolidColorBrush(Colors.Red);
-                toggleButton.BorderThickness = new Thickness(2);
+            WiDocumento ventanaDoc = new("Factura", new Documentos.MaxDocumento(new Documento()));
+            ventanaDoc.ShowDialog();
 
-                FiltrarGrilla();
-            }
+            mainWindow.Effect = null;
+            CargarGrilla();
         }
 
-        private void ToggleButton_Unchecked(object sender, RoutedEventArgs e)
+        private void NuevoPresupuesto_Click(object sender, RoutedEventArgs e)
         {
-            ToggleButton toggleButton = sender as ToggleButton;
+            var mainWindow = Window.GetWindow(this);
+            mainWindow.Effect = new BlurEffect { Radius = 3 };
 
-            if (toggleButton != null)
-            {
-                toggleButton.BorderBrush = new SolidColorBrush(Colors.Transparent);
-                toggleButton.BorderThickness = new Thickness(1);
+            var ventanaPres = new WiDocumento("Presupuesto", new Presupuestos.UcPresupuesto(null));
+            ventanaPres.ShowDialog();
 
-                FiltrarGrilla();
-            }
+            mainWindow.Effect = null;
         }
 
-        // Filtra listado de documentos según los botones presionados
         private void FiltrarGrilla()
         {
             var tiposSeleccionados = items.Children
@@ -324,81 +285,22 @@ namespace DataObra.Interfaz.Controles
                 : ListaDocumentos.Where(a => tiposSeleccionados.Contains(a.TipoID)).ToList();
         }
 
-        private void GrillaDocumentos_MouseDoubleClick(object sender, MouseButtonEventArgs e) => EditaDoc_Click(sender, e);
+        #endregion
 
-        private async void NuevoDoc_Click(object sender, RoutedEventArgs e)
+        #region Roles
+
+        private void ConfiguraRol(string rol)
         {
-                var mainWindow = Window.GetWindow(this);
-
-                // Aplicar efecto de desenfoque a la ventana principal
-                mainWindow.Effect = new BlurEffect { Radius = 3 };
-
-                DataObra.Interfaz.Ventanas.WiDocumento ventanaDoc;
-
-                // Agregar manejo para cada tipo de documento
-                Biblioteca.Documento objetoFactura = new Biblioteca.Documento();
-                Documentos.MaxDocumento Docu = new Documentos.MaxDocumento(objetoFactura);
-                ventanaDoc = new DataObra.Interfaz.Ventanas.WiDocumento("Factura", Docu);
-
-                // Ventana de manera modal y quitar el efecto de desenfoque
-                ventanaDoc.ShowDialog();
-                mainWindow.Effect = null;
-                CargarGrilla();
-        }
-
-        private async void EditaDoc_Click(object sender, RoutedEventArgs e)
-        {
-            if (GrillaDocumentos.SelectedItem is Documento sele)
+            switch (rol)
             {
-                var mainWindow = Window.GetWindow(this);
-
-                // Aplicar efecto de desenfoque a la ventana principal
-                mainWindow.Effect = new BlurEffect { Radius = 3 };
-
-                DataObra.Interfaz.Ventanas.WiDocumento ventanaDoc;
-
-                if (sele.TipoID == 10) // es un presupuesto
-                {
-                    UserControl presup = new DataObra.Presupuestos.UcPresupuesto(null);
-                    ventanaDoc = new DataObra.Interfaz.Ventanas.WiDocumento("Presupuesto", presup);
-
-                }
-                else
-                {
-                    // Agregar manejo para cada tipo de documento
-                    // Biblioteca.Documento objetoFactura = new Biblioteca.Documento();
-
-                    Documentos.MaxDocumento Docu = new Documentos.MaxDocumento(sele);
-                    ventanaDoc = new DataObra.Interfaz.Ventanas.WiDocumento(" "+sele.TipoDoc, Docu);
-                    CargarGrilla();
-
-                }
-                // Mostrar la ventana de manera modal
-                ventanaDoc.ShowDialog();
-
-                // Quitar el efecto de desenfoque después de cerrar la ventana modal
-                mainWindow.Effect = null;
-            }
-            else
-            {
-                MessageBox.Show("Por favor, seleccione un documento para editar.");
+                case "Presupuestos":
+                case "Compras":
+                    break;
+                default:
+                    break;
             }
         }
 
-        private void ActualizaGrilla_Click(object sender, RoutedEventArgs e)
-        {
-            CargarGrilla();
-        }
+        #endregion
     }
 }
-
-
-
-
-
-
-
-
-
-
-
