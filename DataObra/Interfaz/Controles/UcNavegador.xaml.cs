@@ -128,6 +128,7 @@ namespace DataObra.Interfaz.Controles
 
                 DepositoID = docDTO.DepositoID,
                 Deposito = docDTO.DepositoID.HasValue && agrupadoresDict.TryGetValue(docDTO.DepositoID.Value, out var deposito) ? deposito.Descrip : null,
+
                 #endregion
 
                 #region DATOS
@@ -285,6 +286,8 @@ namespace DataObra.Interfaz.Controles
             {
                 toggleButton.BorderBrush = new SolidColorBrush(Colors.Red);
                 toggleButton.BorderThickness = new Thickness(2);
+
+                ActualizarGrilla();
             }
         }
 
@@ -296,12 +299,22 @@ namespace DataObra.Interfaz.Controles
             {
                 toggleButton.BorderBrush = new SolidColorBrush(Colors.Transparent);
                 toggleButton.BorderThickness = new Thickness(1);
+
+                ActualizarGrilla();
             }
         }
 
-        private void actualizaGrilla_Click(object sender, RoutedEventArgs e)
+        private void ActualizarGrilla()
         {
-            CargarGrilla();
+            var tiposSeleccionados = items.Children
+                .OfType<ToggleButton>()
+                .Where(b => b.IsChecked == true)
+                .Select(b => Convert.ToByte(b.Tag))
+                .ToList();
+
+            GrillaDocumentos.ItemsSource = tiposSeleccionados.Count == 0
+                ? ListaDocumentos
+                : ListaDocumentos.Where(a => tiposSeleccionados.Contains(a.TipoID)).ToList();
         }
 
         private void GrillaDocumentos_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -364,6 +377,11 @@ namespace DataObra.Interfaz.Controles
             {
                 MessageBox.Show("Por favor, seleccione un documento para editar.");
             }
+        }
+
+        private void actualizaGrilla_Click(object sender, RoutedEventArgs e)
+        {
+            CargarGrilla();
         }
     }
 }

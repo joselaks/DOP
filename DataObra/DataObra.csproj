@@ -9,6 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Imagenes\Actualiza.png" />
+    <None Remove="Imagenes\Actualizar.png" />
     <None Remove="Imagenes\Interface\Admin.png" />
     <None Remove="Imagenes\Interface\Compras.png" />
     <None Remove="Imagenes\Interface\Jefe.png" />
@@ -52,6 +54,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Resource Include="Imagenes\Actualiza.png" />
+      <Resource Include="Imagenes\Actualizar.png" />
       <Resource Include="Imagenes\Interface\Admin.png" />
       <Resource Include="Imagenes\Interface\Compras.png" />
       <Resource Include="Imagenes\Interface\Jefe.png" />
