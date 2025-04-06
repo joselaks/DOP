@@ -19,6 +19,7 @@ namespace DataObra.Interfaz.Controles
 
         string Rol;
         List<Documento> ListaDocumentos;
+        private List<byte> TiposPermitidos = new();
 
         private static readonly Dictionary<byte, string> TiposDeDocumento = new()
         {
@@ -26,6 +27,15 @@ namespace DataObra.Interfaz.Controles
             { 6, "Cobro" }, { 7, "Acopio" }, { 8, "Compra" }, { 9, "Pago" }, { 10, "Presupuesto" },
             { 11, "Contrato" }, { 12, "Sueldo" }, { 13, "Pedido" }, { 14, "Ingreso" }, { 15, "Egreso" },
             { 16, "Entrada" }, { 17, "Salida" }, { 18, "Impuesto" }, { 19, "Tema" }
+        };
+
+        private static readonly Dictionary<string, List<byte>> TiposPorRol = new()
+        {
+            { "Presupuestos", new List<byte> { 10, 11, 4, 13 } }, // Presupuesto, Contrato, Parte, Pedido
+            { "Compras", new List<byte> { 5, 6, 7, 8, 13 } }, // Remito, Cobro, Acopio, Compra, Pedido
+            { "Administracion", new List<byte> { 1, 6, 9, 12, 18 } }, // Factura, Cobro, Pago, Sueldo, Impuesto
+            { "JefeDeObra", new List<byte> { 2, 3, 4, 5, 13 } }, // Plan, Certificado, Parte, Remito, Pedido
+            //{ "Socio", new List<byte> { 1, 2, 3, 6, 9, 10, 12, 18 } } // Acceso más amplio
         };
 
         #endregion
@@ -47,7 +57,6 @@ namespace DataObra.Interfaz.Controles
 
         private async void CargarGrilla()
         {
-            ListaDocumentos = new();
             var (success, message, documentosDTO) = await DatosWeb.ObtenerDocumentosPorCuentaIDAsync(App.IdCuenta);
 
             if (!success)
@@ -58,21 +67,31 @@ namespace DataObra.Interfaz.Controles
 
             if (App.ListaAgrupadores?.Any() == true)
             {
-                foreach (var item in documentosDTO)
-                    ListaDocumentos.Add(Convertir(item));
+                ListaDocumentos = documentosDTO
+                    .Select(Convertir)
+                    .Where(d => TiposPermitidos.Contains(d.TipoID))
+                    .ToList();
 
+                GrillaDocumentos.ItemsSource = ListaDocumentos;
+            }
+            else
+            {
+                //MessageBox.Show("Lista de agrupadores vacía o nula.");
+                ListaDocumentos = new List<Documento>();
                 GrillaDocumentos.ItemsSource = ListaDocumentos;
             }
         }
 
+
         private void CrearBotonesDinamicamente()
         {
-            foreach (var kvp in TiposDeDocumento.OrderBy(k => k.Value))
+            foreach (var tipoID in TiposPermitidos.OrderBy(id => TiposDeDocumento[id]))
             {
+                var nombre = TiposDeDocumento[tipoID];
                 var boton = new ToggleButton
                 {
-                    Tag = kvp.Key,
-                    Content = kvp.Value + "s",
+                    Tag = tipoID,
+                    Content = nombre + "s",
                     Width = 85,
                     Height = 35,
                     Margin = new Thickness(3),
@@ -82,10 +101,10 @@ namespace DataObra.Interfaz.Controles
 
                 boton.Checked += ToggleButton_Checked;
                 boton.Unchecked += ToggleButton_Unchecked;
-
                 items.Children.Add(boton);
             }
         }
+
 
         #endregion
 
@@ -291,15 +310,16 @@ namespace DataObra.Interfaz.Controles
 
         private void ConfiguraRol(string rol)
         {
-            switch (rol)
+            if (TiposPorRol.TryGetValue(rol, out var tipos))
             {
-                case "Presupuestos":
-                case "Compras":
-                    break;
-                default:
-                    break;
+                TiposPermitidos = tipos;
+            }
+            else
+            {
+                TiposPermitidos = TiposDeDocumento.Keys.ToList(); // Si no está definido, muestra todo
             }
         }
+
 
         #endregion
     }
