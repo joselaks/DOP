@@ -267,7 +267,6 @@ namespace DataObra.Documentos
 
         #region PANTALLA
 
-
         private async void Guardar_Click(object sender, RoutedEventArgs e)
         {
             var documento = new Biblioteca.DTO.DocumentoDTO();
@@ -394,27 +393,30 @@ namespace DataObra.Documentos
                 {
                 MessageBox.Show($"Error al actualizar el documento: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-            }
-
-
-
+        }
 
         private async void Borrar_Click(object sender, RoutedEventArgs e)
         {
-            // Codigo a utilizar
-            //var respuesta = await ConsultasAPI.DeleteDocumentoAsync(oActivo.ID);
+            if (oActivo.ID != null)
+            {
+                // Llamar al método EliminarDocumentoAsync
+                var (success, message) = await DatosWeb.EliminarDocumentoAsync((int)oActivo.ID);
 
-            //Respuestas
-            //bool resultadoBorrado = respuesta.Success;  // true si lo borró, false si no existia el registro
-            //string mensaje = respuesta.Message;
-
-            //Mensaje para testeo
-            //if (respuesta.Success != null)
-            //{
-            //    MessageBox.Show(respuesta.Success + " " + respuesta.Message);
-            //}
+                // Manejar la respuesta
+                if (success)
+                {
+                    MessageBox.Show($"Documento eliminado con éxito. ID: {oActivo.ID}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Window ventanaPadre = Window.GetWindow(this);
+                    if (ventanaPadre != null)
+                        ventanaPadre.Close();
+                }
+                else
+                {
+                    MessageBox.Show($"Error al eliminar el documento: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
-        
+
         private void Cancelar_Click(object sender, RoutedEventArgs e)
         {
             // Obtener la ventana que contiene este UserControl
@@ -462,31 +464,6 @@ namespace DataObra.Documentos
 
         #endregion Pantalla
 
-        private async void ListaDocumentosAsync(short pCuentaID)
-        {
-            // Código a utilizar
-            //var docBuscado = await ConsultasAPI.ObtenerDocumentosPorCuentaID(pCuentaID);
-
-            // Respuestas
-            //bool resultado = docBuscado.Success;
-            //string mensaje = docBuscado.Message;
-            //List<Biblioteca.Documento> listaDocumentos = docBuscado.docs;
-
-            //if (docBuscado.Success == true)
-            //{
-            //    this.GrillaDocumentos.ItemsSource = listaDocumentos;
-            //}
-            //else
-            //{
-            //    MessageBox.Show("No hay Documentos");
-            //}
-        }
-
-        private void GrillaPrincipal_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ListaDocumentosAsync(1);
-        }
-
         private void Vincular_Click(object sender, RoutedEventArgs e)
         {
             // Obtener el ítem seleccionado desde el SfDataGrid
@@ -516,8 +493,6 @@ namespace DataObra.Documentos
             }
         }
 
-     
-
         private async void cFecha_DateTimeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is FrameworkElement element)
@@ -546,6 +521,11 @@ namespace DataObra.Documentos
                     //MessageBox.Show(respuesta.Message, respuesta.Success ? "Éxito" : "Error");
                 }
             }
+        }
+
+        private void GrillaPrincipal_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

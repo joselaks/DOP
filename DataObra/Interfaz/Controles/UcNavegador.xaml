@@ -103,7 +103,7 @@
                     <ContextMenu>
                         <MenuItem Click="NuevoDoc_Click" Header="Nuevo" />
                         <MenuItem Click="EditaDoc_Click" Header="Editar" />
-                        <MenuItem Click="MenuItem_Click_2" Header="Borrar" />
+                        <MenuItem Click="BorraDoc_Click" Header="Borrar" />
                     </ContextMenu>
                 </syncfusion:SfDataGrid.ContextMenu>
                 <syncfusion:SfDataGrid.Columns>
@@ -185,76 +185,11 @@
                 HorizontalAlignment="Left"
                 Margin="2,2,0,0"
                 ToolTip="Actualizar"
-                Click="actualizaGrilla_Click">
-                <Image Source="/Imagenes/Actualiza.png" />
+                Click="ActualizaGrilla_Click">
+                <Image Source="/Imagenes/Actualiza.png" Margin="1,1,0,1"
+                       ToolTip="Actualiza listado desde el servidor"/>
             </Button>
-
-
-            <syncfusion:DropDownButtonAdv
-                Width="75"
-                Height="25"
-                Margin="5,0,5,0"
-                HorizontalAlignment="Left"
-                Label="Filtro"
-                SizeMode="Normal"
-                SmallIcon="/Interfaz/Imagenes/Filtro.png">
-                <syncfusion:DropDownMenuGroup>
-                    <Grid Width="250" Height="150">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="20" />
-                            <RowDefinition Height="20" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <StackPanel Height="23" Orientation="Horizontal">
-                            <Label Margin="-3,0,0,0" Content="DE:" />
-                            <DatePicker
-                                Name="FechaDesde"
-                                Width="91"
-                                Margin="-2,0,0,0" />
-                            <Label Content="A:" />
-                            <DatePicker
-                                Name="FechaHasta"
-                                Width="91"
-                                Margin="-2,0,0,0" />
-                        </StackPanel>
-                        <Button
-                            x:Name="actualizaGrilla"
-                            Click="actualizaGrilla_Click"
-                            Content="Aplica Filtro" />
-
-
-                    </Grid>
-                </syncfusion:DropDownMenuGroup>
-            </syncfusion:DropDownButtonAdv>
-            <syncfusion:DropDownButtonAdv
-                x:Name="NuevoDocumento"
-                Width="100"
-                Label="Nuevo"
-                SmallIcon="/Presupuestos/agregar.png"
-                ToolTip="Agregar conceptos">
-                <syncfusion:DropDownMenuGroup IsResizable="True">
-                    <syncfusion:DropDownMenuItem
-                        x:Name="NuevoPresupuesto"
-                        HorizontalAlignment="Left"
-                        Click="NuevoPresupuesto_Click"
-                        Header="Presupuesto">
-                        <syncfusion:DropDownMenuItem.Icon>
-                            <Image Source="/Presupuestos/Rubro.png" />
-                        </syncfusion:DropDownMenuItem.Icon>
-                    </syncfusion:DropDownMenuItem>
-                    <syncfusion:DropDownMenuItem
-                        x:Name="NuevaFactura"
-                        HorizontalAlignment="Left"
-                        Click="NuevaFactura_Click"
-                        Header="Factura">
-                        <syncfusion:DropDownMenuItem.Icon>
-                            <Image Source="/Presupuestos/Tarea.png" />
-                        </syncfusion:DropDownMenuItem.Icon>
-                    </syncfusion:DropDownMenuItem>
-
-                </syncfusion:DropDownMenuGroup>
-            </syncfusion:DropDownButtonAdv>
-            >
+            
         </syncfusion:ToolBarAdv>
 
 

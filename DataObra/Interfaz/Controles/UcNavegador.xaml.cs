@@ -5,6 +5,7 @@ using DataObra.Datos;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 using Documento = Biblioteca.Documento;
@@ -24,6 +25,7 @@ namespace DataObra.Interfaz.Controles
             CargarGrilla();
         }
 
+        // Lee documentos del servidor
         private async void CargarGrilla()
         {
             ListaDocumentos = new List<Documento>();
@@ -201,12 +203,12 @@ namespace DataObra.Interfaz.Controles
         //{
         //    if (GrillaDocumentos.SelectedItem is DocumentoDTO documentoSeleccionado)
         //    {
-                
+
 
 
         //        if (documentoSeleccionado.TipoID == 10) // es un presupuesto
         //        {
-                    
+
         //            var encabezado = documentoSeleccionado;
         //            UserControl presup = new DataObra.Presupuestos.UcPresupuesto(docActivo);
         //            DataObra.Interfaz.Ventanas.WiDocumento ventanaPres = new DataObra.Interfaz.Ventanas.WiDocumento("Presupuesto", presup);
@@ -232,25 +234,29 @@ namespace DataObra.Interfaz.Controles
         //    }
         //}
 
-        private async void MenuItem_Click_2(object sender, RoutedEventArgs e)
+
+        private async void BorraDoc_Click(object sender, RoutedEventArgs e)
         {
-            if (GrillaDocumentos.SelectedItem is Documento documentoSeleccionado)
+            var sele = GrillaDocumentos.SelectedItem as Documento;
+
+            if (sele != null)
             {
-                //var respuesta = await ConsultasAPI.DeleteDocumentoAsync((int)documentoSeleccionado.ID);
-                //if (respuesta.Success)
-                //{
-                //    MessageBox.Show("Documento eliminado exitosamente.");
-                //    CargarGrilla(); // Actualizar la grilla después de eliminar el documento
-                //}
-                //else
-                //{
-                //    MessageBox.Show($"Error al eliminar el documento: {respuesta.Message}");
-                //}
+                // Llamar al método EliminarDocumentoAsync
+                var (success, message) = await DatosWeb.EliminarDocumentoAsync((int)sele.ID);
+
+                // Manejar la respuesta
+                if (success)
+                {
+                    MessageBox.Show($"Documento eliminado con éxito. ID: {sele.ID}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                    CargarGrilla();
+                }
+                else
+                {
+                    MessageBox.Show($"Error al eliminar el documento: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
             else
-            {
-                MessageBox.Show("Por favor, seleccione un documento para eliminar.");
-            }
+                MessageBox.Show("Seleccione un documento para eliminar.");
         }
 
         private void NuevoPresupuesto_Click(object sender, RoutedEventArgs e)
@@ -269,14 +275,14 @@ namespace DataObra.Interfaz.Controles
             mainWindow.Effect = null;
         }
 
-        private void NuevaFactura_Click(object sender, RoutedEventArgs e)
-        {
-            Biblioteca.Documento objetoFactura = new Biblioteca.Documento();
-            Documentos.MaxDocumento Docu = new Documentos.MaxDocumento(objetoFactura);
-            DataObra.Interfaz.Ventanas.WiDocumento ventanaDocu = new DataObra.Interfaz.Ventanas.WiDocumento("Factura", Docu);
+        //private void NuevaFactura_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Biblioteca.Documento objetoFactura = new Biblioteca.Documento();
+        //    Documentos.MaxDocumento Docu = new Documentos.MaxDocumento(objetoFactura);
+        //    DataObra.Interfaz.Ventanas.WiDocumento ventanaDocu = new DataObra.Interfaz.Ventanas.WiDocumento("Factura", Docu);
 
-            ventanaDocu.ShowDialog();
-        }
+        //    ventanaDocu.ShowDialog();
+        //}
 
         private void ToggleButton_Checked(object sender, RoutedEventArgs e)
         {
@@ -287,7 +293,7 @@ namespace DataObra.Interfaz.Controles
                 toggleButton.BorderBrush = new SolidColorBrush(Colors.Red);
                 toggleButton.BorderThickness = new Thickness(2);
 
-                ActualizarGrilla();
+                FiltrarGrilla();
             }
         }
 
@@ -300,11 +306,12 @@ namespace DataObra.Interfaz.Controles
                 toggleButton.BorderBrush = new SolidColorBrush(Colors.Transparent);
                 toggleButton.BorderThickness = new Thickness(1);
 
-                ActualizarGrilla();
+                FiltrarGrilla();
             }
         }
 
-        private void ActualizarGrilla()
+        // Filtra listado de documentos según los botones presionados
+        private void FiltrarGrilla()
         {
             var tiposSeleccionados = items.Children
                 .OfType<ToggleButton>()
@@ -317,10 +324,7 @@ namespace DataObra.Interfaz.Controles
                 : ListaDocumentos.Where(a => tiposSeleccionados.Contains(a.TipoID)).ToList();
         }
 
-        private void GrillaDocumentos_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-
-        }
+        private void GrillaDocumentos_MouseDoubleClick(object sender, MouseButtonEventArgs e) => EditaDoc_Click(sender, e);
 
         private async void NuevoDoc_Click(object sender, RoutedEventArgs e)
         {
@@ -339,6 +343,7 @@ namespace DataObra.Interfaz.Controles
                 // Ventana de manera modal y quitar el efecto de desenfoque
                 ventanaDoc.ShowDialog();
                 mainWindow.Effect = null;
+                CargarGrilla();
         }
 
         private async void EditaDoc_Click(object sender, RoutedEventArgs e)
@@ -365,6 +370,7 @@ namespace DataObra.Interfaz.Controles
 
                     Documentos.MaxDocumento Docu = new Documentos.MaxDocumento(sele);
                     ventanaDoc = new DataObra.Interfaz.Ventanas.WiDocumento(" "+sele.TipoDoc, Docu);
+                    CargarGrilla();
 
                 }
                 // Mostrar la ventana de manera modal
@@ -379,7 +385,7 @@ namespace DataObra.Interfaz.Controles
             }
         }
 
-        private void actualizaGrilla_Click(object sender, RoutedEventArgs e)
+        private void ActualizaGrilla_Click(object sender, RoutedEventArgs e)
         {
             CargarGrilla();
         }
