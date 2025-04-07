@@ -316,7 +316,7 @@ namespace DataObra.Interfaz.Controles
             mainWindow.Effect = new BlurEffect { Radius = 3 };
 
             WiDocumento ventanaDoc = sele.TipoID == 10
-                ? new WiDocumento("Presupuesto", new Presupuestos.UcPresupuesto(null))
+                ? new WiDocumento("Presupuesto", new Presupuestos.UcPresupuesto(copia))
                 : new WiDocumento(" " + sele.TipoDoc, new Documentos.MaxDocumento(copia));
 
             ventanaDoc.ShowDialog();
@@ -382,5 +382,18 @@ namespace DataObra.Interfaz.Controles
 
 
         #endregion
+
+        private void nuevoPres_Click(object sender, RoutedEventArgs e)
+        {
+            var mainWindow = Window.GetWindow(this);
+            mainWindow.Effect = new BlurEffect { Radius = 3 };
+
+            WiDocumento ventanaDoc = new WiDocumento("Presupuesto", new Presupuestos.UcPresupuesto(new Documento()));
+            ventanaDoc.ShowDialog();
+
+            mainWindow.Effect = null;
+            CargarGrilla();
+
+        }
     }
 }
