@@ -927,11 +927,6 @@
             <Button
                 Width="85"
                 Margin="15,5,0,0"
-                Click="Actualizar_Click"
-                Content="Actualizar" />
-            <Button
-                Width="85"
-                Margin="15,5,0,0"
                 Click="Cancelar_Click"
                 Content="No Guardar" />
             <Button

@@ -110,6 +110,59 @@ namespace DataObra.Interfaz.Controles
 
         #region Conversión
 
+        public Documento Clonar(Documento doc)
+        {
+            return new Documento
+            {
+                ID = (int)doc.ID,
+                CuentaID = doc.CuentaID,
+                TipoID = doc.TipoID,
+                UsuarioID = doc.UsuarioID,
+                CreadoFecha = doc.CreadoFecha,
+                EditadoID = doc.EditadoID,
+                EditadoFecha = doc.EditadoFecha,
+                RevisadoID = doc.RevisadoID,
+                RevisadoFecha = doc.RevisadoFecha,
+                AdminID = doc.AdminID,
+                ObraID = doc.ObraID,
+                PresupuestoID = doc.PresupuestoID,
+                RubroID = doc.RubroID,
+                EntidadID = doc.EntidadID,
+                DepositoID = doc.DepositoID,
+                Descrip = doc.Descrip,
+                Concepto1 = doc.Concepto1,
+                Fecha1 = doc.Fecha1,
+                Fecha2 = doc.Fecha2,
+                Fecha3 = doc.Fecha3,
+                Numero1 = doc.Numero1,
+                Numero2 = doc.Numero2,
+                Numero3 = doc.Numero3,
+                Notas = doc.Notas,
+                Active = doc.Active,
+                Pesos = doc.Pesos,
+                Dolares = doc.Dolares,
+                Impuestos = doc.Impuestos,
+                ImpuestosD = doc.ImpuestosD,
+                Materiales = doc.Materiales,
+                ManodeObra = doc.ManodeObra,
+                Subcontratos = doc.Subcontratos,
+                Equipos = doc.Equipos,
+                Otros = doc.Otros,
+                MaterialesD = doc.MaterialesD,
+                ManodeObraD = doc.ManodeObraD,
+                SubcontratosD = doc.SubcontratosD,
+                EquiposD = doc.EquiposD,
+                OtrosD = doc.OtrosD,
+                RelDoc = doc.RelDoc,
+                RelArt = doc.RelArt,
+                RelMov = doc.RelMov,
+                RelImp = doc.RelImp,
+                RelRub = doc.RelRub,
+                RelTar = doc.RelTar,
+                RelIns = doc.RelIns
+            };
+        }
+
         private static string ConvertirTipo(byte pID) =>
             TiposDeDocumento.TryGetValue(pID, out var nombre) ? nombre : "Otro";
 
@@ -257,15 +310,22 @@ namespace DataObra.Interfaz.Controles
                 return;
             }
 
+            var copia = Clonar(sele);
+
             var mainWindow = Window.GetWindow(this);
             mainWindow.Effect = new BlurEffect { Radius = 3 };
 
             WiDocumento ventanaDoc = sele.TipoID == 10
                 ? new WiDocumento("Presupuesto", new Presupuestos.UcPresupuesto(null))
-                : new WiDocumento(" " + sele.TipoDoc, new Documentos.MaxDocumento(sele));
+                : new WiDocumento(" " + sele.TipoDoc, new Documentos.MaxDocumento(copia));
 
             ventanaDoc.ShowDialog();
             mainWindow.Effect = null;
+
+            if (ventanaDoc.GuardadoConExito)
+            {
+                CargarGrilla(); // Método que recarga la lista o refresca el DataGrid
+            }
         }
 
         private async void NuevoDoc_Click(object sender, RoutedEventArgs e)

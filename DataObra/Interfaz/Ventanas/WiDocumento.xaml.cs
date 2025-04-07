@@ -17,12 +17,21 @@ namespace DataObra.Interfaz.Ventanas
         private double _previousWidth;
         private double _previousHeight;
         private bool _isCustomMaximized = false;
+        public bool GuardadoConExito { get; private set; } = false;
 
         public WiDocumento(string TipoDoc, UserControl userControl)
         {
             InitializeComponent();
             TituloVentana.Text = TipoDoc;
             espacioPrincipal.Children.Add(userControl);
+
+            this.Closed += (s, e) =>
+            {
+                if (userControl is Documentos.MaxDocumento maxDoc)
+                {
+                    GuardadoConExito = maxDoc.GuardadoConExito;
+                }
+            };
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
