@@ -34,13 +34,13 @@ namespace DataObra.Documentos
             {
                 oActivo = new Documento()
                 {
-                    CuentaID = 1,
-                    TipoID = 2,
-                    UsuarioID = 3,
+                    CuentaID = (byte)App.IdCuenta,
+                    TipoID = TipoID,
+                    UsuarioID = App.IdUsuario,
                     CreadoFecha = DateTime.Now,
-                    EditadoID = 1,
+                    EditadoID = 0,
                     EditadoFecha = DateTime.Now,
-                    RevisadoID = 1,
+                    RevisadoID = 0,
                     RevisadoFecha = DateTime.Now,
                     AdminID = 63,
                     ObraID = 60,

@@ -61,7 +61,6 @@
                 MouseDoubleClick="GrillaDocumentos_MouseDoubleClick">
                 <syncfusion:SfDataGrid.ContextMenu>
                     <ContextMenu>
-                        <ContextMenu>
                             <MenuItem Header="Nuevo">
                                 <MenuItem Header="Factura" Click="NuevoDoc_Click" Tag="1" />
                                 <MenuItem Header="Plan" Click="NuevoDoc_Click" Tag="2" />
@@ -83,10 +82,6 @@
                                 <MenuItem Header="Impuesto" Click="NuevoDoc_Click" Tag="18" />
                                 <MenuItem Header="Tema" Click="NuevoDoc_Click" Tag="19" />
                             </MenuItem>
-                            <MenuItem Click="EditaDoc_Click" Header="Editar" />
-                            <MenuItem Click="BorraDoc_Click" Header="Borrar" />
-                        </ContextMenu>
-
                         <MenuItem Click="EditaDoc_Click" Header="Editar" />
                         <MenuItem Click="BorraDoc_Click" Header="Borrar" />
                     </ContextMenu>
