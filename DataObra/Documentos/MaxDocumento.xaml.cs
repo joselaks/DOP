@@ -80,7 +80,8 @@ namespace DataObra.Documentos
                     RelTar = false,
                     RelIns = false
                 };
-                this.P.IsChecked = true;
+                
+                // this.P.IsChecked = true;
             }
             else
             {
@@ -112,10 +113,6 @@ namespace DataObra.Documentos
         #endregion
 
         #region Métodos de Conversión
-
-    
-
-
 
         private static DocumentoDTO ConvertirADTO(Documento doc, bool esNuevo)
         {
