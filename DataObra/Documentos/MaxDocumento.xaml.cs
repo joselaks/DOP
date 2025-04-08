@@ -243,7 +243,13 @@ namespace DataObra.Documentos
 
         private async void Guardar_Click(object sender, RoutedEventArgs e)
         {
-            bool esNuevo = oActivo.ID == null;
+            bool esNuevo = false;
+
+            if (oActivo.ID == null)
+            {
+                esNuevo = true;
+            }
+            //bool esNuevo = oActivo.ID == null;
 
             var documento = ConvertirADTO(oActivo, esNuevo);
 
@@ -272,9 +278,6 @@ namespace DataObra.Documentos
                 );
             }
         }
-
-
-
 
         private async void Borrar_Click(object sender, RoutedEventArgs e)
         {
