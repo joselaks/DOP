@@ -72,7 +72,7 @@
                                 <MenuItem Header="Acopio" Click="NuevoDoc_Click" Tag="7" />
                                 <MenuItem Header="Compra" Click="NuevoDoc_Click" Tag="8" />
                                 <MenuItem Header="Pago" Click="NuevoDoc_Click" Tag="9" />
-                                <MenuItem Header="Presupuesto" Click="nuevoPres" Tag="10" />
+                                <MenuItem Header="Presupuesto" Click="NuevoDoc_Click" Tag="10" />
                                 <MenuItem Header="Contrato" Click="NuevoDoc_Click" Tag="11" />
                                 <MenuItem Header="Sueldo" Click="NuevoDoc_Click" Tag="12" />
                                 <MenuItem Header="Pedido" Click="NuevoDoc_Click" Tag="13" />
@@ -87,7 +87,6 @@
                             <MenuItem Click="BorraDoc_Click" Header="Borrar" />
                         </ContextMenu>
 
-                        <MenuItem Click="nuevoPres_Click"  Header="Nuevo Presupuesto" x:Name="nuevoPres"/>
                         <MenuItem Click="EditaDoc_Click" Header="Editar" />
                         <MenuItem Click="BorraDoc_Click" Header="Borrar" />
                     </ContextMenu>

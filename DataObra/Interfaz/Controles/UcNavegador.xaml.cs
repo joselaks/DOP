@@ -339,25 +339,34 @@ namespace DataObra.Interfaz.Controles
 
         private async void NuevoDoc_Click(object sender, RoutedEventArgs e)
         {
+            if (sender is not MenuItem item || !int.TryParse(item.Tag?.ToString(), out int tipoDocID))
+            {
+                MessageBox.Show("Opción no válida");
+                return;
+            }
+
+            string etiqueta = item.Header?.ToString() ?? "Nuevo";
             var mainWindow = Window.GetWindow(this);
-            mainWindow.Effect = new BlurEffect { Radius = 3 };
+            AplicarBlur(mainWindow, true);
 
-            WiDocumento ventanaDoc = new("Factura", new Documentos.MaxDocumento(new Documento()));
-            ventanaDoc.ShowDialog();
+            if (tipoDocID == 10) // Presupuesto
+            {
+                var ventanaPres = new WiDocumento(etiqueta, new Presupuestos.UcPresupuesto(null));
+                ventanaPres.ShowDialog();
+            }
+            else
+            {
+                var ventanaDoc = new WiDocumento(etiqueta, new Documentos.MaxDocumento(new Documento(), (byte)tipoDocID));
+                ventanaDoc.ShowDialog();
+            }
 
-            mainWindow.Effect = null;
+            AplicarBlur(mainWindow, false);
             CargarGrilla();
         }
 
-        private void NuevoPresupuesto_Click(object sender, RoutedEventArgs e)
+        private void AplicarBlur(Window ventana, bool activar)
         {
-            var mainWindow = Window.GetWindow(this);
-            mainWindow.Effect = new BlurEffect { Radius = 3 };
-
-            var ventanaPres = new WiDocumento("Presupuesto", new Presupuestos.UcPresupuesto(null));
-            ventanaPres.ShowDialog();
-
-            mainWindow.Effect = null;
+            ventana.Effect = activar ? new BlurEffect { Radius = 3 } : null;
         }
 
         private void FiltrarGrilla()
