@@ -35,12 +35,12 @@ namespace Biblioteca
         public int UsuarioID { get; set; } // Int Creador inicial
         public string? Usuario { get; set; } // Mostrar
         public DateTime CreadoFecha { get; set; } // Date Fecha del primer guardado en la tabla
-        public int EditadoID { get; set; } // Int Ultimo usuario en editar
+        public int? EditadoID { get; set; } // Int Ultimo usuario en editar
         public string? Editado { get; set; } // Mostrar usuario
-        public DateTime EditadoFecha { get; set; } // Date Ultima modificación
-        public int RevisadoID { get; set; } // Int Usuario que Autoriza o Verifica
+        public DateTime? EditadoFecha { get; set; } // Date Ultima modificación
+        public int? RevisadoID { get; set; } // Int Usuario que Autoriza o Verifica
         public string? Revisado { get; set; } // Mostrar usuario
-        public DateTime RevisadoFecha { get; set; } // Date Cuando fue revisado
+        public DateTime? RevisadoFecha { get; set; } // Date Cuando fue revisado
         #endregion
         #region AGRUPADORES
         public int? AdminID { get; set; } // Int Administracion o Empresa
@@ -63,11 +63,11 @@ namespace Biblioteca
         public DateTime Fecha1 { get; set; } // Date Fecha del documento ingresada por el usuario
         public DateTime? Fecha2 { get; set; } // Date Fecha de vencimiento o entrega o ...
         public DateTime? Fecha3 { get; set; } // Date Fecha contable o ...
-        public int Numero1 { get; set; } // Int en las facturas en numero de sucursal
-        public int Numero2 { get; set; } // Int 
-        public int Numero3 { get; set; } // Int numero de archivo u otro
+        public int? Numero1 { get; set; } // Int en las facturas en numero de sucursal
+        public int? Numero2 { get; set; } // Int 
+        public int? Numero3 { get; set; } // Int numero de archivo u otro
         public string? Notas { get; set; } // Varchar250 Ingresadas por el usuario
-        public bool Active { get; set; } // Bool
+        public bool? Active { get; set; } // Bool
         #endregion
         #region TOTALES
         public decimal Pesos { get; set; } // Decimal 19.2
@@ -111,7 +111,7 @@ namespace Biblioteca
             return new Documento
             {
                 ID = docDTO.ID,
-                
+
                 CuentaID = docDTO.CuentaID,
                 TipoID = docDTO.TipoID,
                 TipoDoc = "Documento Tipo", //docDTO.TipoDoc,
@@ -229,7 +229,7 @@ namespace Biblioteca
                 RelIns = doc.RelIns
             };
         }
-        
+
         #endregion
     }
     //public class Documento
@@ -408,7 +408,5 @@ namespace Biblioteca
         public int? MovimientoID { get; set; }
         public char Accion { get; set; }
     }
-      
+
 }
-
-
