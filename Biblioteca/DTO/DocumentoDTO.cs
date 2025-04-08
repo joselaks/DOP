@@ -8,15 +8,15 @@ namespace Biblioteca.DTO
 {
     public class DocumentoDTO
     {
-        public int ID { get; set; }
+        public int? ID { get; set; }
         public short CuentaID { get; set; }
         public byte TipoID { get; set; }
         public int UsuarioID { get; set; }
         public DateTime CreadoFecha { get; set; }
-        public int EditadoID { get; set; }
-        public DateTime EditadoFecha { get; set; }
-        public int RevisadoID { get; set; }
-        public DateTime RevisadoFecha { get; set; }
+        public int? EditadoID { get; set; }
+        public DateTime? EditadoFecha { get; set; }
+        public int? RevisadoID { get; set; }
+        public DateTime? RevisadoFecha { get; set; }
         public int? AdminID { get; set; }
         public int? ObraID { get; set; }
         public int? PresupuestoID { get; set; }
@@ -28,11 +28,11 @@ namespace Biblioteca.DTO
         public DateTime Fecha1 { get; set; }
         public DateTime? Fecha2 { get; set; }
         public DateTime? Fecha3 { get; set; }
-        public int Numero1 { get; set; }
-        public int Numero2 { get; set; }
-        public int Numero3 { get; set; }
+        public int? Numero1 { get; set; }
+        public int? Numero2 { get; set; }
+        public int? Numero3 { get; set; }
         public string? Notas { get; set; }
-        public bool Active { get; set; }
+        public bool? Active { get; set; }
         public decimal Pesos { get; set; }
         public decimal Dolares { get; set; }
         public decimal Impuestos { get; set; }

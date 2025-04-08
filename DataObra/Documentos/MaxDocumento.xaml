@@ -34,7 +34,7 @@
             VerticalAlignment="Bottom"
             FontSize="16"
             FontWeight="Bold"
-            Text="Documento MAXIMIZADO" />
+            Text="" />
 
         <Border
             x:Name="FECHAS"
@@ -233,6 +233,7 @@
 
         <Border
             Grid.Row="1"
+            Grid.Column="2"
             Grid.ColumnSpan="2"
             Margin="5,5,5,5"
             BorderBrush="#FF3399FF"
@@ -312,7 +313,7 @@
 
         <Border
             Grid.Row="1"
-            Grid.Column="2"
+            Grid.Column="0"
             Margin="5,5,5,5"
             BorderBrush="#FF3399FF"
             BorderThickness="3">
@@ -562,7 +563,7 @@
                 <TextBlock
                     Grid.Row="0"
                     VerticalAlignment="Center"
-                    Text="Titulo"
+                    Text="Descripción"
                     TextAlignment="Center" />
                 <TextBox
                     Grid.Row="1"
@@ -915,8 +916,6 @@
             </TabControl>
 
         </Grid>
-
-
 
         <StackPanel Grid.Row="4" Orientation="Horizontal">
             <Button
