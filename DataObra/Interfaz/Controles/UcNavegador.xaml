@@ -51,56 +51,6 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Orientation="Horizontal">
-            <!--<ToggleButton
-                Tag="10"  
-                Width="100"
-                Height="35"
-                Margin="5"
-                BorderThickness="1"
-                BorderBrush="Beige"
-                Checked="ToggleButton_Checked"
-                Content="Presupuestos"
-                Unchecked="ToggleButton_Unchecked" />
-            <ToggleButton
-                Tag="8"  
-                Width="100"
-                Height="35"
-                Margin="5"
-                BorderThickness="1"
-                BorderBrush="Beige"
-                Checked="ToggleButton_Checked"
-                Content="O. de compra"
-                Unchecked="ToggleButton_Unchecked" />
-            <ToggleButton
-                Tag="1"  
-                Width="100"
-                Height="35"
-                Margin="5"
-                BorderThickness="1"
-                BorderBrush="Beige"
-                Checked="ToggleButton_Checked"
-                Content="Facturas"
-                Unchecked="ToggleButton_Unchecked" />
-            <ToggleButton
-                Tag="5"  
-                Width="100"
-                Height="35"
-                Margin="5"
-                BorderThickness="1"
-                BorderBrush="Beige"
-                Checked="ToggleButton_Checked"
-                Content="Remitos"
-                Unchecked="ToggleButton_Unchecked" />
-            <ToggleButton
-                Tag="9"  
-                Width="100"
-                Height="35"
-                Margin="5"
-                BorderThickness="1"
-                BorderBrush="Beige"
-                Checked="ToggleButton_Checked"
-                Content="Pagos"
-                Unchecked="ToggleButton_Unchecked" />-->
         </StackPanel>
 
         <Grid Grid.Row="2">
@@ -111,7 +61,32 @@
                 MouseDoubleClick="GrillaDocumentos_MouseDoubleClick">
                 <syncfusion:SfDataGrid.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Click="NuevoDoc_Click" Header="Nueva Factura" />
+                        <ContextMenu>
+                            <MenuItem Header="Nuevo">
+                                <MenuItem Header="Factura" Click="NuevoDoc_Click" Tag="1" />
+                                <MenuItem Header="Plan" Click="NuevoDoc_Click" Tag="2" />
+                                <MenuItem Header="Certificado" Click="NuevoDoc_Click" Tag="3" />
+                                <MenuItem Header="Parte" Click="NuevoDoc_Click" Tag="4" />
+                                <MenuItem Header="Remito" Click="NuevoDoc_Click" Tag="5" />
+                                <MenuItem Header="Cobro" Click="NuevoDoc_Click" Tag="6" />
+                                <MenuItem Header="Acopio" Click="NuevoDoc_Click" Tag="7" />
+                                <MenuItem Header="Compra" Click="NuevoDoc_Click" Tag="8" />
+                                <MenuItem Header="Pago" Click="NuevoDoc_Click" Tag="9" />
+                                <MenuItem Header="Presupuesto" Click="nuevoPres" Tag="10" />
+                                <MenuItem Header="Contrato" Click="NuevoDoc_Click" Tag="11" />
+                                <MenuItem Header="Sueldo" Click="NuevoDoc_Click" Tag="12" />
+                                <MenuItem Header="Pedido" Click="NuevoDoc_Click" Tag="13" />
+                                <MenuItem Header="Ingreso" Click="NuevoDoc_Click" Tag="14" />
+                                <MenuItem Header="Egreso" Click="NuevoDoc_Click" Tag="15" />
+                                <MenuItem Header="Entrada" Click="NuevoDoc_Click" Tag="16" />
+                                <MenuItem Header="Salida" Click="NuevoDoc_Click" Tag="17" />
+                                <MenuItem Header="Impuesto" Click="NuevoDoc_Click" Tag="18" />
+                                <MenuItem Header="Tema" Click="NuevoDoc_Click" Tag="19" />
+                            </MenuItem>
+                            <MenuItem Click="EditaDoc_Click" Header="Editar" />
+                            <MenuItem Click="BorraDoc_Click" Header="Borrar" />
+                        </ContextMenu>
+
                         <MenuItem Click="nuevoPres_Click"  Header="Nuevo Presupuesto" x:Name="nuevoPres"/>
                         <MenuItem Click="EditaDoc_Click" Header="Editar" />
                         <MenuItem Click="BorraDoc_Click" Header="Borrar" />

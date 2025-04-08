@@ -326,7 +326,7 @@ namespace DataObra.Interfaz.Controles
 
             WiDocumento ventanaDoc = sele.TipoID == 10
                 ? new WiDocumento("Presupuesto", new Presupuestos.UcPresupuesto(copia))
-                : new WiDocumento(" " + sele.TipoDoc, new Documentos.MaxDocumento(copia));
+                : new WiDocumento(" " + sele.TipoDoc, new Documentos.MaxDocumento(copia, (byte)copia.ID));
 
             ventanaDoc.ShowDialog();
             mainWindow.Effect = null;
