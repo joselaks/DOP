@@ -22,7 +22,7 @@ namespace DataObra.Interfaz.Ventanas
         public WiDocumento(string TipoDoc, UserControl userControl)
         {
             InitializeComponent();
-            TituloVentana.Text = TipoDoc;
+            TituloVentana.Text = " " + TipoDoc;
             espacioPrincipal.Children.Add(userControl);
 
             this.Closed += (s, e) =>

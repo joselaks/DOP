@@ -20,7 +20,7 @@ namespace DataObra.Documentos
         string TextBoxValueAnterior;
         public bool GuardadoConExito { get; private set; } = false;
 
-        public MaxDocumento(Biblioteca.Documento pDoc)
+        public MaxDocumento(Biblioteca.Documento pDoc, byte TipoID)
         {
             InitializeComponent();
 

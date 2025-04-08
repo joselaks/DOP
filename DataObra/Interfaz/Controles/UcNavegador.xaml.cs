@@ -170,7 +170,7 @@ namespace DataObra.Interfaz.Controles
         {
             var agrupadoresDict = App.ListaAgrupadores?.ToDictionary(a => a.ID, a => a) ?? new();
 
-            return new Documento
+            var doc = new Documento
             {
                 ID = docDTO.ID,
                 CuentaID = docDTO.CuentaID,
@@ -180,14 +180,6 @@ namespace DataObra.Interfaz.Controles
                 UsuarioID = docDTO.UsuarioID,
                 Usuario = agrupadoresDict.GetValueOrDefault(docDTO.UsuarioID)?.Descrip,
                 CreadoFecha = docDTO.CreadoFecha,
-
-                EditadoID = docDTO.EditadoID,
-                Editado = agrupadoresDict.GetValueOrDefault(docDTO.EditadoID)?.Descrip,
-                EditadoFecha = docDTO.EditadoFecha,
-
-                RevisadoID = docDTO.RevisadoID,
-                Revisado = agrupadoresDict.GetValueOrDefault(docDTO.RevisadoID)?.Descrip,
-                RevisadoFecha = docDTO.RevisadoFecha,
 
                 AdminID = docDTO.AdminID,
                 Admin = docDTO.AdminID.HasValue && agrupadoresDict.TryGetValue(docDTO.AdminID.Value, out var admin) ? admin.Descrip : null,
@@ -249,7 +241,24 @@ namespace DataObra.Interfaz.Controles
                 DetalleMovimientos = new List<Movimiento>(),
                 DetalleImpuestos = new List<Impuesto>()
             };
+
+            if (docDTO.EditadoID.HasValue)
+            {
+                doc.EditadoID = docDTO.EditadoID;
+                doc.Editado = agrupadoresDict.GetValueOrDefault(docDTO.EditadoID.Value)?.Descrip;
+                doc.EditadoFecha = docDTO.EditadoFecha;
+            }
+
+            if (docDTO.RevisadoID.HasValue)
+            {
+                doc.RevisadoID = docDTO.RevisadoID;
+                doc.Revisado = agrupadoresDict.GetValueOrDefault(docDTO.RevisadoID.Value)?.Descrip;
+                doc.RevisadoFecha = docDTO.RevisadoFecha;
+            }
+
+            return doc;
         }
+
 
         #endregion
 
