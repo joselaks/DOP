@@ -65,14 +65,14 @@ namespace DataObra.Datos
 
             var documento = new Biblioteca.DTO.DocumentoDTO
                 {
-                CuentaID = 1,
+                CuentaID = 5,
                 TipoID = 2,
                 UsuarioID = 3,
                 CreadoFecha = DateTime.Now,
                 EditadoID = 4,
                 EditadoFecha = DateTime.Now,
-                RevisadoID = 5,
-                RevisadoFecha = DateTime.Now,
+                AutorizadoID = 5,
+                AutorizadoFecha = DateTime.Now,
                 AdminID = 3,
                 ObraID = 5,
                 PresupuestoID = 6,
@@ -156,15 +156,15 @@ namespace DataObra.Datos
             #region Datos para testeo
             var documento = new Biblioteca.DTO.DocumentoDTO
                 {
-                ID = 99,
-                CuentaID = 1,
+                ID = 118,
+                CuentaID = 6,
                 TipoID = 5,
                 UsuarioID = 1,
                 CreadoFecha = DateTime.Now,
                 EditadoID = 4,
                 EditadoFecha = DateTime.Now,
-                RevisadoID = 5,
-                RevisadoFecha = DateTime.Now,
+                AutorizadoID = 5,
+                AutorizadoFecha = DateTime.Now,
                 AdminID = 3,
                 ObraID = 5,
                 PresupuestoID = 6,
