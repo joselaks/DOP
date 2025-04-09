@@ -141,7 +141,7 @@ namespace DataObra.Documentos
                 Numero2 = doc.Numero2,
                 Numero3 = doc.Numero3,
                 Notas = doc.Notas,
-                Active = doc.Active,
+                Active = (bool)doc.Active,
                 Pesos = doc.Pesos,
                 Dolares = doc.Dolares,
                 Impuestos = doc.Impuestos,
