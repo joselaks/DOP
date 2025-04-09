@@ -51,26 +51,30 @@ namespace DataObra.Presupuestos
         Nodo anterior = new Nodo();
         private Stack<Cambios> undoStack;
         private Stack<Cambios> redoStack;
-        public bool GuardadoConExito { get; private set; } = false;
+        public event EventHandler GuardadoConExito;
 
 
         //SfTreeGrid grillaNavegador = new SfTreeGrid();
         public UcPresupuesto(Biblioteca.Documento encabezado)
         {
             InitializeComponent();
+
             undoStack = new Stack<Cambios>();
             redoStack = new Stack<Cambios>();
+            this.ComboObras.ItemsSource = App.ListaAgrupadores.Where(a => a.TipoID == 'O' && a.Active);
             if (encabezado!= null)
             {
                 Encabezado = encabezado;
                 this.descripcion.Text = Encabezado.Descrip;
-                this.ComboObras.ItemsSource = App.ListaAgrupadores.Where(a => a.TipoID == 'O' && a.Active);
-
                 this.ComboObras.SelectedItem = App.ListaAgrupadores.FirstOrDefault(a => a.ID == encabezado.ObraID);
 
 
-            }
-            Objeto = new Presupuesto(null);
+                }
+            else
+                {
+                Encabezado = new Biblioteca.Documento();
+                }
+                Objeto = new Presupuesto(null);
             this.grillaArbol.ItemsSource = Objeto.Arbol;
             this.grillaArbol.ChildPropertyName = "Inferiores";
             this.grillaDetalle.ItemsSource = Objeto.Insumos;
@@ -87,6 +91,11 @@ namespace DataObra.Presupuestos
             cID.IsHidden = true;
             this.colTipo.IsChecked = true;
         }
+
+        private void OnGuardadoConExito()
+            {
+            GuardadoConExito?.Invoke(this, EventArgs.Empty);
+            }
 
         protected void OnPropertyChanged(string propertyName)
         {
@@ -667,6 +676,9 @@ namespace DataObra.Presupuestos
             }
         }
 
+
+
+
         private async void BtnGuardar_Click(object sender, RoutedEventArgs e)
         {
             bool esNuevo = Encabezado.ID == null;
@@ -680,23 +692,16 @@ namespace DataObra.Presupuestos
                 : EmpaquetarResultado(await DatosWeb.ActualizarDocumentoAsync(documento), documento.ID);
 
             if (resultado.Item1 && resultado.Item3.HasValue)
-            {
-                GuardadoConExito = true;
-                string mensaje = esNuevo
-                    ? $"Documento creado con éxito. ID asignado: {resultado.Item3.Value}"
-                    : $"Documento actualizado con éxito. ID: {resultado.Item3.Value}";
+                {
+                MessageBox.Show("Documento guardado con éxito.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                MessageBox.Show(mensaje, "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
+                // Disparar el evento para notificar el guardado exitoso
+                OnGuardadoConExito();
+                }
             else
-            {
-                MessageBox.Show(
-                    $"Error al {(esNuevo ? "crear" : "actualizar")} el documento: {resultado.Item2}",
-                    "Error",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error
-                );
-            }
+                {
+                MessageBox.Show($"Error al guardar el documento: {resultado.Item2}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
 
 
 
@@ -706,7 +711,7 @@ namespace DataObra.Presupuestos
             //MessageBox.Show($"Cantidad de registros en listaConceptosGrabar: {Objeto.listaConceptosGrabar.Count}\nCantidad de registros en listaRelacionesGrabar: {Objeto.listaRelacionesGrabar.Count}");
             //ProcesarArbolPresupuestoRequest();
 
-        }
+            }
 
         private async void ProcesarArbolPresupuestoRequest()
         {

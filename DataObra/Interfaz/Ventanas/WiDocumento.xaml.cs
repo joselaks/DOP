@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataObra.Presupuestos;
+using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,6 +25,7 @@ namespace DataObra.Interfaz.Ventanas
             InitializeComponent();
             TituloVentana.Text = " " + TipoDoc;
             espacioPrincipal.Children.Add(userControl);
+            
 
             this.Closed += (s, e) =>
             {
@@ -32,7 +34,16 @@ namespace DataObra.Interfaz.Ventanas
                     GuardadoConExito = maxDoc.GuardadoConExito;
                 }
             };
-        }
+
+            if (userControl is UcPresupuesto ucPresupuesto)
+                {
+                    ucPresupuesto.GuardadoConExito += (s, e) =>
+                    {
+                        GuardadoConExito = true;
+                        this.Close(); // Cerrar la ventana
+                    };
+                }
+            }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
