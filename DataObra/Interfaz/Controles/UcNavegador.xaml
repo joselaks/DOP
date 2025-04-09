@@ -149,8 +149,8 @@
                         TextAlignment="Center"/>
                     <syncfusion:GridTextColumn
                         Width="90"
-                        HeaderText="Revisado"
-                        MappingName="Revisado"
+                        HeaderText="Autorizado"
+                        MappingName="Autorizado"
                         TextAlignment="Center"/>
                 </syncfusion:SfDataGrid.Columns>
             </syncfusion:SfDataGrid>

@@ -511,23 +511,23 @@
                     VerticalAlignment="Center"
                     Text="Autorizado: " />
                 <TextBlock
-                    x:Name="CelRevisadoFecha"
+                    x:Name="CelAutorizadoFecha"
                     Grid.Row="4"
                     Grid.Column="1"
                     Width="63"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     FontStyle="Italic"
-                    Text="{Binding RevisadoFecha, StringFormat='{}{0:dd/MM/yy}'}" />
+                    Text="{Binding AutorizadoFecha, StringFormat='{}{0:dd/MM/yy}'}" />
                 <TextBlock
-                    x:Name="CelRevisado"
+                    x:Name="CelAutorizado"
                     Grid.Row="4"
                     Grid.Column="2"
                     Width="102"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     FontStyle="Italic"
-                    Text="{Binding Revisado}"
+                    Text="{Binding Autorizado}"
                     TextAlignment="Left" />
                 <Button
                     x:Name="BotonVerifica"

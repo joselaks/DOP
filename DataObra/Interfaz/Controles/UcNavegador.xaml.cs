@@ -121,8 +121,8 @@ namespace DataObra.Interfaz.Controles
                 CreadoFecha = doc.CreadoFecha,
                 EditadoID = doc.EditadoID,
                 EditadoFecha = doc.EditadoFecha,
-                RevisadoID = doc.RevisadoID,
-                RevisadoFecha = doc.RevisadoFecha,
+                AutorizadoID = doc.AutorizadoID,
+                AutorizadoFecha = doc.AutorizadoFecha,
                 AdminID = doc.AdminID,
                 ObraID = doc.ObraID,
                 PresupuestoID = doc.PresupuestoID,
@@ -249,11 +249,11 @@ namespace DataObra.Interfaz.Controles
                 doc.EditadoFecha = docDTO.EditadoFecha;
             }
 
-            if (docDTO.RevisadoID.HasValue)
+            if (docDTO.AutorizadoID.HasValue)
             {
-                doc.RevisadoID = docDTO.RevisadoID;
-                doc.Revisado = agrupadoresDict.GetValueOrDefault(docDTO.RevisadoID.Value)?.Descrip;
-                doc.RevisadoFecha = docDTO.RevisadoFecha;
+                doc.AutorizadoID = docDTO.AutorizadoID;
+                doc.Autorizado = agrupadoresDict.GetValueOrDefault(docDTO.AutorizadoID.Value)?.Descrip;
+                doc.AutorizadoFecha = docDTO.AutorizadoFecha;
             }
 
             return doc;

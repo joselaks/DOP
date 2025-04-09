@@ -185,8 +185,8 @@
                         <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding Editado, Mode=TwoWay}" FontStyle="Italic" Width="102" HorizontalAlignment="Left" VerticalAlignment="Center" />
 
                         <TextBlock Text="Autorizado: " Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" />
-                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding RevisadoFecha, StringFormat='{}{0:dd/MM/yy}'}" x:Name="CelRevisadoFecha" FontStyle="Italic" Width="63"  HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        <TextBlock Grid.Row="4" Grid.Column="2" Text="{Binding Revisado}" x:Name="CelRevisado" FontStyle="Italic" Width="102" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding AutorizadoFecha, StringFormat='{}{0:dd/MM/yy}'}" x:Name="CelAutorizadoFecha" FontStyle="Italic" Width="63"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <TextBlock Grid.Row="4" Grid.Column="2" Text="{Binding Autorizado}" x:Name="CelAutorizado" FontStyle="Italic" Width="102" TextAlignment="Left" HorizontalAlignment="Left" VerticalAlignment="Center" />
                         <Button x:Name="BotonVerifica" Grid.Row="4" Grid.Column="2" Content="Autorizar" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,3,0" ToolTip="Agrega o elimina Autorización" Click="BotonVerifica_Click" />
                     </Grid>
                 </Border>

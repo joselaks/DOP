@@ -70,13 +70,13 @@ namespace DataObra.Documentos
                 }
                 this.ComboEntidad.SelectedItem = entidad;
 
-                if (oActivo.RevisadoID != 0)
+                if (oActivo.AutorizadoID != 0)
                 {
-                    //this.CelRevisadoFecha.Visibility = Visibility.Visible;
+                    //this.CelAutorizadoFecha.Visibility = Visibility.Visible;
                 }
                 else
                 {
-                    //this.CelRevisadoFecha.Visibility = Visibility.Collapsed;
+                    //this.CelAutorizadoFecha.Visibility = Visibility.Collapsed;
                 }
             }
 
@@ -154,16 +154,16 @@ namespace DataObra.Documentos
 
         private void BotonVerifica_Click(object sender, RoutedEventArgs e)
         {
-            if (oActivo.RevisadoID == 0)
+            if (oActivo.AutorizadoID == 0)
             {
-                oActivo.RevisadoID = azure.UsuarioID;
-                oActivo.Revisado = azure.Usuario;
-                oActivo.RevisadoFecha = System.DateTime.Today;
+                oActivo.AutorizadoID = azure.UsuarioID;
+                oActivo.Autorizado = azure.Usuario;
+                oActivo.AutorizadoFecha = System.DateTime.Today;
             }
             else
             {
-                oActivo.RevisadoID = 0;
-                oActivo.Revisado = "";
+                oActivo.AutorizadoID = 0;
+                oActivo.Autorizado = "";
             }
         }
 

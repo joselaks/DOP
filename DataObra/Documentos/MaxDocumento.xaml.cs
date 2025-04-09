@@ -40,8 +40,8 @@ namespace DataObra.Documentos
                     CreadoFecha = DateTime.Now,
                     EditadoID = 0,
                     EditadoFecha = DateTime.Now,
-                    RevisadoID = 0,
-                    RevisadoFecha = DateTime.Now,
+                    AutorizadoID = 0,
+                    AutorizadoFecha = DateTime.Now,
                     AdminID = 63,
                     ObraID = 60,
                     PresupuestoID = 6,
@@ -103,7 +103,7 @@ namespace DataObra.Documentos
                     this.ComboEntidad.SelectedItem = entidad;
                 }
 
-                this.CelRevisadoFecha.Visibility = oActivo.RevisadoID != 0 ? Visibility.Visible : Visibility.Collapsed;
+                this.CelAutorizadoFecha.Visibility = oActivo.AutorizadoID != 0 ? Visibility.Visible : Visibility.Collapsed;
                 this.CelEditadoFecha.Visibility = oActivo.EditadoID != 0 ? Visibility.Visible : Visibility.Collapsed;
             }
 
@@ -124,8 +124,8 @@ namespace DataObra.Documentos
                 CreadoFecha = doc.CreadoFecha,
                 EditadoID = doc.EditadoID,
                 EditadoFecha = doc.EditadoFecha,
-                RevisadoID = doc.RevisadoID,
-                RevisadoFecha = doc.RevisadoFecha,
+                AutorizadoID = doc.AutorizadoID,
+                AutorizadoFecha = doc.AutorizadoFecha,
                 AdminID = doc.AdminID,
                 ObraID = doc.ObraID,
                 PresupuestoID = doc.PresupuestoID,
@@ -338,16 +338,16 @@ namespace DataObra.Documentos
 
         private void BotonVerifica_Click(object sender, RoutedEventArgs e)
         {
-            if (oActivo.RevisadoID == 0)
+            if (oActivo.AutorizadoID == 0)
             {
-                oActivo.RevisadoID = App.IdUsuario;
-                //oActivo.Revisado = (int)App.IdUsuario;
-                oActivo.RevisadoFecha = DateTime.Today;
+                oActivo.AutorizadoID = App.IdUsuario;
+                //oActivo.Autorizado = (int)App.IdUsuario;
+                oActivo.AutorizadoFecha = DateTime.Today;
             }
             else
             {
-                oActivo.RevisadoID = 0;
-                oActivo.Revisado = "";
+                oActivo.AutorizadoID = 0;
+                oActivo.Autorizado = "";
             }
         }
 

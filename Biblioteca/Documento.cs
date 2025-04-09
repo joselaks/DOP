@@ -40,7 +40,7 @@ namespace Biblioteca
         public DateTime? EditadoFecha { get; set; } // Date Ultima modificación
         public int? AutorizadoID { get; set; } // Int Usuario que Autoriza o Verifica
         public string? Autorizado { get; set; } // Mostrar usuario
-        public DateTime? AutorizadoFecha { get; set; } // Date Cuando fue revisado
+        public DateTime? AutorizadoFecha { get; set; } // Date Cuando fue Autorizado
         #endregion
         #region AGRUPADORES
         public int? AdminID { get; set; } // Int Administracion o Empresa
@@ -121,9 +121,9 @@ namespace Biblioteca
                 EditadoID = docDTO.EditadoID,
                 Editado = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.EditadoID).Descrip,
                 EditadoFecha = docDTO.EditadoFecha,
-                AutorizadoID = docDTO.RevisadoID,
-                Autorizado = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.RevisadoID).Descrip,
-                AutorizadoFecha = docDTO.RevisadoFecha,
+                AutorizadoID = docDTO.AutorizadoID,
+                Autorizado = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.AutorizadoID).Descrip,
+                AutorizadoFecha = docDTO.AutorizadoFecha,
                 AdminID = docDTO.AdminID,
                 Admin = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.AdminID).Descrip,
                 ObraID = docDTO.ObraID,
@@ -188,8 +188,8 @@ namespace Biblioteca
                 CreadoFecha = doc.CreadoFecha,
                 EditadoID = doc.EditadoID,
                 EditadoFecha = doc.EditadoFecha,
-                RevisadoID = doc.RevisadoID,
-                RevisadoFecha = doc.RevisadoFecha,
+                AutorizadoID = doc.AutorizadoID,
+                AutorizadoFecha = doc.AutorizadoFecha,
                 AdminID = doc.AdminID,
                 ObraID = doc.ObraID,
                 PresupuestoID = doc.PresupuestoID,
@@ -244,9 +244,9 @@ namespace Biblioteca
     //    public int EditadoID { get; set; }
     //    public string? Editado { get; set; }
     //    public DateTime EditadoFecha { get; set; }
-    //    public int RevisadoID { get; set; }
-    //    public string? Revisado { get; set; }
-    //    public DateTime RevisadoFecha { get; set; }
+    //    public int AutorizadoID { get; set; }
+    //    public string? Autorizado { get; set; }
+    //    public DateTime AutorizadoFecha { get; set; }
     //    public int? AdminID { get; set; }
     //    public string? Admin { get; set; }
     //    public int? ObraID { get; set; }
