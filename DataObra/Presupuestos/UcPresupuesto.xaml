@@ -327,13 +327,39 @@
                     Width="200"
                     Height="30"
                     Margin="5,0,0,0"
-                    KeyDown="descripcion_KeyDown" />
+                     />
                 <syncfusion:ButtonAdv
                     x:Name="ejemplo"
                     Margin="3"
                     Click="ejemplo_Click"
                     Content="H"
                     SizeMode="Small" />
+                <TextBlock Text="Obra: " VerticalAlignment="Center" />
+                <syncfusion:ComboBoxAdv
+    Name="ComboObras"
+   
+    Width="192"
+    Height="23"
+    HorizontalAlignment="Left"
+    VerticalAlignment="Center"
+    DisplayMemberPath="Descrip"
+    SelectedValuePath="ID"
+    SelectionChanged="ComboObras_SelectionChanged" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             </StackPanel>
             <syncfusion:SfTreeGrid

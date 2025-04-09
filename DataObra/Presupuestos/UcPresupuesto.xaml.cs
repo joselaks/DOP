@@ -1,5 +1,7 @@
 ﻿using Bibioteca.Clases;
+using Biblioteca;
 using Biblioteca.DTO;
+using DataObra.Agrupadores;
 using DataObra.Controles;
 using DataObra.Datos;
 using Microsoft.Win32;
@@ -49,6 +51,7 @@ namespace DataObra.Presupuestos
         Nodo anterior = new Nodo();
         private Stack<Cambios> undoStack;
         private Stack<Cambios> redoStack;
+        public bool GuardadoConExito { get; private set; } = false;
 
 
         //SfTreeGrid grillaNavegador = new SfTreeGrid();
@@ -61,6 +64,10 @@ namespace DataObra.Presupuestos
             {
                 Encabezado = encabezado;
                 this.descripcion.Text = Encabezado.Descrip;
+                this.ComboObras.ItemsSource = App.ListaAgrupadores.Where(a => a.TipoID == 'O' && a.Active);
+
+                this.ComboObras.SelectedItem = App.ListaAgrupadores.FirstOrDefault(a => a.ID == encabezado.ObraID);
+
 
             }
             Objeto = new Presupuesto(null);
@@ -176,7 +183,7 @@ namespace DataObra.Presupuestos
         }
 
 
-
+      
 
 
 
@@ -662,11 +669,42 @@ namespace DataObra.Presupuestos
 
         private async void BtnGuardar_Click(object sender, RoutedEventArgs e)
         {
-            Objeto.listaConceptosGrabar.Clear();
-            Objeto.listaRelacionesGrabar.Clear();
-            Objeto.aplanar(Objeto.Arbol, null);
-            MessageBox.Show($"Cantidad de registros en listaConceptosGrabar: {Objeto.listaConceptosGrabar.Count}\nCantidad de registros en listaRelacionesGrabar: {Objeto.listaRelacionesGrabar.Count}");
-            ProcesarArbolPresupuestoRequest();
+            bool esNuevo = Encabezado.ID == null;
+
+            var documento = ConvertirADTO(Encabezado, esNuevo);
+
+            (bool, string, int?) EmpaquetarResultado((bool, string) r, int? id) => (r.Item1, r.Item2, id);
+
+            var resultado = esNuevo
+                ? await DatosWeb.CrearDocumentoAsync(documento)
+                : EmpaquetarResultado(await DatosWeb.ActualizarDocumentoAsync(documento), documento.ID);
+
+            if (resultado.Item1 && resultado.Item3.HasValue)
+            {
+                GuardadoConExito = true;
+                string mensaje = esNuevo
+                    ? $"Documento creado con éxito. ID asignado: {resultado.Item3.Value}"
+                    : $"Documento actualizado con éxito. ID: {resultado.Item3.Value}";
+
+                MessageBox.Show(mensaje, "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show(
+                    $"Error al {(esNuevo ? "crear" : "actualizar")} el documento: {resultado.Item2}",
+                    "Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+            }
+
+
+
+            //Objeto.listaConceptosGrabar.Clear();
+            //Objeto.listaRelacionesGrabar.Clear();
+            //Objeto.aplanar(Objeto.Arbol, null);
+            //MessageBox.Show($"Cantidad de registros en listaConceptosGrabar: {Objeto.listaConceptosGrabar.Count}\nCantidad de registros en listaRelacionesGrabar: {Objeto.listaRelacionesGrabar.Count}");
+            //ProcesarArbolPresupuestoRequest();
 
         }
 
@@ -829,9 +867,73 @@ namespace DataObra.Presupuestos
             recalculo();
         }
 
+        private void ComboObras_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            var sele = ComboObras.SelectedItem as AgrupadorDTO;
+            if (sele != null)
+            {
+                Encabezado.ObraID = sele.ID;
+                Encabezado.Obra = sele.Descrip;
+            }
+        }
 
+        private DocumentoDTO ConvertirADTO(Documento doc, bool esNuevo)
+        {
+            var dto = new DocumentoDTO
+            {
+                CuentaID = 1,
+                TipoID = 10,
+                UsuarioID = 3,
+                CreadoFecha = DateTime.Now,
+                EditadoID = 1,
+                EditadoFecha = DateTime.Now,
+                RevisadoID = 1,
+                RevisadoFecha = DateTime.Now,
+                AdminID = 1,
+                ObraID = Encabezado.ObraID,
+                PresupuestoID = 6,
+                RubroID = 6,
+                EntidadID = 7,
+                DepositoID = 5,
+                Descrip = Encabezado.Descrip,
+                Concepto1 = "b",
+                Fecha1 = DateTime.Now,
+                Fecha2 = DateTime.Now,
+                Fecha3 = DateTime.Now,
+                Numero1 = 0,
+                Numero2 = 0,
+                Numero3 = 0,
+                Notas = "bb",
+                Active = false,
+                Pesos = 0,
+                Dolares = 0,
+                Impuestos = 0,
+                ImpuestosD = 0,
+                Materiales = 0,
+                ManodeObra = 0,
+                Subcontratos = 0,
+                Equipos = 0,
+                Otros = 0,
+                MaterialesD = 0,
+                ManodeObraD = 0,
+                SubcontratosD = 0,
+                EquiposD = 0,
+                OtrosD = 0,
+                RelDoc = false,
+                RelArt = false,
+                RelMov = false,
+                RelImp = false,
+                RelRub = false,
+                RelTar = false,
+                RelIns = false
+            };
 
+            if (!esNuevo)
+                dto.ID = (int)doc.ID;
 
+            return dto;
+
+        }
     }
 
     public class Cambios
@@ -848,6 +950,7 @@ namespace DataObra.Presupuestos
         public Nodo NodoPadreAnterior { get; set; }
         public int Posicion { get; set; }
     }
+
 
 
 }

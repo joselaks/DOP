@@ -51,15 +51,16 @@ namespace DataObra.Interfaz.Controles.SubControles
         {
             var tipos = new Dictionary<char, string>
             {
-            { 'O', "Obra" },
+             { 'O', "Obra" },
             { 'A', "Administración" },
             { 'C', "Cliente" },
             { 'P', "Proveedor" },
             { 'E', "Empleado" },
             { 'S', "SubContratista" },
-            { 'U', "Cuenta" },
+            { 'N', "Cuenta" },
             { 'D', "Deposito" },
             { 'I', "Impuesto" },
+            { 'U', "Usuario" },  // Es un agrupador?
             { 'T', "Tema" }
         };
             TipoComboBox.ItemsSource = tipos;

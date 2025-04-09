@@ -118,7 +118,7 @@ namespace DataObra.Documentos
                 Height = 800,
                 Margin = new Thickness(5),
                 Header = header,
-                Content = maximizado ? (object)new MaxDocumento(documento) : new MinDocumento(documento),
+                Content = maximizado ? (object)new MaxDocumento(documento, 1) : new MinDocumento(documento),
                 TileViewItemState = maximizado ? TileViewItemState.Maximized : TileViewItemState.Normal
             };
 
@@ -131,7 +131,7 @@ namespace DataObra.Documentos
         {
             if (tileViewItem.TileViewItemState == TileViewItemState.Maximized)
             {
-                tileViewItem.Content = new MaxDocumento(documento);
+                tileViewItem.Content = new MaxDocumento(documento, 1);
             }
             else
             {

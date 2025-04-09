@@ -40,9 +40,10 @@ namespace DataObra.Interfaz.Controles
             { 'P', "Proveedor" },
             { 'E', "Empleado" },
             { 'S', "SubContratista" },
-            { 'U', "Cuenta" },
+            { 'N', "Cuenta" },
             { 'D', "Deposito" },
             { 'I', "Impuesto" },
+            { 'U', "Usuario" },  // Es un agrupador?
             { 'T', "Tema" }
         };
 

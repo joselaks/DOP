@@ -35,12 +35,12 @@ namespace Biblioteca
         public int UsuarioID { get; set; } // Int Creador inicial
         public string? Usuario { get; set; } // Mostrar
         public DateTime CreadoFecha { get; set; } // Date Fecha del primer guardado en la tabla
-        public int AutorizadoID { get; set; } // Int Ultimo usuario en editar
+        public int? EditadoID { get; set; } // Int Ultimo usuario en editar
         public string? Editado { get; set; } // Mostrar usuario
-        public DateTime AutorizadoFecha { get; set; } // Date Ultima modificación
-        public int RevisadoID { get; set; } // Int Usuario que Autoriza o Verifica
+        public DateTime? EditadoFecha { get; set; } // Date Ultima modificación
+        public int? RevisadoID { get; set; } // Int Usuario que Autoriza o Verifica
         public string? Revisado { get; set; } // Mostrar usuario
-        public DateTime RevisadoFecha { get; set; } // Date Cuando fue revisado
+        public DateTime? RevisadoFecha { get; set; } // Date Cuando fue revisado
         #endregion
         #region AGRUPADORES
         public int? AdminID { get; set; } // Int Administracion o Empresa
@@ -63,11 +63,11 @@ namespace Biblioteca
         public DateTime Fecha1 { get; set; } // Date Fecha del documento ingresada por el usuario
         public DateTime? Fecha2 { get; set; } // Date Fecha de vencimiento o entrega o ...
         public DateTime? Fecha3 { get; set; } // Date Fecha contable o ...
-        public int Numero1 { get; set; } // Int en las facturas en numero de sucursal
-        public int Numero2 { get; set; } // Int 
-        public int Numero3 { get; set; } // Int numero de archivo u otro
+        public int? Numero1 { get; set; } // Int en las facturas en numero de sucursal
+        public int? Numero2 { get; set; } // Int 
+        public int? Numero3 { get; set; } // Int numero de archivo u otro
         public string? Notas { get; set; } // Varchar250 Ingresadas por el usuario
-        public bool Active { get; set; } // Bool
+        public bool? Active { get; set; } // Bool
         #endregion
         #region TOTALES
         public decimal Pesos { get; set; } // Decimal 19.2
@@ -111,64 +111,64 @@ namespace Biblioteca
             return new Documento
             {
                 ID = docDTO.ID,
-                
-                //CuentaID = docDTO.CuentaID,
-                //TipoID = docDTO.TipoID,
-                //TipoDoc = "Documento Tipo", //docDTO.TipoDoc,
-                //UsuarioID = docDTO.UsuarioID,
-                //Usuario = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.UsuarioID).Descrip,
-                //CreadoFecha = docDTO.CreadoFecha,
-                //EditadoID = docDTO.EditadoID,
-                //Editado = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.EditadoID).Descrip,
-                //EditadoFecha = docDTO.EditadoFecha,
-                //RevisadoID = docDTO.RevisadoID,
-                //Revisado = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.RevisadoID).Descrip,
-                //RevisadoFecha = docDTO.RevisadoFecha,
-                //AdminID = docDTO.AdminID,
-                //Admin = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.AdminID).Descrip,
-                //ObraID = docDTO.ObraID,
-                //Obra = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.ObraID).Descrip,
-                //PresupuestoID = docDTO.PresupuestoID,
-                //Presupuesto = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.PresupuestoID).Descrip,
-                ////RubroID = docDTO.RubroID,
-                ////Rubro = docDTO.Rubro,
-                //EntidadID = docDTO.EntidadID,
-                //Entidad = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.EntidadID).Descrip,
-                //EntidadTipo = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.EntidadID).Tipo,
-                //DepositoID = docDTO.DepositoID,
-                //Deposito = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.DepositoID).Descrip,
-                //Descrip = docDTO.Descrip,
-                //Concepto1 = docDTO.Concepto1,
-                //Fecha1 = docDTO.Fecha1,
-                //Fecha2 = docDTO.Fecha2,
-                //Fecha3 = docDTO.Fecha3,
-                //Numero1 = docDTO.Numero1,
-                //Numero2 = docDTO.Numero2,
-                //Numero3 = docDTO.Numero3,
-                //Notas = docDTO.Notas,
-                //Active = docDTO.Active,
-                //Pesos = docDTO.Pesos,
-                //Dolares = docDTO.Dolares,
-                //Impuestos = docDTO.Impuestos,
-                //ImpuestosD = docDTO.ImpuestosD,
-                //Materiales = docDTO.Materiales,
-                //ManodeObra = docDTO.ManodeObra,
-                //Subcontratos = docDTO.Subcontratos,
-                //Equipos = docDTO.Equipos,
-                //Otros = docDTO.Otros,
-                //MaterialesD = docDTO.MaterialesD,
-                //ManodeObraD = docDTO.ManodeObraD,
-                //SubcontratosD = docDTO.SubcontratosD,
-                //EquiposD = docDTO.EquiposD,
-                //OtrosD = docDTO.OtrosD,
-                //RelDoc = docDTO.RelDoc,
-                //RelArt = docDTO.RelArt,
-                //RelMov = docDTO.RelMov,
-                //RelImp = docDTO.RelImp,
-                //RelRub = docDTO.RelRub,
-                //RelTar = docDTO.RelTar,
-                //RelIns = docDTO.RelIns,
-                //Accion = 'A',
+
+                CuentaID = docDTO.CuentaID,
+                TipoID = docDTO.TipoID,
+                TipoDoc = "Documento Tipo", //docDTO.TipoDoc,
+                UsuarioID = docDTO.UsuarioID,
+                Usuario = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.UsuarioID).Descrip,
+                CreadoFecha = docDTO.CreadoFecha,
+                EditadoID = docDTO.EditadoID,
+                Editado = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.EditadoID).Descrip,
+                EditadoFecha = docDTO.EditadoFecha,
+                RevisadoID = docDTO.RevisadoID,
+                Revisado = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.RevisadoID).Descrip,
+                RevisadoFecha = docDTO.RevisadoFecha,
+                AdminID = docDTO.AdminID,
+                Admin = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.AdminID).Descrip,
+                ObraID = docDTO.ObraID,
+                Obra = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.ObraID).Descrip,
+                PresupuestoID = docDTO.PresupuestoID,
+                Presupuesto = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.PresupuestoID).Descrip,
+                //RubroID = docDTO.RubroID,
+                //Rubro = docDTO.Rubro,
+                EntidadID = docDTO.EntidadID,
+                Entidad = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.EntidadID).Descrip,
+                EntidadTipo = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.EntidadID).Tipo,
+                DepositoID = docDTO.DepositoID,
+                Deposito = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.DepositoID).Descrip,
+                Descrip = docDTO.Descrip,
+                Concepto1 = docDTO.Concepto1,
+                Fecha1 = docDTO.Fecha1,
+                Fecha2 = docDTO.Fecha2,
+                Fecha3 = docDTO.Fecha3,
+                Numero1 = docDTO.Numero1,
+                Numero2 = docDTO.Numero2,
+                Numero3 = docDTO.Numero3,
+                Notas = docDTO.Notas,
+                Active = docDTO.Active,
+                Pesos = docDTO.Pesos,
+                Dolares = docDTO.Dolares,
+                Impuestos = docDTO.Impuestos,
+                ImpuestosD = docDTO.ImpuestosD,
+                Materiales = docDTO.Materiales,
+                ManodeObra = docDTO.ManodeObra,
+                Subcontratos = docDTO.Subcontratos,
+                Equipos = docDTO.Equipos,
+                Otros = docDTO.Otros,
+                MaterialesD = docDTO.MaterialesD,
+                ManodeObraD = docDTO.ManodeObraD,
+                SubcontratosD = docDTO.SubcontratosD,
+                EquiposD = docDTO.EquiposD,
+                OtrosD = docDTO.OtrosD,
+                RelDoc = docDTO.RelDoc,
+                RelArt = docDTO.RelArt,
+                RelMov = docDTO.RelMov,
+                RelImp = docDTO.RelImp,
+                RelRub = docDTO.RelRub,
+                RelTar = docDTO.RelTar,
+                RelIns = docDTO.RelIns,
+                Accion = 'A',
             };
         }
 
@@ -186,8 +186,8 @@ namespace Biblioteca
                 TipoID = doc.TipoID,
                 UsuarioID = doc.UsuarioID,
                 CreadoFecha = doc.CreadoFecha,
-                AutorizadoID = doc.AutorizadoID,
-                AutorizadoFecha = doc.AutorizadoFecha,
+                EditadoID = doc.EditadoID,
+                EditadoFecha = doc.EditadoFecha,
                 RevisadoID = doc.RevisadoID,
                 RevisadoFecha = doc.RevisadoFecha,
                 AdminID = doc.AdminID,
@@ -229,7 +229,7 @@ namespace Biblioteca
                 RelIns = doc.RelIns
             };
         }
-        
+
         #endregion
     }
     //public class Documento
@@ -408,7 +408,5 @@ namespace Biblioteca
         public int? MovimientoID { get; set; }
         public char Accion { get; set; }
     }
-      
+
 }
-
-

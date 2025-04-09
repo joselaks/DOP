@@ -88,7 +88,7 @@ namespace DataObra.Sistema
                     item.EntidadTipo = tipoDiccionario.TryGetValue(entidad.TipoID, out var tipo) ? tipo : "Otro";
                 }
                 item.Usuario = usuariosDict.TryGetValue(item.UsuarioID, out var usuario) ? $"{usuario.Nombre} {usuario.Apellido}" : item.Usuario;
-                item.Revisado = usuariosDict.TryGetValue(item.RevisadoID, out var verifica) ? $"{verifica.Nombre} {verifica.Apellido}" : item.Revisado;
+                //item.Revisado = usuariosDict.TryGetValue(item.RevisadoID, out var verifica) ? $"{verifica.Nombre} {verifica.Apellido}" : item.Revisado;
                 //item.TipoDoc = clasificadoresDict.TryGetValue(item.TipoID, out var tipoDoc) ? tipoDoc.Descrip : item.TipoDoc;
             }
         }
