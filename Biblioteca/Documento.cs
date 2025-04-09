@@ -38,9 +38,9 @@ namespace Biblioteca
         public int? EditadoID { get; set; } // Int Ultimo usuario en editar
         public string? Editado { get; set; } // Mostrar usuario
         public DateTime? EditadoFecha { get; set; } // Date Ultima modificación
-        public int? RevisadoID { get; set; } // Int Usuario que Autoriza o Verifica
-        public string? Revisado { get; set; } // Mostrar usuario
-        public DateTime? RevisadoFecha { get; set; } // Date Cuando fue revisado
+        public int? AutorizadoID { get; set; } // Int Usuario que Autoriza o Verifica
+        public string? Autorizado { get; set; } // Mostrar usuario
+        public DateTime? AutorizadoFecha { get; set; } // Date Cuando fue revisado
         #endregion
         #region AGRUPADORES
         public int? AdminID { get; set; } // Int Administracion o Empresa
@@ -121,9 +121,9 @@ namespace Biblioteca
                 EditadoID = docDTO.EditadoID,
                 Editado = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.EditadoID).Descrip,
                 EditadoFecha = docDTO.EditadoFecha,
-                RevisadoID = docDTO.RevisadoID,
-                Revisado = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.RevisadoID).Descrip,
-                RevisadoFecha = docDTO.RevisadoFecha,
+                AutorizadoID = docDTO.RevisadoID,
+                Autorizado = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.RevisadoID).Descrip,
+                AutorizadoFecha = docDTO.RevisadoFecha,
                 AdminID = docDTO.AdminID,
                 Admin = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.AdminID).Descrip,
                 ObraID = docDTO.ObraID,
