@@ -141,29 +141,32 @@
             Grid.Column="1"
             Height="30"
             VerticalAlignment="Center"
-            
             Orientation="Horizontal">
             <Button
                 x:Name="nuevoAgrupador"
                 Width="90"
                 Margin="3,3,3,3"
-                Content="Nuevo" IsEnabled="True" Click="nuevoAgrupador_Click"/>
+                Click="nuevoAgrupador_Click"
+                Content="Nuevo"
+                IsEnabled="True" />
             <Button
                 x:Name="borrarrAgrupador"
                 Width="90"
                 Margin="3,3,3,3"
-                Content="Borrar" Click="borrarrAgrupador_Click" />
+                Click="borrarrAgrupador_Click"
+                Content="Borrar" />
             <Button
-     x:Name="editaAgrup"
-     Width="90"
-     Margin="3,3,3,3"
-    
-     Content="Edita" Click="editaAgrup_Click"  />
+                x:Name="editaAgrup"
+                Width="90"
+                Margin="3,3,3,3"
+                Click="editaAgrup_Click"
+                Content="Edita" />
             <Button
                 x:Name="obtenerAgrupador"
                 Width="90"
                 Margin="3,3,3,3"
-                Content="Buscar p/cuenta" Click="obtenerAgrupador_Click"/>
+                Click="obtenerAgrupador_Click"
+                Content="Buscar p/cuenta" />
         </StackPanel>
         <StackPanel
             Grid.Row="4"
@@ -189,54 +192,57 @@
             Grid.Column="1"
             Height="30"
             VerticalAlignment="Center"
-            
             Orientation="Horizontal">
             <Button
                 x:Name="obtenerMovimientos"
                 Width="90"
                 Margin="3,3,3,3"
-                Content="Obtener" Click="obtenerMovimientos_Click" />
+                Click="obtenerMovimientos_Click"
+                Content="Obtener" />
             <Button
                 x:Name="ProcesaLoteMov"
                 Width="90"
                 Margin="3,3,3,3"
-                Content="Procesa Lote" Click="ProcesaLoteMov_Click" />
+                Click="ProcesaLoteMov_Click"
+                Content="Procesa Lote" />
         </StackPanel>
         <StackPanel
             Grid.Row="7"
             Grid.Column="1"
             Height="30"
             VerticalAlignment="Center"
-            
             Orientation="Horizontal">
             <Button
                 x:Name="obtenerImpuestos"
                 Width="90"
                 Margin="3,3,3,3"
-                Content="Obtener" Click="obtenerImpuestos_Click" />
+                Click="obtenerImpuestos_Click"
+                Content="Obtener" />
             <Button
                 x:Name="ProcesaLoteImp"
                 Width="90"
                 Margin="3,3,3,3"
-                Content="Procesa Lote" Click="ProcesaLoteImp_Click" />
+                Click="ProcesaLoteImp_Click"
+                Content="Procesa Lote" />
         </StackPanel>
         <StackPanel
             Grid.Row="5"
             Grid.Column="1"
             Height="30"
             VerticalAlignment="Center"
-            
             Orientation="Horizontal">
             <Button
                 x:Name="obtenerDetallePres"
                 Width="90"
                 Margin="3,3,3,3"
-                Content="Obtener" Click="obtenerDetallePres_Click" />
+                Click="obtenerDetallePres_Click"
+                Content="Obtener" />
             <Button
                 x:Name="ProcesaDetallePres"
                 Width="90"
                 Margin="3,3,3,3"
-                Content="Procesa Lote" Click="ProcesaDetallePres_Click" />
+                Click="ProcesaDetallePres_Click"
+                Content="Procesa Lote" />
         </StackPanel>
         <syncfusion:TabControlExt Grid.Row="8" Grid.ColumnSpan="2">
             <syncfusion:TabItemExt Header="Listado">
