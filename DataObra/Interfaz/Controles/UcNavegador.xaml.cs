@@ -21,6 +21,28 @@ namespace DataObra.Interfaz.Controles
         List<Documento> ListaDocumentos;
         private List<byte> TiposPermitidos = new();
 
+        //private void Window_Loaded(object sender, RoutedEventArgs e)
+        //{
+        //    List<byte> docIDs = App.Rol == "Socio"
+        //        ? TiposDeDocumento.Keys.ToList()
+        //        : TiposPorRol.GetValueOrDefault(App.Rol, new());
+
+        //    foreach (var docID in docIDs)
+        //    {
+        //        if (TiposDeDocumento.TryGetValue(docID, out string nombre))
+        //        {
+        //            var item = new MenuItem
+        //            {
+        //                Header = nombre,
+        //                Tag = docID
+        //            };
+        //            item.Click += NuevoDoc_Click;
+        //            NuevoMenuItem.Items.Add(item);
+        //        }
+        //    }
+        //}
+
+
         private static readonly Dictionary<byte, string> TiposDeDocumento = new()
         {
             { 1, "Factura" }, { 2, "Plan" }, { 3, "Certificado" }, { 4, "Parte" }, { 5, "Remito" },
@@ -47,6 +69,7 @@ namespace DataObra.Interfaz.Controles
             InitializeComponent();
             Rol = rol;
             ConfiguraRol(Rol);
+            CrearMenuNuevo();
             CargarGrilla();
             CrearBotonesDinamicamente();
         }
@@ -385,6 +408,28 @@ namespace DataObra.Interfaz.Controles
         #endregion
 
         #region Roles
+
+        private void CrearMenuNuevo()
+        {
+            List<byte> docIDs = Rol == "Socio"
+                ? TiposDeDocumento.Keys.ToList()
+                : TiposPorRol.GetValueOrDefault(Rol, new());
+
+            foreach (var docID in docIDs)
+            {
+                if (TiposDeDocumento.TryGetValue(docID, out string nombre))
+                {
+                    var item = new MenuItem
+                    {
+                        Header = nombre,
+                        Tag = docID
+                    };
+                    item.Click += NuevoDoc_Click;
+                    NuevoMenuItem.Items.Add(item);
+                }
+            }
+        }
+
 
         private void ConfiguraRol(string rol)
         {

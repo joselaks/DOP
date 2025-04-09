@@ -33,6 +33,7 @@ namespace DataObra.Interfaz.Ventanas
                 // Crear una instancia de GeRoles y llamar al procedimiento
                 GeRoles geRoles = new GeRoles();
                 geRoles.EjecutarProcedimiento(boton, this);
+                App.Rol = boton.Name;
             }
         }
 

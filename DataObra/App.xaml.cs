@@ -19,6 +19,8 @@ namespace DataObra
         public static int IdUsuario { get; set; }
         public static int IdCuenta { get; set; }
 
+        public static string Rol { get; set; }
+
         public static RoutedCommand OpenConectoresCommand = new RoutedCommand();
 
         public static List<AgrupadorDTO>? ListaAgrupadores;
