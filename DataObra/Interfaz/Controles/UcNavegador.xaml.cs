@@ -322,6 +322,10 @@ namespace DataObra.Interfaz.Controles
                 var (success, message) = await DatosWeb.EliminarDocumentoAsync((int)sele.ID);
                 if (success)
                 {
+                    if (sele.TipoID == 10)
+                        {
+                            //Implementar el borrado de los conceptos y relaciones del presupuesto
+                        }
                     MessageBox.Show($"Documento eliminado con éxito. ID: {sele.ID}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
                     CargarGrilla();
                 }

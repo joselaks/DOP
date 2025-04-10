@@ -67,14 +67,18 @@ namespace DataObra.Presupuestos
                 Encabezado = encabezado;
                 this.descripcion.Text = Encabezado.Descrip;
                 this.ComboObras.SelectedItem = App.ListaAgrupadores.FirstOrDefault(a => a.ID == encabezado.ObraID);
-
+                DocumentoDTO doc = new DocumentoDTO();
+                doc.ID = (int)Encabezado.ID;
+                Objeto = new Presupuesto(doc);
+                LlenaPresupuesto(doc.ID);
 
                 }
             else
                 {
                 Encabezado = new Biblioteca.Documento();
-                }
                 Objeto = new Presupuesto(null);
+                }
+               
             this.grillaArbol.ItemsSource = Objeto.Arbol;
             this.grillaArbol.ChildPropertyName = "Inferiores";
             this.grillaDetalle.ItemsSource = Objeto.Insumos;
@@ -680,7 +684,7 @@ namespace DataObra.Presupuestos
 
 
         private async void BtnGuardar_Click(object sender, RoutedEventArgs e)
-        {
+            {
             bool esNuevo = Encabezado.ID == null;
 
             var documento = ConvertirADTO(Encabezado, esNuevo);
@@ -693,6 +697,19 @@ namespace DataObra.Presupuestos
 
             if (resultado.Item1 && resultado.Item3.HasValue)
                 {
+                // Asignar el ID devuelto al Encabezado
+                if (esNuevo)
+                    {
+                    Encabezado.ID = resultado.Item3.Value;
+                    }
+
+                Objeto.listaConceptosGrabar.Clear();
+                Objeto.listaRelacionesGrabar.Clear();
+                Objeto.aplanar(Objeto.Arbol, null);
+
+                MessageBox.Show($"Cantidad de registros en listaConceptosGrabar: {Objeto.listaConceptosGrabar.Count}\nCantidad de registros en listaRelacionesGrabar: {Objeto.listaRelacionesGrabar.Count}");
+                await ProcesarArbolPresupuestoRequest();
+
                 MessageBox.Show("Documento guardado con éxito.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 // Disparar el evento para notificar el guardado exitoso
@@ -702,18 +719,10 @@ namespace DataObra.Presupuestos
                 {
                 MessageBox.Show($"Error al guardar el documento: {resultado.Item2}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-
-
-
-            //Objeto.listaConceptosGrabar.Clear();
-            //Objeto.listaRelacionesGrabar.Clear();
-            //Objeto.aplanar(Objeto.Arbol, null);
-            //MessageBox.Show($"Cantidad de registros en listaConceptosGrabar: {Objeto.listaConceptosGrabar.Count}\nCantidad de registros en listaRelacionesGrabar: {Objeto.listaRelacionesGrabar.Count}");
-            //ProcesarArbolPresupuestoRequest();
-
             }
 
-        private async void ProcesarArbolPresupuestoRequest()
+
+        private async Task ProcesarArbolPresupuestoRequest()
         {
            
 
@@ -794,8 +803,7 @@ namespace DataObra.Presupuestos
             // Crear el objeto ProcesaPresupuestoDTO
             var request = new ProcesaPresupuestoDTO
             {
-                //PresupuestoID = Encabezado?.ID ?? 0,
-                PresupuestoID = 1, //Por ahora, solo trabaja con uno
+                PresupuestoID = Encabezado?.ID ?? 0,
                 ListaConceptos = Objeto.listaConceptosGrabar.Select(c => new ConceptoDTO
                 {
                     PresupuestoID = c.PresupuestoID,
@@ -856,9 +864,9 @@ namespace DataObra.Presupuestos
             Encabezado.Descrip = this.descripcion.Text;
         }
 
-        private async void ejemplo_Click(object sender, RoutedEventArgs e)
+        private async void LlenaPresupuesto(int idPres)
         {
-            var (success, message, data) = await DatosWeb.ObtenerRegistrosPorPresupuestoIDAsync(1);
+            var (success, message, data) = await DatosWeb.ObtenerRegistrosPorPresupuestoIDAsync(idPres);
 
             if (!success)
             {
