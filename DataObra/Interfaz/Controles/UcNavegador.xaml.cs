@@ -3,6 +3,7 @@ using Biblioteca.DTO;
 using DataObra.Agrupadores;
 using DataObra.Datos;
 using DataObra.Interfaz.Ventanas;
+using DataObra.Presupuestos;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -324,7 +325,9 @@ namespace DataObra.Interfaz.Controles
                 {
                     if (sele.TipoID == 10)
                         {
-                            //Implementar el borrado de los conceptos y relaciones del presupuesto
+                        //Implementar el borrado de los conceptos y relaciones del presupuesto
+                        await DatosWeb.EliminarPresupuestoAsync((int)sele.ID, false);
+
                         }
                     MessageBox.Show($"Documento eliminado con éxito. ID: {sele.ID}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
                     CargarGrilla();

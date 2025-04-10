@@ -446,6 +446,18 @@ pre.MapPost("/procesar", async (ProcesaPresupuestoDTO request, rPresupuestos rep
         }
 }).RequireAuthorization();
 
+pre.MapDelete("/{presupuestoID:int}", async (int presupuestoID, bool verifica, rPresupuestos repo) =>
+{
+    try
+        {
+        await repo.EliminarPresupuestoAsync(presupuestoID, verifica);
+        return Results.Ok(new { Success = true, Message = "Presupuesto eliminado exitosamente." });
+        }
+    catch (Exception ex)
+        {
+        return Results.BadRequest(new { Success = false, Message = ex.Message });
+        }
+}).RequireAuthorization();
 
 
 

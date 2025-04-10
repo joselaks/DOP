@@ -102,8 +102,29 @@ namespace Servidor.Repositorios
             }
         }
 
+        public async Task EliminarPresupuestoAsync(int presupuestoID, bool verifica)
+            {
+            using (var db = new SqlConnection(_connectionString))
+                {
+                var parameters = new DynamicParameters();
+                parameters.Add("@ID", presupuestoID, DbType.Int32);
+                parameters.Add("@verifica", verifica, DbType.Boolean);
+
+                try
+                    {
+                    await db.ExecuteAsync("PresupuestoDelete", parameters, commandType: CommandType.StoredProcedure);
+                    }
+                catch (SqlException ex)
+                    {
+                    throw new Exception($"Error al eliminar el presupuesto con ID {presupuestoID}: {ex.Message}", ex);
+                    }
+                }
+            }
+
+
+
+        }
     }
-}
 
  
 

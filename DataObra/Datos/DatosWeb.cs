@@ -219,6 +219,17 @@ namespace DataObra.Datos
             return (result.Success, result.Message);
             }
 
+        public static async Task<(bool Success, string Message)> EliminarPresupuestoAsync(int presupuestoID, bool verifica)
+            {
+            string url = $"{App.BaseUrl}presupuestos/{presupuestoID}?verifica={verifica.ToString().ToLower()}";
+            var result = await ExecuteRequestAsync<ResultadoOperacion>(() => httpClient.DeleteAsync(url), "Eliminar Presupuesto");
+
+            return (result.Success, result.Message);
+            }
+
+
+
+
         public class ResultadoOperacion
             {
             public bool Success { get; set; }
