@@ -324,11 +324,36 @@ namespace DataObra.Interfaz.Controles
                 if (success)
                 {
                     if (sele.TipoID == 10)
+                    {
+                        // Intentar eliminar el presupuesto sin borrar los datos relacionados
+                        var (presupuestoSuccess, presupuestoMessage) = await DatosWeb.EliminarPresupuestoAsync((int)sele.ID, true);
+                        if (!presupuestoSuccess)
                         {
-                        //Implementar el borrado de los conceptos y relaciones del presupuesto
-                        await DatosWeb.EliminarPresupuestoAsync((int)sele.ID, false);
+                            // Preguntar al usuario si desea volver a intentarlo borrando los datos relacionados
+                            var result = MessageBox.Show(
+                                $"No se pudo eliminar el presupuesto: {presupuestoMessage}\n¿Desea volver a intentarlo borrando los datos relacionados?",
+                                "Error al eliminar el presupuesto",
+                                MessageBoxButton.YesNo,
+                                MessageBoxImage.Warning
+                            );
 
+                            if (result == MessageBoxResult.Yes)
+                            {
+                                // Intentar eliminar el presupuesto borrando los datos relacionados
+                                (presupuestoSuccess, presupuestoMessage) = await DatosWeb.EliminarPresupuestoAsync((int)sele.ID, false);
+                                if (!presupuestoSuccess)
+                                {
+                                    MessageBox.Show($"Error al eliminar el presupuesto: {presupuestoMessage}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                                    return;
+                                }
+                            }
+                            else
+                            {
+                                return;
+                            }
                         }
+                    }
+
                     MessageBox.Show($"Documento eliminado con éxito. ID: {sele.ID}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
                     CargarGrilla();
                 }
@@ -338,8 +363,12 @@ namespace DataObra.Interfaz.Controles
                 }
             }
             else
+            {
                 MessageBox.Show("Seleccione un documento para eliminar.");
+            }
         }
+
+
 
         private async void EditaDoc_Click(object sender, RoutedEventArgs e)
         {
