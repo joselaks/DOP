@@ -328,12 +328,13 @@ namespace Biblioteca
         public int? ParteID { get; set; }
         public int? ObraID { get; set; }
         public int? PresupuestoID { get; set; }
-        public int? RubroID { get; set; }
-        public int? TareaID { get; set; }
+        public string? RubroID { get; set; } // Cambiado de int? a string? para reflejar VARCHAR(20)
+        public string? TareaID { get; set; } // Cambiado de int? a string? para reflejar VARCHAR(20)
+        public string? InsumoID { get; set; } // Nuevo campo agregado como string? para reflejar VARCHAR(20)
         public DateTime? Fecha { get; set; }
-        public string ArticuloDescrip { get; set; }
-        public decimal ArticuloCantSuma { get; set; }
-        public decimal ArticuloCantResta { get; set; }
+        public string ArticuloDescrip { get; set; } = string.Empty; // Default para reflejar la restricción DEFAULT ('')
+        public decimal ArticuloCantSuma { get; set; } = 0; // Default para reflejar la restricción DEFAULT ((0))
+        public decimal ArticuloCantResta { get; set; } = 0; // Default para reflejar la restricción DEFAULT ((0))
         public decimal ArticuloPrecio { get; set; }
         public decimal? SumaPesos { get; set; }
         public decimal? RestaPesos { get; set; }
@@ -341,7 +342,7 @@ namespace Biblioteca
         public decimal? RestaDolares { get; set; }
         public decimal? Cambio { get; set; }
         public char Accion { get; set; }
-    }
+        }
 
     public class Movimiento
     {

@@ -101,11 +101,11 @@ namespace Servidor.Repositorios
 
 
 
-        //Procesar lote de Detalles de documentos
+        // Procesar lote de Detalles de documentos
         public async Task ProcesarListaDetalleDocumentoAsync(List<DocumentoDet> listaDetalleDocumento)
-        {
-            using (var db = new SqlConnection(_connectionString))
             {
+            using (var db = new SqlConnection(_connectionString))
+                {
                 var table = new DataTable();
                 table.Columns.Add("ID", typeof(int));
                 table.Columns.Add("CuentaID", typeof(short));
@@ -124,8 +124,9 @@ namespace Servidor.Repositorios
                 table.Columns.Add("ParteID", typeof(int));
                 table.Columns.Add("ObraID", typeof(int));
                 table.Columns.Add("PresupuestoID", typeof(int));
-                table.Columns.Add("RubroID", typeof(int));
-                table.Columns.Add("TareaID", typeof(int));
+                table.Columns.Add("RubroID", typeof(string)); // Cambiado a string para reflejar VARCHAR(20)
+                table.Columns.Add("TareaID", typeof(string)); // Cambiado a string para reflejar VARCHAR(20)
+                table.Columns.Add("InsumoID", typeof(string)); // Nuevo campo agregado como string
                 table.Columns.Add("Fecha", typeof(DateTime));
                 table.Columns.Add("ArticuloDescrip", typeof(string));
                 table.Columns.Add("ArticuloCantSuma", typeof(decimal));
@@ -139,30 +140,32 @@ namespace Servidor.Repositorios
                 table.Columns.Add("Accion", typeof(char));
 
                 foreach (var item in listaDetalleDocumento)
-                {
+                    {
                     table.Rows.Add(
                         item.ID, item.CuentaID, item.UsuarioID, item.Editado, item.TipoID, item.AdminID,
                         item.EntidadID, item.DepositoID, item.AcopioID, item.PedidoID, item.CompraID,
                         item.ContratoID, item.FacturaID, item.RemitoID, item.ParteID, item.ObraID,
-                        item.PresupuestoID, item.RubroID, item.TareaID, item.Fecha, item.ArticuloDescrip,
-                        item.ArticuloCantSuma, item.ArticuloCantResta, item.ArticuloPrecio, item.SumaPesos,
-                        item.RestaPesos, item.SumaDolares, item.RestaDolares, item.Cambio, item.Accion
+                        item.PresupuestoID, item.RubroID, item.TareaID, item.InsumoID, // Incluye el nuevo campo
+                        item.Fecha, item.ArticuloDescrip, item.ArticuloCantSuma, item.ArticuloCantResta,
+                        item.ArticuloPrecio, item.SumaPesos, item.RestaPesos, item.SumaDolares,
+                        item.RestaDolares, item.Cambio, item.Accion
                     );
-                }
+                    }
 
                 var parameters = new DynamicParameters();
                 parameters.Add("@ListaDetalleDocumento", table.AsTableValuedParameter("dbo.DocumentoDet"));
 
                 try
-                {
+                    {
                     await db.ExecuteAsync("ProcesaListaDetalleDocumento", parameters, commandType: CommandType.StoredProcedure);
-                }
+                    }
                 catch (SqlException ex)
-                {
+                    {
                     throw new Exception($"{ex.Message}", ex);
+                    }
                 }
             }
-        }
+
 
         public async Task ProcesarMovimientosAsync(List<MovimientoDTO> listaMovimientos)
         {
