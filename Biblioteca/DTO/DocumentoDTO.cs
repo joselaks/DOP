@@ -24,7 +24,7 @@ namespace Biblioteca.DTO
         public int? EntidadID { get; set; }
         public int? DepositoID { get; set; }
         public string? Descrip { get; set; } // VARCHAR(150)
-        public string? Concepto1 { get; set; } // VARCHAR(150)
+        public int? Concepto1 { get; set; } // Cambiado de string a int
         public DateTime Fecha1 { get; set; } // Cambiar a DateOnly si es necesario
         public DateTime? Fecha2 { get; set; }
         public DateTime? Fecha3 { get; set; }
@@ -33,8 +33,9 @@ namespace Biblioteca.DTO
         public int? Numero3 { get; set; } // Cambiado a nullable
         public string? Notas { get; set; } // VARCHAR(250)
         public bool Active { get; set; }
-        public decimal Pesos { get; set; }
-        public decimal Dolares { get; set; }
+        public decimal? Avance { get; set; } // Nuevo campo
+        public decimal Precio1 { get; set; } // Nuevo campo
+        public decimal Precio2 { get; set; } // Nuevo campo
         public decimal Impuestos { get; set; }
         public decimal ImpuestosD { get; set; }
         public decimal Materiales { get; set; }
@@ -55,5 +56,6 @@ namespace Biblioteca.DTO
         public bool RelTar { get; set; }
         public bool RelIns { get; set; }
         }
+
 
     }

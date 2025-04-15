@@ -59,10 +59,11 @@ namespace Biblioteca
         #endregion
         #region DATOS
         public string? Descrip { get; set; } // varchar150  Titulo o descripción del usuario
-        public string? Concepto1 { get; set; } // varchar150
+        public int? Concepto1 { get; set; } // varchar150
         public DateTime Fecha1 { get; set; } // Date Fecha del documento ingresada por el usuario
         public DateTime? Fecha2 { get; set; } // Date Fecha de vencimiento o entrega o ...
         public DateTime? Fecha3 { get; set; } // Date Fecha contable o ...
+        public int Avance { get; set; } // Int Avance de la obra o porcentaje de avance
         public int? Numero1 { get; set; } // Int en las facturas en numero de sucursal
         public int? Numero2 { get; set; } // Int 
         public int? Numero3 { get; set; } // Int numero de archivo u otro
@@ -70,8 +71,8 @@ namespace Biblioteca
         public bool? Active { get; set; } // Bool
         #endregion
         #region TOTALES
-        public decimal Pesos { get; set; } // Decimal 19.2
-        public decimal Dolares { get; set; } // Decimal 19.2
+        public decimal Precio1 { get; set; } // Decimal 19.2
+        public decimal Precio2 { get; set; } // Decimal 19.2
         public decimal Impuestos { get; set; } // Decimal 19.2
         public decimal ImpuestosD { get; set; } // Decimal 19.2
         #endregion
@@ -127,6 +128,7 @@ namespace Biblioteca
                 AdminID = docDTO.AdminID,
                 Admin = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.AdminID).Descrip,
                 ObraID = docDTO.ObraID,
+                Avance = (int)docDTO.Avance,
                 Obra = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.ObraID).Descrip,
                 PresupuestoID = docDTO.PresupuestoID,
                 Presupuesto = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.PresupuestoID).Descrip,
@@ -147,8 +149,8 @@ namespace Biblioteca
                 Numero3 = docDTO.Numero3,
                 Notas = docDTO.Notas,
                 Active = docDTO.Active,
-                Pesos = docDTO.Pesos,
-                Dolares = docDTO.Dolares,
+                Precio1 = docDTO.Precio1,
+                Precio2 = docDTO.Precio2,
                 Impuestos = docDTO.Impuestos,
                 ImpuestosD = docDTO.ImpuestosD,
                 Materiales = docDTO.Materiales,
@@ -204,10 +206,11 @@ namespace Biblioteca
                 Numero1 = doc.Numero1,
                 Numero2 = doc.Numero2,
                 Numero3 = doc.Numero3,
+                Avance = doc.Avance,
                 Notas = doc.Notas,
                 Active = doc.Active,
-                Pesos = doc.Pesos,
-                Dolares = doc.Dolares,
+                Precio1 = doc.Precio1,
+                Precio2 = doc.Precio2,
                 Impuestos = doc.Impuestos,
                 ImpuestosD = doc.ImpuestosD,
                 Materiales = doc.Materiales,

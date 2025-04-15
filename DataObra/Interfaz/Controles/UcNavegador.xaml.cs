@@ -163,8 +163,8 @@ namespace DataObra.Interfaz.Controles
                 Numero3 = doc.Numero3,
                 Notas = doc.Notas,
                 Active = doc.Active,
-                Pesos = doc.Pesos,
-                Dolares = doc.Dolares,
+                Precio1 = doc.Precio1,
+                Precio2 = doc.Precio2,
                 Impuestos = doc.Impuestos,
                 ImpuestosD = doc.ImpuestosD,
                 Materiales = doc.Materiales,
@@ -235,8 +235,8 @@ namespace DataObra.Interfaz.Controles
                 Notas = docDTO.Notas,
                 Active = docDTO.Active,
 
-                Pesos = docDTO.Pesos,
-                Dolares = docDTO.Dolares,
+                Precio1 = docDTO.Precio1,
+                Precio2 = docDTO.Precio2,
                 Impuestos = docDTO.Impuestos,
                 ImpuestosD = docDTO.ImpuestosD,
 
