@@ -831,12 +831,62 @@
             Grid.ColumnSpan="{Binding ElementName=GrillaPrincipal, Path=ColumnDefinitions.Count}"
             Margin="5,0,0,0">
 
+
             <TabControl SelectionChanged="GrillaPrincipal_SelectionChanged">
-                <TabItem Header="Insumos" />
+
+                <TabItem Header="Insumos">
+
+                    <Syncfusion:SfDataGrid Name="GrillaDocumentosDet" Margin="4,5,0,0" AutoGenerateColumns="False" IsReadOnly="True" Grid.Row="1" Grid.Column="1">
+                        <Syncfusion:SfDataGrid.Columns>
+                            <Syncfusion:GridTextColumn Width="80" HeaderText="ID" MappingName="ID" />
+                            <Syncfusion:GridTextColumn Width="80" HeaderText="Cuenta" MappingName="CuentaID" />
+                            <Syncfusion:GridTextColumn Width="90" HeaderText="Usuario" MappingName="UsuarioID" />
+                            <Syncfusion:GridDateTimeColumn Width="100" HeaderText="Editado" MappingName="Editado" />
+                            <Syncfusion:GridTextColumn Width="70" HeaderText="Tipo" MappingName="TipoID" />
+                            <Syncfusion:GridTextColumn Width="90" HeaderText="Admin" MappingName="AdminID" />
+                            <Syncfusion:GridTextColumn Width="90" HeaderText="Entidad" MappingName="EntidadID" />
+                            <Syncfusion:GridTextColumn Width="90" HeaderText="Deposito" MappingName="DepositoID" />
+                            <Syncfusion:GridTextColumn Width="90" HeaderText="Acopio" MappingName="AcopioID" />
+                            <Syncfusion:GridTextColumn Width="90" HeaderText="Pedido" MappingName="PedidoID" />
+                            <Syncfusion:GridTextColumn Width="90" HeaderText="Compra" MappingName="CompraID" />
+                            <Syncfusion:GridTextColumn Width="90" HeaderText="Contrato" MappingName="ContratoID" />
+                            <Syncfusion:GridTextColumn Width="90" HeaderText="Factura" MappingName="FacturaID" />
+                            <Syncfusion:GridTextColumn Width="90" HeaderText="Remito" MappingName="RemitoID" />
+                            <Syncfusion:GridTextColumn Width="90" HeaderText="Parte" MappingName="ParteID" />
+                            <Syncfusion:GridTextColumn Width="90" HeaderText="Obra" MappingName="ObraID" />
+                            <Syncfusion:GridTextColumn Width="110" HeaderText="Presupuesto" MappingName="PresupuestoID" />
+                            <Syncfusion:GridTextColumn Width="90" HeaderText="Rubro" MappingName="RubroID" />
+                            <Syncfusion:GridTextColumn Width="90" HeaderText="Tarea" MappingName="TareaID" />
+                            <Syncfusion:GridTextColumn Width="90" HeaderText="Insumo" MappingName="InsumoID" />
+                            <Syncfusion:GridDateTimeColumn Width="90" HeaderText="Fecha" MappingName="Fecha" />
+                            <Syncfusion:GridTextColumn Width="160" HeaderText="Descripción" MappingName="ArticuloDescrip" />
+                            <Syncfusion:GridNumericColumn Width="90" HeaderText="Cant Suma" MappingName="ArticuloCantSuma" />
+                            <Syncfusion:GridNumericColumn Width="90" HeaderText="Cant Resta" MappingName="ArticuloCantResta" />
+                            <Syncfusion:GridNumericColumn Width="90" HeaderText="Precio" MappingName="ArticuloPrecio" />
+                            <Syncfusion:GridNumericColumn Width="90" HeaderText="Suma $" MappingName="SumaPesos" />
+                            <Syncfusion:GridNumericColumn Width="90" HeaderText="Resta $" MappingName="RestaPesos" />
+                            <Syncfusion:GridNumericColumn Width="90" HeaderText="Suma USD" MappingName="SumaDolares" />
+                            <Syncfusion:GridNumericColumn Width="90" HeaderText="Resta USD" MappingName="RestaDolares" />
+                            <Syncfusion:GridNumericColumn Width="80" HeaderText="Cambio" MappingName="Cambio" />
+                        </Syncfusion:SfDataGrid.Columns>
+                        <Syncfusion:SfDataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Click="Vincular_Click" Header="Vincular" />
+                                <MenuItem Click="DesVincular_Click" Header="DesVincular" />
+                            </ContextMenu>
+                        </Syncfusion:SfDataGrid.ContextMenu>
+                    </Syncfusion:SfDataGrid>
+
+
+
+                </TabItem>
+
                 <TabItem Header="Movimientos" />
+
                 <TabItem Header="Impuestos" />
 
                 <TabItem Header="Documentos">
+
                     <Syncfusion:SfDataGrid
                         Name="GrillaDocumentos"
                         Grid.Row="1"
