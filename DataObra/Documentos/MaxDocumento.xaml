@@ -10,6 +10,11 @@
     d:DesignWidth="992"
     Background="White"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+    </UserControl.Resources>
+
+
     <Grid x:Name="GrillaPrincipal" Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -834,48 +839,74 @@
 
             <TabControl SelectionChanged="GrillaPrincipal_SelectionChanged">
 
-                <TabItem Header="Insumos">
+                <TabItem Header="Insumos" Height="22" Margin="-2,-2,-2,0" VerticalAlignment="Top">
 
-                    <Syncfusion:SfDataGrid Name="GrillaDocumentosDet" Margin="4,5,0,0" AutoGenerateColumns="False" IsReadOnly="True" Grid.Row="1" Grid.Column="1">
+                    <Syncfusion:SfDataGrid Name="GrillaDocumentosDet"
+                       AutoGenerateColumns="False"
+                       AllowGrouping="False"
+                       ShowGroupDropArea="False"
+                       Grid.Row="1"
+                       Grid.Column="1">
+
+                        <!-- Columnas -->
                         <Syncfusion:SfDataGrid.Columns>
-                            <Syncfusion:GridTextColumn Width="80" HeaderText="ID" MappingName="ID" />
-                            <Syncfusion:GridTextColumn Width="80" HeaderText="Cuenta" MappingName="CuentaID" />
-                            <Syncfusion:GridTextColumn Width="90" HeaderText="Usuario" MappingName="UsuarioID" />
-                            <Syncfusion:GridDateTimeColumn Width="100" HeaderText="Editado" MappingName="Editado" />
-                            <Syncfusion:GridTextColumn Width="70" HeaderText="Tipo" MappingName="TipoID" />
-                            <Syncfusion:GridTextColumn Width="90" HeaderText="Admin" MappingName="AdminID" />
-                            <Syncfusion:GridTextColumn Width="90" HeaderText="Entidad" MappingName="EntidadID" />
-                            <Syncfusion:GridTextColumn Width="90" HeaderText="Deposito" MappingName="DepositoID" />
-                            <Syncfusion:GridTextColumn Width="90" HeaderText="Acopio" MappingName="AcopioID" />
-                            <Syncfusion:GridTextColumn Width="90" HeaderText="Pedido" MappingName="PedidoID" />
-                            <Syncfusion:GridTextColumn Width="90" HeaderText="Compra" MappingName="CompraID" />
-                            <Syncfusion:GridTextColumn Width="90" HeaderText="Contrato" MappingName="ContratoID" />
-                            <Syncfusion:GridTextColumn Width="90" HeaderText="Factura" MappingName="FacturaID" />
-                            <Syncfusion:GridTextColumn Width="90" HeaderText="Remito" MappingName="RemitoID" />
-                            <Syncfusion:GridTextColumn Width="90" HeaderText="Parte" MappingName="ParteID" />
-                            <Syncfusion:GridTextColumn Width="90" HeaderText="Obra" MappingName="ObraID" />
-                            <Syncfusion:GridTextColumn Width="110" HeaderText="Presupuesto" MappingName="PresupuestoID" />
-                            <Syncfusion:GridTextColumn Width="90" HeaderText="Rubro" MappingName="RubroID" />
-                            <Syncfusion:GridTextColumn Width="90" HeaderText="Tarea" MappingName="TareaID" />
-                            <Syncfusion:GridTextColumn Width="90" HeaderText="Insumo" MappingName="InsumoID" />
-                            <Syncfusion:GridDateTimeColumn Width="90" HeaderText="Fecha" MappingName="Fecha" />
-                            <Syncfusion:GridTextColumn Width="160" HeaderText="Descripción" MappingName="ArticuloDescrip" />
-                            <Syncfusion:GridNumericColumn Width="90" HeaderText="Cant Suma" MappingName="ArticuloCantSuma" />
-                            <Syncfusion:GridNumericColumn Width="90" HeaderText="Cant Resta" MappingName="ArticuloCantResta" />
-                            <Syncfusion:GridNumericColumn Width="90" HeaderText="Precio" MappingName="ArticuloPrecio" />
-                            <Syncfusion:GridNumericColumn Width="90" HeaderText="Suma $" MappingName="SumaPesos" />
-                            <Syncfusion:GridNumericColumn Width="90" HeaderText="Resta $" MappingName="RestaPesos" />
-                            <Syncfusion:GridNumericColumn Width="90" HeaderText="Suma USD" MappingName="SumaDolares" />
-                            <Syncfusion:GridNumericColumn Width="90" HeaderText="Resta USD" MappingName="RestaDolares" />
-                            <Syncfusion:GridNumericColumn Width="80" HeaderText="Cambio" MappingName="Cambio" />
+
+                            <!-- DATOS ARTÍCULO -->
+                            <Syncfusion:GridTextColumn MappingName="ArticuloDescrip" HeaderText="Descripción" Width="150"/>
+                            <Syncfusion:GridTextColumn MappingName="ArticuloCantSuma" HeaderText="Cant +" Width="70" TextAlignment="Center"/>
+                            <Syncfusion:GridTextColumn MappingName="ArticuloCantResta" HeaderText="Cant -" Width="70" TextAlignment="Center"/>
+                            <Syncfusion:GridTextColumn MappingName="ArticuloPrecio" HeaderText="Precio" Width="69" TextAlignment="Center"/>
+                            <Syncfusion:GridTextColumn MappingName="Fecha" HeaderText="Fecha" Width="62"/>
+
+                            <!-- DOCUMENTOS -->
+                            <Syncfusion:GridTextColumn MappingName="PedidoID" HeaderText="Pedido" Width="60"/>
+                            <Syncfusion:GridTextColumn MappingName="CompraID" HeaderText="Compra" Width="60"/>
+                            <Syncfusion:GridTextColumn MappingName="ContratoID" HeaderText="Contrato" Width="60"/>
+                            <Syncfusion:GridTextColumn MappingName="FacturaID" HeaderText="Factura" Width="60"/>
+                            <Syncfusion:GridTextColumn MappingName="RemitoID" HeaderText="Remito" Width="60"/>
+                            <Syncfusion:GridTextColumn MappingName="ParteID" HeaderText="Parte" Width="60"/>
+
+                            <!-- VALORES -->
+                            <Syncfusion:GridTextColumn MappingName="SumaPesos" HeaderText="Suma $" Width="80" TextAlignment="Center"/>
+                            <Syncfusion:GridTextColumn MappingName="RestaPesos" HeaderText="Resta $" Width="80" TextAlignment="Center"/>
+                            <Syncfusion:GridTextColumn MappingName="SumaDolares" HeaderText="Suma USD" Width="80" TextAlignment="Center"/>
+                            <Syncfusion:GridTextColumn MappingName="RestaDolares" HeaderText="Resta USD" Width="80" TextAlignment="Center"/>
+                            <Syncfusion:GridTextColumn MappingName="Cambio" HeaderText="Cambio" Width="70" TextAlignment="Center"/>
+
+                            <!-- SISTEMA -->
+                            <Syncfusion:GridTextColumn MappingName="ID" HeaderText="ID" Width="60" TextAlignment="Center"/>
+                            <Syncfusion:GridTextColumn MappingName="CuentaID" HeaderText="Cuenta" Width="50" TextAlignment="Center"/>
+                            <Syncfusion:GridTextColumn MappingName="UsuarioID" HeaderText="Usuario" Width="60" TextAlignment="Center"/>
+                            <Syncfusion:GridTextColumn MappingName="EditadoID" HeaderText="Editado" Width="60" TextAlignment="Center"/>
+                            <Syncfusion:GridTextColumn MappingName="TipoID" HeaderText="Tipo" Width="40" TextAlignment="Center"/>
+
                         </Syncfusion:SfDataGrid.Columns>
-                        <Syncfusion:SfDataGrid.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Click="Vincular_Click" Header="Vincular" />
-                                <MenuItem Click="DesVincular_Click" Header="DesVincular" />
-                            </ContextMenu>
-                        </Syncfusion:SfDataGrid.ContextMenu>
+
+                        <!-- Agrupamiento visual por región -->
+                        <Syncfusion:SfDataGrid.StackedHeaderRows>
+                            <Syncfusion:StackedHeaderRow>
+                                <Syncfusion:StackedHeaderRow.StackedColumns>
+
+                                    <Syncfusion:StackedColumn HeaderText="SISTEMA"
+                                           ChildColumns="ID,CuentaID,UsuarioID,EditadoID,TipoID" />
+
+                                    <Syncfusion:StackedColumn HeaderText="DOCUMENTOS"
+                          ChildColumns="PedidoID,CompraID,ContratoID,FacturaID,RemitoID,ParteID" />
+
+
+                                    <Syncfusion:StackedColumn HeaderText="DATOS ARTÍCULO"
+                                           ChildColumns="ArticuloDescrip,ArticuloCantSuma,ArticuloCantResta,ArticuloPrecio,Fecha" />
+
+                                    <Syncfusion:StackedColumn HeaderText="VALORES"
+                                           ChildColumns="SumaPesos,RestaPesos,SumaDolares,RestaDolares,Cambio" />
+
+                                </Syncfusion:StackedHeaderRow.StackedColumns>
+                            </Syncfusion:StackedHeaderRow>
+                        </Syncfusion:SfDataGrid.StackedHeaderRows>
+
                     </Syncfusion:SfDataGrid>
+
+
 
 
 

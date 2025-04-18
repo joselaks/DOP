@@ -98,208 +98,13 @@ namespace Biblioteca
         public bool RelIns { get; set; } // Insumos
         #endregion
         #region COLECCIONES
-        public char Accion { get; set; } // Campo Accion para definir si se agrega, modifica o borra
-
+        public char Accion { get; set; } // Campo Accion para definir si se agrega, modifica o borra  ¿Para que aqui?
         public List<DocumentoDet> DetalleDocumento { get; set; }
         public List<Movimiento> DetalleMovimientos { get; set; }
         public List<Impuesto> DetalleImpuestos { get; set; }
 
         #endregion
-
-        #region METODOS
-        public static Documento Convertir(Biblioteca.DTO.DocumentoDTO docDTO, List<AgrupadorDTO>? listaAgrupadores)
-        {
-            return new Documento
-            {
-                ID = docDTO.ID,
-
-                CuentaID = docDTO.CuentaID,
-                TipoID = docDTO.TipoID,
-                TipoDoc = "Documento Tipo", //docDTO.TipoDoc,
-                UsuarioID = docDTO.UsuarioID,
-                Usuario = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.UsuarioID).Descrip,
-                CreadoFecha = docDTO.CreadoFecha,
-                EditadoID = docDTO.EditadoID,
-                Editado = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.EditadoID).Descrip,
-                EditadoFecha = docDTO.EditadoFecha,
-                AutorizadoID = docDTO.AutorizadoID,
-                Autorizado = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.AutorizadoID).Descrip,
-                AutorizadoFecha = docDTO.AutorizadoFecha,
-                AdminID = docDTO.AdminID,
-                Admin = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.AdminID).Descrip,
-                ObraID = docDTO.ObraID,
-                Avance = (int)docDTO.Avance,
-                Obra = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.ObraID).Descrip,
-                PresupuestoID = docDTO.PresupuestoID,
-                Presupuesto = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.PresupuestoID).Descrip,
-                //RubroID = docDTO.RubroID,
-                //Rubro = docDTO.Rubro,
-                EntidadID = docDTO.EntidadID,
-                Entidad = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.EntidadID).Descrip,
-                EntidadTipo = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.EntidadID).Tipo,
-                DepositoID = docDTO.DepositoID,
-                Deposito = listaAgrupadores?.FirstOrDefault(a => a.ID == docDTO.DepositoID).Descrip,
-                Descrip = docDTO.Descrip,
-                Concepto1 = docDTO.Concepto1,
-                Fecha1 = docDTO.Fecha1,
-                Fecha2 = docDTO.Fecha2,
-                Fecha3 = docDTO.Fecha3,
-                Numero1 = docDTO.Numero1,
-                Numero2 = docDTO.Numero2,
-                Numero3 = docDTO.Numero3,
-                Notas = docDTO.Notas,
-                Active = docDTO.Active,
-                Precio1 = docDTO.Precio1,
-                Precio2 = docDTO.Precio2,
-                Impuestos = docDTO.Impuestos,
-                ImpuestosD = docDTO.ImpuestosD,
-                Materiales = docDTO.Materiales,
-                ManodeObra = docDTO.ManodeObra,
-                Subcontratos = docDTO.Subcontratos,
-                Equipos = docDTO.Equipos,
-                Otros = docDTO.Otros,
-                MaterialesD = docDTO.MaterialesD,
-                ManodeObraD = docDTO.ManodeObraD,
-                SubcontratosD = docDTO.SubcontratosD,
-                EquiposD = docDTO.EquiposD,
-                OtrosD = docDTO.OtrosD,
-                RelDoc = docDTO.RelDoc,
-                RelArt = docDTO.RelArt,
-                RelMov = docDTO.RelMov,
-                RelImp = docDTO.RelImp,
-                RelRub = docDTO.RelRub,
-                RelTar = docDTO.RelTar,
-                RelIns = docDTO.RelIns,
-                Accion = 'A',
-            };
-        }
-
-        public static Biblioteca.Documento ConvertirInverso(Documento doc)
-        {
-            if (doc == null)
-            {
-                throw new ArgumentNullException(nameof(doc));
-            }
-
-            return new Biblioteca.Documento
-            {
-                ID = doc.ID,
-                CuentaID = doc.CuentaID,
-                TipoID = doc.TipoID,
-                UsuarioID = doc.UsuarioID,
-                CreadoFecha = doc.CreadoFecha,
-                EditadoID = doc.EditadoID,
-                EditadoFecha = doc.EditadoFecha,
-                AutorizadoID = doc.AutorizadoID,
-                AutorizadoFecha = doc.AutorizadoFecha,
-                AdminID = doc.AdminID,
-                ObraID = doc.ObraID,
-                PresupuestoID = doc.PresupuestoID,
-                RubroID = doc.RubroID,
-                EntidadID = doc.EntidadID,
-                DepositoID = doc.DepositoID,
-                Descrip = doc.Descrip,
-                Concepto1 = doc.Concepto1,
-                Fecha1 = doc.Fecha1,
-                Fecha2 = doc.Fecha2,
-                Fecha3 = doc.Fecha3,
-                Numero1 = doc.Numero1,
-                Numero2 = doc.Numero2,
-                Numero3 = doc.Numero3,
-                Avance = doc.Avance,
-                Notas = doc.Notas,
-                Active = doc.Active,
-                Precio1 = doc.Precio1,
-                Precio2 = doc.Precio2,
-                Impuestos = doc.Impuestos,
-                ImpuestosD = doc.ImpuestosD,
-                Materiales = doc.Materiales,
-                ManodeObra = doc.ManodeObra,
-                Subcontratos = doc.Subcontratos,
-                Equipos = doc.Equipos,
-                Otros = doc.Otros,
-                MaterialesD = doc.MaterialesD,
-                ManodeObraD = doc.ManodeObraD,
-                SubcontratosD = doc.SubcontratosD,
-                EquiposD = doc.EquiposD,
-                OtrosD = doc.OtrosD,
-                RelDoc = doc.RelDoc,
-                RelArt = doc.RelArt,
-                RelMov = doc.RelMov,
-                RelImp = doc.RelImp,
-                RelRub = doc.RelRub,
-                RelTar = doc.RelTar,
-                RelIns = doc.RelIns
-            };
-        }
-
-        #endregion
     }
-    //public class Documento
-    //{
-    //    public int? ID { get; set; }
-    //    public short CuentaID { get; set; }
-    //    public byte TipoID { get; set; }
-    //    public string? Tipo { get; set; }
-    //    public int UsuarioID { get; set; }
-    //    public string? Usuario { get; set; }
-    //    public DateTime CreadoFecha { get; set; }
-    //    public int EditadoID { get; set; }
-    //    public string? Editado { get; set; }
-    //    public DateTime EditadoFecha { get; set; }
-    //    public int AutorizadoID { get; set; }
-    //    public string? Autorizado { get; set; }
-    //    public DateTime AutorizadoFecha { get; set; }
-    //    public int? AdminID { get; set; }
-    //    public string? Admin { get; set; }
-    //    public int? ObraID { get; set; }
-    //    public string? Obra { get; set; }
-    //    public int? PresupuestoID { get; set; }
-    //    public string? Presupuesto { get; set; }
-    //    public int? RubroID { get; set; }
-    //    public string? Rubro { get; set; }
-    //    public int? EntidadID { get; set; }
-    //    public string? Entidad { get; set; }
-    //    public string? EntidadTipo { get; set; }
-    //    public int? DepositoID { get; set; }
-    //    public string? Deposito { get; set; }
-    //    public string Descrip { get; set; }
-    //    public string? Concepto1 { get; set; }
-    //    public DateTime Fecha1 { get; set; }
-    //    public DateTime? Fecha2 { get; set; }
-    //    public DateTime? Fecha3 { get; set; }
-    //    public int Numero1 { get; set; }
-    //    public int Numero2 { get; set; }
-    //    public int Numero3 { get; set; }
-    //    public string? Notas { get; set; }
-    //    public bool Active { get; set; }
-    //    public decimal Pesos { get; set; }
-    //    public decimal Dolares { get; set; }
-    //    public decimal Impuestos { get; set; }
-    //    public decimal ImpuestosD { get; set; }
-    //    public decimal Materiales { get; set; }
-    //    public decimal ManodeObra { get; set; }
-    //    public decimal Subcontratos { get; set; }
-    //    public decimal Equipos { get; set; }
-    //    public decimal Otros { get; set; }
-    //    public decimal MaterialesD { get; set; }
-    //    public decimal ManodeObraD { get; set; }
-    //    public decimal SubcontratosD { get; set; }
-    //    public decimal EquiposD { get; set; }
-    //    public decimal OtrosD { get; set; }
-    //    public bool RelDoc { get; set; }
-    //    public bool RelArt { get; set; }
-    //    public bool RelMov { get; set; }
-    //    public bool RelImp { get; set; }
-    //    public bool RelRub { get; set; }
-    //    public bool RelTar { get; set; }
-    //    public bool RelIns { get; set; }
-    //    public char Accion { get; set; } // Campo Accion para definir si se agrega, modifica o borra
-
-    //    public List<DocumentoDet> DetalleDocumento { get; set; }
-    //    public List<Movimiento> DetalleMovimientos { get; set; }
-    //    public List<Impuesto> DetalleImpuestos { get; set; }
-    //}
 
     public class InfoDocumento
     {
@@ -309,16 +114,24 @@ namespace Biblioteca
 
     }
 
-    public class DocumentoDet
+    public class DocumentoDet  // Tabla DocumentosDet
     {
+        #region SISTEMA
         public int ID { get; set; }
         public short CuentaID { get; set; }
         public int UsuarioID { get; set; }
-        public DateTime Editado { get; set; }
-        public char TipoID { get; set; }
+        public DateTime Editado { get; set; } // date
+        public char TipoID { get; set; } // Insumos Dto Acopio Dto Anticipo Det Certificado
+        public char Accion { get; set; }
+        #endregion
+
+        #region AGRUPADORES
         public int? AdminID { get; set; }
         public int? EntidadID { get; set; }
         public int? DepositoID { get; set; }
+        #endregion
+
+        #region DOCUMENTOS
         public int? AcopioID { get; set; }
         public int? PedidoID { get; set; }
         public int? CompraID { get; set; }
@@ -326,23 +139,37 @@ namespace Biblioteca
         public int? FacturaID { get; set; }
         public int? RemitoID { get; set; }
         public int? ParteID { get; set; }
+        #endregion
+
+        #region IMPUTACION
         public int? ObraID { get; set; }
         public int? PresupuestoID { get; set; }
-        public string? RubroID { get; set; } // Cambiado de int? a string? para reflejar VARCHAR(20)
-        public string? TareaID { get; set; } // Cambiado de int? a string? para reflejar VARCHAR(20)
-        public string? InsumoID { get; set; } // Nuevo campo agregado como string? para reflejar VARCHAR(20)
-        public DateTime? Fecha { get; set; }
-        public string ArticuloDescrip { get; set; } = string.Empty; // Default para reflejar la restricción DEFAULT ('')
-        public decimal ArticuloCantSuma { get; set; } = 0; // Default para reflejar la restricción DEFAULT ((0))
-        public decimal ArticuloCantResta { get; set; } = 0; // Default para reflejar la restricción DEFAULT ((0))
-        public decimal ArticuloPrecio { get; set; }
-        public decimal? SumaPesos { get; set; }
-        public decimal? RestaPesos { get; set; }
-        public decimal? SumaDolares { get; set; }
-        public decimal? RestaDolares { get; set; }
-        public decimal? Cambio { get; set; }
-        public char Accion { get; set; }
-        }
+        public string? RubroID { get; set; } // varchar(20)
+        public string? TareaID { get; set; } // varchar(20)
+        public string? InsumoID { get; set; } // varchar(20)
+        #endregion
+
+        #region DATOS ARTICULO
+        public DateTime? Fecha { get; set; } // date
+        public string ArticuloDescrip { get; set; } = string.Empty; // varchar(65)
+        public decimal ArticuloCantSuma { get; set; } = 0; // decimal(19,2), default ((0))
+        public decimal ArticuloCantResta { get; set; } = 0; // decimal(19,2), default ((0)), Notas de crédito
+        public decimal ArticuloPrecio { get; set; } // decimal(19,2)
+        #endregion
+
+        #region VALORES  // Los "Resta" son para nota de crédito
+        public decimal? SumaPesos { get; set; } // decimal(19,2)
+        public decimal? RestaPesos { get; set; } // decimal(19,2), Notas de crédito
+        public decimal? SumaDolares { get; set; } // decimal(19,2)
+        public decimal? RestaDolares { get; set; } // decimal(19,2), Notas de crédito
+        public decimal? Cambio { get; set; } // Tipo de cambio tomado, decimal(9,2)
+        #endregion
+
+        // Esta propiedad adicional es solo para mostrar el encabezado agrupado
+        public int? FacturaID_dummy => FacturaID;
+
+    }
+
 
     public class Movimiento
     {

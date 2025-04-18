@@ -9,6 +9,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.ComponentModel;
 using Biblioteca.DTO;
+using System.Globalization;
+using System.Windows.Data;
 
 namespace DataObra.Documentos
 {
@@ -19,7 +21,7 @@ namespace DataObra.Documentos
         Documento oActivo;
         string TextBoxValueAnterior;
         public bool GuardadoConExito { get; private set; } = false;
-
+        
         public MaxDocumento(Biblioteca.Documento pDoc, byte TipoID)
         {
             InitializeComponent();
@@ -351,7 +353,29 @@ namespace DataObra.Documentos
             }
         }
 
-        private void GrillaPrincipal_SelectionChanged(object sender, SelectionChangedEventArgs e) { }
+        private void GrillaPrincipal_SelectionChanged(object sender, SelectionChangedEventArgs e) 
+        {
+            ObtenerDetalle((int)oActivo.ID, "FacturaID");
+        }
+
+        private async void ObtenerDetalle(int pDocID, string pCampo)
+        {
+            // Llamar al método ObtenerDocumentosDetPorCampoAsync
+            var (success, message, detalles) = await DatosWeb.ObtenerDocumentosDetPorCampoAsync(pDocID, pCampo, (short)App.IdCuenta);
+
+            if (success)
+            {
+                string mensaje = $"Detalles obtenidos exitosamente. Cantidad: {detalles.Count}";
+                MessageBox.Show(mensaje, "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                string mensaje = $"Error al obtener los detalles: {message}";
+                MessageBox.Show(mensaje, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            this.GrillaDocumentosDet.ItemsSource = detalles;
+        }
 
         private void OActivo_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
