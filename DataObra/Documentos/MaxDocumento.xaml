@@ -836,7 +836,6 @@
             Grid.ColumnSpan="{Binding ElementName=GrillaPrincipal, Path=ColumnDefinitions.Count}"
             Margin="5,0,0,0">
 
-
             <TabControl SelectionChanged="GrillaPrincipal_SelectionChanged">
 
                 <TabItem Header="Insumos" Height="22" Margin="-2,-2,-2,0" VerticalAlignment="Top">
@@ -873,6 +872,13 @@
                             <Syncfusion:GridTextColumn MappingName="RestaDolares" HeaderText="Resta USD" Width="80" TextAlignment="Center"/>
                             <Syncfusion:GridTextColumn MappingName="Cambio" HeaderText="Cambio" Width="70" TextAlignment="Center"/>
 
+                            <!-- IMPUTACIONES -->
+                            <Syncfusion:GridTextColumn MappingName="ObraID" HeaderText="Obra" Width="70" TextAlignment="Center"/>
+                            <Syncfusion:GridTextColumn MappingName="PresupuestoID" HeaderText="Presup." Width="70" TextAlignment="Center"/>
+                            <Syncfusion:GridTextColumn MappingName="RubroID" HeaderText="Rubro" Width="70" TextAlignment="Center"/>
+                            <Syncfusion:GridTextColumn MappingName="TareaID" HeaderText="Tarea" Width="70" TextAlignment="Center"/>
+                            <Syncfusion:GridTextColumn MappingName="InsumoID" HeaderText="Insumo" Width="70" TextAlignment="Center"/>
+
                             <!-- SISTEMA -->
                             <Syncfusion:GridTextColumn MappingName="ID" HeaderText="ID" Width="60" TextAlignment="Center"/>
                             <Syncfusion:GridTextColumn MappingName="CuentaID" HeaderText="Cuenta" Width="50" TextAlignment="Center"/>
@@ -887,28 +893,37 @@
                             <Syncfusion:StackedHeaderRow>
                                 <Syncfusion:StackedHeaderRow.StackedColumns>
 
-                                    <Syncfusion:StackedColumn HeaderText="SISTEMA"
-                                           ChildColumns="ID,CuentaID,UsuarioID,EditadoID,TipoID" />
+                                    <Syncfusion:StackedColumn HeaderText="DATOS ARTÍCULO"
+                                        ChildColumns="ArticuloDescrip,ArticuloCantSuma,ArticuloCantResta,ArticuloPrecio,Fecha" />
 
                                     <Syncfusion:StackedColumn HeaderText="DOCUMENTOS"
-                          ChildColumns="PedidoID,CompraID,ContratoID,FacturaID,RemitoID,ParteID" />
+                                        ChildColumns="PedidoID,CompraID,ContratoID,FacturaID,RemitoID,ParteID" />
 
-
-                                    <Syncfusion:StackedColumn HeaderText="DATOS ARTÍCULO"
-                                           ChildColumns="ArticuloDescrip,ArticuloCantSuma,ArticuloCantResta,ArticuloPrecio,Fecha" />
+                                    <Syncfusion:StackedColumn HeaderText="IMPUTACIONES"
+                                           ChildColumns="ObraID,PresupuestoID,RubroID,TareaID,InsumoID" />
 
                                     <Syncfusion:StackedColumn HeaderText="VALORES"
                                            ChildColumns="SumaPesos,RestaPesos,SumaDolares,RestaDolares,Cambio" />
+
+                                    <Syncfusion:StackedColumn HeaderText="SISTEMA"
+                                           ChildColumns="ID,CuentaID,UsuarioID,EditadoID,TipoID" />
 
                                 </Syncfusion:StackedHeaderRow.StackedColumns>
                             </Syncfusion:StackedHeaderRow>
                         </Syncfusion:SfDataGrid.StackedHeaderRows>
 
+                        <Syncfusion:SfDataGrid.ContextMenu>
+                            <ContextMenu Opened="ContextMenu_Opened">
+                                <MenuItem Header="Mostrar/Ocultar DATOS ARTÍCULO" Name="MenuArticulo" Click="ToggleGrupo_Click"/>
+                                <MenuItem Header="Mostrar/Ocultar DOCUMENTOS" Name="MenuDocumentos" Click="ToggleGrupo_Click"/>
+                                <MenuItem Header="Mostrar/Ocultar IMPUTACIONES" Name="MenuImputaciones" Click="ToggleGrupo_Click"/>
+                                <MenuItem Header="Mostrar/Ocultar VALORES" Name="MenuValores" Click="ToggleGrupo_Click"/>
+                                <MenuItem Header="Mostrar/Ocultar SISTEMA" Name="MenuSistema" Click="ToggleGrupo_Click"/>
+                            </ContextMenu>
+                        </Syncfusion:SfDataGrid.ContextMenu>
+
+
                     </Syncfusion:SfDataGrid>
-
-
-
-
 
                 </TabItem>
 

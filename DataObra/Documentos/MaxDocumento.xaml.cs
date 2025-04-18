@@ -11,6 +11,7 @@ using System.ComponentModel;
 using Biblioteca.DTO;
 using System.Globalization;
 using System.Windows.Data;
+using Syncfusion.UI.Xaml.Grid;
 
 namespace DataObra.Documentos
 {
@@ -178,7 +179,7 @@ namespace DataObra.Documentos
 
         #region Eventos de ComboBox
 
-        private void ComboPresupuestos_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ComboPresupuestos_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             var sele = ComboPresupuestos.SelectedItem as Agrupador;
             if (sele != null)
@@ -188,7 +189,7 @@ namespace DataObra.Documentos
             }
         }
 
-        private void ComboObras_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ComboObras_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             var sele = ComboObras.SelectedItem as AgrupadorDTO;
             if (sele != null)
@@ -198,7 +199,7 @@ namespace DataObra.Documentos
             }
         }
 
-        private void ComboAdmin_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ComboAdmin_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             var sele = ComboAdmin.SelectedItem as AgrupadorDTO;
             if (sele != null)
@@ -208,7 +209,7 @@ namespace DataObra.Documentos
             }
         }
 
-        private void ComboEntidad_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ComboEntidad_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             var sele = ComboEntidad.SelectedItem as AgrupadorDTO;
             if (sele != null)
@@ -353,7 +354,7 @@ namespace DataObra.Documentos
             }
         }
 
-        private void GrillaPrincipal_SelectionChanged(object sender, SelectionChangedEventArgs e) 
+        private void GrillaPrincipal_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e) 
         {
             ObtenerDetalle((int)oActivo.ID, "FacturaID");
         }
@@ -381,6 +382,86 @@ namespace DataObra.Documentos
         {
             MessageBox.Show("cambio");
         }
+
+        // Diccionario para mapear el Name del MenuItem a las columnas correspondientes
+        private readonly Dictionary<string, string[]> _grupoColumnas = new Dictionary<string, string[]>
+        {
+            { "MenuArticulo", new[] { "ArticuloDescrip", "ArticuloCantSuma", "ArticuloCantResta", "ArticuloPrecio", "Fecha" } },
+            { "MenuDocumentos", new[] { "PedidoID", "CompraID", "ContratoID", "FacturaID", "RemitoID", "ParteID" } },
+            { "MenuImputaciones", new[] { "ObraID", "PresupuestoID", "RubroID", "TareaID", "InsumoID" } },
+            { "MenuValores", new[] { "SumaPesos", "RestaPesos", "SumaDolares", "RestaDolares", "Cambio" } },
+            { "MenuSistema", new[] { "ID", "CuentaID", "UsuarioID", "EditadoID", "TipoID" } }
+        };
+
+        // Método único
+        private void ToggleGrupo_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is not MenuItem menuItem || string.IsNullOrEmpty(menuItem.Name))
+                return;
+
+            if (_grupoColumnas.TryGetValue(menuItem.Name, out var columnas))
+            {
+                ToggleGrupoColumnas(columnas);
+                UpdateMenuCheck(menuItem, columnas);
+            }
+        }
+
+        private void ToggleGrupoColumnas(string[] columnNames)
+        {
+            bool? firstVisibility = null;
+
+            foreach (var name in columnNames)
+            {
+                var column = GrillaDocumentosDet.Columns.FirstOrDefault(c => c.MappingName == name);
+                if (column != null)
+                {
+                    firstVisibility ??= column.IsHidden;
+                }
+            }
+
+            bool newVisibility = !(firstVisibility ?? false);
+
+            foreach (var name in columnNames)
+            {
+                var column = GrillaDocumentosDet.Columns.FirstOrDefault(c => c.MappingName == name);
+                if (column != null)
+                {
+                    column.IsHidden = newVisibility;
+                }
+            }
+        }
+
+        private void UpdateMenuCheck(MenuItem menuItem, string[] columnNames)
+        {
+            bool allHidden = columnNames.All(name =>
+            {
+                var col = GrillaDocumentosDet.Columns.FirstOrDefault(c => c.MappingName == name);
+                return col == null || col.IsHidden;
+            });
+
+            menuItem.IsChecked = !allHidden;
+        }
+
+        private void ContextMenu_Opened(object sender, RoutedEventArgs e)
+        {
+            if (sender is not ContextMenu menu) return;
+
+            foreach (var item in menu.Items)
+            {
+                if (item is MenuItem menuItem && _grupoColumnas.TryGetValue(menuItem.Name, out var columnas))
+                {
+                    bool allHidden = columnas.All(name =>
+                    {
+                        var col = GrillaDocumentosDet.Columns.FirstOrDefault(c => c.MappingName == name);
+                        return col == null || col.IsHidden;
+                    });
+
+                    menuItem.IsChecked = !allHidden;
+                }
+            }
+        }
+
+
 
         #endregion
     }
