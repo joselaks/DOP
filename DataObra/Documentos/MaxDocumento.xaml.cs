@@ -368,14 +368,16 @@ namespace DataObra.Documentos
             {
                 string mensaje = $"Detalles obtenidos exitosamente. Cantidad: {detalles.Count}";
                 MessageBox.Show(mensaje, "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                oActivo.DetalleDocumento = detalles;
+
+                this.GrillaDocumentosDet.ItemsSource = oActivo.DetalleDocumento;
             }
             else
             {
                 string mensaje = $"Error al obtener los detalles: {message}";
                 MessageBox.Show(mensaje, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
-            this.GrillaDocumentosDet.ItemsSource = detalles;
         }
 
         private void OActivo_PropertyChanged(object? sender, PropertyChangedEventArgs e)

@@ -844,7 +844,7 @@
                        AutoGenerateColumns="False"
                        AllowGrouping="False"
                        ShowGroupDropArea="False"
-                       Grid.Row="1"
+                       Grid.Row="1" IsReadOnly="False" SelectionMode="None" EditTrigger="OnTap"
                        Grid.Column="1">
 
                         <!-- Columnas -->
@@ -858,10 +858,31 @@
                             <Syncfusion:GridTextColumn MappingName="Fecha" HeaderText="Fecha" Width="62"/>
 
                             <!-- DOCUMENTOS -->
-                            <Syncfusion:GridTextColumn MappingName="PedidoID" HeaderText="Pedido" Width="60"/>
+                            <Syncfusion:GridTemplateColumn MappingName="PedidoID" HeaderText="Pedido" Width="60">
+                                <Syncfusion:GridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <Image Width="16" Height="16" 
+                                            Source="/Resources/CheckIcon.png" 
+                                            Visibility="{Binding PedidoID, Converter={StaticResource NullToVisibilityConverter}}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </Syncfusion:GridTemplateColumn.CellTemplate>
+                            </Syncfusion:GridTemplateColumn>
                             <Syncfusion:GridTextColumn MappingName="CompraID" HeaderText="Compra" Width="60"/>
                             <Syncfusion:GridTextColumn MappingName="ContratoID" HeaderText="Contrato" Width="60"/>
-                            <Syncfusion:GridTextColumn MappingName="FacturaID" HeaderText="Factura" Width="60"/>
+                            <Syncfusion:GridTemplateColumn MappingName="FacturaID" HeaderText="Factura" Width="60">
+                                <Syncfusion:GridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <TextBlock Text="✔" 
+                                               FontSize="14" 
+                                               Foreground="Green" 
+                                               Visibility="{Binding FacturaID, Converter={StaticResource NullToVisibilityConverter}}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </Syncfusion:GridTemplateColumn.CellTemplate>
+                            </Syncfusion:GridTemplateColumn>
                             <Syncfusion:GridTextColumn MappingName="RemitoID" HeaderText="Remito" Width="60"/>
                             <Syncfusion:GridTextColumn MappingName="ParteID" HeaderText="Parte" Width="60"/>
 

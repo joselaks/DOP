@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Collections.ObjectModel;
 
 
 namespace Biblioteca
@@ -99,7 +100,10 @@ namespace Biblioteca
         #endregion
         #region COLECCIONES
         public char Accion { get; set; } // Campo Accion para definir si se agrega, modifica o borra  ¿Para que aqui?
-        public List<DocumentoDet> DetalleDocumento { get; set; }
+
+        public ObservableCollection<DocumentoDetDTO> DetalleDocumento = new ObservableCollection<DocumentoDetDTO>();
+
+        //public List<DocumentoDetDTO> DetalleDocumento { get; set; }
         public List<Movimiento> DetalleMovimientos { get; set; }
         public List<Impuesto> DetalleImpuestos { get; set; }
 
@@ -164,9 +168,6 @@ namespace Biblioteca
         public decimal? RestaDolares { get; set; } // decimal(19,2), Notas de crédito
         public decimal? Cambio { get; set; } // Tipo de cambio tomado, decimal(9,2)
         #endregion
-
-        // Esta propiedad adicional es solo para mostrar el encabezado agrupado
-        public int? FacturaID_dummy => FacturaID;
 
     }
 

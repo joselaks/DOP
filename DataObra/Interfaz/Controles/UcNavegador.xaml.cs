@@ -260,8 +260,7 @@ namespace DataObra.Interfaz.Controles
                 RelTar = docDTO.RelTar,
                 RelIns = docDTO.RelIns,
 
-                Accion = 'A',
-                DetalleDocumento = new List<DocumentoDet>(),
+                DetalleDocumento = new List<DocumentoDetDTO>(),
                 DetalleMovimientos = new List<Movimiento>(),
                 DetalleImpuestos = new List<Impuesto>()
             };

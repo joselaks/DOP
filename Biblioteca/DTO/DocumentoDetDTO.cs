@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Biblioteca.DTO
 {
-    public class DocumentoDetDTO
-        {
+    public class DocumentoDetDTO : INotifyPropertyChanged
+    {
         public int ID { get; set; }
         public short CuentaID { get; set; }
         public int UsuarioID { get; set; }
@@ -25,13 +26,13 @@ namespace Biblioteca.DTO
         public int? ParteID { get; set; }
         public int? ObraID { get; set; }
         public int? PresupuestoID { get; set; }
-        public string? RubroID { get; set; } // Cambiado de int? a string? para reflejar VARCHAR(20)
-        public string? TareaID { get; set; } // Cambiado de int? a string? para reflejar VARCHAR(20)
-        public string? InsumoID { get; set; } // Nuevo campo agregado como string? para reflejar VARCHAR(20)
+        public string? RubroID { get; set; }
+        public string? TareaID { get; set; }
+        public string? InsumoID { get; set; }
         public DateTime? Fecha { get; set; }
-        public string ArticuloDescrip { get; set; } = string.Empty; // Default para reflejar la restricción DEFAULT ('')
-        public decimal ArticuloCantSuma { get; set; } = 0; // Default para reflejar la restricción DEFAULT ((0))
-        public decimal ArticuloCantResta { get; set; } = 0; // Default para reflejar la restricción DEFAULT ((0))
+        public string ArticuloDescrip { get; set; } = string.Empty;
+        public decimal ArticuloCantSuma { get; set; } = 0;
+        public decimal ArticuloCantResta { get; set; } = 0;
         public decimal ArticuloPrecio { get; set; }
         public decimal? SumaPesos { get; set; }
         public decimal? RestaPesos { get; set; }
@@ -39,5 +40,13 @@ namespace Biblioteca.DTO
         public decimal? RestaDolares { get; set; }
         public decimal? Cambio { get; set; }
         public char Accion { get; set; }
+
+        // Implementación de INotifyPropertyChanged  
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
+}
