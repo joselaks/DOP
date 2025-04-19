@@ -12,6 +12,7 @@ using Biblioteca.DTO;
 using System.Globalization;
 using System.Windows.Data;
 using Syncfusion.UI.Xaml.Grid;
+using System.Collections.ObjectModel;
 
 namespace DataObra.Documentos
 {
@@ -369,7 +370,7 @@ namespace DataObra.Documentos
                 string mensaje = $"Detalles obtenidos exitosamente. Cantidad: {detalles.Count}";
                 MessageBox.Show(mensaje, "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                oActivo.DetalleDocumento = detalles;
+                oActivo.DetalleDocumento = new ObservableCollection<DocumentoDetDTO>(detalles);
 
                 this.GrillaDocumentosDet.ItemsSource = oActivo.DetalleDocumento;
             }
