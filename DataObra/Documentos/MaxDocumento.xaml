@@ -844,7 +844,7 @@
                        AutoGenerateColumns="False"
                        AllowGrouping="False"
                        ShowGroupDropArea="False"
-                       Grid.Row="1" IsReadOnly="False" SelectionMode="None" EditTrigger="OnTap"
+                       Grid.Row="1" IsReadOnly="False" EditTrigger="OnTap" AllowEditing="True"
                        Grid.Column="1">
 
                         <!-- Columnas -->
