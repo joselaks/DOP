@@ -372,7 +372,11 @@ namespace DataObra.Documentos
 
                 oActivo.DetalleDocumento = new ObservableCollection<DocumentoDetDTO>(detalles);
 
+                // Falta Convertir de DetallesDTO a Detalles
+
                 this.GrillaDocumentosDet.ItemsSource = oActivo.DetalleDocumento;
+
+                this.DataContext = oActivo;
             }
             else
             {
@@ -396,7 +400,7 @@ namespace DataObra.Documentos
             { "MenuSistema", new[] { "ID", "CuentaID", "UsuarioID", "EditadoID", "TipoID" } }
         };
 
-        // Método único
+        // Método único columnas
         private void ToggleGrupo_Click(object sender, RoutedEventArgs e)
         {
             if (sender is not MenuItem menuItem || string.IsNullOrEmpty(menuItem.Name))
@@ -463,8 +467,6 @@ namespace DataObra.Documentos
                 }
             }
         }
-
-
 
         #endregion
     }

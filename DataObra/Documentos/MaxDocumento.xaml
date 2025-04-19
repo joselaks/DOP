@@ -869,8 +869,30 @@
                                     </DataTemplate>
                                 </Syncfusion:GridTemplateColumn.CellTemplate>
                             </Syncfusion:GridTemplateColumn>
-                            <Syncfusion:GridTextColumn MappingName="CompraID" HeaderText="Compra" Width="60"/>
-                            <Syncfusion:GridTextColumn MappingName="ContratoID" HeaderText="Contrato" Width="60"/>
+                            <Syncfusion:GridTemplateColumn MappingName="CompraID" HeaderText="Factura" Width="60">
+                                <Syncfusion:GridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <TextBlock Text="✔" 
+                                               FontSize="14" 
+                                               Foreground="Green" 
+                                               Visibility="{Binding CompraID, Converter={StaticResource NullToVisibilityConverter}}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </Syncfusion:GridTemplateColumn.CellTemplate>
+                            </Syncfusion:GridTemplateColumn>
+                            <Syncfusion:GridTemplateColumn MappingName="ContratoID" HeaderText="Factura" Width="60">
+                                <Syncfusion:GridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <TextBlock Text="✔" 
+                                               FontSize="14" 
+                                               Foreground="Green" 
+                                               Visibility="{Binding ContratoID, Converter={StaticResource NullToVisibilityConverter}}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </Syncfusion:GridTemplateColumn.CellTemplate>
+                            </Syncfusion:GridTemplateColumn>
                             <Syncfusion:GridTemplateColumn MappingName="FacturaID" HeaderText="Factura" Width="60">
                                 <Syncfusion:GridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -883,8 +905,30 @@
                                     </DataTemplate>
                                 </Syncfusion:GridTemplateColumn.CellTemplate>
                             </Syncfusion:GridTemplateColumn>
-                            <Syncfusion:GridTextColumn MappingName="RemitoID" HeaderText="Remito" Width="60"/>
-                            <Syncfusion:GridTextColumn MappingName="ParteID" HeaderText="Parte" Width="60"/>
+                            <Syncfusion:GridTemplateColumn MappingName="RemitoID" HeaderText="Factura" Width="60">
+                                <Syncfusion:GridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <TextBlock Text="✔" 
+                                               FontSize="14" 
+                                               Foreground="Green" 
+                                               Visibility="{Binding RemitoID, Converter={StaticResource NullToVisibilityConverter}}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </Syncfusion:GridTemplateColumn.CellTemplate>
+                            </Syncfusion:GridTemplateColumn>
+                            <Syncfusion:GridTemplateColumn MappingName="ParteID" HeaderText="Factura" Width="60">
+                                <Syncfusion:GridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <TextBlock Text="✔" 
+                                               FontSize="14" 
+                                               Foreground="Green" 
+                                               Visibility="{Binding ParteID, Converter={StaticResource NullToVisibilityConverter}}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </Syncfusion:GridTemplateColumn.CellTemplate>
+                            </Syncfusion:GridTemplateColumn>
 
                             <!-- VALORES -->
                             <Syncfusion:GridTextColumn MappingName="SumaPesos" HeaderText="Suma $" Width="80" TextAlignment="Center"/>
