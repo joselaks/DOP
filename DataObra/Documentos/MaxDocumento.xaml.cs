@@ -322,7 +322,7 @@ namespace DataObra.Documentos
 
         #endregion
 
-        #region Utilidades y Otros Eventos
+        #region Utilidades
 
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
@@ -360,6 +360,9 @@ namespace DataObra.Documentos
             ObtenerDetalle((int)oActivo.ID, "FacturaID");
         }
 
+        #endregion
+
+        #region Documentos Detalle
         private async void ObtenerDetalle(int pDocID, string pCampo)
         {
             // Llamar al método ObtenerDocumentosDetPorCampoAsync
