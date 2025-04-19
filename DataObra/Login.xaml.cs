@@ -7,6 +7,7 @@ namespace DataObra
 {
     public partial class Login : Window
     {
+        //Prueba para ver los cambios
         public string Usuario { get; private set; }
         public string Rol { get; private set; }
 
