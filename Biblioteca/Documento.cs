@@ -101,9 +101,7 @@ namespace Biblioteca
         #region COLECCIONES
         public char Accion { get; set; } // Campo Accion para definir si se agrega, modifica o borra  ¿Para que aqui?
 
-        public ObservableCollection<DocumentoDetDTO> DetalleDocumento = new ObservableCollection<DocumentoDetDTO>();
-
-        //public List<DocumentoDetDTO> DetalleDocumento { get; set; }
+        public List<DocumentoDetDTO> DetalleDocumento { get; set; }
         public List<Movimiento> DetalleMovimientos { get; set; }
         public List<Impuesto> DetalleImpuestos { get; set; }
 
