@@ -851,6 +851,7 @@
                         <Syncfusion:SfDataGrid.Columns>
 
                             <!-- DATOS ARTÍCULO -->
+                            <Syncfusion:GridTextColumn MappingName="Accion" HeaderText="ABM" Width="36"/>
                             <Syncfusion:GridTextColumn MappingName="ArticuloDescrip" HeaderText="Descripción" Width="150"/>
                             <Syncfusion:GridTextColumn MappingName="ArticuloCantSuma" HeaderText="Cant +" Width="70" TextAlignment="Center"/>
                             <Syncfusion:GridTextColumn MappingName="ArticuloCantResta" HeaderText="Cant -" Width="70" TextAlignment="Center"/>

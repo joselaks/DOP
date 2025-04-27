@@ -268,6 +268,8 @@ namespace DataObra.Documentos
                     : $"Documento actualizado con éxito. ID: {resultado.Item3.Value}";
 
                 MessageBox.Show(mensaje, "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                ActualizarDetalle();
             }
             else
             {
@@ -388,117 +390,8 @@ namespace DataObra.Documentos
             }
         }
 
-        private async void ProcesaLoteDet_Click(object sender, RoutedEventArgs e)
+        private async void ActualizarDetalle()
         {
-            // Crear tres registros de DocumentoDetDTO
-            var documentoDet1 = new DocumentoDetDTO
-            {
-                ID = 250,
-                CuentaID = 1,
-                UsuarioID = 1,
-                Editado = DateTime.Now,
-                TipoID = 'A',
-                AdminID = null,
-                EntidadID = null,
-                DepositoID = null,
-                AcopioID = null,
-                PedidoID = null,
-                CompraID = null,
-                ContratoID = null,
-                FacturaID = null,
-                RemitoID = null,
-                ParteID = null,
-                ObraID = null,
-                PresupuestoID = 1,
-                RubroID = "P01",
-                TareaID = null,
-                InsumoID = null,
-                Fecha = DateTime.Now,
-                ArticuloDescrip = "Artículo 444",
-                ArticuloCantSuma = 10,
-                ArticuloCantResta = 0,
-                ArticuloPrecio = 100,
-                SumaPesos = 1000,
-                RestaPesos = 0,
-                SumaDolares = 10,
-                RestaDolares = 0,
-                Cambio = 1,
-                Accion = 'A'
-            };
-
-            var documentoDet2 = new DocumentoDetDTO
-            {
-                ID = 1,
-                CuentaID = 2,
-                UsuarioID = 2,
-                Editado = DateTime.Now,
-                TipoID = 'B',
-                AdminID = null,
-                EntidadID = null,
-                DepositoID = null,
-                AcopioID = null,
-                PedidoID = null,
-                CompraID = null,
-                ContratoID = null,
-                FacturaID = null,
-                RemitoID = null,
-                ParteID = null,
-                ObraID = null,
-                PresupuestoID = null,
-                RubroID = null,
-                TareaID = null,
-                Fecha = DateTime.Now,
-                ArticuloDescrip = "Artículo 2",
-                ArticuloCantSuma = 20,
-                ArticuloCantResta = 0,
-                ArticuloPrecio = 200,
-                SumaPesos = 2000,
-                RestaPesos = 0,
-                SumaDolares = 20,
-                RestaDolares = 0,
-                Cambio = 1,
-                Accion = 'M'
-            };
-
-            var documentoDet3 = new DocumentoDetDTO
-            {
-                ID = 2,
-                CuentaID = 3,
-                UsuarioID = 3,
-                Editado = DateTime.Now,
-                TipoID = 'C',
-                AdminID = null,
-                EntidadID = null,
-                DepositoID = null,
-                AcopioID = null,
-                PedidoID = null,
-                CompraID = null,
-                ContratoID = null,
-                FacturaID = null,
-                RemitoID = null,
-                ParteID = null,
-                ObraID = null,
-                PresupuestoID = null,
-                RubroID = null,
-                TareaID = null,
-                Fecha = DateTime.Now,
-                ArticuloDescrip = "Nuevo solo",
-                ArticuloCantSuma = 30,
-                ArticuloCantResta = 0,
-                ArticuloPrecio = 300,
-                SumaPesos = 3000,
-                RestaPesos = 0,
-                SumaDolares = 30,
-                RestaDolares = 0,
-                Cambio = 1,
-                Accion = 'D'
-            };
-
-            // Crear la lista de DocumentoDetDTO
-            var listaDetalleDocumento = new List<DocumentoDetDTO> { documentoDet1, documentoDet2, documentoDet3 };
-
-            oActivo.DetalleDocumento = new List<DocumentoDetDTO>();
-
             // Llamar al método ProcesarListaDetalleDocumentoAsync
             var (success, message) = await DatosWeb.ProcesarListaDetalleDocumentoAsync(oActivo.DetalleDocumento);
 
