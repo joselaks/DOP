@@ -13,6 +13,7 @@ using System.Globalization;
 using System.Windows.Data;
 using Syncfusion.UI.Xaml.Grid;
 using System.Collections.ObjectModel;
+using Syncfusion.UI.Xaml.Grid.Helpers;
 
 namespace DataObra.Documentos
 {
@@ -490,5 +491,40 @@ namespace DataObra.Documentos
         }
 
         #endregion
+
+        private void GrillaDocumentosDet_CurrentCellEndEdit(object sender, CurrentCellEndEditEventArgs e)
+        {
+            var grid = sender as SfDataGrid;
+
+            if (grid != null)
+            {
+                var detalle = grid.GetRecordAtRowIndex(e.RowColumnIndex.RowIndex) as DocumentoDetDTO;
+                if (detalle != null)
+                {
+                    if (detalle.Accion != 'A') // comillas simples para char
+                    {
+                        detalle.Accion = 'M'; 
+                    }
+                }
+            }
+        }
+
+        private void NuevoDetalle_Click(object sender, RoutedEventArgs e)
+        {
+            var nuevoDetalle = new DocumentoDetDTO
+            {
+                ArticuloDescrip = "Nuevo Artículo",
+                ArticuloCantSuma = 5,
+                ArticuloPrecio = 100,
+                Fecha = DateTime.Now,
+                Accion = 'A',
+                CuentaID = (byte)App.IdCuenta,
+                UsuarioID = App.IdUsuario
+            };
+
+            oActivo.DetalleDocumento.Add(nuevoDetalle);
+
+            this.GrillaDocumentosDet.ItemsSource = oActivo.DetalleDocumento;
+        }
     }
 }

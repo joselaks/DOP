@@ -840,7 +840,7 @@
 
                 <TabItem Header="Insumos" Height="22" Margin="-2,-2,-2,0" VerticalAlignment="Top">
 
-                    <Syncfusion:SfDataGrid Name="GrillaDocumentosDet"
+                    <Syncfusion:SfDataGrid Name="GrillaDocumentosDet" CurrentCellEndEdit="GrillaDocumentosDet_CurrentCellEndEdit"
                        AutoGenerateColumns="False"
                        AllowGrouping="False"
                        ShowGroupDropArea="False"
@@ -1079,7 +1079,7 @@
 
         </Grid>
 
-        <StackPanel Grid.Row="4" Orientation="Horizontal">
+        <StackPanel Grid.Row="4" Grid.ColumnSpan="4" Orientation="Horizontal">
             <Button
                 Width="85"
                 Margin="5,5,0,0"
@@ -1095,6 +1095,11 @@
                 Margin="15,5,0,0"
                 Click="Borrar_Click"
                 Content="Borrar" />
+            <Button
+                Width="85"
+                Margin="55,5,0,0"
+                Click="NuevoDetalle_Click"
+                Content="Agregar Detalle" />
         </StackPanel>
 
     </Grid>
