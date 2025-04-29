@@ -949,7 +949,7 @@
                             <Syncfusion:GridTextColumn MappingName="ID" HeaderText="ID" Width="60" TextAlignment="Center"/>
                             <Syncfusion:GridTextColumn MappingName="CuentaID" HeaderText="Cuenta" Width="50" TextAlignment="Center"/>
                             <Syncfusion:GridTextColumn MappingName="UsuarioID" HeaderText="Usuario" Width="60" TextAlignment="Center"/>
-                            <Syncfusion:GridTextColumn MappingName="EditadoID" HeaderText="Editado" Width="60" TextAlignment="Center"/>
+                            <Syncfusion:GridTextColumn MappingName="Editado" HeaderText="Editado" Width="60" TextAlignment="Center"/>
                             <Syncfusion:GridTextColumn MappingName="TipoID" HeaderText="Tipo" Width="40" TextAlignment="Center"/>
 
                         </Syncfusion:SfDataGrid.Columns>

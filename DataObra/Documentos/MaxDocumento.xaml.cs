@@ -24,9 +24,10 @@ namespace DataObra.Documentos
         Documento oActivo;
         string TextBoxValueAnterior;
         public bool GuardadoConExito { get; private set; } = false;
-        
+        InfoDocumento docdet = new InfoDocumento();
+
         public MaxDocumento(Biblioteca.Documento pDoc, byte TipoID)
-        {
+            {
             InitializeComponent();
 
             this.ComboObras.ItemsSource = App.ListaAgrupadores.Where(a => a.TipoID == 'O' && a.Active);
@@ -34,6 +35,8 @@ namespace DataObra.Documentos
             this.ComboEntidad.ItemsSource = App.ListaAgrupadores.Where(a => new[] { 'C', 'P', 'S', 'O' }.Contains(a.TipoID) && a.Active);
 
             Random random = new Random();
+
+            docdet.DetalleInsumos = new ObservableCollection<DocumentoDetDTO>();
 
             if (pDoc.ID == null)
             {
@@ -376,11 +379,14 @@ namespace DataObra.Documentos
                 string mensaje = $"Detalles obtenidos exitosamente. Cantidad: {detalles.Count}";
                 MessageBox.Show(mensaje, "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                oActivo.DetalleDocumento = detalles;
+                foreach (var item in detalles)
+                    {
+                    docdet.DetalleInsumos.Add(item);
+                    }
 
-                // Falta Convertir de DetallesDTO a Detalles
+                // Falta Convertir de Detalles
 
-                this.GrillaDocumentosDet.ItemsSource = oActivo.DetalleDocumento;
+                this.GrillaDocumentosDet.ItemsSource = docdet.DetalleInsumos;
 
                 this.DataContext = oActivo;
             }
@@ -392,9 +398,17 @@ namespace DataObra.Documentos
         }
 
         private async void ActualizarDetalle()
-        {
+            {
+
+            List<DocumentoDetDTO> aguardar = new List<DocumentoDetDTO>();
+
+            foreach (var item in docdet.DetalleInsumos)
+                {
+                aguardar.Add(item);
+                }
+
             // Llamar al método ProcesarListaDetalleDocumentoAsync
-            var (success, message) = await DatosWeb.ProcesarListaDetalleDocumentoAsync(oActivo.DetalleDocumento);
+            var (success, message) = await DatosWeb.ProcesarListaDetalleDocumentoAsync(aguardar);
 
             // Manejar el resultado de la llamada
             if (success)
@@ -499,6 +513,7 @@ namespace DataObra.Documentos
             if (grid != null)
             {
                 var detalle = grid.GetRecordAtRowIndex(e.RowColumnIndex.RowIndex) as DocumentoDetDTO;
+                
                 if (detalle != null)
                 {
                     if (detalle.Accion != 'A') // comillas simples para char
@@ -512,19 +527,27 @@ namespace DataObra.Documentos
         private void NuevoDetalle_Click(object sender, RoutedEventArgs e)
         {
             var nuevoDetalle = new DocumentoDetDTO
-            {
+                {
                 ArticuloDescrip = "Nuevo Artículo",
-                ArticuloCantSuma = 5,
+                ArticuloCantSuma = 0,
+                ArticuloCantResta = 0,
                 ArticuloPrecio = 100,
+                SumaDolares = 0,
+                SumaPesos = 0,
+                RestaDolares = 0,
+                RestaPesos = 0,
                 Fecha = DateTime.Now,
+                Editado = DateTime.Now,
+                TipoID = 'M',
                 Accion = 'A',
                 CuentaID = (byte)App.IdCuenta,
-                UsuarioID = App.IdUsuario
+                UsuarioID = App.IdUsuario,
+                FacturaID = oActivo.ID
             };
 
-            oActivo.DetalleDocumento.Add(nuevoDetalle);
+            docdet.DetalleInsumos.Add(nuevoDetalle);
 
-            this.GrillaDocumentosDet.ItemsSource = oActivo.DetalleDocumento;
+            //this.GrillaDocumentosDet.ItemsSource = oActivo.DetalleDocumento;
         }
     }
 }
