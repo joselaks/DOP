@@ -1079,7 +1079,7 @@
 
         </Grid>
 
-        <StackPanel Grid.Row="4" Grid.ColumnSpan="4" Orientation="Horizontal">
+        <StackPanel Grid.Row="4" Grid.ColumnSpan="3" Orientation="Horizontal">
             <Button
                 Width="85"
                 Margin="5,5,0,0"
@@ -1101,6 +1101,16 @@
                 Click="NuevoDetalle_Click"
                 Content="Agregar Detalle" />
         </StackPanel>
+
+        <TextBlock x:Name="EstadoTexto" Grid.Row="4" Grid.Column="4" Height="27"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Bottom"
+               Text="..." FontStyle="Italic"
+               Background="LightGray"
+               Foreground="Black"
+               Padding="5,2"
+               Visibility="Visible"
+               />
 
     </Grid>
 

@@ -14,12 +14,17 @@ using System.Windows.Data;
 using Syncfusion.UI.Xaml.Grid;
 using System.Collections.ObjectModel;
 using Syncfusion.UI.Xaml.Grid.Helpers;
+using System.Collections.Concurrent;
+using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace DataObra.Documentos
     {
     public partial class MaxDocumento : UserControl
         {
         #region Variables y Constructor
+        private readonly ConcurrentQueue<string> colaMensajes = new();
+        private bool mostrandoMensaje = false;
 
         Documento oActivo;
         string TextBoxValueAnterior;
@@ -45,7 +50,7 @@ namespace DataObra.Documentos
             if (TiposDeDocumento.TryGetValue(TipoDocID, out string nombreTipo))
                 TipoDoc = nombreTipo + "ID"; // "FacturaID", "PedidoID", etc.
             else
-                MessageBox.Show($"TipoDocID {TipoDocID} no está en el diccionario.");
+                MostrarMensajeEstado($"TipoDocID {TipoDocID} no está en el diccionario.");
 
             // Temporal para manejar los datos en la ventana 
             docdet.DetalleInsumos = new ObservableCollection<DocumentoDetDTO>();
@@ -265,15 +270,12 @@ namespace DataObra.Documentos
         #region Acciones de Botones
 
         private async void Guardar_Click(object sender, RoutedEventArgs e)
-            {
+        {
             bool esNuevo = false;
 
             if (oActivo.ID == null)
-                {
                 esNuevo = true;
-                }
-            //bool esNuevo = oActivo.ID == null;
-
+           
             var documento = ConvertirADTO(oActivo, esNuevo);
 
             (bool, string, int?) EmpaquetarResultado((bool, string) r, int? id) => (r.Item1, r.Item2, id);
@@ -289,17 +291,16 @@ namespace DataObra.Documentos
                     ? $"Documento creado con éxito. ID asignado: {resultado.Item3.Value}"
                     : $"Documento actualizado con éxito. ID: {resultado.Item3.Value}";
 
-                MessageBox.Show(mensaje, "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                MostrarMensajeEstado(mensaje);
 
                 if (docdet.DetalleInsumos.Count > 0)
                     ActualizarDetalle();
                 }
             else
-                {
-                MessageBox.Show($"Error al {(esNuevo ? "crear" : "actualizar")} el documento: {resultado.Item2}","Error",
-                    MessageBoxButton.OK,MessageBoxImage.Error);
-                }
+            {
+                MostrarMensajeEstado($"Error al {(esNuevo ? "crear" : "actualizar")} el documento: {resultado.Item2}");
             }
+        }
 
         private async void Borrar_Click(object sender, RoutedEventArgs e)
             {
@@ -393,14 +394,14 @@ namespace DataObra.Documentos
             var (success, message, detalles) = await DatosWeb.ObtenerDocumentosDetPorCampoAsync(pDocID, pCampo, (short)App.IdCuenta);
 
             if (success)
-                {
+            {
                 string mensaje = $"Detalles obtenidos exitosamente. Cantidad: {detalles.Count}";
-                MessageBox.Show(mensaje, "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                MostrarMensajeEstado(mensaje);
 
                 foreach (var item in detalles)
-                    {
+                {
                     docdet.DetalleInsumos.Add(item);
-                    }
+                }
 
                 // Falta Convertir de Detalles
 
@@ -409,15 +410,14 @@ namespace DataObra.Documentos
                 this.DataContext = oActivo;
                 }
             else
-                {
+            {
                 string mensaje = $"Error al obtener los detalles: {message}";
-                MessageBox.Show(mensaje, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                MostrarMensajeEstado(mensaje);
             }
+        }
 
         private async void ActualizarDetalle()
-            {
-
+        {
             List<DocumentoDetDTO> aguardar = new List<DocumentoDetDTO>();
 
             foreach (var item in docdet.DetalleInsumos)
@@ -430,19 +430,19 @@ namespace DataObra.Documentos
 
             // Manejar el resultado de la llamada
             if (success)
-                {
-                MessageBox.Show("Lista de detalles de documentos procesada exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-            else
-                {
-                MessageBox.Show($"Error al procesar la lista de detalles de documentos: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+            {
+                MostrarMensajeEstado("Lista de detalles de documentos procesada exitosamente.");
             }
+            else
+            {
+                MostrarMensajeEstado($"Error al procesar la lista de detalles de documentos: {message}");
+            }
+        }
 
         private void OActivo_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-            {
-            MessageBox.Show("cambio");
-            }
+        {
+            MostrarMensajeEstado("cambio");
+        }
 
         // Diccionario para mapear el Name del MenuItem a las columnas correspondientes
         private readonly Dictionary<string, string[]> _grupoColumnas = new Dictionary<string, string[]>
@@ -565,7 +565,7 @@ namespace DataObra.Documentos
             if (oActivo.ID != null)
                 AsignarDocumento(nuevoDetalle);
             else
-                MessageBox.Show("Falta ID de Documento");
+                MostrarMensajeEstado("Falta ID de Documento");
 
             docdet.DetalleInsumos.Add(nuevoDetalle);
         }
@@ -580,15 +580,38 @@ namespace DataObra.Documentos
         if (propiedad != null && propiedad.CanWrite &&
             (propiedad.PropertyType == typeof(int) || propiedad.PropertyType == typeof(int?)))
             {
-            propiedad.SetValue(pDetalle, oActivo.ID);
-            // Opcional: mostrar para confirmar
-            MessageBox.Show($"{TipoDoc} asignado con valor {oActivo.ID}");
+                propiedad.SetValue(pDetalle, oActivo.ID);
+                MostrarMensajeEstado($"{TipoDoc} asignado con valor {oActivo.ID}");
             }
         else
             {
-            MessageBox.Show($"No se pudo asignar {TipoDoc} en pDetalle");
+                MostrarMensajeEstado($"No se pudo asignar {TipoDoc} en pDetalle");
+                // MessageBox.Show($"No se pudo asignar {TipoDoc} en pDetalle");
             }
         }
+
+        private async void MostrarMensajeEstado(string mensaje)
+            {
+            colaMensajes.Enqueue(mensaje);
+
+            if (mostrandoMensaje)
+                return;
+
+            mostrandoMensaje = true;
+
+            while (colaMensajes.TryDequeue(out var msg))
+                {
+                EstadoTexto.Text = msg;
+                EstadoTexto.Visibility = Visibility.Visible;
+
+                await Task.Delay(4000); // 4 segundos
+
+                EstadoTexto.Visibility = Visibility.Collapsed;
+                EstadoTexto.Text = string.Empty;
+                }
+
+            mostrandoMensaje = false;
+            }
 
         }
     }
