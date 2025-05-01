@@ -16,34 +16,52 @@ using System.Collections.ObjectModel;
 using Syncfusion.UI.Xaml.Grid.Helpers;
 
 namespace DataObra.Documentos
-{
-    public partial class MaxDocumento : UserControl
     {
+    public partial class MaxDocumento : UserControl
+        {
         #region Variables y Constructor
 
         Documento oActivo;
         string TextBoxValueAnterior;
         public bool GuardadoConExito { get; private set; } = false;
         InfoDocumento docdet = new InfoDocumento();
+        public byte TipoDocID;
+        public string TipoDoc;
 
-        public MaxDocumento(Biblioteca.Documento pDoc, byte TipoID)
+        private static readonly Dictionary<byte, string> TiposDeDocumento = new()
+        {
+            { 1, "Factura" }, { 2, "Plan" }, { 3, "Certificado" }, { 4, "Parte" }, { 5, "Remito" },
+            { 6, "Cobro" }, { 7, "Acopio" }, { 8, "Compra" }, { 9, "Pago" }, { 10, "Presupuesto" },
+            { 11, "Contrato" }, { 12, "Sueldo" }, { 13, "Pedido" }, { 14, "Ingreso" }, { 15, "Egreso" },
+            { 16, "Entrada" }, { 17, "Salida" }, { 18, "Impuesto" }, { 19, "Tema" }
+        };
+
+
+        public MaxDocumento(Biblioteca.Documento pDoc, byte pTipoID)
             {
             InitializeComponent();
+
+            TipoDocID = pTipoID;
+            if (TiposDeDocumento.TryGetValue(TipoDocID, out string nombreTipo))
+                TipoDoc = nombreTipo + "ID"; // "FacturaID", "PedidoID", etc.
+            else
+                MessageBox.Show($"TipoDocID {TipoDocID} no está en el diccionario.");
+
+            // Temporal para manejar los datos en la ventana 
+            docdet.DetalleInsumos = new ObservableCollection<DocumentoDetDTO>();
 
             this.ComboObras.ItemsSource = App.ListaAgrupadores.Where(a => a.TipoID == 'O' && a.Active);
             this.ComboAdmin.ItemsSource = App.ListaAgrupadores.Where(a => a.TipoID == 'A' && a.Active);
             this.ComboEntidad.ItemsSource = App.ListaAgrupadores.Where(a => new[] { 'C', 'P', 'S', 'O' }.Contains(a.TipoID) && a.Active);
 
-            Random random = new Random();
-
-            docdet.DetalleInsumos = new ObservableCollection<DocumentoDetDTO>();
-
             if (pDoc.ID == null)
-            {
-                oActivo = new Documento()
                 {
+                Random random = new Random();
+
+                oActivo = new Documento()
+                    {
                     CuentaID = (byte)App.IdCuenta,
-                    TipoID = TipoID,
+                    TipoID = TipoDocID,
                     UsuarioID = App.IdUsuario,
                     CreadoFecha = DateTime.Now,
                     EditadoID = 0,
@@ -87,12 +105,12 @@ namespace DataObra.Documentos
                     RelRub = false,
                     RelTar = false,
                     RelIns = false
-                };
-                
+                    };
+
                 // this.P.IsChecked = true;
-            }
+                }
             else
-            {
+                {
                 oActivo = pDoc;
 
                 this.ComboObras.SelectedItem = App.ListaAgrupadores.FirstOrDefault(a => a.ID == oActivo.ObraID);
@@ -100,32 +118,32 @@ namespace DataObra.Documentos
                 var entidad = App.ListaAgrupadores.FirstOrDefault(a => a.ID == oActivo.EntidadID);
 
                 if (entidad != null)
-                {
-                    switch (entidad.TipoID)
                     {
+                    switch (entidad.TipoID)
+                        {
                         case 'C': this.C.IsChecked = true; break;
                         case 'P': this.P.IsChecked = true; break;
                         case 'S': this.S.IsChecked = true; break;
                         case 'O': this.E.IsChecked = true; break;
-                    }
+                        }
                     this.ComboEntidad.SelectedItem = entidad;
-                }
+                    }
 
                 this.CelAutorizadoFecha.Visibility = oActivo.AutorizadoID != 0 ? Visibility.Visible : Visibility.Collapsed;
                 this.CelEditadoFecha.Visibility = oActivo.EditadoID != 0 ? Visibility.Visible : Visibility.Collapsed;
-            }
+                }
 
             this.DataContext = oActivo;
-        }
+            }
 
         #endregion
 
         #region Métodos de Conversión
 
         private static DocumentoDTO ConvertirADTO(Documento doc, bool esNuevo)
-        {
-            var dto = new DocumentoDTO
             {
+            var dto = new DocumentoDTO
+                {
                 CuentaID = doc.CuentaID,
                 TipoID = doc.TipoID,
                 UsuarioID = doc.UsuarioID,
@@ -171,89 +189,89 @@ namespace DataObra.Documentos
                 RelRub = doc.RelRub,
                 RelTar = doc.RelTar,
                 RelIns = doc.RelIns
-            };
+                };
 
             if (!esNuevo)
                 dto.ID = (int)doc.ID;
 
             return dto;
 
-        }
+            }
 
         #endregion
 
         #region Eventos de ComboBox
 
         private void ComboPresupuestos_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
+            {
             var sele = ComboPresupuestos.SelectedItem as Agrupador;
             if (sele != null)
-            {
+                {
                 oActivo.PresupuestoID = sele.ID;
                 oActivo.Presupuesto = sele.Descrip;
+                }
             }
-        }
 
         private void ComboObras_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
+            {
             var sele = ComboObras.SelectedItem as AgrupadorDTO;
             if (sele != null)
-            {
+                {
                 oActivo.ObraID = sele.ID;
                 oActivo.Obra = sele.Descrip;
+                }
             }
-        }
 
         private void ComboAdmin_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
+            {
             var sele = ComboAdmin.SelectedItem as AgrupadorDTO;
             if (sele != null)
-            {
+                {
                 oActivo.AdminID = sele.ID;
                 oActivo.Admin = sele.Descrip;
+                }
             }
-        }
 
         private void ComboEntidad_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
+            {
             var sele = ComboEntidad.SelectedItem as AgrupadorDTO;
             if (sele != null)
-            {
+                {
                 oActivo.EntidadID = sele.ID;
                 oActivo.Entidad = sele.Descrip;
                 oActivo.EntidadTipo = sele.Tipo;
+                }
             }
-        }
 
         #endregion
 
         #region Eventos de Fecha
 
         private async void cFecha_DateTimeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is FrameworkElement element && oActivo != null && e.NewValue != e.OldValue)
             {
-                switch (element.Name)
+            if (d is FrameworkElement element && oActivo != null && e.NewValue != e.OldValue)
                 {
+                switch (element.Name)
+                    {
                     case "cFecha1": oActivo.Fecha1 = (DateTime)e.NewValue; break;
                     case "cFecha2": oActivo.Fecha2 = (DateTime?)e.NewValue; break;
                     case "cFecha3": oActivo.Fecha3 = (DateTime?)e.NewValue; break;
+                    }
                 }
             }
-        }
 
         #endregion
 
         #region Acciones de Botones
 
         private async void Guardar_Click(object sender, RoutedEventArgs e)
-        {
+            {
             bool esNuevo = false;
 
             if (oActivo.ID == null)
-            {
+                {
                 esNuevo = true;
-            }
+                }
             //bool esNuevo = oActivo.ID == null;
 
             var documento = ConvertirADTO(oActivo, esNuevo);
@@ -265,7 +283,7 @@ namespace DataObra.Documentos
                 : EmpaquetarResultado(await DatosWeb.ActualizarDocumentoAsync(documento), documento.ID);
 
             if (resultado.Item1 && resultado.Item3.HasValue)
-            {
+                {
                 GuardadoConExito = true;
                 string mensaje = esNuevo
                     ? $"Documento creado con éxito. ID asignado: {resultado.Item3.Value}"
@@ -273,109 +291,109 @@ namespace DataObra.Documentos
 
                 MessageBox.Show(mensaje, "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                ActualizarDetalle();
-            }
+                if (docdet.DetalleInsumos.Count > 0)
+                    ActualizarDetalle();
+                }
             else
-            {
-                MessageBox.Show(
-                    $"Error al {(esNuevo ? "crear" : "actualizar")} el documento: {resultado.Item2}",
-                    "Error",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error
-                );
+                {
+                MessageBox.Show($"Error al {(esNuevo ? "crear" : "actualizar")} el documento: {resultado.Item2}","Error",
+                    MessageBoxButton.OK,MessageBoxImage.Error);
+                }
             }
-        }
 
         private async void Borrar_Click(object sender, RoutedEventArgs e)
-        {
-            if (oActivo.ID != null)
             {
+            if (oActivo.ID != null)
+                {
                 var (success, message) = await DatosWeb.EliminarDocumentoAsync((int)oActivo.ID);
 
                 if (success)
-                {
+                    {
                     MessageBox.Show($"Documento eliminado con éxito. ID: {oActivo.ID}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
                     Window.GetWindow(this)?.Close();
-                }
+                    }
                 else
-                {
+                    {
                     MessageBox.Show($"Error al eliminar el documento: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
             }
-        }
 
         private void Cancelar_Click(object sender, RoutedEventArgs e)
-        {
+            {
             Window.GetWindow(this)?.Close();
-        }
+            }
 
         #endregion
 
         #region Lógica de Vinculación
 
         private void Vincular_Click(object sender, RoutedEventArgs e)
-        {
+            {
             var selectedItem = GrillaDocumentos.SelectedItem as Biblioteca.Documento;
             if (selectedItem != null)
                 MessageBox.Show($"Seleccionado: ID {selectedItem.ID}, Descripción: {selectedItem.Descrip}");
             else
                 MessageBox.Show("No se ha seleccionado ningún ítem.");
-        }
+            }
 
         private void DesVincular_Click(object sender, RoutedEventArgs e)
-        {
-        }
+            {
+            }
 
         #endregion
 
         #region Utilidades
 
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
-        {
+            {
             if (sender is TextBox textBox)
                 TextBoxValueAnterior = textBox.Text;
-        }
+            }
 
         private void EntityType_Checked(object sender, RoutedEventArgs e)
-        {
-            if (sender is RadioButton radioButton)
             {
+            if (sender is RadioButton radioButton)
+                {
                 char tipo = Convert.ToChar(radioButton.Name);
                 this.ComboEntidad.ItemsSource = App.ListaAgrupadores.Where(a => a.TipoID == tipo).OrderBy(a => a.Descrip);
                 this.ComboEntidad.SelectedItem = App.ListaAgrupadores.FirstOrDefault(a => a.TipoID == tipo);
+                }
             }
-        }
 
         private void BotonVerifica_Click(object sender, RoutedEventArgs e)
-        {
-            if (oActivo.AutorizadoID == 0)
             {
+            if (oActivo.AutorizadoID == 0)
+                {
                 oActivo.AutorizadoID = App.IdUsuario;
                 //oActivo.Autorizado = (int)App.IdUsuario;
                 oActivo.AutorizadoFecha = DateTime.Today;
-            }
+                }
             else
-            {
+                {
                 oActivo.AutorizadoID = 0;
                 oActivo.Autorizado = "";
+                }
             }
-        }
 
-        private void GrillaPrincipal_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e) 
+        private void GrillaPrincipal_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            ObtenerDetalle((int)oActivo.ID, "FacturaID");
+            if (oActivo.ID != null)
+            {
+                ObtenerDetalle((int)oActivo.ID, TipoDoc);
+            }
         }
 
         #endregion
 
         #region Documentos Detalle
         private async void ObtenerDetalle(int pDocID, string pCampo)
-        {
+            {
             // Llamar al método ObtenerDocumentosDetPorCampoAsync
             var (success, message, detalles) = await DatosWeb.ObtenerDocumentosDetPorCampoAsync(pDocID, pCampo, (short)App.IdCuenta);
 
             if (success)
-            {
+                {
                 string mensaje = $"Detalles obtenidos exitosamente. Cantidad: {detalles.Count}";
                 MessageBox.Show(mensaje, "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
 
@@ -389,13 +407,13 @@ namespace DataObra.Documentos
                 this.GrillaDocumentosDet.ItemsSource = docdet.DetalleInsumos;
 
                 this.DataContext = oActivo;
-            }
+                }
             else
-            {
+                {
                 string mensaje = $"Error al obtener los detalles: {message}";
                 MessageBox.Show(mensaje, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
-        }
 
         private async void ActualizarDetalle()
             {
@@ -412,19 +430,19 @@ namespace DataObra.Documentos
 
             // Manejar el resultado de la llamada
             if (success)
-            {
+                {
                 MessageBox.Show("Lista de detalles de documentos procesada exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
+                }
             else
-            {
+                {
                 MessageBox.Show($"Error al procesar la lista de detalles de documentos: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
-        }
 
         private void OActivo_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-        {
+            {
             MessageBox.Show("cambio");
-        }
+            }
 
         // Diccionario para mapear el Name del MenuItem a las columnas correspondientes
         private readonly Dictionary<string, string[]> _grupoColumnas = new Dictionary<string, string[]>
@@ -438,44 +456,44 @@ namespace DataObra.Documentos
 
         // Método único columnas
         private void ToggleGrupo_Click(object sender, RoutedEventArgs e)
-        {
+            {
             if (sender is not MenuItem menuItem || string.IsNullOrEmpty(menuItem.Name))
                 return;
 
             if (_grupoColumnas.TryGetValue(menuItem.Name, out var columnas))
-            {
+                {
                 ToggleGrupoColumnas(columnas);
                 UpdateMenuCheck(menuItem, columnas);
+                }
             }
-        }
 
         private void ToggleGrupoColumnas(string[] columnNames)
-        {
+            {
             bool? firstVisibility = null;
 
             foreach (var name in columnNames)
-            {
+                {
                 var column = GrillaDocumentosDet.Columns.FirstOrDefault(c => c.MappingName == name);
                 if (column != null)
-                {
+                    {
                     firstVisibility ??= column.IsHidden;
+                    }
                 }
-            }
 
             bool newVisibility = !(firstVisibility ?? false);
 
             foreach (var name in columnNames)
-            {
+                {
                 var column = GrillaDocumentosDet.Columns.FirstOrDefault(c => c.MappingName == name);
                 if (column != null)
-                {
+                    {
                     column.IsHidden = newVisibility;
+                    }
                 }
             }
-        }
 
         private void UpdateMenuCheck(MenuItem menuItem, string[] columnNames)
-        {
+            {
             bool allHidden = columnNames.All(name =>
             {
                 var col = GrillaDocumentosDet.Columns.FirstOrDefault(c => c.MappingName == name);
@@ -483,16 +501,16 @@ namespace DataObra.Documentos
             });
 
             menuItem.IsChecked = !allHidden;
-        }
+            }
 
         private void ContextMenu_Opened(object sender, RoutedEventArgs e)
-        {
+            {
             if (sender is not ContextMenu menu) return;
 
             foreach (var item in menu.Items)
-            {
-                if (item is MenuItem menuItem && _grupoColumnas.TryGetValue(menuItem.Name, out var columnas))
                 {
+                if (item is MenuItem menuItem && _grupoColumnas.TryGetValue(menuItem.Name, out var columnas))
+                    {
                     bool allHidden = columnas.All(name =>
                     {
                         var col = GrillaDocumentosDet.Columns.FirstOrDefault(c => c.MappingName == name);
@@ -500,34 +518,34 @@ namespace DataObra.Documentos
                     });
 
                     menuItem.IsChecked = !allHidden;
+                    }
                 }
             }
-        }
 
         #endregion
 
         private void GrillaDocumentosDet_CurrentCellEndEdit(object sender, CurrentCellEndEditEventArgs e)
-        {
+            {
             var grid = sender as SfDataGrid;
 
             if (grid != null)
-            {
-                var detalle = grid.GetRecordAtRowIndex(e.RowColumnIndex.RowIndex) as DocumentoDetDTO;
-                
-                if (detalle != null)
                 {
-                    if (detalle.Accion != 'A') // comillas simples para char
+                var detalle = grid.GetRecordAtRowIndex(e.RowColumnIndex.RowIndex) as DocumentoDetDTO;
+
+                if (detalle != null)
                     {
-                        detalle.Accion = 'M'; 
+                    if (detalle.Accion != 'A') // comillas simples para char
+                        {
+                        detalle.Accion = 'M';
+                        }
                     }
                 }
             }
-        }
 
         private void NuevoDetalle_Click(object sender, RoutedEventArgs e)
         {
             var nuevoDetalle = new DocumentoDetDTO
-                {
+            {
                 ArticuloDescrip = "Nuevo Artículo",
                 ArticuloCantSuma = 0,
                 ArticuloCantResta = 0,
@@ -542,12 +560,35 @@ namespace DataObra.Documentos
                 Accion = 'A',
                 CuentaID = (byte)App.IdCuenta,
                 UsuarioID = App.IdUsuario,
-                FacturaID = oActivo.ID
             };
 
-            docdet.DetalleInsumos.Add(nuevoDetalle);
+            if (oActivo.ID != null)
+                AsignarDocumento(nuevoDetalle);
+            else
+                MessageBox.Show("Falta ID de Documento");
 
-            //this.GrillaDocumentosDet.ItemsSource = oActivo.DetalleDocumento;
+            docdet.DetalleInsumos.Add(nuevoDetalle);
+        }
+
+        // Agrega el ID al campo del tipo de Documento
+        private void AsignarDocumento(DocumentoDetDTO pDetalle)
+        {
+        if (string.IsNullOrEmpty(TipoDoc)) return;
+
+        var propiedad = typeof(DocumentoDetDTO).GetProperty(TipoDoc);
+
+        if (propiedad != null && propiedad.CanWrite &&
+            (propiedad.PropertyType == typeof(int) || propiedad.PropertyType == typeof(int?)))
+            {
+            propiedad.SetValue(pDetalle, oActivo.ID);
+            // Opcional: mostrar para confirmar
+            MessageBox.Show($"{TipoDoc} asignado con valor {oActivo.ID}");
+            }
+        else
+            {
+            MessageBox.Show($"No se pudo asignar {TipoDoc} en pDetalle");
+            }
+        }
+
         }
     }
-}
