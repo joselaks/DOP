@@ -591,7 +591,7 @@ namespace DataObra.Documentos
         }
 
         private async void MostrarMensajeEstado(string mensaje)
-            {
+        {
             colaMensajes.Enqueue(mensaje);
 
             if (mostrandoMensaje)
@@ -600,18 +600,18 @@ namespace DataObra.Documentos
             mostrandoMensaje = true;
 
             while (colaMensajes.TryDequeue(out var msg))
-                {
+            {
                 EstadoTexto.Text = msg;
                 EstadoTexto.Visibility = Visibility.Visible;
 
-                await Task.Delay(4000); // 4 segundos
+                await Task.Delay(5000); // 5 segundos
 
                 EstadoTexto.Visibility = Visibility.Collapsed;
                 EstadoTexto.Text = string.Empty;
-                }
-
-            mostrandoMensaje = false;
             }
 
+            mostrandoMensaje = false;
         }
+
     }
+}

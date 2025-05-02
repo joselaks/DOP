@@ -1109,9 +1109,7 @@
                Background="LightGray"
                Foreground="Black"
                Padding="5,2"
-               Visibility="Visible"
-               />
-
+               Visibility="Visible" />
     </Grid>
 
 </UserControl>
