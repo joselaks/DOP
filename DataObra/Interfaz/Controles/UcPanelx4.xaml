@@ -45,7 +45,12 @@
             Grid.Row="1"
             Grid.Column="1"
             Margin="15"
-            TabItemSelectedForeground="Black" />
+            TabItemSelectedForeground="Black" Visibility="Hidden" />
+
+        <syncfusion:SfScheduler Grid.Row="1"
+Grid.Column="1"/>
+        
+        
 
     </Grid>
 </UserControl>

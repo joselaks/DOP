@@ -1,5 +1,4 @@
-﻿using Syncfusion.SfSkinManager;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -15,18 +14,17 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace DataObra.Interfaz.Controles
-{
-    /// <summary>
-    /// Lógica de interacción para UcPanelx4.xaml
-    /// </summary>
-    public partial class UcPanelx4 : UserControl
+namespace DataObra.Planificacion
     {
-        public UcPanelx4()
+    /// <summary>
+    /// Lógica de interacción para UcPlanificacion.xaml
+    /// </summary>
+    public partial class UcPlanificacion : UserControl
         {
-            SfSkinManager.SetTheme(this, new Theme("MaterialLight", new string[] { "TabNavigationControl", "TabControlExt" }));
+        public UcPlanificacion()
+            {
             InitializeComponent();
--
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("es-ES");
             }
+        }
     }
-}
