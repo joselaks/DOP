@@ -60,7 +60,7 @@ public class GeRoles
         principalWindow.contenidoPanel.Children.Add(ucPanelx4);
         switch (Rol)
         {
-            case "BotonPresupuestos":
+            case "Presupuestos":
 
                 //zona00
                 UsGraficoBarras grafico1 = new UsGraficoBarras();
