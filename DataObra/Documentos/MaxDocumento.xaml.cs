@@ -432,6 +432,20 @@ namespace DataObra.Documentos
             if (success)
             {
                 MostrarMensajeEstado("Lista de detalles de documentos procesada exitosamente.");
+                
+                foreach (var item in docdet.DetalleDocumento.ToList())
+                {
+                    if (item.Accion == 'D')
+                    {
+                        docdet.DetalleDocumento.Remove(item);
+                    }
+                    else
+                    {
+                        item.Accion = ' ';
+                    }
+                }
+
+                // GrillaDocumentosDet.ItemsSource = docdet.DetalleDocumento;
             }
             else
             {
@@ -548,14 +562,13 @@ namespace DataObra.Documentos
             {
                 if (item is DocumentoDetDTO detalle)
                 {
-                    detalle.Accion = 'B';
+                    detalle.Accion = 'D';
                 }
             }
 
             // Cancela el borrado
             e.Cancel = true;
 
-            // Refrescar la vista para mostrar la marca 'B' si hace falta
             //GrillaDocumentosDet.View.Refresh();
         }
 

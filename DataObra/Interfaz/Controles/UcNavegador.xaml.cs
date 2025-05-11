@@ -367,8 +367,6 @@ namespace DataObra.Interfaz.Controles
             }
         }
 
-
-
         private async void EditaDoc_Click(object sender, RoutedEventArgs e)
         {
             if (GrillaDocumentos.SelectedItem is not Documento sele)
