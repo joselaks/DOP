@@ -842,8 +842,8 @@
 
                     <Syncfusion:SfDataGrid Name="GrillaDocumentosDet" CurrentCellEndEdit="GrillaDocumentosDet_CurrentCellEndEdit"
                        AutoGenerateColumns="False"
-                       AllowGrouping="False"
-                       ShowGroupDropArea="False"
+                       AllowGrouping="False" AllowDeleting="True"
+                       ShowGroupDropArea="False" RecordDeleting="GrillaDocumentosDet_RecordDeleting"
                        Grid.Row="1" IsReadOnly="False" EditTrigger="OnTap" AllowEditing="True"
                        Grid.Column="1">
 

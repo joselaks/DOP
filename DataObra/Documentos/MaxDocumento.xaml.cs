@@ -542,6 +542,24 @@ namespace DataObra.Documentos
                 }
             }
 
+        private void GrillaDocumentosDet_RecordDeleting(object sender, RecordDeletingEventArgs e)
+        {
+            foreach (var item in e.Items)
+            {
+                if (item is DocumentoDetDTO detalle)
+                {
+                    detalle.Accion = 'B';
+                }
+            }
+
+            // Cancela el borrado
+            e.Cancel = true;
+
+            // Refrescar la vista para mostrar la marca 'B' si hace falta
+            //GrillaDocumentosDet.View.Refresh();
+        }
+
+
         private void NuevoDetalle_Click(object sender, RoutedEventArgs e)
         {
             var nuevoDetalle = new DocumentoDetDTO

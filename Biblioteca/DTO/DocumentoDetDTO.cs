@@ -39,7 +39,19 @@ namespace Biblioteca.DTO
         public decimal? SumaDolares { get; set; }
         public decimal? RestaDolares { get; set; }
         public decimal? Cambio { get; set; }
-        public char Accion { get; set; }
+        private char _accion;
+        public char Accion
+        {
+            get => _accion;
+            set
+            {
+                if (_accion != value)
+                {
+                    _accion = value;
+                    OnPropertyChanged(nameof(Accion));
+                }
+            }
+        }
 
         // Implementación de INotifyPropertyChanged  
         public event PropertyChangedEventHandler? PropertyChanged;
