@@ -851,15 +851,16 @@
                         <Syncfusion:SfDataGrid.Columns>
 
                             <!-- DATOS ARTÍCULO -->
-                            <Syncfusion:GridTextColumn MappingName="Accion" HeaderText="Abm" Width="39"/>
+                            <Syncfusion:GridTextColumn MappingName="Accion" HeaderText="Abm" Width="39" TextAlignment="Center"/>
                             <Syncfusion:GridTextColumn MappingName="ArticuloDescrip" HeaderText="Descripción" Width="150"/>
                             <Syncfusion:GridTextColumn MappingName="ArticuloCantSuma" HeaderText="Cant +" Width="70" TextAlignment="Center"/>
                             <Syncfusion:GridTextColumn MappingName="ArticuloCantResta" HeaderText="Cant -" Width="70" TextAlignment="Center"/>
                             <Syncfusion:GridTextColumn MappingName="ArticuloPrecio" HeaderText="Precio" Width="69" TextAlignment="Center"/>
-                            <Syncfusion:GridTextColumn MappingName="Fecha" HeaderText="Fecha" Width="62"/>
+                            <Syncfusion:GridDateTimeColumn CustomPattern="dd-MM-yy" Width="55"
+                                    HeaderText="Fecha" MappingName="Fecha" Pattern="CustomPattern" TextAlignment="Center" />
 
                             <!-- DOCUMENTOS -->
-                            <Syncfusion:GridTemplateColumn MappingName="PedidoID" HeaderText="Pedido" Width="60">
+                            <Syncfusion:GridTemplateColumn MappingName="PedidoID" HeaderText="Pedido" Width="59">
                                 <Syncfusion:GridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -870,7 +871,7 @@
                                     </DataTemplate>
                                 </Syncfusion:GridTemplateColumn.CellTemplate>
                             </Syncfusion:GridTemplateColumn>
-                            <Syncfusion:GridTemplateColumn MappingName="CompraID" HeaderText="Compra" Width="60">
+                            <Syncfusion:GridTemplateColumn MappingName="CompraID" HeaderText="Compra" Width="59">
                                 <Syncfusion:GridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -882,7 +883,7 @@
                                     </DataTemplate>
                                 </Syncfusion:GridTemplateColumn.CellTemplate>
                             </Syncfusion:GridTemplateColumn>
-                            <Syncfusion:GridTemplateColumn MappingName="ContratoID" HeaderText="Contrato" Width="60">
+                            <Syncfusion:GridTemplateColumn MappingName="ContratoID" HeaderText="Contra." Width="59">
                                 <Syncfusion:GridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -894,7 +895,7 @@
                                     </DataTemplate>
                                 </Syncfusion:GridTemplateColumn.CellTemplate>
                             </Syncfusion:GridTemplateColumn>
-                            <Syncfusion:GridTemplateColumn MappingName="FacturaID" HeaderText="Factura" Width="60">
+                            <Syncfusion:GridTemplateColumn MappingName="FacturaID" HeaderText="Factura" Width="59">
                                 <Syncfusion:GridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -906,7 +907,7 @@
                                     </DataTemplate>
                                 </Syncfusion:GridTemplateColumn.CellTemplate>
                             </Syncfusion:GridTemplateColumn>
-                            <Syncfusion:GridTemplateColumn MappingName="RemitoID" HeaderText="Remito" Width="60">
+                            <Syncfusion:GridTemplateColumn MappingName="RemitoID" HeaderText="Remito" Width="59">
                                 <Syncfusion:GridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -918,7 +919,7 @@
                                     </DataTemplate>
                                 </Syncfusion:GridTemplateColumn.CellTemplate>
                             </Syncfusion:GridTemplateColumn>
-                            <Syncfusion:GridTemplateColumn MappingName="ParteID" HeaderText="Parte" Width="60">
+                            <Syncfusion:GridTemplateColumn MappingName="ParteID" HeaderText="Parte" Width="59">
                                 <Syncfusion:GridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -949,7 +950,8 @@
                             <Syncfusion:GridTextColumn MappingName="ID" HeaderText="ID" Width="60" TextAlignment="Center"/>
                             <Syncfusion:GridTextColumn MappingName="CuentaID" HeaderText="Cuenta" Width="50" TextAlignment="Center"/>
                             <Syncfusion:GridTextColumn MappingName="UsuarioID" HeaderText="Usuario" Width="60" TextAlignment="Center"/>
-                            <Syncfusion:GridTextColumn MappingName="Editado" HeaderText="Editado" Width="60" TextAlignment="Center"/>
+                            <Syncfusion:GridDateTimeColumn CustomPattern="dd-MM-yy" Width="57"
+                                HeaderText="Editado" MappingName="Editado" Pattern="CustomPattern" TextAlignment="Center" />
                             <Syncfusion:GridTextColumn MappingName="TipoID" HeaderText="Tipo" Width="40" TextAlignment="Center"/>
 
                         </Syncfusion:SfDataGrid.Columns>
@@ -960,7 +962,7 @@
                                 <Syncfusion:StackedHeaderRow.StackedColumns>
 
                                     <Syncfusion:StackedColumn HeaderText="DATOS ARTÍCULO"
-                                        ChildColumns="ArticuloDescrip,ArticuloCantSuma,ArticuloCantResta,ArticuloPrecio,Fecha" />
+                                        ChildColumns="Accion,ArticuloDescrip,ArticuloCantSuma,ArticuloCantResta,ArticuloPrecio,Fecha" />
 
                                     <Syncfusion:StackedColumn HeaderText="DOCUMENTOS"
                                         ChildColumns="PedidoID,CompraID,ContratoID,FacturaID,RemitoID,ParteID" />
@@ -972,7 +974,7 @@
                                            ChildColumns="SumaPesos,RestaPesos,SumaDolares,RestaDolares,Cambio" />
 
                                     <Syncfusion:StackedColumn HeaderText="SISTEMA"
-                                           ChildColumns="ID,CuentaID,UsuarioID,EditadoID,TipoID" />
+                                           ChildColumns="ID,CuentaID,UsuarioID,Editado,TipoID" />
 
                                 </Syncfusion:StackedHeaderRow.StackedColumns>
                             </Syncfusion:StackedHeaderRow>

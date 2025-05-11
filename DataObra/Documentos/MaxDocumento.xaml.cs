@@ -53,7 +53,7 @@ namespace DataObra.Documentos
                 MostrarMensajeEstado($"TipoDocID {TipoDocID} no está en el diccionario.");
 
             // Temporal para manejar los datos en la ventana 
-            docdet.DetalleInsumos = new ObservableCollection<DocumentoDetDTO>();
+            docdet.DetalleDocumento = new ObservableCollection<DocumentoDetDTO>();
 
             this.ComboObras.ItemsSource = App.ListaAgrupadores.Where(a => a.TipoID == 'O' && a.Active);
             this.ComboAdmin.ItemsSource = App.ListaAgrupadores.Where(a => a.TipoID == 'A' && a.Active);
@@ -293,7 +293,7 @@ namespace DataObra.Documentos
 
                 MostrarMensajeEstado(mensaje);
 
-                if (docdet.DetalleInsumos.Count > 0)
+                if (docdet.DetalleDocumento.Count > 0)
                     ActualizarDetalle();
                 }
             else
@@ -400,12 +400,12 @@ namespace DataObra.Documentos
 
                 foreach (var item in detalles)
                 {
-                    docdet.DetalleInsumos.Add(item);
+                    docdet.DetalleDocumento.Add(item);
                 }
 
                 // Falta Convertir de Detalles
 
-                this.GrillaDocumentosDet.ItemsSource = docdet.DetalleInsumos;
+                this.GrillaDocumentosDet.ItemsSource = docdet.DetalleDocumento;
 
                 this.DataContext = oActivo;
                 }
@@ -420,7 +420,7 @@ namespace DataObra.Documentos
         {
             List<DocumentoDetDTO> aguardar = new List<DocumentoDetDTO>();
 
-            foreach (var item in docdet.DetalleInsumos)
+            foreach (var item in docdet.DetalleDocumento)
                 {
                 aguardar.Add(item);
                 }
@@ -567,7 +567,7 @@ namespace DataObra.Documentos
             else
                 MostrarMensajeEstado("Falta ID de Documento");
 
-            docdet.DetalleInsumos.Add(nuevoDetalle);
+            docdet.DetalleDocumento.Add(nuevoDetalle);
         }
 
         // Agrega el ID al campo del tipo de Documento

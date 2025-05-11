@@ -110,7 +110,7 @@ namespace Biblioteca
 
     public class InfoDocumento
     {
-        public ObservableCollection <DocumentoDetDTO> DetalleInsumos { get; set; }
+        public ObservableCollection <DocumentoDetDTO> DetalleDocumento { get; set; }
         public List<Movimiento> DetalleMovimientos { get; set; }
         public List<Impuesto> DetalleImpuestos { get; set; }
 

@@ -26,7 +26,7 @@ namespace DataObra.Interfaz.Controles
         {
             SfSkinManager.SetTheme(this, new Theme("MaterialLight", new string[] { "TabNavigationControl", "TabControlExt" }));
             InitializeComponent();
--
+
             }
     }
 }
