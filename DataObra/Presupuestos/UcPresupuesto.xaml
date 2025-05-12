@@ -117,6 +117,9 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+        <Style x:Key="BoldTreeGridHeaderStyle" TargetType="syncfusion:TreeGridHeaderCell">
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -409,7 +412,7 @@
 
                         <syncfusion:TreeGridNumericColumn
                             CellStyle="{StaticResource CantidadCellStyle}"
-                            HeaderText="Cantidad"
+                            HeaderText="Cant."
                             MappingName="Cantidad"
                             NumberDecimalDigits="2"
                             NumberDecimalSeparator=","
@@ -444,13 +447,17 @@
                             NumberGroupSizes="3" />-->
 
                         <syncfusion:TreeGridNumericColumn
+                            x:Name="colImporte1"
                             Width="120"
                             CellStyle="{StaticResource TipoCellStyle}"
+                            HeaderText="{Binding totGeneral1}"
+                            HeaderStyle="{StaticResource BoldTreeGridHeaderStyle}"
                             MappingName="Importe1"
                             NumberDecimalDigits="2"
                             NumberDecimalSeparator=","
                             NumberGroupSeparator="."
                             NumberGroupSizes="3" />
+
                         <syncfusion:TreeGridNumericColumn
                             Width="120"
                             CellStyle="{StaticResource TipoCellStyle}"
@@ -746,7 +753,7 @@
                         NumberGroupSizes="3" />
                     <syncfusion:TreeGridNumericColumn
                         Width="80"
-                        HeaderText="P.U"
+                        HeaderText="P.U."
                         MappingName="PU1"
                         NumberDecimalDigits="2"
                         NumberDecimalSeparator=","
@@ -782,6 +789,8 @@
                     <syncfusion:TreeGridTextColumn Width="50" MappingName="Tipo" />
 
                 </syncfusion:SfTreeGrid.Columns>
+                
+                
 
             </syncfusion:SfTreeGrid>
         </Grid>

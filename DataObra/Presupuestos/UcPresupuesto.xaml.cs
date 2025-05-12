@@ -253,11 +253,14 @@ namespace DataObra.Presupuestos
             totSubcontratos1.Value = Objeto.Arbol.Sum(i => i.Subcontratos1);
             totOtros1.Value = Objeto.Arbol.Sum(i => i.Otros1);
             totGeneral1.Value = Objeto.Arbol.Sum(i => i.Importe1);
+
+            // Asignar el valor explícitamente al HeaderText
+            colImporte1.HeaderText = $"Total: {totGeneral1.Value:C}";
             //Totales grillas
             //listaInsumos.grillaInsumos.CalculateAggregates();
             //this.GrillaArbol.CalculateAggregates();
             //graficoInsumos.recalculo();
-        }
+            }
 
         private void aRubro_Click(object sender, RoutedEventArgs e)
         {
