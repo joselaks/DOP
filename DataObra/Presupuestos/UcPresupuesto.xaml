@@ -363,9 +363,7 @@
                 <syncfusion:SfTreeGrid.StackedHeaderRows>
                     <syncfusion:StackedHeaderRow>
                         <syncfusion:StackedHeaderRow.StackedColumns>
-                            <syncfusion:StackedColumn ChildColumns="ID,Tipo,Descripcion,Unidad,Cantidad,PU1,PU2" HeaderText="" />
-                            <syncfusion:StackedColumn ChildColumns="Importe1" HeaderText="Importe en pesos" />
-                            <syncfusion:StackedColumn ChildColumns="Importe2" HeaderText="Importe en dólares" />
+                            <syncfusion:StackedColumn ChildColumns="Cantidad,PU1,PU2,Importe1,Importe2" HeaderText="Ejecución" />
                         </syncfusion:StackedHeaderRow.StackedColumns>
                     </syncfusion:StackedHeaderRow>
                 </syncfusion:SfTreeGrid.StackedHeaderRows>

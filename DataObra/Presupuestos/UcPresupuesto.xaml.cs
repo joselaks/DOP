@@ -258,8 +258,8 @@ namespace DataObra.Presupuestos
 
             // Asignar el valor explícitamente al HeaderText
             var cultura = new CultureInfo("es-ES") { NumberFormat = { NumberGroupSeparator = ".", NumberDecimalSeparator = "," } };
-            colImporte1.HeaderText = $"$ {(totGeneral1.Value ?? 0m).ToString("N2", cultura)}";
-            colImporte2.HeaderText = $"$ {totalGeneralDol.ToString("N2", cultura)}";
+            colImporte1.HeaderText = $"Total $ {(totGeneral1.Value ?? 0m).ToString("N2", cultura)}";
+            colImporte2.HeaderText = $"Total u$s {totalGeneralDol.ToString("N2", cultura)}";
 
 
             //Totales grillas
