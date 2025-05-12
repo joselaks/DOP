@@ -17,6 +17,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -253,14 +254,19 @@ namespace DataObra.Presupuestos
             totSubcontratos1.Value = Objeto.Arbol.Sum(i => i.Subcontratos1);
             totOtros1.Value = Objeto.Arbol.Sum(i => i.Otros1);
             totGeneral1.Value = Objeto.Arbol.Sum(i => i.Importe1);
+            decimal totalGeneralDol = Objeto.Arbol.Sum(i => i.Importe2);
 
             // Asignar el valor explícitamente al HeaderText
-            colImporte1.HeaderText = $"Total: {totGeneral1.Value:C}";
+            var cultura = new CultureInfo("es-ES") { NumberFormat = { NumberGroupSeparator = ".", NumberDecimalSeparator = "," } };
+            colImporte1.HeaderText = $"$ {(totGeneral1.Value ?? 0m).ToString("N2", cultura)}";
+            colImporte2.HeaderText = $"$ {totalGeneralDol.ToString("N2", cultura)}";
+
+
             //Totales grillas
             //listaInsumos.grillaInsumos.CalculateAggregates();
             //this.GrillaArbol.CalculateAggregates();
             //graficoInsumos.recalculo();
-            }
+        }
 
         private void aRubro_Click(object sender, RoutedEventArgs e)
         {

@@ -119,6 +119,8 @@
         </Style>
         <Style x:Key="BoldTreeGridHeaderStyle" TargetType="syncfusion:TreeGridHeaderCell">
             <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="Black" />
+
         </Style>
     </UserControl.Resources>
     <Grid>
@@ -343,21 +345,6 @@
     SelectedValuePath="ID"
     SelectionChanged="ComboObras_SelectionChanged" />
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             </StackPanel>
             <syncfusion:SfTreeGrid
                 Name="grillaArbol"
@@ -376,8 +363,9 @@
                 <syncfusion:SfTreeGrid.StackedHeaderRows>
                     <syncfusion:StackedHeaderRow>
                         <syncfusion:StackedHeaderRow.StackedColumns>
-                            <syncfusion:StackedColumn ChildColumns="ID,Tipo,Descripcion" HeaderText="" />
-                            <syncfusion:StackedColumn ChildColumns="Unidad,Cantidad,PU,Importe" HeaderText="Ejecución" />
+                            <syncfusion:StackedColumn ChildColumns="ID,Tipo,Descripcion,Unidad,Cantidad,PU1,PU2" HeaderText="" />
+                            <syncfusion:StackedColumn ChildColumns="Importe1" HeaderText="Importe en pesos" />
+                            <syncfusion:StackedColumn ChildColumns="Importe2" HeaderText="Importe en dólares" />
                         </syncfusion:StackedHeaderRow.StackedColumns>
                     </syncfusion:StackedHeaderRow>
                 </syncfusion:SfTreeGrid.StackedHeaderRows>
@@ -390,15 +378,15 @@
 
 
                         <syncfusion:TreeGridTemplateColumn
-                            Width="25"
+                            Width="30"
                             CellTemplateSelector="{StaticResource IconTemplateSelector}"
                             HeaderText="Nat"
                             MappingName="Tipo" />
 
 
-                        <syncfusion:TreeGridTextColumn Width="50" MappingName="Tipo" />
+                        <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="Tipo" />
 
-                        <syncfusion:TreeGridTextColumn Width="50" MappingName="OrdenInt" />
+                        <syncfusion:TreeGridTextColumn Width="50" MappingName="OrdenInt" />-->
 
 
                         <syncfusion:TreeGridTextColumn Width="250" MappingName="Descripcion" />
@@ -422,6 +410,7 @@
                         <syncfusion:TreeGridNumericColumn
                             Width="80"
                             CellStyle="{StaticResource CantidadCellStyle}"
+                            HeaderText="P.U. $."
                             MappingName="PU1"
                             NumberDecimalDigits="2"
                             NumberDecimalSeparator=","
@@ -431,6 +420,7 @@
                         <syncfusion:TreeGridNumericColumn
                             Width="80"
                             CellStyle="{StaticResource CantidadCellStyle}"
+                            HeaderText="P.U. u$s."
                             MappingName="PU2"
                             NumberDecimalDigits="2"
                             NumberDecimalSeparator=","
@@ -459,8 +449,11 @@
                             NumberGroupSizes="3" />
 
                         <syncfusion:TreeGridNumericColumn
+                            x:Name="colImporte2"
                             Width="120"
                             CellStyle="{StaticResource TipoCellStyle}"
+                            HeaderText="{Binding totGeneral2}"
+                            HeaderStyle="{StaticResource BoldTreeGridHeaderStyle}"
                             MappingName="Importe2"
                             NumberDecimalDigits="2"
                             NumberDecimalSeparator=","
