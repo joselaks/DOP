@@ -1,6 +1,8 @@
 ﻿using DataObra.Datos;
+using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -29,12 +31,21 @@ namespace DataObra.Interfaz.Ventanas
 
         public WiLogin(WiInicio inicio)
         {
+            // Asegura la creación del archivo y la tabla Usuario
+            var generador = new DataObra.Datos.GeneraArchivoLocal("Config.precosto");
+
             InitializeComponent();
 
-            txtUsuario.Text = "jose@dataobra.com";
-            txtContraseña.Password = "contra";
+            var (usuario, password) = LeerUsuarioLocal();
+            if (!string.IsNullOrWhiteSpace(usuario) && !string.IsNullOrWhiteSpace(password))
+            {
+                txtUsuario.Text = usuario;
+                txtContraseña.Password = password;
+            }
             Inicio = inicio;
         }
+
+
 
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
@@ -63,7 +74,12 @@ namespace DataObra.Interfaz.Ventanas
                 {
                     if (respuesta.Usuario.DatosUsuario != null)
                     {
-                        //Existe el usuario. puede verificarse abono, etc
+                        // Guardar usuario y contraseña localmente si no existen
+                        var (usuarioLocal, passwordLocal) = LeerUsuarioLocal();
+                        if (string.IsNullOrWhiteSpace(usuarioLocal) || string.IsNullOrWhiteSpace(passwordLocal))
+                        {
+                            GuardarUsuarioLocal(txtUsuario.Text, txtContraseña.Password);
+                        }
 
                         this.DialogResult = true;
                         this.Close();
@@ -71,8 +87,8 @@ namespace DataObra.Interfaz.Ventanas
                         // Abrir la ventana WiRoles después de cerrar WiLogin
                         WiRoles rolesWindow = new WiRoles(Inicio)
                         {
-                            Owner = Inicio, // Establecer la ventana WiInicio como la propietaria de la ventana de login
-                            WindowStartupLocation = WindowStartupLocation.CenterOwner // Centrar la ventana de login en WiInicio
+                            Owner = Inicio,
+                            WindowStartupLocation = WindowStartupLocation.CenterOwner
                         };
                         rolesWindow.ShowDialog();
                         return;
@@ -101,6 +117,79 @@ namespace DataObra.Interfaz.Ventanas
                 await Task.Delay(delay);
             }
         }
+
+        private (string usuario, string password) LeerUsuarioLocal()
+        {
+            string usuario = string.Empty;
+            string password = string.Empty;
+            string path = Directory.GetCurrentDirectory();
+            string archivo = System.IO.Path.Combine(path, "Config.precosto");
+            string cadenaConexion = $"Data Source={archivo}";
+
+            using (var connection = new SqliteConnection(cadenaConexion))
+            {
+                connection.Open();
+
+                // Asegura que la tabla exista antes de leer
+                var createCmd = connection.CreateCommand();
+                createCmd.CommandText = @"
+            CREATE TABLE IF NOT EXISTS Usuario (
+                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                Nombre TEXT NOT NULL,
+                Password TEXT NOT NULL
+            );";
+                createCmd.ExecuteNonQuery();
+
+                var command = connection.CreateCommand();
+                command.CommandText = "SELECT Nombre, Password FROM Usuario LIMIT 1";
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        usuario = reader.GetString(0);
+                        password = reader.GetString(1);
+                    }
+                }
+            }
+            return (usuario, password);
+        }
+
+
+
+
+        private void GuardarUsuarioLocal(string usuario, string password)
+        {
+            string path = Directory.GetCurrentDirectory();
+            string archivo = System.IO.Path.Combine(path, "Config.precosto");
+            string cadenaConexion = $"Data Source={archivo}";
+
+            using (var connection = new SqliteConnection(cadenaConexion))
+            {
+                connection.Open();
+
+                // Asegura que la tabla exista antes de guardar
+                var createCmd = connection.CreateCommand();
+                createCmd.CommandText = @"
+            CREATE TABLE IF NOT EXISTS Usuario (
+                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                Nombre TEXT NOT NULL,
+                Password TEXT NOT NULL
+            );";
+                createCmd.ExecuteNonQuery();
+
+                var command = connection.CreateCommand();
+                command.CommandText = "DELETE FROM Usuario";
+                command.ExecuteNonQuery();
+
+                command.CommandText = "INSERT INTO Usuario (Nombre, Password) VALUES (@nombre, @password)";
+                command.Parameters.AddWithValue("@nombre", usuario);
+                command.Parameters.AddWithValue("@password", password);
+                command.ExecuteNonQuery();
+            }
+        }
+
+
+
 
 
         private void TextBox_LostFocus(object sender, RoutedEventArgs e)
