@@ -76,10 +76,7 @@ namespace DataObra.Interfaz.Ventanas
                     {
                         // Guardar usuario y contraseña localmente si no existen
                         var (usuarioLocal, passwordLocal) = LeerUsuarioLocal();
-                        if (string.IsNullOrWhiteSpace(usuarioLocal) || string.IsNullOrWhiteSpace(passwordLocal))
-                        {
-                            GuardarUsuarioLocal(txtUsuario.Text, txtContraseña.Password);
-                        }
+                        GuardarUsuarioLocal(txtUsuario.Text, txtContraseña.Password);
 
                         this.DialogResult = true;
                         this.Close();
