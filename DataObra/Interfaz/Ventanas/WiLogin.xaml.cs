@@ -99,7 +99,27 @@ namespace DataObra.Interfaz.Ventanas
                                 Owner = Inicio,
                                 WindowStartupLocation = WindowStartupLocation.CenterOwner
                             };
+
+                            // Detectar la resolución de pantalla principal
+                            var screenWidth = SystemParameters.PrimaryScreenWidth;
+                            var screenHeight = SystemParameters.PrimaryScreenHeight;
+
+                            if (screenWidth <= 1920 && screenHeight <= 1080)
+                            {
+                                // Maximizar si la resolución es igual o menor a 1920x1080
+                                tablero.WindowState = WindowState.Maximized;
+                            }
+                            else
+                            {
+                                // Centrar y establecer tamaño fijo si la resolución es mayor
+                                tablero.Width = 1900;
+                                tablero.Height = 1000;
+                                tablero.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                                tablero.WindowState = WindowState.Normal;
+                            }
+
                             tablero.ShowDialog();
+
                         }
 
                         return;
