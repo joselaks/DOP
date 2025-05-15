@@ -81,13 +81,27 @@ namespace DataObra.Interfaz.Ventanas
                         this.DialogResult = true;
                         this.Close();
 
-                        // Abrir la ventana WiRoles después de cerrar WiLogin
-                        WiRoles rolesWindow = new WiRoles(Inicio)
+                        if (respuesta.Usuario.DatosUsuario.Active==false)
                         {
-                            Owner = Inicio,
-                            WindowStartupLocation = WindowStartupLocation.CenterOwner
-                        };
-                        rolesWindow.ShowDialog();
+                            // Abrir la ventana WiRoles después de cerrar WiLogin
+                            WiRoles rolesWindow = new WiRoles(Inicio)
+                            {
+                                Owner = Inicio,
+                                WindowStartupLocation = WindowStartupLocation.CenterOwner
+                            };
+                            rolesWindow.ShowDialog();
+
+                        }
+                        else
+                        {
+                            WiTableroDOP tablero = new WiTableroDOP()
+                            {
+                                Owner = Inicio,
+                                WindowStartupLocation = WindowStartupLocation.CenterOwner
+                            };
+                            tablero.ShowDialog();
+                        }
+
                         return;
                     }
                     else
