@@ -42,7 +42,6 @@ namespace DataObra.Interfaz.Controles.SubControles
 
             Datos = datos;
 
-
         }
 
         private void GraficoTorta_Loaded(object sender, RoutedEventArgs e)
