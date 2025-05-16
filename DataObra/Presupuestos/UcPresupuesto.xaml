@@ -17,56 +17,56 @@
             <Image
                 Width="15"
                 Height="15"
-                Source="/Presupuestos/Imagenes/Rubro.png" />
+                Source="/Imagenes/Presupuestos/Rubro.png" />
         </DataTemplate>
         <!--  DataTemplate para ícono Tarea  -->
         <DataTemplate x:Key="TarTemplate">
             <Image
                 Width="15"
                 Height="15"
-                Source="/Presupuestos/Imagenes/Tarea.png" />
+                Source="/Imagenes/Presupuestos/Tarea.png" />
         </DataTemplate>
         <!--  DataTemplate para ícono Materiales  -->
         <DataTemplate x:Key="MatTemplate">
             <Image
                 Width="15"
                 Height="15"
-                Source="/Presupuestos/Imagenes/Material.png" />
+                Source="/Imagenes/Presupuestos/Material.png" />
         </DataTemplate>
         <!--  DataTemplate para ícono Mano de obra  -->
         <DataTemplate x:Key="MdoTemplate">
             <Image
                 Width="15"
                 Height="15"
-                Source="/Presupuestos/Imagenes/mdo.png" />
+                Source="/Imagenes/Presupuestos/mdo.png" />
         </DataTemplate>
         <!--  DataTemplate para ícono Equipos  -->
         <DataTemplate x:Key="EquTemplate">
             <Image
                 Width="15"
                 Height="15"
-                Source="/Presupuestos/Imagenes/equipos.png" />
+                Source="/Imagenes/Presupuestos/equipos.png" />
         </DataTemplate>
         <!--  DataTemplate para ícono Subcontratos  -->
         <DataTemplate x:Key="SubTemplate">
             <Image
                 Width="15"
                 Height="15"
-                Source="/Presupuestos/Imagenes/subcontrato.png" />
+                Source="/Imagenes/Presupuestos/subcontrato.png" />
         </DataTemplate>
         <!--  DataTemplate para ícono Otros  -->
         <DataTemplate x:Key="OtrTemplate">
             <Image
                 Width="15"
                 Height="15"
-                Source="/Presupuestos/Imagenes/otros.png" />
+                Source="/Imagenes/Presupuestos/otros.png" />
         </DataTemplate>
         <!--  DataTemplate para ícono AuxTemplate  -->
         <DataTemplate x:Key="AuxTemplate">
             <Image
                 Width="15"
                 Height="15"
-                Source="/Presupuestos/Imagenes/arbol.png" />
+                Source="/Imagenes/Presupuestos/arbol.png" />
         </DataTemplate>
         <!--  DataTemplateSelector  -->
         <local:IconTemplateSelector
@@ -157,7 +157,7 @@
                     x:Name="dropAgregar"
                     Width="100"
                     Label="Items"
-                    SmallIcon="/Presupuestos/Imagenes/agregar.png"
+                    SmallIcon="/Imagenes/Presupuestos/agregar.png"
                     ToolTip="Agregar conceptos">
                     <syncfusion:DropDownMenuGroup IsResizable="True">
                         <syncfusion:DropDownMenuItem
@@ -166,7 +166,7 @@
                             Click="aRubro_Click"
                             Header="Rubro">
                             <syncfusion:DropDownMenuItem.Icon>
-                                <Image Source="/Presupuestos/Imagenes/Rubro.png" />
+                                <Image Source="/Imagenes/Presupuestos/Rubro.png" />
                             </syncfusion:DropDownMenuItem.Icon>
                         </syncfusion:DropDownMenuItem>
                         <syncfusion:DropDownMenuItem
@@ -175,7 +175,7 @@
                             Click="aTarea_Click"
                             Header="Tarea">
                             <syncfusion:DropDownMenuItem.Icon>
-                                <Image Source="/Presupuestos/Imagenes/Tarea.png" />
+                                <Image Source="/Imagenes/Presupuestos/Tarea.png" />
                             </syncfusion:DropDownMenuItem.Icon>
                         </syncfusion:DropDownMenuItem>
                         <syncfusion:DropDownMenuItem
@@ -183,7 +183,7 @@
                             Click="DropDownMenuItem_Click"
                             Header="Material">
                             <syncfusion:DropDownMenuItem.Icon>
-                                <Image Source="/Presupuestos/Imagenes/Material.png" />
+                                <Image Source="/Imagenes/Presupuestos/Material.png" />
                             </syncfusion:DropDownMenuItem.Icon>
                         </syncfusion:DropDownMenuItem>
                         <syncfusion:DropDownMenuItem
@@ -191,7 +191,7 @@
                             Click="DropDownMenuItem_Click_1"
                             Header="Mano de Obra">
                             <syncfusion:DropDownMenuItem.Icon>
-                                <Image Source="/Presupuestos/Imagenes/mdo.png" />
+                                <Image Source="/Imagenes/Presupuestos/mdo.png" />
                             </syncfusion:DropDownMenuItem.Icon>
                         </syncfusion:DropDownMenuItem>
                         <syncfusion:DropDownMenuItem
@@ -199,7 +199,7 @@
                             Click="DropDownMenuItem_Click_2"
                             Header="Equipo">
                             <syncfusion:DropDownMenuItem.Icon>
-                                <Image Source="/Presupuestos/Imagenes/equipos.png" />
+                                <Image Source="/Imagenes/Presupuestos/equipos.png" />
                             </syncfusion:DropDownMenuItem.Icon>
                         </syncfusion:DropDownMenuItem>
                         <syncfusion:DropDownMenuItem
@@ -215,7 +215,7 @@
                             Click="DropDownMenuItem_Click_4"
                             Header="Otro">
                             <syncfusion:DropDownMenuItem.Icon>
-                                <Image Source="/Presupuestos/Imagenes/otros.png" />
+                                <Image Source="/Imagenes/Presupuestos/otros.png" />
                             </syncfusion:DropDownMenuItem.Icon>
                         </syncfusion:DropDownMenuItem>
                         <syncfusion:DropDownMenuItem
@@ -224,7 +224,7 @@
                             Click="sAux_Click"
                             Header="Auxiliar">
                             <syncfusion:DropDownMenuItem.Icon>
-                                <Image Source="/Presupuestos/Imagenes/otros.png" />
+                                <Image Source="/Imagenes/Presupuestos/otros.png" />
                             </syncfusion:DropDownMenuItem.Icon>
                         </syncfusion:DropDownMenuItem>
                     </syncfusion:DropDownMenuGroup>
@@ -236,7 +236,7 @@
                     x:Name="dropColumnas"
                     Width="100"
                     Label="Columnas"
-                    SmallIcon="/Presupuestos/Imagenes/Tarea.png"
+                    SmallIcon="/Imagenes/Presupuestos/Tarea.png"
                     StayDropDownOnClick="True"
                     ToolTip="Visualizar columnas">
                     <syncfusion:DropDownMenuGroup IsResizable="True">
@@ -292,7 +292,7 @@
                     Click="Fiebdc_Click"
                     Label="Log-in"
                     SizeMode="Small"
-                    SmallIcon="/Presupuestos/Imagenes/Import.png"
+                    SmallIcon="/Imagenes/Presupuestos/Import.png"
                     ToolTip="Fiebdc" />
 
                 <syncfusion:ButtonAdv
@@ -301,7 +301,7 @@
                     Click="recalculo_Click"
                     Label="Log-in"
                     SizeMode="Small"
-                    SmallIcon="/Presupuestos/Imagenes/recalculo.png"
+                    SmallIcon="/Imagenes/Presupuestos/recalculo.png"
                     ToolTip="Recalculo" />
                 <syncfusion:ButtonAdv
                     x:Name="bus"
@@ -309,7 +309,7 @@
                     Click="bus_Click"
                     Label="Log-in"
                     SizeMode="Small"
-                    SmallIcon="/Presupuestos/Imagenes/Buscador.png"
+                    SmallIcon="/Imagenes/Presupuestos/Buscador.png"
                     ToolTip="Recalculo" />
                 <syncfusion:ButtonAdv
                     x:Name="hacer"
@@ -317,7 +317,7 @@
                     Click="UndoRedo_Click"
                     Label="Log-in"
                     SizeMode="Small"
-                    SmallIcon="/Presupuestos/Imagenes/Undo.png"
+                    SmallIcon="/Imagenes/Presupuestos/Undo.png"
                     ToolTip="Recalculo" />
                 <syncfusion:ButtonAdv
                     x:Name="deshacer"
@@ -325,7 +325,7 @@
                     Click="UndoRedo_Click"
                     Label="Log-in"
                     SizeMode="Small"
-                    SmallIcon="/Presupuestos/Imagenes/Redo.png"
+                    SmallIcon="/Imagenes/Presupuestos/Redo.png"
                     ToolTip="Recalculo" />
                 <TextBox
                     x:Name="descripcion"
@@ -649,7 +649,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
-                <Image Source="/Presupuestos/Imagenes/Buscador.png" />
+                <Image Source="/Imagenes/Presupuestos/Buscador.png" />
                 <TextBlock
                     Margin="3,1,3,1"
                     FontSize="20"
@@ -662,7 +662,7 @@
                     Click="buscar_Click"
                     Label="Log-in"
                     SizeMode="Small"
-                    SmallIcon="/Presupuestos/Imagenes/Buscador.png" />
+                    SmallIcon="/Imagenes/Presupuestos/Buscador.png" />
             </StackPanel>
             <Grid x:Name="nav" Grid.Row="1">
                 <syncfusion:SfTreeGrid x:Name="grillaNavegador" AllowDraggingRows="True">
@@ -708,12 +708,12 @@
                     Margin="3"
                     Label="Log-in"
                     SizeMode="Small"
-                    SmallIcon="/Presupuestos/Imagenes/abrir.png" />
+                    SmallIcon="/Imagenes/Presupuestos/abrir.png" />
                 <syncfusion:ButtonAdv
                     Margin="3"
                     Label="Log-in"
                     SizeMode="Small"
-                    SmallIcon="/Presupuestos/Imagenes/abrir.png" />
+                    SmallIcon="/Imagenes/Presupuestos/abrir.png" />
             </StackPanel>
             <syncfusion:SfTreeGrid
                 x:Name="grillaDetalle"
