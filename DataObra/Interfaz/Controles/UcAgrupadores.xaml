@@ -164,7 +164,7 @@
                 x:Name="NuevoDocumento"
                 Width="100"
                 Label="Nuevo"
-                SmallIcon="/Presupuestos/agregar.png"
+                SmallIcon="/Presupuestos/Imagenes/agregar.png"
                 ToolTip="Agregar conceptos">
                 <syncfusion:DropDownMenuGroup IsResizable="True">
                     <syncfusion:DropDownMenuItem
@@ -172,7 +172,7 @@
                         HorizontalAlignment="Left"
                         Header="Obra">
                         <syncfusion:DropDownMenuItem.Icon>
-                            <Image Source="/Presupuestos/Rubro.png" />
+                            <Image Source="/Presupuestos/Imagenes/Rubro.png" />
                         </syncfusion:DropDownMenuItem.Icon>
                     </syncfusion:DropDownMenuItem>
                     <syncfusion:DropDownMenuItem
@@ -180,7 +180,7 @@
                         HorizontalAlignment="Left"
                         Header="Proveedor">
                         <syncfusion:DropDownMenuItem.Icon>
-                            <Image Source="/Presupuestos/Tarea.png" />
+                            <Image Source="/Presupuestos/Imagenes/Tarea.png" />
                         </syncfusion:DropDownMenuItem.Icon>
                     </syncfusion:DropDownMenuItem>
 

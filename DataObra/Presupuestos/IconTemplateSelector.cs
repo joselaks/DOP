@@ -4,10 +4,10 @@ using System.Windows;
 using System.Windows.Controls;
 
 namespace DataObra.Presupuestos
-{
+    {
 
     public class IconTemplateSelector : DataTemplateSelector
-    {
+        {
         public DataTemplate RubTemplate { get; set; }
         public DataTemplate TarTemplate { get; set; }
         public DataTemplate MatTemplate { get; set; }
@@ -19,12 +19,12 @@ namespace DataObra.Presupuestos
 
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
-        {
+            {
             var nodo = item as Nodo;
             if (nodo != null)
-            {
-                switch (nodo.Tipo)
                 {
+                switch (nodo.Tipo)
+                    {
                     case "R":
                         return RubTemplate;
                     case "T":
@@ -41,14 +41,14 @@ namespace DataObra.Presupuestos
                         return OtrTemplate;
                     case "A":
                         return AuxTemplate;
+                    }
                 }
-            }
 
             return base.SelectTemplate(item, container);
-           
+
+            }
+
+
         }
 
-
     }
-
-}
