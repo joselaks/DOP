@@ -147,7 +147,7 @@
                     Click="BtnGuardar_Click"
                     Label="Log-in"
                     SizeMode="Small"
-                    SmallIcon="/Presupuestos/save.png"
+                    SmallIcon="/Presupuestos/Imagenes/save.png"
                     ToolTip="Abrir" />
 
 
@@ -157,7 +157,7 @@
                     x:Name="dropAgregar"
                     Width="100"
                     Label="Items"
-                    SmallIcon="/Presupuestos/agregar.png"
+                    SmallIcon="/Presupuestos/Imagenes/agregar.png"
                     ToolTip="Agregar conceptos">
                     <syncfusion:DropDownMenuGroup IsResizable="True">
                         <syncfusion:DropDownMenuItem
@@ -236,7 +236,7 @@
                     x:Name="dropColumnas"
                     Width="100"
                     Label="Columnas"
-                    SmallIcon="/Presupuestos/Tarea.png"
+                    SmallIcon="/Presupuestos/Imagenes/Tarea.png"
                     StayDropDownOnClick="True"
                     ToolTip="Visualizar columnas">
                     <syncfusion:DropDownMenuGroup IsResizable="True">
@@ -292,7 +292,7 @@
                     Click="Fiebdc_Click"
                     Label="Log-in"
                     SizeMode="Small"
-                    SmallIcon="/Presupuestos/Import.png"
+                    SmallIcon="/Presupuestos/Imagenes/Import.png"
                     ToolTip="Fiebdc" />
 
                 <syncfusion:ButtonAdv
@@ -301,7 +301,7 @@
                     Click="recalculo_Click"
                     Label="Log-in"
                     SizeMode="Small"
-                    SmallIcon="/Presupuestos/recalculo.png"
+                    SmallIcon="/Presupuestos/Imagenes/recalculo.png"
                     ToolTip="Recalculo" />
                 <syncfusion:ButtonAdv
                     x:Name="bus"
@@ -309,7 +309,7 @@
                     Click="bus_Click"
                     Label="Log-in"
                     SizeMode="Small"
-                    SmallIcon="/Presupuestos/Buscador.png"
+                    SmallIcon="/Presupuestos/Imagenes/Buscador.png"
                     ToolTip="Recalculo" />
                 <syncfusion:ButtonAdv
                     x:Name="hacer"
@@ -317,7 +317,7 @@
                     Click="UndoRedo_Click"
                     Label="Log-in"
                     SizeMode="Small"
-                    SmallIcon="/Presupuestos/Undo.png"
+                    SmallIcon="/Presupuestos/Imagenes/Undo.png"
                     ToolTip="Recalculo" />
                 <syncfusion:ButtonAdv
                     x:Name="deshacer"
@@ -325,7 +325,7 @@
                     Click="UndoRedo_Click"
                     Label="Log-in"
                     SizeMode="Small"
-                    SmallIcon="/Presupuestos/Redo.png"
+                    SmallIcon="/Presupuestos/Imagenes/Redo.png"
                     ToolTip="Recalculo" />
                 <TextBox
                     x:Name="descripcion"
@@ -651,7 +651,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
-                <Image Source="/Presupuestos/Buscador.png" />
+                <Image Source="/Presupuestos/Imagenes/Buscador.png" />
                 <TextBlock
                     Margin="3,1,3,1"
                     FontSize="20"
@@ -710,12 +710,12 @@
                     Margin="3"
                     Label="Log-in"
                     SizeMode="Small"
-                    SmallIcon="/Presupuestos/abrir.png" />
+                    SmallIcon="/Presupuestos/Imagenes/abrir.png" />
                 <syncfusion:ButtonAdv
                     Margin="3"
                     Label="Log-in"
                     SizeMode="Small"
-                    SmallIcon="/Presupuestos/abrir.png" />
+                    SmallIcon="/Presupuestos/Imagenes/abrir.png" />
             </StackPanel>
             <syncfusion:SfTreeGrid
                 x:Name="grillaDetalle"
