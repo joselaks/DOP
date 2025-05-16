@@ -79,7 +79,7 @@
             RubTemplate="{StaticResource RubTemplate}"
             SubTemplate="{StaticResource SubTemplate}"
             TarTemplate="{StaticResource TarTemplate}" />
-        
+
         <Style x:Key="CantidadCellStyle" TargetType="syncfusion:TreeGridCell">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
@@ -147,7 +147,7 @@
                     Click="BtnGuardar_Click"
                     Label="Log-in"
                     SizeMode="Small"
-                    SmallIcon="/Presupuestos/Imagenes/save.png"
+                    SmallIcon="/Imagenes/Presupuestos/Save.png"
                     ToolTip="Abrir" />
 
 
@@ -331,19 +331,17 @@
                     x:Name="descripcion"
                     Width="200"
                     Height="30"
-                    Margin="5,0,0,0"
-                     />
-                <TextBlock Text="Obra: " VerticalAlignment="Center" />
+                    Margin="5,0,0,0" />
+                <TextBlock VerticalAlignment="Center" Text="Obra: " />
                 <syncfusion:ComboBoxAdv
-    Name="ComboObras"
-   
-    Width="192"
-    Height="23"
-    HorizontalAlignment="Left"
-    VerticalAlignment="Center"
-    DisplayMemberPath="Descrip"
-    SelectedValuePath="ID"
-    SelectionChanged="ComboObras_SelectionChanged" />
+                    Name="ComboObras"
+                    Width="192"
+                    Height="23"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    DisplayMemberPath="Descrip"
+                    SelectedValuePath="ID"
+                    SelectionChanged="ComboObras_SelectionChanged" />
 
             </StackPanel>
             <syncfusion:SfTreeGrid
@@ -367,7 +365,7 @@
                         </syncfusion:StackedHeaderRow.StackedColumns>
                     </syncfusion:StackedHeaderRow>
                     <syncfusion:StackedHeaderRow>
-                    <syncfusion:StackedHeaderRow.StackedColumns>
+                        <syncfusion:StackedHeaderRow.StackedColumns>
                             <syncfusion:StackedColumn ChildColumns="Importe1" HeaderText="Total $" />
                             <syncfusion:StackedColumn ChildColumns="Importe2" HeaderText="Total u$s" />
                         </syncfusion:StackedHeaderRow.StackedColumns>
@@ -444,8 +442,8 @@
                             x:Name="colImporte1"
                             Width="120"
                             CellStyle="{StaticResource TipoCellStyle}"
-                            HeaderText="{Binding totGeneral1}"
                             HeaderStyle="{StaticResource BoldTreeGridHeaderStyle}"
+                            HeaderText="{Binding totGeneral1}"
                             MappingName="Importe1"
                             NumberDecimalDigits="2"
                             NumberDecimalSeparator=","
@@ -456,8 +454,8 @@
                             x:Name="colImporte2"
                             Width="120"
                             CellStyle="{StaticResource TipoCellStyle}"
-                            HeaderText="{Binding totGeneral2}"
                             HeaderStyle="{StaticResource BoldTreeGridHeaderStyle}"
+                            HeaderText="{Binding totGeneral2}"
                             MappingName="Importe2"
                             NumberDecimalDigits="2"
                             NumberDecimalSeparator=","
@@ -786,8 +784,8 @@
                     <syncfusion:TreeGridTextColumn Width="50" MappingName="Tipo" />
 
                 </syncfusion:SfTreeGrid.Columns>
-                
-                
+
+
 
             </syncfusion:SfTreeGrid>
         </Grid>

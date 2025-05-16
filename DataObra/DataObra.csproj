@@ -33,7 +33,6 @@
     <None Remove="Presupuestos\recalculo.png" />
     <None Remove="Presupuestos\Redo.png" />
     <None Remove="Presupuestos\Rubro.png" />
-    <None Remove="Presupuestos\Save.png" />
     <None Remove="Presupuestos\subcontrato.png" />
     <None Remove="Presupuestos\Tarea.png" />
     <None Remove="Presupuestos\Undo.png" />
@@ -62,26 +61,27 @@
       <Resource Include="Imagenes\Interface\Jefe.png" />
       <Resource Include="Imagenes\Interface\Presupuesto.png" />
       <Resource Include="Imagenes\Interface\Socio.png" />
+      <Resource Include="Images\Save.png" />
       <Resource Include="Interfaz\Imagenes\construccion.png" />
       <Resource Include="Interfaz\Imagenes\Filtro.png" />
       <Resource Include="Interfaz\Imagenes\Mas.png" />
-      <Resource Include="Presupuestos\Imagenes\abrir.png" />
-      <Resource Include="Presupuestos\Imagenes\agregar.png" />
-      <Resource Include="Presupuestos\Imagenes\arbol.png" />
-      <Resource Include="Presupuestos\Imagenes\base.png" />
-      <Resource Include="Presupuestos\Imagenes\Buscador.png" />
-      <Resource Include="Presupuestos\Imagenes\equipos.png" />
-      <Resource Include="Presupuestos\Imagenes\Import.png" />
-      <Resource Include="Presupuestos\Imagenes\Material.png" />
-      <Resource Include="Presupuestos\Imagenes\mdo.png" />
-      <Resource Include="Presupuestos\Imagenes\otros.png" />
-      <Resource Include="Presupuestos\Imagenes\recalculo.png" />
-      <Resource Include="Presupuestos\Imagenes\Redo.png" />
-      <Resource Include="Presupuestos\Imagenes\Rubro.png" />
-      <Resource Include="Presupuestos\Imagenes\Save.png" />
-      <Resource Include="Presupuestos\Imagenes\subcontrato.png" />
-      <Resource Include="Presupuestos\Imagenes\Tarea.png" />
-      <Resource Include="Presupuestos\Imagenes\Undo.png" />
+      <Resource Include="Imagenes\Presupuestos\abrir.png" />
+      <Resource Include="Imagenes\Presupuestos\agregar.png" />
+      <Resource Include="Imagenes\Presupuestos\arbol.png" />
+      <Resource Include="Imagenes\Presupuestos\base.png" />
+      <Resource Include="Imagenes\Presupuestos\Buscador.png" />
+      <Resource Include="Imagenes\Presupuestos\equipos.png" />
+      <Resource Include="Imagenes\Presupuestos\Import.png" />
+      <Resource Include="Imagenes\Presupuestos\Material.png" />
+      <Resource Include="Imagenes\Presupuestos\mdo.png" />
+      <Resource Include="Imagenes\Presupuestos\otros.png" />
+      <Resource Include="Imagenes\Presupuestos\recalculo.png" />
+      <Resource Include="Imagenes\Presupuestos\Redo.png" />
+      <Resource Include="Imagenes\Presupuestos\Rubro.png" />
+      <Resource Include="Imagenes\Presupuestos\Save.png" />
+      <Resource Include="Imagenes\Presupuestos\subcontrato.png" />
+      <Resource Include="Imagenes\Presupuestos\Tarea.png" />
+      <Resource Include="Imagenes\Presupuestos\Undo.png" />
     </ItemGroup>
 		
 </Project>

@@ -20,7 +20,7 @@ using System.Windows.Shapes;
 using DataObra.Datos;
 using DataObra.Documentos;
 
-namespace DataObra.Interfaz.Ventanas
+namespace DataObra.Presupuestos
 {
     /// <summary>
     /// Lógica de interacción para WiTableroDOP.xaml
@@ -39,10 +39,29 @@ namespace DataObra.Interfaz.Ventanas
             SfSkinManager.SetTheme(this, new Theme("MaterialLight", new string[] { "TabNavigationControl", "TabControlExt" }));
             InitializeComponent();
             GraficoGraficoBarras();
-        }
+            Maximize_Click(null, null);
 
 
+            ////// Detectar la resolución de pantalla principal
+            //var screenWidth = SystemParameters.PrimaryScreenWidth;
+            //var screenHeight = SystemParameters.PrimaryScreenHeight;
 
+            //if (screenWidth <= 1920 && screenHeight <= 1080)
+            //    {
+            //    // Maximizar si la resolución es igual o menor a 1920x1080
+            //    Maximize_Click(null, null);
+            //    }
+            //else
+            //    {
+            //    // Centrar y establecer tamaño fijo si la resolución es mayor
+
+            //    WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            //    WindowState = WindowState.Normal;
+            //    Width = 1800;
+            //    Height = 1000;
+            //    }
+
+            }
 
 
         #region Comportamiento ventana
@@ -163,62 +182,9 @@ namespace DataObra.Interfaz.Ventanas
         private async void BorraDoc_Click(object sender, RoutedEventArgs e)
         {
 
-            //Ver tema de borrar encabezado y datos a la vez....
-
-            if (GrillaDocumentos.SelectedItem is Documento sele)
-            {
-                var (success, message) = await DatosWeb.EliminarDocumentoAsync((int)sele.ID);
-                if (success)
-                {
-                        // Intentar eliminar el presupuesto sin borrar los datos relacionados
-                        var (presupuestoSuccess, presupuestoMessage) = await DatosWeb.EliminarPresupuestoAsync((int)sele.ID, true);
-                        if (!presupuestoSuccess)
-                        {
-                            // Preguntar al usuario si desea volver a intentarlo borrando los datos relacionados
-                            var result = MessageBox.Show(
-                                $"No se pudo eliminar el presupuesto: {presupuestoMessage}\n¿Desea volver a intentarlo borrando los datos relacionados?",
-                                "Error al eliminar el presupuesto",
-                                MessageBoxButton.YesNo,
-                                MessageBoxImage.Warning
-                            );
-
-                            if (result == MessageBoxResult.Yes)
-                            {
-                                // Intentar eliminar el presupuesto borrando los datos relacionados
-                                (presupuestoSuccess, presupuestoMessage) = await DatosWeb.EliminarPresupuestoAsync((int)sele.ID, false);
-                                if (!presupuestoSuccess)
-                                {
-                                    MessageBox.Show($"Error al eliminar el presupuesto: {presupuestoMessage}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                                    return;
-                                }
-                            }
-                            else
-                            {
-                                return;
-                            }
-                       
-                    }
-
-                    MessageBox.Show($"Documento eliminado con éxito. ID: {sele.ID}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-                    CargarGrilla();
-                }
-                else
-                {
-                    MessageBox.Show($"Error al eliminar el documento: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
-            else
-            {
-                MessageBox.Show("Seleccione un documento para eliminar.");
-            }
         }
         private async void EditaDoc_Click(object sender, RoutedEventArgs e)
         {
-            if (GrillaDocumentos.SelectedItem is not Documento sele)
-            {
-                MessageBox.Show("Por favor, seleccione un documento para editar.");
-                return;
-            }
             
         }
 
@@ -231,14 +197,6 @@ namespace DataObra.Interfaz.Ventanas
 
         private void nuevoPres_Click(object sender, RoutedEventArgs e)
         {
-            var mainWindow = Window.GetWindow(this);
-            mainWindow.Effect = new BlurEffect { Radius = 3 };
-
-            WiDocumento ventanaDoc = new WiDocumento("Presupuesto", new Presupuestos.UcPresupuesto(new Documento()));
-            ventanaDoc.ShowDialog();
-
-            mainWindow.Effect = null;
-            CargarGrilla();
 
         }
 
