@@ -126,7 +126,6 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="10*" />
-            <RowDefinition Height="auto" />
             <RowDefinition Height="4*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -138,7 +137,6 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="30" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="60" />
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
                 <syncfusion:ButtonAdv
@@ -517,126 +515,7 @@
                     </syncfusion:TreeGridColumns>
                 </syncfusion:SfTreeGrid.Columns>
             </syncfusion:SfTreeGrid>
-            <StackPanel
-                Grid.Row="3"
-                HorizontalAlignment="Right"
-                Orientation="Horizontal">
-                <StackPanel Margin="2" Cursor="">
-                    <Label
-                        Margin="2"
-                        Padding="0,5,5,5"
-                        HorizontalAlignment="Center"
-                        Content="Materiales"
-                        FontWeight="DemiBold" />
-                    <syncfusion:CurrencyTextBox
-                        x:Name="totMateriales1"
-                        Width="100"
-                        Height="24"
-                        Margin="2"
-                        HorizontalContentAlignment="Center"
-                        CurrencyDecimalDigits="2"
-                        CurrencyDecimalSeparator=","
-                        CurrencyGroupSeparator=" "
-                        CurrencySymbol="$"
-                        Value="0" />
-                </StackPanel>
-                <StackPanel Margin="2">
-                    <Label
-                        Margin="2"
-                        Padding="0,5,5,5"
-                        HorizontalAlignment="Center"
-                        Content="Mano de &gt;Obra"
-                        FontWeight="DemiBold" />
-                    <syncfusion:CurrencyTextBox
-                        x:Name="totMDO1"
-                        Width="100"
-                        Height="24"
-                        Margin="2"
-                        HorizontalContentAlignment="Center"
-                        CurrencyDecimalDigits="2"
-                        CurrencyDecimalSeparator=","
-                        CurrencyGroupSeparator=" "
-                        CurrencySymbol="$"
-                        Value="0" />
-                </StackPanel>
-                <StackPanel Margin="2">
-                    <Label
-                        Margin="2"
-                        Padding="0,5,5,5"
-                        HorizontalAlignment="Center"
-                        Content="Equipos"
-                        FontWeight="DemiBold" />
-                    <syncfusion:CurrencyTextBox
-                        x:Name="totEquipos1"
-                        Width="100"
-                        Height="24"
-                        Margin="2"
-                        HorizontalContentAlignment="Center"
-                        CurrencyDecimalDigits="2"
-                        CurrencyDecimalSeparator=","
-                        CurrencyGroupSeparator=" "
-                        CurrencySymbol="$"
-                        Value="0" />
-                </StackPanel>
-                <StackPanel Margin="2">
-                    <Label
-                        Margin="2"
-                        Padding="0,5,5,5"
-                        HorizontalAlignment="Center"
-                        Content="Subcontratos"
-                        FontWeight="DemiBold" />
-                    <syncfusion:CurrencyTextBox
-                        x:Name="totSubcontratos1"
-                        Width="100"
-                        Height="24"
-                        Margin="2"
-                        HorizontalContentAlignment="Center"
-                        CurrencyDecimalDigits="2"
-                        CurrencyDecimalSeparator=","
-                        CurrencyGroupSeparator=" "
-                        CurrencySymbol="$"
-                        Value="0" />
-                </StackPanel>
-                <StackPanel Margin="2">
-                    <Label
-                        Margin="2"
-                        Padding="0,5,5,5"
-                        HorizontalAlignment="Center"
-                        Content="Otros"
-                        FontWeight="DemiBold" />
-                    <syncfusion:CurrencyTextBox
-                        x:Name="totOtros1"
-                        Width="100"
-                        Height="24"
-                        Margin="2"
-                        HorizontalContentAlignment="Center"
-                        CurrencyDecimalDigits="2"
-                        CurrencyDecimalSeparator=","
-                        CurrencyGroupSeparator=" "
-                        CurrencySymbol="$"
-                        Value="0" />
-                </StackPanel>
-                <StackPanel Margin="2">
-                    <Label
-                        Margin="2"
-                        Padding="0,5,5,5"
-                        HorizontalAlignment="Center"
-                        Content="Total"
-                        FontWeight="DemiBold" />
-                    <syncfusion:CurrencyTextBox
-                        x:Name="totGeneral1"
-                        Width="100"
-                        Height="24"
-                        Margin="2"
-                        HorizontalContentAlignment="Center"
-                        CurrencyDecimalDigits="2"
-                        CurrencyDecimalSeparator=","
-                        CurrencyGroupSeparator=" "
-                        CurrencySymbol="$"
-                        Value="0" />
-                </StackPanel>
 
-            </StackPanel>
 
         </Grid>
         <Grid
@@ -691,13 +570,17 @@
         </Grid>
         <Grid
             x:Name="Detalle"
-            Grid.Row="2"
+            Grid.Row="1"
             Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="198*"/>
+                <ColumnDefinition Width="947*"/>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="30" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
                 <TextBlock
                     Margin="3,1,3,1"
                     FontSize="20"
@@ -723,7 +606,7 @@
                 AllowResizingColumns="True"
                 AutoGenerateColumns="False"
                 CurrentCellBeginEdit="grillaDetalle_CurrentCellBeginEdit"
-                CurrentCellEndEdit="grillaDetalle_CurrentCellEndEdit">
+                CurrentCellEndEdit="grillaDetalle_CurrentCellEndEdit" Grid.ColumnSpan="2">
                 <syncfusion:SfTreeGrid.Columns>
                     <syncfusion:TreeGridTextColumn
                         Width="50"

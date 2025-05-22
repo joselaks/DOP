@@ -248,17 +248,18 @@ namespace DataObra.Presupuestos
 
             Objeto.sinCero();
 
-            totMateriales1.Value = Objeto.Arbol.Sum(i => i.Materiales1);
-            totMDO1.Value = Objeto.Arbol.Sum(i => i.ManodeObra1);
-            totEquipos1.Value = Objeto.Arbol.Sum(i => i.Equipos1);
-            totSubcontratos1.Value = Objeto.Arbol.Sum(i => i.Subcontratos1);
-            totOtros1.Value = Objeto.Arbol.Sum(i => i.Otros1);
-            totGeneral1.Value = Objeto.Arbol.Sum(i => i.Importe1);
+            //totMateriales1.Value = Objeto.Arbol.Sum(i => i.Materiales1);
+            //totMDO1.Value = Objeto.Arbol.Sum(i => i.ManodeObra1);
+            //totEquipos1.Value = Objeto.Arbol.Sum(i => i.Equipos1);
+            //totSubcontratos1.Value = Objeto.Arbol.Sum(i => i.Subcontratos1);
+            //totOtros1.Value = Objeto.Arbol.Sum(i => i.Otros1);
+            //totGeneral1.Value = Objeto.Arbol.Sum(i => i.Importe1);
+            decimal totGeneral1 = Objeto.Arbol.Sum(i => i.Importe1);
             decimal totalGeneralDol = Objeto.Arbol.Sum(i => i.Importe2);
 
             // Asignar el valor explícitamente al HeaderText
             var cultura = new CultureInfo("es-ES") { NumberFormat = { NumberGroupSeparator = ".", NumberDecimalSeparator = "," } };
-            colImporte1.HeaderText = $"{(totGeneral1.Value ?? 0m).ToString("N2", cultura)}";
+            colImporte1.HeaderText = $"{totGeneral1.ToString("N2", cultura)}";
             colImporte2.HeaderText = $"{totalGeneralDol.ToString("N2", cultura)}";
 
 
