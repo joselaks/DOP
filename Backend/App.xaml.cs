@@ -1,35 +1,25 @@
-﻿using System.Configuration;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System.Configuration;
 using System.Data;
 using System.Net.Http;
 using System.Windows;
 using System.Windows.Input;
-using DataObra.Datos;
-using Microsoft.Extensions.DependencyInjection;
-using System.Threading.Tasks;
-using Biblioteca.DTO;
-using System.Windows.Controls;
 
-namespace DataObra
-{
-    public partial class App : Application
+namespace Backend
     {
+    /// <summary>
+    /// Interaction logic for App.xaml
+    /// </summary>
+    public partial class App : Application
+        {
         public IServiceProvider ServiceProvider { get; private set; }
         public HttpClient HttpClient { get; private set; }
         public static string BaseUrl { get; private set; }
-        public static int IdUsuario { get; set; }
-        public static int IdCuenta { get; set; }
-
-        public static string Rol { get; set; }
-
-        public static RoutedCommand OpenConectoresCommand = new RoutedCommand();
-
-        public static List<AgrupadorDTO>? ListaAgrupadores;
-
         // Propiedad estática para almacenar el estado de la conexión
         public static bool IsConnectionSuccessful { get; private set; }
 
         public App()
-        {
+            {
             //Register Syncfusion license
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NNaF1cWGhIfEx1RHxQdld5ZFRHallYTnNWUj0eQnxTdEBjXH1dcXxXQGRVUUF3Wklfag==");
 
@@ -41,25 +31,20 @@ namespace DataObra
                 client.DefaultRequestHeaders.ConnectionClose = false; // Mantener viva la conexión
             })
             .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
-            {
+                {
                 UseCookies = true,
                 AllowAutoRedirect = true,
                 AutomaticDecompression = System.Net.DecompressionMethods.GZip | System.Net.DecompressionMethods.Deflate
-            });
+                });
 
             var servicios = serviceCollection.BuildServiceProvider();
             var httpClientFactory = servicios.GetRequiredService<IHttpClientFactory>();
             HttpClient = httpClientFactory.CreateClient("default");
 
-            IdCuenta = 1;
-            IdUsuario = 1;
-
-            // Agregar el CommandBinding
-            CommandManager.RegisterClassCommandBinding(typeof(App), new CommandBinding(OpenConectoresCommand, OpenConectores));
-        }
+            }
 
         protected override void OnStartup(StartupEventArgs e)
-        {
+            {
             base.OnStartup(e);
             // Aquí puedes decidir cuál URL usar, por ejemplo, basado en una configuración
 
@@ -68,35 +53,8 @@ namespace DataObra
             // cambiar cuando pase a producción
             BaseUrl = "https://servidordataobra.azurewebsites.net/";
 
-            // Registrar el evento de teclado
-            EventManager.RegisterClassHandler(typeof(Window), Keyboard.KeyDownEvent, new KeyEventHandler(OnKeyDown));
-        }
-
-        private void OpenConectores(object sender, ExecutedRoutedEventArgs e)
-        {
-            var conectoresWindow = new Conectores();
-            conectoresWindow.Show();
-        }
-
-        private void testPresupuesto(object sender, ExecutedRoutedEventArgs e)
-        {
-            UserControl presup = new DataObra.Presupuestos.UcPresupuesto(null);
-            DataObra.Interfaz.Ventanas.WiDocumento ventanaPres = new DataObra.Interfaz.Ventanas.WiDocumento("Presupuesto", presup);
-            ventanaPres.ShowDialog();
-        }
-
-        private void OnKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.A && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
-            {
-                OpenConectores(this, null);
 
             }
-            if (e.Key == Key.P && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
-            {
-                testPresupuesto(this, null);
-            }
+
         }
     }
-}
-
