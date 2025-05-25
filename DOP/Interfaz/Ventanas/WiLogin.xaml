@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
     Width="600"
-    Height="350"
+    Height="380"
     WindowStyle="None"
     mc:Ignorable="d">
 
@@ -56,12 +56,20 @@
                         Margin="0,0,0,10"
                         FontSize="20"
                         Text="Iniciar Sesión" />
+                    <TextBlock
+                        Margin="2,0,0,2"
+                        FontSize="15"
+                        Text="Usuario:" />
                     <TextBox
                         Name="txtUsuario"
                         Height="20"
                         Margin="0,0,0,10"
                         GotFocus="TextBox_GotFocus"
                         LostFocus="TextBox_LostFocus" />
+                    <TextBlock
+                        Margin="2,0,0,2"
+                        FontSize="15"
+                        Text="Contraseña:" />
                     <PasswordBox
                         Name="txtContraseña"
                         Height="20"
@@ -110,29 +118,29 @@
                 Margin="10,10,10,0"
                 Background="#F0F0F0">
                 <TextBlock
-                    Margin="0,0,0,10"
+                    Margin="5,0,5,10"
                     FontSize="20"
                     Text="Novedades de la Construcción" />
 
                 <TextBlock
-                    Margin="0,0,0,5"
+                    Margin="5,0,5,5"
                     Text="Edificación modular: La construcción fuera del sitio está ganando popularidad."
                     TextWrapping="Wrap" />
                 <TextBlock
-                    Margin="0,0,0,5"
+                    Margin="5,0,5,5"
                     Text="Ver mas...."
                     TextWrapping="Wrap" />
 
                 <TextBlock
-                    Margin="0,10,0,10"
+                    Margin="5,10,5,10"
                     FontSize="20"
                     Text="Novedades del Software" />
                 <TextBlock
-                    Margin="0,0,0,5"
+                    Margin="5,0,5,5"
                     Text="Actualización de seguridad: Nueva versión con mejoras en la seguridad de datos."
                     TextWrapping="Wrap" />
                 <TextBlock
-                    Margin="0,0,0,5"
+                    Margin="5,0,5,5"
                     Text="Ver mas...."
                     TextWrapping="Wrap" />
 

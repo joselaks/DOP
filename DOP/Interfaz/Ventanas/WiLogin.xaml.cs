@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using DOP.Presupuestos.Ventanas;
+using Microsoft.Data.Sqlite;
 using Syncfusion.XlsIO.Parser.Biff_Records;
 using System;
 using System.Collections.Generic;
@@ -78,12 +79,12 @@ namespace DOP.Interfaz.Ventanas
                         this.DialogResult = true;
                         this.Close();
 
-                        //WiTableroDOP tablero = new WiTableroDOP()
-                        //        {
-                        //        Owner = Inicio,
-                        //        WindowStartupLocation = WindowStartupLocation.CenterOwner
-                        //        };
-                        //    tablero.ShowDialog();
+                        WiTablero tablero = new WiTablero()
+                            {
+                            Owner = Inicio,
+                            WindowStartupLocation = WindowStartupLocation.CenterOwner
+                            };
+                        tablero.ShowDialog();
                         return;
                         }
                     else
