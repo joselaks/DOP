@@ -126,18 +126,36 @@
                 <TextBlock
                     Margin="0,0,0,10"
                     FontSize="20"
-                    Text="Últimas Novedades del Mercado de la Construcción" />
-                <TextBlock Margin="0,0,0,5" Text="1. Innovación en materiales: Nuevos tipos de materiales sostenibles y la impresión 3D están revolucionando el mercado." />
-                <TextBlock Margin="0,0,0,5" Text="2. Edificación modular: La construcción fuera del sitio está ganando popularidad." />
-                <TextBlock Margin="0,0,0,5" Text="3. Software de gestión: Herramientas como Oracle Construction Intelligence Cloud Analytics están mejorando la gestión de proyectos." />
+                    Text="Novedades del Mercado de la Construcción" />
+                <TextBlock
+                    Margin="0,0,0,5"
+                    Text="1. Innovación en materiales: Nuevos tipos de materiales sostenibles y la impresión 3D están revolucionando el mercado."
+                    TextWrapping="Wrap" />
+                <TextBlock
+                    Margin="0,0,0,5"
+                    Text="2. Edificación modular: La construcción fuera del sitio está ganando popularidad."
+                    TextWrapping="Wrap" />
+                <TextBlock
+                    Margin="0,0,0,5"
+                    Text="3. Software de gestión: Herramientas como Oracle Construction Intelligence Cloud Analytics están mejorando la gestión de proyectos."
+                    TextWrapping="Wrap" />
 
                 <TextBlock
                     Margin="0,10,0,10"
                     FontSize="20"
                     Text="Novedades del Software" />
-                <TextBlock Margin="0,0,0,5" Text="1. Actualización de seguridad: Nueva versión con mejoras en la seguridad de datos." />
-                <TextBlock Margin="0,0,0,5" Text="2. Integración con BIM: Ahora compatible con modelos de información de construcción." />
-                <TextBlock Margin="0,0,0,5" Text="3. Mejora en la interfaz: Diseño más intuitivo y fácil de usar." />
+                <TextBlock
+                    Margin="0,0,0,5"
+                    Text="1. Actualización de seguridad: Nueva versión con mejoras en la seguridad de datos."
+                    TextWrapping="Wrap" />
+                <TextBlock
+                    Margin="0,0,0,5"
+                    Text="2. Integración con BIM: Ahora compatible con modelos de información de construcción."
+                    TextWrapping="Wrap" />
+                <TextBlock
+                    Margin="0,0,0,5"
+                    Text="3. Mejora en la interfaz: Diseño más intuitivo y fácil de usar."
+                    TextWrapping="Wrap" />
             </StackPanel>
         </Grid>
     </Grid>

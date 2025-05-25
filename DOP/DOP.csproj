@@ -8,4 +8,22 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Imagenes\construccion.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.5" />
+    <PackageReference Include="Syncfusion.UI.WPF.NET" Version="29.2.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Biblioteca\Biblioteca.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Imagenes\construccion.png" />
+  </ItemGroup>
+
 </Project>
