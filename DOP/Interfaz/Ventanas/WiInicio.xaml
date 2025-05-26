@@ -37,7 +37,7 @@
                 <Image
                     Margin="5,5,5,5"
                     Opacity="0.5"
-                    Source="pack://application:,,,/Imagenes/construccion.png"
+                    Source="pack://application:,,,/Imagenes/Construccion.png"
                     Stretch="Fill" />
             </syncfusion:SfBusyIndicator>
 

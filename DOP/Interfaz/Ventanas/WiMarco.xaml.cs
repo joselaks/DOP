@@ -119,6 +119,11 @@ namespace DOP.Interfaz.Ventanas
                 Estado.Text = "No hay documentos relacionados";
                 }
             }
+
+        private void espacioMaestro_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+            {
+
+            }
         }
     }
 

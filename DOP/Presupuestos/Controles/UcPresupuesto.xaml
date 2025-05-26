@@ -5,8 +5,180 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:DOP.Presupuestos.Controles"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    xmlns:numberformat="clr-namespace:System.Globalization;assembly=mscorlib"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    d:DesignHeight="800"
+    d:DesignWidth="1200"
     mc:Ignorable="d">
-    <Grid />
+    <UserControl.Resources>
+        <!--  DataTemplate para ícono Rubro  -->
+        <DataTemplate x:Key="RubTemplate">
+            <Image
+                Width="15"
+                Height="15"
+                Source="/Imagenes/Presupuestos/Rubro.png" />
+        </DataTemplate>
+        <!--  DataTemplate para ícono Tarea  -->
+        <DataTemplate x:Key="TarTemplate">
+            <Image
+                Width="15"
+                Height="15"
+                Source="pack://application:,,,/Imagenes/Tarea.png" />
+        </DataTemplate>
+        <!--  DataTemplate para ícono Materiales  -->
+        <DataTemplate x:Key="MatTemplate">
+            <Image
+                Width="15"
+                Height="15"
+                Source="pack://application:,,,/Imagenes/Material.png" />
+        </DataTemplate>
+        <!--  DataTemplate para ícono Mano de obra  -->
+        <DataTemplate x:Key="MdoTemplate">
+            <Image
+                Width="15"
+                Height="15"
+                Source="pack://application:,,,/Imagenes/ManoDeObra.png" />
+        </DataTemplate>
+        <!--  DataTemplate para ícono Equipos  -->
+        <DataTemplate x:Key="EquTemplate">
+            <Image
+                Width="15"
+                Height="15"
+                Source="pack://application:,,,/Imagenes/Equipos.png" />
+        </DataTemplate>
+        <!--  DataTemplate para ícono Subcontratos  -->
+        <DataTemplate x:Key="SubTemplate">
+            <Image
+                Width="15"
+                Height="15"
+                Source="pack://application:,,,/Imagenes/Subcontratos.png" />
+        </DataTemplate>
+        <!--  DataTemplate para ícono Otros  -->
+        <DataTemplate x:Key="OtrTemplate">
+            <Image
+                Width="15"
+                Height="15"
+                Source="pack://application:,,,/Imagenes/Otros.png" />
+        </DataTemplate>
+        <!--  DataTemplate para ícono AuxTemplate  -->
+        <DataTemplate x:Key="AuxTemplate">
+            <Image
+                Width="15"
+                Height="15"
+                Source="pack://application:,,,/Imagenes/Arbol.png" />
+        </DataTemplate>
+        <!--  DataTemplateSelector  -->
+        <local:IconTemplateSelector
+            x:Key="IconTemplateSelector"
+            AuxTemplate="{StaticResource AuxTemplate}"
+            EquTemplate="{StaticResource EquTemplate}"
+            MatTemplate="{StaticResource MatTemplate}"
+            MdoTemplate="{StaticResource MdoTemplate}"
+            OtrTemplate="{StaticResource OtrTemplate}"
+            RubTemplate="{StaticResource RubTemplate}"
+            SubTemplate="{StaticResource SubTemplate}"
+            TarTemplate="{StaticResource TarTemplate}" />
+        <Style x:Key="CantidadCellStyle" TargetType="syncfusion:TreeGridCell">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
+                    <Setter Property="Foreground" Value="Transparent" />
+                    <Setter Property="Background" Value="#C0C0C0" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Tipo}" Value="T">
+                    <Setter Property="Foreground" Value="Black" />
+                    <Setter Property="Background" Value="#E0E0E0" />
+                </DataTrigger>
+
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="TipoCellStyle" TargetType="syncfusion:TreeGridCell">
+            <Setter Property="FontWeight" Value="Normal" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
+                    <Setter Property="FontWeight" Value="Bold" />
+                    <Setter Property="Background" Value="#C0C0C0" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Tipo}" Value="T">
+                    <Setter Property="Background" Value="#E0E0E0" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="ExpandedCellStyle" TargetType="syncfusion:TreeGridExpanderCell">
+            <Setter Property="FontWeight" Value="Normal" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
+                    <Setter Property="FontWeight" Value="Bold" />
+                    <Setter Property="Background" Value="#C0C0C0" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Tipo}" Value="T">
+                    <Setter Property="Background" Value="#E0E0E0" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="BoldTreeGridHeaderStyle" TargetType="syncfusion:TreeGridHeaderCell">
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="Black" />
+
+        </Style>
+
+    </UserControl.Resources>
+
+    <Grid x:Name="Planilla">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition x:Name="panelDetalle" Height="4*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10*" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition x:Name="panelInsumos" Width="4*" />
+        </Grid.ColumnDefinitions>
+        <syncfusion:SfGridSplitter
+            Grid.Row="1"
+            Grid.Column="0"
+            Height="5"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Top"
+            EnableCollapseButton="True"
+            ResizeBehavior="PreviousAndNext"
+            ShowsPreview="True" />
+        <syncfusion:SfGridSplitter
+            Grid.RowSpan="3"
+            Grid.Column="1"
+            Width="5"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Stretch"
+            EnableCollapseButton="True"
+            ResizeBehavior="PreviousAndNext"
+            ShowsPreview="True" />
+
+        <syncfusion:TabControlExt Grid.Column="2" Grid.RowSpan="3" Name="tabControlExt">
+            <syncfusion:TabItemExt Header="Actual presupuesto">
+                <TextBlock Name="Actual" Text="This is the first tab item." />
+            </syncfusion:TabItemExt>
+            <syncfusion:TabItemExt Header="Maestro">
+                <TextBlock Name="Maestro" Text="This is the second tab item." />
+            </syncfusion:TabItemExt>
+            <syncfusion:TabItemExt Header="BIM">
+                <TextBlock Name="BIM" Text="This is the third tab item." />
+            </syncfusion:TabItemExt>
+        </syncfusion:TabControlExt>
+
+        <syncfusion:TabControlExt  Grid.Row="3" Grid.Column="0" >
+            <syncfusion:TabItemExt Header="Dosaje">
+                <TextBlock Name="Dosaje" Text="This is the first tab item." />
+            </syncfusion:TabItemExt>
+            <syncfusion:TabItemExt Header="Cómputo">
+                <TextBlock Name="Cómputo" Text="This is the second tab item." />
+            </syncfusion:TabItemExt>
+            <syncfusion:TabItemExt Header="Especificación">
+                <TextBlock Name="Especifdicación" Text="This is the third tab item." />
+            </syncfusion:TabItemExt>
+        </syncfusion:TabControlExt>
+
+    </Grid>
+    
+    
+
 </UserControl>

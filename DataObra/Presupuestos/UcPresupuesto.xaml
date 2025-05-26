@@ -204,9 +204,7 @@
                             HorizontalAlignment="Left"
                             Click="DropDownMenuItem_Click_3"
                             Header="Subcontrato">
-                            <syncfusion:DropDownMenuItem.Icon>
-                                <Image Source="/Presupuestos/Inagenes/subcontrato.png" />
-                            </syncfusion:DropDownMenuItem.Icon>
+                            
                         </syncfusion:DropDownMenuItem>
                         <syncfusion:DropDownMenuItem
                             HorizontalAlignment="Left"
@@ -331,15 +329,7 @@
                     Height="30"
                     Margin="5,0,0,0" />
                 <TextBlock VerticalAlignment="Center" Text="Obra: " />
-                <syncfusion:ComboBoxAdv
-                    Name="ComboObras"
-                    Width="192"
-                    Height="23"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    DisplayMemberPath="Descrip"
-                    SelectedValuePath="ID"
-                    SelectionChanged="ComboObras_SelectionChanged" />
+                
 
             </StackPanel>
             <syncfusion:SfTreeGrid

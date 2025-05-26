@@ -1,4 +1,6 @@
-﻿using Syncfusion.SfSkinManager;
+﻿using Biblioteca;
+using DOP.Interfaz.Ventanas;
+using Syncfusion.SfSkinManager;
 using Syncfusion.UI.Xaml.Charts;
 using System;
 using System.Collections.Generic;
@@ -33,7 +35,26 @@ namespace DOP.Presupuestos.Ventanas
             SfSkinManager.SetTheme(this, new Theme("MaterialLight", new string[] { "TabNavigationControl", "TabControlExt" }));
             InitializeComponent();
             GraficoGraficoBarras();
-            Maximize_Click(null, null);
+
+            //// Detectar la resolución de pantalla principal
+            var screenWidth = SystemParameters.PrimaryScreenWidth;
+            var screenHeight = SystemParameters.PrimaryScreenHeight;
+
+            if (screenWidth <= 1920 && screenHeight <= 1080)
+                {
+                // Maximizar si la resolución es igual o menor a 1920x1080
+                Maximize_Click(null, null);
+                }
+            else
+                {
+                // Centrar y establecer tamaño fijo si la resolución es mayor
+
+                WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                WindowState = WindowState.Normal;
+                Width = 1800;
+                Height = 1000;
+                }
+
 
 
             }
@@ -165,6 +186,21 @@ namespace DOP.Presupuestos.Ventanas
 
         private void GrillaDocumentos_MouseDoubleClick(object sender, MouseButtonEventArgs e)
             {
+
+            }
+
+        private void NuevoPres(object sender, RoutedEventArgs e)
+            {
+            WiMarco ventana = new WiMarco("Presupuesto", new Presupuestos.Controles.UcPresupuesto());
+            ventana.Owner = this;
+            ventana.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            ventana.WindowState = WindowState.Normal;
+            var screenWidth = SystemParameters.PrimaryScreenWidth;
+            var screenHeight = SystemParameters.PrimaryScreenHeight;
+
+            ventana.Width = screenWidth-10;
+            ventana.Height = screenHeight-40;
+            ventana.ShowDialog();
 
             }
         }

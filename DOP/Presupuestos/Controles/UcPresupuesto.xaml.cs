@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Biblioteca;
+using Syncfusion.SfSkinManager;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,15 +16,19 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace DOP.Presupuestos.Controles
-{
+    {
     /// <summary>
     /// Lógica de interacción para UcPresupuesto.xaml
     /// </summary>
     public partial class UcPresupuesto : UserControl
-    {
-        public UcPresupuesto()
         {
+        public UcPresupuesto()
+            {
+            SfSkinManager.SetTheme(this, new Theme("MaterialLight", new string[] { "TabNavigationControl", "TabControlExt" }));
+
             InitializeComponent();
+            }
+
+
         }
     }
-}
