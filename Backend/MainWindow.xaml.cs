@@ -20,7 +20,7 @@ namespace Backend
         public MainWindow()
             {
             InitializeComponent();
-            VerificaUsuario();
+            
 
             }
 
@@ -61,5 +61,10 @@ namespace Backend
                     }
                 }
             }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            VerificaUsuario();
         }
+    }
     }
