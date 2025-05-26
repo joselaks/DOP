@@ -62,12 +62,12 @@ namespace DataObra.Presupuestos
 
             undoStack = new Stack<Cambios>();
             redoStack = new Stack<Cambios>();
-            this.ComboObras.ItemsSource = App.ListaAgrupadores.Where(a => a.TipoID == 'O' && a.Active);
+            //this.ComboObras.ItemsSource = App.ListaAgrupadores.Where(a => a.TipoID == 'O' && a.Active);
             if (encabezado!= null)
             {
                 Encabezado = encabezado;
                 this.descripcion.Text = Encabezado.Descrip;
-                this.ComboObras.SelectedItem = App.ListaAgrupadores.FirstOrDefault(a => a.ID == encabezado.ObraID);
+                //this.ComboObras.SelectedItem = App.ListaAgrupadores.FirstOrDefault(a => a.ID == encabezado.ObraID);
                 DocumentoDTO doc = new DocumentoDTO();
                 doc.ID = (int)Encabezado.ID;
                 Objeto = new Presupuesto(doc);
