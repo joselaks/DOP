@@ -1,6 +1,4 @@
-﻿using Biblioteca;
-using Syncfusion.SfSkinManager;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,22 +14,25 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace DOP.Presupuestos.Controles
-    {
+{
     /// <summary>
-    /// Lógica de interacción para UcPresupuesto.xaml
+    /// Lógica de interacción para UcPrametrosExcel.xaml
     /// </summary>
-    public partial class UcPresupuesto : UserControl
+    public partial class UcPrametrosExcel : UserControl
+    {
+        public UcPrametrosExcel()
         {
-        public UcPresupuesto()
-            {
-            SfSkinManager.SetTheme(this, new Theme("MaterialLight", new string[] { "TabNavigationControl", "TabControlExt" }));
-
             InitializeComponent();
-            }
+        }
 
-        private void BtnGuardar_Click(object sender, RoutedEventArgs e)
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void OKButton_Click(object sender, RoutedEventArgs e)
         {
 
         }
     }
-    }
+}

@@ -134,7 +134,40 @@
             <ColumnDefinition Width="auto" />
             <ColumnDefinition x:Name="panelInsumos" Width="4*" />
         </Grid.ColumnDefinitions>
-        <syncfusion:SfGridSplitter
+        <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock VerticalAlignment="Center" Text="Nombre del presupuesto: " />
+                <TextBox
+    x:Name="descripcion"
+    Width="200"
+    Height="30"
+    Margin="5,0,0,0" />
+                <syncfusion:ButtonAdv
+     x:Name="BtnGuardar"
+     Margin="3"
+     Click="BtnGuardar_Click"
+     Label="Log-in"
+     SizeMode="Small"
+     SmallIcon="pack://application:,,,/Imagenes/Guardar.png"
+     ToolTip="Guardar" />
+
+
+
+            </StackPanel>
+
+
+
+
+
+        </Grid>
+
+
+    <syncfusion:SfGridSplitter
             Grid.Row="1"
             Grid.Column="0"
             Height="5"

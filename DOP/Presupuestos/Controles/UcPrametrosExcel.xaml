@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="DOP.Presupuestos.Controles.UcPrametrosExcel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" Width="405" Height="194" 
+             >
+    <Grid x:Name="LayoutRoot" Margin="2">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="23" />
+        </Grid.RowDefinitions>
+
+        <StackPanel  Grid.Column="0" Margin="10,16,0,0">
+            <CheckBox Content="Presupuesto" Height="20" Name="PE" />
+            <CheckBox Content="Desglose por tipo de insumos" Height="20" Name="TI" />
+            <CheckBox Content="Insumos por rubro" Height="20" Name="RU" Visibility="Collapsed" />
+        </StackPanel>
+        <StackPanel Grid.Column="1">
+            <TextBlock>Lista de Insumos</TextBlock>
+            <CheckBox Content="Materiales" Height="20" Name="MA" />
+            <CheckBox Content="Mano de obra" Height="20" Name="MO" />
+            <CheckBox Content="Equipos" Height="20" Name="EQ" />
+            <CheckBox Content="Sub Contratos" Height="20" Name="SC" />
+            <CheckBox Content="Otros" Height="20" Name="OT" />
+        </StackPanel>
+
+        <TextBlock Foreground="Red" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="estado" Grid.Column="0" Grid.ColumnSpan="2" ></TextBlock>
+        <ProgressBar Grid.Row="1" x:Name="progresBar" IsIndeterminate="true" Height="20" VerticalAlignment="Top" Visibility="Collapsed"  />
+        <Button x:Name="CancelButton" Content="Cancelar" Click="CancelButton_Click"  Width="75" Height="23" HorizontalAlignment="Right" Grid.Row="2" Grid.Column="1" />
+        <Button x:Name="OKButton" Content="OK" Click="OKButton_Click"  Width="75" Height="23" HorizontalAlignment="Right" Margin="0,0,79,0" Grid.Row="2" Grid.ColumnSpan="2" />
+    </Grid>
+</UserControl>
