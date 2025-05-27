@@ -12,6 +12,8 @@
     <None Remove="Imagenes\construccion.png" />
     <None Remove="Imagenes\Guardar.png" />
     <None Remove="Imagenes\Importar.png" />
+    <None Remove="Imagenes\Rubro.png" />
+    <None Remove="Imagenes\Tarea.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +30,8 @@
     <Resource Include="Imagenes\Construccion.png" />
     <Resource Include="Imagenes\Guardar.png" />
     <Resource Include="Imagenes\Importar.png" />
+    <Resource Include="Imagenes\Rubro.png" />
+    <Resource Include="Imagenes\Tarea.png" />
   </ItemGroup>
 
 </Project>

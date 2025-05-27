@@ -17,7 +17,7 @@
             <Image
                 Width="15"
                 Height="15"
-                Source="/Imagenes/Presupuestos/Rubro.png" />
+                Source="pack://application:,,,/Imagenes/Rubro.png" />
         </DataTemplate>
         <!--  DataTemplate para ícono Tarea  -->
         <DataTemplate x:Key="TarTemplate">
@@ -83,11 +83,11 @@
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
                     <Setter Property="Foreground" Value="Transparent" />
-                    <Setter Property="Background" Value="#C0C0C0" />
+                    <Setter Property="Background" Value="#E0E0E0" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="T">
                     <Setter Property="Foreground" Value="Black" />
-                    <Setter Property="Background" Value="#E0E0E0" />
+                    <!--<Setter Property="Background" Value="#E0E0E0" />-->
                 </DataTrigger>
 
             </Style.Triggers>
@@ -97,10 +97,10 @@
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
                     <Setter Property="FontWeight" Value="Bold" />
-                    <Setter Property="Background" Value="#C0C0C0" />
+                    <Setter Property="Background" Value="#E0E0E0" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="T">
-                    <Setter Property="Background" Value="#E0E0E0" />
+                    <!--<Setter Property="Background" Value="#E0E0E0" />-->
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -109,10 +109,10 @@
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
                     <Setter Property="FontWeight" Value="Bold" />
-                    <Setter Property="Background" Value="#C0C0C0" />
+                    <Setter Property="Background" Value="#E0E0E0" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="T">
-                    <Setter Property="Background" Value="#E0E0E0" />
+                    <!--<Setter Property="Background" Value="#E0E0E0" />-->
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -185,11 +185,11 @@
     KeyDown="grillaArbol_KeyDown"
     SelectionMode="Single">
                 <syncfusion:SfTreeGrid.StackedHeaderRows>
-                    <syncfusion:StackedHeaderRow>
-                        <syncfusion:StackedHeaderRow.StackedColumns>
+                    <!--<syncfusion:StackedHeaderRow>
+                        --><!--<syncfusion:StackedHeaderRow.StackedColumns>
                             <syncfusion:StackedColumn ChildColumns="Cantidad,PU1,PU2,Importe1,Importe2" HeaderText="Ejecución" />
-                        </syncfusion:StackedHeaderRow.StackedColumns>
-                    </syncfusion:StackedHeaderRow>
+                        </syncfusion:StackedHeaderRow.StackedColumns>--><!--
+                    </syncfusion:StackedHeaderRow>-->
                     <syncfusion:StackedHeaderRow>
                         <syncfusion:StackedHeaderRow.StackedColumns>
                             <syncfusion:StackedColumn ChildColumns="Importe1" HeaderText="Total $" />
@@ -202,7 +202,7 @@
 
                         <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="OrdenInt" />-->
 
-                        <syncfusion:TreeGridTextColumn Width="50" MappingName="ID" />
+                        <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="ID" />-->
 
 
                         <syncfusion:TreeGridTemplateColumn
@@ -212,9 +212,9 @@
                 MappingName="Tipo" />
 
 
-                        <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="Tipo" />
+                        <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="Tipo" />-->
 
-            <syncfusion:TreeGridTextColumn Width="50" MappingName="OrdenInt" />-->
+            <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="OrdenInt" />-->
 
 
                         <syncfusion:TreeGridTextColumn Width="250" MappingName="Descripcion" />

@@ -41,7 +41,27 @@ namespace DOP.Presupuestos.Controles
             this.grillaArbol.ChildPropertyName = "Inferiores";
             UcListaConceptos listaInsumos = new UcListaConceptos(Objeto);
             this.listado.Children.Add(listaInsumos);
+            this.grillaArbol.Loaded += GrillaArbol_Loaded;
         }
+
+        private void GrillaArbol_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (this.grillaArbol.View != null)
+            {
+                this.grillaArbol.View.Filter = FiltrarPorTipo;
+                this.grillaArbol.View.Refresh();
+            }
+        }
+
+        private bool FiltrarPorTipo(object item)
+        {
+            if (item is Nodo nodo)
+            {
+                return nodo.Tipo == "R" || nodo.Tipo == "T";
+            }
+            return false;
+        }
+
 
         private void BtnGuardar_Click(object sender, RoutedEventArgs e)
         {
