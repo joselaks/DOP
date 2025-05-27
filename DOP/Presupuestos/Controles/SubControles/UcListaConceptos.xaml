@@ -1,0 +1,91 @@
+﻿<UserControl x:Class="DOP.Presupuestos.Controles.SubControles.UcListaConceptos"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DOP.Presupuestos.Controles.SubControles"
+             mc:Ignorable="d" 
+              d:DesignWidth="400">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <syncfusion:SfTreeGrid
+     x:Name="grillaListado"
+     Grid.Row="1"
+     AllowDraggingRows="True"
+     AllowEditing="True"
+     AllowResizingColumns="True"
+     AutoGenerateColumns="False"
+     CurrentCellBeginEdit="grillaListado_CurrentCellBeginEdit"
+     CurrentCellEndEdit="grillaListado_CurrentCellEndEdit">
+            <syncfusion:SfTreeGrid.Columns>
+                <syncfusion:TreeGridTextColumn
+             Width="50"
+             IsReadOnly="True"
+             MappingName="ID" />
+                <syncfusion:TreeGridTextColumn
+             Width="150"
+             IsReadOnly="True"
+             MappingName="Descripcion" />
+                <syncfusion:TreeGridTextColumn
+             Width="50"
+             IsReadOnly="True"
+             MappingName="Unidad" />
+                <syncfusion:TreeGridNumericColumn
+             Width="80"
+             HeaderText="Cantidad"
+             IsReadOnly="True"
+             MappingName="Cantidad"
+             NumberDecimalDigits="2"
+             NumberDecimalSeparator=","
+             NumberGroupSeparator="."
+             NumberGroupSizes="3" />
+                <syncfusion:TreeGridNumericColumn
+             Width="80"
+             HeaderText="P.U."
+             MappingName="PU1"
+             NumberDecimalDigits="2"
+             NumberDecimalSeparator=","
+             NumberGroupSeparator="."
+             NumberGroupSizes="3" />
+                <syncfusion:TreeGridNumericColumn
+             Width="150"
+             HeaderText="Importe"
+             IsReadOnly="True"
+             MappingName="Importe1"
+             NumberDecimalDigits="2"
+             NumberDecimalSeparator=","
+             NumberGroupSeparator="."
+             NumberGroupSizes="3" />
+                <syncfusion:TreeGridNumericColumn
+             Width="80"
+             HeaderText="P.U 2"
+             MappingName="PU2"
+             NumberDecimalDigits="2"
+             NumberDecimalSeparator=","
+             NumberGroupSeparator="."
+             NumberGroupSizes="3" />
+                <syncfusion:TreeGridNumericColumn
+             Width="150"
+             HeaderText="Importe2"
+             IsReadOnly="True"
+             MappingName="Importe2"
+             NumberDecimalDigits="2"
+             NumberDecimalSeparator=","
+             NumberGroupSeparator="."
+             NumberGroupSizes="3" />
+
+                <syncfusion:TreeGridTextColumn Width="50" MappingName="Tipo" />
+
+            </syncfusion:SfTreeGrid.Columns>
+
+
+
+        </syncfusion:SfTreeGrid>
+
+    </Grid>
+</UserControl>

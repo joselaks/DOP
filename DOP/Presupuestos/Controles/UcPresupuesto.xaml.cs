@@ -1,5 +1,6 @@
 ﻿using Bibioteca.Clases;
 using Biblioteca;
+using DOP.Presupuestos.Controles.SubControles;
 using Microsoft.Win32;
 using Syncfusion.SfSkinManager;
 using System;
@@ -32,12 +33,14 @@ namespace DOP.Presupuestos.Controles
 
         public UcPresupuesto()
             {
-            SfSkinManager.SetTheme(this, new Theme("MaterialLight", new string[] { "TabNavigationControl", "TabControlExt" }));
+            SfSkinManager.SetTheme(this, new Theme("MaterialLight", new string[] { "DockingManager", "TabControlExt" }));
 
             InitializeComponent();
             Objeto = new Presupuesto(null);
             this.grillaArbol.ItemsSource = Objeto.Arbol;
             this.grillaArbol.ChildPropertyName = "Inferiores";
+            UcListaConceptos listaInsumos = new UcListaConceptos(Objeto);
+            this.listado.Children.Add(listaInsumos);
         }
 
         private void BtnGuardar_Click(object sender, RoutedEventArgs e)

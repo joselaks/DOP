@@ -11,6 +11,7 @@
     d:DesignWidth="1200"
     mc:Ignorable="d">
     <UserControl.Resources>
+        
         <!--  DataTemplate para ícono Rubro  -->
         <DataTemplate x:Key="RubTemplate">
             <Image
@@ -122,8 +123,9 @@
         </Style>
 
     </UserControl.Resources>
-
-    <Grid x:Name="Planilla">
+    <syncfusion:DockingManager UseDocumentContainer="False" UseNativeFloatWindow="True" DockFill="True"
+                                SidePanelSize="50" >
+        <Grid x:Name="basePres" syncfusion:DockingManager.NoHeader="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="10*" />
             <RowDefinition Height="auto" />
@@ -343,13 +345,14 @@
             </syncfusion:SfTreeGrid>
 
 
+                
 
 
+            </Grid>
 
-        </Grid>
-
-
-    <syncfusion:SfGridSplitter
+            <Grid x:Name="listado" Grid.Column="2" Grid.RowSpan="3" />
+            
+            <syncfusion:SfGridSplitter
             Grid.Row="1"
             Grid.Column="0"
             Height="5"
@@ -368,32 +371,16 @@
             ResizeBehavior="PreviousAndNext"
             ShowsPreview="True" />
 
-        <syncfusion:TabControlExt Grid.Column="2" Grid.RowSpan="3" Name="tabControlExt">
-            <syncfusion:TabItemExt Header="Actual presupuesto">
-                <TextBlock Name="Actual" Text="This is the first tab item." />
-            </syncfusion:TabItemExt>
-            <syncfusion:TabItemExt Header="Maestro">
-                <TextBlock Name="Maestro" Text="This is the second tab item." />
-            </syncfusion:TabItemExt>
-            <syncfusion:TabItemExt Header="BIM">
-                <TextBlock Name="BIM" Text="This is the third tab item." />
-            </syncfusion:TabItemExt>
-        </syncfusion:TabControlExt>
+      
 
-        <syncfusion:TabControlExt  Grid.Row="3" Grid.Column="0" >
-            <syncfusion:TabItemExt Header="Dosaje">
-                <TextBlock Name="Dosaje" Text="This is the first tab item." />
-            </syncfusion:TabItemExt>
-            <syncfusion:TabItemExt Header="Cómputo">
-                <TextBlock Name="Cómputo" Text="This is the second tab item." />
-            </syncfusion:TabItemExt>
-            <syncfusion:TabItemExt Header="Especificación">
-                <TextBlock Name="Especifdicación" Text="This is the third tab item." />
-            </syncfusion:TabItemExt>
-        </syncfusion:TabControlExt>
+       
 
     </Grid>
-    
-    
+       
+
+        <ContentControl x:Name="dockMaestro" syncfusion:DockingManager.Header="Maestro" syncfusion:DockingManager.State="AutoHidden" syncfusion:DockingManager.SideInDockedMode="Right" syncfusion:DockingManager.DesiredWidthInDockedMode="250"  />
+        <ContentControl x:Name="docBIM" syncfusion:DockingManager.Header="BIM" syncfusion:DockingManager.State="AutoHidden" syncfusion:DockingManager.SideInDockedMode="Right" syncfusion:DockingManager.DesiredWidthInDockedMode="250" />
+
+    </syncfusion:DockingManager>
 
 </UserControl>
