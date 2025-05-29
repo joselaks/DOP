@@ -11,7 +11,7 @@
     d:DesignWidth="1200"
     mc:Ignorable="d">
     <UserControl.Resources>
-        
+
         <!--  DataTemplate para ícono Rubro  -->
         <DataTemplate x:Key="RubTemplate">
             <Image
@@ -123,139 +123,145 @@
         </Style>
 
     </UserControl.Resources>
-    <syncfusion:DockingManager UseDocumentContainer="False" UseNativeFloatWindow="True" DockFill="True"
-                                SidePanelSize="50" >
+    <syncfusion:DockingManager
+        x:Name="docPres"
+        DockFill="True"
+        SidePanelSize="50"
+        UseDocumentContainer="False"
+        UseNativeFloatWindow="True">
         <Grid x:Name="basePres" syncfusion:DockingManager.NoHeader="True">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="10*" />
-            <RowDefinition Height="auto" />
-            <RowDefinition x:Name="panelDetalle" Height="4*" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10*" />
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition x:Name="panelInsumos" Width="4*" />
-        </Grid.ColumnDefinitions>
-        <Grid Grid.Row="0" Grid.Column="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="30" />
-                <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+                <RowDefinition Height="10*" />
+                <RowDefinition Height="auto" />
+                <RowDefinition x:Name="panelDetalle" Height="4*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10*" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition x:Name="panelInsumos" Width="4*" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="0" Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-            <StackPanel Orientation="Horizontal">
-                <TextBlock VerticalAlignment="Center" Text="Nombre del presupuesto: " />
-                <TextBox
-    x:Name="descripcion"
-    Width="200"
-    Height="30"
-    Margin="5,0,0,0" />
-                <syncfusion:ButtonAdv
-     x:Name="BtnGuardar"
-     Margin="3"
-     Click="BtnGuardar_Click"
-     Label="Log-in"
-     SizeMode="Small"
-     SmallIcon="pack://application:,,,/Imagenes/Guardar.png"
-     ToolTip="Guardar" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Text="Nombre del presupuesto: " />
+                    <TextBox
+                        x:Name="descripcion"
+                        Width="200"
+                        Height="30"
+                        Margin="5,0,0,0" />
+                    <syncfusion:ButtonAdv
+                        x:Name="BtnGuardar"
+                        Margin="3"
+                        Click="BtnGuardar_Click"
+                        Label="Log-in"
+                        SizeMode="Small"
+                        SmallIcon="pack://application:,,,/Imagenes/Guardar.png"
+                        ToolTip="Guardar" />
 
-                <syncfusion:ButtonAdv
-     x:Name="Fiebdc"
-     Margin="3"
-     Click="Fiebdc_Click"
-     Label="Log-in"
-     SizeMode="Small"
-     SmallIcon="pack://application:,,,/Imagenes/Importar.png"
-     ToolTip="Fiebdc" />
+                    <syncfusion:ButtonAdv
+                        x:Name="Fiebdc"
+                        Margin="3"
+                        Click="Fiebdc_Click"
+                        Label="Log-in"
+                        SizeMode="Small"
+                        SmallIcon="pack://application:,,,/Imagenes/Importar.png"
+                        ToolTip="Fiebdc" />
 
 
 
-            </StackPanel>
-            <syncfusion:SfTreeGrid
-    Name="grillaArbol"
-    Grid.Row="1"
-    AllowDraggingRows="True"
-    AllowDrop="True"
-    AllowEditing="True"
-    AllowResizingColumns="True"
-    AutoGenerateColumns="False"
-    CurrentCellBeginEdit="grillaArbol_CurrentCellBeginEdit"
-    CurrentCellEndEdit="grillaArbol_CurrentCellEndEdit"
-    ExpanderCellStyle="{StaticResource ExpandedCellStyle}"
-    ExpanderColumn="Descripcion"
-    KeyDown="grillaArbol_KeyDown"
-    SelectionMode="Single">
-                <syncfusion:SfTreeGrid.StackedHeaderRows>
-                    <!--<syncfusion:StackedHeaderRow>
-                        --><!--<syncfusion:StackedHeaderRow.StackedColumns>
+                </StackPanel>
+                <syncfusion:SfTreeGrid
+                    Name="grillaArbol"
+                    Grid.Row="1"
+                    AllowDraggingRows="True"
+                    AllowDrop="True"
+                    AllowEditing="True"
+                    AllowResizingColumns="True"
+                    AutoGenerateColumns="False"
+                    CurrentCellBeginEdit="grillaArbol_CurrentCellBeginEdit"
+                    CurrentCellEndEdit="grillaArbol_CurrentCellEndEdit"
+                    ExpanderCellStyle="{StaticResource ExpandedCellStyle}"
+                    ExpanderColumn="Descripcion"
+                    KeyDown="grillaArbol_KeyDown"
+                    SelectionMode="Single">
+                    <syncfusion:SfTreeGrid.StackedHeaderRows>
+                        <!--<syncfusion:StackedHeaderRow>
+                        -->
+                        <!--<syncfusion:StackedHeaderRow.StackedColumns>
                             <syncfusion:StackedColumn ChildColumns="Cantidad,PU1,PU2,Importe1,Importe2" HeaderText="Ejecución" />
-                        </syncfusion:StackedHeaderRow.StackedColumns>--><!--
+                        </syncfusion:StackedHeaderRow.StackedColumns>-->
+                        <!--
                     </syncfusion:StackedHeaderRow>-->
-                    <syncfusion:StackedHeaderRow>
-                        <syncfusion:StackedHeaderRow.StackedColumns>
-                            <syncfusion:StackedColumn ChildColumns="Importe1" HeaderText="Total $" />
-                            <syncfusion:StackedColumn ChildColumns="Importe2" HeaderText="Total u$s" />
-                        </syncfusion:StackedHeaderRow.StackedColumns>
-                    </syncfusion:StackedHeaderRow>
-                </syncfusion:SfTreeGrid.StackedHeaderRows>
-                <syncfusion:SfTreeGrid.Columns>
-                    <syncfusion:TreeGridColumns>
+                        <syncfusion:StackedHeaderRow>
+                            <syncfusion:StackedHeaderRow.StackedColumns>
+                                <syncfusion:StackedColumn ChildColumns="Importe1" HeaderText="Total $" />
+                                <syncfusion:StackedColumn ChildColumns="Importe2" HeaderText="Total u$s" />
+                            </syncfusion:StackedHeaderRow.StackedColumns>
+                        </syncfusion:StackedHeaderRow>
+                    </syncfusion:SfTreeGrid.StackedHeaderRows>
+                    <syncfusion:SfTreeGrid.Columns>
+                        <syncfusion:TreeGridColumns>
 
-                        <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="OrdenInt" />-->
+                            <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="OrdenInt" />-->
 
-                        <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="ID" />-->
-
-
-                        <syncfusion:TreeGridTemplateColumn
-                Width="30"
-                CellTemplateSelector="{StaticResource IconTemplateSelector}"
-                HeaderText="Nat"
-                MappingName="Tipo" />
+                            <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="ID" />-->
 
 
-                        <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="Tipo" />-->
-
-            <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="OrdenInt" />-->
-
-
-                        <syncfusion:TreeGridTextColumn Width="250" MappingName="Descripcion" />
-
-                        <syncfusion:TreeGridTextColumn
-                Width="80"
-                CellStyle="{StaticResource CantidadCellStyle}"
-                MappingName="Unidad"
-                TextAlignment="Right" />
+                            <syncfusion:TreeGridTemplateColumn
+                                Width="30"
+                                CellTemplateSelector="{StaticResource IconTemplateSelector}"
+                                HeaderText="Nat"
+                                MappingName="Tipo" />
 
 
-                        <syncfusion:TreeGridNumericColumn
-                CellStyle="{StaticResource CantidadCellStyle}"
-                HeaderText="Cant."
-                MappingName="Cantidad"
-                NumberDecimalDigits="2"
-                NumberDecimalSeparator=","
-                NumberGroupSeparator="."
-                NumberGroupSizes="3" />
+                            <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="Tipo" />-->
 
-                        <syncfusion:TreeGridNumericColumn
-                Width="80"
-                CellStyle="{StaticResource CantidadCellStyle}"
-                HeaderText="P.U. $."
-                MappingName="PU1"
-                NumberDecimalDigits="2"
-                NumberDecimalSeparator=","
-                NumberGroupSeparator="."
-                NumberGroupSizes="3" />
+                            <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="OrdenInt" />-->
 
-                        <syncfusion:TreeGridNumericColumn
-                Width="80"
-                CellStyle="{StaticResource CantidadCellStyle}"
-                HeaderText="P.U. u$s."
-                MappingName="PU2"
-                NumberDecimalDigits="2"
-                NumberDecimalSeparator=","
-                NumberGroupSeparator="."
-                NumberGroupSizes="3" />
 
-                        <!--<syncfusion:TreeGridNumericColumn
+                            <syncfusion:TreeGridTextColumn Width="250" MappingName="Descripcion" />
+
+                            <syncfusion:TreeGridTextColumn
+                                Width="80"
+                                CellStyle="{StaticResource CantidadCellStyle}"
+                                MappingName="Unidad"
+                                TextAlignment="Right" />
+
+
+                            <syncfusion:TreeGridNumericColumn
+                                CellStyle="{StaticResource CantidadCellStyle}"
+                                HeaderText="Cant."
+                                MappingName="Cantidad"
+                                NumberDecimalDigits="2"
+                                NumberDecimalSeparator=","
+                                NumberGroupSeparator="."
+                                NumberGroupSizes="3" />
+
+                            <syncfusion:TreeGridNumericColumn
+                                Width="80"
+                                CellStyle="{StaticResource CantidadCellStyle}"
+                                HeaderText="P.U. $."
+                                MappingName="PU1"
+                                NumberDecimalDigits="2"
+                                NumberDecimalSeparator=","
+                                NumberGroupSeparator="."
+                                NumberGroupSizes="3" />
+
+                            <syncfusion:TreeGridNumericColumn
+                                Width="80"
+                                CellStyle="{StaticResource CantidadCellStyle}"
+                                HeaderText="P.U. u$s."
+                                MappingName="PU2"
+                                NumberDecimalDigits="2"
+                                NumberDecimalSeparator=","
+                                NumberGroupSeparator="."
+                                NumberGroupSizes="3" />
+
+                            <!--<syncfusion:TreeGridNumericColumn
                 Width="80"
                 CellStyle="{StaticResource CantidadCellStyle}"
                 MappingName="Factor"
@@ -264,122 +270,141 @@
                 NumberGroupSeparator="."
                 NumberGroupSizes="3" />-->
 
-                        <syncfusion:TreeGridNumericColumn
-                x:Name="colImporte1"
-                Width="120"
-                CellStyle="{StaticResource TipoCellStyle}"
-                HeaderStyle="{StaticResource BoldTreeGridHeaderStyle}"
-                HeaderText="{Binding totGeneral1}"
-                MappingName="Importe1"
-                NumberDecimalDigits="2"
-                NumberDecimalSeparator=","
-                NumberGroupSeparator="."
-                NumberGroupSizes="3" />
+                            <syncfusion:TreeGridNumericColumn
+                                x:Name="colImporte1"
+                                Width="120"
+                                CellStyle="{StaticResource TipoCellStyle}"
+                                HeaderStyle="{StaticResource BoldTreeGridHeaderStyle}"
+                                HeaderText="{Binding totGeneral1}"
+                                MappingName="Importe1"
+                                NumberDecimalDigits="2"
+                                NumberDecimalSeparator=","
+                                NumberGroupSeparator="."
+                                NumberGroupSizes="3" />
 
-                        <syncfusion:TreeGridNumericColumn
-                x:Name="colImporte2"
-                Width="120"
-                CellStyle="{StaticResource TipoCellStyle}"
-                HeaderStyle="{StaticResource BoldTreeGridHeaderStyle}"
-                HeaderText="{Binding totGeneral2}"
-                MappingName="Importe2"
-                NumberDecimalDigits="2"
-                NumberDecimalSeparator=","
-                NumberGroupSeparator="."
-                NumberGroupSizes="3" />
+                            <syncfusion:TreeGridNumericColumn
+                                x:Name="colImporte2"
+                                Width="120"
+                                CellStyle="{StaticResource TipoCellStyle}"
+                                HeaderStyle="{StaticResource BoldTreeGridHeaderStyle}"
+                                HeaderText="{Binding totGeneral2}"
+                                MappingName="Importe2"
+                                NumberDecimalDigits="2"
+                                NumberDecimalSeparator=","
+                                NumberGroupSeparator="."
+                                NumberGroupSizes="3" />
 
-                        <syncfusion:TreeGridNumericColumn
-                Width="120"
-                CellStyle="{StaticResource TipoCellStyle}"
-                IsHidden="True"
-                MappingName="Materiales1"
-                NumberDecimalDigits="2"
-                NumberDecimalSeparator=","
-                NumberGroupSeparator="."
-                NumberGroupSizes="3" />
+                            <syncfusion:TreeGridNumericColumn
+                                Width="120"
+                                CellStyle="{StaticResource TipoCellStyle}"
+                                IsHidden="True"
+                                MappingName="Materiales1"
+                                NumberDecimalDigits="2"
+                                NumberDecimalSeparator=","
+                                NumberGroupSeparator="."
+                                NumberGroupSizes="3" />
 
-                        <syncfusion:TreeGridNumericColumn
-                Width="120"
-                CellStyle="{StaticResource TipoCellStyle}"
-                IsHidden="True"
-                MappingName="ManodeObra1"
-                NumberDecimalDigits="2"
-                NumberDecimalSeparator=","
-                NumberGroupSeparator="."
-                NumberGroupSizes="3" />
+                            <syncfusion:TreeGridNumericColumn
+                                Width="120"
+                                CellStyle="{StaticResource TipoCellStyle}"
+                                IsHidden="True"
+                                MappingName="ManodeObra1"
+                                NumberDecimalDigits="2"
+                                NumberDecimalSeparator=","
+                                NumberGroupSeparator="."
+                                NumberGroupSizes="3" />
 
-                        <syncfusion:TreeGridNumericColumn
-                Width="120"
-                CellStyle="{StaticResource TipoCellStyle}"
-                IsHidden="True"
-                MappingName="Equipos1"
-                NumberDecimalDigits="2"
-                NumberDecimalSeparator=","
-                NumberGroupSeparator="."
-                NumberGroupSizes="3" />
+                            <syncfusion:TreeGridNumericColumn
+                                Width="120"
+                                CellStyle="{StaticResource TipoCellStyle}"
+                                IsHidden="True"
+                                MappingName="Equipos1"
+                                NumberDecimalDigits="2"
+                                NumberDecimalSeparator=","
+                                NumberGroupSeparator="."
+                                NumberGroupSizes="3" />
 
-                        <syncfusion:TreeGridNumericColumn
-                Width="120"
-                CellStyle="{StaticResource TipoCellStyle}"
-                IsHidden="True"
-                MappingName="Subcontratos1"
-                NumberDecimalDigits="2"
-                NumberDecimalSeparator=","
-                NumberGroupSeparator="."
-                NumberGroupSizes="3" />
+                            <syncfusion:TreeGridNumericColumn
+                                Width="120"
+                                CellStyle="{StaticResource TipoCellStyle}"
+                                IsHidden="True"
+                                MappingName="Subcontratos1"
+                                NumberDecimalDigits="2"
+                                NumberDecimalSeparator=","
+                                NumberGroupSeparator="."
+                                NumberGroupSizes="3" />
 
-                        <syncfusion:TreeGridNumericColumn
-                Width="120"
-                CellStyle="{StaticResource TipoCellStyle}"
-                IsHidden="True"
-                MappingName="Otros1"
-                NumberDecimalDigits="2"
-                NumberDecimalSeparator=","
-                NumberGroupSeparator="."
-                NumberGroupSizes="3" />
-
-
-
-                    </syncfusion:TreeGridColumns>
-                </syncfusion:SfTreeGrid.Columns>
-            </syncfusion:SfTreeGrid>
+                            <syncfusion:TreeGridNumericColumn
+                                Width="120"
+                                CellStyle="{StaticResource TipoCellStyle}"
+                                IsHidden="True"
+                                MappingName="Otros1"
+                                NumberDecimalDigits="2"
+                                NumberDecimalSeparator=","
+                                NumberGroupSeparator="."
+                                NumberGroupSizes="3" />
 
 
-                
+
+                        </syncfusion:TreeGridColumns>
+                    </syncfusion:SfTreeGrid.Columns>
+                </syncfusion:SfTreeGrid>
+
+               
+
 
 
             </Grid>
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal">
+                    
+                </StackPanel>
 
-            <Grid x:Name="listado" Grid.Column="2" Grid.RowSpan="3" />
-            
+            </Grid>
+
+            <Grid
+                x:Name="listado"
+                Grid.RowSpan="3"
+                Grid.Column="2" />
+
             <syncfusion:SfGridSplitter
-            Grid.Row="1"
-            Grid.Column="0"
-            Height="5"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Top"
-            EnableCollapseButton="True"
-            ResizeBehavior="PreviousAndNext"
-            ShowsPreview="True" />
-        <syncfusion:SfGridSplitter
-            Grid.RowSpan="3"
-            Grid.Column="1"
-            Width="5"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Stretch"
-            EnableCollapseButton="True"
-            ResizeBehavior="PreviousAndNext"
-            ShowsPreview="True" />
+                Grid.Row="1"
+                Grid.Column="0"
+                Height="5"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Top"
+                EnableCollapseButton="True"
+                ResizeBehavior="PreviousAndNext"
+                ShowsPreview="True" />
+            <syncfusion:SfGridSplitter
+                Grid.RowSpan="3"
+                Grid.Column="1"
+                Width="5"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Stretch"
+                EnableCollapseButton="True"
+                ResizeBehavior="PreviousAndNext"
+                ShowsPreview="True" />
 
-      
 
-       
 
-    </Grid>
-       
 
-        <ContentControl x:Name="dockMaestro" syncfusion:DockingManager.Header="Maestro" syncfusion:DockingManager.State="AutoHidden" syncfusion:DockingManager.SideInDockedMode="Right" syncfusion:DockingManager.DesiredWidthInDockedMode="250"  />
-        <ContentControl x:Name="docBIM" syncfusion:DockingManager.Header="BIM" syncfusion:DockingManager.State="AutoHidden" syncfusion:DockingManager.SideInDockedMode="Right" syncfusion:DockingManager.DesiredWidthInDockedMode="250" />
+
+        </Grid>
+
+
+        <ContentControl
+            x:Name="dockMaestro"
+            syncfusion:DockingManager.DesiredWidthInDockedMode="250"
+            syncfusion:DockingManager.Header="Maestro"
+            syncfusion:DockingManager.SideInDockedMode="Right"
+            syncfusion:DockingManager.State="AutoHidden"
+            Background="White" />
+        <!--<ContentControl x:Name="docBIM" syncfusion:DockingManager.Header="   BIM   " syncfusion:DockingManager.State="AutoHidden" syncfusion:DockingManager.SideInDockedMode="Right" syncfusion:DockingManager.DesiredWidthInDockedMode="250" Background="White"/>-->
 
     </syncfusion:DockingManager>
 

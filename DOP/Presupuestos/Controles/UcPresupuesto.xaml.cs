@@ -1,8 +1,12 @@
 ﻿using Bibioteca.Clases;
+using Syncfusion.Windows.Shared;
+using Syncfusion.Windows.Tools.Controls;
 using Biblioteca;
 using DOP.Presupuestos.Controles.SubControles;
 using Microsoft.Win32;
 using Syncfusion.SfSkinManager;
+using Syncfusion.Windows.Controls;
+using Syncfusion.Windows.Tools.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -28,12 +32,13 @@ namespace DOP.Presupuestos.Controles
     /// </summary>
     public partial class UcPresupuesto : UserControl
         {
+        private SidePanel rightPanel;
         public Presupuesto Objeto;
         
 
         public UcPresupuesto()
             {
-            SfSkinManager.SetTheme(this, new Theme("MaterialLight", new string[] { "DockingManager", "TabControlExt" }));
+            //SfSkinManager.SetTheme(this, new Theme("MaterialLight", new string[] { "DockingManager", "TabControlExt" }));
 
             InitializeComponent();
             Objeto = new Presupuesto(null);
@@ -51,7 +56,32 @@ namespace DOP.Presupuestos.Controles
                 this.grillaArbol.View.Filter = FiltrarPorTipo;
                 this.grillaArbol.View.Refresh();
             }
-        }
+            var panels = Syncfusion.Windows.Shared.VisualUtils.EnumChildrenOfType(docPres, typeof(SidePanel));
+            if (panels != null)
+                {
+                foreach (SidePanel panel in panels)
+                    {
+                    if (panel.Name.ToString() == "PART_RightPanel")
+                        {
+                        rightPanel = panel;
+                        rightPanel.FontSize = 20;
+                        rightPanel.FontWeight = FontWeights.DemiBold;
+                        rightPanel.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+                        rightPanel.LayoutUpdated += Panel_LayoutUpdated;
+                        }
+                    }
+                }
+            }
+
+        private void Panel_LayoutUpdated(object sender, EventArgs e)
+            {
+            DirectTabPanel tabpanel = rightPanel.Template.FindName("PART_PanelName", rightPanel) as DirectTabPanel;
+            if (tabpanel != null)
+                {
+                tabpanel.VerticalAlignment = VerticalAlignment.Center;
+                rightPanel.LayoutUpdated -= Panel_LayoutUpdated;
+                }
+            }
 
         private bool FiltrarPorTipo(object item)
         {
