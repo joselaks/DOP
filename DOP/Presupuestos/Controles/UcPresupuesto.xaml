@@ -211,11 +211,11 @@
                             <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="ID" />-->
 
 
-                            <syncfusion:TreeGridTemplateColumn
-                                Width="30"
-                                CellTemplateSelector="{StaticResource IconTemplateSelector}"
-                                HeaderText="Nat"
-                                MappingName="Tipo" />
+                        <syncfusion:TreeGridTemplateColumn
+                Width="30"
+                CellTemplateSelector="{StaticResource IconTemplateSelector}"
+                HeaderText="Nat"
+                MappingName="Tipo" />
 
 
                             <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="Tipo" />-->
