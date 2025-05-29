@@ -24,8 +24,7 @@ namespace DOP.Presupuestos.Ventanas
         public WiPresupuesto()
         {
             InitializeComponent();
-            UcPresupuesto ucPresupuesto = new UcPresupuesto();
-            this.ppal.Children.Add(ucPresupuesto);  
+           
         }
     }
 }
