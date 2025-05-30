@@ -892,12 +892,12 @@ namespace DataObra.Presupuestos
 
         private void ComboObras_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            var sele = ComboObras.SelectedItem as AgrupadorDTO;
-            if (sele != null)
-            {
-                Encabezado.ObraID = sele.ID;
-                Encabezado.Obra = sele.Descrip;
-            }
+            //var sele = ComboObras.SelectedItem as AgrupadorDTO;
+            //if (sele != null)
+            //{
+            //    Encabezado.ObraID = sele.ID;
+            //    Encabezado.Obra = sele.Descrip;
+            //}
         }
 
         private DocumentoDTO ConvertirADTO(Documento doc, bool esNuevo)

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Bibioteca.Clases;
+using Syncfusion.Windows.Tools.Controls;
+using Syncfusion.XlsIO.Implementation.XmlSerialization.Constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +23,31 @@ namespace DOP.Presupuestos.Controles
     /// </summary>
     public partial class UcPlanilla : UserControl
     {
-        public UcPlanilla()
+        public Presupuesto Objeto;
+        public UcPlanilla(Presupuesto objeto)
         {
             InitializeComponent();
+            this.grillaArbol.ItemsSource = objeto.Arbol;
+            this.grillaArbol.ChildPropertyName = "Inferiores";
+            this.grillaArbol.Loaded += GrillaArbol_Loaded;
+        }
+
+        private void GrillaArbol_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (this.grillaArbol.View != null)
+            {
+                this.grillaArbol.View.Filter = FiltrarPorTipo;
+                this.grillaArbol.View.Refresh();
+            }
+        }
+
+        private bool FiltrarPorTipo(object item)
+        {
+            if (item is Nodo nodo)
+            {
+                return nodo.Tipo == "R" || nodo.Tipo == "T";
+            }
+            return false;
         }
 
         private void grillaArbol_CurrentCellBeginEdit(object sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridCurrentCellBeginEditEventArgs e)

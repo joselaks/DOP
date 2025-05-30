@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bibioteca.Clases;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,12 @@ namespace DOP.Presupuestos.Controles
     /// </summary>
     public partial class UcListado : UserControl
     {
-        public UcListado()
+        public Presupuesto Objeto;
+        public UcListado(Presupuesto objeto)
         {
             InitializeComponent();
+            Objeto= objeto;
+            this.grillaListados.ItemsSource = Objeto.Insumos;
         }
     }
 }

@@ -69,7 +69,7 @@
                 Source="/Imagenes/Presupuestos/arbol.png" />
         </DataTemplate>
         <!--  DataTemplateSelector  -->
-        <local:IconTemplateSelector
+        <!--<local:IconTemplateSelector
             x:Key="IconTemplateSelector"
             AuxTemplate="{StaticResource AuxTemplate}"
             EquTemplate="{StaticResource EquTemplate}"
@@ -78,7 +78,7 @@
             OtrTemplate="{StaticResource OtrTemplate}"
             RubTemplate="{StaticResource RubTemplate}"
             SubTemplate="{StaticResource SubTemplate}"
-            TarTemplate="{StaticResource TarTemplate}" />
+            TarTemplate="{StaticResource TarTemplate}" />-->
 
         <Style x:Key="CantidadCellStyle" TargetType="syncfusion:TreeGridCell">
             <Style.Triggers>

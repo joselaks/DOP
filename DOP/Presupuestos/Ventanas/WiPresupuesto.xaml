@@ -114,6 +114,7 @@
                             <ComboBoxItem>Otros</ComboBoxItem>
                         </ComboBox>
                     </StackPanel>
+                    <Grid x:Name="gListado" Grid.Row="1"></Grid>
                 </Grid>
 
                 <syncfusion:SfGridSplitter
