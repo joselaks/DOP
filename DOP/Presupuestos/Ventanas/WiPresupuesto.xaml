@@ -9,23 +9,36 @@
         xmlns:syncfusion="http://schemas.syncfusion.com/wpf" 
         mc:Ignorable="d"
         Title="DataObra" 
-        Height="450" Width="800"
+        Height="800" Width="1020"
         WindowStartupLocation="CenterScreen"
         WindowState="Normal">
-    
 
-  
-   
+
+
+
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
         <syncfusion:Ribbon x:Name="menuppal" VerticalAlignment="Top" BackStageHeader="CONFIG."  >
-            
+
             <syncfusion:Ribbon.BackStage>
                 <syncfusion:Backstage>
-                    <syncfusion:BackstageTabItem  Header="Info">
+                    <syncfusion:BackstageTabItem  Header="Datos">
                         <StackPanel>
-                            <TextBlock FontSize="20" Margin="10" Text="Account Information"/>
-                            <TextBlock FontSize="12" Margin="10" Text="Employ1@syncfusion.com"/>
+                            <TextBlock FontSize="20" Margin="10" Text="Datos del presupuesto"/>
+                        </StackPanel>
+                    </syncfusion:BackstageTabItem>
+                    <syncfusion:BackstageTabItem  Header="Indirectos">
+                        <StackPanel>
+                            <TextBlock FontSize="20" Margin="10" Text="Coeficiente"/>
+                        </StackPanel>
+                    </syncfusion:BackstageTabItem>
+                    <syncfusion:BackstageTabItem  Header="Divisas">
+                        <StackPanel>
+                            <TextBlock FontSize="20" Margin="10" Text="Tipos de cambio"/>
                         </StackPanel>
                     </syncfusion:BackstageTabItem>
                 </syncfusion:Backstage >
@@ -33,6 +46,103 @@
             <syncfusion:RibbonTab Caption="INICIO"  IsChecked="True"/>
             <syncfusion:RibbonTab Caption="REPORTES"  IsChecked="False"/>
         </syncfusion:Ribbon>
+        <syncfusion:DockingManager
+            Grid.Row="1"
+     x:Name="docPres"
+     DockFill="True"
+     SidePanelSize="50"
+     UseDocumentContainer="False"
+     UseNativeFloatWindow="True" Grid.RowSpan="2">
+
+            <Grid x:Name="basePres" syncfusion:DockingManager.NoHeader="True">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10*" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition x:Name="panelDetalle" Height="4*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="10*" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition x:Name="panelInsumos" Width="4*" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Row="0" Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" Text="Presupuesto" FontSize="20" FontWeight="Bold" />
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" Text="Detalle" FontSize="20" FontWeight="Bold" />
+                    </StackPanel>
+
+                </Grid>
+
+                <Grid
+          x:Name="listado"
+          Grid.RowSpan="3"
+          Grid.Column="2" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel x:Name="tListados" Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" Text="Listado" FontSize="20" FontWeight="Bold" />
+                        <ComboBox Width="150" Margin="10,0,0,0" VerticalAlignment="Center" SelectedIndex="0">
+                            <ComboBoxItem>Todos</ComboBoxItem>
+                            <ComboBoxItem>Materiales</ComboBoxItem>
+                            <ComboBoxItem>Mano de obra</ComboBoxItem>
+                            <ComboBoxItem>Equipos</ComboBoxItem>
+                            <ComboBoxItem>Subcontratos</ComboBoxItem>
+                            <ComboBoxItem>Otros</ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
+                </Grid>
+
+                <syncfusion:SfGridSplitter
+          Grid.Row="1"
+          Grid.Column="0"
+          Height="5"
+          HorizontalAlignment="Stretch"
+          VerticalAlignment="Top"
+          EnableCollapseButton="True"
+          ResizeBehavior="PreviousAndNext"
+          ShowsPreview="True" />
+                <syncfusion:SfGridSplitter
+          Grid.RowSpan="3"
+          Grid.Column="1"
+          Width="5"
+          HorizontalAlignment="Left"
+          VerticalAlignment="Stretch"
+          EnableCollapseButton="True"
+          ResizeBehavior="PreviousAndNext"
+          ShowsPreview="True" />
+
+
+
+
+
+            </Grid>
+
+
+            <ContentControl
+         x:Name="dockMaestro"
+         syncfusion:DockingManager.DesiredWidthInDockedMode="250"
+         syncfusion:DockingManager.Header="Maestro"
+         syncfusion:DockingManager.SideInDockedMode="Right"
+         syncfusion:DockingManager.State="AutoHidden"
+         Background="White" />
+
+        </syncfusion:DockingManager>
+
     </Grid>
 </syncfusion:RibbonWindow>                       
      

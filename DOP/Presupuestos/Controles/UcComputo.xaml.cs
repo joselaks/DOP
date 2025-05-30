@@ -4,37 +4,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using Syncfusion.Windows.Tools.Controls;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
-using DOP.Presupuestos.Controles;
 
-namespace DOP.Presupuestos.Ventanas
+namespace DOP.Presupuestos.Controles
 {
     /// <summary>
-    /// Lógica de interacción para WiPresupuesto.xaml
+    /// Lógica de interacción para UcComputo.xaml
     /// </summary>
-    public partial class WiPresupuesto : RibbonWindow
+    public partial class UcComputo : UserControl
     {
-        public WiPresupuesto()
+        public UcComputo()
         {
             InitializeComponent();
-           
-        }
-
-        private void Fiebdc_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void BtnGuardar_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }
