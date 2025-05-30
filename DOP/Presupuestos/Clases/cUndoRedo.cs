@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DOP.Presupuestos.Clases
 {
-    class UndoRedo
+    public class cUndoRedo
     {
     }
 }

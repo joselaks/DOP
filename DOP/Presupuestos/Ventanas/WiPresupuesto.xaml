@@ -9,20 +9,16 @@
         xmlns:syncfusion="http://schemas.syncfusion.com/wpf" 
         mc:Ignorable="d"
         Title="DataObra" 
-        Height="800" Width="1020"
+        Height="900" Width="1800"
         WindowStartupLocation="CenterScreen"
         WindowState="Normal">
-
-
-
-
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <syncfusion:Ribbon x:Name="menuppal" VerticalAlignment="Top" BackStageHeader="CONFIG."  >
+        <syncfusion:Ribbon x:Name="menuppal" VerticalAlignment="Top" BackStageHeader="CONFIG."   >
 
             <syncfusion:Ribbon.BackStage>
                 <syncfusion:Backstage>
@@ -43,7 +39,16 @@
                     </syncfusion:BackstageTabItem>
                 </syncfusion:Backstage >
             </syncfusion:Ribbon.BackStage>
-            <syncfusion:RibbonTab Caption="INICIO"  IsChecked="True"/>
+            <syncfusion:RibbonTab Caption="INICIO"  IsChecked="True">
+                <syncfusion:RibbonBar Name="New" Width="90"  Header="Guardar">
+                    <syncfusion:RibbonButton SizeForm="Large" Label="Guardar"/>
+                    <syncfusion:RibbonButton SizeForm="Large" Label="Importar FIEBDC" x:Name="btnFiebdc" Click="btnFiebdc_Click"/>
+                </syncfusion:RibbonBar>
+                <syncfusion:RibbonBar Name="Delete" Width="150"  Header="Vistas"/>
+                <syncfusion:RibbonBar Name="Respond" Width="90" Header="Reportes"/>
+
+
+            </syncfusion:RibbonTab>
             <syncfusion:RibbonTab Caption="REPORTES"  IsChecked="False"/>
         </syncfusion:Ribbon>
         <syncfusion:DockingManager
@@ -74,7 +79,11 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center" Text="Presupuesto" FontSize="20" FontWeight="Bold" />
                     </StackPanel>
+                    <Grid Grid.Row="1" x:Name="gPlanilla"/>
+
+
                 </Grid>
+              
                 <Grid Grid.Row="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30"/>
