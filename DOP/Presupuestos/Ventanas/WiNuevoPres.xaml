@@ -1,0 +1,59 @@
+﻿<Window x:Class="DOP.Presupuestos.Ventanas.WiNuevoPres"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Nuevo Presupuesto"
+        Height="500" Width="800"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        WindowStyle="SingleBorderWindow"
+        ShowInTaskbar="False">
+    <Window.Resources>
+        <Style x:Key="RoundedButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FFEEEEEE"/>
+            <Setter Property="BorderBrush" Value="#FFCCCCCC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Margin" Value="0,0,10,10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="18">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Seleccione cómo desea crear el nuevo presupuesto:" 
+                   FontSize="18" FontWeight="Bold" Margin="0,0,0,20"/>
+        <StackPanel Grid.Row="1" Orientation="Vertical" VerticalAlignment="Top">
+            <!-- Opción 1: Presupuesto vacío -->
+            <Button x:Name="btnVacio" Content="Crear presupuesto vacío" Height="40" Style="{StaticResource RoundedButtonStyle}" Click="btnVacio_Click"/>
+
+            <!-- Opción 2: Modelos predefinidos -->
+            <TextBlock Text="Crear en base a modelos:" FontWeight="SemiBold" Margin="0,10,0,5"/>
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Grid.Row="1" Margin="0,10,0,0">
+                <StackPanel x:Name="panelModelos" Orientation="Horizontal"/>
+            </ScrollViewer>
+            <!-- Opción 3: Modelos propios -->
+            <TextBlock Text="Crear en base a modelos propios:" FontWeight="SemiBold" Margin="0,15,0,5"/>
+            <StackPanel x:Name="panelModelosPropios" Orientation="Horizontal" Grid.Row="1" Margin="0,10,0,0"/>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+            <Button Content="Cancelar" Width="100" Click="Button_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
+

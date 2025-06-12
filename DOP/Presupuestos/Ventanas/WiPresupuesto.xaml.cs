@@ -30,7 +30,7 @@ namespace DOP.Presupuestos.Ventanas
         public cUndoRedo UndoRedo;
         public UcPlanilla Planilla;
         public UcListado Listado;
-        public WiPresupuesto()
+        public WiPresupuesto(int usuario, int presupuesto )
         {
             InitializeComponent();
             Objeto = new Presupuesto(null);

@@ -171,7 +171,7 @@ namespace DOP.Presupuestos.Ventanas
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
             {
-                WiPresupuesto wiPresupuesto = new WiPresupuesto();
+                WiPresupuesto wiPresupuesto = new WiPresupuesto(0,0);
             
             wiPresupuesto.ShowDialog();
         }
@@ -193,18 +193,14 @@ namespace DOP.Presupuestos.Ventanas
 
         private void NuevoPres(object sender, RoutedEventArgs e)
             {
-            WiMarco ventana = new WiMarco("Presupuesto", new Presupuestos.Controles.UcPresupuesto());
-            ventana.Owner = this;
-            ventana.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            ventana.WindowState = WindowState.Normal;
-            var screenWidth = SystemParameters.PrimaryScreenWidth;
-            var screenHeight = SystemParameters.PrimaryScreenHeight;
-
-            ventana.Width = screenWidth-10;
-            ventana.Height = screenHeight-40;
+            var ventana = new WiNuevoPres
+            {
+                Owner = this,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
+            };
             ventana.ShowDialog();
 
-            }
+        }
         }
 
 
