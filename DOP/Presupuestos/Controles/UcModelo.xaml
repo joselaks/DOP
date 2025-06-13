@@ -1,7 +1,7 @@
 ﻿<UserControl x:Class="DOP.Presupuestos.Controles.UcModelo"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             Height="60" Width="160">
+             Height="160" Width="160">
     <Border Background="#FFEEEEEE" BorderBrush="#FFCCCCCC" BorderThickness="1" CornerRadius="18" Padding="10">
         <StackPanel>
             <TextBlock x:Name="Titulo" FontWeight="Bold" FontSize="16" Text="Título"/>

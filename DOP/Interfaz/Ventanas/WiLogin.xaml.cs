@@ -79,12 +79,19 @@ namespace DOP.Interfaz.Ventanas
                         this.DialogResult = true;
                         this.Close();
 
+                        
+
+                        // Crea y asigna la nueva ventana principal
                         WiTablero tablero = new WiTablero()
                             {
-                            Owner = Inicio,
-                            WindowStartupLocation = WindowStartupLocation.CenterOwner
+                            WindowStartupLocation = WindowStartupLocation.CenterScreen
                             };
-                        tablero.ShowDialog();
+                        Application.Current.MainWindow = tablero;
+                        tablero.Show();
+
+                        // Cierra la ventana de inicio
+                        Inicio.Close();
+
                         return;
                         }
                     else

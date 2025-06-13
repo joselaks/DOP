@@ -16,27 +16,28 @@ namespace DOP.Presupuestos.Ventanas
 
             var opciones = new[]
             {
-                new { Titulo = "Modelo 1", Descripcion = "Descripción breve", Parametro = "Modelo:Modelo 1" },
-                new { Titulo = "Modelo 2", Descripcion = "Otra descripción", Parametro = "Modelo:Modelo 2" },
-                new { Titulo = "Propio 1", Descripcion = "Descripción propia", Parametro = "Propio:Propio 1" },
-                new { Titulo = "Modelo 1", Descripcion = "Descripción breve", Parametro = "Modelo:Modelo 1" },
-                new { Titulo = "Modelo 2", Descripcion = "Otra descripción", Parametro = "Modelo:Modelo 2" },
-                new { Titulo = "Propio 1", Descripcion = "Descripción propia", Parametro = "Propio:Propio 1" },
-                new { Titulo = "Modelo 1", Descripcion = "Descripción breve", Parametro = "Modelo:Modelo 1" },
-                new { Titulo = "Modelo 2", Descripcion = "Otra descripción", Parametro = "Modelo:Modelo 2" },
-                new { Titulo = "Propio 1", Descripcion = "Descripción propia", Parametro = "Propio:Propio 1" }
+                new { Titulo = "Modelo 1", Descripcion = "Vivienda Unifamiliar", Parametro = "Modelo:Modelo 1" },
+                new { Titulo = "Modelo 2", Descripcion = "Edificio de Propiedad Horizontal", Parametro = "Modelo:Modelo 2" },
+                new { Titulo = "Modelo 3", Descripcion = "Descripción propia", Parametro = "Propio:Propio 1" },
+                new { Titulo = "Modelo 4", Descripcion = "Descripción breve", Parametro = "Modelo:Modelo 1" },
+                new { Titulo = "Modelo 5", Descripcion = "Otra descripción", Parametro = "Modelo:Modelo 2" },
+                new { Titulo = "Modelo 6", Descripcion = "Descripción breve", Parametro = "Modelo:Modelo 1" },
+                new { Titulo = "Modelo 7", Descripcion = "Otra descripción", Parametro = "Modelo:Modelo 2" },
+                new { Titulo = "Propio 8", Descripcion = "Descripción propia", Parametro = "Propio:Propio 1" }
             };
 
             foreach (var opcion in opciones)
             {
                 var boton = new Button
-                {
+                    {
                     Margin = new Thickness(0, 0, 10, 10),
                     Padding = new Thickness(0),
                     Background = Brushes.Transparent,
                     BorderThickness = new Thickness(0),
-                    Cursor = Cursors.Hand
-                };
+                    Cursor = Cursors.Hand,
+                    Style = (Style)FindResource("RoundedButtonStyle")
+                    };
+                boton.Focusable = false; // <--- Esto elimina el rectángulo celeste de foco
 
                 // Crea el UserControl y asigna los textos
                 var uc = new DOP.Presupuestos.Controles.UcModelo
