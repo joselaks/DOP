@@ -44,12 +44,12 @@ namespace Bibioteca.Clases
                         {
                             RelacionDTO rel = new RelacionDTO();
                             CodInfe = vInferiores[((z * 3) - 3)];
-                            rel.Inferior = vInferiores[((z * 3) - 3)];
+                            rel.CodInf = vInferiores[((z * 3) - 3)];
                             Cant = vInferiores[((z * 3) - 1)];
                             Cant = Cant.Replace(".", ",");
                             if (CodSupe.EndsWith("##")) //dependen del raiz...o sea...es rubro
                             {
-                                rel.Superior = null;
+                                rel.CodSup = null;
                             }
                             else
                             {
@@ -57,30 +57,30 @@ namespace Bibioteca.Clases
                                 {
                                     if (CodSupe.EndsWith("#"))
                                     {
-                                        rel.Superior = CodSupe.Substring(0, CodSupe.Length - 1);
+                                        rel.CodSup = CodSupe.Substring(0, CodSupe.Length - 1);
                                     }
                                     else
                                     {
-                                        rel.Superior = CodSupe;
+                                        rel.CodSup = CodSupe;
 
                                     }
 
                                 }
                                 else
                                 {
-                                    rel.Superior = CodSupe;
+                                    rel.CodSup = CodSupe;
                                 }
                             }
 
                             try
                             {
-                                rel.Cantidad = Convert.ToDecimal(Cant, new CultureInfo("es-ES"));
+                                rel.CanEjec = Convert.ToDecimal(Cant, new CultureInfo("es-ES"));
                             }
                             catch (Exception)
                             {
 
                                 //Pone cero si da error...
-                                rel.Cantidad = 0;
+                                rel.CanEjec = 0;
                             }
 
 
@@ -105,12 +105,12 @@ namespace Bibioteca.Clases
                     string[] vLinea = linea.Split("|".ToCharArray());
 
                     ConceptoDTO registro = new ConceptoDTO();
-                    registro.Codigo = Convert.ToString(vLinea[1]);
-                    if (registro.Codigo.EndsWith("#"))
+                    registro.ConceptoID = Convert.ToString(vLinea[1]);
+                    if (registro.ConceptoID.EndsWith("#"))
                     {
                         if (origenFiebdc == "Presto")
                         {
-                            registro.Codigo = registro.Codigo.Substring(0, registro.Codigo.Length - 1);
+                            registro.ConceptoID = registro.ConceptoID.Substring(0, registro.ConceptoID.Length - 1);
                         }
                     }
 
@@ -192,13 +192,13 @@ namespace Bibioteca.Clases
                     vLinea[4] = vLinea[4].Replace(".", ",");
                     try
                     {
-                        registro.Precio1 = Convert.ToDecimal(vLinea[4], new CultureInfo("es-ES"));
-                        registro.Precio2 = 0;
+                        registro.PrEjec = Convert.ToDecimal(vLinea[4], new CultureInfo("es-ES"));
+                        registro.PrVent = 0;
 
                     }
                     catch (Exception)
                     {
-                        registro.Precio1 = 0;
+                        registro.PrEjec = 0;
                     }
                     listaConceptos.Add(registro);
                 }

@@ -231,15 +231,15 @@ namespace Bibioteca.Clases
                 raiz = "0";
 
                 }
-            var relaciones = listaRelaciones.Where(a => a.Superior == raiz).OrderBy(b => b.OrdenInt).ToList(); //Nodos Raiz
+            var relaciones = listaRelaciones.Where(a => a.CodSup == raiz).OrderBy(b => b.OrdenInt).ToList(); //Nodos Raiz
             // Recorro los rubros
             foreach (var item in relaciones)
                 {
                 //Obtengo el concepto del rubro
-                ConceptoDTO rubro = listaConceptos.FirstOrDefault(a => a.Codigo == item.Inferior); //Concepto de los rubros raiz
+                ConceptoDTO rubro = listaConceptos.FirstOrDefault(a => a.ConceptoID == item.CodInf); //Concepto de los rubros raiz
                 //Genero el nodo Rubro
                 Nodo registro = new Nodo();
-                registro.ID = rubro.Codigo;
+                registro.ID = rubro.ConceptoID;
                 registro.Descripcion = rubro.Descrip;
                 registro.Tipo = (rubro.Tipo == '0') ? "R" : rubro.Tipo.ToString();
                 registro.Unidad = rubro.Unidad;
@@ -272,20 +272,20 @@ namespace Bibioteca.Clases
                 return null;
 
             ObservableCollection<Nodo> elementosHijos = null;
-            var qryRelacion = listaRelaciones.Where(a => a.Superior == elemento.ID).OrderBy(b => b.OrdenInt).ToList();
+            var qryRelacion = listaRelaciones.Where(a => a.CodSup == elemento.ID).OrderBy(b => b.OrdenInt).ToList();
             if (qryRelacion != null && qryRelacion.Count > 0)
                 {
                 foreach (var item in qryRelacion)
                     {
-                    ConceptoDTO concepto = listaConceptos.FirstOrDefault(a => a.Codigo == item.Inferior);
+                    ConceptoDTO concepto = listaConceptos.FirstOrDefault(a => a.ConceptoID == item.CodInf);
                     if (concepto != null)
                         {
                         Nodo newItem = new Nodo();
-                        newItem.ID = concepto.Codigo;
+                        newItem.ID = concepto.ConceptoID;
                         newItem.Descripcion = concepto.Descrip;
-                        newItem.PU1 = (decimal)concepto.Precio1;
-                        newItem.PU2 = (decimal)concepto.Precio2;
-                        newItem.Cantidad = item.Cantidad;
+                        newItem.PU1 = (decimal)concepto.PrEjec;
+                        newItem.PU2 = (decimal)concepto.PrVent;
+                        newItem.Cantidad = item.CanEjec;
                         newItem.Sup = false;
                         newItem.Unidad = concepto.Unidad;
                         //newItem.Tipo = (concepto.Tipo == "0") ? _nivel.ToString() : concepto.Tipo;
@@ -843,31 +843,31 @@ namespace Bibioteca.Clases
             {
             foreach (var item in items)
                 {
-                bool existe = listaConceptosGrabar.Any(a => a.Codigo == item.ID);
+                bool existe = listaConceptosGrabar.Any(a => a.ConceptoID == item.ID);
                 if (existe == false)
                     {
                     ConceptoDTO registroC = new ConceptoDTO();
                     registroC.PresupuestoID = 1;
-                    registroC.Codigo = item.ID;
+                    registroC.ConceptoID = item.ID;
                     registroC.Descrip = item.Descripcion;
                     registroC.Tipo = item.Tipo[0];
-                    registroC.Precio1 = item.PU1;
-                    registroC.Precio2 = item.PU2;
+                    registroC.PrEjec = item.PU1;
+                    registroC.PrVent = item.PU2;
                     registroC.Unidad = item.Unidad;
-                    registroC.FechaPrecio = DateTime.Now;
+                    registroC.MesBase = DateTime.Now;
                     listaConceptosGrabar.Add(registroC);
                     }
                 RelacionDTO registroR = new RelacionDTO();
                 registroR.PresupuestoID = 1;
-                registroR.Superior = parentItem==null?"0": parentItem.ID;
-                registroR.Inferior = item.ID;
-                registroR.Cantidad = item.Cantidad;
-                registroR.OrdenInt = item.OrdenInt;
+            registroR.CodSup = parentItem == null ? "0" : parentItem.ID;
+                registroR.CodInf= item.ID;
+                registroR.CanEjec = item.Cantidad;
+                registroR.OrdenInt = (short)item.OrdenInt;
                 listaRelacionesGrabar.Add(registroR);
                 if (item.HasItems == true)
                     {
                     //antes de segir bajando, verificar si ya existen relaciones anteriores para no agregar.
-                    bool anterior = listaRelacionesGrabar.Any(a => a.Superior == item.ID);
+                    bool anterior = listaRelacionesGrabar.Any(a => a.CodSup == item.ID);
                     if (anterior == false)
                         {
                         aplanar(item.Inferiores, item);

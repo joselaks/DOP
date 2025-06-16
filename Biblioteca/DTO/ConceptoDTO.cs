@@ -7,27 +7,20 @@ using System.Threading.Tasks;
 namespace Biblioteca.DTO
 {
     public class ConceptoDTO
-    {
+        {
         public int PresupuestoID { get; set; }
-        public string Codigo { get; set; }
+        public string ConceptoID { get; set; } // Corresponde a ConceptoID en SQL
         public string Descrip { get; set; }
         public char Tipo { get; set; }
-        public decimal? Precio1 { get; set; }
-        public decimal? Precio2 { get; set; }
-        public DateTime? FechaPrecio { get; set; }
         public string Unidad { get; set; }
-        public decimal? CanPr { get; set; }
-        public decimal? CanPe { get; set; }
-        public decimal? CanCo { get; set; }
-        public decimal? CanEn { get; set; }
-        public decimal? CanFa { get; set; }
-        public decimal? CanEj { get; set; }
-        public decimal? UltimoPrecio1 { get; set; }
-        public decimal? UltimoPrecio2 { get; set; }
-        public DateTime? FechaUltimoPrecio { get; set; }
-        public int? DocumentoID { get; set; }
+        public decimal PrEjec { get; set; }
+        public decimal PrVent { get; set; }
+        public char EjecMoneda { get; set; }
+        public char VentMoneda { get; set; }
+        public DateTime MesBase { get; set; }
+        public decimal CanTotalEjec { get; set; }
         public int? InsumoID { get; set; }
+        public char? Accion { get; set; } // Solo necesario si usas el procedimiento de alta/modificación/borrado
+        }
 
-        public char Accion { get; set; }
     }
-}

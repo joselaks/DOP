@@ -36,8 +36,22 @@ namespace DOP.Presupuestos.Ventanas
             Objeto = new Presupuesto(null);
             this.gPlanilla.Children.Add(Planilla = new UcPlanilla(Objeto));
             this.gListado.Children.Add(Listado = new UcListado(Objeto));
+            this.Closing += WiPresupuesto_Closing; // Suscribir el evento
 
-        }
+            }
+
+        private void WiPresupuesto_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
+            {
+            // Ejemplo: Confirmar cierre
+            var result = MessageBox.Show("¿Está seguro que desea cerrar el presupuesto?", "Confirmar cierre", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result != MessageBoxResult.Yes)
+                {
+                e.Cancel = true; // Cancela el cierre
+                }
+
+            // Aquí puedes agregar lógica adicional, como guardar cambios, liberar recursos, etc.
+            }
+
 
         private void Fiebdc_Click(object sender, RoutedEventArgs e)
         {
