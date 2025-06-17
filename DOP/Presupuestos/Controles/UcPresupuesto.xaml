@@ -211,11 +211,11 @@
                             <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="ID" />-->
 
 
-                        <syncfusion:TreeGridTemplateColumn
-                Width="30"
-                CellTemplateSelector="{StaticResource IconTemplateSelector}"
-                HeaderText="Nat"
-                MappingName="Tipo" />
+                            <syncfusion:TreeGridTemplateColumn
+                                Width="30"
+                                CellTemplateSelector="{StaticResource IconTemplateSelector}"
+                                HeaderText="Nat"
+                                MappingName="Tipo" />
 
 
                             <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="Tipo" />-->
@@ -350,19 +350,17 @@
                     </syncfusion:SfTreeGrid.Columns>
                 </syncfusion:SfTreeGrid>
 
-               
+
 
 
 
             </Grid>
             <Grid Grid.Row="2">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <StackPanel Orientation="Horizontal">
-                    
-                </StackPanel>
+                <StackPanel Orientation="Horizontal" />
 
             </Grid>
 

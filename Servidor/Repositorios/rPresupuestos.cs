@@ -58,10 +58,12 @@ namespace Servidor.Repositorios
                 tableConceptos.Columns.Add("InsumoID", typeof(int));
                 tableConceptos.Columns.Add("Accion", typeof(char));
 
+                bool esNuevo = !presupuesto.ID.HasValue || presupuesto.ID == 0;
+
                 foreach (var c in conceptos)
                     {
                     tableConceptos.Rows.Add(
-                        c.PresupuestoID,
+                        esNuevo ? (object)DBNull.Value : c.PresupuestoID,
                         c.ConceptoID,
                         c.Descrip,
                         c.Tipo,
@@ -90,7 +92,7 @@ namespace Servidor.Repositorios
                 foreach (var r in relaciones)
                     {
                     tableRelaciones.Rows.Add(
-                        r.PresupuestoID,
+                        esNuevo ? (object)DBNull.Value : r.PresupuestoID,
                         r.CodSup,
                         r.CodInf,
                         r.CanEjec,
@@ -101,7 +103,7 @@ namespace Servidor.Repositorios
                     }
 
                 var parameters = new DynamicParameters();
-                parameters.Add("@ID", presupuesto.ID == 0 ? (object)DBNull.Value : presupuesto.ID, DbType.Int32);
+                parameters.Add("@ID", !presupuesto.ID.HasValue || presupuesto.ID == 0 ? (object)DBNull.Value : presupuesto.ID, DbType.Int32);
                 parameters.Add("@CuentaID", presupuesto.CuentaID, DbType.Int32);
                 parameters.Add("@UsuarioID", presupuesto.UsuarioID, DbType.Int32);
                 parameters.Add("@Descrip", presupuesto.Descrip, DbType.String);
@@ -136,6 +138,7 @@ namespace Servidor.Repositorios
                     }
                 }
             }
+
 
         public async Task<(List<ConceptoDTO> Conceptos, List<RelacionDTO> Relaciones)> ObtenerConceptosYRelacionesAsync(int presupuestoID)
             {

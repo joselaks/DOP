@@ -72,28 +72,34 @@ namespace DOP.Presupuestos.Ventanas
                 }
 
             // Armar el request
+            Objeto.listaConceptosGrabar.Clear();
+            Objeto.listaRelacionesGrabar.Clear();
+            Objeto.aplanar(Objeto.Arbol, null);
             var request = new DOP.Datos.ProcesaPresupuestoRequest
                 {
                 Presupuesto = new Biblioteca.DTO.PresupuestoDTO
                     {
-                    ID = 0, // Para nuevo presupuesto, usa 0 o elimina si el campo es nullable
-                    CuentaID = Objeto.encabezado.CuentaID,
-                    UsuarioID = Objeto.encabezado.UsuarioID,
-                    Descrip = "Prueba",
-                    PrEjecTotal = 1000,
-                    PrEjecDirecto = 10,
+                    ID = 0, // Nuevo presupuesto
+                    CuentaID = null,
+                    UsuarioID = 2,
+                    Descrip = "Sin descripción",
+                    PrEjecTotal = 100,
+                    PrEjecDirecto = 200,
                     EjecMoneda = 'P',
-                    PrVentaTotal = 0,
-                    PrVentaDirecto = 0,
+                    PrVentaTotal = 300,
+                    PrVentaDirecto = 400,
                     VentaMoneda = 'P',
-                    Superficie = 100,
-                    
+                    Superficie = 500,
+                    MesBase = DateTime.Now,
+                    FechaC = DateTime.Now,
+                    FechaM = DateTime.Now,
                     EsModelo = false,
-                    TipoCambioD = 100
+                    TipoCambioD = 1200
                     },
 
                 Conceptos = Objeto.listaConceptosGrabar ?? new List<ConceptoDTO>(),
                 Relaciones = Objeto.listaRelacionesGrabar ?? new List<RelacionDTO>()
+
                 };
 
             // Llamar al servicio

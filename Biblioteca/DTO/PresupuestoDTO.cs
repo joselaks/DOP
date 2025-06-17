@@ -8,7 +8,7 @@ namespace Biblioteca.DTO
     {
     public class PresupuestoDTO
         {
-        public int ID { get; set; }
+        public int? ID { get; set; }
         public int? CuentaID { get; set; }
         public int UsuarioID { get; set; }
         public string Descrip { get; set; }

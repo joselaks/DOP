@@ -30,7 +30,7 @@ builder.Services.Configure<RouteOptions>(options =>
 
 #region Configuración de la cadena de conexión
 // ------- Azure ------------- 
-string connectionString = "Server=tcp:ghu95zexx2.database.windows.net,1433;Initial Catalog=DataObraBeta001;Persist Security Info=False;User ID=joselaks;Password=Santorini2010;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30";
+string connectionString = "Server=tcp:ghu95zexx2.database.windows.net,1433;Initial Catalog=DOP01;Persist Security Info=False;User ID=joselaks;Password=Santorini2010;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30";
 // ------- Unpaz -------------
 // string connectionString = "Data Source=UEJINF-P2-19\\TEST01;Initial Catalog=DataObraBeta001;User ID=sa;Password=santorini2010;Encrypt=False";
 // ----Notebook Lenovo José --
