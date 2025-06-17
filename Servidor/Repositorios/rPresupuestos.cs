@@ -5,118 +5,182 @@ using System.Data;
 using System.Data.SqlClient;
 
 namespace Servidor.Repositorios
-{
-    public class rPresupuestos
     {
+    public class rPresupuestos
+        {
         private readonly string _connectionString;
 
         public rPresupuestos(string connectionString)
-        {
-            _connectionString = connectionString;
-        }
-
-        public async Task<(List<ConceptoDTO> Conceptos, List<RelacionDTO> Relaciones)> ObtenerRegistrosPorPresupuestoIDAsync(int presupuestoID)
-        {
-            using (var db = new SqlConnection(_connectionString))
             {
+            _connectionString = connectionString;
+            }
+        
+        public async Task<List<PresupuestoDTO>> ListarPresupuestosPorUsuarioAsync(int usuarioID)
+            {
+            using (var db = new SqlConnection(_connectionString))
+                {
+                var parameters = new DynamicParameters();
+                parameters.Add("@UsuarioID", usuarioID, DbType.Int32);
+
+                try
+                    {
+                    var result = await db.QueryAsync<PresupuestoDTO>(
+                        "ListarPresupuestosPorUsuario",
+                        parameters,
+                        commandType: CommandType.StoredProcedure);
+
+                    return result.ToList();
+                    }
+                catch (SqlException ex)
+                    {
+                    throw new Exception($"Error al listar los presupuestos del usuario {usuarioID}: {ex.Message}", ex);
+                    }
+                }
+            }
+
+        public async Task<int> ProcesarPresupuestoAsync(PresupuestoDTO presupuesto, List<ConceptoDTO> conceptos, List<RelacionDTO> relaciones)
+            {
+            using (var db = new SqlConnection(_connectionString))
+                {
+                // Crear DataTable para Conceptos
+                var tableConceptos = new DataTable();
+                tableConceptos.Columns.Add("PresupuestoID", typeof(int));
+                tableConceptos.Columns.Add("ConceptoID", typeof(string));
+                tableConceptos.Columns.Add("Descrip", typeof(string));
+                tableConceptos.Columns.Add("Tipo", typeof(char));
+                tableConceptos.Columns.Add("Unidad", typeof(string));
+                tableConceptos.Columns.Add("PrEjec", typeof(decimal));
+                tableConceptos.Columns.Add("PrVent", typeof(decimal));
+                tableConceptos.Columns.Add("EjecMoneda", typeof(char));
+                tableConceptos.Columns.Add("VentMoneda", typeof(char));
+                tableConceptos.Columns.Add("MesBase", typeof(DateTime));
+                tableConceptos.Columns.Add("CanTotalEjec", typeof(decimal));
+                tableConceptos.Columns.Add("InsumoID", typeof(int));
+                tableConceptos.Columns.Add("Accion", typeof(char));
+
+                foreach (var c in conceptos)
+                    {
+                    tableConceptos.Rows.Add(
+                        c.PresupuestoID,
+                        c.ConceptoID,
+                        c.Descrip,
+                        c.Tipo,
+                        c.Unidad,
+                        c.PrEjec,
+                        c.PrVent,
+                        c.EjecMoneda,
+                        c.VentMoneda,
+                        c.MesBase,
+                        c.CanTotalEjec,
+                        c.InsumoID.HasValue ? (object)c.InsumoID.Value : DBNull.Value,
+                        c.Accion.HasValue ? (object)c.Accion.Value : DBNull.Value
+                    );
+                    }
+
+                // Crear DataTable para Relaciones
+                var tableRelaciones = new DataTable();
+                tableRelaciones.Columns.Add("PresupuestoID", typeof(int));
+                tableRelaciones.Columns.Add("CodSup", typeof(string));
+                tableRelaciones.Columns.Add("CodInf", typeof(string));
+                tableRelaciones.Columns.Add("CanEjec", typeof(decimal));
+                tableRelaciones.Columns.Add("CanVenta", typeof(decimal));
+                tableRelaciones.Columns.Add("OrdenInt", typeof(short));
+                tableRelaciones.Columns.Add("Accion", typeof(char));
+
+                foreach (var r in relaciones)
+                    {
+                    tableRelaciones.Rows.Add(
+                        r.PresupuestoID,
+                        r.CodSup,
+                        r.CodInf,
+                        r.CanEjec,
+                        r.CanVenta,
+                        r.OrdenInt,
+                        r.Accion.HasValue ? (object)r.Accion.Value : DBNull.Value
+                    );
+                    }
+
+                var parameters = new DynamicParameters();
+                parameters.Add("@ID", presupuesto.ID == 0 ? (object)DBNull.Value : presupuesto.ID, DbType.Int32);
+                parameters.Add("@CuentaID", presupuesto.CuentaID, DbType.Int32);
+                parameters.Add("@UsuarioID", presupuesto.UsuarioID, DbType.Int32);
+                parameters.Add("@Descrip", presupuesto.Descrip, DbType.String);
+                parameters.Add("@PrEjecTotal", presupuesto.PrEjecTotal, DbType.Decimal);
+                parameters.Add("@PrEjecDirecto", presupuesto.PrEjecDirecto, DbType.Decimal);
+                parameters.Add("@EjecMoneda", presupuesto.EjecMoneda, DbType.AnsiStringFixedLength, size: 1);
+                parameters.Add("@PrVentaTotal", presupuesto.PrVentaTotal, DbType.Decimal);
+                parameters.Add("@PrVentaDirecto", presupuesto.PrVentaDirecto, DbType.Decimal);
+                parameters.Add("@VentaMoneda", presupuesto.VentaMoneda, DbType.AnsiStringFixedLength, size: 1);
+                parameters.Add("@Superficie", presupuesto.Superficie, DbType.Decimal);
+                parameters.Add("@MesBase", presupuesto.MesBase, DbType.Date);
+                parameters.Add("@FechaC", presupuesto.FechaC, DbType.Date);
+                parameters.Add("@FechaM", presupuesto.FechaM, DbType.Date);
+                parameters.Add("@EsModelo", presupuesto.EsModelo, DbType.Boolean);
+                parameters.Add("@TipoCambioD", presupuesto.TipoCambioD, DbType.Decimal);
+                parameters.Add("@Conceptos", tableConceptos.AsTableValuedParameter("dbo.TT_Conceptos"));
+                parameters.Add("@Relaciones", tableRelaciones.AsTableValuedParameter("dbo.TT_Relaciones"));
+
+                try
+                    {
+                    // El procedimiento devuelve el ID del presupuesto afectado
+                    var result = await db.QueryFirstOrDefaultAsync<int>(
+                        "ProcesarPresupuesto",
+                        parameters,
+                        commandType: CommandType.StoredProcedure);
+
+                    return result;
+                    }
+                catch (SqlException ex)
+                    {
+                    throw new Exception($"Error al procesar el presupuesto: {ex.Message}", ex);
+                    }
+                }
+            }
+
+        public async Task<(List<ConceptoDTO> Conceptos, List<RelacionDTO> Relaciones)> ObtenerConceptosYRelacionesAsync(int presupuestoID)
+            {
+            using (var db = new SqlConnection(_connectionString))
+                {
                 var parameters = new DynamicParameters();
                 parameters.Add("@PresupuestoID", presupuestoID, DbType.Int32);
 
                 try
-                {
-                    using (var multi = await db.QueryMultipleAsync("ObtenerRegistrosPorPresupuestoID", parameters, commandType: CommandType.StoredProcedure))
                     {
+                    using (var multi = await db.QueryMultipleAsync(
+                        "ObtenerConceptosYRelaciones",
+                        parameters,
+                        commandType: CommandType.StoredProcedure))
+                        {
                         var conceptos = (await multi.ReadAsync<ConceptoDTO>()).ToList();
                         var relaciones = (await multi.ReadAsync<RelacionDTO>()).ToList();
 
                         return (conceptos, relaciones);
+                        }
+                    }
+                catch (SqlException ex)
+                    {
+                    throw new Exception($"Error al obtener conceptos y relaciones del presupuesto {presupuestoID}: {ex.Message}", ex);
                     }
                 }
-                catch (SqlException ex)
-                {
-                    throw new Exception($"Error al obtener los registros por PresupuestoID: {ex.Message}", ex);
-                }
             }
-        }
 
-
-        public async Task ProcesarArbolPresupuestoAsync(int presupuestoID, List<ConceptoDTO> listaConceptos, List<RelacionDTO> listaRelaciones)
-        {
-            using (var db = new SqlConnection(_connectionString))
-            {
-                var tableConceptos = new DataTable();
-                tableConceptos.Columns.Add("Codigo", typeof(string));
-                tableConceptos.Columns.Add("Descrip", typeof(string));
-                tableConceptos.Columns.Add("Tipo", typeof(char));
-                tableConceptos.Columns.Add("Precio1", typeof(decimal));
-                tableConceptos.Columns.Add("Precio2", typeof(decimal));
-                tableConceptos.Columns.Add("FechaPrecio", typeof(DateTime));
-                tableConceptos.Columns.Add("Unidad", typeof(string));
-                tableConceptos.Columns.Add("CanPr", typeof(decimal));
-                tableConceptos.Columns.Add("CanPe", typeof(decimal));
-                tableConceptos.Columns.Add("CanCo", typeof(decimal));
-                tableConceptos.Columns.Add("CanEn", typeof(decimal));
-                tableConceptos.Columns.Add("CanFa", typeof(decimal));
-                tableConceptos.Columns.Add("CanEj", typeof(decimal));
-                tableConceptos.Columns.Add("UltimoPrecio1", typeof(decimal));
-                tableConceptos.Columns.Add("UltimoPrecio2", typeof(decimal));
-                tableConceptos.Columns.Add("FechaUltimoPrecio", typeof(DateTime));
-                tableConceptos.Columns.Add("DocumentoID", typeof(int));
-                tableConceptos.Columns.Add("InsumoID", typeof(int));
-                tableConceptos.Columns.Add("Accion", typeof(char));
-
-                foreach (var item in listaConceptos)
-                {
-                    tableConceptos.Rows.Add(
-                        item.Codigo, item.Descrip, item.Tipo, item.Precio1, item.Precio2, item.FechaPrecio, item.Unidad, item.CanPr, item.CanPe, item.CanCo, item.CanEn, item.CanFa, item.CanEj, item.UltimoPrecio1, item.UltimoPrecio2, item.FechaUltimoPrecio, item.DocumentoID, item.InsumoID, item.Accion
-                    );
-                }
-
-                var tableRelaciones = new DataTable();
-                tableRelaciones.Columns.Add("Superior", typeof(string));
-                tableRelaciones.Columns.Add("Inferior", typeof(string));
-                tableRelaciones.Columns.Add("Cantidad", typeof(decimal));
-                tableRelaciones.Columns.Add("OrdenInt", typeof(int));
-                tableRelaciones.Columns.Add("Accion", typeof(char));
-
-                foreach (var item in listaRelaciones)
-                {
-                    tableRelaciones.Rows.Add(
-                        item.Superior, item.Inferior, item.Cantidad, item.OrdenInt, item.Accion
-                    );
-                }
-
-                var parameters = new DynamicParameters();
-                parameters.Add("@PresupuestoID", presupuestoID, DbType.Int32);
-                parameters.Add("@ListaConceptos", tableConceptos.AsTableValuedParameter("dbo.ConceptoType"));
-                parameters.Add("@ListaRelaciones", tableRelaciones.AsTableValuedParameter("dbo.RelacionType"));
-
-                try
-                {
-                    await db.ExecuteAsync("ProcesaArbolPresupuesto", parameters, commandType: CommandType.StoredProcedure);
-                }
-                catch (SqlException ex)
-                {
-                    throw new Exception($"Error al procesar el árbol de presupuesto: {ex.Message}", ex);
-                }
-            }
-        }
-
-        public async Task EliminarPresupuestoAsync(int presupuestoID, bool verifica)
+        public async Task BorrarPresupuestoAsync(int presupuestoID)
             {
             using (var db = new SqlConnection(_connectionString))
                 {
                 var parameters = new DynamicParameters();
                 parameters.Add("@ID", presupuestoID, DbType.Int32);
-                parameters.Add("@verifica", verifica, DbType.Boolean);
 
                 try
                     {
-                    await db.ExecuteAsync("PresupuestoDelete", parameters, commandType: CommandType.StoredProcedure);
+                    await db.ExecuteAsync(
+                        "BorrarPresupuesto",
+                        parameters,
+                        commandType: CommandType.StoredProcedure);
                     }
                 catch (SqlException ex)
                     {
-                    throw new Exception($"Error al eliminar el presupuesto con ID {presupuestoID}: {ex.Message}", ex);
+                    throw new Exception($"Error al borrar el presupuesto con ID {presupuestoID}: {ex.Message}", ex);
                     }
                 }
             }
@@ -126,5 +190,5 @@ namespace Servidor.Repositorios
         }
     }
 
- 
+
 

@@ -418,11 +418,40 @@ agr.MapDelete("/{id:int}", async (rDocumentos repositorio, int id) =>
 
 var pre = app.MapGroup("/presupuestos");
 
+pre.MapGet("/usuario/{usuarioID:int}", async (int usuarioID, rPresupuestos repo) =>
+{
+    try
+        {
+        var presupuestos = await repo.ListarPresupuestosPorUsuarioAsync(usuarioID);
+        return Results.Ok(presupuestos);
+        }
+    catch (Exception ex)
+        {
+        return Results.BadRequest(new { Message = ex.Message });
+        }
+}).RequireAuthorization();
+
+pre.MapPost("/procesar", async (ProcesaPresupuestoRequest request, rPresupuestos repo) =>
+{
+    try
+        {
+        var id = await repo.ProcesarPresupuestoAsync(request.Presupuesto, request.Conceptos, request.Relaciones);
+        return Results.Ok(new { Success = true, PresupuestoID = id, Message = "Presupuesto procesado exitosamente." });
+        }
+    catch (Exception ex)
+        {
+        return Results.BadRequest(new { Success = false, Message = ex.Message });
+        }
+}).RequireAuthorization();
+
+
+
+
 pre.MapGet("/{presupuestoID:int}", async (int presupuestoID, rPresupuestos repo) =>
 {
     try
         {
-        var (conceptos, relaciones) = await repo.ObtenerRegistrosPorPresupuestoIDAsync(presupuestoID);
+        var (conceptos, relaciones) = await repo.ObtenerConceptosYRelacionesAsync(presupuestoID);
         return Results.Ok(new { Conceptos = conceptos, Relaciones = relaciones });
         }
     catch (Exception ex)
@@ -431,26 +460,11 @@ pre.MapGet("/{presupuestoID:int}", async (int presupuestoID, rPresupuestos repo)
         }
 }).RequireAuthorization();
 
-
-
-pre.MapPost("/procesar", async (ProcesaPresupuestoDTO request, rPresupuestos repo) =>
+pre.MapDelete("/{presupuestoID:int}", async (int presupuestoID, rPresupuestos repo) =>
 {
     try
         {
-        await repo.ProcesarArbolPresupuestoAsync(request.PresupuestoID, request.ListaConceptos, request.ListaRelaciones);
-        return Results.Ok(new { Success = true, Message = "Árbol de presupuesto procesado exitosamente." });
-        }
-    catch (Exception ex)
-        {
-        return Results.BadRequest(new { Success = false, Message = ex.Message });
-        }
-}).RequireAuthorization();
-
-pre.MapDelete("/{presupuestoID:int}", async (int presupuestoID, bool verifica, rPresupuestos repo) =>
-{
-    try
-        {
-        await repo.EliminarPresupuestoAsync(presupuestoID, verifica);
+        await repo.BorrarPresupuestoAsync(presupuestoID);
         return Results.Ok(new { Success = true, Message = "Presupuesto eliminado exitosamente." });
         }
     catch (Exception ex)
@@ -458,6 +472,7 @@ pre.MapDelete("/{presupuestoID:int}", async (int presupuestoID, bool verifica, r
         return Results.BadRequest(new { Success = false, Message = ex.Message });
         }
 }).RequireAuthorization();
+
 
 
 

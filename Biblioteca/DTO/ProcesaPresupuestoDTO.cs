@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace Biblioteca.DTO
     {
-    public class ProcesaPresupuestoDTO
+    public class ProcesaPresupuestoRequest
         {
-        public int PresupuestoID { get; set; }
-        public List<ConceptoDTO> ListaConceptos { get; set; }
-        public List<RelacionDTO> ListaRelaciones { get; set; }
+        public PresupuestoDTO Presupuesto { get; set; }
+        public List<ConceptoDTO> Conceptos { get; set; }
+        public List<RelacionDTO> Relaciones { get; set; }
         }
+
     }
 
