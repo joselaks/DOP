@@ -61,61 +61,138 @@ namespace DOP.Presupuestos.Ventanas
         }
 
         private async void BtnGuardar_Click(object sender, RoutedEventArgs e)
+        {
+            // Crear el presupuesto principal
+            var presupuestoDto = new PresupuestoDTO
             {
+                ID = 11,
+                CuentaID = 1,
+                UsuarioID = 2,
+                Descrip = "Presupuesto de prueba modificado",
+                PrEjecTotal = 1000,
+                PrEjecDirecto = 800,
+                EjecMoneda = 'P',
+                PrVentaTotal = 1200,
+                PrVentaDirecto = 900,
+                VentaMoneda = 'P',
+                Superficie = 150,
+                MesBase = DateTime.Now,
+                FechaC = DateTime.Now,
+                FechaM = DateTime.Now,
+                EsModelo = false,
+                TipoCambioD = 1200
+            };
 
-            //Ojo....por ahora funciona solo para nuevos 
-            // Validar que haya datos mínimos
-            if (Objeto == null || Objeto.encabezado == null)
-                {
-                MessageBox.Show("No hay datos de presupuesto para guardar.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-                }
+            // Crear lista de conceptos (3 registros de ejemplo)
+            var conceptos = new List<ConceptoDTO>
+    {
+        new ConceptoDTO
+        {
+            PresupuestoID = 0,
+            ConceptoID = "C1",
+            Descrip = "Concepto 1",
+            Tipo = 'M',
+            Unidad = "m2",
+            PrEjec = 100,
+            PrVent = 120,
+            EjecMoneda = 'P',
+            VentMoneda = 'P',
+            MesBase = DateTime.Now,
+            CanTotalEjec = 10,
+            InsumoID = 1,
+            Accion = 'A'
+        },
+        new ConceptoDTO
+        {
+            PresupuestoID = 0,
+            ConceptoID = "C2",
+            Descrip = "Concepto 2",
+            Tipo = 'O',
+            Unidad = "u",
+            PrEjec = 200,
+            PrVent = 220,
+            EjecMoneda = 'P',
+            VentMoneda = 'P',
+            MesBase = DateTime.Now,
+            CanTotalEjec = 5,
+            InsumoID = 2,
+            Accion = 'I'
+        },
+        new ConceptoDTO
+        {
+            PresupuestoID = 0,
+            ConceptoID = "C3",
+            Descrip = "Concepto 3",
+            Tipo = 'E',
+            Unidad = "kg",
+            PrEjec = 300,
+            PrVent = 330,
+            EjecMoneda = 'P',
+            VentMoneda = 'P',
+            MesBase = DateTime.Now,
+            CanTotalEjec = 20,
+            InsumoID = 3,
+            Accion = 'A'
+        }
+    };
+
+            // Crear lista de relaciones (3 registros de ejemplo)
+            var relaciones = new List<RelacionDTO>
+    {
+        new RelacionDTO
+        {
+            PresupuestoID = 0,
+            CodSup = "C1",
+            CodInf = "C2",
+            CanEjec = 2,
+            CanVenta = 2,
+            OrdenInt = 1,
+            Accion = 'A'
+        },
+        new RelacionDTO
+        {
+            PresupuestoID = 0,
+            CodSup = "C1",
+            CodInf = "C3",
+            CanEjec = 3,
+            CanVenta = 3,
+            OrdenInt = 2,
+            Accion = 'A'
+        },
+        new RelacionDTO
+        {
+            PresupuestoID = 0,
+            CodSup = "C2",
+            CodInf = "C3",
+            CanEjec = 1,
+            CanVenta = 1,
+            OrdenInt = 3,
+            Accion = 'A'
+        }
+    };
 
             // Armar el request
-            Objeto.listaConceptosGrabar.Clear();
-            Objeto.listaRelacionesGrabar.Clear();
-            Objeto.aplanar(Objeto.Arbol, null);
             var request = new DOP.Datos.ProcesaPresupuestoRequest
-                {
-                Presupuesto = new Biblioteca.DTO.PresupuestoDTO
-                    {
-                    ID = 0, // Nuevo presupuesto
-                    CuentaID = null,
-                    UsuarioID = 2,
-                    Descrip = "Sin descripción",
-                    PrEjecTotal = 100,
-                    PrEjecDirecto = 200,
-                    EjecMoneda = 'P',
-                    PrVentaTotal = 300,
-                    PrVentaDirecto = 400,
-                    VentaMoneda = 'P',
-                    Superficie = 500,
-                    MesBase = DateTime.Now,
-                    FechaC = DateTime.Now,
-                    FechaM = DateTime.Now,
-                    EsModelo = false,
-                    TipoCambioD = 1200
-                    },
-
-                Conceptos = Objeto.listaConceptosGrabar ?? new List<ConceptoDTO>(),
-                Relaciones = Objeto.listaRelacionesGrabar ?? new List<RelacionDTO>()
-
-                };
+            {
+                Presupuesto = presupuestoDto,
+                Conceptos = conceptos,
+                Relaciones = relaciones
+            };
 
             // Llamar al servicio
             var (success, message, presupuestoID) = await DOP.Datos.DatosWeb.ProcesarPresupuestoAsync(request);
 
             // Mostrar resultado
             if (success)
-                {
+            {
                 MessageBox.Show($"Presupuesto guardado correctamente. ID: {presupuestoID}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-                // Puedes actualizar el estado local aquí si lo necesitas
-                }
-            else
-                {
-                MessageBox.Show($"Error al guardar el presupuesto:\n{message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
             }
+            else
+            {
+                MessageBox.Show($"Error al guardar el presupuesto:\n{message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
 
 
         private void btnFiebdc_Click(object sender, RoutedEventArgs e)

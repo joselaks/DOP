@@ -14,7 +14,7 @@ namespace Bibioteca.Clases
 
         #region Estructura
 
-        public DocumentoDTO encabezado;
+        public PresupuestoDTO encabezado;
         public List<ConceptoDTO> listaConceptosLeer;
         public List<RelacionDTO> listaRelacionesLeer;
         public List<ConceptoDTO> listaConceptosGrabar;
@@ -194,11 +194,11 @@ namespace Bibioteca.Clases
 
         #endregion
 
-        public Presupuesto(DocumentoDTO? _encabezado)
+        public Presupuesto(PresupuestoDTO? _encabezado)
             {
             if (_encabezado == null)
                 {
-                encabezado = new DocumentoDTO();
+                encabezado = new PresupuestoDTO();
                 listaConceptosLeer = new List<ConceptoDTO>();
                 listaRelacionesLeer = new List<RelacionDTO>();
                 }
@@ -847,7 +847,7 @@ namespace Bibioteca.Clases
                 if (existe == false)
                     {
                     ConceptoDTO registroC = new ConceptoDTO();
-                    registroC.PresupuestoID = 1;
+                    //registroC.PresupuestoID = encabezado.ID;
                     registroC.ConceptoID = item.ID;
                     registroC.Descrip = item.Descripcion;
                     registroC.Tipo = item.Tipo[0];
@@ -858,7 +858,7 @@ namespace Bibioteca.Clases
                     listaConceptosGrabar.Add(registroC);
                     }
                 RelacionDTO registroR = new RelacionDTO();
-                registroR.PresupuestoID = 1;
+                //registroR.PresupuestoID = encabezado.ID;
             registroR.CodSup = parentItem == null ? "0" : parentItem.ID;
                 registroR.CodInf= item.ID;
                 registroR.CanEjec = item.Cantidad;
