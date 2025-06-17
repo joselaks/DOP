@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Bibioteca.Clases;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,9 +22,23 @@ namespace DOP.Presupuestos.Controles
     /// </summary>
     public partial class UcDosaje : UserControl
     {
-        public UcDosaje()
+        public Presupuesto Objeto;
+        public UcDosaje(Presupuesto objeto) 
         {
             InitializeComponent();
+            //this.grillaDetalle.ChildPropertyName = "Inferiores";
+            Objeto = objeto;
+            //grillaDetalle.ItemsSource = Objeto.Arbol;
+
+
         }
+
+
+        public void MostrarInferiores(ObservableCollection<Nodo> inferiores)
+        {
+            grillaDetalle.ItemsSource = inferiores;
+
+        }
+
     }
 }

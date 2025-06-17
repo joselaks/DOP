@@ -816,35 +816,35 @@ namespace DataObra.Presupuestos
                 PresupuestoID = Encabezado?.ID ?? 0,
                 ListaConceptos = Objeto.listaConceptosGrabar.Select(c => new ConceptoDTO
                 {
-                    PresupuestoID = c.PresupuestoID,
-                    Codigo = c.Codigo,
-                    Descrip = c.Descrip,
-                    Tipo = c.Tipo,
-                    Precio1 = c.Precio1 ?? 0,
-                    Precio2 = c.Precio2 ?? 0,
-                    FechaPrecio = c.FechaPrecio ?? DateTime.MinValue,
-                    Unidad = c.Unidad ?? "Gl",
-                    CanPr = c.CanPr ?? 0,
-                    CanPe = c.CanPe ?? 0,
-                    CanCo = c.CanCo ?? 0,
-                    CanEn = c.CanEn ?? 0,
-                    CanFa = c.CanFa ?? 0,
-                    CanEj = c.CanEj ?? 0,
-                    UltimoPrecio1 = c.UltimoPrecio1 ?? 0,
-                    UltimoPrecio2 = c.UltimoPrecio2 ?? 0,
-                    FechaUltimoPrecio = c.FechaUltimoPrecio ?? DateTime.MinValue,
-                    DocumentoID = c.DocumentoID ?? 0,
-                    InsumoID = c.InsumoID ?? 0,
-                    Accion = c.Accion
+                    //PresupuestoID = c.PresupuestoID,
+                    //Codigo = c.Codigo,
+                    //Descrip = c.Descrip,
+                    //Tipo = c.Tipo,
+                    //Precio1 = c.Precio1 ?? 0,
+                    //Precio2 = c.Precio2 ?? 0,
+                    //FechaPrecio = c.FechaPrecio ?? DateTime.MinValue,
+                    //Unidad = c.Unidad ?? "Gl",
+                    //CanPr = c.CanPr ?? 0,
+                    //CanPe = c.CanPe ?? 0,
+                    //CanCo = c.CanCo ?? 0,
+                    //CanEn = c.CanEn ?? 0,
+                    //CanFa = c.CanFa ?? 0,
+                    //CanEj = c.CanEj ?? 0,
+                    //UltimoPrecio1 = c.UltimoPrecio1 ?? 0,
+                    //UltimoPrecio2 = c.UltimoPrecio2 ?? 0,
+                    //FechaUltimoPrecio = c.FechaUltimoPrecio ?? DateTime.MinValue,
+                    //DocumentoID = c.DocumentoID ?? 0,
+                    //InsumoID = c.InsumoID ?? 0,
+                    //Accion = c.Accion
                 }).ToList(),
                 ListaRelaciones = Objeto.listaRelacionesGrabar.Select(r => new RelacionDTO
                 {
-                    PresupuestoID = r.PresupuestoID,
-                    Superior = r.Superior ,
-                    Inferior = r.Inferior,
-                    Cantidad = r.Cantidad,
-                    OrdenInt = r.OrdenInt ?? 0,
-                    Accion = r.Accion
+                    //PresupuestoID = r.PresupuestoID,
+                    //Superior = r.Superior ,
+                    //Inferior = r.Inferior,
+                    //Cantidad = r.Cantidad,
+                    //OrdenInt = r.OrdenInt ?? 0,
+                    //Accion = r.Accion
                 }).ToList()
             };
 

@@ -1,4 +1,5 @@
 ﻿using Bibioteca.Clases;
+using Syncfusion.UI.Xaml.Grid;
 using Syncfusion.Windows.Tools.Controls;
 using Syncfusion.XlsIO.Implementation.XmlSerialization.Constants;
 using System;
@@ -24,13 +25,18 @@ namespace DOP.Presupuestos.Controles
     public partial class UcPlanilla : UserControl
     {
         public Presupuesto Objeto;
-        public UcPlanilla(Presupuesto objeto)
+        public UcDosaje Dosaje;
+        public UcPlanilla(Presupuesto objeto, UcDosaje dosaje)
         {
             InitializeComponent();
-            this.grillaArbol.ItemsSource = objeto.Arbol;
+            Dosaje = dosaje;
+            Objeto = objeto;
+            this.grillaArbol.ItemsSource = Objeto.Arbol;
             this.grillaArbol.ChildPropertyName = "Inferiores";
             this.grillaArbol.Loaded += GrillaArbol_Loaded;
+
         }
+
 
         private void GrillaArbol_Loaded(object sender, RoutedEventArgs e)
         {
@@ -62,6 +68,15 @@ namespace DOP.Presupuestos.Controles
 
         private void grillaArbol_KeyDown(object sender, KeyEventArgs e)
         {
+
+        }
+
+        private void grillaArbol_SelectionChanged(object sender, GridSelectionChangedEventArgs e)
+        {
+            if (grillaArbol.SelectedItem is Nodo nodoSeleccionado && Dosaje != null)
+            {
+                Dosaje.MostrarInferiores(nodoSeleccionado.Inferiores);
+            }
 
         }
     }

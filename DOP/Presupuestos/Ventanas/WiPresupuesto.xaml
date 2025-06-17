@@ -40,11 +40,14 @@
                 </syncfusion:Backstage >
             </syncfusion:Ribbon.BackStage>
             <syncfusion:RibbonTab Caption="INICIO"  IsChecked="True">
-                <syncfusion:RibbonBar Name="New" Width="90"  Header="Guardar">
-                    <syncfusion:RibbonButton SizeForm="Large" Label="Guardar" Click="BtnGuardar_Click"/>
-                    <syncfusion:RibbonButton SizeForm="Large" Label="Importar FIEBDC" x:Name="btnFiebdc" Click="btnFiebdc_Click"/>
+                <syncfusion:RibbonBar Name="New"  Header="Guardar">
+                    <syncfusion:RibbonButton  SizeForm="Large" Label="Guardar" Click="BtnGuardar_Click"/>
+                    <syncfusion:RibbonButton  SizeForm="Large" Label="Importar FIEBDC" x:Name="btnFiebdc" Click="btnFiebdc_Click"/>
                 </syncfusion:RibbonBar>
-                <syncfusion:RibbonBar Name="Delete" Width="150"  Header="Vistas"/>
+                <syncfusion:RibbonBar Name="Delete"  Header="Agregar">
+                    <syncfusion:RibbonButton x:Name="Rubro" SizeForm="Large" Label="Rubro" Click="Agregar_Click"/>
+                    <syncfusion:RibbonButton x:Name="Tarea" SizeForm="Large" Label="Tarea" Click="Agregar_Click"/>
+                </syncfusion:RibbonBar>
                 <syncfusion:RibbonBar Name="Respond" Width="90" Header="Reportes"/>
 
 
@@ -92,6 +95,10 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center" Text="Detalle" FontSize="20" FontWeight="Bold" />
                     </StackPanel>
+                    <Grid x:Name="gDetalle" Grid.Row="1">
+                        
+                    </Grid>
+                        
 
                 </Grid>
 

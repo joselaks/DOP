@@ -20,6 +20,7 @@ using System.IO;
 using System.Globalization;
 using Biblioteca.DTO;
 using Syncfusion.Windows.Shared;
+using Syncfusion.XlsIO;
 
 namespace DOP.Presupuestos.Ventanas
 {
@@ -32,12 +33,15 @@ namespace DOP.Presupuestos.Ventanas
         public cUndoRedo UndoRedo;
         public UcPlanilla Planilla;
         public UcListado Listado;
+        public UcDosaje Dosaje;
         public WiPresupuesto(int usuario, int presupuesto )
         {
             InitializeComponent();
             Objeto = new Presupuesto(null);
-            this.gPlanilla.Children.Add(Planilla = new UcPlanilla(Objeto));
+            Dosaje = new UcDosaje(Objeto);
+            this.gPlanilla.Children.Add(Planilla = new UcPlanilla(Objeto, Dosaje));
             this.gListado.Children.Add(Listado = new UcListado(Objeto));
+            this.gDetalle.Children.Add(Dosaje = new UcDosaje(Objeto));
             this.Closing += WiPresupuesto_Closing; // Suscribir el evento
 
             }
@@ -251,6 +255,42 @@ namespace DOP.Presupuestos.Ventanas
             //listaInsumos.grillaInsumos.CalculateAggregates();
             //this.GrillaArbol.CalculateAggregates();
             //graficoInsumos.recalculo();
+        }
+
+        private void Agregar_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is RibbonButton boton)
+            {
+                switch (boton.Name)
+                {
+                    case "Rubro":
+                        // Lógica para agregar Rubro
+                        var (nuevoNodo, mensaje) = Objeto.agregaNodo("R", null);
+                        break;
+                    case "Tarea":
+                        // Lógica para agregar Tarea
+                        if (this.Planilla.grillaArbol.SelectedItem == null)
+                        {
+                            MessageBox.Show("debe seleccionar un rubro para la tarea");
+                        }
+                        else
+                        {
+                            Bibioteca.Clases.Nodo sele = this.Planilla.grillaArbol.SelectedItem as Bibioteca.Clases.Nodo; //obtine contenido
+                            if (sele.Tipo != "R")
+                            {
+                                MessageBox.Show("debe seleccionar un rubro para la tarea");
+                            }
+                            else
+                            {
+                                Objeto.agregaNodo("T", sele);
+                            }
+                        }
+                        break;
+                    default:
+                        // Otro caso
+                        break;
+                }
+            }
         }
     }
 }

@@ -134,6 +134,7 @@
      ExpanderCellStyle="{StaticResource ExpandedCellStyle}"
      ExpanderColumn="Descripcion"
      KeyDown="grillaArbol_KeyDown"
+     SelectionChanged="grillaArbol_SelectionChanged"
      SelectionMode="Single">
         <syncfusion:SfTreeGrid.StackedHeaderRows>
             <!--<syncfusion:StackedHeaderRow>
