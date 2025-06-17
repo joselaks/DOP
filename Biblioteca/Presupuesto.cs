@@ -866,7 +866,7 @@ namespace Bibioteca.Clases
                 listaRelacionesGrabar.Add(registroR);
                 if (item.HasItems == true)
                     {
-                    //antes de segir bajando, verificar si ya existen relaciones anteriores para no agregar.
+                    //antes de seguir bajando, verificar si ya existen relaciones anteriores para no agregar.
                     bool anterior = listaRelacionesGrabar.Any(a => a.CodSup == item.ID);
                     if (anterior == false)
                         {

@@ -87,6 +87,39 @@ namespace DOP.Datos
             return (result.Success, result.Message, result.Data);
             }
 
+        public static async Task<(bool Success, string Message, int PresupuestoID)> ProcesarPresupuestoAsync(ProcesaPresupuestoRequest request)
+            {
+            string url = $"{App.BaseUrl}presupuestos/procesar";
+            var json = JsonSerializer.Serialize(request, jsonSerializerOptions);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            try
+                {
+                var response = await httpClient.PostAsync(url, content);
+                var responseString = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                    {
+                    var result = JsonSerializer.Deserialize<ProcesarPresupuestoResult>(responseString, jsonSerializerOptions);
+                    return (result.Success, result.Message, result.PresupuestoID);
+                    }
+                else
+                    {
+                    var error = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, jsonSerializerOptions);
+                    string errorMessage = !string.IsNullOrEmpty(error?.Message)
+                        ? error.Message
+                        : !string.IsNullOrEmpty(error?.Mensaje)
+                            ? error.Mensaje
+                            : "Error desconocido";
+                    return (false, errorMessage, 0);
+                    }
+                }
+            catch (Exception ex)
+                {
+                return (false, $"Error: {ex.Message}", 0);
+                }
+            }
+
 
         }
 
@@ -95,5 +128,19 @@ namespace DOP.Datos
         public bool Success { get; set; }
         public string Message { get; set; }
         public string Mensaje { get; set; } // <-- Agregado para soportar ambos nombres
+        }
+
+    public class ProcesaPresupuestoRequest
+        {
+        public PresupuestoDTO Presupuesto { get; set; }
+        public List<ConceptoDTO> Conceptos { get; set; }
+        public List<RelacionDTO> Relaciones { get; set; }
+        }
+
+    public class ProcesarPresupuestoResult
+        {
+        public bool Success { get; set; }
+        public int PresupuestoID { get; set; }
+        public string Message { get; set; }
         }
     }

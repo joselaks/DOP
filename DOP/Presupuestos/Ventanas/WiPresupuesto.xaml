@@ -41,7 +41,7 @@
             </syncfusion:Ribbon.BackStage>
             <syncfusion:RibbonTab Caption="INICIO"  IsChecked="True">
                 <syncfusion:RibbonBar Name="New" Width="90"  Header="Guardar">
-                    <syncfusion:RibbonButton SizeForm="Large" Label="Guardar"/>
+                    <syncfusion:RibbonButton SizeForm="Large" Label="Guardar" Click="BtnGuardar_Click"/>
                     <syncfusion:RibbonButton SizeForm="Large" Label="Importar FIEBDC" x:Name="btnFiebdc" Click="btnFiebdc_Click"/>
                 </syncfusion:RibbonBar>
                 <syncfusion:RibbonBar Name="Delete" Width="150"  Header="Vistas"/>

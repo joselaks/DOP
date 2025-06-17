@@ -18,6 +18,8 @@ using DOP.Presupuestos.Clases;
 using Microsoft.Win32;
 using System.IO;
 using System.Globalization;
+using Biblioteca.DTO;
+using Syncfusion.Windows.Shared;
 
 namespace DOP.Presupuestos.Ventanas
 {
@@ -58,10 +60,57 @@ namespace DOP.Presupuestos.Ventanas
 
         }
 
-        private void BtnGuardar_Click(object sender, RoutedEventArgs e)
-        {
+        private async void BtnGuardar_Click(object sender, RoutedEventArgs e)
+            {
 
-        }
+            //Ojo....por ahora funciona solo para nuevos 
+            // Validar que haya datos mínimos
+            if (Objeto == null || Objeto.encabezado == null)
+                {
+                MessageBox.Show("No hay datos de presupuesto para guardar.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+                }
+
+            // Armar el request
+            var request = new DOP.Datos.ProcesaPresupuestoRequest
+                {
+                Presupuesto = new Biblioteca.DTO.PresupuestoDTO
+                    {
+                    ID = 0, // Para nuevo presupuesto, usa 0 o elimina si el campo es nullable
+                    CuentaID = Objeto.encabezado.CuentaID,
+                    UsuarioID = Objeto.encabezado.UsuarioID,
+                    Descrip = "Prueba",
+                    PrEjecTotal = 1000,
+                    PrEjecDirecto = 10,
+                    EjecMoneda = 'P',
+                    PrVentaTotal = 0,
+                    PrVentaDirecto = 0,
+                    VentaMoneda = 'P',
+                    Superficie = 100,
+                    
+                    EsModelo = false,
+                    TipoCambioD = 100
+                    },
+
+                Conceptos = Objeto.listaConceptosGrabar ?? new List<ConceptoDTO>(),
+                Relaciones = Objeto.listaRelacionesGrabar ?? new List<RelacionDTO>()
+                };
+
+            // Llamar al servicio
+            var (success, message, presupuestoID) = await DOP.Datos.DatosWeb.ProcesarPresupuestoAsync(request);
+
+            // Mostrar resultado
+            if (success)
+                {
+                MessageBox.Show($"Presupuesto guardado correctamente. ID: {presupuestoID}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                // Puedes actualizar el estado local aquí si lo necesitas
+                }
+            else
+                {
+                MessageBox.Show($"Error al guardar el presupuesto:\n{message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
 
         private void btnFiebdc_Click(object sender, RoutedEventArgs e)
         {
