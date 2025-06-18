@@ -38,10 +38,11 @@ namespace DOP.Presupuestos.Ventanas
         {
             InitializeComponent();
             Objeto = new Presupuesto(null);
-            Dosaje = new UcDosaje(Objeto);
-            this.gPlanilla.Children.Add(Planilla = new UcPlanilla(Objeto, Dosaje));
+            Dosaje = new UcDosaje();
+            Planilla = new UcPlanilla(Objeto, Dosaje);
+            this.gPlanilla.Children.Add(Planilla);
             this.gListado.Children.Add(Listado = new UcListado(Objeto));
-            this.gDetalle.Children.Add(Dosaje = new UcDosaje(Objeto));
+            this.gDetalle.Children.Add(Dosaje);
             this.Closing += WiPresupuesto_Closing; // Suscribir el evento
 
             }

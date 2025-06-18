@@ -22,13 +22,9 @@ namespace DOP.Presupuestos.Controles
     /// </summary>
     public partial class UcDosaje : UserControl
     {
-        public Presupuesto Objeto;
-        public UcDosaje(Presupuesto objeto) 
+        public UcDosaje() 
         {
             InitializeComponent();
-            //this.grillaDetalle.ChildPropertyName = "Inferiores";
-            Objeto = objeto;
-            //grillaDetalle.ItemsSource = Objeto.Arbol;
 
 
         }
