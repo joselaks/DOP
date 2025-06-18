@@ -40,8 +40,9 @@ namespace DOP.Presupuestos.Ventanas
             Objeto = new Presupuesto(null);
             Dosaje = new UcDosaje();
             Planilla = new UcPlanilla(Objeto, Dosaje);
+            Listado = new UcListado(Objeto);
             this.gPlanilla.Children.Add(Planilla);
-            this.gListado.Children.Add(Listado = new UcListado(Objeto));
+            this.gListado.Children.Add(Listado);
             this.gDetalle.Children.Add(Dosaje);
             this.Closing += WiPresupuesto_Closing; // Suscribir el evento
 

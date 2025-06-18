@@ -36,5 +36,24 @@ namespace DOP.Presupuestos.Controles
 
         }
 
-    }
+        private void grillaDetalle_CurrentCellBeginEdit(object sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridCurrentCellBeginEditEventArgs e)
+            {
+
+            }
+
+        private void grillaDetalle_CurrentCellEndEdit(object sender, Syncfusion.UI.Xaml.Grid.CurrentCellEndEditEventArgs e)
+            {
+
+            }
+
+        private void grillaDetalle_SelectionChanged(object sender, Syncfusion.UI.Xaml.Grid.GridSelectionChangedEventArgs e)
+            {
+
+            }
+
+        private void grillaDetalle_KeyDown(object sender, KeyEventArgs e)
+            {
+
+            }
+        }
 }

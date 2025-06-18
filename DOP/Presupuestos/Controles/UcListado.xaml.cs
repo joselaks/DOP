@@ -28,5 +28,25 @@ namespace DOP.Presupuestos.Controles
             Objeto= objeto;
             this.grillaListados.ItemsSource = Objeto.Insumos;
         }
-    }
+
+        private void grillaListados_CurrentCellBeginEdit(object sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridCurrentCellBeginEditEventArgs e)
+            {
+
+            }
+
+        private void grillaListados_CurrentCellEndEdit(object sender, Syncfusion.UI.Xaml.Grid.CurrentCellEndEditEventArgs e)
+            {
+
+            }
+
+        private void grillaListados_KeyDown(object sender, KeyEventArgs e)
+            {
+
+            }
+
+        private void grillaListados_SelectionChanged(object sender, Syncfusion.UI.Xaml.Grid.GridSelectionChangedEventArgs e)
+            {
+
+            }
+        }
 }
