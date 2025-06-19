@@ -80,48 +80,7 @@
             RubTemplate="{StaticResource RubTemplate}"
             SubTemplate="{StaticResource SubTemplate}"
             TarTemplate="{StaticResource TarTemplate}" />
-        <Style x:Key="CantidadCellStyle" TargetType="syncfusion:TreeGridCell">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
-                    <Setter Property="Foreground" Value="Transparent" />
-                    <Setter Property="Background" Value="#E0E0E0" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Path=Tipo}" Value="T">
-                    <Setter Property="Foreground" Value="Black" />
-                    <!--<Setter Property="Background" Value="#E0E0E0" />-->
-                </DataTrigger>
-
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="TipoCellStyle" TargetType="syncfusion:TreeGridCell">
-            <Setter Property="FontWeight" Value="Normal" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
-                    <Setter Property="FontWeight" Value="Bold" />
-                    <Setter Property="Background" Value="#E0E0E0" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Path=Tipo}" Value="T">
-                    <!--<Setter Property="Background" Value="#E0E0E0" />-->
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="ExpandedCellStyle" TargetType="syncfusion:TreeGridExpanderCell">
-            <Setter Property="FontWeight" Value="Normal" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
-                    <Setter Property="FontWeight" Value="Bold" />
-                    <Setter Property="Background" Value="#E0E0E0" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Path=Tipo}" Value="T">
-                    <!--<Setter Property="Background" Value="#E0E0E0" />-->
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="BoldTreeGridHeaderStyle" TargetType="syncfusion:TreeGridHeaderCell">
-            <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="Foreground" Value="Black" />
-
-        </Style>
+       
 
     </UserControl.Resources>
 
@@ -136,7 +95,6 @@
         AutoGenerateColumns="False"
         CurrentCellBeginEdit="grillaDetalle_CurrentCellBeginEdit"
         CurrentCellEndEdit="grillaDetalle_CurrentCellEndEdit"
-        ExpanderCellStyle="{StaticResource ExpandedCellStyle}"
         ExpanderColumn="Descripcion"
         KeyDown="grillaDetalle_KeyDown"
         SelectionChanged="grillaDetalle_SelectionChanged"
@@ -169,14 +127,12 @@
 
                 <syncfusion:TreeGridTextColumn
                     Width="60"
-                    CellStyle="{StaticResource CantidadCellStyle}"
                     MappingName="Unidad"
                     TextAlignment="Right" />
 
 
                 <syncfusion:TreeGridNumericColumn
                     Width="60"
-                    CellStyle="{StaticResource CantidadCellStyle}"
                     HeaderText="Cant."
                     MappingName="Cantidad"
                     NumberDecimalDigits="2"
@@ -186,7 +142,6 @@
 
                 <syncfusion:TreeGridNumericColumn
                     Width="80"
-                    CellStyle="{StaticResource CantidadCellStyle}"
                     HeaderText="P.U."
                     MappingName="PU1"
                     NumberDecimalDigits="2"
@@ -198,8 +153,6 @@
                 <syncfusion:TreeGridNumericColumn
                     x:Name="colImporte1"
                     Width="120"
-                    CellStyle="{StaticResource TipoCellStyle}"
-                    HeaderStyle="{StaticResource BoldTreeGridHeaderStyle}"
                     HeaderText="{Binding totGeneral1}"
                     MappingName="Importe1"
                     NumberDecimalDigits="2"
@@ -211,7 +164,6 @@
 
                 <syncfusion:TreeGridNumericColumn
                     Width="120"
-                    CellStyle="{StaticResource TipoCellStyle}"
                     IsHidden="True"
                     MappingName="Materiales1"
                     NumberDecimalDigits="2"
@@ -221,7 +173,6 @@
 
                 <syncfusion:TreeGridNumericColumn
                     Width="120"
-                    CellStyle="{StaticResource TipoCellStyle}"
                     IsHidden="True"
                     MappingName="ManodeObra1"
                     NumberDecimalDigits="2"
@@ -231,7 +182,6 @@
 
                 <syncfusion:TreeGridNumericColumn
                     Width="120"
-                    CellStyle="{StaticResource TipoCellStyle}"
                     IsHidden="True"
                     MappingName="Equipos1"
                     NumberDecimalDigits="2"
@@ -241,7 +191,6 @@
 
                 <syncfusion:TreeGridNumericColumn
                     Width="120"
-                    CellStyle="{StaticResource TipoCellStyle}"
                     IsHidden="True"
                     MappingName="Subcontratos1"
                     NumberDecimalDigits="2"
@@ -251,7 +200,6 @@
 
                 <syncfusion:TreeGridNumericColumn
                     Width="120"
-                    CellStyle="{StaticResource TipoCellStyle}"
                     IsHidden="True"
                     MappingName="Otros1"
                     NumberDecimalDigits="2"

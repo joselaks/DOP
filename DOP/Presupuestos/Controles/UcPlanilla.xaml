@@ -10,119 +10,7 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <UserControl.Resources>
-
-        <!--  DataTemplate para ícono Rubro  -->
-        <DataTemplate x:Key="RubTemplate">
-            <Image
-                Width="15"
-                Height="15"
-                Source="pack://application:,,,/Imagenes/Rubro.png" />
-        </DataTemplate>
-        <!--  DataTemplate para ícono Tarea  -->
-        <DataTemplate x:Key="TarTemplate">
-            <Image
-                Width="15"
-                Height="15"
-                Source="pack://application:,,,/Imagenes/Tarea.png" />
-        </DataTemplate>
-        <!--  DataTemplate para ícono Materiales  -->
-        <DataTemplate x:Key="MatTemplate">
-            <Image
-                Width="15"
-                Height="15"
-                Source="pack://application:,,,/Imagenes/Material.png" />
-        </DataTemplate>
-        <!--  DataTemplate para ícono Mano de obra  -->
-        <DataTemplate x:Key="MdoTemplate">
-            <Image
-                Width="15"
-                Height="15"
-                Source="pack://application:,,,/Imagenes/ManoDeObra.png" />
-        </DataTemplate>
-        <!--  DataTemplate para ícono Equipos  -->
-        <DataTemplate x:Key="EquTemplate">
-            <Image
-                Width="15"
-                Height="15"
-                Source="pack://application:,,,/Imagenes/Equipos.png" />
-        </DataTemplate>
-        <!--  DataTemplate para ícono Subcontratos  -->
-        <DataTemplate x:Key="SubTemplate">
-            <Image
-                Width="15"
-                Height="15"
-                Source="pack://application:,,,/Imagenes/Subcontratos.png" />
-        </DataTemplate>
-        <!--  DataTemplate para ícono Otros  -->
-        <DataTemplate x:Key="OtrTemplate">
-            <Image
-                Width="15"
-                Height="15"
-                Source="pack://application:,,,/Imagenes/Otros.png" />
-        </DataTemplate>
-        <!--  DataTemplate para ícono AuxTemplate  -->
-        <DataTemplate x:Key="AuxTemplate">
-            <Image
-                Width="15"
-                Height="15"
-                Source="pack://application:,,,/Imagenes/Arbol.png" />
-        </DataTemplate>
-        <!--  DataTemplateSelector  -->
-        <local:IconTemplateSelector
-            x:Key="IconTemplateSelector"
-            AuxTemplate="{StaticResource AuxTemplate}"
-            EquTemplate="{StaticResource EquTemplate}"
-            MatTemplate="{StaticResource MatTemplate}"
-            MdoTemplate="{StaticResource MdoTemplate}"
-            OtrTemplate="{StaticResource OtrTemplate}"
-            RubTemplate="{StaticResource RubTemplate}"
-            SubTemplate="{StaticResource SubTemplate}"
-            TarTemplate="{StaticResource TarTemplate}" />
-        <Style x:Key="CantidadCellStyle" TargetType="syncfusion:TreeGridCell">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
-                    <Setter Property="Foreground" Value="Transparent" />
-                    <Setter Property="Background" Value="#E0E0E0" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Path=Tipo}" Value="T">
-                    <Setter Property="Foreground" Value="Black" />
-                    <!--<Setter Property="Background" Value="#E0E0E0" />-->
-                </DataTrigger>
-
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="TipoCellStyle" TargetType="syncfusion:TreeGridCell">
-            <Setter Property="FontWeight" Value="Normal" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
-                    <Setter Property="FontWeight" Value="Bold" />
-                    <Setter Property="Background" Value="#E0E0E0" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Path=Tipo}" Value="T">
-                    <!--<Setter Property="Background" Value="#E0E0E0" />-->
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="ExpandedCellStyle" TargetType="syncfusion:TreeGridExpanderCell">
-            <Setter Property="FontWeight" Value="Normal" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
-                    <Setter Property="FontWeight" Value="Bold" />
-                    <Setter Property="Background" Value="#E0E0E0" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Path=Tipo}" Value="T">
-                    <!--<Setter Property="Background" Value="#E0E0E0" />-->
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="BoldTreeGridHeaderStyle" TargetType="syncfusion:TreeGridHeaderCell">
-            <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="Foreground" Value="Black" />
-
-        </Style>
-
-    </UserControl.Resources>
+  
     <syncfusion:SfTreeGrid
         Name="grillaArbol"
         Grid.Row="1"
@@ -133,7 +21,6 @@
         AutoGenerateColumns="False"
         CurrentCellBeginEdit="grillaArbol_CurrentCellBeginEdit"
         CurrentCellEndEdit="grillaArbol_CurrentCellEndEdit"
-        ExpanderCellStyle="{StaticResource ExpandedCellStyle}"
         ExpanderColumn="Descripcion"
         KeyDown="grillaArbol_KeyDown"
         SelectionChanged="grillaArbol_SelectionChanged"
@@ -178,14 +65,12 @@
 
                 <syncfusion:TreeGridTextColumn
                     Width="60"
-                    CellStyle="{StaticResource CantidadCellStyle}"
                     MappingName="Unidad"
                     TextAlignment="Right" />
 
 
                 <syncfusion:TreeGridNumericColumn
                     Width="60"
-                    CellStyle="{StaticResource CantidadCellStyle}"
                     HeaderText="Cant."
                     MappingName="Cantidad"
                     NumberDecimalDigits="2"
@@ -195,7 +80,6 @@
 
                 <syncfusion:TreeGridNumericColumn
                     Width="80"
-                    CellStyle="{StaticResource CantidadCellStyle}"
                     HeaderText="P.U."
                     MappingName="PU1"
                     NumberDecimalDigits="2"
@@ -207,8 +91,6 @@
                 <syncfusion:TreeGridNumericColumn
                     x:Name="colImporte1"
                     Width="120"
-                    CellStyle="{StaticResource TipoCellStyle}"
-                    HeaderStyle="{StaticResource BoldTreeGridHeaderStyle}"
                     HeaderText="{Binding totGeneral1}"
                     MappingName="Importe1"
                     NumberDecimalDigits="2"
@@ -220,7 +102,6 @@
 
                 <syncfusion:TreeGridNumericColumn
                     Width="120"
-                    CellStyle="{StaticResource TipoCellStyle}"
                     IsHidden="True"
                     MappingName="Materiales1"
                     NumberDecimalDigits="2"
@@ -230,7 +111,6 @@
 
                 <syncfusion:TreeGridNumericColumn
                     Width="120"
-                    CellStyle="{StaticResource TipoCellStyle}"
                     IsHidden="True"
                     MappingName="ManodeObra1"
                     NumberDecimalDigits="2"
@@ -240,7 +120,6 @@
 
                 <syncfusion:TreeGridNumericColumn
                     Width="120"
-                    CellStyle="{StaticResource TipoCellStyle}"
                     IsHidden="True"
                     MappingName="Equipos1"
                     NumberDecimalDigits="2"
@@ -250,7 +129,6 @@
 
                 <syncfusion:TreeGridNumericColumn
                     Width="120"
-                    CellStyle="{StaticResource TipoCellStyle}"
                     IsHidden="True"
                     MappingName="Subcontratos1"
                     NumberDecimalDigits="2"
@@ -260,7 +138,6 @@
 
                 <syncfusion:TreeGridNumericColumn
                     Width="120"
-                    CellStyle="{StaticResource TipoCellStyle}"
                     IsHidden="True"
                     MappingName="Otros1"
                     NumberDecimalDigits="2"
