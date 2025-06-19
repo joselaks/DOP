@@ -15,80 +15,79 @@
         <!--  DataTemplate para ícono Rubro  -->
         <DataTemplate x:Key="RubTemplate">
             <Image
-                Width="15"
-                Height="15"
-                Source="/Imagenes/Presupuestos/Rubro.png" />
+            Width="15"
+            Height="15"
+            Source="pack://application:,,,/Imagenes/Rubro.png" />
         </DataTemplate>
         <!--  DataTemplate para ícono Tarea  -->
         <DataTemplate x:Key="TarTemplate">
             <Image
-                Width="15"
-                Height="15"
-                Source="/Imagenes/Presupuestos/Tarea.png" />
+            Width="15"
+            Height="15"
+            Source="pack://application:,,,/Imagenes/Tarea.png" />
         </DataTemplate>
         <!--  DataTemplate para ícono Materiales  -->
         <DataTemplate x:Key="MatTemplate">
             <Image
-                Width="15"
-                Height="15"
-                Source="/Imagenes/Presupuestos/Material.png" />
+            Width="15"
+            Height="15"
+            Source="pack://application:,,,/Imagenes/Material.png" />
         </DataTemplate>
         <!--  DataTemplate para ícono Mano de obra  -->
         <DataTemplate x:Key="MdoTemplate">
             <Image
-                Width="15"
-                Height="15"
-                Source="/Imagenes/Presupuestos/mdo.png" />
+            Width="15"
+            Height="15"
+            Source="pack://application:,,,/Imagenes/ManoDeObra.png" />
         </DataTemplate>
         <!--  DataTemplate para ícono Equipos  -->
         <DataTemplate x:Key="EquTemplate">
             <Image
-                Width="15"
-                Height="15"
-                Source="/Imagenes/Presupuestos/equipos.png" />
+            Width="15"
+            Height="15"
+            Source="pack://application:,,,/Imagenes/Equipos.png" />
         </DataTemplate>
         <!--  DataTemplate para ícono Subcontratos  -->
         <DataTemplate x:Key="SubTemplate">
             <Image
-                Width="15"
-                Height="15"
-                Source="/Imagenes/Presupuestos/subcontrato.png" />
+            Width="15"
+            Height="15"
+            Source="pack://application:,,,/Imagenes/Subcontratos.png" />
         </DataTemplate>
         <!--  DataTemplate para ícono Otros  -->
         <DataTemplate x:Key="OtrTemplate">
             <Image
-                Width="15"
-                Height="15"
-                Source="/Imagenes/Presupuestos/otros.png" />
+            Width="15"
+            Height="15"
+            Source="pack://application:,,,/Imagenes/Otros.png" />
         </DataTemplate>
         <!--  DataTemplate para ícono AuxTemplate  -->
         <DataTemplate x:Key="AuxTemplate">
             <Image
-                Width="15"
-                Height="15"
-                Source="/Imagenes/Presupuestos/arbol.png" />
+            Width="15"
+            Height="15"
+            Source="pack://application:,,,/Imagenes/Arbol.png" />
         </DataTemplate>
         <!--  DataTemplateSelector  -->
         <local:IconTemplateSelector
-            x:Key="IconTemplateSelector"
-            AuxTemplate="{StaticResource AuxTemplate}"
-            EquTemplate="{StaticResource EquTemplate}"
-            MatTemplate="{StaticResource MatTemplate}"
-            MdoTemplate="{StaticResource MdoTemplate}"
-            OtrTemplate="{StaticResource OtrTemplate}"
-            RubTemplate="{StaticResource RubTemplate}"
-            SubTemplate="{StaticResource SubTemplate}"
-            TarTemplate="{StaticResource TarTemplate}" />
-
+        x:Key="IconTemplateSelector"
+        AuxTemplate="{StaticResource AuxTemplate}"
+        EquTemplate="{StaticResource EquTemplate}"
+        MatTemplate="{StaticResource MatTemplate}"
+        MdoTemplate="{StaticResource MdoTemplate}"
+        OtrTemplate="{StaticResource OtrTemplate}"
+        RubTemplate="{StaticResource RubTemplate}"
+        SubTemplate="{StaticResource SubTemplate}"
+        TarTemplate="{StaticResource TarTemplate}" />
         <Style x:Key="CantidadCellStyle" TargetType="syncfusion:TreeGridCell">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
                     <Setter Property="Foreground" Value="Transparent" />
-                    <Setter Property="Background" Value="#C0C0C0" />
+                    <Setter Property="Background" Value="#E0E0E0" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="T">
                     <Setter Property="Foreground" Value="Black" />
-                    <Setter Property="Background" Value="#E0E0E0" />
+                    <!--<Setter Property="Background" Value="#E0E0E0" />-->
                 </DataTrigger>
 
             </Style.Triggers>
@@ -98,10 +97,10 @@
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
                     <Setter Property="FontWeight" Value="Bold" />
-                    <Setter Property="Background" Value="#C0C0C0" />
+                    <Setter Property="Background" Value="#E0E0E0" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="T">
-                    <Setter Property="Background" Value="#E0E0E0" />
+                    <!--<Setter Property="Background" Value="#E0E0E0" />-->
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -110,10 +109,10 @@
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
                     <Setter Property="FontWeight" Value="Bold" />
-                    <Setter Property="Background" Value="#C0C0C0" />
+                    <Setter Property="Background" Value="#E0E0E0" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="T">
-                    <Setter Property="Background" Value="#E0E0E0" />
+                    <!--<Setter Property="Background" Value="#E0E0E0" />-->
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -122,8 +121,8 @@
             <Setter Property="Foreground" Value="Black" />
 
         </Style>
-    </UserControl.Resources>
 
+    </UserControl.Resources>
 
 
 
@@ -136,7 +135,6 @@
         AutoGenerateColumns="False"
         CurrentCellBeginEdit="grillaListados_CurrentCellBeginEdit"
         CurrentCellEndEdit="grillaListados_CurrentCellEndEdit"
-        ExpanderCellStyle="{StaticResource ExpandedCellStyle}"
         ExpanderColumn="Descripcion"
         KeyDown="grillaListados_KeyDown"
         SelectionChanged="grillaListados_SelectionChanged"
@@ -148,24 +146,59 @@
 
             <syncfusion:TreeGridTextColumn
                 Width="50"
-                IsHidden="True"
                 MappingName="ID" />
 
 
             <syncfusion:TreeGridTemplateColumn
-                Width="40"
-                CellTemplateSelector="{StaticResource IconTemplateSelector}"
-                HeaderText="Nat"
-                MappingName="Tipo" />
+    Width="30"
+    CellTemplateSelector="{StaticResource IconTemplateSelector}"
+    HeaderText="Nat"
+    MappingName="Tipo" />
 
 
             <syncfusion:TreeGridTextColumn
                 Width="50"
-                IsHidden="True"
                 MappingName="Tipo" />
 
 
             <syncfusion:TreeGridTextColumn Width="250" MappingName="Descripcion" />
+
+
+            <syncfusion:TreeGridNumericColumn
+    Width="60"
+    CellStyle="{StaticResource CantidadCellStyle}"
+    HeaderText="Cant."
+    MappingName="Cantidad"
+    NumberDecimalDigits="2"
+    NumberDecimalSeparator=","
+    NumberGroupSeparator="."
+    NumberGroupSizes="3" />
+
+            <syncfusion:TreeGridNumericColumn
+     Width="80"
+     CellStyle="{StaticResource CantidadCellStyle}"
+     HeaderText="P.U."
+     MappingName="PU1"
+     NumberDecimalDigits="2"
+     NumberDecimalSeparator=","
+     NumberGroupSeparator="."
+     NumberGroupSizes="3" />
+
+
+            <syncfusion:TreeGridNumericColumn
+     x:Name="colImporte1"
+     Width="120"
+     CellStyle="{StaticResource TipoCellStyle}"
+     HeaderStyle="{StaticResource BoldTreeGridHeaderStyle}"
+     HeaderText="{Binding totGeneral1}"
+     MappingName="Importe1"
+     NumberDecimalDigits="2"
+     NumberDecimalSeparator=","
+     NumberGroupSeparator="."
+     NumberGroupSizes="3" />
+
+
+
         </syncfusion:SfTreeGrid.Columns>
 
     </syncfusion:SfTreeGrid>

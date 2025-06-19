@@ -53,15 +53,15 @@ namespace Bibioteca.Clases
                 }
             }
 
-        ObservableCollection<Insumo> insumos;
+        ObservableCollection<Nodo> insumos;
 
-        public ObservableCollection<Insumo> Insumos
+        public ObservableCollection<Nodo> Insumos
             {
             get
                 {
                 if (insumos == null)
                     {
-                    insumos = new ObservableCollection<Insumo>();
+                    insumos = new ObservableCollection<Nodo>();
                     }
                 return insumos;
                 }
@@ -474,7 +474,7 @@ namespace Bibioteca.Clases
                 {
                 if (Insumos == null)
                     {
-                    Insumos = new ObservableCollection<Insumo>();
+                    Insumos = new ObservableCollection<Nodo>();
                     }
                 else
                     {
@@ -619,10 +619,10 @@ namespace Bibioteca.Clases
 
                     #endregion
 
-                    Insumo sele = Insumos.FirstOrDefault(a => a.ID == item.ID);
+                    Nodo sele = Insumos.FirstOrDefault(a => a.ID == item.ID);
                     if (sele == null)
                         {
-                        Insumo registro = new Insumo();
+                        Nodo registro = new Nodo();
                         registro.ID = item.ID;
                         registro.Descripcion = item.Descripcion;
                         registro.Cantidad = item.Cantidad * FactorSup;
@@ -887,7 +887,7 @@ namespace Bibioteca.Clases
             respuesta.Unidad = origen.Unidad;
             respuesta.Cantidad = origen.Cantidad;
             respuesta.OrdenInt = origen.OrdenInt;
-            Insumo existe = this.Insumos.FirstOrDefault(a => a.ID == origen.ID);
+            Nodo existe = this.Insumos.FirstOrDefault(a => a.ID == origen.ID);
             if (existe != null)
                 {
                 respuesta.PU1 = existe.PU1;
@@ -925,7 +925,7 @@ namespace Bibioteca.Clases
                     respuesta.Descripcion = item.Descripcion;
                     respuesta.Unidad = item.Unidad;
                     respuesta.Cantidad = item.Cantidad;
-                    Insumo existe = this.Insumos.FirstOrDefault(a => a.ID == item.ID);
+                    Nodo existe = this.Insumos.FirstOrDefault(a => a.ID == item.ID);
                     if (existe != null)
                         {
                         respuesta.PU1 = existe.PU1;
