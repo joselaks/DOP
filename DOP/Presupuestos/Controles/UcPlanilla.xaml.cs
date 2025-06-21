@@ -45,7 +45,7 @@ namespace DOP.Presupuestos.Controles
 
         }
 
-
+        // Le hemos agregado un evento Loaded al TreeGrid para aplicar el filtro una vez que la vista se haya cargado.
         private void GrillaArbol_Loaded(object sender, RoutedEventArgs e)
         {
             if (this.grillaArbol.View != null)
@@ -54,7 +54,7 @@ namespace DOP.Presupuestos.Controles
                 this.grillaArbol.View.Refresh();
             }
         }
-
+        // Método para filtrar los nodos que se mostrarán en el TreeGrid.
         private bool FiltrarPorTipo(object item)
         {
             if (item is Nodo nodo)
@@ -63,7 +63,7 @@ namespace DOP.Presupuestos.Controles
             }
             return false;
         }
-
+        //Cada vez que se edita la grilla, se clona el objeto original antes de editarlo.
         private void grillaArbol_CurrentCellBeginEdit(object sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridCurrentCellBeginEditEventArgs e)
         {
             var column = grillaArbol.Columns[e.RowColumnIndex.ColumnIndex].MappingName;
@@ -129,7 +129,7 @@ namespace DOP.Presupuestos.Controles
             //totOtros1.Value = Objeto.Arbol.Sum(i => i.Otros1);
             //totGeneral1.Value = Objeto.Arbol.Sum(i => i.Importe1);
             decimal totGeneral1 = Objeto.Arbol.Sum(i => i.Importe1);
-            decimal totalGeneralDol = Objeto.Arbol.Sum(i => i.Importe2);
+            //decimal totalGeneralDol = Objeto.Arbol.Sum(i => i.Importe2);
 
             // Asignar el valor explícitamente al HeaderText
             var cultura = new CultureInfo("es-ES") { NumberFormat = { NumberGroupSeparator = ".", NumberDecimalSeparator = "," } };
@@ -149,9 +149,9 @@ namespace DOP.Presupuestos.Controles
 
         private void grillaArbol_SelectionChanged(object sender, GridSelectionChangedEventArgs e)
         {
-            if (grillaArbol.SelectedItem is Nodo nodoSeleccionado && Dosaje != null)
+            if (grillaArbol.SelectedItem is Nodo nodoSeleccionado && Dosaje != null && nodoSeleccionado.Tipo=="T")
             {
-                Dosaje.MostrarInferiores(nodoSeleccionado.Inferiores);
+                Dosaje.MostrarInferiores(nodoSeleccionado);
             }
 
         }

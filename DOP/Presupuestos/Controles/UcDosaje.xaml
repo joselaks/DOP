@@ -80,139 +80,168 @@
             RubTemplate="{StaticResource RubTemplate}"
             SubTemplate="{StaticResource SubTemplate}"
             TarTemplate="{StaticResource TarTemplate}" />
-       
+
 
     </UserControl.Resources>
 
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock
+                VerticalAlignment="Center"
+                FontSize="20"
+                FontWeight="Bold"
+                Text="Analisis de costo: " />
+            <TextBlock x:Name="nombreTarea" VerticalAlignment="Center">Nombre tarea</TextBlock>
+    
+        </StackPanel>
+        <syncfusion:SfTreeGrid Grid.Row="1"
+            x:Name="grillaDetalle"
+            AllowDraggingRows="True"
+            AllowDrop="True"
+            AllowEditing="True"
+            AllowResizingColumns="True"
+            AutoGenerateColumns="False"
+            CurrentCellBeginEdit="grillaDetalle_CurrentCellBeginEdit"
+            CurrentCellEndEdit="grillaDetalle_CurrentCellEndEdit"
+            ExpanderColumn="Descripcion"
+            KeyDown="grillaDetalle_KeyDown"
+            SelectionChanged="grillaDetalle_SelectionChanged"
+            SelectionMode="Single">
+
+            <syncfusion:SfTreeGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Material" Click="MenuItem_Click"/>
+                    <MenuItem Header="Mano de obra" Click="MenuItem_Click"/>
+                </ContextMenu>
+            </syncfusion:SfTreeGrid.ContextMenu>
+
+            <syncfusion:SfTreeGrid.Columns>
+                
+                <syncfusion:TreeGridColumns>
+                    
+
+                    <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="OrdenInt" />-->
+
+                    <syncfusion:TreeGridTextColumn
+                        Width="50"
+                        IsHidden="True"
+                        MappingName="ID" />
 
 
-    <syncfusion:SfTreeGrid
-        x:Name="grillaDetalle"
-        AllowDraggingRows="True"
-        AllowDrop="True"
-        AllowEditing="True"
-        AllowResizingColumns="True"
-        AutoGenerateColumns="False"
-        CurrentCellBeginEdit="grillaDetalle_CurrentCellBeginEdit"
-        CurrentCellEndEdit="grillaDetalle_CurrentCellEndEdit"
-        ExpanderColumn="Descripcion"
-        KeyDown="grillaDetalle_KeyDown"
-        SelectionChanged="grillaDetalle_SelectionChanged"
-        SelectionMode="Single">
-       
-        <syncfusion:SfTreeGrid.Columns>
-            <syncfusion:TreeGridColumns>
-
-                <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="OrdenInt" />-->
-
-                <syncfusion:TreeGridTextColumn
-                    Width="50"
-                    IsHidden="True"
-                    MappingName="ID" />
+                    <syncfusion:TreeGridTemplateColumn
+                        Width="30"
+                        CellTemplateSelector="{StaticResource IconTemplateSelector}"
+                        HeaderText="Nat"
+                        MappingName="Tipo" />
 
 
-                <syncfusion:TreeGridTemplateColumn
-                    Width="30"
-                    CellTemplateSelector="{StaticResource IconTemplateSelector}"
-                    HeaderText="Nat"
-                    MappingName="Tipo" />
+                    <syncfusion:TreeGridTextColumn
+                        Width="50"
+                        IsHidden="True"
+                        MappingName="Tipo" />
+
+                    <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="OrdenInt" />-->
 
 
-                <syncfusion:TreeGridTextColumn Width="50" MappingName="Tipo" IsHidden="True" />
+                    <syncfusion:TreeGridTextColumn Width="250" MappingName="Descripcion" />
 
-                <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="OrdenInt" />-->
-
-
-                <syncfusion:TreeGridTextColumn Width="250" MappingName="Descripcion" />
-
-                <syncfusion:TreeGridTextColumn
-                    Width="60"
-                    MappingName="Unidad"
-                    TextAlignment="Right" />
+                    <syncfusion:TreeGridTextColumn
+                        Width="60"
+                        MappingName="Unidad"
+                        TextAlignment="Right" />
 
 
-                <syncfusion:TreeGridNumericColumn
-                    Width="60"
-                    HeaderText="Cant."
-                    MappingName="Cantidad"
-                    NumberDecimalDigits="2"
-                    NumberDecimalSeparator=","
-                    NumberGroupSeparator="."
-                    NumberGroupSizes="3" />
+                    <syncfusion:TreeGridNumericColumn
+                        Width="60"
+                        HeaderText="Cant."
+                        MappingName="Cantidad"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3" />
 
-                <syncfusion:TreeGridNumericColumn
-                    Width="80"
-                    HeaderText="P.U."
-                    MappingName="PU1"
-                    NumberDecimalDigits="2"
-                    NumberDecimalSeparator=","
-                    NumberGroupSeparator="."
-                    NumberGroupSizes="3" />
-
-
-                <syncfusion:TreeGridNumericColumn
-                    x:Name="colImporte1"
-                    Width="120"
-                    HeaderText="{Binding totGeneral1}"
-                    MappingName="Importe1"
-                    NumberDecimalDigits="2"
-                    NumberDecimalSeparator=","
-                    NumberGroupSeparator="."
-                    NumberGroupSizes="3" />
+                    <syncfusion:TreeGridNumericColumn
+                        Width="80"
+                        HeaderText="P.U."
+                        MappingName="PU1"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3" />
 
 
-
-                <syncfusion:TreeGridNumericColumn
-                    Width="120"
-                    IsHidden="True"
-                    MappingName="Materiales1"
-                    NumberDecimalDigits="2"
-                    NumberDecimalSeparator=","
-                    NumberGroupSeparator="."
-                    NumberGroupSizes="3" />
-
-                <syncfusion:TreeGridNumericColumn
-                    Width="120"
-                    IsHidden="True"
-                    MappingName="ManodeObra1"
-                    NumberDecimalDigits="2"
-                    NumberDecimalSeparator=","
-                    NumberGroupSeparator="."
-                    NumberGroupSizes="3" />
-
-                <syncfusion:TreeGridNumericColumn
-                    Width="120"
-                    IsHidden="True"
-                    MappingName="Equipos1"
-                    NumberDecimalDigits="2"
-                    NumberDecimalSeparator=","
-                    NumberGroupSeparator="."
-                    NumberGroupSizes="3" />
-
-                <syncfusion:TreeGridNumericColumn
-                    Width="120"
-                    IsHidden="True"
-                    MappingName="Subcontratos1"
-                    NumberDecimalDigits="2"
-                    NumberDecimalSeparator=","
-                    NumberGroupSeparator="."
-                    NumberGroupSizes="3" />
-
-                <syncfusion:TreeGridNumericColumn
-                    Width="120"
-                    IsHidden="True"
-                    MappingName="Otros1"
-                    NumberDecimalDigits="2"
-                    NumberDecimalSeparator=","
-                    NumberGroupSeparator="."
-                    NumberGroupSizes="3" />
+                    <syncfusion:TreeGridNumericColumn
+                        x:Name="colImporte1"
+                        Width="120"
+                        HeaderText="{Binding PUTarea}"
+                        MappingName="Importe1"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3" />
 
 
 
-            </syncfusion:TreeGridColumns>
-        </syncfusion:SfTreeGrid.Columns>
+                    <syncfusion:TreeGridNumericColumn
+                        Width="120"
+                        IsHidden="True"
+                        MappingName="Materiales1"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3" />
 
-    </syncfusion:SfTreeGrid>
+                    <syncfusion:TreeGridNumericColumn
+                        Width="120"
+                        IsHidden="True"
+                        MappingName="ManodeObra1"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3" />
+
+                    <syncfusion:TreeGridNumericColumn
+                        Width="120"
+                        IsHidden="True"
+                        MappingName="Equipos1"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3" />
+
+                    <syncfusion:TreeGridNumericColumn
+                        Width="120"
+                        IsHidden="True"
+                        MappingName="Subcontratos1"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3" />
+
+                    <syncfusion:TreeGridNumericColumn
+                        Width="120"
+                        IsHidden="True"
+                        MappingName="Otros1"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3" />
+
+
+
+                </syncfusion:TreeGridColumns>
+            </syncfusion:SfTreeGrid.Columns>
+
+        </syncfusion:SfTreeGrid>
+    </Grid>
+
+
+
+
 
 
 

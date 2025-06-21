@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,11 +31,15 @@ namespace DOP.Presupuestos.Controles
         }
 
 
-        public void MostrarInferiores(ObservableCollection<Nodo> inferiores)
+        public void MostrarInferiores(Nodo inferiores)
         {
-            grillaDetalle.ItemsSource = inferiores;
+            grillaDetalle.ItemsSource = inferiores.Inferiores;
+            nombreTarea.Text = inferiores.Descripcion;
+            // Asignar el valor explícitamente al HeaderText
+            var cultura = new CultureInfo("es-ES") { NumberFormat = { NumberGroupSeparator = ".", NumberDecimalSeparator = "," } };
+            colImporte1.HeaderText = $"{inferiores.PU1.ToString("N2", cultura)}";
 
-        }
+            }
 
         private void grillaDetalle_CurrentCellBeginEdit(object sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridCurrentCellBeginEditEventArgs e)
             {
@@ -53,6 +58,23 @@ namespace DOP.Presupuestos.Controles
 
         private void grillaDetalle_KeyDown(object sender, KeyEventArgs e)
             {
+
+            }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+            {
+            if (sender is MenuItem menuItem)
+                {
+                switch (menuItem.Header)
+                    {
+                    case "Material":
+                        // Lógica para editar
+                        break;
+                    case "Mano de obra":
+                        // Lógica para eliminar
+                        break;
+                    }
+                }
 
             }
         }
