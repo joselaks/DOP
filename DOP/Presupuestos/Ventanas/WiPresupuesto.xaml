@@ -14,7 +14,7 @@
     WindowStartupLocation="CenterScreen"
     WindowState="Normal"
     mc:Ignorable="d">
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -57,11 +57,13 @@
                     <syncfusion:RibbonButton
                         Click="BtnGuardar_Click"
                         Label="Guardar"
-                        SizeForm="Large" />
+                        LargeIcon="pack://application:,,,/Imagenes/Guardar.png"
+                        SizeForm="Large"/>
                     <syncfusion:RibbonButton
                         x:Name="btnFiebdc"
                         Click="btnFiebdc_Click"
                         Label="Importar FIEBDC"
+                        LargeIcon="pack://application:,,,/Imagenes/Importar.png"
                         SizeForm="Large" />
                 </syncfusion:RibbonBar>
                 <syncfusion:RibbonBar Name="Delete" Header="Agregar">
@@ -69,12 +71,14 @@
                         x:Name="Rubro"
                         Click="Agregar_Click"
                         Label="Rubro"
-                        SizeForm="Large" />
+                        SizeForm="Large" 
+                        LargeIcon="pack://application:,,,/Imagenes/Rubro.png"/>
                     <syncfusion:RibbonButton
                         x:Name="Tarea"
                         Click="Agregar_Click"
                         Label="Tarea"
-                        SizeForm="Large" />
+                        SizeForm="Large" 
+                        LargeIcon="pack://application:,,,/Imagenes/Tarea.png"/>
                 </syncfusion:RibbonBar>
                 <syncfusion:RibbonBar
                     Name="Respond"
@@ -83,7 +87,7 @@
             </syncfusion:RibbonTab>
             <syncfusion:RibbonTab Caption="REPORTES" IsChecked="False" />
         </syncfusion:Ribbon>
-        
+
         <syncfusion:DockingManager
             x:Name="docPres"
             Grid.Row="1"
@@ -117,9 +121,9 @@
                             Text="Presupuesto" />
                     </StackPanel>
                     <Grid x:Name="gPlanilla" Grid.Row="1" />
-                    
+
                 </Grid>
-                
+
                 <Grid x:Name="gDetalle" Grid.Row="2" />
 
                 <Grid

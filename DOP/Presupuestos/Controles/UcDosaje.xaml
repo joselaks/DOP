@@ -112,6 +112,14 @@
             SelectionChanged="grillaDetalle_SelectionChanged"
             SelectionMode="Single">
 
+            <syncfusion:SfTreeGrid.HeaderContextMenu>
+                <ContextMenu>
+                    <MenuItem x:Name="SortDescendin" Header="SortDescending" />
+                    <MenuItem x:Name="ClearSorting" Header="ClearSorting" />
+                    <MenuItem x:Name="ClearFiltering" Header="ClearFiltering" />
+                </ContextMenu>
+            </syncfusion:SfTreeGrid.HeaderContextMenu>
+
             <syncfusion:SfTreeGrid.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Material" Click="MenuItem_Click"/>
