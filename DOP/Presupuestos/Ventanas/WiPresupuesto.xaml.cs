@@ -38,7 +38,7 @@ namespace DOP.Presupuestos.Ventanas
         {
             InitializeComponent();
             Objeto = new Presupuesto(null);
-            Dosaje = new UcDosaje();
+            Dosaje = new UcDosaje(Objeto);
             Planilla = new UcPlanilla(Objeto, Dosaje);
             Listado = new UcListado(Objeto);
             this.gPlanilla.Children.Add(Planilla);
@@ -249,7 +249,7 @@ namespace DOP.Presupuestos.Ventanas
 
             // Asignar el valor explícitamente al HeaderText
             var cultura = new CultureInfo("es-ES") { NumberFormat = { NumberGroupSeparator = ".", NumberDecimalSeparator = "," } };
-            //colImporte1.HeaderText = $"{totGeneral1.ToString("N2", cultura)}";
+            Planilla.colImporte1.HeaderText = $"{totGeneral1.ToString("N2", cultura)}";
             //colImporte2.HeaderText = $"{totalGeneralDol.ToString("N2", cultura)}";
 
 
@@ -294,5 +294,10 @@ namespace DOP.Presupuestos.Ventanas
                 }
             }
         }
-    }
+
+        private void Recalculo_Click(object sender, RoutedEventArgs e)
+            {
+             recalculo();
+            }
+        }
 }

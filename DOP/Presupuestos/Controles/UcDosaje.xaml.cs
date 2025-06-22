@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DOP.Presupuestos.Controles
 {
@@ -23,21 +24,26 @@ namespace DOP.Presupuestos.Controles
     /// </summary>
     public partial class UcDosaje : UserControl
     {
-        public UcDosaje() 
+        Nodo NodoAnalizado;
+        Presupuesto Presup;
+
+
+        public UcDosaje(Presupuesto presup) 
         {
             InitializeComponent();
+            Presup = presup;
+            
+            }
 
 
-        }
-
-
-        public void MostrarInferiores(Nodo inferiores)
+        public void MostrarInferiores(Nodo analizado)
         {
-            grillaDetalle.ItemsSource = inferiores.Inferiores;
-            nombreTarea.Text = inferiores.Descripcion;
+            NodoAnalizado = analizado;
+            grillaDetalle.ItemsSource = NodoAnalizado.Inferiores;
+            nombreTarea.Text = NodoAnalizado.Descripcion;
             // Asignar el valor explícitamente al HeaderText
             var cultura = new CultureInfo("es-ES") { NumberFormat = { NumberGroupSeparator = ".", NumberDecimalSeparator = "," } };
-            colImporte1.HeaderText = $"{inferiores.PU1.ToString("N2", cultura)}";
+            colImporte1.HeaderText = $"{NodoAnalizado.PU1.ToString("N2", cultura)}";
 
             }
 
@@ -68,13 +74,29 @@ namespace DOP.Presupuestos.Controles
                 switch (menuItem.Header)
                     {
                     case "Material":
-                        // Lógica para editar
+                        AgregarNodo("M");
                         break;
                     case "Mano de obra":
                         // Lógica para eliminar
                         break;
                     }
                 }
+
+            }
+
+        private void AgregarNodo(string tipo)
+            {
+
+
+            Nodo sele = NodoAnalizado;
+            if (sele == null || (tipo != "A" && sele.Tipo != "T"))
+                {
+                MessageBox.Show("Debe seleccionar una tarea o auxiliar para agregar el nuevo nodo.");
+                return;
+                }
+
+            (Nodo nuevoNodo, string mensaje) = Presup.agregaNodo(tipo, sele);
+            Presup.recalculo(Presup.Arbol, true, 0, true);
 
             }
         }

@@ -58,7 +58,7 @@
                         Click="BtnGuardar_Click"
                         Label="Guardar"
                         LargeIcon="pack://application:,,,/Imagenes/Guardar.png"
-                        SizeForm="Large"/>
+                        SizeForm="Large" />
                     <syncfusion:RibbonButton
                         x:Name="btnFiebdc"
                         Click="btnFiebdc_Click"
@@ -71,19 +71,28 @@
                         x:Name="Rubro"
                         Click="Agregar_Click"
                         Label="Rubro"
-                        SizeForm="Large" 
-                        LargeIcon="pack://application:,,,/Imagenes/Rubro.png"/>
+                        LargeIcon="pack://application:,,,/Imagenes/Rubro.png"
+                        SizeForm="Large" />
                     <syncfusion:RibbonButton
                         x:Name="Tarea"
                         Click="Agregar_Click"
                         Label="Tarea"
-                        SizeForm="Large" 
-                        LargeIcon="pack://application:,,,/Imagenes/Tarea.png"/>
+                        LargeIcon="pack://application:,,,/Imagenes/Tarea.png"
+                        SizeForm="Large" />
                 </syncfusion:RibbonBar>
                 <syncfusion:RibbonBar
                     Name="Respond"
                     Width="90"
-                    Header="Reportes" />
+                    Header="Varios">
+                    <syncfusion:RibbonButton
+                        x:Name="Recalculo"
+                        Click="Recalculo_Click"
+                        Label="Recalculo"
+                        SmallIcon="pack://application:,,,/Imagenes/Otros.png"
+                        SizeForm="Small" />
+                </syncfusion:RibbonBar>
+
+
             </syncfusion:RibbonTab>
             <syncfusion:RibbonTab Caption="REPORTES" IsChecked="False" />
         </syncfusion:Ribbon>
