@@ -86,8 +86,6 @@ namespace DOP.Presupuestos.Controles
 
         private void AgregarNodo(string tipo)
             {
-
-
             Nodo sele = NodoAnalizado;
             if (sele == null || (tipo != "A" && sele.Tipo != "T"))
                 {
