@@ -130,12 +130,6 @@ namespace DOP.Datos
         public string Mensaje { get; set; } // <-- Agregado para soportar ambos nombres
         }
 
-    public class ProcesaPresupuestoRequest
-        {
-        public PresupuestoDTO Presupuesto { get; set; }
-        public List<ConceptoDTO> Conceptos { get; set; }
-        public List<RelacionDTO> Relaciones { get; set; }
-        }
 
     public class ProcesarPresupuestoResult
         {
