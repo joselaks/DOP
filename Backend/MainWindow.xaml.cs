@@ -66,5 +66,11 @@ namespace Backend
         {
             VerificaUsuario();
         }
+
+        private void Panel_Click(object sender, RoutedEventArgs e)
+        {
+            var panel = new Backend.Panel();
+            panel.Show(); // .ShowDialog() 
+        }
     }
     }

@@ -8,8 +8,8 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Button Content="Verifica Usuario" HorizontalAlignment="Left" Margin="687,369,0,0" VerticalAlignment="Top" Click="Button_Click"/>
-        <TextBlock Margin="59,0,679,418"><Run Language="es-mx" Text="Articulos"/></TextBlock>
-        <TextBlock Margin="241,0,497,418"><Run Language="es-mx" Text="Insumos"/><LineBreak/><Run Language="es-mx"/></TextBlock>
+
+        <Button Content="Panel" HorizontalAlignment="Left" Margin="32,369,0,0" VerticalAlignment="Top" Click="Panel_Click"/>
 
     </Grid>
 </Window>
