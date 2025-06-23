@@ -299,5 +299,10 @@ namespace DOP.Presupuestos.Ventanas
             {
              recalculo();
             }
+
+        private void Recnumerar_Click(object sender, RoutedEventArgs e)
+        {
+            Objeto.NumeraItems(Objeto.Arbol,"");
         }
+    }
 }

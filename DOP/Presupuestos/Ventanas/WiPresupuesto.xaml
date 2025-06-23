@@ -90,6 +90,12 @@
                         Label="Recalculo"
                         SmallIcon="pack://application:,,,/Imagenes/Otros.png"
                         SizeForm="Small" />
+                    <syncfusion:RibbonButton
+    x:Name="Recnumerar"
+    Click="Recnumerar_Click"
+    Label="Renumerar"
+    SmallIcon="pack://application:,,,/Imagenes/Tarea.png"
+    SizeForm="Small" />
                 </syncfusion:RibbonBar>
 
 

@@ -42,9 +42,23 @@ namespace DOP.Presupuestos.Controles
             this.grillaArbol.ItemsSource = Objeto.Arbol;
             this.grillaArbol.ChildPropertyName = "Inferiores";
             this.grillaArbol.Loaded += GrillaArbol_Loaded;
+            this.grillaArbol.QueryCoveredRange += OnQueryCoveredRange;
 
         }
 
+
+        private void OnQueryCoveredRange(object? sender, TreeGridQueryCoveredRangeEventArgs e)
+        {
+            var record = e.Record as Nodo;
+            if (record != null && record.Tipo == "R")
+            {
+                //Customize here based on your requirement
+                e.Range = new TreeGridCoveredCellInfo(2, 5, e.RowColumnIndex.RowIndex);
+                e.Handled = true;
+            }
+        }
+
+        
         // Le hemos agregado un evento Loaded al TreeGrid para aplicar el filtro una vez que la vista se haya cargado.
         private void GrillaArbol_Loaded(object sender, RoutedEventArgs e)
         {

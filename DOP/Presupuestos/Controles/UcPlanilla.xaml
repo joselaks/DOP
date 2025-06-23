@@ -10,7 +10,24 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-  
+
+    <UserControl.Resources>
+        <Style x:Key="TipoCellStyle" TargetType="syncfusion:TreeGridCell">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
+                    <Setter Property="FontWeight" Value="Bold" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="expanderCellStyle" TargetType="syncfusion:TreeGridExpanderCell">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
+                    <Setter Property="FontWeight" Value="Bold"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
     <syncfusion:SfTreeGrid
         Name="grillaArbol"
         Grid.Row="1"
@@ -21,9 +38,12 @@
         AutoGenerateColumns="False"
         CurrentCellBeginEdit="grillaArbol_CurrentCellBeginEdit"
         CurrentCellEndEdit="grillaArbol_CurrentCellEndEdit"
-        ExpanderColumn="Descripcion"
+        ExpanderColumn="Item"
+        ExpanderCellStyle="{StaticResource expanderCellStyle}"
         KeyDown="grillaArbol_KeyDown"
         SelectionChanged="grillaArbol_SelectionChanged"
+        SelectionBackground="DarkGray"                                                  
+        SelectionForeground="Black"
         SelectionMode="Single">
         <syncfusion:SfTreeGrid.StackedHeaderRows>
             <!--<syncfusion:StackedHeaderRow>
@@ -40,6 +60,11 @@
         </syncfusion:SfTreeGrid.StackedHeaderRows>
         <syncfusion:SfTreeGrid.Columns>
             <syncfusion:TreeGridColumns>
+
+                <syncfusion:TreeGridTextColumn
+     Width="50"
+    
+     MappingName="Item" />
 
                 <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="OrdenInt" />-->
 
@@ -61,7 +86,7 @@
                 <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="OrdenInt" />-->
 
 
-                <syncfusion:TreeGridTextColumn Width="250" MappingName="Descripcion" />
+                <syncfusion:TreeGridTextColumn Width="250" MappingName="Descripcion" CellStyle="{StaticResource TipoCellStyle}" />
 
                 <syncfusion:TreeGridTextColumn
                     Width="60"
@@ -92,6 +117,7 @@
                     x:Name="colImporte1"
                     Width="120"
                     HeaderText="{Binding totGeneral1}"
+                    CellStyle="{StaticResource TipoCellStyle}"
                     MappingName="Importe1"
                     NumberDecimalDigits="2"
                     NumberDecimalSeparator=","

@@ -5,6 +5,7 @@ using System.Text;
 using System.Collections.ObjectModel;
 using Biblioteca;
 using Biblioteca.DTO;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Bibioteca.Clases
     {
@@ -262,7 +263,9 @@ namespace Bibioteca.Clases
                 {
                 DetectaAuxilarRecursivo(this.Arbol);
                 }
-            }
+
+            NumeraItems(Arbol, "");
+        }
 
         private ObservableCollection<Nodo> GetElementosHijos(Nodo elemento, List<ConceptoDTO> listaConceptos, List<RelacionDTO> listaRelaciones, int _nivel)
             {
@@ -654,6 +657,21 @@ namespace Bibioteca.Clases
             }
 
 
+        public void NumeraItems(IEnumerable<Nodo> nodos, string prefijo)
+        {
+            int contador = 1;
+            foreach (var nodo in nodos)
+            {
+                string itemActual = string.IsNullOrEmpty(prefijo) ? $"{contador}" : $"{prefijo}.{contador}";
+                nodo.Item = itemActual;
+
+                if (nodo.Inferiores != null && nodo.Inferiores.Count > 0)
+                {
+                    NumeraItems(nodo.Inferiores, itemActual);
+                }
+                contador++;
+            }
+        }
 
         public Nodo FindParentNode(IEnumerable<Nodo> items, Nodo inferior, Nodo superior)
             {
