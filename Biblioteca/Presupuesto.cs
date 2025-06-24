@@ -331,9 +331,6 @@ namespace Bibioteca.Clases
         }
 
 
-
-
-
         public void mismoCodigo(IEnumerable<Nodo> items, Nodo editado)
         {
             foreach (var item in items)
