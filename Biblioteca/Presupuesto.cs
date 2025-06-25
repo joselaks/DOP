@@ -1035,14 +1035,14 @@ namespace Bibioteca.Clases
                 bool existiaAntes = listaConceptosLeer.Any(c => c.ConceptoID == concepto.ConceptoID);
                 if (!existiaAntes)
                 {
-                    concepto.Accion = 'M';
+                    concepto.Accion = 'A';
                 }
             }
             foreach (var concepto in listaConceptosGrabar)
             {
-                if (concepto.Accion != 'B' && concepto.Accion != 'M')
+                if (concepto.Accion != 'B' && concepto.Accion != 'A')
                 {
-                    concepto.Accion = 'A';
+                    concepto.Accion = 'M';
                 }
             }
 
@@ -1074,14 +1074,14 @@ namespace Bibioteca.Clases
                     r.CodInf == relacion.CodInf);
                 if (!existiaAntes)
                 {
-                    relacion.Accion = 'M';
+                    relacion.Accion = 'A';
                 }
             }
             foreach (var relacion in listaRelacionesGrabar)
             {
-                if (relacion.Accion != 'B' && relacion.Accion != 'M')
+                if (relacion.Accion != 'B' && relacion.Accion != 'A')
                 {
-                    relacion.Accion = 'A';
+                    relacion.Accion = 'M';
                 }
             }
 
@@ -1122,6 +1122,10 @@ namespace Bibioteca.Clases
                 Conceptos = listaConceptosGrabar,
                 Relaciones = listaRelacionesGrabar
             };
+
+            // --- ACTUALIZACIÓN DE LISTAS PARA PRÓXIMA EJECUCIÓN ---
+            listaConceptosLeer = listaConceptosGrabar.Select(x => x).ToList();
+            listaRelacionesLeer = listaRelacionesGrabar.Select(x => x).ToList();
 
             return request;
         }
