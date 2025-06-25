@@ -200,6 +200,7 @@ namespace Bibioteca.Clases
             if (_encabezado == null)
             {
                 encabezado = new PresupuestoDTO();
+                encabezado.Descrip = "Nuevo Presupuesto";
                 listaConceptosLeer = new List<ConceptoDTO>();
                 listaRelacionesLeer = new List<RelacionDTO>();
             }
@@ -712,6 +713,7 @@ namespace Bibioteca.Clases
                     {
                         Tipo = "R",
                         Cantidad = 1,
+                        Unidad = "Gl",
                         Sup = true,
                         Inferiores = new ObservableCollection<Nodo>()
                     };
@@ -862,7 +864,7 @@ namespace Bibioteca.Clases
                 if (existe == false)
                 {
                     ConceptoDTO registroC = new ConceptoDTO();
-                    //registroC.PresupuestoID = encabezado.ID;
+                    registroC.PresupuestoID = encabezado?.ID ?? 0;
                     registroC.ConceptoID = item.ID;
                     registroC.Descrip = item.Descripcion;
                     registroC.Tipo = item.Tipo[0];
@@ -873,7 +875,7 @@ namespace Bibioteca.Clases
                     listaConceptosGrabar.Add(registroC);
                 }
                 RelacionDTO registroR = new RelacionDTO();
-                //registroR.PresupuestoID = encabezado.ID;
+                registroR.PresupuestoID = encabezado?.ID ?? 0;
                 registroR.CodSup = parentItem == null ? "0" : parentItem.ID;
                 registroR.CodInf = item.ID;
                 registroR.CanEjec = item.Cantidad;
@@ -1011,7 +1013,7 @@ namespace Bibioteca.Clases
                 {
                     var conceptoBaja = new ConceptoDTO
                     {
-                        PresupuestoID = concepto.PresupuestoID,
+                        PresupuestoID = encabezado?.ID ?? 0,
                         ConceptoID = concepto.ConceptoID,
                         Descrip = concepto.Descrip,
                         Tipo = concepto.Tipo,
@@ -1033,12 +1035,12 @@ namespace Bibioteca.Clases
                 bool existiaAntes = listaConceptosLeer.Any(c => c.ConceptoID == concepto.ConceptoID);
                 if (!existiaAntes)
                 {
-                    concepto.Accion = 'I';
+                    concepto.Accion = 'M';
                 }
             }
             foreach (var concepto in listaConceptosGrabar)
             {
-                if (concepto.Accion != 'B' && concepto.Accion != 'I')
+                if (concepto.Accion != 'B' && concepto.Accion != 'M')
                 {
                     concepto.Accion = 'A';
                 }
@@ -1054,7 +1056,7 @@ namespace Bibioteca.Clases
                 {
                     var relacionBaja = new RelacionDTO
                     {
-                        PresupuestoID = relacion.PresupuestoID,
+                        PresupuestoID = encabezado?.ID ?? 0,
                         CodSup = relacion.CodSup,
                         CodInf = relacion.CodInf,
                         CanEjec = relacion.CanEjec,
@@ -1072,12 +1074,12 @@ namespace Bibioteca.Clases
                     r.CodInf == relacion.CodInf);
                 if (!existiaAntes)
                 {
-                    relacion.Accion = 'I';
+                    relacion.Accion = 'M';
                 }
             }
             foreach (var relacion in listaRelacionesGrabar)
             {
-                if (relacion.Accion != 'B' && relacion.Accion != 'I')
+                if (relacion.Accion != 'B' && relacion.Accion != 'M')
                 {
                     relacion.Accion = 'A';
                 }
@@ -1087,7 +1089,7 @@ namespace Bibioteca.Clases
             var fechaActual = DateTime.Today;
             var encabezadoEmpaquetado = new PresupuestoDTO
             {
-                ID = encabezado?.ID,
+                ID = encabezado.ID ?? 0,
                 CuentaID = encabezado?.CuentaID,
                 UsuarioID = encabezado?.UsuarioID ?? 0,
                 Descrip = encabezado?.Descrip,

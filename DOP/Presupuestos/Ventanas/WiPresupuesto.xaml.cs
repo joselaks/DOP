@@ -76,6 +76,11 @@ namespace DOP.Presupuestos.Ventanas
             if (resultado.Success)
             {
                 MessageBox.Show($"Presupuesto guardado correctamente. ID: {resultado.PresupuestoID}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                if (Objeto.encabezado.ID == null)
+                {
+                    Objeto.encabezado.ID = resultado.PresupuestoID;
+
+                }
             }
             else
             {
