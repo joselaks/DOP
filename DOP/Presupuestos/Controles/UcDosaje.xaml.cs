@@ -1,4 +1,6 @@
 ﻿using Bibioteca.Clases;
+using Syncfusion.UI.Xaml.Grid;
+using Syncfusion.UI.Xaml.TreeGrid;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -26,11 +28,17 @@ namespace DOP.Presupuestos.Controles
     {
         Nodo NodoAnalizado;
         Presupuesto Presup;
+        Nodo anterior = new Nodo();
+        public Presupuesto Objeto;
+        private object _originalValue;
 
 
         public UcDosaje(Presupuesto presup) 
         {
             InitializeComponent();
+            Objeto = presup;
+            this.grillaDetalle.ChildPropertyName = "Inferiores";
+
             Presup = presup;
             
             }
@@ -49,13 +57,53 @@ namespace DOP.Presupuestos.Controles
 
         private void grillaDetalle_CurrentCellBeginEdit(object sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridCurrentCellBeginEditEventArgs e)
             {
+            var column = grillaDetalle.Columns[e.RowColumnIndex.ColumnIndex].MappingName;
+            var record = grillaDetalle.GetNodeAtRowIndex(e.RowColumnIndex.RowIndex).Item as Nodo;
+            // Clonar el objeto record y asignarlo a anterior
+            anterior = Objeto.clonar(record);
 
+            if (column == "ID")
+            {
+                _originalValue = record.ID;
             }
+        }
 
         private void grillaDetalle_CurrentCellEndEdit(object sender, Syncfusion.UI.Xaml.Grid.CurrentCellEndEditEventArgs e)
             {
+            var column = grillaDetalle.Columns[e.RowColumnIndex.ColumnIndex].MappingName;
+            var editado = grillaDetalle.GetNodeAtRowIndex(e.RowColumnIndex.RowIndex).Item as Nodo;
+            edicion(editado, column);
+            var undoRegistro = new Cambios
+            {
+                TipoCambio = "Tipeo",
+                antesCambio = anterior,
+                despuesCambio = Objeto.clonar(editado),
+                PropiedadCambiada = column,
+                OldValue = _originalValue,
+                NewValue = editado.GetType().GetProperty(column).GetValue(editado)
+            };
+        }
 
+        private void edicion(Nodo? editado, string column)
+        {
+            switch (column)
+            {
+                case "ID":
+                    Objeto.cambiaCodigo(Objeto.Arbol, editado.ID, _originalValue.ToString());
+                    break;
+                case "Cantidad":
+                    CambioAuxiliar dato = new CambioAuxiliar();
+                    dato.IdInferior = editado.ID;
+                    dato.IdSuperior = Objeto.FindParentNode(Objeto.Arbol, editado, null).ID;
+                    dato.Cantidad = editado.Cantidad;
+                    Objeto.cambioCantidadAuxiliar(Objeto.Arbol, dato);
+                    break;
+                default:
+                    Objeto.mismoCodigo(Objeto.Arbol, editado);
+                    break;
             }
+            Objeto.recalculo(Objeto.Arbol, true, 0, true);
+        }
 
         private void grillaDetalle_SelectionChanged(object sender, Syncfusion.UI.Xaml.Grid.GridSelectionChangedEventArgs e)
             {
@@ -64,8 +112,45 @@ namespace DOP.Presupuestos.Controles
 
         private void grillaDetalle_KeyDown(object sender, KeyEventArgs e)
             {
+            if (e.Key == Key.Delete)
+            {
+                var selectedItems = grillaDetalle.SelectedItems;
+                var itemsToRemove = new List<Nodo>();
+                foreach (var item in selectedItems)
+                {
+                    itemsToRemove.Add(item as Nodo);
+                }
+                foreach (var item in itemsToRemove)
+                {
+                    var result = RemoveItemRecursively(Objeto.Arbol, item);
 
+                }
             }
+        }
+
+        private (bool, Nodo, int) RemoveItemRecursively(ObservableCollection<Nodo> collection, Nodo itemToRemove, Nodo parent = null)
+        {
+            int index = collection.IndexOf(itemToRemove);
+            if (index != -1)
+            {
+                collection.RemoveAt(index);
+                return (true, parent, index);
+            }
+
+            foreach (var item in collection)
+            {
+                if (item.HasItems)
+                {
+                    var result = RemoveItemRecursively(item.Inferiores, itemToRemove, item);
+                    if (result.Item1)
+                    {
+                        return result;
+                    }
+                }
+            }
+
+            return (false, null, -1);
+        }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
             {
