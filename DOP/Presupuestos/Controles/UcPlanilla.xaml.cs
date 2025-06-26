@@ -5,6 +5,7 @@ using Syncfusion.Windows.Tools.Controls;
 using Syncfusion.XlsIO.Implementation.XmlSerialization.Constants;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -158,7 +159,44 @@ namespace DOP.Presupuestos.Controles
 
         private void grillaArbol_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.Key == Key.Delete)
+            {
+                var selectedItems = grillaArbol.SelectedItems;
+                var itemsToRemove = new List<Nodo>();
+                foreach (var item in selectedItems)
+                {
+                    itemsToRemove.Add(item as Nodo);
+                }
+                foreach (var item in itemsToRemove)
+                {
+                    var result = RemoveItemRecursively(Objeto.Arbol, item);
+                   
+                }
+            }
+        }
 
+        private (bool, Nodo, int) RemoveItemRecursively(ObservableCollection<Nodo> collection, Nodo itemToRemove, Nodo parent = null)
+        {
+            int index = collection.IndexOf(itemToRemove);
+            if (index != -1)
+            {
+                collection.RemoveAt(index);
+                return (true, parent, index);
+            }
+
+            foreach (var item in collection)
+            {
+                if (item.HasItems)
+                {
+                    var result = RemoveItemRecursively(item.Inferiores, itemToRemove, item);
+                    if (result.Item1)
+                    {
+                        return result;
+                    }
+                }
+            }
+
+            return (false, null, -1);
         }
 
         private void grillaArbol_SelectionChanged(object sender, GridSelectionChangedEventArgs e)
