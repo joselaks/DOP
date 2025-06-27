@@ -171,7 +171,7 @@ namespace DOP.Presupuestos.Ventanas
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
             {
-                WiPresupuesto wiPresupuesto = new WiPresupuesto(0,0);
+                WiPresupuesto wiPresupuesto = new WiPresupuesto(0);
             
             wiPresupuesto.ShowDialog();
         }

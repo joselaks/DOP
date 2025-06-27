@@ -75,7 +75,7 @@ namespace DOP.Interfaz.Ventanas
                         // Guardar usuario y contraseña localmente si no existen
                         var (usuarioLocal, passwordLocal) = LeerUsuarioLocal();
                         GuardarUsuarioLocal(txtUsuario.Text, txtContraseña.Password);
-
+                        App.IdUsuario = respuesta.Usuario.DatosUsuario.ID;
                         this.DialogResult = true;
                         this.Close();
 

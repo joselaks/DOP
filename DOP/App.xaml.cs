@@ -17,6 +17,7 @@ namespace DOP
         public IServiceProvider ServiceProvider { get; private set; }
         public HttpClient HttpClient { get; private set; }
         public static string BaseUrl { get; private set; }
+        public static int IdUsuario { get; set; }
         // Propiedad estática para almacenar el estado de la conexión
         public static bool IsConnectionSuccessful { get; private set; }
 

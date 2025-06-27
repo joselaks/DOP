@@ -34,10 +34,11 @@ namespace DOP.Presupuestos.Ventanas
         public UcPlanilla Planilla;
         public UcListado Listado;
         public UcDosaje Dosaje;
-        public WiPresupuesto(int usuario, int presupuesto )
+        public WiPresupuesto(int presupuesto )
         {
             InitializeComponent();
             Objeto = new Presupuesto(null);
+            Objeto.encabezado.UsuarioID = App.IdUsuario;
             Dosaje = new UcDosaje(Objeto);
             Planilla = new UcPlanilla(Objeto, Dosaje);
             Listado = new UcListado(Objeto);

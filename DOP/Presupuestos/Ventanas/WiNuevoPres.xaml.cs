@@ -67,7 +67,7 @@ namespace DOP.Presupuestos.Ventanas
 
         private void AbrirPresupuesto(string parametro)
         {
-            var win = new WiPresupuesto(0, 0);
+            var win = new WiPresupuesto(0);
             win.Owner = this.Owner;
             win.Show();
             this.Close();
