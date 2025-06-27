@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Configuration;
 using System.Data;
+using System.Globalization;
 using System.Net.Http;
 using System.Windows;
 using System.Windows.Input;
@@ -42,6 +43,13 @@ namespace DOP
             var servicios = serviceCollection.BuildServiceProvider();
             var httpClientFactory = servicios.GetRequiredService<IHttpClientFactory>();
             HttpClient = httpClientFactory.CreateClient("default");
+
+            // Establece la cultura para todos los threads de la aplicación
+            var cultura = new CultureInfo("es-ES");
+            Thread.CurrentThread.CurrentCulture = cultura;
+            Thread.CurrentThread.CurrentUICulture = cultura;
+            CultureInfo.DefaultThreadCurrentCulture = cultura;
+            CultureInfo.DefaultThreadCurrentUICulture = cultura;
 
             }
 

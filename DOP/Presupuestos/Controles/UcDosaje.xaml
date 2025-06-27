@@ -124,6 +124,11 @@
                 <ContextMenu>
                     <MenuItem Header="Material" Click="MenuItem_Click"/>
                     <MenuItem Header="Mano de obra" Click="MenuItem_Click"/>
+                    <MenuItem Header="Equipo" Click="MenuItem_Click"/>
+                    <MenuItem Header="Subcontrato" Click="MenuItem_Click"/>
+                    <MenuItem Header="Otro" Click="MenuItem_Click"/>
+                    <MenuItem Header="Auxiliar" Click="MenuItem_Click"/>
+
                 </ContextMenu>
             </syncfusion:SfTreeGrid.ContextMenu>
 

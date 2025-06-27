@@ -20,12 +20,12 @@ using System.Windows.Shapes;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DOP.Presupuestos.Controles
-{
+    {
     /// <summary>
     /// Lógica de interacción para UcDosaje.xaml
     /// </summary>
     public partial class UcDosaje : UserControl
-    {
+        {
         Nodo NodoAnalizado;
         Presupuesto Presup;
         Nodo anterior = new Nodo();
@@ -33,19 +33,19 @@ namespace DOP.Presupuestos.Controles
         private object _originalValue;
 
 
-        public UcDosaje(Presupuesto presup) 
-        {
+        public UcDosaje(Presupuesto presup)
+            {
             InitializeComponent();
             Objeto = presup;
             this.grillaDetalle.ChildPropertyName = "Inferiores";
 
             Presup = presup;
-            
+
             }
 
 
         public void MostrarInferiores(Nodo analizado)
-        {
+            {
             NodoAnalizado = analizado;
             grillaDetalle.ItemsSource = NodoAnalizado.Inferiores;
             nombreTarea.Text = NodoAnalizado.Descripcion;
@@ -63,10 +63,10 @@ namespace DOP.Presupuestos.Controles
             anterior = Objeto.clonar(record);
 
             if (column == "ID")
-            {
+                {
                 _originalValue = record.ID;
+                }
             }
-        }
 
         private void grillaDetalle_CurrentCellEndEdit(object sender, Syncfusion.UI.Xaml.Grid.CurrentCellEndEditEventArgs e)
             {
@@ -74,20 +74,20 @@ namespace DOP.Presupuestos.Controles
             var editado = grillaDetalle.GetNodeAtRowIndex(e.RowColumnIndex.RowIndex).Item as Nodo;
             edicion(editado, column);
             var undoRegistro = new Cambios
-            {
+                {
                 TipoCambio = "Tipeo",
                 antesCambio = anterior,
                 despuesCambio = Objeto.clonar(editado),
                 PropiedadCambiada = column,
                 OldValue = _originalValue,
                 NewValue = editado.GetType().GetProperty(column).GetValue(editado)
-            };
-        }
+                };
+            }
 
         private void edicion(Nodo? editado, string column)
-        {
-            switch (column)
             {
+            switch (column)
+                {
                 case "ID":
                     Objeto.cambiaCodigo(Objeto.Arbol, editado.ID, _originalValue.ToString());
                     break;
@@ -101,9 +101,9 @@ namespace DOP.Presupuestos.Controles
                 default:
                     Objeto.mismoCodigo(Objeto.Arbol, editado);
                     break;
-            }
+                }
             Objeto.recalculo(Objeto.Arbol, true, 0, true);
-        }
+            }
 
         private void grillaDetalle_SelectionChanged(object sender, Syncfusion.UI.Xaml.Grid.GridSelectionChangedEventArgs e)
             {
@@ -113,44 +113,44 @@ namespace DOP.Presupuestos.Controles
         private void grillaDetalle_KeyDown(object sender, KeyEventArgs e)
             {
             if (e.Key == Key.Delete)
-            {
+                {
                 var selectedItems = grillaDetalle.SelectedItems;
                 var itemsToRemove = new List<Nodo>();
                 foreach (var item in selectedItems)
-                {
+                    {
                     itemsToRemove.Add(item as Nodo);
-                }
+                    }
                 foreach (var item in itemsToRemove)
-                {
+                    {
                     var result = RemoveItemRecursively(Objeto.Arbol, item);
 
-                }
-            }
-        }
-
-        private (bool, Nodo, int) RemoveItemRecursively(ObservableCollection<Nodo> collection, Nodo itemToRemove, Nodo parent = null)
-        {
-            int index = collection.IndexOf(itemToRemove);
-            if (index != -1)
-            {
-                collection.RemoveAt(index);
-                return (true, parent, index);
-            }
-
-            foreach (var item in collection)
-            {
-                if (item.HasItems)
-                {
-                    var result = RemoveItemRecursively(item.Inferiores, itemToRemove, item);
-                    if (result.Item1)
-                    {
-                        return result;
                     }
                 }
             }
 
+        private (bool, Nodo, int) RemoveItemRecursively(ObservableCollection<Nodo> collection, Nodo itemToRemove, Nodo parent = null)
+            {
+            int index = collection.IndexOf(itemToRemove);
+            if (index != -1)
+                {
+                collection.RemoveAt(index);
+                return (true, parent, index);
+                }
+
+            foreach (var item in collection)
+                {
+                if (item.HasItems)
+                    {
+                    var result = RemoveItemRecursively(item.Inferiores, itemToRemove, item);
+                    if (result.Item1)
+                        {
+                        return result;
+                        }
+                    }
+                }
+
             return (false, null, -1);
-        }
+            }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
             {
@@ -162,8 +162,21 @@ namespace DOP.Presupuestos.Controles
                         AgregarNodo("M");
                         break;
                     case "Mano de obra":
-                        // Lógica para eliminar
+                        AgregarNodo("D");
                         break;
+                    case "Equipo":
+                        AgregarNodo("E");
+                        break;
+                    case "Subcontrato":
+                        AgregarNodo("S");
+                        break;
+                    case "Otro":
+                        AgregarNodo("O");
+                        break;
+                    case "Auxiliar":
+                        AgregarNodo("A");
+                        break;
+
                     }
                 }
 
@@ -172,7 +185,14 @@ namespace DOP.Presupuestos.Controles
         private void AgregarNodo(string tipo)
             {
             Nodo sele = NodoAnalizado;
-            if (sele == null || (tipo != "A" && sele.Tipo != "T"))
+
+            // Si hay un nodo seleccionado en la grilla y es de tipo "A", usarlo como sele
+            if (grillaDetalle.SelectedItem is Nodo seleccionado && seleccionado.Tipo == "A")
+                {
+                sele = seleccionado;
+                }
+
+            if (sele == null || (tipo != "A" && sele.Tipo != "T" && sele.Tipo != "A"))
                 {
                 MessageBox.Show("Debe seleccionar una tarea o auxiliar para agregar el nuevo nodo.");
                 return;
@@ -180,7 +200,6 @@ namespace DOP.Presupuestos.Controles
 
             (Nodo nuevoNodo, string mensaje) = Presup.agregaNodo(tipo, sele);
             Presup.recalculo(Presup.Arbol, true, 0, true);
-
             }
         }
-}
+    }

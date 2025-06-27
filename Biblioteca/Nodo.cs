@@ -70,8 +70,29 @@ namespace Bibioteca.Clases
 
         public Nodo Copia() => (Nodo)this.MemberwiseClone();
 
-        public ObservableCollection<Nodo> Inferiores { get => inferiores; set => inferiores = value; }
-    }
+        public ObservableCollection<Nodo> Inferiores
+            {
+            get => inferiores;
+            set
+                {
+                if (inferiores != null)
+                    inferiores.CollectionChanged -= Inferiores_CollectionChanged;
+
+                inferiores = value;
+
+                if (inferiores != null)
+                    inferiores.CollectionChanged += Inferiores_CollectionChanged;
+
+                OnPropertyChanged(nameof(Inferiores));
+                OnPropertyChanged(nameof(HasItems));
+                }
+            }
+
+        private void Inferiores_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+            {
+            OnPropertyChanged(nameof(HasItems));
+            }
+        }
 }
 
 //Nodos con dos monedas
