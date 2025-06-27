@@ -120,8 +120,33 @@ namespace DOP.Datos
                 }
             }
 
+        public static async Task<(bool Success, string Message, List<PresupuestoDTO> Presupuestos)> ObtenerPresupuestosUsuarioAsync()
+            {
+            string url = $"{App.BaseUrl}presupuestos/usuario/{App.IdUsuario}";
+            var (success, message, data) = await ExecuteRequestAsync<List<PresupuestoDTO>>(
+                () => httpClient.GetAsync(url),
+                $"Obtener presupuestos del usuario {App.IdUsuario}"
+            );
+            return (success, message, data ?? new List<PresupuestoDTO>());
+            }
 
+
+        public static async Task<(bool Success, string Message, List<ConceptoDTO> Conceptos, List<RelacionDTO> Relaciones)> ObtenerConceptosYRelacionesAsync(int presupuestoID)
+            {
+            string url = $"{App.BaseUrl}presupuestos/{presupuestoID}";
+            var (success, message, data) = await ExecuteRequestAsync<ConceptosRelacionesResult>(
+                () => httpClient.GetAsync(url),
+                $"Obtener conceptos y relaciones del presupuesto {presupuestoID}"
+            );
+
+            if (success && data != null)
+                return (true, "Operación exitosa.", data.Conceptos ?? new List<ConceptoDTO>(), data.Relaciones ?? new List<RelacionDTO>());
+            else
+                return (false, message, new List<ConceptoDTO>(), new List<RelacionDTO>());
+            }
         }
+
+
 
     public class ResultadoOperacion
         {

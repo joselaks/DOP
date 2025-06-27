@@ -1,4 +1,6 @@
 ﻿using Biblioteca;
+using Biblioteca.DTO;
+using DOP.Datos;
 using DOP.Interfaz.Ventanas;
 using Syncfusion.SfSkinManager;
 using Syncfusion.UI.Xaml.Charts;
@@ -29,6 +31,7 @@ namespace DOP.Presupuestos.Ventanas
         private double _previousWidth;
         private double _previousHeight;
         private bool _isCustomMaximized = false;
+        private ObservableCollection<PresupuestoDTO> _presupuestos = new();
 
         public WiTablero()
             {
@@ -54,9 +57,25 @@ namespace DOP.Presupuestos.Ventanas
                 Width = 1800;
                 Height = 1000;
                 }
+            Loaded += WiTablero_Loaded;
 
 
 
+            }
+
+        private async void WiTablero_Loaded(object sender, RoutedEventArgs e)
+            {
+            var (success, message, lista) = await DatosWeb.ObtenerPresupuestosUsuarioAsync();
+            if (success)
+                {
+                _presupuestos = new ObservableCollection<PresupuestoDTO>(lista);
+                GrillaPresupuestos.ItemsSource = _presupuestos;
+                }
+            else
+                {
+                MessageBox.Show($"No se pudieron cargar los presupuestos.\n{message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                GrillaPresupuestos.ItemsSource = null;
+                }
             }
 
 
@@ -169,38 +188,77 @@ namespace DOP.Presupuestos.Ventanas
 
         #endregion
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private async void MenuItem_Click(object sender, RoutedEventArgs e)
             {
-                WiPresupuesto wiPresupuesto = new WiPresupuesto(0);
-            
-            wiPresupuesto.ShowDialog();
-        }
+            if (sender is MenuItem menuItem)
+                {
+                // Puedes usar Name o Header según cómo esté definido tu menú
+                switch (menuItem.Header?.ToString())
+                    {
+                    case "Nuevo":
+                        var ventana = new WiNuevoPres
+                            {
+                            Owner = this,
+                            WindowStartupLocation = WindowStartupLocation.CenterOwner
+                            };
+                        ventana.ShowDialog();
+                        break;
 
-        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+                    case "Editar":
+                        if (GrillaPresupuestos.SelectedItem is PresupuestoDTO seleccionado && seleccionado.ID.HasValue)
+                            {
+                            // Obtener conceptos y relaciones antes de abrir la ventana
+                            var (ok, msg, conceptos, relaciones) = await DatosWeb.ObtenerConceptosYRelacionesAsync(seleccionado.ID.Value);
+                            if (ok)
+                                {
+                                // Aquí puedes pasar conceptos y relaciones a la ventana WiPresupuesto si lo necesitas
+                                var wiPresupuesto = new WiPresupuesto(seleccionado,conceptos,relaciones);
+                                wiPresupuesto.Owner = this;
+                                wiPresupuesto.ShowDialog();
+                                // Si necesitas usar conceptos y relaciones después, puedes hacerlo aquí
+                                }
+                            else
+                                {
+                                MessageBox.Show($"No se pudieron obtener los datos del presupuesto.\n{msg}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                                }
+                            }
+                        else
+                            {
+                            MessageBox.Show("Seleccione un presupuesto para editar.", "Atención", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            }
+                        break;
+
+                    case "Eliminar":
+                        if (GrillaPresupuestos.SelectedItem is PresupuestoDTO eliminar && eliminar.ID.HasValue)
+                            {
+                            // Aquí puedes pedir confirmación y luego llamar a tu método de borrado
+                            var result = MessageBox.Show("¿Está seguro que desea eliminar el presupuesto seleccionado?", "Confirmar", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                            if (result == MessageBoxResult.Yes)
+                                {
+                                // Llama a tu método de borrado (puedes hacerlo async si lo deseas)
+                                // await DatosWeb.BorrarPresupuestoAsync(eliminar.ID.Value);
+                                MessageBox.Show("Presupuesto eliminado (implementa el borrado real aquí).");
+                                }
+                            }
+                        else
+                            {
+                            MessageBox.Show("Seleccione un presupuesto para eliminar.", "Atención", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            }
+                        break;
+
+                    default:
+                        MessageBox.Show("Opción de menú no implementada.", "Menú", MessageBoxButton.OK, MessageBoxImage.Information);
+                        break;
+                    }
+                }
+            }
+
+       
+
+        private void GrillaPresupuestos_MouseDoubleClick(object sender, MouseButtonEventArgs e)
             {
 
             }
-
-        private void MenuItem_Click_2(object sender, RoutedEventArgs e)
-            {
-
-            }
-
-        private void GrillaDocumentos_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-            {
-
-            }
-
-        private void NuevoPres(object sender, RoutedEventArgs e)
-            {
-            var ventana = new WiNuevoPres
-            {
-                Owner = this,
-                WindowStartupLocation = WindowStartupLocation.CenterOwner
-            };
-            ventana.ShowDialog();
-
-        }
         }
 
 

@@ -123,15 +123,15 @@
 
                             <Grid Grid.Row="2">
                                 <syncfusion:SfDataGrid
-                                    Name="GrillaDocumentos"
-                                    AutoGenerateColumns="False"
+                                    Name="GrillaPresupuestos"
+                                    AutoGenerateColumns="True"
                                     IsReadOnly="True"
-                                    MouseDoubleClick="GrillaDocumentos_MouseDoubleClick">
+                                    MouseDoubleClick="GrillaPresupuestos_MouseDoubleClick">
                                     <syncfusion:SfDataGrid.ContextMenu>
                                         <ContextMenu>
-                                            <MenuItem Click="NuevoPres"  Header="Nuevo" />
+                                            <MenuItem Click="MenuItem_Click"  Header="Nuevo" />
                                             <MenuItem Click="MenuItem_Click" Header="Editar" />
-                                            <MenuItem Click="MenuItem_Click_2" Header="Borrar" />
+                                            <MenuItem Click="MenuItem_Click" Header="Borrar" />
                                         </ContextMenu>
                                     </syncfusion:SfDataGrid.ContextMenu>
                                     <syncfusion:SfDataGrid.Columns>

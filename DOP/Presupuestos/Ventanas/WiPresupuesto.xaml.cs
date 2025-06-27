@@ -34,10 +34,10 @@ namespace DOP.Presupuestos.Ventanas
         public UcPlanilla Planilla;
         public UcListado Listado;
         public UcDosaje Dosaje;
-        public WiPresupuesto(int presupuesto )
+        public WiPresupuesto(PresupuestoDTO? _encabezado, List<ConceptoDTO> conceptos, List<RelacionDTO> relaciones)
         {
             InitializeComponent();
-            Objeto = new Presupuesto(null);
+            Objeto = new Presupuesto(_encabezado, conceptos,relaciones);
             Objeto.encabezado.UsuarioID = App.IdUsuario;
             Dosaje = new UcDosaje(Objeto);
             Planilla = new UcPlanilla(Objeto, Dosaje);
@@ -76,6 +76,10 @@ namespace DOP.Presupuestos.Ventanas
 
             if (resultado.Success)
             {
+                // --- ACTUALIZACIÓN DE LISTAS PARA PRÓXIMA EJECUCIÓN ---
+                Objeto.listaConceptosLeer = Objeto.listaConceptosGrabar.Select(x => x).ToList();
+                Objeto.listaRelacionesLeer = Objeto.listaRelacionesGrabar.Select(x => x).ToList();
+
                 MessageBox.Show($"Presupuesto guardado correctamente. ID: {resultado.PresupuestoID}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
                 if (Objeto.encabezado.ID == null)
                 {
@@ -110,9 +114,9 @@ namespace DOP.Presupuestos.Ventanas
                     string txtNombre = stream.Name;
                 }
                 Bibioteca.Clases.Fiebdc fie = new Bibioteca.Clases.Fiebdc(textoFie);
-                Bibioteca.Clases.Presupuesto pres = new Bibioteca.Clases.Presupuesto(null);
+                Bibioteca.Clases.Presupuesto pres = new Bibioteca.Clases.Presupuesto(null,null,null);
 
-                Bibioteca.Clases.Presupuesto objetofieb = new Bibioteca.Clases.Presupuesto(null);
+                Bibioteca.Clases.Presupuesto objetofieb = new Bibioteca.Clases.Presupuesto(null,null,null);
                 objetofieb.generaPresupuesto("fie", fie.listaConceptos, fie.listaRelaciones);
                 foreach (var item in objetofieb.Arbol)
                 {

@@ -1,11 +1,12 @@
 ﻿using Bibioteca.Clases;
-using Syncfusion.Windows.Shared;
-using Syncfusion.Windows.Tools.Controls;
 using Biblioteca;
+using Biblioteca.DTO;
 using DOP.Presupuestos.Controles.SubControles;
 using Microsoft.Win32;
 using Syncfusion.SfSkinManager;
 using Syncfusion.Windows.Controls;
+using Syncfusion.Windows.Shared;
+using Syncfusion.Windows.Tools.Controls;
 using Syncfusion.Windows.Tools.Controls;
 using System;
 using System.Collections.Generic;
@@ -36,12 +37,12 @@ namespace DOP.Presupuestos.Controles
         public Presupuesto Objeto;
         
 
-        public UcPresupuesto()
+        public UcPresupuesto(PresupuestoDTO? _encabezado,List<ConceptoDTO> conceptos, List<RelacionDTO> relaciones)
             {
             //SfSkinManager.SetTheme(this, new Theme("MaterialLight", new string[] { "DockingManager", "TabControlExt" }));
 
             InitializeComponent();
-            Objeto = new Presupuesto(null);
+            Objeto = new Presupuesto(_encabezado, conceptos,relaciones);
             this.grillaArbol.ItemsSource = Objeto.Arbol;
             this.grillaArbol.ChildPropertyName = "Inferiores";
             UcListaConceptos listaInsumos = new UcListaConceptos(Objeto);
@@ -131,9 +132,9 @@ namespace DOP.Presupuestos.Controles
                     string txtNombre = stream.Name;
                 }
                 Bibioteca.Clases.Fiebdc fie = new Bibioteca.Clases.Fiebdc(textoFie);
-                Bibioteca.Clases.Presupuesto pres = new Bibioteca.Clases.Presupuesto(null);
+                Bibioteca.Clases.Presupuesto pres = new Bibioteca.Clases.Presupuesto(null,null,null);
 
-                Bibioteca.Clases.Presupuesto objetofieb = new Bibioteca.Clases.Presupuesto(null);
+                Bibioteca.Clases.Presupuesto objetofieb = new Bibioteca.Clases.Presupuesto(null,null,null);
                 objetofieb.generaPresupuesto("fie", fie.listaConceptos, fie.listaRelaciones);
                 foreach (var item in objetofieb.Arbol)
                 {

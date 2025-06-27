@@ -88,14 +88,14 @@
                         x:Name="Recalculo"
                         Click="Recalculo_Click"
                         Label="Recalculo"
-                        SmallIcon="pack://application:,,,/Imagenes/Otros.png"
-                        SizeForm="Small" />
+                        SizeForm="Small"
+                        SmallIcon="pack://application:,,,/Imagenes/Otros.png" />
                     <syncfusion:RibbonButton
-    x:Name="Recnumerar"
-    Click="Recnumerar_Click"
-    Label="Renumerar"
-    SmallIcon="pack://application:,,,/Imagenes/Tarea.png"
-    SizeForm="Small" />
+                        x:Name="Recnumerar"
+                        Click="Recnumerar_Click"
+                        Label="Renumerar"
+                        SizeForm="Small"
+                        SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
                 </syncfusion:RibbonBar>
 
 

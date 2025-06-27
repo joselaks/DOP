@@ -195,7 +195,7 @@ namespace Bibioteca.Clases
 
         #endregion
 
-        public Presupuesto(PresupuestoDTO? _encabezado)
+        public Presupuesto(PresupuestoDTO? _encabezado, List<ConceptoDTO> conceptos, List<RelacionDTO> relaciones )
         {
             if (_encabezado == null)
             {
@@ -207,12 +207,14 @@ namespace Bibioteca.Clases
             else
             {
                 encabezado = _encabezado;
+                listaConceptosLeer = conceptos;
+                listaRelacionesLeer = relaciones;
                 //Tomar los datos del encabezado para los campos editables.
                 //Obtener el detalle del presupuesto.
+                generaPresupuesto(null, listaConceptosLeer, listaRelacionesLeer);
+
+                }
             }
-            listaConceptosGrabar = new List<ConceptoDTO>();
-            listaRelacionesGrabar = new List<RelacionDTO>();
-        }
 
         // Procedimiento que en base a una lista de conceptos y relaciones, genera un presupuesto arbol.
         public void generaPresupuesto(string origen, List<ConceptoDTO> listaConceptos, List<RelacionDTO> listaRelaciones)
@@ -1123,9 +1125,6 @@ namespace Bibioteca.Clases
                 Relaciones = listaRelacionesGrabar
             };
 
-            // --- ACTUALIZACIÓN DE LISTAS PARA PRÓXIMA EJECUCIÓN ---
-            listaConceptosLeer = listaConceptosGrabar.Select(x => x).ToList();
-            listaRelacionesLeer = listaRelacionesGrabar.Select(x => x).ToList();
 
             return request;
         }

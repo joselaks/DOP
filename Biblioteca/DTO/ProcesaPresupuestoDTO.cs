@@ -14,5 +14,11 @@ namespace Biblioteca.DTO
         public List<RelacionDTO> Relaciones { get; set; }
         }
 
+    public class ConceptosRelacionesResult
+        {
+        public List<ConceptoDTO> Conceptos { get; set; }
+        public List<RelacionDTO> Relaciones { get; set; }
+        }
+
     }
 
