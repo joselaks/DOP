@@ -91,6 +91,65 @@ namespace Backend.Datos
             return (result.Success, result.Message, result.Data);
             }
 
+        // Obtener insumos por usuario
+        public static async Task<(bool Success, string Message, List<InsumoDTO> Insumos)> ObtenerInsumosPorUsuarioAsync(int usuarioID)
+            {
+            string url = $"{App.BaseUrl}insumos/usuario/{usuarioID}";
+            var result = await ExecuteRequestAsync<List<InsumoDTO>>(() => httpClient.GetAsync(url), $"Obtener insumos usuario {usuarioID}");
+            return (result.Success, result.Message, result.Data);
+            }
+
+        // Procesar (insertar/actualizar) un insumo y sus artículos relacionados
+        public static async Task<(bool Success, string Message, int? InsumoID)> ProcesarInsumoAsync(InsumoDTO insumo, List<ArticuloRelDTO> articulos)
+            {
+            string url = $"{App.BaseUrl}insumos/procesar";
+            var request = new
+                {
+                Insumo = insumo,
+                Articulos = articulos
+                };
+            var content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
+            var result = await ExecuteRequestAsync<JsonElement>(() => httpClient.PostAsync(url, content), "Procesar insumo");
+            int? id = null;
+            if (result.Success && result.Data.TryGetProperty("InsumoID", out var idProp))
+                id = idProp.GetInt32();
+            return (result.Success, result.Message, id);
+            }
+
+        // Eliminar un insumo y sus artículos relacionados
+        public static async Task<(bool Success, string Message)> EliminarInsumoYArticulosRelAsync(int insumoID)
+            {
+            string url = $"{App.BaseUrl}insumos/{insumoID}";
+            var result = await ExecuteRequestAsync<JsonElement>(() => httpClient.DeleteAsync(url), $"Eliminar insumo {insumoID}");
+            return (result.Success, result.Message);
+            }
+
+        // Procesar (insertar/actualizar) una lista de artículos y sus artículos
+        public static async Task<(bool Success, string Message, int? ListaID)> ProcesarArticulosListaAsync(ArticulosListaDTO lista, List<ArticuloDTO> articulos)
+            {
+            string url = $"{App.BaseUrl}insumos/articulos/procesar";
+            var request = new
+                {
+                Lista = lista,
+                Articulos = articulos
+                };
+            var content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
+            var result = await ExecuteRequestAsync<JsonElement>(() => httpClient.PostAsync(url, content), "Procesar lista de artículos");
+            int? id = null;
+            if (result.Success && result.Data.TryGetProperty("ListaID", out var idProp))
+                id = idProp.GetInt32();
+            return (result.Success, result.Message, id);
+            }
+
+        // Eliminar una lista de artículos y sus artículos relacionados
+        public static async Task<(bool Success, string Message)> EliminarArticulosListaYArticulosAsync(int listaID)
+            {
+            string url = $"{App.BaseUrl}insumos/articulos/{listaID}";
+            var result = await ExecuteRequestAsync<JsonElement>(() => httpClient.DeleteAsync(url), $"Eliminar lista de artículos {listaID}");
+            return (result.Success, result.Message);
+            }
+
+
         }
 
     public class ResultadoOperacion

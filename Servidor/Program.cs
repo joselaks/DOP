@@ -44,6 +44,7 @@ string connectionString = "Server=tcp:ghu95zexx2.database.windows.net,1433;Initi
 //Agrega el servicio del repositorio al contenedor de dependencias
 builder.Services.AddSingleton(new rUsuarios(connectionString));
 builder.Services.AddSingleton(new rPresupuestos(connectionString));
+builder.Services.AddSingleton(new rInsumos(connectionString));
 
 // Configurar servicios de Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -124,7 +125,6 @@ usu.MapGet("validacion/", async (string email, string pass, rUsuarios repo) =>
 
 #endregion
 
-
 #region Grupo de rutas: /pre
 
 var pre = app.MapGroup("/presupuestos");
@@ -186,6 +186,77 @@ pre.MapDelete("/{presupuestoID:int}", async (int presupuestoID, rPresupuestos re
 
 
 
+
+#endregion
+
+#region Grupo de rutas: /ins
+
+var ins = app.MapGroup("/insumos");
+
+ins.MapGet("/usuario/{usuarioID:int}", async (int usuarioID, rInsumos repo) =>
+{
+    try
+        {
+        var insumos = await repo.ListarInsumosPorUsuarioAsync(usuarioID);
+        return Results.Ok(insumos);
+        }
+    catch (Exception ex)
+        {
+        return Results.BadRequest(new { Message = ex.Message });
+        }
+}).RequireAuthorization();
+
+ins.MapPost("/procesar", async (ProcesaInsumoRequest request, rInsumos repo) =>
+{
+    try
+        {
+        var id = await repo.ProcesarInsumoAsync(request.Insumo, request.Articulos);
+        return Results.Ok(new { Success = true, InsumoID = id, Message = "Insumo procesado exitosamente." });
+        }
+    catch (Exception ex)
+        {
+        return Results.BadRequest(new { Success = false, Message = ex.Message });
+        }
+}).RequireAuthorization();
+
+ins.MapDelete("/{insumoID:int}", async (int insumoID, rInsumos repo) =>
+{
+    try
+        {
+        await repo.EliminarInsumoYArticulosRelAsync(insumoID);
+        return Results.Ok(new { Success = true, Message = "Insumo y artículos relacionados eliminados exitosamente." });
+        }
+    catch (Exception ex)
+        {
+        return Results.BadRequest(new { Success = false, Message = ex.Message });
+        }
+}).RequireAuthorization();
+
+ins.MapPost("/articulos/procesar", async (ProcesaArticulosListaRequest request, rInsumos repo) =>
+{
+    try
+        {
+        var id = await repo.ProcesarArticulosListaAsync(request.Lista, request.Articulos);
+        return Results.Ok(new { Success = true, ListaID = id, Message = "Lista de artículos procesada exitosamente." });
+        }
+    catch (Exception ex)
+        {
+        return Results.BadRequest(new { Success = false, Message = ex.Message });
+        }
+}).RequireAuthorization();
+
+ins.MapDelete("/articulos/{listaID:int}", async (int listaID, rInsumos repo) =>
+{
+    try
+        {
+        await repo.EliminarArticulosListaYArticulosAsync(listaID);
+        return Results.Ok(new { Success = true, Message = "Lista y artículos relacionados eliminados exitosamente." });
+        }
+    catch (Exception ex)
+        {
+        return Results.BadRequest(new { Success = false, Message = ex.Message });
+        }
+}).RequireAuthorization();
 
 #endregion
 

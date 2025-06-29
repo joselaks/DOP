@@ -196,7 +196,7 @@ namespace DOP.Presupuestos.Ventanas
                 switch (menuItem.Header?.ToString())
                     {
                     case "Nuevo":
-                        var ventana = new WiNuevoPres
+                        var ventana = new WiNuevoPres(_presupuestos)
                             {
                             Owner = this,
                             WindowStartupLocation = WindowStartupLocation.CenterOwner
@@ -212,7 +212,7 @@ namespace DOP.Presupuestos.Ventanas
                             if (ok)
                                 {
                                 // Aquí puedes pasar conceptos y relaciones a la ventana WiPresupuesto si lo necesitas
-                                var wiPresupuesto = new WiPresupuesto(seleccionado,conceptos,relaciones);
+                                var wiPresupuesto = new WiPresupuesto(seleccionado,conceptos,relaciones, _presupuestos);
                                 wiPresupuesto.Owner = this;
                                 wiPresupuesto.ShowDialog();
                                 // Si necesitas usar conceptos y relaciones después, puedes hacerlo aquí
@@ -228,16 +228,25 @@ namespace DOP.Presupuestos.Ventanas
                             }
                         break;
 
-                    case "Eliminar":
+                    case "Borrar":
                         if (GrillaPresupuestos.SelectedItem is PresupuestoDTO eliminar && eliminar.ID.HasValue)
                             {
-                            // Aquí puedes pedir confirmación y luego llamar a tu método de borrado
                             var result = MessageBox.Show("¿Está seguro que desea eliminar el presupuesto seleccionado?", "Confirmar", MessageBoxButton.YesNo, MessageBoxImage.Question);
                             if (result == MessageBoxResult.Yes)
                                 {
-                                // Llama a tu método de borrado (puedes hacerlo async si lo deseas)
-                                // await DatosWeb.BorrarPresupuestoAsync(eliminar.ID.Value);
-                                MessageBox.Show("Presupuesto eliminado (implementa el borrado real aquí).");
+                                var (success, message) = await DatosWeb.BorrarPresupuestoAsync(eliminar.ID.Value);
+                                if (success)
+                                    {
+                                    // Quitar de la colección y refrescar la grilla
+                                    _presupuestos.Remove(eliminar);
+                                    GrillaPresupuestos.ItemsSource = null;
+                                    GrillaPresupuestos.ItemsSource = _presupuestos;
+                                    MessageBox.Show(message, "Eliminado", MessageBoxButton.OK, MessageBoxImage.Information);
+                                    }
+                                else
+                                    {
+                                    MessageBox.Show($"No se pudo eliminar el presupuesto.\n{message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                                    }
                                 }
                             }
                         else

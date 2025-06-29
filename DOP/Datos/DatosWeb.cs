@@ -144,6 +144,42 @@ namespace DOP.Datos
             else
                 return (false, message, new List<ConceptoDTO>(), new List<RelacionDTO>());
             }
+
+
+        public static async Task<(bool Success, string Message)> BorrarPresupuestoAsync(int presupuestoID)
+            {
+            string url = $"{App.BaseUrl}presupuestos/{presupuestoID}";
+            try
+                {
+                var response = await httpClient.DeleteAsync(url);
+                var responseString = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                    {
+                    var result = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, jsonSerializerOptions);
+                    string message = !string.IsNullOrEmpty(result?.Message)
+                        ? result.Message
+                        : !string.IsNullOrEmpty(result?.Mensaje)
+                            ? result.Mensaje
+                            : "Presupuesto eliminado exitosamente.";
+                    return (true, message);
+                    }
+                else
+                    {
+                    var error = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, jsonSerializerOptions);
+                    string errorMessage = !string.IsNullOrEmpty(error?.Message)
+                        ? error.Message
+                        : !string.IsNullOrEmpty(error?.Mensaje)
+                            ? error.Mensaje
+                            : "Error desconocido al eliminar el presupuesto.";
+                    return (false, errorMessage);
+                    }
+                }
+            catch (Exception ex)
+                {
+                return (false, $"Error: {ex.Message}");
+                }
+            }
         }
 
 

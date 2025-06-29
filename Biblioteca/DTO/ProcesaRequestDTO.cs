@@ -19,6 +19,18 @@ namespace Biblioteca.DTO
         public List<ConceptoDTO> Conceptos { get; set; }
         public List<RelacionDTO> Relaciones { get; set; }
         }
+    public class ProcesaInsumoRequest
+        {
+        public InsumoDTO Insumo { get; set; }
+        public List<ArticuloRelDTO> Articulos { get; set; }
+        }
+
+    // DTO para procesar lista de artículos y sus artículos
+    public class ProcesaArticulosListaRequest
+        {
+        public ArticulosListaDTO Lista { get; set; }
+        public List<ArticuloDTO> Articulos { get; set; }
+        }
 
     }
 

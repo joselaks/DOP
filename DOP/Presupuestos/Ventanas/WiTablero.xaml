@@ -124,46 +124,47 @@
                             <Grid Grid.Row="2">
                                 <syncfusion:SfDataGrid
                                     Name="GrillaPresupuestos"
-                                    AutoGenerateColumns="True"
+                                    AutoGenerateColumns="False"
+                                    AllowResizingColumns="True"
                                     IsReadOnly="True"
                                     MouseDoubleClick="GrillaPresupuestos_MouseDoubleClick">
                                     <syncfusion:SfDataGrid.ContextMenu>
                                         <ContextMenu>
-                                            <MenuItem Click="MenuItem_Click"  Header="Nuevo" />
+                                            <MenuItem Click="MenuItem_Click" Header="Nuevo" />
                                             <MenuItem Click="MenuItem_Click" Header="Editar" />
                                             <MenuItem Click="MenuItem_Click" Header="Borrar" />
                                         </ContextMenu>
                                     </syncfusion:SfDataGrid.ContextMenu>
                                     <syncfusion:SfDataGrid.Columns>
                                         <syncfusion:GridTextColumn
+                                            Width="50"
+                                            HeaderText="ID"
+                                            MappingName="ID" />
+                                        <syncfusion:GridTextColumn
                                             Width="250"
-                                            HeaderText="Nombre"
-                                            MappingName="TipoDoc" />
+                                            HeaderText="Descripción"
+                                            MappingName="Descrip" />
                                         <syncfusion:GridDateTimeColumn
-                                            Width="69"
-                                            HeaderText="Fecha"
-                                            MappingName="Fecha1"
+                                            Width="100"
+                                            HeaderText="Fecha de creación"
+                                            MappingName="FechaC"
                                             TextAlignment="Center" />
-                                        <syncfusion:GridTextColumn
-                                            Width="90"
-                                            HeaderText="Pesos"
-                                            MappingName="Pesos"
+                                        <syncfusion:GridDateTimeColumn
+                                            Width="100"
+                                            HeaderText="Fecha de modificación"
+                                            MappingName="FechaM"
                                             TextAlignment="Right" />
-                                        <syncfusion:GridTextColumn
-                                            Width="90"
-                                            HeaderText="Dolares"
-                                            MappingName="Dolares"
+                                        <syncfusion:GridDateTimeColumn
+                                            Width="100"
+                                            HeaderText="Mes base"
+                                            MappingName="MesBase"
                                             TextAlignment="Right" />
-                                        <syncfusion:GridTextColumn
-                                            Width="90"
-                                            HeaderText="Impuestos"
-                                            MappingName="Impuestos"
+                                        <syncfusion:GridNumericColumn
+                                            Width="200"
+                                            HeaderText="Importe"
+                                            MappingName="PrEjecTotal"
                                             TextAlignment="Right" />
-                                        <syncfusion:GridTextColumn
-                                            Width="90"
-                                            HeaderText="Valor m2"
-                                            MappingName="Autorizado"
-                                            TextAlignment="Center" />
+                                        
                                     </syncfusion:SfDataGrid.Columns>
                                 </syncfusion:SfDataGrid>
 

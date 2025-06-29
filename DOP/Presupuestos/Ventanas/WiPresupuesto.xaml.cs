@@ -1,10 +1,20 @@
-﻿using System;
+﻿using Bibioteca.Clases;
+using Biblioteca.DTO;
+using DOP.Presupuestos.Clases;
+using DOP.Presupuestos.Controles;
+using Microsoft.Win32;
+using Syncfusion.Windows.Shared;
+using Syncfusion.Windows.Tools.Controls;
+using Syncfusion.XlsIO;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using Syncfusion.Windows.Tools.Controls;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -12,15 +22,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using DOP.Presupuestos.Controles;
-using Bibioteca.Clases;
-using DOP.Presupuestos.Clases;
-using Microsoft.Win32;
-using System.IO;
-using System.Globalization;
-using Biblioteca.DTO;
-using Syncfusion.Windows.Shared;
-using Syncfusion.XlsIO;
 
 namespace DOP.Presupuestos.Ventanas
 {
@@ -34,10 +35,14 @@ namespace DOP.Presupuestos.Ventanas
         public UcPlanilla Planilla;
         public UcListado Listado;
         public UcDosaje Dosaje;
-        public WiPresupuesto(PresupuestoDTO? _encabezado, List<ConceptoDTO> conceptos, List<RelacionDTO> relaciones)
+        private ObservableCollection<PresupuestoDTO> _presupuestosRef;
+
+
+        public WiPresupuesto(PresupuestoDTO? _encabezado, List<ConceptoDTO> conceptos, List<RelacionDTO> relaciones, ObservableCollection<PresupuestoDTO> presupuestosRef)
         {
             InitializeComponent();
             Objeto = new Presupuesto(_encabezado, conceptos,relaciones);
+
             Objeto.encabezado.UsuarioID = App.IdUsuario;
             Dosaje = new UcDosaje(Objeto);
             Planilla = new UcPlanilla(Objeto, Dosaje);
@@ -46,7 +51,7 @@ namespace DOP.Presupuestos.Ventanas
             this.gListado.Children.Add(Listado);
             this.gDetalle.Children.Add(Dosaje);
             this.Closing += WiPresupuesto_Closing; // Suscribir el evento
-
+            _presupuestosRef = presupuestosRef;
             }
 
         private void WiPresupuesto_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
@@ -68,30 +73,51 @@ namespace DOP.Presupuestos.Ventanas
         }
 
         private async void BtnGuardar_Click(object sender, RoutedEventArgs e)
-        {
+            {
             ProcesaPresupuestoRequest oGrabar = Objeto.EmpaquetarPresupuesto();
 
             // Llamada al servicio web para procesar el presupuesto
             var resultado = await DOP.Datos.DatosWeb.ProcesarPresupuestoAsync(oGrabar);
 
             if (resultado.Success)
-            {
+                {
                 // --- ACTUALIZACIÓN DE LISTAS PARA PRÓXIMA EJECUCIÓN ---
                 Objeto.listaConceptosLeer = Objeto.listaConceptosGrabar.Select(x => x).ToList();
                 Objeto.listaRelacionesLeer = Objeto.listaRelacionesGrabar.Select(x => x).ToList();
 
                 MessageBox.Show($"Presupuesto guardado correctamente. ID: {resultado.PresupuestoID}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-                if (Objeto.encabezado.ID == null)
-                {
-                    Objeto.encabezado.ID = resultado.PresupuestoID;
 
+                // Asignar siempre la fecha de modificación actual
+                Objeto.encabezado.FechaM = DateTime.Now;
+
+                if (Objeto.encabezado.ID == null)
+                    {
+                    // Nuevo presupuesto: asignar fecha de creación y ID, luego agregar a la colección
+                    Objeto.encabezado.FechaC = DateTime.Today;
+                    Objeto.encabezado.ID = resultado.PresupuestoID;
+                    _presupuestosRef.Add(Objeto.encabezado);
+                    }
+                else
+                    {
+                    // Edición: buscar y reemplazar en la colección
+                    var existente = _presupuestosRef.FirstOrDefault(p => p.ID == Objeto.encabezado.ID);
+                    if (existente != null)
+                        {
+                        var idx = _presupuestosRef.IndexOf(existente);
+                        _presupuestosRef[idx] = Objeto.encabezado;
+                        }
+                    else
+                        {
+                        // Si no se encuentra, lo agrega (caso raro)
+                        _presupuestosRef.Add(Objeto.encabezado);
+                        }
+                    }
+                }
+            else
+                {
+                MessageBox.Show($"Error al guardar el presupuesto: {resultado.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-            else
-            {
-                MessageBox.Show($"Error al guardar el presupuesto: {resultado.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
 
 
 

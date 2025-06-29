@@ -1095,7 +1095,7 @@ namespace Bibioteca.Clases
                 CuentaID = encabezado?.CuentaID,
                 UsuarioID = encabezado?.UsuarioID ?? 0,
                 Descrip = encabezado?.Descrip,
-                PrEjecTotal = encabezado?.PrEjecTotal ?? 0,
+                PrEjecTotal = Arbol.Sum(i => i.Importe1),
                 PrEjecDirecto = encabezado?.PrEjecDirecto ?? 0,
                 EjecMoneda = encabezado?.EjecMoneda ?? 'P',
                 PrVentaTotal = encabezado?.PrVentaTotal ?? 0,

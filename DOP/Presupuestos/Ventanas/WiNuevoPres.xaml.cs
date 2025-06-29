@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using Biblioteca.DTO;
+using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -7,9 +9,11 @@ namespace DOP.Presupuestos.Ventanas
 {
     public partial class WiNuevoPres : Window
     {
-        public WiNuevoPres()
+        private ObservableCollection<PresupuestoDTO> _presupuestosRef;
+        public WiNuevoPres(ObservableCollection<PresupuestoDTO> presupuestosRef)
         {
             InitializeComponent();
+            _presupuestosRef = presupuestosRef;
 
             // Ejemplo: si tienes <StackPanel x:Name="panelModelos" ... /> en tu XAML
             // Usa panelModelos directamente, no crees un nuevo StackPanel aquí
@@ -67,7 +71,7 @@ namespace DOP.Presupuestos.Ventanas
 
         private void AbrirPresupuesto(string parametro)
         {
-            var win = new WiPresupuesto(null,null,null);
+            var win = new WiPresupuesto(null,null,null, _presupuestosRef);
             win.Owner = this.Owner;
             win.Show();
             this.Close();
