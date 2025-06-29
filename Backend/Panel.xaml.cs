@@ -12,46 +12,45 @@ namespace Backend
         private List<Articulo> Articulos = new();
         private List<Tarea> Tareas = new();
         private List<Articulo> ArticulosProveedor = new();
+        private Dictionary<string, List<string>> InsumoArticuloMap = new();
+        private Dictionary<string, List<string>> TareaInsumoMap = new();
+        private Dictionary<string, List<string>> RubroSubRubroMap = new();
+        private Dictionary<(string Rubro, string SubRubro), List<Tarea>> RubroSubRubroTareasMap = new();
+        private List<Rubro> Rubros = new();
+
+
+
 
         public Panel()
         {
             InitializeComponent();
+
             CargarDatosSimulados();
+
             lstInsumos.ItemsSource = Insumos;
             lstTareas.ItemsSource = Tareas;
             lstArticulosProveedor.ItemsSource = ArticulosProveedor;
         }
-
         private void CargarDatosSimulados()
         {
-            Insumos.AddRange(new[] {
-                new Insumo { Descripcion = "Cemento", Tipo = "Materiales", PrecioUnitario = 1200, Unidad = "KG", MetodoCalculo = "Directo", Codigo = "MAT001" },
-                new Insumo { Descripcion = "Pintura", Tipo = "Materiales", PrecioUnitario = 850, Unidad = "LT", MetodoCalculo = "Promedio", Codigo = "MAT002" },
-                new Insumo { Descripcion = "Albañil", Tipo = "Mano de Obra", PrecioUnitario = 3500, Unidad = "HS", MetodoCalculo = "Estimado", Codigo = "MO001" },
-                new Insumo { Descripcion = "Excavadora", Tipo = "Equipos", PrecioUnitario = 8000, Unidad = "HS", MetodoCalculo = "Tarifa", Codigo = "EQ001" },
-            });
+            Insumos = DatosSimulados.ObtenerInsumos();
+            ArticulosProveedor = DatosSimulados.ObtenerArticulosProveedor();
+            Tareas = DatosSimulados.ObtenerTareas();
+            InsumoArticuloMap = DatosSimulados.ObtenerInsumoArticuloMap();
+            TareaInsumoMap = DatosSimulados.ObtenerTareaInsumoMap();
 
-            ArticulosProveedor.AddRange(new[] {
-                new Articulo { Descripcion = "Bolsa Cemento Loma Negra", Unidad = "KG", Factor = 50, Moneda = "AR", Precio = 1200, Codigo = "ART001" },
-                new Articulo { Descripcion = "Pintura Blanca 10L", Unidad = "LT", Factor = 10, Moneda = "AR", Precio = 8500, Codigo = "ART002" },
-                new Articulo { Descripcion = "Pala de Punta", Unidad = "UN", Factor = 1, Moneda = "AR", Precio = 1500, Codigo = "ART003" },
-                new Articulo { Descripcion = "Camión Mixer", Unidad = "HS", Factor = 1, Moneda = "AR", Precio = 10000, Codigo = "ART004" },
-            });
+            lstInsumos.ItemsSource = Insumos;
+            lstTareas.ItemsSource = Tareas;
+            lstArticulosProveedor.ItemsSource = ArticulosProveedor;
 
-            Tareas.AddRange(new[] {
-                new Tarea { Descripcion = "Revoque Fino Interior", Unidad = "M2", Precio = 800 },
-                new Tarea { Descripcion = "Colocación Cerámicos", Unidad = "M2", Precio = 1500 },
-                new Tarea { Descripcion = "Pintura Interior", Unidad = "M2", Precio = 1200 },
-                new Tarea { Descripcion = "Excavación de Zanjas", Unidad = "ML", Precio = 2500 },
-            });
-
-            Articulos.AddRange(new[] {
-                new Articulo { Descripcion = "Bolsa Cemento Loma Negra", Unidad = "KG", Factor = 50, Moneda = "ARS", Precio = 1200, Codigo = "ART001" },
-                new Articulo { Descripcion = "Pala de Punta", Unidad = "UN", Factor = 1, Moneda = "ARS", Precio = 1500, Codigo = "ART003" }
-            });
-
+            Articulos.AddRange(ArticulosProveedor.Where(a => a.Codigo == "ART001" || a.Codigo == "ART003"));
             lstArticulos.ItemsSource = Articulos;
+
+            Rubros = DatosSimulados.ObtenerRubrosConSubrubros();
+            cmbRubro.ItemsSource = Rubros.Select(r => r.Nombre).ToList();
+
         }
+
 
         private void TxtBuscarInsumo_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -147,6 +146,32 @@ namespace Backend
                 lstArticulos.ItemsSource = lista;
             }
         }
+
+        private void cmbRubro_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cmbRubro.SelectedItem is string rubroNombre)
+            {
+                var rubro = Rubros.FirstOrDefault(r => r.Nombre == rubroNombre);
+                if (rubro is not null)
+                {
+                    cmbSubRubro.ItemsSource = rubro.SubRubros.Select(sr => sr.Nombre).ToList();
+                    cmbSubRubro.SelectedIndex = 0;
+                }
+            }
+        }
+
+        private void cmbSubRubro_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cmbRubro.SelectedItem is string rubroNombre && cmbSubRubro.SelectedItem is string subRubroNombre)
+            {
+                var subRubro = Rubros
+                    .FirstOrDefault(r => r.Nombre == rubroNombre)?
+                    .SubRubros.FirstOrDefault(sr => sr.Nombre == subRubroNombre);
+
+                if (subRubro is not null)
+                    lstTareas.ItemsSource = subRubro.Tareas;
+            }
+        }
     }
 
     public class Insumo
@@ -174,5 +199,20 @@ namespace Backend
         public string Descripcion { get; set; }
         public string Unidad { get; set; }
         public double Precio { get; set; }
+        public string Rubro { get; set; }
+        public string SubRubro { get; set; }
     }
+
+    public class Rubro
+    {
+        public string Nombre { get; set; }
+        public List<SubRubro> SubRubros { get; set; } = new();
+    }
+
+    public class SubRubro
+    {
+        public string Nombre { get; set; }
+        public List<Tarea> Tareas { get; set; } = new();
+    }
+
 }

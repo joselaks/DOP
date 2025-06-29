@@ -87,8 +87,8 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                    <ComboBox Width="150" Margin="0,0,10,0" x:Name="cmbRubro" ToolTip="Rubros" />
-                    <ComboBox Width="150" Margin="0,0,10,0" x:Name="cmbSubRubro" ToolTip="Sub Rubros"/>
+                    <ComboBox Width="150" Margin="0,0,10,0" x:Name="cmbRubro" ToolTip="Rubros" SelectionChanged="cmbRubro_SelectionChanged" />
+                    <ComboBox Width="150" Margin="0,0,10,0" x:Name="cmbSubRubro" ToolTip="Sub Rubros" SelectionChanged="cmbSubRubro_SelectionChanged"/>
                     <TextBox Width="200" Margin="0,0,10,0" x:Name="txtBuscarTarea" TextChanged="TxtBuscarTarea_TextChanged" ToolTip="Escriba para filtrar"/>
                 </StackPanel>
                 <ListView x:Name="lstTareas" Grid.Row="1">
