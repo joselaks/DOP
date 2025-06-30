@@ -1,5 +1,7 @@
 ﻿using Bibioteca.Clases;
+using Biblioteca;
 using Biblioteca.DTO;
+using DOP.Datos;
 using DOP.Presupuestos.Clases;
 using DOP.Presupuestos.Controles;
 using Microsoft.Win32;
@@ -224,6 +226,20 @@ namespace DOP.Presupuestos.Ventanas
         private void Recnumerar_Click(object sender, RoutedEventArgs e)
         {
             Objeto.NumeraItems(Objeto.Arbol,"");
+        }
+
+        private async void OInsumo_Click(object sender, RoutedEventArgs e)
+        {
+            var (success1, message1, insumos) = await DatosWeb.ObtenerInsumosPorUsuarioAsync(2);
+            if (success1)
+            {
+                foreach (var insumo in insumos)
+                    MessageBox.Show($"{insumo.ID} - {insumo.Descrip}");
+            }
+            else
+            {
+                MessageBox.Show($"Error: {message1}");
+            }
         }
     }
 }

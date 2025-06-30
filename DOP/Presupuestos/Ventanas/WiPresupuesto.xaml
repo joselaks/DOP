@@ -96,6 +96,12 @@
                         Label="Renumerar"
                         SizeForm="Small"
                         SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
+                    <syncfusion:RibbonButton
+     x:Name="OInsumo"
+     Click="OInsumo_Click"
+     Label="Insumos"
+     SizeForm="Small"
+     SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
                 </syncfusion:RibbonBar>
 
 
