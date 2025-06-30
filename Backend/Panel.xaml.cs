@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using Backend.Datos;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Biblioteca.DTO;
+
+
 
 namespace Backend
 {
@@ -18,18 +20,34 @@ namespace Backend
         private Dictionary<(string Rubro, string SubRubro), List<Tarea>> RubroSubRubroTareasMap = new();
         private List<Rubro> Rubros = new();
 
-
-
+        Conectores meconecto = new Conectores();
 
         public Panel()
         {
             InitializeComponent();
 
-            CargarDatosSimulados();
+            //CargarDatosSimulados();  
+            _ = CargarInsumos();
 
             lstInsumos.ItemsSource = Insumos;
             lstTareas.ItemsSource = Tareas;
             lstArticulosProveedor.ItemsSource = ArticulosProveedor;
+        }
+
+        private async Task CargarInsumos()
+        {
+            int usuarioID = 1;
+            var (success1, message1, insumos) = await meconecto.ObtenerInsumosPorUsuarioAsync(usuarioID);
+            if (success1)
+            {
+                foreach (var insumo in insumos)
+                    Console.WriteLine($"{insumo.ID} - {insumo.Descrip}");
+            }
+            else
+            {
+                MessageBox.Show("Error al buscar insumos");
+                //Console.WriteLine($"Error: {message1}");
+            }
         }
         private void CargarDatosSimulados()
         {
