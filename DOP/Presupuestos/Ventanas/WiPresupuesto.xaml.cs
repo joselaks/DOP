@@ -241,5 +241,11 @@ namespace DOP.Presupuestos.Ventanas
                 MessageBox.Show($"Error: {message1}");
             }
         }
+
+        private void SaleExcel_Click(object sender, RoutedEventArgs e)
+        {
+            WiInformes info  = new WiInformes();
+            info.Show();
+        }
     }
 }

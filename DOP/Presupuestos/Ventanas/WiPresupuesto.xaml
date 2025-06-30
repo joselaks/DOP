@@ -103,6 +103,14 @@
      SizeForm="Small"
      SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
                 </syncfusion:RibbonBar>
+                <syncfusion:RibbonBar Header="Informes">
+                    <syncfusion:RibbonButton
+    x:Name="SaleExcel"
+    Click="SaleExcel_Click"
+    Label="Excel"
+    SizeForm="Small"
+    SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
+                </syncfusion:RibbonBar>
 
 
             </syncfusion:RibbonTab>
