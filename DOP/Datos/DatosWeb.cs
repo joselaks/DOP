@@ -182,7 +182,13 @@ namespace DOP.Datos
             }
         }
 
-
+    // Obtener insumos por usuario
+        public static async Task<(bool Success, string Message, List<InsumoDTO> Insumos)> ObtenerInsumosPorUsuarioAsync(int usuarioID)
+        {
+            string url = $"{App.BaseUrl}insumos/usuario/{usuarioID}";
+            var result = await ExecuteRequestAsync<List<InsumoDTO>>(() => httpClient.GetAsync(url), $"Obtener insumos usuario {usuarioID}");
+            return (result.Success, result.Message, result.Data);
+        }
 
     public class ResultadoOperacion
         {
