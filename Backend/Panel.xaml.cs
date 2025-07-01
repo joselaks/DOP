@@ -41,12 +41,12 @@ namespace Backend
             if (success1)
             {
                 foreach (var insumo in insumos)
-                    Console.WriteLine($"{insumo.ID} - {insumo.Descrip}");
+                    MessageBox.Show($"{insumo.ID} - {insumo.Descrip}");
             }
             else
             {
-                MessageBox.Show("Error al buscar insumos");
-                //Console.WriteLine($"Error: {message1}");
+                //MessageBox.Show("Error al buscar insumos");
+                MessageBox.Show($"Error: {message1}");
             }
         }
         private void CargarDatosSimulados()
