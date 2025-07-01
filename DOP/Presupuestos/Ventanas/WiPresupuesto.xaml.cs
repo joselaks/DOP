@@ -243,9 +243,57 @@ namespace DOP.Presupuestos.Ventanas
         }
 
         private void SaleExcel_Click(object sender, RoutedEventArgs e)
-        {
-            WiInformes info  = new WiInformes();
-            info.Show();
+            {
+            // 1. Crear el Excel con el presupuesto actual
+            using (var excel = new DOP.Presupuestos.Clases.Excel(Objeto))
+                {
+                // 2. Generar la hoja que desees (puedes cambiar el método)
+                excel.PresupuestoEjecutivo();
+                //excel.PresupuestoTipos(); // Genera la hoja de tipos de presupuesto
+                // También podrías usar: excel.PresupuestoTipos(); o excel.PresupuestoComercial();
+
+                // 3. Guardar el archivo temporalmente
+                string tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"Presupuesto_{Guid.NewGuid():N}.xlsx");
+                excel.book.SaveAs(tempPath);
+
+                // 4. Intentar abrir el archivo con Excel
+                try
+                    {
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                        {
+                        FileName = tempPath,
+                        UseShellExecute = true
+                        });
+                    }
+                catch (Exception ex)
+                    {
+                    // Si no se pudo abrir, permitir al usuario elegir dónde guardar el archivo
+                    var saveDialog = new Microsoft.Win32.SaveFileDialog
+                        {
+                        Title = "Guardar archivo Excel",
+                        Filter = "Archivos de Excel (*.xlsx)|*.xlsx",
+                        FileName = "Presupuesto.xlsx"
+                        };
+
+                    if (saveDialog.ShowDialog() == true)
+                        {
+                        try
+                            {
+                            File.Copy(tempPath, saveDialog.FileName, true);
+                            MessageBox.Show($"Archivo guardado en:\n{saveDialog.FileName}", "Guardado exitoso", MessageBoxButton.OK, MessageBoxImage.Information);
+                            }
+                        catch (Exception copyEx)
+                            {
+                            MessageBox.Show($"No se pudo guardar el archivo.\nError: {copyEx.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
+                        }
+                    else
+                        {
+                        MessageBox.Show($"No se pudo abrir Excel automáticamente.\nArchivo temporal generado en:\n{tempPath}\n\nError: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                }
+            }
+
         }
-    }
 }
