@@ -1,8 +1,14 @@
 ﻿<Window x:Class="Backend.Panel"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Panel de Insumos" Height="800" Width="1200" Background="#f2f2f2">
-    <Grid>
+        xmlns:sfSkinManager="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
+        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+        sfSkinManager:SfSkinManager.VisualStyle="Office2016White"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Normal"
+        Title="Panel de Insumos" Height="950" Width="1400" Background="#f2f2f2">
+
+    <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="Auto" />
@@ -15,144 +21,137 @@
         </Grid.RowDefinitions>
 
         <!-- Insumos -->
-        <GroupBox Header="Insumos" Grid.Row="0" Grid.Column="0" Margin="10" Background="White">
+        <GroupBox Header="Insumos" Grid.Row="0" Grid.Column="0" Margin="5">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                    <ComboBox Width="150" Margin="0,0,10,0" x:Name="cmbTipoInsumo" SelectedIndex="0">
+                <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,5">
+                    <ComboBox x:Name="cmbTipoInsumo"
+          SelectedIndex="0"
+          SelectionChanged="cmbTipoInsumo_SelectionChanged"
+          Width="150" Margin="0,0,10,0">
                         <ComboBoxItem Content="Todos"/>
-                        <ComboBoxItem Content="Materiales"/>
+                        <ComboBoxItem Content="Material"/>
                         <ComboBoxItem Content="Mano de Obra"/>
-                        <ComboBoxItem Content="Equipos"/>
-                        <ComboBoxItem Content="SubContratos"/>
+                        <ComboBoxItem Content="Equipo"/>
+                        <ComboBoxItem Content="SubContrato"/>
                         <ComboBoxItem Content="Otros"/>
                     </ComboBox>
-                    <TextBox Width="200" Margin="0,0,10,0" x:Name="txtBuscarInsumo" TextChanged="TxtBuscarInsumo_TextChanged" ToolTip="Escriba para filtrar" />
+
+                    <TextBox Width="200" x:Name="txtBuscarInsumo" TextChanged="TxtBuscarInsumo_TextChanged" ToolTip="Escriba para filtrar" />
+                    <Button x:Name="btnLimpiarFiltros" Content="Limpiar" Width="60" Margin="10,0,0,0" ></Button>
                 </StackPanel>
-                <ListView x:Name="lstInsumos" Grid.Row="1">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="Descripción" DisplayMemberBinding="{Binding Descripcion}" Width="150"/>
-                            <GridViewColumn Header="Tipo" DisplayMemberBinding="{Binding Tipo}" Width="90"/>
-                            <GridViewColumn Header="P. Unitario" Width="80" >
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding PrecioUnitario}" TextAlignment="Right" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Header="Unidad" DisplayMemberBinding="{Binding Unidad}" Width="50"/>
-                            <GridViewColumn Header="Cálculo" DisplayMemberBinding="{Binding MetodoCalculo}" Width="70"/>
-                            <GridViewColumn Header="Código" DisplayMemberBinding="{Binding Codigo}" Width="80"/>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
+
+                <syncfusion:SfDataGrid x:Name="ListaInsumos" AllowDraggingColumns="True" AllowResizingColumns="True"
+                                       Grid.Row="1" 
+                                       AutoGenerateColumns="False"
+                                       ColumnSizer="Star">
+                    <syncfusion:SfDataGrid.Columns>
+                        <syncfusion:GridTextColumn MappingName="TipoDescripcion" HeaderText="Tipo" Width="92" />
+                        <syncfusion:GridTextColumn MappingName="Descrip" HeaderText="Descripción" />
+                        <syncfusion:GridTextColumn MappingName="Unidad" HeaderText="Un." Width="40" TextAlignment="Center"/>
+                        <syncfusion:GridNumericColumn MappingName="Precio" HeaderText="P. Unitario" NumberDecimalDigits="2" TextAlignment="Right" Width="92"/>
+                        <syncfusion:GridDateTimeColumn MappingName="Editado" HeaderText="Editado" CustomPattern="dd/MM/yy" Width="69" TextAlignment="Center" />
+                        
+                        <syncfusion:GridTextColumn MappingName="MetodoCalculo" HeaderText="Cálculo" Width="80"/>
+                        <syncfusion:GridTextColumn MappingName="Codigo" HeaderText="Código" Width="90"/>
+                        
+                    </syncfusion:SfDataGrid.Columns>
+                </syncfusion:SfDataGrid>
             </Grid>
         </GroupBox>
 
-        <!-- Flecha hacia Artículos -->
+        <!-- Botón hacia Artículos -->
         <Button FontFamily="Segoe MDL2 Assets" Content="&#xE74B;" FontSize="20" FontWeight="Bold"
-        Background="#e0e0e0" BorderBrush="DarkGray"
-        ToolTip="Artículos relacionados al Insumo seleccionado"
-        Grid.Row="1" Grid.Column="0"
-        Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center"
-        Click="BtnActualizarArticulos_Click" />
-
+                Background="#e0e0e0" BorderBrush="DarkGray" ToolTip="Artículos relacionados al Insumo seleccionado"
+                Grid.Row="1" Grid.Column="0" Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center"
+                Click="BtnActualizarArticulos_Click" />
 
         <!-- Artículos -->
-        <GroupBox Header="Artículos" Grid.Row="2" Grid.Column="0" Margin="10" Background="White">
-            <ListView x:Name="lstArticulos" AllowDrop="True"
-                      Drop="LstArticulos_Drop" DragOver="LstArticulos_DragOver">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Descripción" DisplayMemberBinding="{Binding Descripcion}" Width="180"/>
-                        <GridViewColumn Header="Unidad" DisplayMemberBinding="{Binding Unidad}" Width="60"/>
-                        <GridViewColumn Header="Factor" DisplayMemberBinding="{Binding Factor}" Width="70"/>
-                        <GridViewColumn Header="Moneda" DisplayMemberBinding="{Binding Moneda}" Width="60"/>
-                        <GridViewColumn Header="Precio" DisplayMemberBinding="{Binding Precio}" Width="80"/>
-                        <GridViewColumn Header="Código" DisplayMemberBinding="{Binding Codigo}" Width="80"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
+        <GroupBox Header="Artículos" Grid.Row="2" Grid.Column="0" Margin="5">
+            <syncfusion:SfDataGrid x:Name="ListaArticulos"
+                                   AutoGenerateColumns="False"
+                                   ColumnSizer="Star">
+                <syncfusion:SfDataGrid.Columns>
+                    <syncfusion:GridTextColumn MappingName="Descripcion" HeaderText="Descripción" Width="180"/>
+                    <syncfusion:GridTextColumn MappingName="Unidad" HeaderText="Unidad" Width="60"/>
+                    <syncfusion:GridNumericColumn MappingName="Factor" HeaderText="Factor" Width="70"/>
+                    <syncfusion:GridTextColumn MappingName="Moneda" HeaderText="Moneda" Width="60"/>
+                    <syncfusion:GridNumericColumn MappingName="Precio" HeaderText="Precio" Width="80"/>
+                    <syncfusion:GridTextColumn MappingName="Codigo" HeaderText="Código" Width="80"/>
+                </syncfusion:SfDataGrid.Columns>
+            </syncfusion:SfDataGrid>
         </GroupBox>
 
         <!-- Tareas -->
-        <GroupBox Header="Tareas" Grid.Row="0" Grid.Column="2" Margin="10" Background="White">
+        <GroupBox Header="Tareas" Grid.Row="0" Grid.Column="2" Margin="5">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                    <ComboBox Width="150" Margin="0,0,10,0" x:Name="cmbRubro" ToolTip="Rubros" SelectionChanged="cmbRubro_SelectionChanged" />
-                    <ComboBox Width="150" Margin="0,0,10,0" x:Name="cmbSubRubro" ToolTip="Sub Rubros" SelectionChanged="cmbSubRubro_SelectionChanged"/>
-                    <TextBox Width="200" Margin="0,0,10,0" x:Name="txtBuscarTarea" TextChanged="TxtBuscarTarea_TextChanged" ToolTip="Escriba para filtrar"/>
+                <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,5">
+                    <ComboBox Width="150" x:Name="cmbRubro" SelectionChanged="cmbRubro_SelectionChanged" Margin="0,0,10,0" />
+                    <ComboBox Width="150" x:Name="cmbSubRubro" SelectionChanged="cmbSubRubro_SelectionChanged" Margin="0,0,10,0" />
+                    <TextBox Width="200" x:Name="txtBuscarTarea" TextChanged="TxtBuscarTarea_TextChanged" ToolTip="Escriba para filtrar" />
                 </StackPanel>
-                <ListView x:Name="lstTareas" Grid.Row="1">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="Descripción" DisplayMemberBinding="{Binding Descripcion}" Width="200"/>
-                            <GridViewColumn Header="Unidad" DisplayMemberBinding="{Binding Unidad}" Width="60"/>
-                            <GridViewColumn Header="Precio" DisplayMemberBinding="{Binding Precio}" Width="100"/>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
+                <syncfusion:SfDataGrid x:Name="ListaTareas"
+                                       Grid.Row="1"
+                                       AutoGenerateColumns="False"
+                                       ColumnSizer="Star">
+                    <syncfusion:SfDataGrid.Columns>
+                        <syncfusion:GridTextColumn MappingName="Descripcion" HeaderText="Descripción" Width="200"/>
+                        <syncfusion:GridTextColumn MappingName="Unidad" HeaderText="Unidad" Width="60"/>
+                        <syncfusion:GridNumericColumn MappingName="Precio" HeaderText="Precio" Width="100"/>
+                    </syncfusion:SfDataGrid.Columns>
+                </syncfusion:SfDataGrid>
             </Grid>
         </GroupBox>
 
-        <!-- Flecha hacia Insumos -->
+        <!-- Botón hacia Insumos desde Tareas -->
         <Button FontFamily="Segoe MDL2 Assets" Content="&#xE0A6;" FontSize="20" FontWeight="Bold"
-        Background="#e0e0e0" BorderBrush="DarkGray" Margin="0,-60,0,0"
-        ToolTip="Insumos de Tarea seleccionada"
-        Grid.Row="0" Grid.Column="1"
-        Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center"
-        Click="BtnActualizarInsumosDesdeTarea_Click" />
+                Background="#e0e0e0" BorderBrush="DarkGray" Margin="0,-60,0,0"
+                ToolTip="Insumos de Tarea seleccionada"
+                Grid.Row="0" Grid.Column="1"
+                Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center"
+                Click="BtnActualizarInsumosDesdeTarea_Click" />
 
-
-        <Button FontFamily="Segoe MDL2 Assets" Content="&#xE0AD;" FontSize="20" FontWeight="Bold"
-        Background="#e0e0e0" BorderBrush="DarkGray" Margin="0,60,0,0"
-        ToolTip="Tareas que contienen Insumo seleccionado"
-        Grid.Row="0" Grid.Column="1"
-        Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center"
-        Click="BtnActualizarInsumosDesdeTarea_Click" />
-
-
-        <!-- Buscador de Artículos -->
-        <GroupBox Header="Buscador de Artículos" Grid.Row="2" Grid.Column="2" FontSize="14" Margin="10" Background="White">
+        <!-- Buscador Artículos Proveedor -->
+        <GroupBox Header="Buscador de Artículos" Grid.Row="2" Grid.Column="2" Margin="5">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                    <ComboBox Width="150" Margin="0,0,10,0" x:Name="cmbListaPrecio" ToolTip="Proveedor"/>
-                    <ComboBox Width="150" Margin="0,0,10,0" x:Name="cmbSubLista" ToolTip="Listas de Precio" />
+                <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,5">
+                    <ComboBox Width="150" x:Name="cmbListaPrecio" ToolTip="Proveedor" Margin="0,0,10,0" />
+                    <ComboBox Width="150" x:Name="cmbSubLista" ToolTip="Listas de Precio" Margin="0,0,10,0" />
                     <TextBox Width="200" x:Name="txtBuscarArticuloProveedor" TextChanged="TxtBuscarArticuloProveedor_TextChanged" ToolTip="Escriba para filtrar" />
                 </StackPanel>
-                <ListView ToolTip="Arrastrar y soltar en Articulos" x:Name="lstArticulosProveedor" Grid.Row="1" PreviewMouseLeftButtonDown="LstArticulosProveedor_PreviewMouseLeftButtonDown">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="Descripción" DisplayMemberBinding="{Binding Descripcion}" Width="190"/>
-                            <GridViewColumn Header="Unidad" DisplayMemberBinding="{Binding Unidad}" Width="60"/>
-                            <GridViewColumn Header="Precio" DisplayMemberBinding="{Binding Precio}" Width="80"/>
-                            <GridViewColumn Header="Factor" DisplayMemberBinding="{Binding Factor}" Width="80"/>
-                            <GridViewColumn Header="Código" DisplayMemberBinding="{Binding Codigo}" Width="80"/>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
+                <syncfusion:SfDataGrid x:Name="ListaArticulosProveedor"
+                                       Grid.Row="1"
+                                       AutoGenerateColumns="False"
+                                       ColumnSizer="Star">
+                    <syncfusion:SfDataGrid.Columns>
+                        <syncfusion:GridTextColumn MappingName="Descripcion" HeaderText="Descripción" Width="190"/>
+                        <syncfusion:GridTextColumn MappingName="Unidad" HeaderText="Unidad" Width="60"/>
+                        <syncfusion:GridNumericColumn MappingName="Precio" HeaderText="Precio" Width="80"/>
+                        <syncfusion:GridNumericColumn MappingName="Factor" HeaderText="Factor" Width="80"/>
+                        <syncfusion:GridTextColumn MappingName="Codigo" HeaderText="Código" Width="80"/>
+                    </syncfusion:SfDataGrid.Columns>
+                </syncfusion:SfDataGrid>
             </Grid>
         </GroupBox>
 
-        <!-- Flecha desde Buscador hacia Artículos -->
-        <Button FontFamily="Segoe MDL2 Assets" Content="&#xE721;" FontSize="18" 
-        ToolTip="Busca Artículo seleecionado en listas" Grid.Row="2" Grid.Column="1"
-        Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center"
-        Background="#e0e0e0" BorderBrush="DarkGray" 
-        Click="BtnAgregarArticuloDesdeProveedor_Click"/>
-
+        <!-- Botón hacia Artículos desde Proveedor -->
+        <Button FontFamily="Segoe MDL2 Assets" Content="&#xE721;" FontSize="18"
+                ToolTip="Busca Artículo seleccionado en listas"
+                Grid.Row="2" Grid.Column="1"
+                Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center"
+                Background="#e0e0e0" BorderBrush="DarkGray"
+                Click="BtnAgregarArticuloDesdeProveedor_Click"/>
 
     </Grid>
 </Window>

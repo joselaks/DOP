@@ -13,6 +13,7 @@ namespace Biblioteca.DTO
         public int UsuarioID { get; set; }
         public DateTime Editado { get; set; }
         public string Tipo { get; set; }
+        public string TipoDescripcion { get; set; }
         public string Descrip { get; set; }
         public string Unidad { get; set; }
         public string Moneda { get; set; }
