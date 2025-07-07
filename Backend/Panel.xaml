@@ -49,15 +49,21 @@
                                        AutoGenerateColumns="False"
                                        ColumnSizer="Star">
                     <syncfusion:SfDataGrid.Columns>
-                        <syncfusion:GridTextColumn MappingName="TipoDescripcion" HeaderText="Tipo" Width="92" />
+                        <syncfusion:GridTextColumn MappingName="TipoDescripcion" HeaderText="Tipo" Width="86" />
                         <syncfusion:GridTextColumn MappingName="Descrip" HeaderText="Descripción" />
-                        <syncfusion:GridTextColumn MappingName="Unidad" HeaderText="Un." Width="40" TextAlignment="Center"/>
-                        <syncfusion:GridNumericColumn MappingName="Precio" HeaderText="P. Unitario" NumberDecimalDigits="2" TextAlignment="Right" Width="92"/>
-                        <syncfusion:GridDateTimeColumn MappingName="Editado" HeaderText="Editado" CustomPattern="dd/MM/yy" Width="69" TextAlignment="Center" />
-                        
+                        <syncfusion:GridTextColumn MappingName="Unidad" HeaderText="Un." Width="32" TextAlignment="Center"/>
+                        <syncfusion:GridNumericColumn MappingName="Precio" HeaderText="P. Unitario" NumberDecimalDigits="2" TextAlignment="Right" Width="86"/>
+                        <syncfusion:GridTemplateColumn HeaderText="Editado" Width="69">
+                            <syncfusion:GridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Editado, StringFormat=dd/MM/yy}" 
+                       HorizontalAlignment="Center" />
+                                </DataTemplate>
+                            </syncfusion:GridTemplateColumn.CellTemplate>
+                        </syncfusion:GridTemplateColumn>
+
+                        <syncfusion:GridTextColumn MappingName="Codigo" HeaderText="Código" Width="90" TextAlignment="Center"/>
                         <syncfusion:GridTextColumn MappingName="MetodoCalculo" HeaderText="Cálculo" Width="80"/>
-                        <syncfusion:GridTextColumn MappingName="Codigo" HeaderText="Código" Width="90"/>
-                        
                     </syncfusion:SfDataGrid.Columns>
                 </syncfusion:SfDataGrid>
             </Grid>
