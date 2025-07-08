@@ -47,6 +47,16 @@ namespace Backend.Datos
             return await DatosWeb.EliminarArticulosListaYArticulosAsync(listaID);
             }
 
+        /// <summary>
+        /// Obtener artículos por insumo.
+        /// </summary>
+        public async Task<(bool Success, string Message, List<ArticuloDTO> Articulos)> ObtenerArticulosPorInsumoAsync(int insumoID)
+            {
+            return await DatosWeb.ObtenerArticulosPorInsumoAsync(insumoID);
+            }
+
+
+
         // =========================
         // ==== EJEMPLOS DE USO ====
         // =========================
@@ -82,18 +92,18 @@ namespace Backend.Datos
                 ArticulosRel = true
                 };
             var articulosRel = new List<ArticuloRelDTO>
-            {
-                new ArticuloRelDTO
-                {
-                    ArticuloID = 1001,
-                    InsumoID = 0, // 0 o null para nuevo
-                    CuentaID = 1,
-                    FactorPrecio = 1.0m,
-                    FactorUnidad = 1.0m,
-                    Seleccionado = true,
-                    Accion = 'A' // 'A' = Agregar, 'M' = Modificar, 'B' = Borrar
-                }
-            };
+    {
+        new ArticuloRelDTO
+        {
+            ArticuloID = 1001,
+            InsumoID = 0, // 0 o null para nuevo
+            CuentaID = 1,
+            FactorPrecio = 1.0m,
+            FactorUnidad = 1.0m,
+            Seleccionado = true,
+            Accion = 'A' // 'A' = Agregar, 'M' = Modificar, 'B' = Borrar
+        }
+    };
             var (success2, message2, insumoID) = await ProcesarInsumoAsync(insumoDTO, articulosRel);
             if (success2)
                 Console.WriteLine($"Insumo procesado. Nuevo ID: {insumoID}");
@@ -122,25 +132,25 @@ namespace Backend.Datos
                 Active = true
                 };
             var articulos = new List<ArticuloDTO>
-            {
-                new ArticuloDTO
-                {
-                    ID = 2001,
-                    CuentaID = 1,
-                    UsuarioID = usuarioID,
-                    ListaID = 0, // 0 o null para nuevo
-                    EntidadID = null,
-                    TipoID = "M",
-                    Descrip = "Artículo de prueba",
-                    Unidad = "UN",
-                    UnidadFactor = 1.0m,
-                    Codigo = "ART001",
-                    Fecha = DateTime.Now,
-                    Precio = 99.99m,
-                    Moneda = "P",
-                    Accion = 'A'
-                }
-            };
+    {
+        new ArticuloDTO
+        {
+            ID = 2001,
+            CuentaID = 1,
+            UsuarioID = usuarioID,
+            ListaID = 0, // 0 o null para nuevo
+            EntidadID = null,
+            TipoID = "M",
+            Descrip = "Artículo de prueba",
+            Unidad = "UN",
+            UnidadFactor = 1.0m,
+            Codigo = "ART001",
+            Fecha = DateTime.Now,
+            Precio = 99.99m,
+            Moneda = "P",
+            Accion = 'A'
+        }
+    };
             var (success4, message4, listaID) = await ProcesarArticulosListaAsync(listaDTO, articulos);
             if (success4)
                 Console.WriteLine($"Lista procesada. Nuevo ID: {listaID}");
@@ -154,6 +164,20 @@ namespace Backend.Datos
                 Console.WriteLine("Lista eliminada correctamente.");
             else
                 Console.WriteLine($"Error: {message5}");
+
+            // 6. Obtener artículos por insumo
+            var (success, message, articulosPorInsumo) = await ObtenerArticulosPorInsumoAsync(123); // Reemplaza 123 por el ID real
+            if (success)
+                {
+                foreach (var articulo in articulosPorInsumo)
+                    Console.WriteLine($"{articulo.ID} - {articulo.Descrip} - {articulo.Precio}");
+                }
+            else
+                {
+                Console.WriteLine($"Error: {message}");
+                }
             }
+
+
         }
     }

@@ -258,6 +258,19 @@ ins.MapDelete("/articulos/{listaID:int}", async (int listaID, rInsumos repo) =>
         }
 }).RequireAuthorization();
 
+ins.MapGet("/articulos/{insumoID:int}", async (int insumoID, rInsumos repo) =>
+{
+    try
+        {
+        var articulos = await repo.ObtenerArticulosPorInsumoAsync(insumoID);
+        return Results.Ok(articulos);
+        }
+    catch (Exception ex)
+        {
+        return Results.BadRequest(new { Success = false, Message = ex.Message });
+        }
+}).RequireAuthorization();
+
 #endregion
 
 #endregion

@@ -214,6 +214,30 @@ namespace Servidor.Repositorios
                 }
             }
 
+        // Obtener artículos relacionados a un insumo específico
+        public async Task<List<ArticuloDTO>> ObtenerArticulosPorInsumoAsync(int insumoID)
+            {
+            using (var db = new SqlConnection(_connectionString))
+                {
+                var parameters = new DynamicParameters();
+                parameters.Add("@InsumoID", insumoID, DbType.Int32);
+
+                try
+                    {
+                    var result = await db.QueryAsync<ArticuloDTO>(
+                        "ObtenerArticulosPorInsumo",
+                        parameters,
+                        commandType: CommandType.StoredProcedure);
+
+                    return result.ToList();
+                    }
+                catch (SqlException ex)
+                    {
+                    throw new Exception($"Error al obtener los artículos del insumo {insumoID}: {ex.Message}", ex);
+                    }
+                }
+            }
+
         }
 
     }

@@ -149,6 +149,16 @@ namespace Backend.Datos
             return (result.Success, result.Message);
             }
 
+        // Obtener artículos por insumo
+        public static async Task<(bool Success, string Message, List<ArticuloDTO> Articulos)> ObtenerArticulosPorInsumoAsync(int insumoID)
+            {
+            string url = $"{App.BaseUrl}insumos/articulos/{insumoID}";
+            var result = await ExecuteRequestAsync<List<ArticuloDTO>>(
+                () => httpClient.GetAsync(url),
+                $"Obtener artículos por insumo {insumoID}"
+            );
+            return (result.Success, result.Message, result.Data);
+            }
 
         }
 
