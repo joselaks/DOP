@@ -23,4 +23,18 @@ namespace Biblioteca.DTO
         public char? Accion { get; set; } // Solo necesario si usas el procedimiento de alta/modificación/borrado
         }
 
+    public class ConceptoMDTO
+        {
+        public int UsuarioID { get; set; }
+        public string ConceptoID { get; set; }
+        public string Descrip { get; set; }
+        public string Tipo { get; set; }
+        public string Unidad { get; set; }
+        public decimal PrEjec { get; set; }
+        public string EjecMoneda { get; set; }
+        public DateTime MesBase { get; set; }
+        public int? InsumoID { get; set; }
+        public char Accion { get; set; } // 'A', 'M', 'B'
+        }
+
     }

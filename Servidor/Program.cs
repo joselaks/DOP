@@ -271,6 +271,33 @@ ins.MapGet("/articulos/{insumoID:int}", async (int insumoID, rInsumos repo) =>
         }
 }).RequireAuthorization();
 
+
+pre.MapGet("/maestro/{usuarioID:int}", async (int usuarioID, rPresupuestos repo) =>
+{
+    try
+        {
+        var (conceptos, relaciones) = await repo.ObtenerConceptosYRelacionesMaestroAsync(usuarioID);
+        return Results.Ok(new { Conceptos = conceptos, Relaciones = relaciones });
+        }
+    catch (Exception ex)
+        {
+        return Results.BadRequest(new { Message = ex.Message });
+        }
+}).RequireAuthorization();
+
+pre.MapPost("/maestro/procesar", async (ProcesaTareaMaestroRequest request, rPresupuestos repo) =>
+{
+    try
+        {
+        var mensaje = await repo.ProcesarTareaMaestroAsync(request.UsuarioID, request.Conceptos, request.Relaciones);
+        return Results.Ok(new { Success = mensaje == "OK", Message = mensaje });
+        }
+    catch (Exception ex)
+        {
+        return Results.BadRequest(new { Success = false, Message = ex.Message });
+        }
+}).RequireAuthorization();
+
 #endregion
 
 #endregion

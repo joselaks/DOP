@@ -187,8 +187,111 @@ namespace Servidor.Repositorios
                     }
                 }
             }
+        public async Task<(List<ConceptoMDTO> Conceptos, List<RelacionMDTO> Relaciones)> ObtenerConceptosYRelacionesMaestroAsync(int usuarioID)
+            {
+            using (var db = new SqlConnection(_connectionString))
+                {
+                var parameters = new DynamicParameters();
+                parameters.Add("@UsuarioID", usuarioID, DbType.Int32);
 
+                try
+                    {
+                    using (var multi = await db.QueryMultipleAsync(
+                        "ObtenerConceptosYRelacionesMaestro",
+                        parameters,
+                        commandType: CommandType.StoredProcedure))
+                        {
+                        var conceptos = (await multi.ReadAsync<ConceptoMDTO>()).ToList();
+                        var relaciones = (await multi.ReadAsync<RelacionMDTO>()).ToList();
 
+                        return (conceptos, relaciones);
+                        }
+                    }
+                catch (SqlException ex)
+                    {
+                    throw new Exception($"Error al obtener conceptos y relaciones maestro del usuario {usuarioID}: {ex.Message}", ex);
+                    }
+                }
+            }
+
+        public async Task<string> ProcesarTareaMaestroAsync(int usuarioID, List<ConceptoMDTO> conceptos, List<RelacionMDTO> relaciones)
+            {
+            using (var db = new SqlConnection(_connectionString))
+                {
+                // Crear DataTable para ConceptosM
+                var tableConceptosM = new DataTable();
+                tableConceptosM.Columns.Add("UsuarioID", typeof(int));
+                tableConceptosM.Columns.Add("ConceptoID", typeof(string));
+                tableConceptosM.Columns.Add("Descrip", typeof(string));
+                tableConceptosM.Columns.Add("Tipo", typeof(string));
+                tableConceptosM.Columns.Add("Unidad", typeof(string));
+                tableConceptosM.Columns.Add("PrEjec", typeof(decimal));
+                tableConceptosM.Columns.Add("EjecMoneda", typeof(string));
+                tableConceptosM.Columns.Add("MesBase", typeof(DateTime));
+                tableConceptosM.Columns.Add("InsumoID", typeof(int));
+                tableConceptosM.Columns.Add("Accion", typeof(char));
+
+                foreach (var c in conceptos)
+                    {
+                    tableConceptosM.Rows.Add(
+                        c.UsuarioID,
+                        c.ConceptoID,
+                        c.Descrip,
+                        c.Tipo,
+                        c.Unidad,
+                        c.PrEjec,
+                        c.EjecMoneda,
+                        c.MesBase,
+                        c.InsumoID.HasValue ? (object)c.InsumoID.Value : DBNull.Value,
+                        c.Accion
+                    );
+                    }
+
+                // Crear DataTable para RelacionesM
+                var tableRelacionesM = new DataTable();
+                tableRelacionesM.Columns.Add("UsuarioID", typeof(int));
+                tableRelacionesM.Columns.Add("CodSup", typeof(string));
+                tableRelacionesM.Columns.Add("CodInf", typeof(string));
+                tableRelacionesM.Columns.Add("CanEjec", typeof(decimal));
+                tableRelacionesM.Columns.Add("OrdenInt", typeof(short));
+                tableRelacionesM.Columns.Add("Accion", typeof(char));
+
+                foreach (var r in relaciones)
+                    {
+                    tableRelacionesM.Rows.Add(
+                        r.UsuarioID,
+                        r.CodSup,
+                        r.CodInf,
+                        r.CanEjec,
+                        r.OrdenInt.HasValue ? (object)r.OrdenInt.Value : DBNull.Value,
+                        r.Accion
+                    );
+                    }
+
+                var parameters = new DynamicParameters();
+                parameters.Add("@UsuarioID", usuarioID, DbType.Int32);
+                parameters.Add("@ConceptosM", tableConceptosM.AsTableValuedParameter("dbo.TT_ConceptosM"));
+                parameters.Add("@RelacionesM", tableRelacionesM.AsTableValuedParameter("dbo.TT_RelacionesM"));
+
+                try
+                    {
+                    var result = await db.QueryFirstOrDefaultAsync<string>(
+                        "ProcesarTareaMaestro",
+                        parameters,
+                        commandType: CommandType.StoredProcedure);
+
+                    return result ?? "OK";
+                    }
+                catch (SqlException ex)
+                    {
+                    return $"Error SQL: {ex.Message}";
+                    }
+                catch (Exception ex)
+                    {
+                    return $"Error: {ex.Message}";
+                    }
+                }
+            }
 
         }
     }
