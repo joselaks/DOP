@@ -28,10 +28,10 @@ namespace Biblioteca.DTO
         public int UsuarioID { get; set; }
         public string ConceptoID { get; set; }
         public string Descrip { get; set; }
-        public string Tipo { get; set; }
+        public char Tipo { get; set; }
         public string Unidad { get; set; }
         public decimal PrEjec { get; set; }
-        public string EjecMoneda { get; set; }
+        public char EjecMoneda { get; set; }
         public DateTime MesBase { get; set; }
         public int? InsumoID { get; set; }
         public char Accion { get; set; } // 'A', 'M', 'B'
