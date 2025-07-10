@@ -61,7 +61,6 @@ namespace Backend
 
                 ListaArticulos.ItemsSource = null;
                 ListaArticulos.ItemsSource = datos;
-                ArticuloDTO
             }
             else
             {
