@@ -81,12 +81,12 @@
                                    AutoGenerateColumns="False"
                                    ColumnSizer="Star">
                 <syncfusion:SfDataGrid.Columns>
-                    <syncfusion:GridTextColumn MappingName="Descripcion" HeaderText="Descripción" Width="180"/>
-                    <syncfusion:GridTextColumn MappingName="Unidad" HeaderText="Unidad" Width="60"/>
-                    <syncfusion:GridNumericColumn MappingName="Factor" HeaderText="Factor" Width="70"/>
-                    <syncfusion:GridTextColumn MappingName="Moneda" HeaderText="Moneda" Width="60"/>
-                    <syncfusion:GridNumericColumn MappingName="Precio" HeaderText="Precio" Width="80"/>
-                    <syncfusion:GridTextColumn MappingName="Codigo" HeaderText="Código" Width="80"/>
+                    <syncfusion:GridTextColumn MappingName="Descrip" HeaderText="Descripción" Width="180"/>
+                    <syncfusion:GridTextColumn MappingName="Unidad" HeaderText="Unidad" Width="56" TextAlignment="Center"/>
+                    <syncfusion:GridNumericColumn MappingName="UnidadFactor" HeaderText="Factor" Width="70" TextAlignment="Center"/>
+                    <syncfusion:GridTextColumn MappingName="Moneda" HeaderText="Moneda" Width="60" TextAlignment="Center"/>
+                    <syncfusion:GridNumericColumn MappingName="Precio" HeaderText="Precio" Width="92"/>
+                    <syncfusion:GridTextColumn MappingName="Codigo" HeaderText="Código" Width="80" TextAlignment="Center"/>
                 </syncfusion:SfDataGrid.Columns>
             </syncfusion:SfDataGrid>
         </GroupBox>

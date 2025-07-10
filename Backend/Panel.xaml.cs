@@ -35,6 +35,7 @@ namespace Backend
         private async Task CargarInsumos()
         {
             var (ok, msg, datos) = await meconecto.ObtenerInsumosPorUsuarioAsync(1);
+            
             if (ok && datos != null)
             {
                 foreach (var d in datos)
@@ -42,6 +43,25 @@ namespace Backend
 
                 Insumos = datos;
                 FiltrarInsumos();
+            }
+            else
+            {
+                MessageBox.Show("Error al cargar insumos: " + msg);
+            }
+        }
+
+        public async Task ObtenerArticulos(int pInsumoID)
+        {
+            var (ok, msg, datos) = await meconecto.ObtenerArticulosPorInsumoAsync(pInsumoID);
+            
+            if (ok && datos != null)
+            {
+                //foreach (var d in datos)
+                //    d.TipoDescripcion = ConvertirTipo(d.Tipo);
+
+                ListaArticulos.ItemsSource = null;
+                ListaArticulos.ItemsSource = datos;
+                ArticuloDTO
             }
             else
             {
@@ -111,7 +131,7 @@ namespace Backend
         {
             if (ListaInsumos.SelectedItem is InsumoDTO insumo)
             {
-                ListaArticulos.ItemsSource = ArticulosProveedor.Where(a => a.Descripcion.ToLower().Contains(insumo.Descrip.ToLower())).ToList();
+                ObtenerArticulos(insumo.ID);
             }
         }
 
