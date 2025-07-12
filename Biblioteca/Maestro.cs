@@ -18,6 +18,7 @@ namespace Biblioteca
         public List<RelacionMDTO> listaRelacionesLeer;
         public List<ConceptoMDTO> listaConceptosGrabar;
         public List<RelacionMDTO> listaRelacionesGrabar;
+        public int UsuarioID;
 
         ObservableCollection<Nodo> arbol;
         bool existe;
@@ -70,13 +71,14 @@ namespace Biblioteca
 
         #endregion
 
-        public Maestro(List<ConceptoMDTO> conBase, List<RelacionMDTO> relBase)
+        public Maestro(List<ConceptoMDTO> conBase, List<RelacionMDTO> relBase, int usuarioID)
             {
             this.listaConceptosLeer = conBase;
             this.listaRelacionesLeer = relBase;
             this.listaConceptosGrabar = new List<ConceptoMDTO>();
             this.listaRelacionesGrabar = new List<RelacionMDTO>();
             Arbol = new ObservableCollection<Nodo>();
+            UsuarioID = usuarioID;
 
             }
 
@@ -178,6 +180,188 @@ namespace Biblioteca
 
             }
 
-        }
+        public void aplanar(IEnumerable<Nodo> items, Nodo parentItem)
+            {
+            foreach (var item in items)
+                {
+                bool existe = listaConceptosGrabar.Any(a => a.ConceptoID == item.ID);
+                if (existe == false)
+                    {
+                    ConceptoMDTO registroC = new ConceptoMDTO();
+                    registroC.UsuarioID = UsuarioID;
+                    registroC.ConceptoID = item.ID;
+                    registroC.Descrip = item.Descripcion;
+                    registroC.Tipo = item.Tipo[0];
+                    registroC.PrEjec = item.PU1;
+                         registroC.Unidad = item.Unidad;
+                    registroC.MesBase = DateTime.Now;
+                    listaConceptosGrabar.Add(registroC);
+                    }
+                RelacionMDTO registroR = new RelacionMDTO();
+                registroR.UsuarioID = UsuarioID;
+                registroR.CodSup = parentItem == null ? "0" : parentItem.ID;
+                registroR.CodInf = item.ID;
+                registroR.CanEjec = item.Cantidad;
+                registroR.OrdenInt = (short)item.OrdenInt;
+                listaRelacionesGrabar.Add(registroR);
+                if (item.HasItems == true)
+                    {
+                    //antes de seguir bajando, verificar si ya existen relaciones anteriores para no agregar.
+                    bool anterior = listaRelacionesGrabar.Any(a => a.CodSup == item.ID);
+                    if (anterior == false)
+                        {
+                        aplanar(item.Inferiores, item);
+                        }
+                    }
+                }
+
+            // Mostrar mensaje con las cantidades de registros
+            }
+
+        public Biblioteca.DTO.ProcesaTareaMaestroRequest EmpaquetarPresupuesto()
+            {
+            // 1. Limpiar y aplanar el árbol
+            listaConceptosGrabar = new List<ConceptoMDTO>();
+            listaRelacionesGrabar = new List<RelacionMDTO>();
+            aplanar(Arbol, null);
+
+            // 2. ACCIONES PARA CONCEPTOS
+            foreach (var concepto in listaConceptosLeer)
+                {
+                bool yaExiste = listaConceptosGrabar.Any(c => c.ConceptoID == concepto.ConceptoID);
+                if (!yaExiste)
+                    {
+                    var conceptoBaja = new ConceptoMDTO
+                        {
+                        UsuarioID = concepto.UsuarioID,
+                        ConceptoID = concepto.ConceptoID,
+                        Descrip = concepto.Descrip,
+                        Tipo = concepto.Tipo,
+                        Unidad = concepto.Unidad,
+                        PrEjec = concepto.PrEjec,
+                        EjecMoneda = concepto.EjecMoneda,
+                        MesBase = DateTime.Today,
+                        InsumoID = concepto.InsumoID,
+                        Accion = 'B'
+                        };
+                    listaConceptosGrabar.Add(conceptoBaja);
+                    }
+                }
+            foreach (var concepto in listaConceptosGrabar)
+                {
+                bool existiaAntes = listaConceptosLeer.Any(c => c.ConceptoID == concepto.ConceptoID);
+                if (!existiaAntes)
+                    {
+                    concepto.Accion = 'A';
+                    }
+                }
+            foreach (var concepto in listaConceptosGrabar)
+                {
+                if (concepto.Accion != 'B' && concepto.Accion != 'A')
+                    {
+                    concepto.Accion = 'M';
+                    }
+                }
+
+            // 3. ACCIONES PARA RELACIONES
+            foreach (var relacion in listaRelacionesLeer)
+                {
+                bool yaExiste = listaRelacionesGrabar.Any(r =>
+                    r.CodSup == relacion.CodSup &&
+                    r.CodInf == relacion.CodInf);
+                if (!yaExiste)
+                    {
+                    var relacionBaja = new RelacionMDTO
+                        {
+                        UsuarioID  = relacion.UsuarioID,
+                        CodSup = relacion.CodSup,
+                        CodInf = relacion.CodInf,
+                        CanEjec = relacion.CanEjec,
+                        OrdenInt = relacion.OrdenInt,
+                        Accion = 'B'
+                        };
+                    listaRelacionesGrabar.Add(relacionBaja);
+                    }
+                }
+            foreach (var relacion in listaRelacionesGrabar)
+                {
+                bool existiaAntes = listaRelacionesLeer.Any(r =>
+                    r.CodSup == relacion.CodSup &&
+                    r.CodInf == relacion.CodInf);
+                if (!existiaAntes)
+                    {
+                    relacion.Accion = 'A';
+                    }
+                }
+            foreach (var relacion in listaRelacionesGrabar)
+                {
+                if (relacion.Accion != 'B' && relacion.Accion != 'A')
+                    {
+                    relacion.Accion = 'M';
+                    }
+                }
+
+            // Empaquetar el request
+            var request = new Biblioteca.DTO.ProcesaTareaMaestroRequest
+                {
+                Conceptos = listaConceptosGrabar,
+                Relaciones = listaRelacionesGrabar
+                };
+
+
+            return request;
+            }
+
+        public Nodo clonar(Nodo origen)
+            {
+            Nodo respuesta = new Nodo();
+            respuesta.ID = origen.ID;
+            respuesta.Descripcion = origen.Descripcion;
+            respuesta.Unidad = origen.Unidad;
+            respuesta.Cantidad = origen.Cantidad;
+            respuesta.PU1 = origen.PU1;
+            respuesta.Tipo = origen.Tipo;
+            respuesta.Inferiores = GetClonesInferiores(origen);
+            return respuesta;
+
+            }
+
+        public ObservableCollection<Nodo> GetClonesInferiores(Nodo elemento)
+            {
+            if (elemento == null)
+                return null;
+
+            if (!elemento.HasItems)
+                {
+                ObservableCollection<Nodo> inferioresVacios = new ObservableCollection<Nodo>();
+                return inferioresVacios;
+
+                }
+            else
+                {
+                ObservableCollection<Nodo> inferioresLlenos = new ObservableCollection<Nodo>();
+                foreach (var item in elemento.Inferiores)
+                    {
+                    Nodo respuesta = new Nodo();
+                    respuesta.ID = item.ID;
+                    respuesta.Descripcion = item.Descripcion;
+                    respuesta.Unidad = item.Unidad;
+                    respuesta.Cantidad = item.Cantidad;
+                    respuesta.PU1 = item.PU1;
+                    respuesta.Tipo = item.Tipo;
+                    respuesta.Inferiores = GetClonesInferiores(item);
+                    inferioresLlenos.Add(respuesta);
+                    if (item.HasItems)
+                        {
+                        respuesta.Inferiores = GetClonesInferiores(item);
+                        }
+                    }
+                return inferioresLlenos;
+
+                }
+
+            }
 
         }
+
+    }

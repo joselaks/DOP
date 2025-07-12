@@ -1,11 +1,25 @@
-﻿<UserControl x:Class="DOP.Presupuestos.Controles.UcModelo"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             Height="160" Width="160">
-    <Border Background="#FFEEEEEE" BorderBrush="#FFCCCCCC" BorderThickness="1" CornerRadius="18" Padding="10">
+﻿<UserControl
+    x:Class="DOP.Presupuestos.Controles.UcModelo"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Width="160"
+    Height="160">
+    <Border
+        Padding="10"
+        Background="#FFEEEEEE"
+        BorderBrush="#FFCCCCCC"
+        BorderThickness="1"
+        CornerRadius="18">
         <StackPanel>
-            <TextBlock x:Name="Titulo" FontWeight="Bold" FontSize="16" Text="Título"/>
-            <TextBlock x:Name="Descripcion" FontSize="12" Text="Descripción"/>
+            <TextBlock
+                x:Name="Titulo"
+                FontSize="16"
+                FontWeight="Bold"
+                Text="Título" />
+            <TextBlock
+                x:Name="Descripcion"
+                FontSize="12"
+                Text="Descripción" />
         </StackPanel>
     </Border>
 </UserControl>

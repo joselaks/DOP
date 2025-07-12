@@ -37,6 +37,7 @@ namespace DOP.Presupuestos.Ventanas
         public UcPlanilla Planilla;
         public UcListado Listado;
         public UcDosaje Dosaje;
+        public UcTareas Tareas;
         private ObservableCollection<PresupuestoDTO> _presupuestosRef;
 
 
@@ -52,6 +53,8 @@ namespace DOP.Presupuestos.Ventanas
             this.gPlanilla.Children.Add(Planilla);
             this.gListado.Children.Add(Listado);
             this.gDetalle.Children.Add(Dosaje);
+            Tareas = new UcTareas();
+            this.dockMaestro.Content = Tareas;
             this.Closing += WiPresupuesto_Closing; // Suscribir el evento
             _presupuestosRef = presupuestosRef;
             }

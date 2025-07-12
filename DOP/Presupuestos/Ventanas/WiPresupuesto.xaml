@@ -97,19 +97,19 @@
                         SizeForm="Small"
                         SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
                     <syncfusion:RibbonButton
-     x:Name="OInsumo"
-     Click="OInsumo_Click"
-     Label="Insumos"
-     SizeForm="Small"
-     SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
+                        x:Name="OInsumo"
+                        Click="OInsumo_Click"
+                        Label="Insumos"
+                        SizeForm="Small"
+                        SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
                 </syncfusion:RibbonBar>
                 <syncfusion:RibbonBar Header="Informes">
                     <syncfusion:RibbonButton
-    x:Name="SaleExcel"
-    Click="SaleExcel_Click"
-    Label="Excel"
-    SizeForm="Small"
-    SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
+                        x:Name="SaleExcel"
+                        Click="SaleExcel_Click"
+                        Label="Excel"
+                        SizeForm="Small"
+                        SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
                 </syncfusion:RibbonBar>
 
 
@@ -209,8 +209,14 @@
 
             <ContentControl
                 x:Name="dockMaestro"
-                syncfusion:DockingManager.DesiredWidthInDockedMode="250"
-                syncfusion:DockingManager.Header="Maestro"
+                syncfusion:DockingManager.Header="Tareas"
+                syncfusion:DockingManager.SideInDockedMode="Right"
+                syncfusion:DockingManager.State="AutoHidden"
+                Background="White" />
+
+            <ContentControl
+                x:Name="dockInsumos"
+                syncfusion:DockingManager.Header="Insumos"
                 syncfusion:DockingManager.SideInDockedMode="Right"
                 syncfusion:DockingManager.State="AutoHidden"
                 Background="White" />

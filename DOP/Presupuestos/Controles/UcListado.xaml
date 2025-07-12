@@ -15,71 +15,71 @@
         <!--  DataTemplate para ícono Rubro  -->
         <DataTemplate x:Key="RubTemplate">
             <Image
-            Width="15"
-            Height="15"
-            Source="pack://application:,,,/Imagenes/Rubro.png" />
+                Width="15"
+                Height="15"
+                Source="pack://application:,,,/Imagenes/Rubro.png" />
         </DataTemplate>
         <!--  DataTemplate para ícono Tarea  -->
         <DataTemplate x:Key="TarTemplate">
             <Image
-            Width="15"
-            Height="15"
-            Source="pack://application:,,,/Imagenes/Tarea.png" />
+                Width="15"
+                Height="15"
+                Source="pack://application:,,,/Imagenes/Tarea.png" />
         </DataTemplate>
         <!--  DataTemplate para ícono Materiales  -->
         <DataTemplate x:Key="MatTemplate">
             <Image
-            Width="15"
-            Height="15"
-            Source="pack://application:,,,/Imagenes/Material.png" />
+                Width="15"
+                Height="15"
+                Source="pack://application:,,,/Imagenes/Material.png" />
         </DataTemplate>
         <!--  DataTemplate para ícono Mano de obra  -->
         <DataTemplate x:Key="MdoTemplate">
             <Image
-            Width="15"
-            Height="15"
-            Source="pack://application:,,,/Imagenes/ManoDeObra.png" />
+                Width="15"
+                Height="15"
+                Source="pack://application:,,,/Imagenes/ManoDeObra.png" />
         </DataTemplate>
         <!--  DataTemplate para ícono Equipos  -->
         <DataTemplate x:Key="EquTemplate">
             <Image
-            Width="15"
-            Height="15"
-            Source="pack://application:,,,/Imagenes/Equipos.png" />
+                Width="15"
+                Height="15"
+                Source="pack://application:,,,/Imagenes/Equipos.png" />
         </DataTemplate>
         <!--  DataTemplate para ícono Subcontratos  -->
         <DataTemplate x:Key="SubTemplate">
             <Image
-            Width="15"
-            Height="15"
-            Source="pack://application:,,,/Imagenes/Subcontratos.png" />
+                Width="15"
+                Height="15"
+                Source="pack://application:,,,/Imagenes/Subcontratos.png" />
         </DataTemplate>
         <!--  DataTemplate para ícono Otros  -->
         <DataTemplate x:Key="OtrTemplate">
             <Image
-            Width="15"
-            Height="15"
-            Source="pack://application:,,,/Imagenes/Otros.png" />
+                Width="15"
+                Height="15"
+                Source="pack://application:,,,/Imagenes/Otros.png" />
         </DataTemplate>
         <!--  DataTemplate para ícono AuxTemplate  -->
         <DataTemplate x:Key="AuxTemplate">
             <Image
-            Width="15"
-            Height="15"
-            Source="pack://application:,,,/Imagenes/Arbol.png" />
+                Width="15"
+                Height="15"
+                Source="pack://application:,,,/Imagenes/Arbol.png" />
         </DataTemplate>
         <!--  DataTemplateSelector  -->
         <local:IconTemplateSelector
-        x:Key="IconTemplateSelector"
-        AuxTemplate="{StaticResource AuxTemplate}"
-        EquTemplate="{StaticResource EquTemplate}"
-        MatTemplate="{StaticResource MatTemplate}"
-        MdoTemplate="{StaticResource MdoTemplate}"
-        OtrTemplate="{StaticResource OtrTemplate}"
-        RubTemplate="{StaticResource RubTemplate}"
-        SubTemplate="{StaticResource SubTemplate}"
-        TarTemplate="{StaticResource TarTemplate}" />
-      
+            x:Key="IconTemplateSelector"
+            AuxTemplate="{StaticResource AuxTemplate}"
+            EquTemplate="{StaticResource EquTemplate}"
+            MatTemplate="{StaticResource MatTemplate}"
+            MdoTemplate="{StaticResource MdoTemplate}"
+            OtrTemplate="{StaticResource OtrTemplate}"
+            RubTemplate="{StaticResource RubTemplate}"
+            SubTemplate="{StaticResource SubTemplate}"
+            TarTemplate="{StaticResource TarTemplate}" />
+
 
     </UserControl.Resources>
 
@@ -103,54 +103,50 @@
         <syncfusion:SfTreeGrid.Columns>
 
 
-            <syncfusion:TreeGridTextColumn
-                Width="50"
-                MappingName="ID" />
+            <syncfusion:TreeGridTextColumn Width="50" MappingName="ID" />
 
 
             <syncfusion:TreeGridTemplateColumn
-    Width="30"
-    CellTemplateSelector="{StaticResource IconTemplateSelector}"
-    HeaderText="Nat"
-    MappingName="Tipo" />
-
-
-            <syncfusion:TreeGridTextColumn
-                Width="50"
+                Width="30"
+                CellTemplateSelector="{StaticResource IconTemplateSelector}"
+                HeaderText="Nat"
                 MappingName="Tipo" />
+
+
+            <syncfusion:TreeGridTextColumn Width="50" MappingName="Tipo" />
 
 
             <syncfusion:TreeGridTextColumn Width="250" MappingName="Descripcion" />
 
 
             <syncfusion:TreeGridNumericColumn
-    Width="60"
-    HeaderText="Cant."
-    MappingName="Cantidad"
-    NumberDecimalDigits="2"
-    NumberDecimalSeparator=","
-    NumberGroupSeparator="."
-    NumberGroupSizes="3" />
+                Width="60"
+                HeaderText="Cant."
+                MappingName="Cantidad"
+                NumberDecimalDigits="2"
+                NumberDecimalSeparator=","
+                NumberGroupSeparator="."
+                NumberGroupSizes="3" />
 
             <syncfusion:TreeGridNumericColumn
-     Width="80"
-     HeaderText="P.U."
-     MappingName="PU1"
-     NumberDecimalDigits="2"
-     NumberDecimalSeparator=","
-     NumberGroupSeparator="."
-     NumberGroupSizes="3" />
+                Width="80"
+                HeaderText="P.U."
+                MappingName="PU1"
+                NumberDecimalDigits="2"
+                NumberDecimalSeparator=","
+                NumberGroupSeparator="."
+                NumberGroupSizes="3" />
 
 
             <syncfusion:TreeGridNumericColumn
-     x:Name="colImporte1"
-     Width="120"
-     HeaderText="{Binding totGeneral1}"
-     MappingName="Importe1"
-     NumberDecimalDigits="2"
-     NumberDecimalSeparator=","
-     NumberGroupSeparator="."
-     NumberGroupSizes="3" />
+                x:Name="colImporte1"
+                Width="120"
+                HeaderText="{Binding totGeneral1}"
+                MappingName="Importe1"
+                NumberDecimalDigits="2"
+                NumberDecimalSeparator=","
+                NumberGroupSeparator="."
+                NumberGroupSizes="3" />
 
 
 
