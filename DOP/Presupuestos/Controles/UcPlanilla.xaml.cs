@@ -43,10 +43,21 @@ namespace DOP.Presupuestos.Controles
             this.grillaArbol.ItemsSource = Objeto.Arbol;
             this.grillaArbol.ChildPropertyName = "Inferiores";
             this.grillaArbol.Loaded += GrillaArbol_Loaded;
+            this.grillaArbol.RowDragDropController.Drop += RowDragDropController_Drop;
+            this.grillaArbol.RowDragDropController.DragStart += RowDragDropController_DragStart;
             this.grillaArbol.QueryCoveredRange += OnQueryCoveredRange;
 
         }
 
+        private void RowDragDropController_DragStart(object? sender, TreeGridRowDragStartEventArgs e)
+        {
+            
+        }
+
+        private void RowDragDropController_Drop(object? sender, TreeGridRowDropEventArgs e)
+        {
+            e.Handled = true;
+        }
 
         private void OnQueryCoveredRange(object? sender, TreeGridQueryCoveredRangeEventArgs e)
         {

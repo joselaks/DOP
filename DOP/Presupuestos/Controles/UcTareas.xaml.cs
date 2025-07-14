@@ -31,20 +31,15 @@ namespace DOP.Presupuestos.Controles
             InitializeComponent();
 
             this.grillaTareas.RowDragDropController.Drop += RowDragDropController_Drop;
-            this.grillaTareas.RowDragDropController.Dropped += RowDragDropController_Dropped;
             this.grillaTareas.RowDragDropController.DragStart += RowDragDropController_DragStart;
             this.grillaTareas.ChildPropertyName = "Inferiores";
             }
 
-        private void RowDragDropController_Dropped(object? sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridRowDroppedEventArgs e)
-            {
-            
-            }
 
         private void RowDragDropController_DragStart(object? sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridRowDragStartEventArgs e)
             {
-            MessageBox.Show("Arrastrando fila");
-            }
+           
+        }
 
 
         private void RowDragDropController_Drop(object? sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridRowDropEventArgs e)
