@@ -73,11 +73,22 @@ namespace Biblioteca
 
         public Maestro(List<ConceptoMDTO> conBase, List<RelacionMDTO> relBase, int usuarioID)
             {
-            this.listaConceptosLeer = conBase;
-            this.listaRelacionesLeer = relBase;
+            if (conBase == null)
+                {
+                listaConceptosLeer = new List<ConceptoMDTO>();
+                listaRelacionesLeer = new List<RelacionMDTO>();
+                Arbol = new ObservableCollection<Nodo>();
+
+                }
+            else
+                {
+                this.listaConceptosLeer = conBase;
+                this.listaRelacionesLeer = relBase;
+                generaPresupuesto();
+                }
+
             this.listaConceptosGrabar = new List<ConceptoMDTO>();
             this.listaRelacionesGrabar = new List<RelacionMDTO>();
-            Arbol = new ObservableCollection<Nodo>();
             UsuarioID = usuarioID;
 
             }

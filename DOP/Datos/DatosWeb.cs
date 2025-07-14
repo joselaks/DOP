@@ -180,17 +180,78 @@ namespace DOP.Datos
                 return (false, $"Error: {ex.Message}");
                 }
             }
-       
 
-    // Obtener insumos por usuario
+
+        // Obtener insumos por usuario
         public static async Task<(bool Success, string Message, List<InsumoDTO> Insumos)> ObtenerInsumosPorUsuarioAsync(int usuarioID)
-        {
+            {
             string url = $"{App.BaseUrl}insumos/usuario/{usuarioID}";
             var result = await ExecuteRequestAsync<List<InsumoDTO>>(() => httpClient.GetAsync(url), $"Obtener insumos usuario {usuarioID}");
             return (result.Success, result.Message, result.Data);
+            }
+
+        public static async Task<(bool Success, string Message, List<ConceptoMDTO> Conceptos, List<RelacionMDTO> Relaciones)> ObtenerConceptosYRelacionesMaestroAsync(int usuarioID)
+            {
+            string url = $"{App.BaseUrl}presupuestos/maestro/{usuarioID}";
+            var (success, message, data) = await ExecuteRequestAsync<ConceptosRelacionesMaestroResult>(
+                () => httpClient.GetAsync(url),
+                $"Obtener conceptos y relaciones maestro del usuario {usuarioID}"
+            );
+
+            if (success && data != null)
+                return (true, "Operación exitosa.", data.Conceptos ?? new List<ConceptoMDTO>(), data.Relaciones ?? new List<RelacionMDTO>());
+            else
+                return (false, message, new List<ConceptoMDTO>(), new List<RelacionMDTO>());
+            }
+
+        public static async Task<(bool Success, string Message)> ProcesarTareaMaestroAsync(ProcesaTareaMaestroRequest request)
+            {
+            string url = $"{App.BaseUrl}presupuestos/maestro/procesar";
+            var json = JsonSerializer.Serialize(request, jsonSerializerOptions);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            try
+                {
+                var response = await httpClient.PostAsync(url, content);
+                var responseString = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                    {
+                    var result = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, jsonSerializerOptions);
+                    string message = !string.IsNullOrEmpty(result?.Message)
+                        ? result.Message
+                        : "Operación realizada correctamente.";
+                    return (result?.Success ?? true, message);
+                    }
+                else
+                    {
+                    var error = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, jsonSerializerOptions);
+                    string errorMessage = !string.IsNullOrEmpty(error?.Message)
+                        ? error.Message
+                        : !string.IsNullOrEmpty(error?.Mensaje)
+                            ? error.Mensaje
+                            : "Error desconocido al procesar el maestro.";
+                    return (false, errorMessage);
+                    }
+                }
+            catch (Exception ex)
+                {
+                return (false, $"Error: {ex.Message}");
+                }
+            }
+
         }
 
-    }
+
+
+    // Clase auxiliar para deserializar la respuesta del endpoint
+    public class ConceptosRelacionesMaestroResult
+        {
+        public List<ConceptoMDTO> Conceptos { get; set; }
+        public List<RelacionMDTO> Relaciones { get; set; }
+        }
+
+   
 
     public class ResultadoOperacion
         {

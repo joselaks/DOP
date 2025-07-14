@@ -30,34 +30,15 @@ namespace DOP.Presupuestos.Controles
             {
             InitializeComponent();
 
-            // Inicializa el objeto Maestro si es necesario
-            if (Objeto == null)
-                Objeto = new Maestro(new List<ConceptoMDTO>(), new List<RelacionMDTO>(), 2);
-
-            // Crea un nodo de ejemplo
-            var nodoEjemplo = new Nodo
-                {
-                ID = "N1",
-                Descripcion = "Nodo de ejemplo",
-                Tipo = "T",
-                Unidad = "m2",
-                Cantidad = 10,
-                PU1 = 100,
-                Importe1 = 1000
-                };
-
-            // Agrega el nodo al árbol
-            if (Objeto.Arbol == null)
-                Objeto.Arbol = new System.Collections.ObjectModel.ObservableCollection<Nodo>();
-
-            //Objeto.Arbol.Add(nodoEjemplo);
-
-            // Enlaza la grilla a la colección de nodos
-            grillaTareas.ItemsSource = Objeto.Arbol;
-
             this.grillaTareas.RowDragDropController.Drop += RowDragDropController_Drop;
+            this.grillaTareas.RowDragDropController.Dropped += RowDragDropController_Dropped;
             this.grillaTareas.RowDragDropController.DragStart += RowDragDropController_DragStart;
             this.grillaTareas.ChildPropertyName = "Inferiores";
+            }
+
+        private void RowDragDropController_Dropped(object? sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridRowDroppedEventArgs e)
+            {
+            
             }
 
         private void RowDragDropController_DragStart(object? sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridRowDragStartEventArgs e)
@@ -65,30 +46,70 @@ namespace DOP.Presupuestos.Controles
             MessageBox.Show("Arrastrando fila");
             }
 
+
         private void RowDragDropController_Drop(object? sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridRowDropEventArgs e)
             {
+            e.Handled = true;
             Nodo nodoMovido = null;
-            Nodo nodoReceptor = null;
 
             if (e.DraggingNodes != null && e.DraggingNodes.Count > 0)
                 {
                 nodoMovido = e.DraggingNodes[0].Item as Nodo;
-                Objeto.Arbol.Add(Objeto.clonar(nodoMovido));
+                if (nodoMovido != null)
+                    {
+                    // Verifica si ya existe un nodo con el mismo ID en el árbol
+                    bool yaExiste = Objeto.Arbol.Any(n => n.ID == nodoMovido.ID);
+                    if (!yaExiste)
+                        {
+                        Objeto.Arbol.Add(Objeto.clonar(nodoMovido));
+                        }
+                    }
                 }
-
             }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Guardar_Click(object sender, RoutedEventArgs e)
             {
             ProcesaTareaMaestroRequest oGrabar = Objeto.EmpaquetarPresupuesto();
             if (oGrabar != null)
                 {
-                // Aquí puedes procesar la solicitud de grabación
-                MessageBox.Show("Solicitud de grabación procesada correctamente.");
+                var (success, message) = await DOP.Datos.DatosWeb.ProcesarTareaMaestroAsync(oGrabar);
+
+                if (success)
+                    {
+                    MessageBox.Show("Tareas guardadas correctamente.\n" + message, "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                else
+                    {
+                    MessageBox.Show("Error al guardar tareas:\n" + message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
             else
                 {
                 MessageBox.Show("Error al procesar la solicitud de grabación.");
+                }
+            }
+         
+
+        private async void Obtener_Click(object sender, RoutedEventArgs e)
+            {
+            // Obtén el usuarioID desde donde corresponda en tu aplicación
+            int usuarioID = App.IdUsuario; // Usa el ID del login 
+
+            var (success, message, conceptos, relaciones) = await DOP.Datos.DatosWeb.ObtenerConceptosYRelacionesMaestroAsync(usuarioID);
+
+            if (success)
+                {
+                // Actualiza el objeto Maestro con los datos obtenidos
+                Objeto = new Maestro(conceptos, relaciones, usuarioID);
+
+                // Si tienes un árbol o grilla, actualízalo
+                grillaTareas.ItemsSource = Objeto.Arbol;
+
+                MessageBox.Show("Datos de tareas maestro obtenidos correctamente.");
+                }
+            else
+                {
+                MessageBox.Show($"Error al obtener datos: {message}");
                 }
             }
         }
