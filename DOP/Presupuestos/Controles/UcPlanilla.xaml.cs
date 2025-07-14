@@ -35,6 +35,7 @@ namespace DOP.Presupuestos.Controles
         private Stack<Cambios> redoStack;
 
 
+
         public UcPlanilla(Presupuesto objeto, UcDosaje dosaje)
         {
             InitializeComponent();
@@ -51,13 +52,28 @@ namespace DOP.Presupuestos.Controles
 
         private void RowDragDropController_DragStart(object? sender, TreeGridRowDragStartEventArgs e)
         {
-            
         }
+
 
         private void RowDragDropController_Drop(object? sender, TreeGridRowDropEventArgs e)
         {
             e.Handled = true;
+
+            if (e.DraggingNodes != null && e.DraggingNodes.Count > 0)
+            {
+                var draggedItem = e.DraggingNodes[0].Item;
+                Type tipo = draggedItem.GetType();
+                MessageBox.Show($"Tipo de objeto recibido: {tipo.FullName}");
+            }
+            else
+            {
+                MessageBox.Show("No se recibió ningún objeto en el drop.");
+            }
         }
+
+
+
+
 
         private void OnQueryCoveredRange(object? sender, TreeGridQueryCoveredRangeEventArgs e)
         {
