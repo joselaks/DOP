@@ -1,4 +1,5 @@
 ﻿using Bibioteca.Clases;
+using DOP.Presupuestos.Clases;
 using Syncfusion.UI.Xaml.Grid;
 using Syncfusion.UI.Xaml.TreeGrid;
 using Syncfusion.Windows.Tools.Controls;
@@ -50,28 +51,37 @@ namespace DOP.Presupuestos.Controles
 
         }
 
-        private void RowDragDropController_DragStart(object? sender, TreeGridRowDragStartEventArgs e)
-        {
-        }
+        private UserControl GetParentUserControl(DependencyObject child)
+            {
+            DependencyObject parent = VisualTreeHelper.GetParent(child);
+            while (parent != null && !(parent is UserControl))
+                {
+                parent = VisualTreeHelper.GetParent(parent);
+                }
+            return parent as UserControl;
+            }
 
+        private void RowDragDropController_DragStart(object? sender, TreeGridRowDragStartEventArgs e)
+            {
+            DragDropContext.DragSourceUserControl = GetParentUserControl(this.grillaArbol);
+            }
 
         private void RowDragDropController_Drop(object? sender, TreeGridRowDropEventArgs e)
-        {
+            {
             e.Handled = true;
 
-            if (e.DraggingNodes != null && e.DraggingNodes.Count > 0)
-            {
-                var draggedItem = e.DraggingNodes[0].Item;
-                Type tipo = draggedItem.GetType();
-                MessageBox.Show($"Tipo de objeto recibido: {tipo.FullName}");
-            }
-            else
-            {
-                MessageBox.Show("No se recibió ningún objeto en el drop.");
-            }
-        }
+            if (DragDropContext.DragSourceUserControl is UcPlanilla)
+                {
+                MessageBox.Show("El drag proviene de UcPlanilla");
+                }
+            else if (DragDropContext.DragSourceUserControl is UcTareas)
+                {
+                MessageBox.Show("El drag proviene de UcTareas");
+                }
+            // ...otros casos
 
-
+            DragDropContext.DragSourceUserControl = null;
+            }
 
 
 

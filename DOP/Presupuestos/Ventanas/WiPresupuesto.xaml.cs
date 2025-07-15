@@ -54,7 +54,7 @@ namespace DOP.Presupuestos.Ventanas
             this.gListado.Children.Add(Listado);
             this.gDetalle.Children.Add(Dosaje);
             Tareas = new UcTareas();
-            this.dockMaestro.Content = Tareas;
+            this.docTareas.Content = Tareas;
             this.Closing += WiPresupuesto_Closing; // Suscribir el evento
             _presupuestosRef = presupuestosRef;
             }

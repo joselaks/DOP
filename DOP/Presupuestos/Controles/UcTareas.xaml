@@ -18,13 +18,15 @@
             <Button
                 Width="25"
                 Height="25"
-                Margin="5,0,5,0" Click="Obtener_Click">
+                Margin="5,0,5,0"
+                Click="Obtener_Click">
                 O
             </Button>
             <Button
                 Width="25"
                 Height="25"
-                Margin="5,0,5,0" Click="Guardar_Click">
+                Margin="5,0,5,0"
+                Click="Guardar_Click">
                 G
             </Button>
         </StackPanel>
@@ -34,14 +36,19 @@
             Grid.Row="1"
             AllowDraggingRows="True"
             AllowDrop="True"
-            AutoGenerateColumns="True"
-            >
+            AllowResizingColumns="True"
+            AutoGenerateColumns="False">
             <syncfusion:SfTreeGrid.Columns>
                 <syncfusion:TreeGridColumns>
+                    <syncfusion:TreeGridTextColumn Width="250" MappingName="Descripcion" />
                     <syncfusion:TreeGridTextColumn
-                        Width="50"
-                        HeaderText="ID"
-                        MappingName="ID" />
+                        Width="60"
+                        MappingName="Unidad"
+                        TextAlignment="Right" />
+                    <syncfusion:TreeGridNumericColumn
+                        Width="80"
+                        HeaderText="P.U."
+                        MappingName="PU1" />
                 </syncfusion:TreeGridColumns>
             </syncfusion:SfTreeGrid.Columns>
         </syncfusion:SfTreeGrid>

@@ -9,7 +9,7 @@
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
     Title="DataObra"
     Width="1800"
-    Height="900"
+    Height="1000"
     sfSkinManager:SfSkinManager.VisualStyle="Office2016White"
     WindowStartupLocation="CenterScreen"
     WindowState="Normal"
@@ -206,10 +206,25 @@
 
             </Grid>
 
+            <ContentControl
+                x:Name="docRubros"
+                syncfusion:DockingManager.Header="Rubros"
+                syncfusion:DockingManager.SideInDockedMode="Right"
+                syncfusion:DockingManager.State="AutoHidden"
+                Background="White" />
+
 
             <ContentControl
-                x:Name="dockMaestro"
+                x:Name="docTareas"
+                Width="400" 
                 syncfusion:DockingManager.Header="Tareas"
+                syncfusion:DockingManager.SideInDockedMode="Right"
+                syncfusion:DockingManager.State="AutoHidden"
+                Background="White" />
+
+            <ContentControl
+                x:Name="dockAuxiliares"
+                syncfusion:DockingManager.Header="Auxiliares"
                 syncfusion:DockingManager.SideInDockedMode="Right"
                 syncfusion:DockingManager.State="AutoHidden"
                 Background="White" />

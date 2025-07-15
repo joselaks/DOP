@@ -1,6 +1,8 @@
 ﻿using Bibioteca.Clases;
 using Biblioteca;
 using Biblioteca.DTO;
+using DOP.Presupuestos.Clases;
+using Syncfusion.UI.Xaml.TreeGrid;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,17 +31,44 @@ namespace DOP.Presupuestos.Controles
         public UcTareas()
             {
             InitializeComponent();
-
             this.grillaTareas.RowDragDropController.Drop += RowDragDropController_Drop;
             this.grillaTareas.RowDragDropController.DragStart += RowDragDropController_DragStart;
-            this.grillaTareas.ChildPropertyName = "Inferiores";
+            this.grillaTareas.Loaded += GrillaTareas_Loaded;
+
             }
 
+        private void GrillaTareas_Loaded(object sender, RoutedEventArgs e)
+            {
+            if (this.grillaTareas.View != null)
+                {
+                this.grillaTareas.View.Filter = FiltrarPorTipo;
+                this.grillaTareas.View.Refresh();
+                }
+            }
+        // Método para filtrar los nodos que se mostrarán en el TreeGrid.
+        private bool FiltrarPorTipo(object item)
+            {
+            if (item is Nodo nodo)
+                {
+                return nodo.Tipo == "T";
+                }
+            return false;
+            }
+
+        private UserControl GetParentUserControl(DependencyObject child)
+            {
+            DependencyObject parent = VisualTreeHelper.GetParent(child);
+            while (parent != null && !(parent is UserControl))
+                {
+                parent = VisualTreeHelper.GetParent(parent);
+                }
+            return parent as UserControl;
+            }
 
         private void RowDragDropController_DragStart(object? sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridRowDragStartEventArgs e)
             {
-           
-        }
+            DragDropContext.DragSourceUserControl = GetParentUserControl(this.grillaTareas);
+            }
 
 
         private void RowDragDropController_Drop(object? sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridRowDropEventArgs e)

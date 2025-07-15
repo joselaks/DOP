@@ -59,7 +59,6 @@ namespace DOP.Interfaz.Ventanas
             this.esperaLogin.IsBusy = true;
 
             int maxRetries = 3;
-            int delay = 2000; // 2 segundos
 
             for (int i = 0; i < maxRetries; i++)
                 {
@@ -115,7 +114,6 @@ namespace DOP.Interfaz.Ventanas
                         }
                     }
 
-                await Task.Delay(delay);
                 }
             }
 

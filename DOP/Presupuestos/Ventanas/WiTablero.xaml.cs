@@ -54,8 +54,8 @@ namespace DOP.Presupuestos.Ventanas
 
                 WindowStartupLocation = WindowStartupLocation.CenterScreen;
                 WindowState = WindowState.Normal;
-                Width = 1800;
-                Height = 1000;
+                Width = 1900;
+                Height = 1030;
                 }
             Loaded += WiTablero_Loaded;
 
