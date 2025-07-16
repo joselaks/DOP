@@ -38,8 +38,8 @@
             AllowDrop="True"
             AllowResizingColumns="True"
             AutoGenerateColumns="False">
-            <syncfusion:SfTreeGrid.Columns>
-                <syncfusion:TreeGridColumns>
+            <syncfusion:SfTreeGrid.Columns >
+                <syncfusion:TreeGridColumns >
                     <syncfusion:TreeGridTextColumn Width="250" MappingName="Descripcion" />
                     <syncfusion:TreeGridTextColumn
                         Width="60"
