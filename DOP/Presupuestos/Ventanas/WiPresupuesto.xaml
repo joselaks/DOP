@@ -111,21 +111,29 @@
                         SizeForm="Small"
                         SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
                 </syncfusion:RibbonBar>
+                <syncfusion:RibbonBar Header="Maestro">
+                    <syncfusion:RibbonButton
+        x:Name="gMaestro"
+        Click="gMaestro_Click"
+        Label="Panel1"
+        SizeForm="Small"
+        SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
+                   
+                        <syncfusion:RibbonButton
+x:Name="gListado"
+Click="gListado_Click"
+Label="Panel2"
+SizeForm="Small"
+SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
+                    </syncfusion:RibbonBar>
 
 
             </syncfusion:RibbonTab>
             <syncfusion:RibbonTab Caption="REPORTES" IsChecked="False" />
         </syncfusion:Ribbon>
 
-        <syncfusion:DockingManager
-            x:Name="docPres"
-            Grid.Row="1"
-            Grid.RowSpan="2"
-            DockFill="True"
-            SidePanelSize="50"
-            UseDocumentContainer="False"
-            UseNativeFloatWindow="True">
-            <Grid x:Name="basePres" syncfusion:DockingManager.NoHeader="True">
+       
+            <Grid x:Name="basePres" syncfusion:DockingManager.NoHeader="True" Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="10*" />
                     <RowDefinition Height="auto" />
@@ -182,7 +190,7 @@
                             <ComboBoxItem>Otros</ComboBoxItem>
                         </ComboBox>
                     </StackPanel>
-                    <Grid x:Name="gListado" Grid.Row="1" />
+                    <Grid x:Name="gLateral" Grid.Row="1" />
                 </Grid>
 
                 <syncfusion:SfGridSplitter
@@ -206,37 +214,8 @@
 
             </Grid>
 
-            <ContentControl
-                x:Name="docRubros"
-                syncfusion:DockingManager.Header="Rubros"
-                syncfusion:DockingManager.SideInDockedMode="Right"
-                syncfusion:DockingManager.State="AutoHidden"
-                Background="White" />
-
-
-            <ContentControl
-                x:Name="docTareas"
-                Width="400" 
-                syncfusion:DockingManager.Header="Tareas"
-                syncfusion:DockingManager.SideInDockedMode="Right"
-                syncfusion:DockingManager.State="AutoHidden"
-                Background="White" />
-
-            <ContentControl
-                x:Name="dockAuxiliares"
-                syncfusion:DockingManager.Header="Auxiliares"
-                syncfusion:DockingManager.SideInDockedMode="Right"
-                syncfusion:DockingManager.State="AutoHidden"
-                Background="White" />
-
-            <ContentControl
-                x:Name="dockInsumos"
-                syncfusion:DockingManager.Header="Insumos"
-                syncfusion:DockingManager.SideInDockedMode="Right"
-                syncfusion:DockingManager.State="AutoHidden"
-                Background="White" />
-
-        </syncfusion:DockingManager>
+           
+               
 
     </Grid>
 </syncfusion:RibbonWindow>

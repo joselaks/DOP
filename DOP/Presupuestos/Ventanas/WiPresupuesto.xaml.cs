@@ -50,11 +50,10 @@ namespace DOP.Presupuestos.Ventanas
             Dosaje = new UcDosaje(Objeto);
             Planilla = new UcPlanilla(Objeto, Dosaje);
             Listado = new UcListado(Objeto);
-            this.gPlanilla.Children.Add(Planilla);
-            this.gListado.Children.Add(Listado);
             this.gDetalle.Children.Add(Dosaje);
             Tareas = new UcTareas();
-            this.docTareas.Content = Tareas;
+            this.gPlanilla.Children.Add(Planilla);
+            //this.docTareas.Content = Tareas;
             this.Closing += WiPresupuesto_Closing; // Suscribir el evento
             _presupuestosRef = presupuestosRef;
             }
@@ -298,5 +297,20 @@ namespace DOP.Presupuestos.Ventanas
                 }
             }
 
+        private void gMaestro_Click(object sender, RoutedEventArgs e)
+        {
+            //this.gPlanilla.Children.Add(Planilla);
+            gLateral.Children.Clear();
+            gLateral.Children.Add(Tareas);
+
         }
+
+        private void gListado_Click(object sender, RoutedEventArgs e)
+        {
+            gLateral.Children.Clear();
+            gLateral.Children.Add(Listado);
+            //this.gListado.Children.Add(Listado);
+
+        }
+    }
 }
