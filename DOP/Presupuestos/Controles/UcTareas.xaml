@@ -9,6 +9,7 @@
     d:DesignHeight="450"
     d:Width="500"
     mc:Ignorable="d">
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
@@ -32,12 +33,18 @@
         </StackPanel>
 
         <syncfusion:SfTreeGrid
+            Background="LightGray"
             x:Name="grillaTareas"
             Grid.Row="1"
             AllowDraggingRows="True"
             AllowDrop="True"
             AllowResizingColumns="True"
             AutoGenerateColumns="False">
+            <syncfusion:SfTreeGrid.Resources>
+                <Style TargetType="syncfusion:SfTreeGrid">
+                    <Setter Property="Background" Value="LightGray"/>
+                </Style>
+            </syncfusion:SfTreeGrid.Resources>
             <syncfusion:SfTreeGrid.Columns >
                 <syncfusion:TreeGridColumns >
                     <syncfusion:TreeGridTextColumn Width="250" MappingName="Descripcion" />
