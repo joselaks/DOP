@@ -164,33 +164,9 @@ SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
                 <Grid x:Name="gDetalle" Grid.Row="2" />
 
                 <Grid
-                    x:Name="listado"
+                    x:Name="gLateral"
                     Grid.RowSpan="3"
                     Grid.Column="2">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="30" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <StackPanel x:Name="tListados" Orientation="Horizontal">
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            FontSize="20"
-                            FontWeight="Bold"
-                            Text="Listado" />
-                        <ComboBox
-                            Width="150"
-                            Margin="10,0,0,0"
-                            VerticalAlignment="Center"
-                            SelectedIndex="0">
-                            <ComboBoxItem>Todos</ComboBoxItem>
-                            <ComboBoxItem>Materiales</ComboBoxItem>
-                            <ComboBoxItem>Mano de obra</ComboBoxItem>
-                            <ComboBoxItem>Equipos</ComboBoxItem>
-                            <ComboBoxItem>Subcontratos</ComboBoxItem>
-                            <ComboBoxItem>Otros</ComboBoxItem>
-                        </ComboBox>
-                    </StackPanel>
-                    <Grid x:Name="gLateral" Grid.Row="1" />
                 </Grid>
 
                 <syncfusion:SfGridSplitter

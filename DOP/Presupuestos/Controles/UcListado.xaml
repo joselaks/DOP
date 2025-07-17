@@ -83,74 +83,105 @@
 
     </UserControl.Resources>
 
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel x:Name="encabezado" Orientation="Horizontal" Grid.Row="0">
+            <TextBlock
+     VerticalAlignment="Center"
+     FontSize="20"
+     FontWeight="Bold"
+     Text="Listado" />
+            <ComboBox Width="220" x:Name="selectorTipo" Margin="20,0,0,0" VerticalAlignment="Center" SelectedIndex="0">
+                <ComboBoxItem Content="Materiales"/>
+                <ComboBoxItem Content="Mano de Obra"/>
+                <ComboBoxItem Content="Equipos"/>
+                <ComboBoxItem Content="Subcontratos"/>
+                <ComboBoxItem Content="Otros"/>
+                <ComboBoxItem Content="Auxiliares"/>
+                <Separator/>
+                <ComboBoxItem Content="Rubros"/>
+                <ComboBoxItem Content="Tareas"/>
 
-
-    <syncfusion:SfTreeGrid
-        x:Name="grillaListados"
-        AllowDraggingRows="True"
-        AllowDrop="True"
-        AllowEditing="True"
-        AllowResizingColumns="True"
-        AutoGenerateColumns="False"
-        CurrentCellBeginEdit="grillaListados_CurrentCellBeginEdit"
-        CurrentCellEndEdit="grillaListados_CurrentCellEndEdit"
-        ExpanderColumn="Descripcion"
-        KeyDown="grillaListados_KeyDown"
-        SelectionChanged="grillaListados_SelectionChanged"
-        SelectionMode="Single">
-
-
-        <syncfusion:SfTreeGrid.Columns>
-
-
-            <syncfusion:TreeGridTextColumn Width="50" MappingName="ID" />
-
-
-            <syncfusion:TreeGridTemplateColumn
-                Width="30"
-                CellTemplateSelector="{StaticResource IconTemplateSelector}"
-                HeaderText="Nat"
-                MappingName="Tipo" />
-
-
-            <syncfusion:TreeGridTextColumn Width="50" MappingName="Tipo" />
-
-
-            <syncfusion:TreeGridTextColumn Width="250" MappingName="Descripcion" />
-
-
-            <syncfusion:TreeGridNumericColumn
-                Width="60"
-                HeaderText="Cant."
-                MappingName="Cantidad"
-                NumberDecimalDigits="2"
-                NumberDecimalSeparator=","
-                NumberGroupSeparator="."
-                NumberGroupSizes="3" />
-
-            <syncfusion:TreeGridNumericColumn
-                Width="80"
-                HeaderText="P.U."
-                MappingName="PU1"
-                NumberDecimalDigits="2"
-                NumberDecimalSeparator=","
-                NumberGroupSeparator="."
-                NumberGroupSizes="3" />
-
-
-            <syncfusion:TreeGridNumericColumn
-                x:Name="colImporte1"
-                Width="120"
-                HeaderText="{Binding totGeneral1}"
-                MappingName="Importe1"
-                NumberDecimalDigits="2"
-                NumberDecimalSeparator=","
-                NumberGroupSeparator="."
-                NumberGroupSizes="3" />
+            </ComboBox>
 
 
 
-        </syncfusion:SfTreeGrid.Columns>
+        </StackPanel>       
 
-    </syncfusion:SfTreeGrid>
+            <syncfusion:SfTreeGrid Grid.Row="1"
+     x:Name="grillaListados"
+     AllowDraggingRows="True"
+     AllowDrop="True"
+     AllowEditing="True"
+     AllowResizingColumns="True"
+     AutoGenerateColumns="False"
+     CurrentCellBeginEdit="grillaListados_CurrentCellBeginEdit"
+     CurrentCellEndEdit="grillaListados_CurrentCellEndEdit"
+     ExpanderColumn="Descripcion"
+     KeyDown="grillaListados_KeyDown"
+     SelectionChanged="grillaListados_SelectionChanged"
+     SelectionMode="Single" Grid.RowSpan="2">
+
+
+            <syncfusion:SfTreeGrid.Columns>
+
+
+                <syncfusion:TreeGridTextColumn Width="50" MappingName="ID" />
+
+
+                <syncfusion:TreeGridTemplateColumn
+             Width="30"
+             CellTemplateSelector="{StaticResource IconTemplateSelector}"
+             HeaderText="Nat"
+             MappingName="Tipo" />
+
+
+                <syncfusion:TreeGridTextColumn Width="50" MappingName="Tipo" />
+
+
+                <syncfusion:TreeGridTextColumn Width="250" MappingName="Descripcion" />
+
+
+                <syncfusion:TreeGridNumericColumn
+             Width="60"
+             HeaderText="Cant."
+             MappingName="Cantidad"
+             NumberDecimalDigits="2"
+             NumberDecimalSeparator=","
+             NumberGroupSeparator="."
+             NumberGroupSizes="3" />
+
+                <syncfusion:TreeGridNumericColumn
+             Width="80"
+             HeaderText="P.U."
+             MappingName="PU1"
+             NumberDecimalDigits="2"
+             NumberDecimalSeparator=","
+             NumberGroupSeparator="."
+             NumberGroupSizes="3" />
+
+
+                <syncfusion:TreeGridNumericColumn
+             x:Name="colImporte1"
+             Width="120"
+             HeaderText="{Binding totGeneral1}"
+             MappingName="Importe1"
+             NumberDecimalDigits="2"
+             NumberDecimalSeparator=","
+             NumberGroupSeparator="."
+             NumberGroupSizes="3" />
+
+
+
+            </syncfusion:SfTreeGrid.Columns>
+
+        </syncfusion:SfTreeGrid>
+
+
+    </Grid>
+
+
 </UserControl>
