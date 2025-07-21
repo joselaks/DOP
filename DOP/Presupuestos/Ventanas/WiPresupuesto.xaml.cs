@@ -56,7 +56,27 @@ namespace DOP.Presupuestos.Ventanas
             //this.docTareas.Content = Tareas;
             this.Closing += WiPresupuesto_Closing; // Suscribir el evento
             _presupuestosRef = presupuestosRef;
+            var screenWidth = SystemParameters.PrimaryScreenWidth;
+            var screenHeight = SystemParameters.PrimaryScreenHeight;
+            //if (screenWidth > 1920 && screenHeight > 1080)
+
+
+                if (screenWidth >= 1920 && screenHeight >= 1080)
+            {
+                // Resolución mayor: tamaño fijo y centrado
+                this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                this.WindowState = WindowState.Normal;
+                this.Width = 1800;
+                this.Height = 900;
             }
+            else
+            {
+                // Resolución igual o menor: maximizar
+                this.WindowState = WindowState.Maximized;
+            }
+
+
+        }
 
         private void WiPresupuesto_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
             {
