@@ -180,6 +180,10 @@ namespace DOP.Presupuestos.Ventanas
         public void recalculo()
         {
             Objeto.recalculo(Objeto.Arbol, true, 0, true);
+            Objeto.Rubros.Clear();
+            Objeto.Tareas.Clear();
+            Objeto.Auxiliares.Clear();
+            Objeto.listaRubrosTareasAuxiliares(Objeto.Arbol);
 
             Objeto.sinCero();
 
@@ -243,6 +247,7 @@ namespace DOP.Presupuestos.Ventanas
         private void Recalculo_Click(object sender, RoutedEventArgs e)
             {
              recalculo();
+
             }
 
         private void Recnumerar_Click(object sender, RoutedEventArgs e)

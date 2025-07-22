@@ -94,7 +94,7 @@
      FontSize="20"
      FontWeight="Bold"
      Text="Listado" />
-            <ComboBox Width="220" x:Name="selectorTipo" Margin="20,0,0,0" VerticalAlignment="Center" SelectedIndex="0">
+            <ComboBox Width="220" x:Name="comboTipoListado" Margin="20,0,0,0" VerticalAlignment="Center" SelectedIndex="0" SelectionChanged="comboTipoListado_SelectionChanged">
                 <ComboBoxItem Content="Materiales"/>
                 <ComboBoxItem Content="Mano de Obra"/>
                 <ComboBoxItem Content="Equipos"/>
