@@ -28,11 +28,14 @@
                 FontWeight="Bold"
                 Text="Maestro" />
             <syncfusion:ComboBoxAdv
-                DefaultText="Seleccione tipo de concepto"
+                x:Name="SelectorTipo"
                 Width="200"
                 Height="30"
                 HorizontalAlignment="Center"
-                VerticalAlignment="Center">
+                VerticalAlignment="Center"
+                DefaultText="Seleccione tipo de concepto"
+                
+                SelectionChanged="SelectorTipo_SelectionChanged">
 
                 <syncfusion:ComboBoxItemAdv Content="Rubros" />
                 <syncfusion:ComboBoxItemAdv Content="Tareas" />
@@ -59,8 +62,19 @@
                 </Style>
             </syncfusion:SfTreeGrid.Resources>
             <syncfusion:SfTreeGrid.Columns>
+
                 <syncfusion:TreeGridColumns>
-                    <syncfusion:TreeGridTextColumn Width="250" MappingName="Descripcion" ColumnSizer="AutoFillColumn"/>
+
+                    <syncfusion:TreeGridTextColumn
+                        Width="60"
+                        MappingName="Tipo"
+                        TextAlignment="Right" />
+
+
+                    <syncfusion:TreeGridTextColumn
+                        Width="250"
+                        ColumnSizer="AutoFillColumn"
+                        MappingName="Descripcion" />
                     <syncfusion:TreeGridTextColumn
                         Width="60"
                         MappingName="Unidad"

@@ -28,6 +28,7 @@ namespace DOP.Presupuestos.Controles
         {
 
         public Maestro Objeto;
+        private string tipoSeleccionado = null;
 
 
         public UcMaestro()
@@ -36,6 +37,8 @@ namespace DOP.Presupuestos.Controles
             this.grillaMaestro.RowDragDropController.Drop += RowDragDropController_Drop;
             this.grillaMaestro.RowDragDropController.DragStart += RowDragDropController_DragStart;
             this.grillaMaestro.Loaded += GrillaMaestro_Loaded;
+            this.grillaMaestro.ChildPropertyName = "Inferiores";
+
 
             }
 
@@ -55,14 +58,37 @@ namespace DOP.Presupuestos.Controles
 
             }
 
+        private void SelectorTipo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+            {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                tipoSeleccionado = SelectorTipo.Text;
+                grillaMaestro.View.Refresh();
+            }), System.Windows.Threading.DispatcherPriority.Background);
+            }
 
 
-        // Método para filtrar los nodos que se mostrarán en el TreeGrid.
+
         private bool FiltrarPorTipo(object item)
             {
             if (item is Nodo nodo)
                 {
-                return nodo.Tipo == "M";
+                if (string.IsNullOrEmpty(tipoSeleccionado) || tipoSeleccionado == "Todos")
+                    return true;
+
+                // Mapeo de los textos del ComboBox a los valores de Tipo
+                switch (tipoSeleccionado)
+                    {
+                    case "Rubros": return nodo.Tipo == "R";
+                    case "Tareas": return nodo.Tipo == "T";
+                    case "Materiales": return nodo.Tipo == "M";
+                    case "Mano de obra": return nodo.Tipo == "D";
+                    case "Equipos": return nodo.Tipo == "E";
+                    case "Subcontratos": return nodo.Tipo == "S";
+                    case "Otros": return nodo.Tipo == "O";
+                    case "Auxiliares": return nodo.Tipo == "A";
+                    default: return true;
+                    }
                 }
             return false;
             }
@@ -98,8 +124,18 @@ namespace DOP.Presupuestos.Controles
                     bool yaExiste = Objeto.Arbol.Any(n => n.ID == nodoMovido.ID);
                     if (!yaExiste)
                         {
-                        Objeto.Arbol.Add(Objeto.clonar(nodoMovido));
+                        if (nodoMovido.Tipo == "T" || nodoMovido.Tipo == "A")
+                            {
+                            Objeto.Arbol.Add(Objeto.clonar(nodoMovido, true));
+
+                            }
+                        else
+                            {
+                            Objeto.Arbol.Add(Objeto.clonar(nodoMovido, false));
+
+                            }
                         }
+                   
                     }
                 }
             }

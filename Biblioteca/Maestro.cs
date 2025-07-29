@@ -324,7 +324,7 @@ namespace Biblioteca
             return request;
             }
 
-        public Nodo clonar(Nodo origen)
+        public Nodo clonar(Nodo origen, bool profundidad)
             {
             Nodo respuesta = new Nodo();
             respuesta.ID = origen.ID;
@@ -333,7 +333,11 @@ namespace Biblioteca
             respuesta.Cantidad = origen.Cantidad;
             respuesta.PU1 = origen.PU1;
             respuesta.Tipo = origen.Tipo;
-            respuesta.Inferiores = GetClonesInferiores(origen);
+            if (profundidad)
+                {
+                respuesta.Inferiores = GetClonesInferiores(origen);
+
+                }
             return respuesta;
 
             }

@@ -85,7 +85,7 @@ namespace DOP.Presupuestos.Controles
                     bool yaExiste = Objeto.Arbol.Any(n => n.ID == nodoMovido.ID);
                     if (!yaExiste)
                         {
-                        Objeto.Arbol.Add(Objeto.clonar(nodoMovido));
+                        Objeto.Arbol.Add(Objeto.clonar(nodoMovido,false));
                         }
                     }
                 }

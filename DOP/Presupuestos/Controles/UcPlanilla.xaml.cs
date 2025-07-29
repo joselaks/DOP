@@ -22,12 +22,12 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace DOP.Presupuestos.Controles
-{
+    {
     /// <summary>
     /// Lógica de interacción para UcPlanilla.xaml
     /// </summary>
     public partial class UcPlanilla : UserControl
-    {
+        {
         public Presupuesto Objeto;
         public UcDosaje Dosaje;
         Nodo anterior = new Nodo();
@@ -38,7 +38,7 @@ namespace DOP.Presupuestos.Controles
 
 
         public UcPlanilla(Presupuesto objeto, UcDosaje dosaje)
-        {
+            {
             InitializeComponent();
             Dosaje = dosaje;
             Objeto = objeto;
@@ -49,7 +49,7 @@ namespace DOP.Presupuestos.Controles
             this.grillaArbol.RowDragDropController.DragStart += RowDragDropController_DragStart;
             this.grillaArbol.QueryCoveredRange += OnQueryCoveredRange;
 
-        }
+            }
 
         private UserControl GetParentUserControl(DependencyObject child)
             {
@@ -69,12 +69,71 @@ namespace DOP.Presupuestos.Controles
         private void RowDragDropController_Drop(object? sender, TreeGridRowDropEventArgs e)
             {
             e.Handled = true;
+            Nodo nodoMovido = null;
+            Nodo nodoReceptor = null;
+            Nodo nodoPadreOriginal = null;
+            Nodo nodoPadreReceptor = null;
+            int itemIndex = -1;
+            int targetIndex = -1;
 
             if (DragDropContext.DragSourceUserControl is UcPlanilla)
                 {
-                MessageBox.Show("El drag proviene de UcPlanilla");
+                if (e.DraggingNodes != null && e.DraggingNodes.Count > 0)
+                    {
+                    nodoMovido = e.DraggingNodes[0].Item as Nodo;
+                    nodoPadreOriginal = Objeto.FindParentNode(Objeto.Arbol, nodoMovido, null);
+                    if (nodoPadreOriginal != null)
+                        itemIndex = nodoPadreOriginal.Inferiores.IndexOf(nodoMovido);
+                    else
+                        itemIndex = Objeto.Arbol.IndexOf(nodoMovido);
+                    }
+
+                if (e.TargetNode != null)
+                    {
+                    nodoReceptor = e.TargetNode.Item as Nodo;
+                    nodoPadreReceptor = Objeto.FindParentNode(Objeto.Arbol, nodoReceptor, null);
+                    if (nodoPadreReceptor != null)
+                        targetIndex = nodoPadreReceptor.Inferiores.IndexOf(nodoReceptor);
+                    else
+                        targetIndex = Objeto.Arbol.IndexOf(nodoReceptor);
+                    }
+                else
+                    {
+                    // Si no hay nodo receptor, se mueve al final de la raíz
+                    nodoPadreReceptor = null;
+                    targetIndex = Objeto.Arbol.Count;
+                    }
+
+                // Si ambos padres son iguales, mover en el mismo nivel
+                if (nodoPadreOriginal == nodoPadreReceptor)
+                    {
+                    var collection = nodoPadreOriginal != null ? nodoPadreOriginal.Inferiores : Objeto.Arbol;
+                    // Remover y reinsertar en la nueva posición
+                    if (itemIndex >= 0)
+                        {
+                        collection.RemoveAt(itemIndex);
+                        // Ajustar el índice si es necesario
+                        if (itemIndex < targetIndex) targetIndex--;
+                        collection.Insert(targetIndex, nodoMovido);
+                        }
+                    }
+                else
+                    {
+                    // Mover a otro nivel (diferente padre)
+                    // Quitar de la colección original
+                    if (nodoPadreOriginal != null)
+                        nodoPadreOriginal.Inferiores.Remove(nodoMovido);
+                    else
+                        Objeto.Arbol.Remove(nodoMovido);
+
+                    // Agregar como hijo del receptor
+                    if (nodoReceptor != null)
+                        nodoReceptor.Inferiores.Add(nodoMovido);
+                    else
+                        Objeto.Arbol.Add(nodoMovido);
+                    }
                 }
-            else if (DragDropContext.DragSourceUserControl is UcTareas)
+            else if (DragDropContext.DragSourceUserControl is UcMaestro)
                 {
                 MessageBox.Show("El drag proviene de UcTareas");
                 }
@@ -86,71 +145,71 @@ namespace DOP.Presupuestos.Controles
 
 
         private void OnQueryCoveredRange(object? sender, TreeGridQueryCoveredRangeEventArgs e)
-        {
+            {
             var record = e.Record as Nodo;
             if (record != null && record.Tipo == "R")
-            {
+                {
                 //Customize here based on your requirement
                 e.Range = new TreeGridCoveredCellInfo(2, 5, e.RowColumnIndex.RowIndex);
                 e.Handled = true;
+                }
             }
-        }
 
-        
+
         // Le hemos agregado un evento Loaded al TreeGrid para aplicar el filtro una vez que la vista se haya cargado.
         private void GrillaArbol_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (this.grillaArbol.View != null)
             {
+            if (this.grillaArbol.View != null)
+                {
                 this.grillaArbol.View.Filter = FiltrarPorTipo;
                 this.grillaArbol.View.Refresh();
+                }
             }
-        }
         // Método para filtrar los nodos que se mostrarán en el TreeGrid.
         private bool FiltrarPorTipo(object item)
-        {
-            if (item is Nodo nodo)
             {
+            if (item is Nodo nodo)
+                {
                 return nodo.Tipo == "R" || nodo.Tipo == "T";
-            }
+                }
             return false;
-        }
+            }
         //Cada vez que se edita la grilla, se clona el objeto original antes de editarlo.
         private void grillaArbol_CurrentCellBeginEdit(object sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridCurrentCellBeginEditEventArgs e)
-        {
+            {
             var column = grillaArbol.Columns[e.RowColumnIndex.ColumnIndex].MappingName;
             var record = grillaArbol.GetNodeAtRowIndex(e.RowColumnIndex.RowIndex).Item as Nodo;
             // Clonar el objeto record y asignarlo a anterior
             anterior = Objeto.clonar(record);
 
             if (column == "ID")
-            {
+                {
                 _originalValue = record.ID;
+                }
+
             }
 
-        }
-
         private void grillaArbol_CurrentCellEndEdit(object sender, Syncfusion.UI.Xaml.Grid.CurrentCellEndEditEventArgs e)
-        {
+            {
             var column = grillaArbol.Columns[e.RowColumnIndex.ColumnIndex].MappingName;
             var editado = grillaArbol.GetNodeAtRowIndex(e.RowColumnIndex.RowIndex).Item as Nodo;
             edicion(editado, column);
             var undoRegistro = new Cambios
-            {
+                {
                 TipoCambio = "Tipeo",
                 antesCambio = anterior,
                 despuesCambio = Objeto.clonar(editado),
                 PropiedadCambiada = column,
                 OldValue = _originalValue,
                 NewValue = editado.GetType().GetProperty(column).GetValue(editado)
-            };
+                };
 
-        }
+            }
 
         private void edicion(Nodo? editado, string column)
-        {
-            switch (column)
             {
+            switch (column)
+                {
                 case "ID":
                     Objeto.cambiaCodigo(Objeto.Arbol, editado.ID, _originalValue.ToString());
                     break;
@@ -164,12 +223,12 @@ namespace DOP.Presupuestos.Controles
                 default:
                     Objeto.mismoCodigo(Objeto.Arbol, editado);
                     break;
-            }
+                }
             recalculo();
-        }
+            }
 
         public void recalculo()
-        {
+            {
             Objeto.recalculo(Objeto.Arbol, true, 0, true);
 
             Objeto.sinCero();
@@ -192,61 +251,61 @@ namespace DOP.Presupuestos.Controles
             //listaInsumos.grillaInsumos.CalculateAggregates();
             //this.GrillaArbol.CalculateAggregates();
             //graficoInsumos.recalculo();
-        }
+            }
 
         private void grillaArbol_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Delete)
             {
+            if (e.Key == Key.Delete)
+                {
                 var selectedItems = grillaArbol.SelectedItems;
                 var itemsToRemove = new List<Nodo>();
                 foreach (var item in selectedItems)
-                {
-                    itemsToRemove.Add(item as Nodo);
-                }
-                foreach (var item in itemsToRemove)
-                {
-                    var result = RemoveItemRecursively(Objeto.Arbol, item);
-                   
-                }
-            }
-        }
-
-        private (bool, Nodo, int) RemoveItemRecursively(ObservableCollection<Nodo> collection, Nodo itemToRemove, Nodo parent = null)
-        {
-            int index = collection.IndexOf(itemToRemove);
-            if (index != -1)
-            {
-                collection.RemoveAt(index);
-                return (true, parent, index);
-            }
-
-            foreach (var item in collection)
-            {
-                if (item.HasItems)
-                {
-                    var result = RemoveItemRecursively(item.Inferiores, itemToRemove, item);
-                    if (result.Item1)
                     {
-                        return result;
+                    itemsToRemove.Add(item as Nodo);
+                    }
+                foreach (var item in itemsToRemove)
+                    {
+                    var result = RemoveItemRecursively(Objeto.Arbol, item);
+
                     }
                 }
             }
 
-            return (false, null, -1);
-        }
-
-        private void grillaArbol_SelectionChanged(object sender, GridSelectionChangedEventArgs e)
-        {
-            if (grillaArbol.SelectedItem is Nodo nodoSeleccionado && Dosaje != null && nodoSeleccionado.Tipo=="T")
+        private (bool, Nodo, int) RemoveItemRecursively(ObservableCollection<Nodo> collection, Nodo itemToRemove, Nodo parent = null)
             {
-                Dosaje.MostrarInferiores(nodoSeleccionado);
+            int index = collection.IndexOf(itemToRemove);
+            if (index != -1)
+                {
+                collection.RemoveAt(index);
+                return (true, parent, index);
+                }
+
+            foreach (var item in collection)
+                {
+                if (item.HasItems)
+                    {
+                    var result = RemoveItemRecursively(item.Inferiores, itemToRemove, item);
+                    if (result.Item1)
+                        {
+                        return result;
+                        }
+                    }
+                }
+
+            return (false, null, -1);
             }
 
+        private void grillaArbol_SelectionChanged(object sender, GridSelectionChangedEventArgs e)
+            {
+            if (grillaArbol.SelectedItem is Nodo nodoSeleccionado && Dosaje != null && nodoSeleccionado.Tipo == "T")
+                {
+                Dosaje.MostrarInferiores(nodoSeleccionado);
+                }
+
+            }
         }
-    }
     public class Cambios
-    {
+        {
         public string TipoCambio { get; set; }
         public Nodo antesCambio { get; set; }
         public Nodo despuesCambio { get; set; }
@@ -258,5 +317,5 @@ namespace DOP.Presupuestos.Controles
         public Nodo NodoPadreNuevo { get; set; }
         public Nodo NodoPadreAnterior { get; set; }
         public int Posicion { get; set; }
+        }
     }
-}
