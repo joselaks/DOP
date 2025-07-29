@@ -84,7 +84,7 @@ namespace Biblioteca
                 {
                 this.listaConceptosLeer = conBase;
                 this.listaRelacionesLeer = relBase;
-                generaPresupuesto();
+                generaMaestro();
                 }
 
             this.listaConceptosGrabar = new List<ConceptoMDTO>();
@@ -95,37 +95,38 @@ namespace Biblioteca
 
 
         // Procedimiento que en base a una lista de conceptos y relaciones, genera un presupuesto arbol.
-        public void generaPresupuesto()
+        public void generaMaestro(List<RelacionMDTO> relBase = null)
             {
+            Arbol.Clear();
 
-            var relaciones = listaRelacionesLeer.Where(a => a.CodSup == "0").OrderBy(b => b.OrdenInt).ToList(); //Nodos Raiz
-            // Recorro los rubros
-            foreach (var item in relaciones)
+            // Si se pasa relBase, copiar su contenido a listaRelacionesLeer
+            if (relBase != null)
                 {
-                //Obtengo el concepto del rubro
-                ConceptoMDTO rubro = listaConceptosLeer.FirstOrDefault(a => a.ConceptoID == item.CodInf); //Concepto de los rubros raiz
-                //Genero el nodo Rubro
-                Nodo registro = new Nodo();
-                registro.ID = rubro.ConceptoID;
-                registro.Descripcion = rubro.Descrip;
-                registro.Tipo = (rubro.Tipo == '0') ? "R" : rubro.Tipo.ToString();
-                registro.Unidad = rubro.Unidad;
-                registro.Cantidad = 1;
-                registro.Sup = true;
-                this.Arbol.Add(registro);
-                //Obtengo los elementos bajo el rubro
-                var bajoRubro = GetElementosHijos(registro, listaConceptosLeer, listaRelacionesLeer, 1); //Rama del rubro
-                // Si hay inferiores, los agrego al rubro.
-                if (bajoRubro != null)
-                    {
-                    registro.Inferiores = new ObservableCollection<Nodo>();
-                    foreach (var itemBajoRubro in bajoRubro)
-                        {
-                        registro.Inferiores.Add(itemBajoRubro);
-                        }
-                    }
+                listaRelacionesLeer.Clear();
+                listaRelacionesLeer.AddRange(relBase);
                 }
-            //NumeraItems(Arbol, "");
+
+            foreach (var concepto in listaConceptosLeer)
+                {
+                Nodo registro = new Nodo
+                    {
+                    ID = concepto.ConceptoID,
+                    Descripcion = concepto.Descrip,
+                    Tipo = concepto.Tipo.ToString(),
+                    Unidad = concepto.Unidad,
+                    Cantidad = 1,
+                    };
+
+                // Si el concepto es de tipo "T" o "A", generar Inferiores
+                if (concepto.Tipo == 'T' || concepto.Tipo == 'A')
+                    {
+                    var inferiores = GetElementosHijos(registro, listaConceptosLeer, listaRelacionesLeer, 1);
+                    if (inferiores != null && inferiores.Count > 0)
+                        registro.Inferiores = inferiores;
+                    }
+
+                Arbol.Add(registro);
+                }
             }
 
         private ObservableCollection<Nodo> GetElementosHijos(Nodo elemento, List<ConceptoMDTO> listaConceptos, List<RelacionMDTO> listaRelaciones, int _nivel)

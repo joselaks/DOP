@@ -49,19 +49,20 @@ namespace DOP.Presupuestos.Controles
             Objeto = new Maestro(conceptos, relaciones, usuarioID);
 
             grillaMaestro.ItemsSource = Objeto.Arbol;
-
-
-
+            this.grillaMaestro.View.Filter = FiltrarPorTipo;
+            this.grillaMaestro.View.Refresh();
 
 
             }
+
+
 
         // Método para filtrar los nodos que se mostrarán en el TreeGrid.
         private bool FiltrarPorTipo(object item)
             {
             if (item is Nodo nodo)
                 {
-                return nodo.Tipo == "T";
+                return nodo.Tipo == "M";
                 }
             return false;
             }
