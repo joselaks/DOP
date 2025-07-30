@@ -60,7 +60,7 @@ namespace DOP.Presupuestos.Controles
             var column = grillaDetalle.Columns[e.RowColumnIndex.ColumnIndex].MappingName;
             var record = grillaDetalle.GetNodeAtRowIndex(e.RowColumnIndex.RowIndex).Item as Nodo;
             // Clonar el objeto record y asignarlo a anterior
-            anterior = Objeto.clonar(record);
+            anterior = Objeto.clonar(record, true);
 
             if (column == "ID")
                 {
@@ -77,7 +77,7 @@ namespace DOP.Presupuestos.Controles
                 {
                 TipoCambio = "Tipeo",
                 antesCambio = anterior,
-                despuesCambio = Objeto.clonar(editado),
+                despuesCambio = Objeto.clonar(editado, true),
                 PropiedadCambiada = column,
                 OldValue = _originalValue,
                 NewValue = editado.GetType().GetProperty(column).GetValue(editado)

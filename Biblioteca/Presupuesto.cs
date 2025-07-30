@@ -993,7 +993,7 @@ namespace Bibioteca.Clases
             }
 
 
-        public Nodo clonar(Nodo origen)
+        public Nodo clonar(Nodo origen, bool profundidad)
             {
             Nodo respuesta = new Nodo();
             respuesta.ID = origen.ID;
@@ -1013,7 +1013,11 @@ namespace Bibioteca.Clases
                 respuesta.PU2 = origen.PU2;
                 }
             respuesta.Tipo = origen.Tipo;
-            respuesta.Inferiores = GetClonesInferiores(origen);
+            if (profundidad)
+                {
+                respuesta.Inferiores = GetClonesInferiores(origen);
+
+                }
             return respuesta;
 
             }

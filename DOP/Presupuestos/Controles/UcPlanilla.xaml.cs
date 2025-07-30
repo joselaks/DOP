@@ -71,77 +71,113 @@ namespace DOP.Presupuestos.Controles
             e.Handled = true;
             Nodo nodoMovido = null;
             Nodo nodoReceptor = null;
-            Nodo nodoPadreOriginal = null;
-            Nodo nodoPadreReceptor = null;
-            int itemIndex = -1;
-            int targetIndex = -1;
+            bool esDragDePlanilla = DragDropContext.DragSourceUserControl is UcPlanilla;
+            bool esDragDeMaestro = DragDropContext.DragSourceUserControl is UcMaestro;
 
-            if (DragDropContext.DragSourceUserControl is UcPlanilla)
+            if (e.DraggingNodes != null && e.DraggingNodes.Count > 0)
                 {
-                if (e.DraggingNodes != null && e.DraggingNodes.Count > 0)
+                if (esDragDePlanilla)
                     {
                     nodoMovido = e.DraggingNodes[0].Item as Nodo;
-                    nodoPadreOriginal = Objeto.FindParentNode(Objeto.Arbol, nodoMovido, null);
-                    if (nodoPadreOriginal != null)
-                        itemIndex = nodoPadreOriginal.Inferiores.IndexOf(nodoMovido);
-                    else
-                        itemIndex = Objeto.Arbol.IndexOf(nodoMovido);
                     }
-
-                if (e.TargetNode != null)
+                else if (esDragDeMaestro)
                     {
-                    nodoReceptor = e.TargetNode.Item as Nodo;
-                    nodoPadreReceptor = Objeto.FindParentNode(Objeto.Arbol, nodoReceptor, null);
-                    if (nodoPadreReceptor != null)
-                        targetIndex = nodoPadreReceptor.Inferiores.IndexOf(nodoReceptor);
-                    else
-                        targetIndex = Objeto.Arbol.IndexOf(nodoReceptor);
-                    }
-                else
-                    {
-                    // Si no hay nodo receptor, se mueve al final de la raíz
-                    nodoPadreReceptor = null;
-                    targetIndex = Objeto.Arbol.Count;
-                    }
-
-                // Si ambos padres son iguales, mover en el mismo nivel
-                if (nodoPadreOriginal == nodoPadreReceptor)
-                    {
-                    var collection = nodoPadreOriginal != null ? nodoPadreOriginal.Inferiores : Objeto.Arbol;
-                    // Remover y reinsertar en la nueva posición
-                    if (itemIndex >= 0)
-                        {
-                        collection.RemoveAt(itemIndex);
-                        // Ajustar el índice si es necesario
-                        if (itemIndex < targetIndex) targetIndex--;
-                        collection.Insert(targetIndex, nodoMovido);
-                        }
-                    }
-                else
-                    {
-                    // Mover a otro nivel (diferente padre)
-                    // Quitar de la colección original
-                    if (nodoPadreOriginal != null)
-                        nodoPadreOriginal.Inferiores.Remove(nodoMovido);
-                    else
-                        Objeto.Arbol.Remove(nodoMovido);
-
-                    // Agregar como hijo del receptor
-                    if (nodoReceptor != null)
-                        nodoReceptor.Inferiores.Add(nodoMovido);
-                    else
-                        Objeto.Arbol.Add(nodoMovido);
+                    var nodoOriginal = e.DraggingNodes[0].Item as Nodo;
+                    nodoMovido = Objeto.clonar(nodoOriginal, true);
                     }
                 }
-            else if (DragDropContext.DragSourceUserControl is UcMaestro)
+
+            if (e.TargetNode != null)
                 {
-                MessageBox.Show("El drag proviene de UcTareas");
+                nodoReceptor = e.TargetNode.Item as Nodo;
+                var tipoReceptor = nodoReceptor?.Tipo;
+                var tipoMovido = nodoMovido?.Tipo;
+
+                switch ((tipoReceptor, tipoMovido))
+                    {
+                    case ("T", "R"):
+                        MessageBox.Show("No se puede mover un rubro dentro de una tarea");
+                        break;
+
+                    case ("R", "R"):
+                        if (esDragDePlanilla)
+                            {
+                            var nodoPadreOriginal = Objeto.FindParentNode(Objeto.Arbol, nodoMovido, null);
+                            if (nodoPadreOriginal != null)
+                                nodoPadreOriginal.Inferiores.Remove(nodoMovido);
+                            else
+                                Objeto.Arbol.Remove(nodoMovido);
+                            }
+                        var padreDestinoRR = Objeto.FindParentNode(Objeto.Arbol, nodoReceptor, null);
+                        var coleccionDestinoRR = padreDestinoRR != null ? padreDestinoRR.Inferiores : Objeto.Arbol;
+                        int idxRR = coleccionDestinoRR.IndexOf(nodoReceptor);
+                        int insertIdxRR = e.DropPosition == Syncfusion.UI.Xaml.TreeGrid.DropPosition.DropAbove ? idxRR : idxRR + 1;
+                        coleccionDestinoRR.Insert(insertIdxRR, nodoMovido);
+                        break;
+
+                    case ("R", "T"):
+                        if (esDragDePlanilla)
+                            {
+                            var nodoPadreOriginal = Objeto.FindParentNode(Objeto.Arbol, nodoMovido, null);
+                            if (nodoPadreOriginal != null)
+                                nodoPadreOriginal.Inferiores.Remove(nodoMovido);
+                            else
+                                Objeto.Arbol.Remove(nodoMovido);
+                            }
+                        nodoReceptor.Inferiores.Add(nodoMovido);
+                        break;
+
+                    case ("T", "T"):
+                        if (esDragDePlanilla)
+                            {
+                            var nodoPadreOriginal = Objeto.FindParentNode(Objeto.Arbol, nodoMovido, null);
+                            if (nodoPadreOriginal != null)
+                                nodoPadreOriginal.Inferiores.Remove(nodoMovido);
+                            else
+                                Objeto.Arbol.Remove(nodoMovido);
+                            }
+                        var padreDestinoTT = Objeto.FindParentNode(Objeto.Arbol, nodoReceptor, null);
+                        var coleccionDestinoTT = padreDestinoTT != null ? padreDestinoTT.Inferiores : Objeto.Arbol;
+                        int idxTT = coleccionDestinoTT.IndexOf(nodoReceptor);
+                        int insertIdxTT = e.DropPosition == Syncfusion.UI.Xaml.TreeGrid.DropPosition.DropAbove ? idxTT : idxTT + 1;
+                        coleccionDestinoTT.Insert(insertIdxTT, nodoMovido);
+                        break;
+
+                    default:
+                        if (nodoMovido != null)
+                            {
+                            if (esDragDePlanilla)
+                                {
+                                var nodoPadreOriginal = Objeto.FindParentNode(Objeto.Arbol, nodoMovido, null);
+                                if (nodoPadreOriginal != null)
+                                    nodoPadreOriginal.Inferiores.Remove(nodoMovido);
+                                else
+                                    Objeto.Arbol.Remove(nodoMovido);
+                                }
+                            Objeto.Arbol.Add(nodoMovido);
+                            }
+                        break;
+                    }
                 }
-            // ...otros casos
+            else
+                {
+                // Si no hay nodo receptor, se agrega a la raíz
+                if (nodoMovido != null)
+                    {
+                    if (esDragDePlanilla)
+                        {
+                        var nodoPadreOriginal = Objeto.FindParentNode(Objeto.Arbol, nodoMovido, null);
+                        if (nodoPadreOriginal != null)
+                            nodoPadreOriginal.Inferiores.Remove(nodoMovido);
+                        else
+                            Objeto.Arbol.Remove(nodoMovido);
+                        }
+                    Objeto.Arbol.Add(nodoMovido);
+                    }
+                }
 
             DragDropContext.DragSourceUserControl = null;
             }
-
 
 
         private void OnQueryCoveredRange(object? sender, TreeGridQueryCoveredRangeEventArgs e)
@@ -180,7 +216,7 @@ namespace DOP.Presupuestos.Controles
             var column = grillaArbol.Columns[e.RowColumnIndex.ColumnIndex].MappingName;
             var record = grillaArbol.GetNodeAtRowIndex(e.RowColumnIndex.RowIndex).Item as Nodo;
             // Clonar el objeto record y asignarlo a anterior
-            anterior = Objeto.clonar(record);
+            anterior = Objeto.clonar(record, true);
 
             if (column == "ID")
                 {
@@ -198,7 +234,7 @@ namespace DOP.Presupuestos.Controles
                 {
                 TipoCambio = "Tipeo",
                 antesCambio = anterior,
-                despuesCambio = Objeto.clonar(editado),
+                despuesCambio = Objeto.clonar(editado, true),
                 PropiedadCambiada = column,
                 OldValue = _originalValue,
                 NewValue = editado.GetType().GetProperty(column).GetValue(editado)
