@@ -180,6 +180,7 @@ namespace DOP.Presupuestos.Controles
             }
 
 
+        // Esto me lo pasó Syncfusion para solucionar lo de las celdas de la grilla en caso de Rubro
         private void OnQueryCoveredRange(object? sender, TreeGridQueryCoveredRangeEventArgs e)
             {
             var record = e.Record as Nodo;
