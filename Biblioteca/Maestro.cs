@@ -114,6 +114,7 @@ namespace Biblioteca
                     Descripcion = concepto.Descrip,
                     Tipo = concepto.Tipo.ToString(),
                     Unidad = concepto.Unidad,
+                    PU1 = (decimal)concepto.PrEjec,
                     Cantidad = 1,
                     };
 
@@ -205,7 +206,7 @@ namespace Biblioteca
                     registroC.Descrip = item.Descripcion;
                     registroC.Tipo = item.Tipo[0];
                     registroC.PrEjec = item.PU1;
-                         registroC.Unidad = item.Unidad;
+                    registroC.Unidad = item.Unidad;
                     registroC.MesBase = DateTime.Now;
                     listaConceptosGrabar.Add(registroC);
                     }
@@ -285,7 +286,7 @@ namespace Biblioteca
                     {
                     var relacionBaja = new RelacionMDTO
                         {
-                        UsuarioID  = relacion.UsuarioID,
+                        UsuarioID = relacion.UsuarioID,
                         CodSup = relacion.CodSup,
                         CodInf = relacion.CodInf,
                         CanEjec = relacion.CanEjec,
@@ -379,6 +380,22 @@ namespace Biblioteca
 
             }
 
-        }
 
+
+
+
+        public void recalculo(IEnumerable<Nodo> items, bool inicio, decimal FactorSup, bool cInsumos)
+            {
+            // Genera listaInsumos con nodos raíz que no sean de tipo 'T' ni 'A'
+            var listaInsumos = items
+                .Where(n => n.Tipo != "T" && n.Tipo != "A")
+                .ToList();
+
+
+
+
+            // Aquí puedes continuar con la lógica de recalculo usando listaInsumos
+            }
+
+        }
     }

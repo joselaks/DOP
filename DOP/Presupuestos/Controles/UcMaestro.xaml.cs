@@ -188,6 +188,31 @@ namespace DOP.Presupuestos.Controles
                 }
             }
 
+        private void MenuItem_Borrar_Click(object sender, RoutedEventArgs e)
+            {
+            if (grillaMaestro.SelectedItem is Nodo nodo)
+                {
+                if (MessageBox.Show($"¿Desea eliminar el nodo '{nodo.Descripcion}'?", "Confirmar eliminación", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+                    return;
+                //En este caso no es necesaria la recursividad, pero lo dejo por ahora.
+                EliminarNodoRecursivo(Objeto.Arbol, nodo);
+                grillaMaestro.View.Refresh();
+                }
+            }
+
+        private bool EliminarNodoRecursivo(ObservableCollection<Nodo> lista, Nodo nodoAEliminar)
+            {
+            if (lista.Remove(nodoAEliminar))
+                return true;
+
+            foreach (var item in lista)
+                {
+                if (item.Inferiores != null && EliminarNodoRecursivo(item.Inferiores, nodoAEliminar))
+                    return true;
+                }
+            return false;
+            }
+
 
         public ObservableCollection<Nodo> GetClonesInferiores(Nodo elemento)
             {
@@ -221,9 +246,115 @@ namespace DOP.Presupuestos.Controles
                 return inferioresLlenos;
                 }
             }
+
+        private async void BtnGuardar_Click(object sender, RoutedEventArgs e)
+            {
+            ProcesaTareaMaestroRequest oGrabar = Objeto.EmpaquetarPresupuesto();
+            if (oGrabar != null)
+                {
+                var (success, message) = await DOP.Datos.DatosWeb.ProcesarTareaMaestroAsync(oGrabar);
+
+                if (success)
+                    {
+                    MessageBox.Show("Tareas guardadas correctamente.\n" + message, "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                else
+                    {
+                    MessageBox.Show("Error al guardar tareas:\n" + message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            else
+                {
+                MessageBox.Show("Error al procesar la solicitud de grabación.");
+                }
+
+            }
+
+        private async void obtener_Click(object sender, RoutedEventArgs e)
+            {
+            // Obtén el usuarioID desde donde corresponda en tu aplicación
+            int usuarioID = App.IdUsuario; // Usa el ID del login 
+
+            var (success, message, conceptos, relaciones) = await DOP.Datos.DatosWeb.ObtenerConceptosYRelacionesMaestroAsync(usuarioID);
+            Objeto = new Maestro(conceptos, relaciones, usuarioID);
+
+            grillaMaestro.ItemsSource = Objeto.Arbol;
+            this.grillaMaestro.View.Filter = FiltrarPorTipo;
+            this.grillaMaestro.View.Refresh();
+
+
+            }
+        private void Button_Click(object sender, RoutedEventArgs e)
+            {
+            // 1. Genera listaInsumos con nodos raíz que no sean de tipo 'T' ni 'A'
+            var listaInsumos = Objeto.Arbol
+                .Where(n => n.Tipo != "T" && n.Tipo != "A")
+                .ToList();
+
+            // 2. Actualiza los nodos hoja desde la lista de insumos si es necesario
+            ActualizaNodosHojaDesdeInsumos(Objeto.Arbol, listaInsumos);
+
+            // 3. Recalcula PU1 y los importes
+            RecalculoPU1(Objeto.Arbol);
+            }
+
+
+        public void RecalculoPU1(IEnumerable<Nodo> items)
+            {
+            foreach (var item in items)
+                {
+                RecalculoNodoPU1(item);
+                }
+            }
+
+        private void RecalculoNodoPU1(Nodo nodo)
+            {
+            if (nodo.HasItems && (nodo.Tipo == "T" || nodo.Tipo == "A"))
+                {
+                // Primero recalcula los hijos
+                foreach (var hijo in nodo.Inferiores)
+                    {
+                    RecalculoNodoPU1(hijo);
+                    }
+
+                // Calcula PU1 como la suma de los Importe1 de los hijos
+                nodo.PU1 = nodo.Inferiores.Sum(c => c.Importe1);
+
+                // Calcula Importe1 del nodo actual
+                nodo.Importe1 = nodo.Cantidad * nodo.PU1;
+                }
+            else if (!nodo.HasItems)
+                {
+                // Si es hoja, simplemente calcula el Importe1
+                nodo.Importe1 = nodo.Cantidad * nodo.PU1;
+                }
+            }
+
+
+        private void ActualizaNodosHojaDesdeInsumos(IEnumerable<Nodo> items, List<Nodo> listaInsumos)
+            {
+            foreach (var item in items)
+                {
+                if (!item.HasItems)
+                    {
+                    var insumo = listaInsumos.FirstOrDefault(x => x.ID == item.ID);
+                    if (insumo != null)
+                        {
+                        item.Cantidad = insumo.Cantidad;
+                        item.PU1 = insumo.PU1;
+                        item.Unidad = insumo.Unidad;
+                        }
+                    }
+                else
+                    {
+                    ActualizaNodosHojaDesdeInsumos(item.Inferiores, listaInsumos);
+                    }
+                }
+            }
+
+
         }
     }
-
 
 
 

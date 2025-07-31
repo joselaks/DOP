@@ -34,7 +34,6 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 DefaultText="Seleccione tipo de concepto"
-                
                 SelectionChanged="SelectorTipo_SelectionChanged">
 
                 <syncfusion:ComboBoxItemAdv Content="Rubros" />
@@ -47,6 +46,26 @@
                 <syncfusion:ComboBoxItemAdv Content="Auxiliares" />
 
             </syncfusion:ComboBoxAdv>
+            <Button
+                x:Name="obtener"
+                Margin="10,0,0,0"
+                Padding="10,2"
+                VerticalAlignment="Center"
+                Click="obtener_Click"
+                Content="Obtener" />
+            <Button
+                Margin="10,0,0,0"
+                Padding="10,2"
+                VerticalAlignment="Center"
+                Click="BtnGuardar_Click"
+                Content="Guardar" />
+
+            <Button
+                Margin="10,0,0,0"
+                Padding="10,2"
+                VerticalAlignment="Center"
+                Click="Button_Click"
+                Content="Recalculo" />
         </StackPanel>
 
         <syncfusion:SfTreeGrid
@@ -54,8 +73,17 @@
             Grid.Row="1"
             AllowDraggingRows="True"
             AllowDrop="True"
+            AllowEditing="True"
             AllowResizingColumns="True"
             AutoGenerateColumns="False">
+            <syncfusion:SfTreeGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem
+                        Click="MenuItem_Borrar_Click"
+                        Header="Borrar"
+                        Icon="🗑" />
+                </ContextMenu>
+            </syncfusion:SfTreeGrid.ContextMenu>
             <syncfusion:SfTreeGrid.Resources>
                 <Style TargetType="syncfusion:SfTreeGrid">
                     <Setter Property="Background" Value="LightGray" />
