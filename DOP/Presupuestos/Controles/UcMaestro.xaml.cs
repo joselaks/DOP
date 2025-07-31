@@ -5,6 +5,7 @@ using DOP.Presupuestos.Clases;
 using Syncfusion.UI.Xaml.TreeGrid;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -118,25 +119,106 @@ namespace DOP.Presupuestos.Controles
             if (e.DraggingNodes != null && e.DraggingNodes.Count > 0)
                 {
                 nodoMovido = e.DraggingNodes[0].Item as Nodo;
-                if (nodoMovido != null)
-                    {
-                    // Verifica si ya existe un nodo con el mismo ID en el árbol
-                    bool yaExiste = Objeto.Arbol.Any(n => n.ID == nodoMovido.ID);
-                    if (!yaExiste)
-                        {
-                        if (nodoMovido.Tipo == "T" || nodoMovido.Tipo == "A")
-                            {
-                            Objeto.Arbol.Add(Objeto.clonar(nodoMovido, true));
 
+                // 1. Copiar los inferiores de nodoMovido a nivel raíz (como antes)
+                if (nodoMovido != null && nodoMovido.Inferiores != null && (nodoMovido.Tipo == "T" || nodoMovido.Tipo == "A"))
+                    {
+                    foreach (var inferior in nodoMovido.Inferiores)
+                        {
+                        var existente = Objeto.Arbol.FirstOrDefault(n => n.ID == inferior.ID);
+                        if (existente == null)
+                            {
+                            Objeto.Arbol.Add(Objeto.clonar(inferior, true));
                             }
                         else
                             {
-                            Objeto.Arbol.Add(Objeto.clonar(nodoMovido, false));
-
+                            existente.Descripcion = inferior.Descripcion;
+                            existente.Unidad = inferior.Unidad;
+                            existente.Cantidad = inferior.Cantidad;
+                            existente.PU1 = inferior.PU1;
+                            existente.Tipo = inferior.Tipo;
+                            existente.Inferiores = Objeto.GetClonesInferiores(inferior);
                             }
                         }
-                   
                     }
+
+                // 2. Clonar el nodoMovido y agregarlo en la ubicación de drop
+                var nodoClonado = (nodoMovido.Tipo == "T" || nodoMovido.Tipo == "A")
+                        ? Objeto.clonar(nodoMovido, true)
+                        : Objeto.clonar(nodoMovido, false);
+
+                // Determinar el nodo destino y la posición
+                var targetNode = e.TargetNode?.Item as Nodo;
+                var dropPosition = e.DropPosition; // Before, After, or Child
+
+                if (targetNode == null || dropPosition == Syncfusion.UI.Xaml.TreeGrid.DropPosition.DropAsChild)
+                    {
+                    // Si no hay destino o es como hijo, agregar a la raíz o a los inferiores del destino
+                    if (targetNode == null)
+                        {
+                        Objeto.Arbol.Add(nodoClonado);
+                        }
+                    else
+                        {
+                        if (targetNode.Inferiores == null)
+                            targetNode.Inferiores = new ObservableCollection<Nodo>();
+                        targetNode.Inferiores.Add(nodoClonado);
+                        }
+                    }
+                else
+                    {
+                    // Insertar antes o después del nodo destino en la colección correspondiente
+                    var parentNode = e.TargetNode.ParentNode?.Item as Nodo;
+                    ObservableCollection<Nodo> collection;
+                    if (parentNode == null)
+                        collection = Objeto.Arbol;
+                    else
+                        {
+                        if (parentNode.Inferiores == null)
+                            parentNode.Inferiores = new ObservableCollection<Nodo>();
+                        collection = parentNode.Inferiores;
+                        }
+
+                    int index = collection.IndexOf(targetNode);
+                    if (dropPosition == Syncfusion.UI.Xaml.TreeGrid.DropPosition.DropAbove)
+                        collection.Insert(index, nodoClonado);
+                    else // After
+                        collection.Insert(index + 1, nodoClonado);
+                    }
+                }
+            }
+
+
+        public ObservableCollection<Nodo> GetClonesInferiores(Nodo elemento)
+            {
+            if (elemento == null)
+                return null;
+
+            if (!elemento.HasItems)
+                {
+                ObservableCollection<Nodo> inferioresVacios = new ObservableCollection<Nodo>();
+                return inferioresVacios;
+                }
+            else
+                {
+                ObservableCollection<Nodo> inferioresLlenos = new ObservableCollection<Nodo>();
+                foreach (var item in elemento.Inferiores)
+                    {
+                    Nodo respuesta = new Nodo();
+                    respuesta.ID = item.ID;
+                    respuesta.Descripcion = item.Descripcion;
+                    respuesta.Unidad = item.Unidad;
+                    respuesta.Cantidad = item.Cantidad;
+                    respuesta.PU1 = item.PU1;
+                    respuesta.Tipo = item.Tipo;
+                    respuesta.Inferiores = GetClonesInferiores(item);
+                    inferioresLlenos.Add(respuesta);
+                    if (item.HasItems)
+                        {
+                        respuesta.Inferiores = GetClonesInferiores(item);
+                        }
+                    }
+                return inferioresLlenos;
                 }
             }
         }

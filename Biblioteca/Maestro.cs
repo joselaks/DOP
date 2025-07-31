@@ -333,6 +333,7 @@ namespace Biblioteca
             respuesta.Cantidad = origen.Cantidad;
             respuesta.PU1 = origen.PU1;
             respuesta.Tipo = origen.Tipo;
+
             if (profundidad)
                 {
                 respuesta.Inferiores = GetClonesInferiores(origen);
