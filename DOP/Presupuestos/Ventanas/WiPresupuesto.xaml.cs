@@ -26,12 +26,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 namespace DOP.Presupuestos.Ventanas
-{
+    {
     /// <summary>
     /// Lógica de interacción para WiPresupuesto.xaml
     /// </summary>
     public partial class WiPresupuesto : RibbonWindow
-    {
+        {
         public Presupuesto Objeto;
         public cUndoRedo UndoRedo;
         public UcPlanilla Planilla;
@@ -42,9 +42,9 @@ namespace DOP.Presupuestos.Ventanas
 
 
         public WiPresupuesto(PresupuestoDTO? _encabezado, List<ConceptoDTO> conceptos, List<RelacionDTO> relaciones, ObservableCollection<PresupuestoDTO> presupuestosRef)
-        {
+            {
             InitializeComponent();
-            Objeto = new Presupuesto(_encabezado, conceptos,relaciones);
+            Objeto = new Presupuesto(_encabezado, conceptos, relaciones);
 
             Objeto.encabezado.UsuarioID = App.IdUsuario;
             Dosaje = new UcDosaje(Objeto);
@@ -61,22 +61,22 @@ namespace DOP.Presupuestos.Ventanas
             //if (screenWidth > 1920 && screenHeight > 1080)
 
 
-                if (screenWidth >= 1920 && screenHeight >= 1080)
-            {
+            if (screenWidth >= 1920 && screenHeight >= 1080)
+                {
                 // Resolución mayor: tamaño fijo y centrado
                 this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                 this.WindowState = WindowState.Normal;
-                this.Width = 1800;
-                this.Height = 900;
-            }
+                this.Width = 1900;
+                this.Height = 1000;
+                }
             else
-            {
+                {
                 // Resolución igual o menor: maximizar
                 this.WindowState = WindowState.Maximized;
+                }
+
+
             }
-
-
-        }
 
         private void WiPresupuesto_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
             {
@@ -92,9 +92,9 @@ namespace DOP.Presupuestos.Ventanas
 
 
         private void Fiebdc_Click(object sender, RoutedEventArgs e)
-        {
+            {
 
-        }
+            }
 
         private async void BtnGuardar_Click(object sender, RoutedEventArgs e)
             {
@@ -147,38 +147,38 @@ namespace DOP.Presupuestos.Ventanas
 
 
         private void btnFiebdc_Click(object sender, RoutedEventArgs e)
-        {
+            {
             OpenFileDialog openFileDialog = new OpenFileDialog();
 
             openFileDialog.Multiselect = false;
             openFileDialog.Filter = "Archivo Fiebdc|*.bc3";
 
             if (openFileDialog.ShowDialog().Value)
-            {
+                {
                 FileStream stream = File.OpenRead(openFileDialog.FileName);
                 string textoFie;
                 using (StreamReader reader = new StreamReader(stream, Encoding.Default, true))
-                {
+                    {
                     textoFie = reader.ReadToEnd();
                     //this.txtArchivoActualiza.Text = "Archivo seleccionado";
                     string txtNombre = stream.Name;
-                }
+                    }
                 Bibioteca.Clases.Fiebdc fie = new Bibioteca.Clases.Fiebdc(textoFie);
-                Bibioteca.Clases.Presupuesto pres = new Bibioteca.Clases.Presupuesto(null,null,null);
+                Bibioteca.Clases.Presupuesto pres = new Bibioteca.Clases.Presupuesto(null, null, null);
 
-                Bibioteca.Clases.Presupuesto objetofieb = new Bibioteca.Clases.Presupuesto(null,null,null);
+                Bibioteca.Clases.Presupuesto objetofieb = new Bibioteca.Clases.Presupuesto(null, null, null);
                 objetofieb.generaPresupuesto("fie", fie.listaConceptos, fie.listaRelaciones);
                 foreach (var item in objetofieb.Arbol)
-                {
+                    {
                     Objeto.Arbol.Add(item);
-                }
+                    }
                 recalculo();
+                }
+
             }
 
-        }
-
         public void recalculo()
-        {
+            {
             Objeto.recalculo(Objeto.Arbol, true, 0, true);
             Objeto.Rubros.Clear();
             Objeto.Tareas.Clear();
@@ -206,14 +206,14 @@ namespace DOP.Presupuestos.Ventanas
             //listaInsumos.grillaInsumos.CalculateAggregates();
             //this.GrillaArbol.CalculateAggregates();
             //graficoInsumos.recalculo();
-        }
+            }
 
         private void Agregar_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is RibbonButton boton)
             {
-                switch (boton.Name)
+            if (sender is RibbonButton boton)
                 {
+                switch (boton.Name)
+                    {
                     case "Rubro":
                         // Lógica para agregar Rubro
                         var (nuevoNodo, mensaje) = Objeto.agregaNodo("R", null);
@@ -221,53 +221,53 @@ namespace DOP.Presupuestos.Ventanas
                     case "Tarea":
                         // Lógica para agregar Tarea
                         if (this.Planilla.grillaArbol.SelectedItem == null)
-                        {
+                            {
                             MessageBox.Show("debe seleccionar un rubro para la tarea");
-                        }
+                            }
                         else
-                        {
+                            {
                             Bibioteca.Clases.Nodo sele = this.Planilla.grillaArbol.SelectedItem as Bibioteca.Clases.Nodo; //obtine contenido
                             if (sele.Tipo != "R")
-                            {
+                                {
                                 MessageBox.Show("debe seleccionar un rubro para la tarea");
-                            }
+                                }
                             else
-                            {
+                                {
                                 Objeto.agregaNodo("T", sele);
+                                }
                             }
-                        }
                         break;
                     default:
                         // Otro caso
                         break;
+                    }
                 }
             }
-        }
 
         private void Recalculo_Click(object sender, RoutedEventArgs e)
             {
-             recalculo();
+            recalculo();
 
             }
 
         private void Recnumerar_Click(object sender, RoutedEventArgs e)
-        {
-            Objeto.NumeraItems(Objeto.Arbol,"");
-        }
+            {
+            Objeto.NumeraItems(Objeto.Arbol, "");
+            }
 
         private async void OInsumo_Click(object sender, RoutedEventArgs e)
-        {
+            {
             var (success1, message1, insumos) = await DatosWeb.ObtenerInsumosPorUsuarioAsync(2);
             if (success1)
-            {
+                {
                 foreach (var insumo in insumos)
                     MessageBox.Show($"{insumo.ID} - {insumo.Descrip}");
-            }
+                }
             else
-            {
+                {
                 MessageBox.Show($"Error: {message1}");
+                }
             }
-        }
 
         private void SaleExcel_Click(object sender, RoutedEventArgs e)
             {
@@ -323,19 +323,41 @@ namespace DOP.Presupuestos.Ventanas
             }
 
         private void gMaestro_Click(object sender, RoutedEventArgs e)
-        {
+            {
             //this.gPlanilla.Children.Add(Planilla);
             gLateral.Children.Clear();
             gLateral.Children.Add(Maestro);
 
-        }
+            }
 
         private void gListado_Click(object sender, RoutedEventArgs e)
-        {
+            {
             gLateral.Children.Clear();
             gLateral.Children.Add(Listado);
             //this.gListado.Children.Add(Listado);
 
+            }
+
+        private void gArbol_Click(object sender, RoutedEventArgs e)
+            {
+            if (Planilla.grillaArbol.View != null)
+                {
+                var boton = sender as RibbonButton;
+                if (boton != null)
+                    {
+                    if (boton.Name == "gArbol")
+                        {
+                        // Quitar el filtro
+                        Planilla.grillaArbol.View.Filter = null;
+                        }
+                    else if (boton.Name == "gFiltrado")
+                        {
+                        // Activar el filtro
+                        Planilla.grillaArbol.View.Filter = Planilla.FiltrarPorTipo;
+                        }
+                    Planilla.grillaArbol.View.Refresh();
+                    }
+                }
+            }
         }
     }
-}

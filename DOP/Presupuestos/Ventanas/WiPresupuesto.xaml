@@ -113,85 +113,109 @@
                 </syncfusion:RibbonBar>
                 <syncfusion:RibbonBar Header="Maestro">
                     <syncfusion:RibbonButton
-        x:Name="gMaestro"
-        Click="gMaestro_Click"
-        Label="Panel1"
-        SizeForm="Small"
-        SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
-                   
-                        <syncfusion:RibbonButton
-x:Name="gListado"
-Click="gListado_Click"
-Label="Panel2"
-SizeForm="Small"
-SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
-                    </syncfusion:RibbonBar>
+                        x:Name="gMaestro"
+                        Click="gMaestro_Click"
+                        Label="Maestro"
+                        SizeForm="Small"
+                        SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
+
+                    <syncfusion:RibbonButton
+                        x:Name="gListado"
+                        Click="gListado_Click"
+                        Label="Listado"
+                        SizeForm="Small"
+                        SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
+                </syncfusion:RibbonBar>
+
+                <syncfusion:RibbonBar Header="Filtros">
+                    <syncfusion:RibbonButton
+                        x:Name="gArbol"
+                        Click="gArbol_Click"
+                        Label="Arbol"
+                        SizeForm="Small"
+                        SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
+
+                    <syncfusion:RibbonButton
+                        x:Name="gFiltrado"
+                        Click="gArbol_Click"
+                        Label="Filtrado"
+                        SizeForm="Small"
+                        SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
+                </syncfusion:RibbonBar>
+
 
 
             </syncfusion:RibbonTab>
+
+
+
+
+
             <syncfusion:RibbonTab Caption="REPORTES" IsChecked="False" />
         </syncfusion:Ribbon>
 
-       
-            <Grid x:Name="basePres" syncfusion:DockingManager.NoHeader="True" Grid.Row="1">
+
+        <Grid
+            x:Name="basePres"
+            Grid.Row="1"
+            syncfusion:DockingManager.NoHeader="True">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*" />
+                <RowDefinition Height="auto" />
+                <RowDefinition x:Name="panelDetalle" Height="4*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10*" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition x:Name="panelInsumos" Width="4*" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="0" Grid.Column="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="10*" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition x:Name="panelDetalle" Height="4*" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="10*" />
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition x:Name="panelInsumos" Width="4*" />
-                </Grid.ColumnDefinitions>
-                <Grid Grid.Row="0" Grid.Column="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="30" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
 
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            FontSize="20"
-                            FontWeight="Bold"
-                            Text="Presupuesto" />
-                    </StackPanel>
-                    <Grid x:Name="gPlanilla" Grid.Row="1" />
-
-                </Grid>
-
-                <Grid x:Name="gDetalle" Grid.Row="2" />
-
-                <Grid
-                    x:Name="gLateral"
-                    Grid.RowSpan="3"
-                    Grid.Column="2">
-                </Grid>
-
-                <syncfusion:SfGridSplitter
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    Height="5"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Top"
-                    EnableCollapseButton="True"
-                    ResizeBehavior="PreviousAndNext"
-                    ShowsPreview="True" />
-                <syncfusion:SfGridSplitter
-                    Grid.RowSpan="3"
-                    Grid.Column="1"
-                    Width="5"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Stretch"
-                    EnableCollapseButton="True"
-                    ResizeBehavior="PreviousAndNext"
-                    ShowsPreview="True" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Text="Presupuesto" />
+                </StackPanel>
+                <Grid x:Name="gPlanilla" Grid.Row="1" />
 
             </Grid>
 
-           
-               
+            <Grid x:Name="gDetalle" Grid.Row="2" />
+
+            <Grid
+                x:Name="gLateral"
+                Grid.RowSpan="3"
+                Grid.Column="2" />
+
+            <syncfusion:SfGridSplitter
+                Grid.Row="1"
+                Grid.Column="0"
+                Height="5"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Top"
+                EnableCollapseButton="True"
+                ResizeBehavior="PreviousAndNext"
+                ShowsPreview="True" />
+            <syncfusion:SfGridSplitter
+                Grid.RowSpan="3"
+                Grid.Column="1"
+                Width="5"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Stretch"
+                EnableCollapseButton="True"
+                ResizeBehavior="PreviousAndNext"
+                ShowsPreview="True" />
+
+        </Grid>
+
+
+
 
     </Grid>
 </syncfusion:RibbonWindow>

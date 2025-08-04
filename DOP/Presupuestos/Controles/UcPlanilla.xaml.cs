@@ -203,7 +203,7 @@ namespace DOP.Presupuestos.Controles
                 }
             }
         // Método para filtrar los nodos que se mostrarán en el TreeGrid.
-        private bool FiltrarPorTipo(object item)
+        public bool FiltrarPorTipo(object item)
             {
             if (item is Nodo nodo)
                 {
