@@ -38,12 +38,14 @@
 
                 <syncfusion:ComboBoxItemAdv Content="Rubros" />
                 <syncfusion:ComboBoxItemAdv Content="Tareas" />
+                <syncfusion:ComboBoxItemAdv Content="Auxiliares" />
+                <syncfusion:ComboBoxItemAdv Content="----- Insumos -----" IsEnabled="False" />
                 <syncfusion:ComboBoxItemAdv Content="Materiales" />
                 <syncfusion:ComboBoxItemAdv Content="Mano de obra" />
                 <syncfusion:ComboBoxItemAdv Content="Equipos" />
                 <syncfusion:ComboBoxItemAdv Content="Subcontratos" />
                 <syncfusion:ComboBoxItemAdv Content="Otros" />
-                <syncfusion:ComboBoxItemAdv Content="Auxiliares" />
+                
 
             </syncfusion:ComboBoxAdv>
             <Button

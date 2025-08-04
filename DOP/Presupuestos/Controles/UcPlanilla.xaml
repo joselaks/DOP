@@ -43,6 +43,7 @@
         Name="grillaArbol"
         Grid.Row="1"
         AllowDraggingRows="True"
+        AllowSorting="False"
         AllowDrop="True"
         AllowEditing="True"
         AllowResizingColumns="True"
