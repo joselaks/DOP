@@ -34,6 +34,8 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 DefaultText="Seleccione lista de precios"
+                DisplayMemberPath="Descrip"
+                ItemsSource="{Binding InfoCombo}"
                 SelectionChanged="SelectorTipo_SelectionChanged" />
             <Button
                 x:Name="listados"
