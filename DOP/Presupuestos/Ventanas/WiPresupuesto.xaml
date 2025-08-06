@@ -125,6 +125,7 @@
                         Label="Listado"
                         SizeForm="Small"
                         SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
+                    
                 </syncfusion:RibbonBar>
 
                 <syncfusion:RibbonBar Header="Filtros">
@@ -141,6 +142,11 @@
                         Label="Filtrado"
                         SizeForm="Small"
                         SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
+
+                    <syncfusion:RibbonCheckBox  Width="140" Content="Precios" IsChecked="false" Checked="RibbonCheckBox_Checked"/>
+
+
+
                 </syncfusion:RibbonBar>
 
 
@@ -168,6 +174,8 @@
                 <ColumnDefinition Width="10*" />
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition x:Name="panelInsumos" Width="4*" />
+                <ColumnDefinition Width="auto" x:Name="sep2" />
+                <ColumnDefinition Width="4*" x:Name="gp" />
             </Grid.ColumnDefinitions>
             <Grid Grid.Row="0" Grid.Column="0">
                 <Grid.RowDefinitions>
@@ -211,6 +219,23 @@
                 EnableCollapseButton="True"
                 ResizeBehavior="PreviousAndNext"
                 ShowsPreview="True" />
+            <syncfusion:SfGridSplitter
+                x:Name="separadorPrecios"
+                Grid.RowSpan="3"
+                Grid.Column="3"
+                Width="5"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Stretch"
+                EnableCollapseButton="True"
+                ResizeBehavior="PreviousAndNext"
+                ShowsPreview="True"
+                 />
+
+            <Grid
+                x:Name="gPrecios"
+                Grid.RowSpan="3"
+                Grid.Column="4"  />
+
 
         </Grid>
 

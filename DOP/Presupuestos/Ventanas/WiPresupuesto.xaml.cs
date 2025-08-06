@@ -38,6 +38,7 @@ namespace DOP.Presupuestos.Ventanas
         public UcListado Listado;
         public UcDosaje Dosaje;
         public UcMaestro Maestro;
+        public UcArticulos Articulos;
         private ObservableCollection<PresupuestoDTO> _presupuestosRef;
 
 
@@ -52,7 +53,9 @@ namespace DOP.Presupuestos.Ventanas
             Listado = new UcListado(Objeto);
             this.gDetalle.Children.Add(Dosaje);
             Maestro = new UcMaestro();
+            Articulos = new UcArticulos();  
             this.gPlanilla.Children.Add(Planilla);
+            //this.gPrecios.Children.Add(Articulos);
             //this.docTareas.Content = Tareas;
             this.Closing += WiPresupuesto_Closing; // Suscribir el evento
             _presupuestosRef = presupuestosRef;
@@ -338,6 +341,12 @@ namespace DOP.Presupuestos.Ventanas
 
             }
 
+        private void cPrecios_Click(object sender, RoutedEventArgs e)
+            {
+
+
+            }
+
         private void gArbol_Click(object sender, RoutedEventArgs e)
             {
             if (Planilla.grillaArbol.View != null)
@@ -358,6 +367,11 @@ namespace DOP.Presupuestos.Ventanas
                     Planilla.grillaArbol.View.Refresh();
                     }
                 }
+            }
+
+        private void RibbonCheckBox_Checked(object sender, RoutedEventArgs e)
+            {
+                gPrecios.Children.Add(Articulos);
             }
         }
     }

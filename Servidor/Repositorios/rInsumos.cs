@@ -238,6 +238,55 @@ namespace Servidor.Repositorios
                 }
             }
 
+        // Obtener las listas de artículos por usuario
+        public async Task<List<ArticulosListaDTO>> ObtenerListasArticulosPorUsuarioAsync(int usuarioID)
+            {
+            using (var db = new SqlConnection(_connectionString))
+                {
+                var parameters = new DynamicParameters();
+                parameters.Add("@UsuarioID", usuarioID, DbType.Int32);
+
+                try
+                    {
+                    var result = await db.QueryAsync<ArticulosListaDTO>(
+                        "ObtenerListasArticulos",
+                        parameters,
+                        commandType: CommandType.StoredProcedure);
+
+                    return result.ToList();
+                    }
+                catch (SqlException ex)
+                    {
+                    throw new Exception($"Error al obtener las listas de artículos del usuario {usuarioID}: {ex.Message}", ex);
+                    }
+                }
+            }
+
+        // Obtener los artículos de una lista específica por ListaID
+        public async Task<List<ArticuloDTO>> ObtenerArticulosPorListaIDAsync(short listaID)
+            {
+            using (var db = new SqlConnection(_connectionString))
+                {
+                var parameters = new DynamicParameters();
+                parameters.Add("@ListaID", listaID, DbType.Int16);
+
+                try
+                    {
+                    var result = await db.QueryAsync<ArticuloDTO>(
+                        "ObtenerArticulosPorListaID",
+                        parameters,
+                        commandType: CommandType.StoredProcedure);
+
+                    return result.ToList();
+                    }
+                catch (SqlException ex)
+                    {
+                    throw new Exception($"Error al obtener los artículos de la lista {listaID}: {ex.Message}", ex);
+                    }
+                }
+            }
+
+
         }
 
     }

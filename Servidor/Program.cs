@@ -298,6 +298,36 @@ pre.MapPost("/maestro/procesar", async (ProcesaTareaMaestroRequest request, rPre
         }
 }).RequireAuthorization();
 
+// Obtener listas de artículos por usuario
+ins.MapGet("/articulos/listas/{usuarioID:int}", async (int usuarioID, rInsumos repo) =>
+{
+    try
+        {
+        var listas = await repo.ObtenerListasArticulosPorUsuarioAsync(usuarioID);
+        return Results.Ok(listas);
+        }
+    catch (Exception ex)
+        {
+        return Results.BadRequest(new { Message = ex.Message });
+        }
+}).RequireAuthorization();
+
+// Obtener artículos de una lista específica por ListaID
+ins.MapGet("/articulos/lista/{listaID:short}", async (short listaID, rInsumos repo) =>
+{
+    try
+        {
+        var articulos = await repo.ObtenerArticulosPorListaIDAsync(listaID);
+        return Results.Ok(articulos);
+        }
+    catch (Exception ex)
+        {
+        return Results.BadRequest(new { Message = ex.Message });
+        }
+}).RequireAuthorization();
+
+
+
 #endregion
 
 #endregion

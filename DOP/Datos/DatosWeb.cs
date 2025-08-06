@@ -204,6 +204,7 @@ namespace DOP.Datos
                 return (false, message, new List<ConceptoMDTO>(), new List<RelacionMDTO>());
             }
 
+        // Ojo... no procesa solo tareas. Ver que da un error.
         public static async Task<(bool Success, string Message)> ProcesarTareaMaestroAsync(ProcesaTareaMaestroRequest request)
             {
             string url = $"{App.BaseUrl}presupuestos/maestro/procesar";
@@ -240,9 +241,29 @@ namespace DOP.Datos
                 }
             }
 
+        // Obtener listas de artículos por usuario
+        public static async Task<(bool Success, string Message, List<ArticulosListaDTO> Listas)> ObtenerListasArticulosPorUsuarioAsync(int usuarioID)
+            {
+            string url = $"{App.BaseUrl}insumos/articulos/listas/{usuarioID}";
+            var (success, message, data) = await ExecuteRequestAsync<List<ArticulosListaDTO>>(
+                () => httpClient.GetAsync(url),
+                $"Obtener listas de artículos del usuario {usuarioID}"
+            );
+            return (success, message, data ?? new List<ArticulosListaDTO>());
+            }
+
+        // Obtener artículos de una lista específica por ListaID
+        public static async Task<(bool Success, string Message, List<ArticuloDTO> Articulos)> ObtenerArticulosPorListaIDAsync(short listaID)
+            {
+            string url = $"{App.BaseUrl}insumos/articulos/lista/{listaID}";
+            var (success, message, data) = await ExecuteRequestAsync<List<ArticuloDTO>>(
+                () => httpClient.GetAsync(url),
+                $"Obtener artículos de la lista {listaID}"
+            );
+            return (success, message, data ?? new List<ArticuloDTO>());
+            }
+
         }
-
-
 
     // Clase auxiliar para deserializar la respuesta del endpoint
     public class ConceptosRelacionesMaestroResult
