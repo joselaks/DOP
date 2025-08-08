@@ -18,14 +18,22 @@
         </Grid.RowDefinitions>
 
         <!--  Encabezado  -->
-        <TextBlock
-            Margin="5"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            FontSize="33"
-            FontWeight="Black"
-            Foreground="Orange"
-            Text="DataObra Presupuestos" />
+        <StackPanel Orientation="Vertical">
+            <TextBlock
+                Margin="5,0,5,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="33"
+                FontWeight="Black"
+                Foreground="Orange"
+                Text="DataObra Presupuestos" />
+            <TextBlock
+                x:Name="txtVersion"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="15"
+                Text="Version...." />
+        </StackPanel>
 
         <!--  Contenido Principal  -->
         <Grid
