@@ -27,27 +27,24 @@
                 FontSize="16"
                 FontWeight="Bold"
                 Text="Maestro" />
-            <syncfusion:ComboBoxAdv
-                x:Name="SelectorTipo"
-                Width="200"
-                Height="30"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                DefaultText="Seleccione tipo de concepto"
-                SelectionChanged="SelectorTipo_SelectionChanged">
-
-                <syncfusion:ComboBoxItemAdv Content="Rubros" />
-                <syncfusion:ComboBoxItemAdv Content="Tareas" />
-                <syncfusion:ComboBoxItemAdv Content="Auxiliares" />
-                <syncfusion:ComboBoxItemAdv Content="----- Insumos -----" IsEnabled="False" />
-                <syncfusion:ComboBoxItemAdv Content="Materiales" />
-                <syncfusion:ComboBoxItemAdv Content="Mano de obra" />
-                <syncfusion:ComboBoxItemAdv Content="Equipos" />
-                <syncfusion:ComboBoxItemAdv Content="Subcontratos" />
-                <syncfusion:ComboBoxItemAdv Content="Otros" />
-
-
-            </syncfusion:ComboBoxAdv>
+            <ComboBox
+    x:Name="SelectorTipo"
+    Width="200"
+    Height="30"
+    HorizontalAlignment="Center"
+    VerticalAlignment="Center"
+    SelectedIndex="0"
+    SelectionChanged="SelectorTipo_SelectionChanged">
+                <ComboBoxItem Content="Rubros" />
+                <ComboBoxItem Content="Tareas" />
+                <ComboBoxItem Content="Auxiliares" />
+                <ComboBoxItem Content="----- Insumos -----" IsEnabled="False" />
+                <ComboBoxItem Content="Materiales" />
+                <ComboBoxItem Content="Mano de obra" />
+                <ComboBoxItem Content="Equipos" />
+                <ComboBoxItem Content="Subcontratos" />
+                <ComboBoxItem Content="Otros" />
+            </ComboBox>
             <Button
                 x:Name="obtener"
                 Margin="10,0,0,0"

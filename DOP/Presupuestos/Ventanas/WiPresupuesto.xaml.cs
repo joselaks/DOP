@@ -40,6 +40,10 @@ namespace DOP.Presupuestos.Ventanas
         public UcMaestro Maestro;
         public UcArticulos Articulos;
         private ObservableCollection<PresupuestoDTO> _presupuestosRef;
+        private GridLength? _panelDetalleUserHeight = null;
+        private GridLength? _panelListadoUserWidth = null;
+        private GridLength? _panelMaestroUserWidth = null;
+        private GridLength? _panelPreciosUserWidth = null;
 
 
         public WiPresupuesto(PresupuestoDTO? _encabezado, List<ConceptoDTO> conceptos, List<RelacionDTO> relaciones, ObservableCollection<PresupuestoDTO> presupuestosRef)
@@ -48,15 +52,20 @@ namespace DOP.Presupuestos.Ventanas
             Objeto = new Presupuesto(_encabezado, conceptos, relaciones);
 
             Objeto.encabezado.UsuarioID = App.IdUsuario;
+
             Dosaje = new UcDosaje(Objeto);
             Planilla = new UcPlanilla(Objeto, Dosaje);
             Listado = new UcListado(Objeto);
-            this.gDetalle.Children.Add(Dosaje);
             Maestro = new UcMaestro();
-            Articulos = new UcArticulos();  
+            Articulos = new UcArticulos();
+
             this.gPlanilla.Children.Add(Planilla);
-            //this.gPrecios.Children.Add(Articulos);
-            //this.docTareas.Content = Tareas;
+            this.panelDetalle.Children.Add(Dosaje);
+            this.panelListado.Children.Add(Listado);
+            this.panelMaestro.Children.Add(Maestro);
+            this.panelPrecios.Children.Add(Articulos);
+
+
             this.Closing += WiPresupuesto_Closing; // Suscribir el evento
             _presupuestosRef = presupuestosRef;
             var screenWidth = SystemParameters.PrimaryScreenWidth;
@@ -327,17 +336,17 @@ namespace DOP.Presupuestos.Ventanas
 
         private void gMaestro_Click(object sender, RoutedEventArgs e)
             {
-            //this.gPlanilla.Children.Add(Planilla);
-            gLateral.Children.Clear();
-            gLateral.Children.Add(Maestro);
+            ////this.gPlanilla.Children.Add(Planilla);
+            //gLateral.Children.Clear();
+            //gLateral.Children.Add(Maestro);
 
             }
 
         private void gListado_Click(object sender, RoutedEventArgs e)
             {
-            gLateral.Children.Clear();
-            gLateral.Children.Add(Listado);
-            //this.gListado.Children.Add(Listado);
+            //gLateral.Children.Clear();
+            //gLateral.Children.Add(Listado);
+            ////this.gListado.Children.Add(Listado);
 
             }
 
@@ -369,9 +378,105 @@ namespace DOP.Presupuestos.Ventanas
                 }
             }
 
-        private void RibbonCheckBox_Checked(object sender, RoutedEventArgs e)
+        private void VentanaDetalle_Checked(object sender, RoutedEventArgs e)
             {
-                gPrecios.Children.Add(Articulos);
+            basePres.RowDefinitions[1].Height = GridLength.Auto;   // sepDetalle
+            var row = basePres.RowDefinitions[2];
+
+            // Si la fila está colapsada, restaurar la altura del usuario o poner 200 si es la primera vez
+            if (row.Height.Value == 0)
+                {
+                if (_panelDetalleUserHeight != null)
+                    row.Height = _panelDetalleUserHeight.Value;
+                else
+                    row.Height = new GridLength(200);
+                }
+            // Si la fila ya está visible, no hacer nada (o puedes actualizar la altura si lo deseas)
+            }
+
+        private void VentanaDetalle_Unchecked(object sender, RoutedEventArgs e)
+            {
+            basePres.RowDefinitions[1].Height = new GridLength(0); // sepDetalle
+            var row = basePres.RowDefinitions[2];
+
+            // Guarda la altura actual antes de colapsar
+            if (row.Height.Value != 0)
+                _panelDetalleUserHeight = row.Height;
+
+            // Colapsa la fila
+            row.Height = new GridLength(0);
+            }
+
+
+        private void VentanasLaterales_Checked(object sender, RoutedEventArgs e)
+            {
+            var checkBox = sender as Syncfusion.Windows.Tools.Controls.RibbonCheckBox;
+            if (checkBox == null) return;
+
+            switch (checkBox.Content?.ToString())
+                {
+                case "Listados":
+                    // Columnas 1 (sepListado) y 2 (panelListado)
+                    basePres.ColumnDefinitions[1].Width = GridLength.Auto;
+                    if (_panelListadoUserWidth != null)
+                        basePres.ColumnDefinitions[2].Width = _panelListadoUserWidth.Value;
+                    else
+                        basePres.ColumnDefinitions[2].Width = new GridLength(300);
+                    break;
+                case "Maestro":
+                    // Columnas 3 (sepMaestro) y 4 (panelMaestro)
+                    basePres.ColumnDefinitions[3].Width = GridLength.Auto;
+                    if (_panelMaestroUserWidth != null)
+                        basePres.ColumnDefinitions[4].Width = _panelMaestroUserWidth.Value;
+                    else
+                        basePres.ColumnDefinitions[4].Width = new GridLength(300);
+                    break;
+                case "Precios":
+                    // Columnas 5 (sepPrecios) y 6 (panelPrecios)
+                    basePres.ColumnDefinitions[5].Width = GridLength.Auto;
+                    if (_panelPreciosUserWidth != null)
+                        basePres.ColumnDefinitions[6].Width = _panelPreciosUserWidth.Value;
+                    else
+                        basePres.ColumnDefinitions[6].Width = new GridLength(300);
+                    break;
+                }
+            }
+
+
+        private void VentanasLaterales_Unchecked(object sender, RoutedEventArgs e)
+            {
+            var checkBox = sender as Syncfusion.Windows.Tools.Controls.RibbonCheckBox;
+            if (checkBox == null) return;
+
+            switch (checkBox.Content?.ToString())
+                {
+                case "Listados":
+                    // Guarda el ancho antes de ocultar
+                    if (basePres.ColumnDefinitions[2].Width.Value != 0)
+                        _panelListadoUserWidth = basePres.ColumnDefinitions[2].Width;
+                    basePres.ColumnDefinitions[1].Width = new GridLength(0);
+                    basePres.ColumnDefinitions[2].Width = new GridLength(0);
+                    break;
+                case "Maestro":
+                    if (basePres.ColumnDefinitions[4].Width.Value != 0)
+                        _panelMaestroUserWidth = basePres.ColumnDefinitions[4].Width;
+                    basePres.ColumnDefinitions[3].Width = new GridLength(0);
+                    basePres.ColumnDefinitions[4].Width = new GridLength(0);
+                    break;
+                case "Precios":
+                    if (basePres.ColumnDefinitions[6].Width.Value != 0)
+                        _panelPreciosUserWidth = basePres.ColumnDefinitions[6].Width;
+                    basePres.ColumnDefinitions[5].Width = new GridLength(0);
+                    basePres.ColumnDefinitions[6].Width = new GridLength(0);
+                    break;
+                }
             }
         }
+
+
     }
+
+
+
+
+    

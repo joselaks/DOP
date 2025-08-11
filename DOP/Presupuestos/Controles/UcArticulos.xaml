@@ -27,13 +27,12 @@
                 FontSize="16"
                 FontWeight="Bold"
                 Text="Precios" />
-            <syncfusion:ComboBoxAdv
+            <ComboBox
                 x:Name="SelectorTipo"
                 Width="200"
                 Height="30"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                DefaultText="Seleccione lista de precios"
                 DisplayMemberPath="Descrip"
                 ItemsSource="{Binding InfoCombo}"
                 SelectionChanged="SelectorTipo_SelectionChanged" />

@@ -186,24 +186,7 @@
                 Height="30"
                 Margin="5,0,5,5"
                 Orientation="Horizontal">
-                <TextBlock
-                    VerticalAlignment="Center"
-                    FontSize="12"
-                    Foreground="White"
-                    Text="Uso del servidor: " />
-                <syncfusion:SfLinearProgressBar
-                    Width="400"
-                    Height="20"
-                    Margin="20,0,20,0"
-                    Foreground="Green"
-                    Maximum="100"
-                    Minimum="0"
-                    Progress="30" />
-                <TextBlock
-                    VerticalAlignment="Center"
-                    FontSize="12"
-                    Foreground="White"
-                    Text="Lleva utilizado el 30% de la cuota mensual de uso del servidor" />
+                
 
             </StackPanel>
         </Grid>
