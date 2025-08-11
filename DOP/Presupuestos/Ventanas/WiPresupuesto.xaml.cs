@@ -380,90 +380,90 @@ namespace DOP.Presupuestos.Ventanas
 
         private void VentanaDetalle_Checked(object sender, RoutedEventArgs e)
             {
-            basePres.RowDefinitions[1].Height = GridLength.Auto;   // sepDetalle
-            var row = basePres.RowDefinitions[2];
-
-            // Si la fila está colapsada, restaurar la altura del usuario o poner 200 si es la primera vez
-            if (row.Height.Value == 0)
+            if (sender is CheckBox checkBox)
                 {
-                if (_panelDetalleUserHeight != null)
-                    row.Height = _panelDetalleUserHeight.Value;
-                else
-                    row.Height = new GridLength(200);
+                // Filtra por el x:Name del CheckBox
+                if (checkBox.Name == "chkDetalle")
+                    {
+                    basePres.RowDefinitions[1].Height = GridLength.Auto;   // sepDetalle
+                    var row = basePres.RowDefinitions[2];
+                    if (row.Height.Value == 0)
+                        {
+                        row.Height = _panelDetalleUserHeight ?? new GridLength(200);
+                        }
+                    }
+                // Si tienes más CheckBox para otros detalles, puedes agregar más condiciones aquí
                 }
-            // Si la fila ya está visible, no hacer nada (o puedes actualizar la altura si lo deseas)
             }
 
         private void VentanaDetalle_Unchecked(object sender, RoutedEventArgs e)
             {
-            basePres.RowDefinitions[1].Height = new GridLength(0); // sepDetalle
-            var row = basePres.RowDefinitions[2];
-
-            // Guarda la altura actual antes de colapsar
-            if (row.Height.Value != 0)
-                _panelDetalleUserHeight = row.Height;
-
-            // Colapsa la fila
-            row.Height = new GridLength(0);
-            }
-
-
-        private void VentanasLaterales_Checked(object sender, RoutedEventArgs e)
-            {
-            var checkBox = sender as Syncfusion.Windows.Tools.Controls.RibbonCheckBox;
-            if (checkBox == null) return;
-
-            switch (checkBox.Content?.ToString())
+            if (sender is CheckBox checkBox)
                 {
-                case "Listados":
-                    // Columnas 1 (sepListado) y 2 (panelListado)
-                    basePres.ColumnDefinitions[1].Width = GridLength.Auto;
-                    if (_panelListadoUserWidth != null)
-                        basePres.ColumnDefinitions[2].Width = _panelListadoUserWidth.Value;
-                    else
-                        basePres.ColumnDefinitions[2].Width = new GridLength(300);
-                    break;
-                case "Maestro":
-                    // Columnas 3 (sepMaestro) y 4 (panelMaestro)
-                    basePres.ColumnDefinitions[3].Width = GridLength.Auto;
-                    if (_panelMaestroUserWidth != null)
-                        basePres.ColumnDefinitions[4].Width = _panelMaestroUserWidth.Value;
-                    else
-                        basePres.ColumnDefinitions[4].Width = new GridLength(300);
-                    break;
-                case "Precios":
-                    // Columnas 5 (sepPrecios) y 6 (panelPrecios)
-                    basePres.ColumnDefinitions[5].Width = GridLength.Auto;
-                    if (_panelPreciosUserWidth != null)
-                        basePres.ColumnDefinitions[6].Width = _panelPreciosUserWidth.Value;
-                    else
-                        basePres.ColumnDefinitions[6].Width = new GridLength(300);
-                    break;
+                if (checkBox.Name == "chkDetalle")
+                    {
+                    basePres.RowDefinitions[1].Height = new GridLength(0); // sepDetalle
+                    var row = basePres.RowDefinitions[2];
+                    if (row.Height.Value != 0)
+                        _panelDetalleUserHeight = row.Height;
+                    row.Height = new GridLength(0);
+                    }
                 }
             }
 
+        private void VentanasLaterales_Checked(object sender, RoutedEventArgs e)
+            {
+
+            // Desmarcar todos los RadioButton del grupo ComboGroup
+            var radioNames = new[] { "rbPlanilla", "rbPresupuesto", "rbMaestro" };
+            foreach (var name in radioNames)
+                {
+                var radio = this.FindName(name) as RadioButton;
+                if (radio != null)
+                    radio.IsChecked = false;
+                }
+
+            var checkBox = sender as Syncfusion.Windows.Tools.Controls.RibbonCheckBox;
+            if (checkBox == null) return;
+
+            // Filtra por el x:Name del RibbonCheckBox
+            switch (checkBox.Name)
+                {
+                case "chkListados":
+                    basePres.ColumnDefinitions[1].Width = GridLength.Auto;
+                    basePres.ColumnDefinitions[2].Width = _panelListadoUserWidth ?? new GridLength(300);
+                    break;
+                case "chkMaestro":
+                    basePres.ColumnDefinitions[3].Width = GridLength.Auto;
+                    basePres.ColumnDefinitions[4].Width = _panelMaestroUserWidth ?? new GridLength(300);
+                    break;
+                case "chkPrecios":
+                    basePres.ColumnDefinitions[5].Width = GridLength.Auto;
+                    basePres.ColumnDefinitions[6].Width = _panelPreciosUserWidth ?? new GridLength(300);
+                    break;
+                }
+            }
 
         private void VentanasLaterales_Unchecked(object sender, RoutedEventArgs e)
             {
             var checkBox = sender as Syncfusion.Windows.Tools.Controls.RibbonCheckBox;
             if (checkBox == null) return;
 
-            switch (checkBox.Content?.ToString())
+            switch (checkBox.Name)
                 {
-                case "Listados":
-                    // Guarda el ancho antes de ocultar
+                case "chkListados":
                     if (basePres.ColumnDefinitions[2].Width.Value != 0)
                         _panelListadoUserWidth = basePres.ColumnDefinitions[2].Width;
                     basePres.ColumnDefinitions[1].Width = new GridLength(0);
                     basePres.ColumnDefinitions[2].Width = new GridLength(0);
                     break;
-                case "Maestro":
+                case "chkMaestro":
                     if (basePres.ColumnDefinitions[4].Width.Value != 0)
                         _panelMaestroUserWidth = basePres.ColumnDefinitions[4].Width;
                     basePres.ColumnDefinitions[3].Width = new GridLength(0);
                     basePres.ColumnDefinitions[4].Width = new GridLength(0);
                     break;
-                case "Precios":
+                case "chkPrecios":
                     if (basePres.ColumnDefinitions[6].Width.Value != 0)
                         _panelPreciosUserWidth = basePres.ColumnDefinitions[6].Width;
                     basePres.ColumnDefinitions[5].Width = new GridLength(0);
@@ -471,11 +471,47 @@ namespace DOP.Presupuestos.Ventanas
                     break;
                 }
             }
+
+
+        private void Combo_Click(object sender, RoutedEventArgs e)
+            {
+            if (sender is RadioButton radio)
+                {
+                switch (radio.Name)
+                    {
+                    case "rbPlanilla":
+                        chkDetalle.IsChecked = false;
+                        chkListados.IsChecked = false;
+                        chkMaestro.IsChecked = false;   
+                        chkPrecios.IsChecked = false;
+                        radio.IsChecked = true;
+                        break;
+
+                    case "rbPresupuesto":
+                        chkDetalle.IsChecked = true;
+                        chkListados.IsChecked = true;
+                        chkMaestro.IsChecked = false;
+                        chkPrecios.IsChecked = false;
+                        radio.IsChecked = true;
+                        break;
+
+                    case "rbMaestro":
+                        chkDetalle.IsChecked = true;
+                        chkListados.IsChecked = false;
+                        chkMaestro.IsChecked = true;
+                        chkPrecios.IsChecked = false;
+                        radio.IsChecked = true;
+                        break;
+
+                    default:
+                        // Si hay más RadioButton, añade aquí su lógica
+                        break;
+                    }
+                }
+            }
+
         }
-
-
     }
-
 
 
 

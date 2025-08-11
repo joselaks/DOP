@@ -125,20 +125,27 @@
                         SizeForm="Small"
                         SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
                 </syncfusion:RibbonBar>
-                <syncfusion:RibbonBar Header="Ventanas">
+                <syncfusion:RibbonBar Width="80" Header="Detalle">
                     <syncfusion:RibbonCheckBox
+                        x:Name="chkDetalle"
                         Width="140"
                         Checked="VentanaDetalle_Checked"
                         Content="Detalle"
                         IsChecked="false"
                         Unchecked="VentanaDetalle_Unchecked" />
+                </syncfusion:RibbonBar>
+
+                <syncfusion:RibbonBar Header="Ventanas">
+
                     <syncfusion:RibbonCheckBox
+                        x:Name="chkListados"
                         Width="140"
                         Checked="VentanasLaterales_Checked"
                         Content="Listados"
                         IsChecked="false"
                         Unchecked="VentanasLaterales_Unchecked" />
                     <syncfusion:RibbonCheckBox
+                        x:Name="chkMaestro"
                         Width="140"
                         Checked="VentanasLaterales_Checked"
                         Content="Maestro"
@@ -146,12 +153,38 @@
                         Unchecked="VentanasLaterales_Unchecked" />
 
                     <syncfusion:RibbonCheckBox
+                        x:Name="chkPrecios"
                         Width="140"
                         Checked="VentanasLaterales_Checked"
                         Content="Precios"
                         IsChecked="false"
                         Unchecked="VentanasLaterales_Unchecked" />
 
+
+                </syncfusion:RibbonBar>
+
+                <syncfusion:RibbonBar Header="Combos">
+                    <RadioButton
+                        x:Name="rbPlanilla"
+                        Margin="5,0,5,0"
+                        Click="Combo_Click"
+                        Content="Solo Planilla"
+                        GroupName="ComboGroup"
+                        IsChecked="False" />
+                    <RadioButton
+                        x:Name="rbPresupuesto"
+                        Margin="5,0,5,0"
+                        Click="Combo_Click"
+                        Content="Presupuesto completo"
+                        GroupName="ComboGroup"
+                        IsChecked="False" />
+                    <RadioButton
+                        x:Name="rbMaestro"
+                        Margin="5,0,5,0"
+                        Click="Combo_Click"
+                        Content="Presupuesto y Maestro"
+                        GroupName="ComboGroup"
+                        IsChecked="False" />
 
                 </syncfusion:RibbonBar>
 
