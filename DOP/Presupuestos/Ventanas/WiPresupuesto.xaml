@@ -96,7 +96,7 @@
                 </syncfusion:RibbonBar>
                 <syncfusion:RibbonBar
                     Name="Respond"
-                    Width="90"
+                    Width="190"
                     Header="Varios">
                     <syncfusion:RibbonButton
                         x:Name="Recalculo"
@@ -116,6 +116,68 @@
                         Label="Insumos"
                         SizeForm="Small"
                         SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
+                    <syncfusion:DropDownButtonAdv
+                        x:Name="dropColumnas"
+                        Width="100"
+                        Label="Columnas"
+                        SmallIcon="pack://application:,,,/Imagenes/Tarea.png"
+                        StayDropDownOnClick="True"
+                        ToolTip="Visualizar columnas">
+                        <syncfusion:DropDownMenuGroup IsResizable="True">
+                            <syncfusion:DropDownMenuItem
+                                x:Name="colCodigo"
+                                Header="Código"
+                                IsCheckable="True"
+                                IsCheckedChanged="columnas_IsCheckedChanged" />
+                            <syncfusion:DropDownMenuItem
+                                x:Name="colTipo"
+                                Header="Tipo"
+                                IsCheckable="True"
+                                IsCheckedChanged="columnas_IsCheckedChanged" />
+                            <syncfusion:DropDownMenuItem
+                                x:Name="colMat"
+                                Header="Materiales"
+                                IsCheckable="True"
+                                IsCheckedChanged="columnas_IsCheckedChanged" />
+                            <syncfusion:DropDownMenuItem
+                                x:Name="colMDO"
+                                Header="Mano de Obra"
+                                IsCheckable="True"
+                                IsCheckedChanged="columnas_IsCheckedChanged" />
+                            <syncfusion:DropDownMenuItem
+                                x:Name="colEqi"
+                                Header="Equipos"
+                                IsCheckable="True"
+                                IsCheckedChanged="columnas_IsCheckedChanged" />
+                            <syncfusion:DropDownMenuItem
+                                x:Name="colSub"
+                                Header="Subcontratos"
+                                IsCheckable="True"
+                                IsCheckedChanged="columnas_IsCheckedChanged" />
+                            <syncfusion:DropDownMenuItem
+                                x:Name="colOtr"
+                                Header="Otros"
+                                IsCheckable="True"
+                                IsCheckedChanged="columnas_IsCheckedChanged" />
+                        </syncfusion:DropDownMenuGroup>
+                    </syncfusion:DropDownButtonAdv>
+
+                    <syncfusion:RibbonButton
+                        x:Name="Expandir"
+                        Click="expandir_Click"
+                        Label="Expandir"
+                        SizeForm="Small" />
+
+                    <syncfusion:RibbonButton
+                        x:Name="Contraer"
+                        Click="expandir_Click"
+                        Label="Contraer"
+                        SizeForm="Small" />
+
+
+
+
+
                 </syncfusion:RibbonBar>
                 <syncfusion:RibbonBar Header="Informes">
                     <syncfusion:RibbonButton

@@ -20,7 +20,7 @@ namespace Bibioteca.Clases
         public List<RelacionDTO> listaRelacionesLeer;
         public List<ConceptoDTO> listaConceptosGrabar;
         public List<RelacionDTO> listaRelacionesGrabar;
-
+        public event EventHandler RecalculoFinalizado;
 
         ObservableCollection<Nodo> arbol;
         bool existe;
@@ -711,6 +711,12 @@ namespace Bibioteca.Clases
                 item.Importe2 = item.Cantidad * item.PU2;
                 item.Factor = FactorSup;
                 }
+
+            if (inicio == true)
+                {
+                RecalculoFinalizado?.Invoke(this, EventArgs.Empty);
+                }
+
             }
 
         public void listaRubrosTareasAuxiliares(IEnumerable<Nodo> items)

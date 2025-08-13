@@ -63,6 +63,9 @@ namespace DOP.Presupuestos.Controles
             {
             Dispatcher.BeginInvoke(new Action(() =>
             {
+                if (SelectorTipo == null || grillaMaestro == null || grillaMaestro.View == null)
+                    return;
+
                 tipoSeleccionado = SelectorTipo.Text;
                 grillaMaestro.View.Refresh();
             }), System.Windows.Threading.DispatcherPriority.Background);

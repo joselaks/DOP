@@ -5,13 +5,12 @@
     xmlns:clases="clr-namespace:DOP.Presupuestos.Clases"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:DOP.Presupuestos.Controles"
-
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:numberformat="clr-namespace:System.Globalization;assembly=mscorlib"
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    mc:Ignorable="d" >
+    mc:Ignorable="d">
 
 
     <UserControl.Resources>
@@ -43,10 +42,10 @@
         Name="grillaArbol"
         Grid.Row="1"
         AllowDraggingRows="True"
-        AllowSorting="False"
         AllowDrop="True"
         AllowEditing="True"
         AllowResizingColumns="True"
+        AllowSorting="False"
         AutoGenerateColumns="False"
         CurrentCellBeginEdit="grillaArbol_CurrentCellBeginEdit"
         CurrentCellEndEdit="grillaArbol_CurrentCellEndEdit"
@@ -66,7 +65,7 @@
             <syncfusion:StackedHeaderRow>
                 <syncfusion:StackedHeaderRow.StackedColumns>
                     <syncfusion:StackedColumn ChildColumns="Importe1" HeaderText="Total" />
-                    <!--<syncfusion:StackedColumn ChildColumns="Importe2" HeaderText="Total u$s" />-->
+                    <syncfusion:StackedColumn ChildColumns="Materiales1" HeaderText="Materiales" />
                 </syncfusion:StackedHeaderRow.StackedColumns>
             </syncfusion:StackedHeaderRow>
         </syncfusion:SfTreeGrid.StackedHeaderRows>
@@ -90,7 +89,6 @@
                     MappingName="Tipo" />-->
 
 
-                <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="Tipo" />-->
 
                 <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="OrdenInt" />-->
 
@@ -154,8 +152,10 @@
 
 
                 <syncfusion:TreeGridNumericColumn
+                    x:Name="colMateriales1"
                     Width="120"
-                    IsHidden="True"
+                    CellStyle="{StaticResource TipoCellStyle}"
+                    HeaderText="{Binding totMateriales1}"
                     MappingName="Materiales1"
                     NumberDecimalDigits="2"
                     NumberDecimalSeparator=","
@@ -164,7 +164,6 @@
 
                 <syncfusion:TreeGridNumericColumn
                     Width="120"
-                    IsHidden="True"
                     MappingName="ManodeObra1"
                     NumberDecimalDigits="2"
                     NumberDecimalSeparator=","
@@ -173,7 +172,6 @@
 
                 <syncfusion:TreeGridNumericColumn
                     Width="120"
-                    IsHidden="True"
                     MappingName="Equipos1"
                     NumberDecimalDigits="2"
                     NumberDecimalSeparator=","
@@ -182,7 +180,6 @@
 
                 <syncfusion:TreeGridNumericColumn
                     Width="120"
-                    IsHidden="True"
                     MappingName="Subcontratos1"
                     NumberDecimalDigits="2"
                     NumberDecimalSeparator=","
@@ -197,6 +194,9 @@
                     NumberDecimalSeparator=","
                     NumberGroupSeparator="."
                     NumberGroupSizes="3" />
+
+                <syncfusion:TreeGridTextColumn Width="50" MappingName="Tipo" IsHidden="True" />
+
 
 
 

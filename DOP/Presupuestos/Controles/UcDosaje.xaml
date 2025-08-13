@@ -95,7 +95,7 @@
                 FontSize="20"
                 FontWeight="Bold"
                 Text="Analisis de costo: " />
-            <TextBlock x:Name="nombreTarea" VerticalAlignment="Center">Nombre tarea</TextBlock>
+            <TextBlock x:Name="nombreTarea" VerticalAlignment="Center"></TextBlock>
     
         </StackPanel>
         <syncfusion:SfTreeGrid Grid.Row="1"

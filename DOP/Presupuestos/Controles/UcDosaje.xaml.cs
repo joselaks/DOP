@@ -27,10 +27,11 @@ namespace DOP.Presupuestos.Controles
     public partial class UcDosaje : UserControl
         {
         Nodo NodoAnalizado;
-        Presupuesto Presup;
         Nodo anterior = new Nodo();
         public Presupuesto Objeto;
         private object _originalValue;
+        private CultureInfo cultura = new CultureInfo("es-ES") { NumberFormat = { NumberGroupSeparator = ".", NumberDecimalSeparator = "," } };
+
 
 
         public UcDosaje(Presupuesto presup)
@@ -38,9 +39,17 @@ namespace DOP.Presupuestos.Controles
             InitializeComponent();
             Objeto = presup;
             this.grillaDetalle.ChildPropertyName = "Inferiores";
+            //Este evento se ejecuta cada vez que haya un recalculo en el arbol del presupuesto
+            Objeto.RecalculoFinalizado += Presupuesto_RecalculoFinalizado;
+            }
 
-            Presup = presup;
+        private void Presupuesto_RecalculoFinalizado(object sender, EventArgs e)
+            {
+            if (NodoAnalizado == null)
+                return;
 
+            // Asignar el valor explícitamente al HeaderText
+            colImporte1.HeaderText = $"{NodoAnalizado.PU1.ToString("N2", cultura)}";
             }
 
 
@@ -50,7 +59,6 @@ namespace DOP.Presupuestos.Controles
             grillaDetalle.ItemsSource = NodoAnalizado.Inferiores;
             nombreTarea.Text = NodoAnalizado.Descripcion;
             // Asignar el valor explícitamente al HeaderText
-            var cultura = new CultureInfo("es-ES") { NumberFormat = { NumberGroupSeparator = ".", NumberDecimalSeparator = "," } };
             colImporte1.HeaderText = $"{NodoAnalizado.PU1.ToString("N2", cultura)}";
 
             }
@@ -198,8 +206,8 @@ namespace DOP.Presupuestos.Controles
                 return;
                 }
 
-            (Nodo nuevoNodo, string mensaje) = Presup.agregaNodo(tipo, sele);
-            Presup.recalculo(Presup.Arbol, true, 0, true);
+            (Nodo nuevoNodo, string mensaje) = Objeto.agregaNodo(tipo, sele);
+            Objeto.recalculo(Objeto.Arbol, true, 0, true);
             }
         }
     }

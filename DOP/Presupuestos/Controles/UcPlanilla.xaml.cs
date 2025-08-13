@@ -2,11 +2,13 @@
 using DOP.Presupuestos.Clases;
 using Syncfusion.UI.Xaml.Grid;
 using Syncfusion.UI.Xaml.TreeGrid;
+using Syncfusion.UI.Xaml.TreeGrid.Helpers;
 using Syncfusion.Windows.Tools.Controls;
 using Syncfusion.XlsIO.Implementation.XmlSerialization.Constants;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -34,6 +36,8 @@ namespace DOP.Presupuestos.Controles
         private object _originalValue;
         private Stack<Cambios> undoStack;
         private Stack<Cambios> redoStack;
+        private CultureInfo cultura = new CultureInfo("es-ES") { NumberFormat = { NumberGroupSeparator = ".", NumberDecimalSeparator = "," } };
+
 
 
 
@@ -44,10 +48,37 @@ namespace DOP.Presupuestos.Controles
             Objeto = objeto;
             this.grillaArbol.ItemsSource = Objeto.Arbol;
             this.grillaArbol.ChildPropertyName = "Inferiores";
+            //Este evento se ejecuta cada vez que haya un recalculo en el arbol del presupuesto
+            Objeto.RecalculoFinalizado += Presupuesto_RecalculoFinalizado;
             this.grillaArbol.Loaded += GrillaArbol_Loaded;
             this.grillaArbol.RowDragDropController.Drop += RowDragDropController_Drop;
             this.grillaArbol.RowDragDropController.DragStart += RowDragDropController_DragStart;
             this.grillaArbol.QueryCoveredRange += OnQueryCoveredRange;
+            }
+
+        private void Presupuesto_RecalculoFinalizado(object sender, EventArgs e)
+            {
+
+            //Objeto.sinCero();
+
+            //totMateriales1.Value = Objeto.Arbol.Sum(i => i.Materiales1);
+            //totMDO1.Value = Objeto.Arbol.Sum(i => i.ManodeObra1);
+            //totEquipos1.Value = Objeto.Arbol.Sum(i => i.Equipos1);
+            //totSubcontratos1.Value = Objeto.Arbol.Sum(i => i.Subcontratos1);
+            //totOtros1.Value = Objeto.Arbol.Sum(i => i.Otros1);
+            //totGeneral1.Value = Objeto.Arbol.Sum(i => i.Importe1);
+            decimal totGeneral1 = Objeto.Arbol.Sum(i => i.Importe1);
+            decimal totMateriales1 = Objeto.Arbol.Sum(i => i.Materiales1);
+            //decimal totalGeneralDol = Objeto.Arbol.Sum(i => i.Importe2);
+
+            // Asignar el valor explícitamente al HeaderText
+            var cultura = new CultureInfo("es-ES") { NumberFormat = { NumberGroupSeparator = ".", NumberDecimalSeparator = "," } };
+            colImporte1.HeaderText = $"{totGeneral1.ToString("N2", cultura)}";
+            colMateriales1.HeaderText = $"{totMateriales1.ToString("N2", cultura)}";
+            //Totales grillas
+            //listaInsumos.grillaInsumos.CalculateAggregates();
+            //this.GrillaArbol.CalculateAggregates();
+            //graficoInsumos.recalculo();}
 
             }
 
@@ -193,15 +224,21 @@ namespace DOP.Presupuestos.Controles
             }
 
 
+
+
         // Le hemos agregado un evento Loaded al TreeGrid para aplicar el filtro una vez que la vista se haya cargado.
         private void GrillaArbol_Loaded(object sender, RoutedEventArgs e)
             {
+
             if (this.grillaArbol.View != null)
                 {
                 this.grillaArbol.View.Filter = FiltrarPorTipo;
                 this.grillaArbol.View.Refresh();
+                ExpandeRubro();
                 }
             }
+
+
         // Método para filtrar los nodos que se mostrarán en el TreeGrid.
         public bool FiltrarPorTipo(object item)
             {
@@ -211,6 +248,38 @@ namespace DOP.Presupuestos.Controles
                 }
             return false;
             }
+
+        private void ExpandeRubro()
+            {
+            if (grillaArbol.View == null)
+                return;
+
+            foreach (var node in grillaArbol.View.Nodes)
+                {
+                ExpandeRubroRecursivo(node);
+                }
+            }
+
+        private void ExpandeRubroRecursivo(Syncfusion.UI.Xaml.TreeGrid.TreeNode node)
+            {
+            if (node == null)
+                return;
+
+            if (node.Item is Nodo nodo && nodo.Tipo == "R")
+                {
+                grillaArbol.ExpandNode(node);
+                }
+
+            if (node.HasChildNodes)
+                {
+                foreach (var child in node.ChildNodes)
+                    {
+                    ExpandeRubroRecursivo(child);
+                    }
+                }
+            }
+
+
         //Cada vez que se edita la grilla, se clona el objeto original antes de editarlo.
         private void grillaArbol_CurrentCellBeginEdit(object sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridCurrentCellBeginEditEventArgs e)
             {
@@ -261,33 +330,7 @@ namespace DOP.Presupuestos.Controles
                     Objeto.mismoCodigo(Objeto.Arbol, editado);
                     break;
                 }
-            recalculo();
-            }
-
-        public void recalculo()
-            {
             Objeto.recalculo(Objeto.Arbol, true, 0, true);
-
-            Objeto.sinCero();
-
-            //totMateriales1.Value = Objeto.Arbol.Sum(i => i.Materiales1);
-            //totMDO1.Value = Objeto.Arbol.Sum(i => i.ManodeObra1);
-            //totEquipos1.Value = Objeto.Arbol.Sum(i => i.Equipos1);
-            //totSubcontratos1.Value = Objeto.Arbol.Sum(i => i.Subcontratos1);
-            //totOtros1.Value = Objeto.Arbol.Sum(i => i.Otros1);
-            //totGeneral1.Value = Objeto.Arbol.Sum(i => i.Importe1);
-            decimal totGeneral1 = Objeto.Arbol.Sum(i => i.Importe1);
-            //decimal totalGeneralDol = Objeto.Arbol.Sum(i => i.Importe2);
-
-            // Asignar el valor explícitamente al HeaderText
-            var cultura = new CultureInfo("es-ES") { NumberFormat = { NumberGroupSeparator = ".", NumberDecimalSeparator = "," } };
-            colImporte1.HeaderText = $"{totGeneral1.ToString("N2", cultura)}";
-
-
-            //Totales grillas
-            //listaInsumos.grillaInsumos.CalculateAggregates();
-            //this.GrillaArbol.CalculateAggregates();
-            //graficoInsumos.recalculo();
             }
 
         private void grillaArbol_KeyDown(object sender, KeyEventArgs e)

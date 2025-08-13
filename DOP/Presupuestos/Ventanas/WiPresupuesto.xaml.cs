@@ -87,7 +87,6 @@ namespace DOP.Presupuestos.Ventanas
                 this.WindowState = WindowState.Maximized;
                 }
 
-
             }
 
         private void WiPresupuesto_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
@@ -189,6 +188,7 @@ namespace DOP.Presupuestos.Ventanas
 
             }
 
+        //Recalculo desde la ventana presupuesto.
         public void recalculo()
             {
             Objeto.recalculo(Objeto.Arbol, true, 0, true);
@@ -199,7 +199,7 @@ namespace DOP.Presupuestos.Ventanas
 
             Objeto.sinCero();
 
-            //totMateriales1.Value = Objeto.Arbol.Sum(i => i.Materiales1);
+            decimal totMateriales1 = Objeto.Arbol.Sum(i => i.Materiales1);
             //totMDO1.Value = Objeto.Arbol.Sum(i => i.ManodeObra1);
             //totEquipos1.Value = Objeto.Arbol.Sum(i => i.Equipos1);
             //totSubcontratos1.Value = Objeto.Arbol.Sum(i => i.Subcontratos1);
@@ -211,6 +211,7 @@ namespace DOP.Presupuestos.Ventanas
             // Asignar el valor explícitamente al HeaderText
             var cultura = new CultureInfo("es-ES") { NumberFormat = { NumberGroupSeparator = ".", NumberDecimalSeparator = "," } };
             Planilla.colImporte1.HeaderText = $"{totGeneral1.ToString("N2", cultura)}";
+            Planilla.colMateriales1.HeaderText = $"{totMateriales1.ToString("N2", cultura)}";
             //colImporte2.HeaderText = $"{totalGeneralDol.ToString("N2", cultura)}";
 
 
@@ -378,6 +379,28 @@ namespace DOP.Presupuestos.Ventanas
                 }
             }
 
+        private void expandir_Click(object sender, RoutedEventArgs e)
+            {
+            if (Planilla.grillaArbol.View != null)
+                {
+                var boton = sender as RibbonButton;
+                if (boton != null)
+                    {
+                    if (boton.Name == "Expandir")
+                        {
+                        Planilla.grillaArbol.ExpandAllNodes();
+                        }
+                    else if (boton.Name == "Contraer")
+                        {
+                        Planilla.grillaArbol.CollapseAllNodes();
+                        }
+                    }
+                }
+            }
+
+
+
+
         private void VentanaDetalle_Checked(object sender, RoutedEventArgs e)
             {
             if (sender is CheckBox checkBox)
@@ -506,6 +529,34 @@ namespace DOP.Presupuestos.Ventanas
                     default:
                         // Si hay más RadioButton, añade aquí su lógica
                         break;
+                    }
+                }
+            }
+
+        private void columnas_IsCheckedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+            {
+            // Determinar qué DropDownMenuItem disparó el evento
+            if (d is Syncfusion.Windows.Tools.Controls.DropDownMenuItem menuItem)
+                {
+                // Mapeo entre x:Name del menú y MappingName de la columna
+                var mapping = new Dictionary<string, string>
+        {
+            { "colCodigo", "ID" },
+            { "colTipo", "Tipo" },
+            { "colMat", "Materiales1" },
+            { "colMDO", "ManodeObra1" },
+            { "colEqi", "Equipos1" },
+            { "colSub", "Subcontratos1" },
+            { "colOtr", "Otros1" }
+        };
+
+                if (mapping.TryGetValue(menuItem.Name, out string mappingName))
+                    {
+                    var column = Planilla.grillaArbol.Columns.FirstOrDefault(c => c.MappingName == mappingName);
+                    if (column != null)
+                        {
+                        column.IsHidden = !menuItem.IsChecked;
+                        }
                     }
                 }
             }
