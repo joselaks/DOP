@@ -98,6 +98,26 @@
                         SizeForm="Large" />
                 </syncfusion:RibbonBar>
                 <syncfusion:RibbonBar
+                    Name="Presup"
+                    Width="190"
+                    Header="Varios">
+                    <RadioButton
+                        x:Name="rbSoloPlanilla"
+                        Margin="5,0,5,0"
+                        Click="PresupClick"
+                        Content="Solo Planilla"
+                        GroupName="ComboGroup"
+                        IsChecked="False" />
+                    <RadioButton
+                        x:Name="rbPlanillaListado"
+                        Margin="5,0,5,0"
+                        Click="PresupClick"
+                        Content="Presupuesto completo"
+                        GroupName="ComboGroup"
+                        IsChecked="False" />
+
+                </syncfusion:RibbonBar>
+                <syncfusion:RibbonBar
                     Name="Respond"
                     Width="190"
                     Header="Varios">
@@ -338,20 +358,8 @@
                 <ColumnDefinition Width="0" />
                 <ColumnDefinition Width="0" />
             </Grid.ColumnDefinitions>
-            <Grid Grid.Row="0" Grid.Column="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock
-                        VerticalAlignment="Center"
-                        FontSize="20"
-                        FontWeight="Bold"
-                        Text="Presupuesto" />
-                </StackPanel>
-                <Grid x:Name="gPlanilla" Grid.Row="1" />
+            <Grid Grid.Row="0" Grid.Column="0"  x:Name="gPlanilla">
+                
 
             </Grid>
 

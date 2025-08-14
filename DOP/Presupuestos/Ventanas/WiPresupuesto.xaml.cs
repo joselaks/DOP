@@ -1,6 +1,7 @@
 ﻿using Bibioteca.Clases;
 using Biblioteca;
 using Biblioteca.DTO;
+using DataObra.Presupuestos.Controles;
 using DOP.Datos;
 using DOP.Presupuestos.Clases;
 using DOP.Presupuestos.Controles;
@@ -39,6 +40,7 @@ namespace DOP.Presupuestos.Ventanas
         public UcDosaje Dosaje;
         public UcMaestro Maestro;
         public UcArticulos Articulos;
+        public UcPlanillaListado PlanillaListado;  
         private ObservableCollection<PresupuestoDTO> _presupuestosRef;
         private GridLength? _panelDetalleUserHeight = null;
         private GridLength? _panelListadoUserWidth = null;
@@ -58,6 +60,7 @@ namespace DOP.Presupuestos.Ventanas
             Listado = new UcListado(Objeto);
             Maestro = new UcMaestro();
             Articulos = new UcArticulos();
+            PlanillaListado = new UcPlanillaListado(Planilla, Listado);
 
             this.gPlanilla.Children.Add(Planilla);
             this.panelDetalle.Children.Add(Dosaje);
@@ -499,6 +502,49 @@ namespace DOP.Presupuestos.Ventanas
                     basePres.ColumnDefinitions[5].Width = new GridLength(0);
                     basePres.ColumnDefinitions[6].Width = new GridLength(0);
                     break;
+                }
+            }
+
+        private void PresupClick(object sender, RoutedEventArgs e)
+            {
+            // Si se selecciona solo Planilla
+            if (rbSoloPlanilla.IsChecked == true)
+                {
+                // Si ya está Planilla, no hacer nada
+                if (gPlanilla.Children.Count == 1 && gPlanilla.Children[0] == Planilla)
+                    return;
+
+                // Quitar Planilla de cualquier contenedor anterior
+                if (Planilla.Parent is Panel parentPanel)
+                    parentPanel.Children.Remove(Planilla);
+
+                gPlanilla.Children.Clear();
+                gPlanilla.Children.Add(Planilla);
+                }
+            // Si se selecciona PlanillaListado (ambos)
+            else if (rbPlanillaListado.IsChecked == true)
+                {
+                // Si ya está UcPlanillaListado, no hacer nada
+                if (gPlanilla.Children.Count == 1 && gPlanilla.Children[0] == PlanillaListado)
+                    return;
+
+                // Quitar Planilla y Listado de cualquier contenedor anterior
+                if (Planilla.Parent is Panel parentPanel1)
+                    parentPanel1.Children.Remove(Planilla);
+                if (Listado.Parent is Panel parentPanel2)
+                    parentPanel2.Children.Remove(Listado);
+
+                // Limpiar los grids internos de PlanillaListado
+                PlanillaListado.gridPlanilla.Children.Clear();
+                PlanillaListado.gridListado.Children.Clear();
+
+                // Agregar Planilla y Listado a los grids internos
+                PlanillaListado.gridPlanilla.Children.Add(Planilla);
+                PlanillaListado.gridListado.Children.Add(Listado);
+
+                // Limpiar el contenedor principal y agregar PlanillaListado
+                gPlanilla.Children.Clear();
+                gPlanilla.Children.Add(PlanillaListado);
                 }
             }
 
