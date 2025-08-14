@@ -65,6 +65,7 @@ namespace DOP.Presupuestos.Ventanas
             this.panelMaestro.Children.Add(Maestro);
             this.panelPrecios.Children.Add(Articulos);
 
+            this.Loaded += WiPresupuesto_Loaded;
 
             this.Closing += WiPresupuesto_Closing; // Suscribir el evento
             _presupuestosRef = presupuestosRef;
@@ -87,6 +88,25 @@ namespace DOP.Presupuestos.Ventanas
                 this.WindowState = WindowState.Maximized;
                 }
 
+            }
+
+
+        private void WiPresupuesto_Loaded(object sender, RoutedEventArgs e)
+            {
+            // Desuscribir el evento antes de cambiar el estado
+            colCodigo.IsCheckedChanged -= columnas_IsCheckedChanged;
+            colTipo.IsCheckedChanged -= columnas_IsCheckedChanged;
+            // ... repite para los que quieras dejar checked ...
+
+            // Establecer los valores iniciales
+            colMat.IsChecked = true;
+            colMDO.IsChecked = true;
+            // ... repite para los que quieras dejar checked ...
+
+            // Volver a suscribir el evento
+            colCodigo.IsCheckedChanged += columnas_IsCheckedChanged;
+            colTipo.IsCheckedChanged += columnas_IsCheckedChanged;
+            // ... repite para los que corresponda ...
             }
 
         private void WiPresupuesto_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
@@ -268,19 +288,6 @@ namespace DOP.Presupuestos.Ventanas
             Objeto.NumeraItems(Objeto.Arbol, "");
             }
 
-        private async void OInsumo_Click(object sender, RoutedEventArgs e)
-            {
-            var (success1, message1, insumos) = await DatosWeb.ObtenerInsumosPorUsuarioAsync(2);
-            if (success1)
-                {
-                foreach (var insumo in insumos)
-                    MessageBox.Show($"{insumo.ID} - {insumo.Descrip}");
-                }
-            else
-                {
-                MessageBox.Show($"Error: {message1}");
-                }
-            }
 
         private void SaleExcel_Click(object sender, RoutedEventArgs e)
             {
@@ -388,7 +395,7 @@ namespace DOP.Presupuestos.Ventanas
                     {
                     if (boton.Name == "Expandir")
                         {
-                        Planilla.grillaArbol.ExpandAllNodes();
+                        Planilla.ExpandeRubro();
                         }
                     else if (boton.Name == "Contraer")
                         {
@@ -561,7 +568,37 @@ namespace DOP.Presupuestos.Ventanas
                 }
             }
 
+
+        private void columnasDetalle_IsCheckedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+            {
+            // Determinar qué DropDownMenuItem disparó el evento
+            if (d is Syncfusion.Windows.Tools.Controls.DropDownMenuItem menuItem)
+                {
+                // Mapeo entre x:Name del menú y MappingName de la columna
+                var mapping = new Dictionary<string, string>
+        {
+            { "colCodigoDetalle", "ID" },
+            { "colTipoDetalle", "Tipo" },
+            { "colMatDetalle", "Materiales1" },
+            { "colMDODetalle", "ManodeObra1" },
+            { "colEqiDetalle", "Equipos1" },
+            { "colSubDetalle", "Subcontratos1" },
+            { "colOtrDetalle", "Otros1" }
+        };
+
+                if (mapping.TryGetValue(menuItem.Name, out string nombreCOL))
+                    {
+                    var column = Dosaje.grillaDetalle.Columns.FirstOrDefault(c => c.MappingName == nombreCOL);
+                    if (column != null)
+                        {
+                        column.IsHidden = !menuItem.IsChecked;
+                        }
+                    }
+                }
+            }
+
         }
+
     }
 
 

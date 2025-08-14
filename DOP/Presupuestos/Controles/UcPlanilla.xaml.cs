@@ -61,24 +61,21 @@ namespace DOP.Presupuestos.Controles
 
             //Objeto.sinCero();
 
-            //totMateriales1.Value = Objeto.Arbol.Sum(i => i.Materiales1);
-            //totMDO1.Value = Objeto.Arbol.Sum(i => i.ManodeObra1);
-            //totEquipos1.Value = Objeto.Arbol.Sum(i => i.Equipos1);
-            //totSubcontratos1.Value = Objeto.Arbol.Sum(i => i.Subcontratos1);
-            //totOtros1.Value = Objeto.Arbol.Sum(i => i.Otros1);
-            //totGeneral1.Value = Objeto.Arbol.Sum(i => i.Importe1);
             decimal totGeneral1 = Objeto.Arbol.Sum(i => i.Importe1);
             decimal totMateriales1 = Objeto.Arbol.Sum(i => i.Materiales1);
-            //decimal totalGeneralDol = Objeto.Arbol.Sum(i => i.Importe2);
+            decimal totManoDeObra1 = Objeto.Arbol.Sum(i => i.ManodeObra1);
+            decimal totEquipos1 = Objeto.Arbol.Sum(i => i.Equipos1);
+            decimal totSubcontratos1 = Objeto.Arbol.Sum(i => i.Subcontratos1);
+            decimal totOtros1 = Objeto.Arbol.Sum(i => i.Otros1);
 
             // Asignar el valor explícitamente al HeaderText
             var cultura = new CultureInfo("es-ES") { NumberFormat = { NumberGroupSeparator = ".", NumberDecimalSeparator = "," } };
             colImporte1.HeaderText = $"{totGeneral1.ToString("N2", cultura)}";
             colMateriales1.HeaderText = $"{totMateriales1.ToString("N2", cultura)}";
-            //Totales grillas
-            //listaInsumos.grillaInsumos.CalculateAggregates();
-            //this.GrillaArbol.CalculateAggregates();
-            //graficoInsumos.recalculo();}
+            colManoDeObra1.HeaderText = $"{totManoDeObra1.ToString("N2", cultura)}";
+            colEquipos1.HeaderText = $"{totEquipos1.ToString("N2", cultura)}";
+            colSubcontratos1.HeaderText = $"{totSubcontratos1.ToString("N2", cultura)}";
+            colOtros1.HeaderText = $"{totOtros1.ToString("N2", cultura)}";
 
             }
 
@@ -249,7 +246,7 @@ namespace DOP.Presupuestos.Controles
             return false;
             }
 
-        private void ExpandeRubro()
+        public void ExpandeRubro()
             {
             if (grillaArbol.View == null)
                 return;

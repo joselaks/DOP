@@ -95,11 +95,12 @@
                 FontSize="20"
                 FontWeight="Bold"
                 Text="Analisis de costo: " />
-            <TextBlock x:Name="nombreTarea" VerticalAlignment="Center"></TextBlock>
-    
+            <TextBlock x:Name="nombreTarea" VerticalAlignment="Center" />
+
         </StackPanel>
-        <syncfusion:SfTreeGrid Grid.Row="1"
+        <syncfusion:SfTreeGrid
             x:Name="grillaDetalle"
+            Grid.Row="1"
             AllowDraggingRows="True"
             AllowDrop="True"
             AllowEditing="True"
@@ -122,24 +123,26 @@
 
             <syncfusion:SfTreeGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Material" Click="MenuItem_Click"/>
-                    <MenuItem Header="Mano de obra" Click="MenuItem_Click"/>
-                    <MenuItem Header="Equipo" Click="MenuItem_Click"/>
-                    <MenuItem Header="Subcontrato" Click="MenuItem_Click"/>
-                    <MenuItem Header="Otro" Click="MenuItem_Click"/>
-                    <MenuItem Header="Auxiliar" Click="MenuItem_Click"/>
+                    <MenuItem Click="MenuItem_Click" Header="Material" />
+                    <MenuItem Click="MenuItem_Click" Header="Mano de obra" />
+                    <MenuItem Click="MenuItem_Click" Header="Equipo" />
+                    <MenuItem Click="MenuItem_Click" Header="Subcontrato" />
+                    <MenuItem Click="MenuItem_Click" Header="Otro" />
+                    <MenuItem Click="MenuItem_Click" Header="Auxiliar" />
 
                 </ContextMenu>
             </syncfusion:SfTreeGrid.ContextMenu>
 
             <syncfusion:SfTreeGrid.Columns>
-                
+
                 <syncfusion:TreeGridColumns>
-                    
+
 
                     <!--<syncfusion:TreeGridTextColumn Width="50" MappingName="OrdenInt" />-->
 
                     <syncfusion:TreeGridTextColumn
+                        x:Name="ID"
+                        HeaderText="Código"
                         Width="50"
                         IsHidden="True"
                         MappingName="ID" />
@@ -148,11 +151,13 @@
                     <syncfusion:TreeGridTemplateColumn
                         Width="30"
                         CellTemplateSelector="{StaticResource IconTemplateSelector}"
-                        HeaderText="Nat"
+                        HeaderText="Tipo"
                         MappingName="Tipo" />
 
 
                     <syncfusion:TreeGridTextColumn
+                        HeaderText="Tipo"
+                        x:Name="Tipo"
                         Width="50"
                         IsHidden="True"
                         MappingName="Tipo" />
@@ -200,6 +205,7 @@
 
 
                     <syncfusion:TreeGridNumericColumn
+                        x:Name="Materiales1"
                         Width="120"
                         IsHidden="True"
                         MappingName="Materiales1"
@@ -209,6 +215,7 @@
                         NumberGroupSizes="3" />
 
                     <syncfusion:TreeGridNumericColumn
+                        x:Name="ManodeObra1"
                         Width="120"
                         IsHidden="True"
                         MappingName="ManodeObra1"
@@ -218,6 +225,7 @@
                         NumberGroupSizes="3" />
 
                     <syncfusion:TreeGridNumericColumn
+                        x:Name="Equipos1"
                         Width="120"
                         IsHidden="True"
                         MappingName="Equipos1"
@@ -227,6 +235,7 @@
                         NumberGroupSizes="3" />
 
                     <syncfusion:TreeGridNumericColumn
+                        x:Name="Subcontratos1"
                         Width="120"
                         IsHidden="True"
                         MappingName="Subcontratos1"
@@ -236,6 +245,7 @@
                         NumberGroupSizes="3" />
 
                     <syncfusion:TreeGridNumericColumn
+                        x:Name="Otros1"
                         Width="120"
                         IsHidden="True"
                         MappingName="Otros1"

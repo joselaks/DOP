@@ -66,6 +66,10 @@
                 <syncfusion:StackedHeaderRow.StackedColumns>
                     <syncfusion:StackedColumn ChildColumns="Importe1" HeaderText="Total" />
                     <syncfusion:StackedColumn ChildColumns="Materiales1" HeaderText="Materiales" />
+                    <syncfusion:StackedColumn ChildColumns="ManodeObra1" HeaderText="Mano de Obra" />
+                    <syncfusion:StackedColumn ChildColumns="Equipos1" HeaderText="Equipos" />
+                    <syncfusion:StackedColumn ChildColumns="Subcontratos1" HeaderText="Subcontratos" />
+                    <syncfusion:StackedColumn ChildColumns="Otros1" HeaderText="Otros" />
                 </syncfusion:StackedHeaderRow.StackedColumns>
             </syncfusion:StackedHeaderRow>
         </syncfusion:SfTreeGrid.StackedHeaderRows>
@@ -163,7 +167,10 @@
                     NumberGroupSizes="3" />
 
                 <syncfusion:TreeGridNumericColumn
+                    x:Name="colManoDeObra1"
                     Width="120"
+                    CellStyle="{StaticResource TipoCellStyle}"
+                    HeaderText="{Binding totManoDeObra1}"
                     MappingName="ManodeObra1"
                     NumberDecimalDigits="2"
                     NumberDecimalSeparator=","
@@ -171,7 +178,10 @@
                     NumberGroupSizes="3" />
 
                 <syncfusion:TreeGridNumericColumn
+                    x:Name="colEquipos1"
                     Width="120"
+                    CellStyle="{StaticResource TipoCellStyle}"
+                    HeaderText="{Binding totEquipos1}"
                     MappingName="Equipos1"
                     NumberDecimalDigits="2"
                     NumberDecimalSeparator=","
@@ -179,7 +189,10 @@
                     NumberGroupSizes="3" />
 
                 <syncfusion:TreeGridNumericColumn
+                    x:Name="colSubcontratos1"
                     Width="120"
+                    CellStyle="{StaticResource TipoCellStyle}"
+                    HeaderText="{Binding totSubcontratos1}"
                     MappingName="Subcontratos1"
                     NumberDecimalDigits="2"
                     NumberDecimalSeparator=","
@@ -187,7 +200,10 @@
                     NumberGroupSizes="3" />
 
                 <syncfusion:TreeGridNumericColumn
+                    x:Name="colOtros1"
                     Width="120"
+                    CellStyle="{StaticResource TipoCellStyle}"
+                    HeaderText="{Binding totOtros1}"
                     IsHidden="True"
                     MappingName="Otros1"
                     NumberDecimalDigits="2"
@@ -195,7 +211,10 @@
                     NumberGroupSeparator="."
                     NumberGroupSizes="3" />
 
-                <syncfusion:TreeGridTextColumn Width="50" MappingName="Tipo" IsHidden="True" />
+                <syncfusion:TreeGridTextColumn
+                    Width="50"
+                    IsHidden="True"
+                    MappingName="Tipo" />
 
 
 

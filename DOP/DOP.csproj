@@ -19,6 +19,7 @@
     <None Remove="Imagenes\Dataobra.png" />
     <None Remove="Imagenes\Equipos.png" />
     <None Remove="Imagenes\Guardar.png" />
+    <None Remove="Imagenes\Guardar48.png" />
     <None Remove="Imagenes\Importar.png" />
     <None Remove="Imagenes\ManoDeObra.png" />
     <None Remove="Imagenes\Material.png" />
@@ -50,6 +51,7 @@
     <Resource Include="Imagenes\Dataobra.png" />
     <Resource Include="Imagenes\Equipos.png" />
     <Resource Include="Imagenes\Guardar.png" />
+    <Resource Include="Imagenes\Guardar48.png" />
     <Resource Include="Imagenes\Importar.png" />
     <Resource Include="Imagenes\ManoDeObra.png" />
     <Resource Include="Imagenes\Material.png" />
