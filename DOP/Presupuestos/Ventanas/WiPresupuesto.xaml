@@ -263,14 +263,6 @@
                 </syncfusion:RibbonBar>
 
                 <syncfusion:RibbonBar Header="Ventanas">
-
-                    <syncfusion:RibbonCheckBox
-                        x:Name="chkListados"
-                        Width="140"
-                        Checked="VentanasLaterales_Checked"
-                        Content="Listados"
-                        IsChecked="false"
-                        Unchecked="VentanasLaterales_Unchecked" />
                     <syncfusion:RibbonCheckBox
                         x:Name="chkMaestro"
                         Width="140"
@@ -355,8 +347,6 @@
                 <ColumnDefinition Width="0" />
                 <ColumnDefinition Width="0" />
                 <ColumnDefinition Width="0" />
-                <ColumnDefinition Width="0" />
-                <ColumnDefinition Width="0" />
             </Grid.ColumnDefinitions>
             <Grid Grid.Row="0" Grid.Column="0"  x:Name="gPlanilla">
                 
@@ -378,8 +368,9 @@
 
             <!--  Laterales  -->
 
+
             <syncfusion:SfGridSplitter
-                x:Name="sepListado"
+                x:Name="sepMaestro"
                 Grid.RowSpan="3"
                 Grid.Column="1"
                 Width="5"
@@ -390,14 +381,13 @@
                 ShowsPreview="True" />
 
             <Grid
-                x:Name="panelListado"
+                x:Name="panelMaestro"
                 Grid.RowSpan="3"
                 Grid.Column="2" />
 
 
-
             <syncfusion:SfGridSplitter
-                x:Name="sepMaestro"
+                x:Name="sepPrecios"
                 Grid.RowSpan="3"
                 Grid.Column="3"
                 Width="5"
@@ -408,26 +398,9 @@
                 ShowsPreview="True" />
 
             <Grid
-                x:Name="panelMaestro"
-                Grid.RowSpan="3"
-                Grid.Column="4" />
-
-
-            <syncfusion:SfGridSplitter
-                x:Name="sepPrecios"
-                Grid.RowSpan="3"
-                Grid.Column="5"
-                Width="5"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Stretch"
-                EnableCollapseButton="True"
-                ResizeBehavior="PreviousAndNext"
-                ShowsPreview="True" />
-
-            <Grid
                 x:Name="panelPrecios"
                 Grid.RowSpan="3"
-                Grid.Column="6" />
+                Grid.Column="4" />
 
         </Grid>
 

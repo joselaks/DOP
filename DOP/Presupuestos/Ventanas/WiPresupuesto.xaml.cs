@@ -64,7 +64,6 @@ namespace DOP.Presupuestos.Ventanas
 
             this.gPlanilla.Children.Add(Planilla);
             this.panelDetalle.Children.Add(Dosaje);
-            this.panelListado.Children.Add(Listado);
             this.panelMaestro.Children.Add(Maestro);
             this.panelPrecios.Children.Add(Articulos);
 
@@ -462,17 +461,13 @@ namespace DOP.Presupuestos.Ventanas
             // Filtra por el x:Name del RibbonCheckBox
             switch (checkBox.Name)
                 {
-                case "chkListados":
-                    basePres.ColumnDefinitions[1].Width = GridLength.Auto;
-                    basePres.ColumnDefinitions[2].Width = _panelListadoUserWidth ?? new GridLength(300);
-                    break;
                 case "chkMaestro":
-                    basePres.ColumnDefinitions[3].Width = GridLength.Auto;
-                    basePres.ColumnDefinitions[4].Width = _panelMaestroUserWidth ?? new GridLength(300);
+                    basePres.ColumnDefinitions[1].Width = GridLength.Auto;
+                    basePres.ColumnDefinitions[2].Width = _panelMaestroUserWidth ?? new GridLength(300);
                     break;
                 case "chkPrecios":
-                    basePres.ColumnDefinitions[5].Width = GridLength.Auto;
-                    basePres.ColumnDefinitions[6].Width = _panelPreciosUserWidth ?? new GridLength(300);
+                    basePres.ColumnDefinitions[3].Width = GridLength.Auto;
+                    basePres.ColumnDefinitions[4].Width = _panelPreciosUserWidth ?? new GridLength(300);
                     break;
                 }
             }
@@ -484,23 +479,13 @@ namespace DOP.Presupuestos.Ventanas
 
             switch (checkBox.Name)
                 {
-                case "chkListados":
-                    if (basePres.ColumnDefinitions[2].Width.Value != 0)
-                        _panelListadoUserWidth = basePres.ColumnDefinitions[2].Width;
+                case "chkMaestro":
                     basePres.ColumnDefinitions[1].Width = new GridLength(0);
                     basePres.ColumnDefinitions[2].Width = new GridLength(0);
                     break;
-                case "chkMaestro":
-                    if (basePres.ColumnDefinitions[4].Width.Value != 0)
-                        _panelMaestroUserWidth = basePres.ColumnDefinitions[4].Width;
+                case "chkPrecios":
                     basePres.ColumnDefinitions[3].Width = new GridLength(0);
                     basePres.ColumnDefinitions[4].Width = new GridLength(0);
-                    break;
-                case "chkPrecios":
-                    if (basePres.ColumnDefinitions[6].Width.Value != 0)
-                        _panelPreciosUserWidth = basePres.ColumnDefinitions[6].Width;
-                    basePres.ColumnDefinitions[5].Width = new GridLength(0);
-                    basePres.ColumnDefinitions[6].Width = new GridLength(0);
                     break;
                 }
             }
@@ -557,7 +542,6 @@ namespace DOP.Presupuestos.Ventanas
                     {
                     case "rbPlanilla":
                         chkDetalle.IsChecked = false;
-                        chkListados.IsChecked = false;
                         chkMaestro.IsChecked = false;   
                         chkPrecios.IsChecked = false;
                         radio.IsChecked = true;
@@ -565,7 +549,6 @@ namespace DOP.Presupuestos.Ventanas
 
                     case "rbPresupuesto":
                         chkDetalle.IsChecked = true;
-                        chkListados.IsChecked = true;
                         chkMaestro.IsChecked = false;
                         chkPrecios.IsChecked = false;
                         radio.IsChecked = true;
@@ -573,7 +556,6 @@ namespace DOP.Presupuestos.Ventanas
 
                     case "rbMaestro":
                         chkDetalle.IsChecked = true;
-                        chkListados.IsChecked = false;
                         chkMaestro.IsChecked = true;
                         chkPrecios.IsChecked = false;
                         radio.IsChecked = true;
