@@ -497,6 +497,11 @@ namespace DOP.Presupuestos.Ventanas
 
         private void PresupClick(object sender, RoutedEventArgs e)
             {
+
+            chkDetalle.IsChecked = false;
+            chkMaestro.IsChecked = false;
+            chkPrecios.IsChecked = false;
+
             // Si se selecciona solo Planilla
             if (rbSoloPlanilla.IsChecked == true)
                 {
@@ -510,10 +515,18 @@ namespace DOP.Presupuestos.Ventanas
 
                 gPlanilla.Children.Clear();
                 gPlanilla.Children.Add(Planilla);
+
                 }
-            // Si se selecciona PlanillaListado (ambos)
-            else if (rbPlanillaListado.IsChecked == true)
+            // Si se selecciona PlanillaListado (ambos) o PresupuestoCompleto
+            else if (rbPlanillaListado.IsChecked == true || rbPresupuestoCompleto.IsChecked == true)
                 {
+
+                // Si es PresupuestoCompleto, marcar Maestro
+                if (rbPresupuestoCompleto.IsChecked == true)
+                    {
+                    chkMaestro.IsChecked = true;
+                    }
+
                 // Si ya está UcPlanillaListado, no hacer nada
                 if (gPlanilla.Children.Count == 1 && gPlanilla.Children[0] == PlanillaListado)
                     return;
@@ -535,6 +548,10 @@ namespace DOP.Presupuestos.Ventanas
                 // Limpiar el contenedor principal y agregar PlanillaListado
                 gPlanilla.Children.Clear();
                 gPlanilla.Children.Add(PlanillaListado);
+
+                // Desmarcar los checkboxes de detalle, maestro y precios
+                chkDetalle.IsChecked = true;
+               
                 }
             }
 

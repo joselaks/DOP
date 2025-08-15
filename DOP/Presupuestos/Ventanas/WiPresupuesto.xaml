@@ -92,7 +92,7 @@
                         Click="PresupClick"
                         Content="Solo Planilla"
                         GroupName="ComboGroup"
-                        IsChecked="False" />
+                        IsChecked="True" />
                     <RadioButton
                         x:Name="rbPlanillaListado"
                         Margin="5,0,5,0"
@@ -267,8 +267,7 @@
 
                 <syncfusion:RibbonBar
                     Name="Respond"
-                    Width="190"
-                    Header="Varios">
+                    Header="Operaciones">
                     <syncfusion:RibbonButton
                         x:Name="Recalculo"
                         Click="Recalculo_Click"
@@ -323,32 +322,9 @@
 
                 </syncfusion:RibbonBar>
 
-                <syncfusion:RibbonBar Header="Combos">
-                    <RadioButton
-                        x:Name="rbPlanilla"
-                        Margin="5,0,5,0"
-                        Click="Combo_Click"
-                        Content="Solo Planilla"
-                        GroupName="ComboGroup"
-                        IsChecked="False" />
-                    <RadioButton
-                        x:Name="rbPresupuesto"
-                        Margin="5,0,5,0"
-                        Click="Combo_Click"
-                        Content="Presupuesto completo"
-                        GroupName="ComboGroup"
-                        IsChecked="False" />
-                    <RadioButton
-                        x:Name="rbMaestro"
-                        Margin="5,0,5,0"
-                        Click="Combo_Click"
-                        Content="Presupuesto y Maestro"
-                        GroupName="ComboGroup"
-                        IsChecked="False" />
+              
 
-                </syncfusion:RibbonBar>
-
-                <syncfusion:RibbonBar Header="Filtros" />
+             
 
 
 
