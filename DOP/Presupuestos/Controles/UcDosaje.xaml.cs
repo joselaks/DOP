@@ -1,4 +1,5 @@
 ﻿using Bibioteca.Clases;
+using DOP.Presupuestos.Clases;
 using Syncfusion.UI.Xaml.Grid;
 using Syncfusion.UI.Xaml.TreeGrid;
 using System;
@@ -41,6 +42,73 @@ namespace DOP.Presupuestos.Controles
             this.grillaDetalle.ChildPropertyName = "Inferiores";
             //Este evento se ejecuta cada vez que haya un recalculo en el arbol del presupuesto
             Objeto.RecalculoFinalizado += Presupuesto_RecalculoFinalizado;
+            this.grillaDetalle.RowDragDropController.Drop += RowDragDropController_Drop;
+            this.grillaDetalle.RowDragDropController.DragStart += RowDragDropController_DragStart;
+            }
+
+        private UserControl GetParentUserControl(DependencyObject child)
+            {
+            DependencyObject parent = VisualTreeHelper.GetParent(child);
+            while (parent != null && !(parent is UserControl))
+                {
+                parent = VisualTreeHelper.GetParent(parent);
+                }
+            return parent as UserControl;
+            }
+
+        private void RowDragDropController_DragStart(object? sender, TreeGridRowDragStartEventArgs e)
+            {
+            DragDropContext.DragSourceUserControl = GetParentUserControl(this.grillaDetalle);
+
+            }
+
+        private void RowDragDropController_Drop(object? sender, TreeGridRowDropEventArgs e)
+            {
+            e.Handled = true;
+            Nodo nodoMovido = null;
+            Nodo nodoReceptor = null;
+            bool esDragDeMaestro = DragDropContext.DragSourceUserControl is UcMaestro;
+            bool esDragDeListadoo = DragDropContext.DragSourceUserControl is UcListado;
+
+            // Solo permitir tipos válidos
+            var tiposPermitidos = new[] { "M", "D", "E", "S", "O", "A" };
+
+            if (e.DraggingNodes != null && e.DraggingNodes.Count > 0)
+                {
+                    var nodoOriginal = e.DraggingNodes[0].Item as Nodo;
+                    nodoMovido = Objeto.clonar(nodoOriginal, true);
+                    }
+
+            // Validar tipo permitido
+            if (nodoMovido == null || !tiposPermitidos.Contains(nodoMovido.Tipo))
+                {
+                MessageBox.Show("Solo se pueden arrastrar nodos de tipo Material, Mano de obra, Equipo, Subcontrato, Otro o Auxiliar.", "Tipo no permitido", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+                }
+
+            if (e.TargetNode != null)
+                {
+                nodoReceptor = e.TargetNode.Item as Nodo;
+                var tipoReceptor = nodoReceptor?.Tipo;
+
+                // Si el receptor es "A", agregar como hijo
+                if (tipoReceptor == "A")
+                    {
+                    nodoReceptor.Inferiores.Add(nodoMovido);
+                    }
+                else
+                    {
+                    // Si el receptor NO es "A", agregar a la raíz
+                    NodoAnalizado.Inferiores.Add(nodoMovido);
+                    }
+                }
+            else
+                {
+                // Si no hay nodo receptor, agregar a la raíz
+                NodoAnalizado.Inferiores.Add(nodoMovido);
+                }
+
+            DragDropContext.DragSourceUserControl = null;
             }
 
         private void Presupuesto_RecalculoFinalizado(object sender, EventArgs e)

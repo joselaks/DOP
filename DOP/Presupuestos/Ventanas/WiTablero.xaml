@@ -120,12 +120,34 @@
                                 <RowDefinition Height="30" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
-
+                            <StackPanel
+                                Margin="0,0,0,0"
+                                HorizontalAlignment="Left"
+                                Orientation="Horizontal">
+                                <Button
+                                    Name="btnNuevo"
+                                    Width="80"
+                                    Margin="2"
+                                    Click="BtnNuevo_Click"
+                                    Content="Nuevo" />
+                                <Button
+                                    Name="btnEditar"
+                                    Width="80"
+                                    Margin="2"
+                                    Click="btnEditar_Click"
+                                    Content="Editar" />
+                                <Button
+                                    Name="btnBorrar"
+                                    Width="80"
+                                    Margin="2"
+                                    Click="btnBorrar_Click"
+                                    Content="Borrar" />
+                            </StackPanel>
                             <Grid Grid.Row="2">
                                 <syncfusion:SfDataGrid
                                     Name="GrillaPresupuestos"
-                                    AutoGenerateColumns="False"
                                     AllowResizingColumns="True"
+                                    AutoGenerateColumns="False"
                                     IsReadOnly="True"
                                     MouseDoubleClick="GrillaPresupuestos_MouseDoubleClick">
                                     <syncfusion:SfDataGrid.ContextMenu>
@@ -164,7 +186,7 @@
                                             HeaderText="Importe"
                                             MappingName="PrEjecTotal"
                                             TextAlignment="Right" />
-                                        
+
                                     </syncfusion:SfDataGrid.Columns>
                                 </syncfusion:SfDataGrid>
 
@@ -185,10 +207,7 @@
                 Grid.Row="2"
                 Height="30"
                 Margin="5,0,5,5"
-                Orientation="Horizontal">
-                
-
-            </StackPanel>
+                Orientation="Horizontal" />
         </Grid>
     </Border>
 </Window>

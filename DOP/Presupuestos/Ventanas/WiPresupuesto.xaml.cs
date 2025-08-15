@@ -6,6 +6,7 @@ using DOP.Datos;
 using DOP.Presupuestos.Clases;
 using DOP.Presupuestos.Controles;
 using Microsoft.Win32;
+using Syncfusion.UI.Xaml.TreeGrid;
 using Syncfusion.Windows.Shared;
 using Syncfusion.Windows.Tools.Controls;
 using Syncfusion.XlsIO;
@@ -269,6 +270,18 @@ namespace DOP.Presupuestos.Ventanas
                             else
                                 {
                                 Objeto.agregaNodo("T", sele);
+
+
+                                // Obtener la vista del árbol
+                                var view = Planilla.grillaArbol.View;
+                                if (view != null && sele != null)
+                                    {
+                                    var node = FindNodeByData(view.Nodes, sele);
+                                    if (node != null && !node.IsExpanded)
+                                        {
+                                        Planilla.grillaArbol.ExpandNode(node);
+                                        }
+                                    }
                                 }
                             }
                         break;
@@ -277,6 +290,19 @@ namespace DOP.Presupuestos.Ventanas
                         break;
                     }
                 }
+            }
+
+        private TreeNode? FindNodeByData(IEnumerable<TreeNode> nodes, object data)
+            {
+            foreach (var node in nodes)
+                {
+                if (node.Item == data) // Cambia aquí 'Item' si es necesario
+                    return node;
+                var found = FindNodeByData(node.ChildNodes, data);
+                if (found != null)
+                    return found;
+                }
+            return null;
             }
 
         private void Recalculo_Click(object sender, RoutedEventArgs e)

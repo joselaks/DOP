@@ -226,6 +226,14 @@ namespace DOP.Presupuestos.Controles
         // Le hemos agregado un evento Loaded al TreeGrid para aplicar el filtro una vez que la vista se haya cargado.
         private void GrillaArbol_Loaded(object sender, RoutedEventArgs e)
             {
+            int inicio = 0;
+
+            colImporte1.HeaderText = $"{inicio.ToString("N2", cultura)}";
+            colMateriales1.HeaderText = $"{inicio.ToString("N2", cultura)}";
+            colManoDeObra1.HeaderText = $"{inicio.ToString("N2", cultura)}";
+            colEquipos1.HeaderText = $"{inicio.ToString("N2", cultura)}";
+            colSubcontratos1.HeaderText = $"{inicio.ToString("N2", cultura)}";
+            colOtros1.HeaderText = $"{inicio.ToString("N2", cultura)}";
 
             if (this.grillaArbol.View != null)
                 {

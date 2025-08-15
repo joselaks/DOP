@@ -79,8 +79,12 @@ namespace DOP.Presupuestos.Ventanas
 
         private void btnVacio_Click(object sender, RoutedEventArgs e)
         {
+            var win = new WiPresupuesto(null, null, null, _presupuestosRef);
+            win.Owner = this.Owner;
+            win.Show();
+            this.Close();
 
-        }
+            }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {

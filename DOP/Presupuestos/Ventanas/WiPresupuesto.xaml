@@ -112,7 +112,14 @@
                         x:Name="rbPlanillaListado"
                         Margin="5,0,5,0"
                         Click="PresupClick"
-                        Content="Presupuesto completo"
+                        Content="Presupuesto y Listado"
+                        GroupName="ComboGroup"
+                        IsChecked="False" />
+                    <RadioButton
+                        x:Name="rbPresupuestoCompleto"
+                        Margin="5,0,5,0"
+                        Click="PresupClick"
+                        Content="Presupuesto Completo"
                         GroupName="ComboGroup"
                         IsChecked="False" />
 

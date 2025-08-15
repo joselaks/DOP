@@ -268,6 +268,70 @@ namespace DOP.Presupuestos.Ventanas
             {
 
             }
+
+        private void BtnNuevo_Click(object sender, RoutedEventArgs e)
+            {
+            var ventana = new WiNuevoPres(_presupuestos)
+                {
+                Owner = this,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
+                };
+            ventana.ShowDialog();
+            }
+
+        private async void btnEditar_Click(object sender, RoutedEventArgs e)
+            {
+            if (GrillaPresupuestos.SelectedItem is PresupuestoDTO seleccionado && seleccionado.ID.HasValue)
+                {
+                // Obtener conceptos y relaciones antes de abrir la ventana
+                var (ok, msg, conceptos, relaciones) = await DatosWeb.ObtenerConceptosYRelacionesAsync(seleccionado.ID.Value);
+                if (ok)
+                    {
+                    // Aquí puedes pasar conceptos y relaciones a la ventana WiPresupuesto si lo necesitas
+                    var wiPresupuesto = new WiPresupuesto(seleccionado, conceptos, relaciones, _presupuestos);
+                    wiPresupuesto.Owner = this;
+                    wiPresupuesto.ShowDialog();
+                    // Si necesitas usar conceptos y relaciones después, puedes hacerlo aquí
+                    }
+                else
+                    {
+                    MessageBox.Show($"No se pudieron obtener los datos del presupuesto.\n{msg}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            else
+                {
+                MessageBox.Show("Seleccione un presupuesto para editar.", "Atención", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+
+        private async void btnBorrar_Click(object sender, RoutedEventArgs e)
+            {
+            if (GrillaPresupuestos.SelectedItem is PresupuestoDTO eliminar && eliminar.ID.HasValue)
+                {
+                var result = MessageBox.Show("¿Está seguro que desea eliminar el presupuesto seleccionado?", "Confirmar", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                    {
+                    var (success, message) = await DatosWeb.BorrarPresupuestoAsync(eliminar.ID.Value);
+                    if (success)
+                        {
+                        // Quitar de la colección y refrescar la grilla
+                        _presupuestos.Remove(eliminar);
+                        GrillaPresupuestos.ItemsSource = null;
+                        GrillaPresupuestos.ItemsSource = _presupuestos;
+                        MessageBox.Show(message, "Eliminado", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                    else
+                        {
+                        MessageBox.Show($"No se pudo eliminar el presupuesto.\n{message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                }
+            else
+                {
+                MessageBox.Show("Seleccione un presupuesto para eliminar.", "Atención", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+
+            }
         }
 
 
