@@ -208,9 +208,20 @@
                         x:Name="chkListado"
                         Width="140"
                         Checked="VentanaListado_Checked"
-                        Content="Ver"
+                        Content="Ver listado de insumos"
                         IsChecked="false"
                         Unchecked="VentanaListado_Unchecked" />
+
+                    <syncfusion:RibbonComboBox
+                        Width="100"
+                        Label="Formato"
+                        ToolTip="Seleccionar formato">
+                        <syncfusion:RibbonComboBoxItem Content="Materiales" />
+                        <syncfusion:RibbonComboBoxItem Content="Mano de Obra" />
+                        <syncfusion:RibbonComboBoxItem Content="Equipos" />
+                        <syncfusion:RibbonComboBoxItem Content="Subcontratos" />
+                        <syncfusion:RibbonComboBoxItem Content="Otros" />
+                    </syncfusion:RibbonComboBox>
 
                     <syncfusion:DropDownButtonAdv
                         x:Name="dropColumnasListado"
@@ -219,21 +230,19 @@
                         SmallIcon="pack://application:,,,/Imagenes/Columnas24.png"
                         StayDropDownOnClick="True"
                         ToolTip="Visualizar columnas">
-                        <syncfusion:DropDownMenuGroup IsResizable="True">
-                           
-                        </syncfusion:DropDownMenuGroup>
+                        <syncfusion:DropDownMenuGroup IsResizable="True" />
                     </syncfusion:DropDownButtonAdv>
 
 
                 </syncfusion:RibbonBar>
 
 
-                <syncfusion:RibbonBar Width="120" Header="Detalle">
+                <syncfusion:RibbonBar Width="140" Header="Detalle">
                     <syncfusion:RibbonCheckBox
                         x:Name="chkDetalle"
                         Width="140"
                         Checked="VentanaDetalle_Checked"
-                        Content="Ver"
+                        Content="Ver Análisis de costo"
                         IsChecked="false"
                         Unchecked="VentanaDetalle_Unchecked" />
 
@@ -287,6 +296,25 @@
 
                 </syncfusion:RibbonBar>
 
+                <syncfusion:RibbonBar Width="140" Header="Maestro">
+                    <syncfusion:RibbonCheckBox
+                        x:Name="chkMaestro"
+                        Width="140"
+                        Checked="VentanasLaterales_Checked"
+                        Content="Maestro"
+                        IsChecked="false"
+                        Unchecked="VentanasLaterales_Unchecked" />
+
+                    <syncfusion:RibbonCheckBox
+                        x:Name="chkPrecios"
+                        Width="140"
+                        Checked="VentanasLaterales_Checked"
+                        Content="Precios"
+                        IsChecked="false"
+                        Unchecked="VentanasLaterales_Unchecked" />
+
+                </syncfusion:RibbonBar>
+
                 <syncfusion:RibbonBar Name="Respond" Header="Operaciones">
                     <syncfusion:RibbonButton
                         x:Name="Recalculo"
@@ -320,34 +348,7 @@
                         SizeForm="Small"
                         SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
                 </syncfusion:RibbonBar>
-
-
-                <syncfusion:RibbonBar Header="Ventanas">
-                    <syncfusion:RibbonCheckBox
-                        x:Name="chkMaestro"
-                        Width="140"
-                        Checked="VentanasLaterales_Checked"
-                        Content="Maestro"
-                        IsChecked="false"
-                        Unchecked="VentanasLaterales_Unchecked" />
-
-                    <syncfusion:RibbonCheckBox
-                        x:Name="chkPrecios"
-                        Width="140"
-                        Checked="VentanasLaterales_Checked"
-                        Content="Precios"
-                        IsChecked="false"
-                        Unchecked="VentanasLaterales_Unchecked" />
-
-
-                </syncfusion:RibbonBar>
-
-
-
-
-
-
-
+                
             </syncfusion:RibbonTab>
 
 

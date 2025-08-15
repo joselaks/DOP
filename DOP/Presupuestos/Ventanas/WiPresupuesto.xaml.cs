@@ -20,6 +20,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -412,53 +413,74 @@ namespace DOP.Presupuestos.Ventanas
                 }
             }
 
+        private void VentanaListado_Checked(object sender, RoutedEventArgs e)
+            {
+            desmarca();
+            // Si ya está UcPlanillaListado, no hacer nada
+            if (gPlanilla.Children.Count == 1 && gPlanilla.Children[0] == PlanillaListado)
+                return;
+
+            // Quitar Planilla y Listado de cualquier contenedor anterior
+            if (Planilla.Parent is Panel parentPanel1)
+                parentPanel1.Children.Remove(Planilla);
+            if (Listado.Parent is Panel parentPanel2)
+                parentPanel2.Children.Remove(Listado);
+
+            // Limpiar los grids internos de PlanillaListado
+            PlanillaListado.gridPlanilla.Children.Clear();
+            PlanillaListado.gridListado.Children.Clear();
+
+            // Agregar Planilla y Listado a los grids internos
+            PlanillaListado.gridPlanilla.Children.Add(Planilla);
+            PlanillaListado.gridListado.Children.Add(Listado);
+
+            // Limpiar el contenedor principal y agregar PlanillaListado
+            gPlanilla.Children.Clear();
+            gPlanilla.Children.Add(PlanillaListado);
+
+            }
+
+        private void VentanaListado_Unchecked(object sender, RoutedEventArgs e)
+            {
+            desmarca();
+            // Si ya está Planilla, no hacer nada
+            if (gPlanilla.Children.Count == 1 && gPlanilla.Children[0] == Planilla)
+                    return;
+
+                // Quitar Planilla de cualquier contenedor anterior
+                if (Planilla.Parent is Panel parentPanel)
+                    parentPanel.Children.Remove(Planilla);
+
+                gPlanilla.Children.Clear();
+                gPlanilla.Children.Add(Planilla);
+            }
 
 
 
         private void VentanaDetalle_Checked(object sender, RoutedEventArgs e)
             {
-            if (sender is CheckBox checkBox)
-                {
-                // Filtra por el x:Name del CheckBox
-                if (checkBox.Name == "chkDetalle")
-                    {
-                    basePres.RowDefinitions[1].Height = GridLength.Auto;   // sepDetalle
+            desmarca();
+            basePres.RowDefinitions[1].Height = GridLength.Auto;   // sepDetalle
                     var row = basePres.RowDefinitions[2];
                     if (row.Height.Value == 0)
                         {
                         row.Height = _panelDetalleUserHeight ?? new GridLength(200);
                         }
-                    }
-                // Si tienes más CheckBox para otros detalles, puedes agregar más condiciones aquí
-                }
             }
 
         private void VentanaDetalle_Unchecked(object sender, RoutedEventArgs e)
             {
-            if (sender is CheckBox checkBox)
-                {
-                if (checkBox.Name == "chkDetalle")
-                    {
-                    basePres.RowDefinitions[1].Height = new GridLength(0); // sepDetalle
+            desmarca();
+            basePres.RowDefinitions[1].Height = new GridLength(0); // sepDetalle
                     var row = basePres.RowDefinitions[2];
                     if (row.Height.Value != 0)
                         _panelDetalleUserHeight = row.Height;
                     row.Height = new GridLength(0);
-                    }
-                }
             }
 
         private void VentanasLaterales_Checked(object sender, RoutedEventArgs e)
             {
-
-            // Desmarcar todos los RadioButton del grupo ComboGroup
-            var radioNames = new[] { "rbPlanilla", "rbPresupuesto", "rbMaestro" };
-            foreach (var name in radioNames)
-                {
-                var radio = this.FindName(name) as RadioButton;
-                if (radio != null)
-                    radio.IsChecked = false;
-                }
+            desmarca();
 
             var checkBox = sender as Syncfusion.Windows.Tools.Controls.RibbonCheckBox;
             if (checkBox == null) return;
@@ -479,6 +501,7 @@ namespace DOP.Presupuestos.Ventanas
 
         private void VentanasLaterales_Unchecked(object sender, RoutedEventArgs e)
             {
+            desmarca();
             var checkBox = sender as Syncfusion.Windows.Tools.Controls.RibbonCheckBox;
             if (checkBox == null) return;
 
@@ -497,62 +520,39 @@ namespace DOP.Presupuestos.Ventanas
 
         private void PresupClick(object sender, RoutedEventArgs e)
             {
+            // Guardar el origen del click
+            string sele = "";
+            var origen = sender as ToggleButton;
+            // Si no es ToggleButton (por ejemplo, un Button normal), puedes adaptarlo según tu caso
+            //if (rbSoloPlanilla.IsChecked == true) sele= "Planilla";
+            if (rbPlanillaListado.IsChecked == true) sele = "Listado";
+            if (rbPresupuestoCompleto.IsChecked == true) sele = "Maestro";
+
 
             chkDetalle.IsChecked = false;
             chkMaestro.IsChecked = false;
             chkPrecios.IsChecked = false;
+            chkListado.IsChecked = false;
 
-            // Si se selecciona solo Planilla
-            if (rbSoloPlanilla.IsChecked == true)
-                {
-                // Si ya está Planilla, no hacer nada
-                if (gPlanilla.Children.Count == 1 && gPlanilla.Children[0] == Planilla)
-                    return;
-
-                // Quitar Planilla de cualquier contenedor anterior
-                if (Planilla.Parent is Panel parentPanel)
-                    parentPanel.Children.Remove(Planilla);
-
-                gPlanilla.Children.Clear();
-                gPlanilla.Children.Add(Planilla);
-
-                }
             // Si se selecciona PlanillaListado (ambos) o PresupuestoCompleto
-            else if (rbPlanillaListado.IsChecked == true || rbPresupuestoCompleto.IsChecked == true)
+            if (sele =="Listado" || sele =="Maestro")
                 {
 
                 // Si es PresupuestoCompleto, marcar Maestro
-                if (rbPresupuestoCompleto.IsChecked == true)
+                if (sele=="Maestro")
                     {
                     chkMaestro.IsChecked = true;
                     }
 
-                // Si ya está UcPlanillaListado, no hacer nada
-                if (gPlanilla.Children.Count == 1 && gPlanilla.Children[0] == PlanillaListado)
-                    return;
-
-                // Quitar Planilla y Listado de cualquier contenedor anterior
-                if (Planilla.Parent is Panel parentPanel1)
-                    parentPanel1.Children.Remove(Planilla);
-                if (Listado.Parent is Panel parentPanel2)
-                    parentPanel2.Children.Remove(Listado);
-
-                // Limpiar los grids internos de PlanillaListado
-                PlanillaListado.gridPlanilla.Children.Clear();
-                PlanillaListado.gridListado.Children.Clear();
-
-                // Agregar Planilla y Listado a los grids internos
-                PlanillaListado.gridPlanilla.Children.Add(Planilla);
-                PlanillaListado.gridListado.Children.Add(Listado);
-
-                // Limpiar el contenedor principal y agregar PlanillaListado
-                gPlanilla.Children.Clear();
-                gPlanilla.Children.Add(PlanillaListado);
-
-                // Desmarcar los checkboxes de detalle, maestro y precios
                 chkDetalle.IsChecked = true;
-               
+
+                
+                chkDetalle.IsChecked = true;
+                chkPrecios.IsChecked = true;
+                chkListado.IsChecked = true;
                 }
+            // Volver a marcar el origen al final
+            if (origen != null) origen.IsChecked = true;
             }
 
 
@@ -671,6 +671,21 @@ namespace DOP.Presupuestos.Ventanas
                 }
 
             }
+
+        private void desmarca()
+            {
+            // Desmarcar todos los RadioButton del grupo ComboGroup
+            var radioNames = new[] { "rbSoloPlanilla", "rbPlanillaListado", "rbPresupuestoCompleto" };
+            foreach (var name in radioNames)
+                {
+                var radio = this.FindName(name) as RadioButton;
+                if (radio != null)
+                    radio.IsChecked = false;
+                }
+
+
+            }
+
         }
 
     }
