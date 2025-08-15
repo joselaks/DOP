@@ -1,5 +1,4 @@
-﻿using DOP.Presupuestos.Controles;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,16 +14,16 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace DataObra.Presupuestos.Controles
-    {
+{
     /// <summary>
-    /// Lógica de interacción para UcPlanillaListado.xaml
+    /// Lógica de interacción para UcModeloPrecios.xaml
     /// </summary>
-    public partial class UcPlanillaListado : UserControl
+    public partial class UcMaestroPrecios : UserControl
+    {
+        public UcMaestroPrecios()
         {
-        public UcPlanillaListado()
-            {
             InitializeComponent();
-            
+
             }
         }
-    }
+}

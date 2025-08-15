@@ -156,7 +156,7 @@
 
                     <syncfusion:DropDownButtonAdv
                         x:Name="dropColumnas"
-                        Width="100"
+                        Width="140"
                         Label="Columnas"
                         SmallIcon="pack://application:,,,/Imagenes/Columnas24.png"
                         StayDropDownOnClick="True"
@@ -213,9 +213,15 @@
                         Unchecked="VentanaListado_Unchecked" />
 
                     <syncfusion:RibbonComboBox
-                        Width="100"
+                        Width="140"
                         Label="Formato"
+                        SelectedIndex="0"
                         ToolTip="Seleccionar formato">
+
+                        <!--  Marca de agua  -->
+                        <syncfusion:RibbonComboBoxItem Content="Tipo de insumo" IsEnabled="False" />
+
+                        <!--  Opciones reales  -->
                         <syncfusion:RibbonComboBoxItem Content="Materiales" />
                         <syncfusion:RibbonComboBoxItem Content="Mano de Obra" />
                         <syncfusion:RibbonComboBoxItem Content="Equipos" />
@@ -225,7 +231,7 @@
 
                     <syncfusion:DropDownButtonAdv
                         x:Name="dropColumnasListado"
-                        Width="100"
+                        Width="140"
                         Label="Columnas"
                         SmallIcon="pack://application:,,,/Imagenes/Columnas24.png"
                         StayDropDownOnClick="True"
@@ -237,7 +243,7 @@
                 </syncfusion:RibbonBar>
 
 
-                <syncfusion:RibbonBar Width="140" Header="Detalle">
+                <syncfusion:RibbonBar Width="150" Header="Detalle">
                     <syncfusion:RibbonCheckBox
                         x:Name="chkDetalle"
                         Width="140"
@@ -248,7 +254,7 @@
 
                     <syncfusion:DropDownButtonAdv
                         x:Name="dropColumnasDetalle"
-                        Width="100"
+                        Width="140"
                         Label="Columnas"
                         SmallIcon="pack://application:,,,/Imagenes/Columnas24.png"
                         StayDropDownOnClick="True"
@@ -296,22 +302,23 @@
 
                 </syncfusion:RibbonBar>
 
-                <syncfusion:RibbonBar Width="140" Header="Maestro">
+                <syncfusion:RibbonBar Width="150" Header="Maestro">
                     <syncfusion:RibbonCheckBox
                         x:Name="chkMaestro"
                         Width="140"
-                        Checked="VentanasLaterales_Checked"
-                        Content="Maestro"
+                        Checked="Maestro_Checked"
+                        Content="Ver Maestro"
                         IsChecked="false"
-                        Unchecked="VentanasLaterales_Unchecked" />
+                        Unchecked="Maestro_Unchecked" />
 
                     <syncfusion:RibbonCheckBox
                         x:Name="chkPrecios"
                         Width="140"
-                        Checked="VentanasLaterales_Checked"
-                        Content="Precios"
+                        Checked="chkPrecios_Checked"
+                        Unchecked="chkPrecios_Unchecked"
+                        Content="Incluir listas de Precios"
                         IsChecked="false"
-                        Unchecked="VentanasLaterales_Unchecked" />
+                        />
 
                 </syncfusion:RibbonBar>
 
@@ -348,7 +355,7 @@
                         SizeForm="Small"
                         SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
                 </syncfusion:RibbonBar>
-                
+
             </syncfusion:RibbonTab>
 
 
@@ -363,10 +370,8 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="0" />
-                <ColumnDefinition Width="0" />
-                <ColumnDefinition Width="0" />
-                <ColumnDefinition Width="0" />
+                <ColumnDefinition Width="0" x:Name="sepMaestro" />
+                <ColumnDefinition Width="0" x:Name="panMaestro" />
             </Grid.ColumnDefinitions>
             <Grid
                 x:Name="gPlanilla"
@@ -390,7 +395,6 @@
 
 
             <syncfusion:SfGridSplitter
-                x:Name="sepMaestro"
                 Grid.RowSpan="3"
                 Grid.Column="1"
                 Width="5"
@@ -404,24 +408,6 @@
                 x:Name="panelMaestro"
                 Grid.RowSpan="3"
                 Grid.Column="2" />
-
-
-            <syncfusion:SfGridSplitter
-                x:Name="sepPrecios"
-                Grid.RowSpan="3"
-                Grid.Column="3"
-                Width="5"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Stretch"
-                EnableCollapseButton="True"
-                ResizeBehavior="PreviousAndNext"
-                ShowsPreview="True" />
-
-            <Grid
-                x:Name="panelPrecios"
-                Grid.RowSpan="3"
-                Grid.Column="4" />
-
         </Grid>
 
 

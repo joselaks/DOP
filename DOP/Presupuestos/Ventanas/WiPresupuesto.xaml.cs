@@ -43,11 +43,15 @@ namespace DOP.Presupuestos.Ventanas
         public UcMaestro Maestro;
         public UcArticulos Articulos;
         public UcPlanillaListado PlanillaListado;
+        public UcMaestroPrecios MaestroPrecios;
         private ObservableCollection<PresupuestoDTO> _presupuestosRef;
         private GridLength? _panelDetalleUserHeight = null;
         private GridLength? _panelListadoUserWidth = null;
         private GridLength? _panelMaestroUserWidth = null;
         private GridLength? _panelPreciosUserWidth = null;
+        private GridLength? _sepMaestroUserWidth = null;
+        public GridLength? _panMaestroUserWidth = null;
+
 
 
         public WiPresupuesto(PresupuestoDTO? _encabezado, List<ConceptoDTO> conceptos, List<RelacionDTO> relaciones, ObservableCollection<PresupuestoDTO> presupuestosRef)
@@ -62,12 +66,16 @@ namespace DOP.Presupuestos.Ventanas
             Listado = new UcListado(Objeto);
             Maestro = new UcMaestro();
             Articulos = new UcArticulos();
-            PlanillaListado = new UcPlanillaListado(Planilla, Listado);
+            PlanillaListado = new UcPlanillaListado();
+            MaestroPrecios = new UcMaestroPrecios();
+            MaestroPrecios.gridMaestro.Children.Add(Maestro);
+            MaestroPrecios.gridPrecios.Children.Add(Articulos);
 
             this.gPlanilla.Children.Add(Planilla);
             this.panelDetalle.Children.Add(Dosaje);
-            this.panelMaestro.Children.Add(Maestro);
-            this.panelPrecios.Children.Add(Articulos);
+
+            this.panelMaestro.Children.Add(MaestroPrecios);
+
 
             this.Loaded += WiPresupuesto_Loaded;
 
@@ -91,6 +99,10 @@ namespace DOP.Presupuestos.Ventanas
                 // Resolución igual o menor: maximizar
                 this.WindowState = WindowState.Maximized;
                 }
+            MaestroPrecios.sepPrecio.Width = new GridLength(0);
+            MaestroPrecios.panPrecio.Width = new GridLength(0);
+
+
 
             }
 
@@ -111,6 +123,7 @@ namespace DOP.Presupuestos.Ventanas
             colCodigo.IsCheckedChanged += columnas_IsCheckedChanged;
             colTipo.IsCheckedChanged += columnas_IsCheckedChanged;
             // ... repite para los que corresponda ...
+
             }
 
         private void WiPresupuesto_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
@@ -445,14 +458,14 @@ namespace DOP.Presupuestos.Ventanas
             desmarca();
             // Si ya está Planilla, no hacer nada
             if (gPlanilla.Children.Count == 1 && gPlanilla.Children[0] == Planilla)
-                    return;
+                return;
 
-                // Quitar Planilla de cualquier contenedor anterior
-                if (Planilla.Parent is Panel parentPanel)
-                    parentPanel.Children.Remove(Planilla);
+            // Quitar Planilla de cualquier contenedor anterior
+            if (Planilla.Parent is Panel parentPanel)
+                parentPanel.Children.Remove(Planilla);
 
-                gPlanilla.Children.Clear();
-                gPlanilla.Children.Add(Planilla);
+            gPlanilla.Children.Clear();
+            gPlanilla.Children.Add(Planilla);
             }
 
 
@@ -461,61 +474,40 @@ namespace DOP.Presupuestos.Ventanas
             {
             desmarca();
             basePres.RowDefinitions[1].Height = GridLength.Auto;   // sepDetalle
-                    var row = basePres.RowDefinitions[2];
-                    if (row.Height.Value == 0)
-                        {
-                        row.Height = _panelDetalleUserHeight ?? new GridLength(200);
-                        }
+            var row = basePres.RowDefinitions[2];
+            if (row.Height.Value == 0)
+                {
+                row.Height = _panelDetalleUserHeight ?? new GridLength(200);
+                }
             }
 
         private void VentanaDetalle_Unchecked(object sender, RoutedEventArgs e)
             {
             desmarca();
             basePres.RowDefinitions[1].Height = new GridLength(0); // sepDetalle
-                    var row = basePres.RowDefinitions[2];
-                    if (row.Height.Value != 0)
-                        _panelDetalleUserHeight = row.Height;
-                    row.Height = new GridLength(0);
+            var row = basePres.RowDefinitions[2];
+            if (row.Height.Value != 0)
+                _panelDetalleUserHeight = row.Height;
+            row.Height = new GridLength(0);
             }
 
-        private void VentanasLaterales_Checked(object sender, RoutedEventArgs e)
+        private void Maestro_Checked(object sender, RoutedEventArgs e)
             {
             desmarca();
 
-            var checkBox = sender as Syncfusion.Windows.Tools.Controls.RibbonCheckBox;
-            if (checkBox == null) return;
-
-            // Filtra por el x:Name del RibbonCheckBox
-            switch (checkBox.Name)
-                {
-                case "chkMaestro":
-                    basePres.ColumnDefinitions[1].Width = GridLength.Auto;
-                    basePres.ColumnDefinitions[2].Width = _panelMaestroUserWidth ?? new GridLength(300);
-                    break;
-                case "chkPrecios":
-                    basePres.ColumnDefinitions[3].Width = GridLength.Auto;
-                    basePres.ColumnDefinitions[4].Width = _panelPreciosUserWidth ?? new GridLength(300);
-                    break;
-                }
+            sepMaestro.Width = GridLength.Auto;
+            panMaestro.Width = _panMaestroUserWidth ?? new GridLength(500);
             }
 
-        private void VentanasLaterales_Unchecked(object sender, RoutedEventArgs e)
+        private void Maestro_Unchecked(object sender, RoutedEventArgs e)
             {
             desmarca();
-            var checkBox = sender as Syncfusion.Windows.Tools.Controls.RibbonCheckBox;
-            if (checkBox == null) return;
 
-            switch (checkBox.Name)
-                {
-                case "chkMaestro":
-                    basePres.ColumnDefinitions[1].Width = new GridLength(0);
-                    basePres.ColumnDefinitions[2].Width = new GridLength(0);
-                    break;
-                case "chkPrecios":
-                    basePres.ColumnDefinitions[3].Width = new GridLength(0);
-                    basePres.ColumnDefinitions[4].Width = new GridLength(0);
-                    break;
-                }
+            // Guardar el ancho actual antes de ocultar
+           _panMaestroUserWidth = panMaestro.Width;
+
+            sepMaestro.Width = new GridLength(0);
+            panMaestro.Width = new GridLength(0);
             }
 
         private void PresupClick(object sender, RoutedEventArgs e)
@@ -535,18 +527,18 @@ namespace DOP.Presupuestos.Ventanas
             chkListado.IsChecked = false;
 
             // Si se selecciona PlanillaListado (ambos) o PresupuestoCompleto
-            if (sele =="Listado" || sele =="Maestro")
+            if (sele == "Listado" || sele == "Maestro")
                 {
 
                 // Si es PresupuestoCompleto, marcar Maestro
-                if (sele=="Maestro")
+                if (sele == "Maestro")
                     {
                     chkMaestro.IsChecked = true;
                     }
 
                 chkDetalle.IsChecked = true;
 
-                
+
                 chkDetalle.IsChecked = true;
                 chkPrecios.IsChecked = true;
                 chkListado.IsChecked = true;
@@ -657,7 +649,7 @@ namespace DOP.Presupuestos.Ventanas
                 Planilla.ExpandeRubro();
                 }
             }
-            
+
 
         private void chkArbol_Unchecked(object sender, RoutedEventArgs e)
             {
@@ -686,6 +678,18 @@ namespace DOP.Presupuestos.Ventanas
 
             }
 
+        private void chkPrecios_Checked(object sender, RoutedEventArgs e)
+            {
+            MaestroPrecios.sepPrecio.Width = GridLength.Auto; // Para "Auto"
+            MaestroPrecios.panPrecio.Width = new GridLength(1, GridUnitType.Star); // Para "*"
+            }
+
+        private void chkPrecios_Unchecked(object sender, RoutedEventArgs e)
+            {
+            MaestroPrecios.sepPrecio.Width = new GridLength(0);
+            MaestroPrecios.panPrecio.Width = new GridLength(0);
+
+            }
         }
 
     }
