@@ -110,6 +110,7 @@
 
                 </syncfusion:RibbonBar>
 
+
                 <syncfusion:RibbonBar
                     Name="Delete"
                     Header="Planilla"
@@ -199,12 +200,33 @@
                                 IsCheckedChanged="columnas_IsCheckedChanged" />
                         </syncfusion:DropDownMenuGroup>
                     </syncfusion:DropDownButtonAdv>
+                </syncfusion:RibbonBar>
 
+                <syncfusion:RibbonBar Header="Listado" IsLauncherButtonVisible="False">
 
+                    <syncfusion:RibbonCheckBox
+                        x:Name="chkListado"
+                        Width="140"
+                        Checked="VentanaListado_Checked"
+                        Content="Ver"
+                        IsChecked="false"
+                        Unchecked="VentanaListado_Unchecked" />
 
+                    <syncfusion:DropDownButtonAdv
+                        x:Name="dropColumnasListado"
+                        Width="100"
+                        Label="Columnas"
+                        SmallIcon="pack://application:,,,/Imagenes/Columnas24.png"
+                        StayDropDownOnClick="True"
+                        ToolTip="Visualizar columnas">
+                        <syncfusion:DropDownMenuGroup IsResizable="True">
+                           
+                        </syncfusion:DropDownMenuGroup>
+                    </syncfusion:DropDownButtonAdv>
 
 
                 </syncfusion:RibbonBar>
+
 
                 <syncfusion:RibbonBar Width="120" Header="Detalle">
                     <syncfusion:RibbonCheckBox
@@ -265,9 +287,7 @@
 
                 </syncfusion:RibbonBar>
 
-                <syncfusion:RibbonBar
-                    Name="Respond"
-                    Header="Operaciones">
+                <syncfusion:RibbonBar Name="Respond" Header="Operaciones">
                     <syncfusion:RibbonButton
                         x:Name="Recalculo"
                         Click="Recalculo_Click"
@@ -322,9 +342,9 @@
 
                 </syncfusion:RibbonBar>
 
-              
 
-             
+
+
 
 
 
