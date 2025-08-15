@@ -83,24 +83,9 @@
                         LargeIcon="pack://application:,,,/Imagenes/Importar.png"
                         SizeForm="Large" />
                 </syncfusion:RibbonBar>
-                <syncfusion:RibbonBar Name="Delete" Header="Agregar">
-                    <syncfusion:RibbonButton
-                        x:Name="Rubro"
-                        Click="Agregar_Click"
-                        Label="Rubro"
-                        LargeIcon="pack://application:,,,/Imagenes/Rubro.png"
-                        SizeForm="Large" />
-                    <syncfusion:RibbonButton
-                        x:Name="Tarea"
-                        Click="Agregar_Click"
-                        Label="Tarea"
-                        LargeIcon="pack://application:,,,/Imagenes/Tarea.png"
-                        SizeForm="Large" />
-                </syncfusion:RibbonBar>
-                <syncfusion:RibbonBar
-                    Name="Presup"
-                    Width="190"
-                    Header="Varios">
+
+                <syncfusion:RibbonBar Header="Vistas" IsLauncherButtonVisible="False">
+
                     <RadioButton
                         x:Name="rbSoloPlanilla"
                         Margin="5,0,5,0"
@@ -112,39 +97,67 @@
                         x:Name="rbPlanillaListado"
                         Margin="5,0,5,0"
                         Click="PresupClick"
-                        Content="Presupuesto y Listado"
+                        Content="Presupuesto completo"
                         GroupName="ComboGroup"
                         IsChecked="False" />
                     <RadioButton
                         x:Name="rbPresupuestoCompleto"
                         Margin="5,0,5,0"
                         Click="PresupClick"
-                        Content="Presupuesto Completo"
+                        Content="Presupuesto y Maestro"
                         GroupName="ComboGroup"
                         IsChecked="False" />
 
                 </syncfusion:RibbonBar>
+
                 <syncfusion:RibbonBar
-                    Name="Respond"
-                    Width="190"
-                    Header="Varios">
+                    Name="Delete"
+                    Header="Planilla"
+                    IsLauncherButtonVisible="False">
                     <syncfusion:RibbonButton
-                        x:Name="Recalculo"
-                        Click="Recalculo_Click"
-                        Label="Recalculo"
+                        x:Name="Rubro"
+                        Click="Agregar_Click"
+                        Label=" Agregar Rubro"
                         SizeForm="Small"
-                        SmallIcon="pack://application:,,,/Imagenes/Otros.png" />
+                        SmallIcon="pack://application:,,,/Imagenes/Rubro.png" />
                     <syncfusion:RibbonButton
-                        x:Name="Recnumerar"
-                        Click="Recnumerar_Click"
-                        Label="Renumerar"
+                        x:Name="Tarea"
+                        Click="Agregar_Click"
+                        Label="Agregar Tarea"
                         SizeForm="Small"
                         SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
+
+                    <syncfusion:RibbonCheckBox
+                        x:Name="chkArbol"
+                        Width="140"
+                        Checked="chkArbol_Checked"
+                        Content="Ver Arbol completo"
+                        IsChecked="false"
+                        Unchecked="chkArbol_Unchecked" />
+
+
+                    <syncfusion:RibbonSeparator />
+
+                    <syncfusion:RibbonButton
+                        x:Name="Expandir"
+                        Click="expandir_Click"
+                        Label="Expandir"
+                        SizeForm="Small"
+                        SmallIcon="pack://application:,,,/Imagenes/Expandir24.png" />
+
+                    <syncfusion:RibbonButton
+                        x:Name="Contraer"
+                        Click="expandir_Click"
+                        Label="Contraer"
+                        SizeForm="Small"
+                        SmallIcon="pack://application:,,,/Imagenes/Contraer24.png" />
+
+
                     <syncfusion:DropDownButtonAdv
                         x:Name="dropColumnas"
                         Width="100"
                         Label="Columnas"
-                        SmallIcon="pack://application:,,,/Imagenes/Tarea.png"
+                        SmallIcon="pack://application:,,,/Imagenes/Columnas24.png"
                         StayDropDownOnClick="True"
                         ToolTip="Visualizar columnas">
                         <syncfusion:DropDownMenuGroup IsResizable="True">
@@ -187,37 +200,18 @@
                         </syncfusion:DropDownMenuGroup>
                     </syncfusion:DropDownButtonAdv>
 
-                    <syncfusion:RibbonButton
-                        x:Name="Expandir"
-                        Click="expandir_Click"
-                        Label="Expandir"
-                        SizeForm="Small" />
-
-                    <syncfusion:RibbonButton
-                        x:Name="Contraer"
-                        Click="expandir_Click"
-                        Label="Contraer"
-                        SizeForm="Small" />
-
 
 
 
 
                 </syncfusion:RibbonBar>
-                <syncfusion:RibbonBar Header="Informes">
-                    <syncfusion:RibbonButton
-                        x:Name="SaleExcel"
-                        Click="SaleExcel_Click"
-                        Label="Excel"
-                        SizeForm="Small"
-                        SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
-                </syncfusion:RibbonBar>
+
                 <syncfusion:RibbonBar Width="120" Header="Detalle">
                     <syncfusion:RibbonCheckBox
                         x:Name="chkDetalle"
                         Width="140"
                         Checked="VentanaDetalle_Checked"
-                        Content="Detalle"
+                        Content="Ver"
                         IsChecked="false"
                         Unchecked="VentanaDetalle_Unchecked" />
 
@@ -225,7 +219,7 @@
                         x:Name="dropColumnasDetalle"
                         Width="100"
                         Label="Columnas"
-                        SmallIcon="pack://application:,,,/Imagenes/Tarea.png"
+                        SmallIcon="pack://application:,,,/Imagenes/Columnas24.png"
                         StayDropDownOnClick="True"
                         ToolTip="Visualizar columnas">
                         <syncfusion:DropDownMenuGroup IsResizable="True">
@@ -267,7 +261,47 @@
                                 IsCheckedChanged="columnasDetalle_IsCheckedChanged" />
                         </syncfusion:DropDownMenuGroup>
                     </syncfusion:DropDownButtonAdv>
+
+
                 </syncfusion:RibbonBar>
+
+                <syncfusion:RibbonBar
+                    Name="Respond"
+                    Width="190"
+                    Header="Varios">
+                    <syncfusion:RibbonButton
+                        x:Name="Recalculo"
+                        Click="Recalculo_Click"
+                        Label="Recalculo"
+                        SizeForm="Small"
+                        SmallIcon="pack://application:,,,/Imagenes/Otros.png" />
+                    <syncfusion:RibbonButton
+                        x:Name="Recnumerar"
+                        Click="Recnumerar_Click"
+                        Label="Renumerar"
+                        SizeForm="Small"
+                        SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
+
+
+
+
+
+
+
+
+
+
+
+                </syncfusion:RibbonBar>
+                <syncfusion:RibbonBar Header="Informes">
+                    <syncfusion:RibbonButton
+                        x:Name="SaleExcel"
+                        Click="SaleExcel_Click"
+                        Label="Excel"
+                        SizeForm="Small"
+                        SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
+                </syncfusion:RibbonBar>
+
 
                 <syncfusion:RibbonBar Header="Ventanas">
                     <syncfusion:RibbonCheckBox
@@ -314,25 +348,7 @@
 
                 </syncfusion:RibbonBar>
 
-                <syncfusion:RibbonBar Header="Filtros">
-                    <syncfusion:RibbonButton
-                        x:Name="gArbol"
-                        Click="gArbol_Click"
-                        Label="Arbol"
-                        SizeForm="Small"
-                        SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
-
-                    <syncfusion:RibbonButton
-                        x:Name="gFiltrado"
-                        Click="gArbol_Click"
-                        Label="Filtrado"
-                        SizeForm="Small"
-                        SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
-
-
-
-
-                </syncfusion:RibbonBar>
+                <syncfusion:RibbonBar Header="Filtros" />
 
 
 
@@ -355,10 +371,10 @@
                 <ColumnDefinition Width="0" />
                 <ColumnDefinition Width="0" />
             </Grid.ColumnDefinitions>
-            <Grid Grid.Row="0" Grid.Column="0"  x:Name="gPlanilla">
-                
-
-            </Grid>
+            <Grid
+                x:Name="gPlanilla"
+                Grid.Row="0"
+                Grid.Column="0" />
 
             <syncfusion:SfGridSplitter
                 x:Name="sepDetalle"

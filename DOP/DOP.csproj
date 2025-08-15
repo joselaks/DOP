@@ -14,10 +14,13 @@
 
   <ItemGroup>
     <None Remove="Imagenes\Arbol.png" />
+    <None Remove="Imagenes\Columnas24.png" />
     <None Remove="Imagenes\construccion.png" />
+    <None Remove="Imagenes\Contraer24.png" />
     <None Remove="Imagenes\DataObra.ico" />
     <None Remove="Imagenes\Dataobra.png" />
     <None Remove="Imagenes\Equipos.png" />
+    <None Remove="Imagenes\Expandir24.png" />
     <None Remove="Imagenes\Guardar.png" />
     <None Remove="Imagenes\Guardar48.png" />
     <None Remove="Imagenes\Importar.png" />
@@ -47,9 +50,12 @@
 
   <ItemGroup>
     <Resource Include="Imagenes\Arbol.png" />
+    <Resource Include="Imagenes\Columnas24.png" />
     <Resource Include="Imagenes\Construccion.png" />
+    <Resource Include="Imagenes\Contraer24.png" />
     <Resource Include="Imagenes\Dataobra.png" />
     <Resource Include="Imagenes\Equipos.png" />
+    <Resource Include="Imagenes\Expandir24.png" />
     <Resource Include="Imagenes\Guardar.png" />
     <Resource Include="Imagenes\Guardar48.png" />
     <Resource Include="Imagenes\Importar.png" />

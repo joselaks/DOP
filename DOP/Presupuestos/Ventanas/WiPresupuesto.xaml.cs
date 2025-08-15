@@ -41,7 +41,7 @@ namespace DOP.Presupuestos.Ventanas
         public UcDosaje Dosaje;
         public UcMaestro Maestro;
         public UcArticulos Articulos;
-        public UcPlanillaListado PlanillaListado;  
+        public UcPlanillaListado PlanillaListado;
         private ObservableCollection<PresupuestoDTO> _presupuestosRef;
         private GridLength? _panelDetalleUserHeight = null;
         private GridLength? _panelListadoUserWidth = null;
@@ -392,27 +392,6 @@ namespace DOP.Presupuestos.Ventanas
 
             }
 
-        private void gArbol_Click(object sender, RoutedEventArgs e)
-            {
-            if (Planilla.grillaArbol.View != null)
-                {
-                var boton = sender as RibbonButton;
-                if (boton != null)
-                    {
-                    if (boton.Name == "gArbol")
-                        {
-                        // Quitar el filtro
-                        Planilla.grillaArbol.View.Filter = null;
-                        }
-                    else if (boton.Name == "gFiltrado")
-                        {
-                        // Activar el filtro
-                        Planilla.grillaArbol.View.Filter = Planilla.FiltrarPorTipo;
-                        }
-                    Planilla.grillaArbol.View.Refresh();
-                    }
-                }
-            }
 
         private void expandir_Click(object sender, RoutedEventArgs e)
             {
@@ -568,7 +547,7 @@ namespace DOP.Presupuestos.Ventanas
                     {
                     case "rbPlanilla":
                         chkDetalle.IsChecked = false;
-                        chkMaestro.IsChecked = false;   
+                        chkMaestro.IsChecked = false;
                         chkPrecios.IsChecked = false;
                         radio.IsChecked = true;
                         break;
@@ -651,10 +630,34 @@ namespace DOP.Presupuestos.Ventanas
                 }
             }
 
+        private void chkArbol_Checked(object sender, RoutedEventArgs e)
+            {
+            if (Planilla.grillaArbol.View != null)
+                {
+                // Quitar el filtro
+                Planilla.grillaArbol.View.Filter = null;
+                Planilla.grillaArbol.View.Refresh();
+                Planilla.ExpandeRubro();
+                }
+            }
+            
+
+        private void chkArbol_Unchecked(object sender, RoutedEventArgs e)
+            {
+
+            if (Planilla.grillaArbol.View != null)
+                {
+                // Activar el filtro
+                Planilla.grillaArbol.View.Filter = Planilla.FiltrarPorTipo;
+                Planilla.grillaArbol.View.Refresh();
+                Planilla.ExpandeRubro();
+                }
+
+            }
         }
 
     }
 
 
 
-    
+
