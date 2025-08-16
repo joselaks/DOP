@@ -68,11 +68,15 @@ namespace Servidor.Repositorios
             {
             using (var db = new SqlConnection(_connectionString))
                 {
+                // Obtener la hora actual de Buenos Aires
+                var zonaBuenosAires = TimeZoneInfo.FindSystemTimeZoneById("Argentina Standard Time");
+                var fechaHoraBuenosAires = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, zonaBuenosAires);
+
                 var sql = @"
             UPDATE UsuariosLog
-            SET Salida = GETDATE(), Resultado = 5
+            SET Salida = @salida, Resultado = 5
             WHERE UsuarioID = @usuarioId AND Macaddress = @macaddress AND Salida IS NULL";
-                var rows = await db.ExecuteAsync(sql, new { usuarioId, macaddress });
+                var rows = await db.ExecuteAsync(sql, new { usuarioId, macaddress, salida = fechaHoraBuenosAires });
                 return rows > 0;
                 }
             }
