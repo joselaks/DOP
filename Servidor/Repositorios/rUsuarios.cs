@@ -18,42 +18,64 @@ namespace Servidor.Repositorios
             _connectionString = connectionString;
         }
 
-        public async Task<CredencialesUsuarioDTO> VerificaUsuario(string email, string pass)
-        {
+        public async Task<CredencialesUsuarioDTO> VerificaUsuario(string email, string pass, string macaddress)
+            {
             var respuesta = new CredencialesUsuarioDTO();
             string key = "ESTALLAVEFUNCOINARIASI12345PARARECORDARLAMEJOR=";
             using (var db = new SqlConnection(_connectionString))
-            {
-                try
                 {
-                    var verificado = await db.QuerySingleOrDefaultAsync<UsuarioDTO>("UsuariosGet", new { email, pass },
-                                                        commandType: CommandType.StoredProcedure);
-                    if (verificado != null)
+                try
                     {
+                    var verificado = await db.QuerySingleOrDefaultAsync<UsuarioDTO>(
+                        "UsuariosGet",
+                        new { email, pass, macaddress },
+                        commandType: CommandType.StoredProcedure);
+
+                    if (verificado != null)
+                        {
                         var tokenHandler = new JwtSecurityTokenHandler();
                         var byteKey = Encoding.UTF8.GetBytes(key);
 
                         var tokenDes = new SecurityTokenDescriptor
-                        {
+                            {
                             Expires = DateTime.UtcNow.AddMonths(1),
                             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(byteKey),
                             SecurityAlgorithms.HmacSha256Signature)
-                        };
+                            };
                         var token = tokenHandler.CreateToken(tokenDes);
 
                         respuesta.Token = tokenHandler.WriteToken(token);
                         respuesta.DatosUsuario = verificado;
+                        }
+                    else
+                        {
+                        respuesta.DatosUsuario = null;
+                        respuesta.Token = null;
+                        respuesta.ErrorMessage = "Usuario o contraseña incorrectos, o usuario no existe.";
+                        }
                     }
-                }
                 catch (SqlException ex)
-                {
-                    // Capturar el mensaje de error del procedimiento almacenado
+                    {
                     respuesta.DatosUsuario = null;
                     respuesta.Token = null;
                     respuesta.ErrorMessage = $"Error al verificar usuario: {ex.Message}";
-                }
+                    }
                 return respuesta;
+                }
             }
+
+        public async Task<bool> RegistrarSalidaUsuario(int usuarioId, string macaddress)
+            {
+            using (var db = new SqlConnection(_connectionString))
+                {
+                var sql = @"
+            UPDATE UsuariosLog
+            SET Salida = GETDATE(), Resultado = 5
+            WHERE UsuarioID = @usuarioId AND Macaddress = @macaddress AND Salida IS NULL";
+                var rows = await db.ExecuteAsync(sql, new { usuarioId, macaddress });
+                return rows > 0;
+                }
+            }
+
         }
-    }
 }

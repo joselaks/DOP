@@ -104,21 +104,30 @@ app.MapGet("/health", () => Results.Ok(new { Status = "Conexión establecida" }))
 
 var usu = app.MapGroup("/usuarios");
 
-usu.MapGet("validacion/", async (string email, string pass, rUsuarios repo) =>
+usu.MapGet("validacion/", async (string email, string pass, string macaddress, rUsuarios repo) =>
 {
-    var respuesta = await repo.VerificaUsuario(email, pass);
+    var respuesta = await repo.VerificaUsuario(email, pass, macaddress);
     if (respuesta.DatosUsuario != null)
-    {
+        {
         return Results.Ok(respuesta);
-    }
+        }
     else if (!string.IsNullOrEmpty(respuesta.ErrorMessage))
-    {
+        {
         return Results.BadRequest(new { Mensaje = respuesta.ErrorMessage });
-    }
+        }
     else
-    {
+        {
         return Results.NotFound(new { Mensaje = "Usuario no encontrado o credenciales incorrectas." });
-    }
+        }
+});
+
+usu.MapPost("logout/", async (int usuarioId, string macaddress, rUsuarios repo) =>
+{
+    var exito = await repo.RegistrarSalidaUsuario(usuarioId, macaddress);
+    if (exito)
+        return Results.Ok();
+    else
+        return Results.BadRequest(new { Mensaje = "No se pudo registrar la salida." });
 });
 
 

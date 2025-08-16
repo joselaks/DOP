@@ -153,7 +153,7 @@ namespace DOP.Presupuestos.Controles
                 }
             }
 
-        // NUEVO: Obtiene todos los superiores tipo "T" en todas las ramas
+        // Obtiene todos los superiores tipo "T" en todas las ramas
         private ObservableCollection<Nodo> ObtenerSuperioresTipoT(Nodo nodo)
             {
             var superiores = new ObservableCollection<Nodo>();
@@ -162,7 +162,7 @@ namespace DOP.Presupuestos.Controles
             return superiores;
             }
 
-        // NUEVO: Búsqueda recursiva de todos los padres tipo "T"
+        // Búsqueda recursiva de todos los padres tipo "T"
         private void BuscarSuperioresTipoTRec(IEnumerable<Nodo> arbol, Nodo hijo, ObservableCollection<Nodo> superiores, HashSet<string> visitados)
             {
             foreach (var nodo in arbol)

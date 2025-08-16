@@ -16,14 +16,15 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Net.NetworkInformation;
 
 namespace DOP.Interfaz.Ventanas
-{
+    {
     /// <summary>
     /// Lógica de interacción para WiLogin.xaml
     /// </summary>
     public partial class WiLogin : Window
-    {
+        {
         public string Usuario { get; private set; }
         public string Rol { get; private set; }
         private WiInicio Inicio;
@@ -60,12 +61,25 @@ namespace DOP.Interfaz.Ventanas
             {
             this.esperaLogin.IsBusy = true;
 
-            int maxRetries = 3;
+            // Obtener la MAC Address de la primera interfaz activa
+            string macaddress = NetworkInterface
+                .GetAllNetworkInterfaces()
+                .Where(nic => nic.OperationalStatus == OperationalStatus.Up &&
+                              nic.NetworkInterfaceType != NetworkInterfaceType.Loopback)
+                .Select(nic => nic.GetPhysicalAddress().ToString())
+                .FirstOrDefault() ?? "UNKNOWN";
 
-            for (int i = 0; i < maxRetries; i++)
+            int maxRetries = 3;
+            int intentos = 0;
+
+            while (intentos < maxRetries)
                 {
                 DateTime startTime = DateTime.Now;
-                var respuesta = await DOP.Datos.DatosWeb.ValidarUsuarioAsync(txtUsuario.Text, txtContraseña.Password);
+                var respuesta = await DOP.Datos.DatosWeb.ValidarUsuarioAsync(
+                    txtUsuario.Text,
+                    txtContraseña.Password,
+                    macaddress
+                );
                 DateTime endTime = DateTime.Now;
                 TimeSpan duration = endTime - startTime;
 
@@ -79,8 +93,6 @@ namespace DOP.Interfaz.Ventanas
                         App.IdUsuario = respuesta.Usuario.DatosUsuario.ID;
                         this.DialogResult = true;
                         this.Close();
-
-                        
 
                         // Crea y asigna la nueva ventana principal
                         WiTablero tablero = new WiTablero()
@@ -104,18 +116,30 @@ namespace DOP.Interfaz.Ventanas
                     }
                 else
                     {
-                    if (i == maxRetries - 1)
+                    // Solo reintenta si es un error de comunicación (no de usuario/contraseña)
+                    if (respuesta.Message.StartsWith("Error HTTP:") || respuesta.Message.StartsWith("Error de comunicación:"))
                         {
-                        this.esperaLogin.IsBusy = false;
-                        var result = MessageBox.Show($"\n{respuesta.Message}\n¿Desea intentar nuevamente?", "Error", MessageBoxButton.YesNo, MessageBoxImage.Error);
-                        if (result == MessageBoxResult.Yes)
+                        intentos++;
+                        if (intentos == maxRetries)
                             {
-                            VerificaUsuario_Click(sender, e);
+                            this.esperaLogin.IsBusy = false;
+                            var result = MessageBox.Show($"\n{respuesta.Message}\n¿Desea intentar nuevamente?", "Error", MessageBoxButton.YesNo, MessageBoxImage.Error);
+                            if (result == MessageBoxResult.Yes)
+                                {
+                                VerificaUsuario_Click(sender, e);
+                                }
+                            return;
                             }
+                        // Si no es el último intento, vuelve a intentar automáticamente
+                        }
+                    else
+                        {
+                        // Es un error de usuario/contraseña, no reintentar
+                        this.esperaLogin.IsBusy = false;
+                        MessageBox.Show(respuesta.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
                         }
                     }
-
                 }
             }
 
@@ -220,9 +244,23 @@ namespace DOP.Interfaz.Ventanas
                 }
             }
 
-        private void bSalir_Click(object sender, RoutedEventArgs e)
+        private async void bSalir_Click(object sender, RoutedEventArgs e)
             {
+            // Obtener la MAC Address de la primera interfaz activa
+            string macaddress = NetworkInterface
+                .GetAllNetworkInterfaces()
+                .Where(nic => nic.OperationalStatus == OperationalStatus.Up &&
+                              nic.NetworkInterfaceType != NetworkInterfaceType.Loopback)
+                .Select(nic => nic.GetPhysicalAddress().ToString())
+                .FirstOrDefault() ?? "UNKNOWN";
+
+            // Registrar la salida en el log (si el usuario está logueado)
+            if (App.IdUsuario > 0)
+                {
+                await DOP.Datos.DatosWeb.RegistrarSalidaUsuarioAsync(App.IdUsuario, macaddress);
+                }
+
             Application.Current.Shutdown();
             }
         }
-}
+    }

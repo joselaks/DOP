@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -120,10 +121,23 @@ namespace DOP.Presupuestos.Ventanas
             WindowState = WindowState.Minimized;
             }
 
-        private void Close_Click(object sender, RoutedEventArgs e)
+        private async void Close_Click(object sender, RoutedEventArgs e)
             {
 
             Close();
+            // Obtener la MAC Address de la primera interfaz activa
+            string macaddress = NetworkInterface
+                .GetAllNetworkInterfaces()
+                .Where(nic => nic.OperationalStatus == OperationalStatus.Up &&
+                              nic.NetworkInterfaceType != NetworkInterfaceType.Loopback)
+                .Select(nic => nic.GetPhysicalAddress().ToString())
+                .FirstOrDefault() ?? "UNKNOWN";
+
+            // Registrar la salida en el log (si el usuario está logueado)
+            if (App.IdUsuario > 0)
+                {
+                await DOP.Datos.DatosWeb.RegistrarSalidaUsuarioAsync(App.IdUsuario, macaddress);
+                }
             Application.Current.Shutdown();
             }
 

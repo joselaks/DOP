@@ -74,9 +74,16 @@ namespace DOP.Datos
                 }
             }
 
-        public static async Task<(bool Success, string Message, CredencialesUsuarioDTO Usuario)> ValidarUsuarioAsync(string email, string pass)
+        public static async Task<bool> RegistrarSalidaUsuarioAsync(int usuarioId, string macaddress)
             {
-            string url = $"{App.BaseUrl}usuarios/validacion?email={email}&pass={pass}";
+            string url = $"{App.BaseUrl}usuarios/logout?usuarioId={usuarioId}&macaddress={macaddress}";
+            var response = await httpClient.PostAsync(url, null);
+            return response.IsSuccessStatusCode;
+            }
+
+        public static async Task<(bool Success, string Message, CredencialesUsuarioDTO Usuario)> ValidarUsuarioAsync(string email, string pass, string macaddress)
+            {
+            string url = $"{App.BaseUrl}usuarios/validacion?email={email}&pass={pass}&macaddress={macaddress}";
             var result = await ExecuteRequestAsync<CredencialesUsuarioDTO>(() => httpClient.GetAsync(url), "Validar Usuario");
 
             if (result.Success && result.Data?.Token != null)
