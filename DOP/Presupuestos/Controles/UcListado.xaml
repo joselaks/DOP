@@ -238,20 +238,37 @@
             ResizeBehavior="PreviousAndNext"
             ShowsPreview="True" />
 
-        <syncfusion:SfTreeGrid Grid.Row="3" x:Name="gridSuperiores"
-                       AutoGenerateColumns="False"
-                       SelectionMode="Single"
-                       AllowEditing="False"
-                       AllowResizingColumns="True">
+        <syncfusion:SfTreeGrid
+            x:Name="gridSuperiores"
+            Grid.Row="3"
+            AllowEditing="False"
+            AllowResizingColumns="True"
+            AutoGenerateColumns="False"
+            SelectionMode="Single">
             <syncfusion:SfTreeGrid.Columns>
-                <syncfusion:TreeGridTextColumn Width="50" MappingName="ID" HeaderText="ID" />
-                <syncfusion:TreeGridTextColumn Width="150" MappingName="Descripcion" HeaderText="Descripción" />
-                <syncfusion:TreeGridTextColumn Width="50" MappingName="Tipo" HeaderText="Tipo" />
-                <syncfusion:TreeGridNumericColumn Width="80" MappingName="Importe1" HeaderText="Importe" />
+                <syncfusion:TreeGridTextColumn
+                    Width="50"
+                    HeaderText="ID"
+                    MappingName="ID" />
+                <syncfusion:TreeGridTextColumn
+                    Width="250"
+                    HeaderText="Descripción"
+                    MappingName="Descripcion" />
+                <syncfusion:TreeGridTextColumn
+                    Width="50"
+                    HeaderText="Tipo"
+                    MappingName="Tipo" />
+                <syncfusion:TreeGridNumericColumn
+                    Width="80"
+                    HeaderText="Importe"
+                    MappingName="Importe1"
+                    NumberDecimalDigits="2"
+                    NumberDecimalSeparator=","
+                    NumberGroupSeparator="." />
             </syncfusion:SfTreeGrid.Columns>
         </syncfusion:SfTreeGrid>
 
-        
+
 
 
     </Grid>

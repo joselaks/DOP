@@ -1,4 +1,5 @@
 ﻿using Bibioteca.Clases;
+using Syncfusion.Licensing;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Syncfusion.UI.Xaml.TreeGrid;
 
 namespace DOP.Presupuestos.Controles
     {
@@ -55,6 +57,12 @@ namespace DOP.Presupuestos.Controles
 
         private void grillaListados_CurrentCellEndEdit(object sender, Syncfusion.UI.Xaml.Grid.CurrentCellEndEditEventArgs e)
             {
+            var editado = grillaListados.GetNodeAtRowIndex(e.RowColumnIndex.RowIndex).Item as Nodo;
+            if (editado != null)
+                {
+                Objeto.cambioDesdeInsumo(Objeto.Arbol, editado.ID, editado.PU1);
+                Objeto.RecalculoCompleto();
+                }
             }
 
         private void grillaListados_KeyDown(object sender, KeyEventArgs e)

@@ -469,18 +469,18 @@ namespace Bibioteca.Clases
             return respuesta;
             }
 
-        public void cambioDesdeInsumo(IEnumerable<Nodo> items, string id, decimal nuevoPU1, decimal nuevoPU2)
+        public void cambioDesdeInsumo(IEnumerable<Nodo> items, string id, decimal nuevoPU1)
             {
             foreach (var item in items)
                 {
                 if (item.ID == id)
                     {
                     item.PU1 = nuevoPU1;
-                    item.PU2 = nuevoPU2;
+                    //item.PU2 = nuevoPU2;
                     }
                 if (item.HasItems)
                     {
-                    cambioDesdeInsumo(item.Inferiores, id, nuevoPU1, nuevoPU2);
+                    cambioDesdeInsumo(item.Inferiores, id, nuevoPU1);
                     }
                 }
             }
