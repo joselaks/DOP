@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Syncfusion.UI.Xaml.TreeGrid;
 
+
 namespace DOP.Presupuestos.Controles
     {
     /// <summary>
@@ -64,9 +65,9 @@ namespace DOP.Presupuestos.Controles
                 Objeto.RecalculoCompleto();
                 }
             }
-
         private void grillaListados_KeyDown(object sender, KeyEventArgs e)
             {
+
             }
 
         private void grillaListados_SelectionChanged(object sender, Syncfusion.UI.Xaml.Grid.GridSelectionChangedEventArgs e)
