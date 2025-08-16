@@ -124,6 +124,7 @@ namespace DOP.Presupuestos.Ventanas
             colTipo.IsCheckedChanged += columnas_IsCheckedChanged;
             // ... repite para los que corresponda ...
 
+
             }
 
         private void WiPresupuesto_Closing(object? sender, System.ComponentModel.CancelEventArgs e)

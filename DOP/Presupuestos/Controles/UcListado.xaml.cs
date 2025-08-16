@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,8 +28,39 @@ namespace DOP.Presupuestos.Controles
         {
             InitializeComponent();
             Objeto= objeto;
+            grillaListados.Loaded += GrillaListados_Loaded;
+            Objeto.RecalculoFinalizado += Presupuesto_RecalculoFinalizado;
+
+
+
             this.grillaListados.ItemsSource = Objeto.Insumos;
         }
+
+        private void Presupuesto_RecalculoFinalizado(object sender, EventArgs e)
+            {
+            decimal totGeneral1 = Objeto.Arbol.Sum(i => i.Importe1);
+
+            // Asignar el valor explícitamente al HeaderText
+            var cultura = new CultureInfo("es-ES") { NumberFormat = { NumberGroupSeparator = ".", NumberDecimalSeparator = "," } };
+            colImporte1.HeaderText = $"{totGeneral1.ToString("N2", cultura)}";
+
+            // Ordenar la grilla por Importe1 descendente
+            grillaListados.SortColumnDescriptions.Clear();
+            grillaListados.SortColumnDescriptions.Add(new Syncfusion.UI.Xaml.Grid.SortColumnDescription()
+                {
+                ColumnName = "Importe1",
+                SortDirection = System.ComponentModel.ListSortDirection.Descending
+                });
+            }
+
+
+
+
+        private void GrillaListados_Loaded(object sender, RoutedEventArgs e)
+            {
+
+            
+            }
 
         private void grillaListados_CurrentCellBeginEdit(object sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridCurrentCellBeginEditEventArgs e)
             {
@@ -54,6 +86,8 @@ namespace DOP.Presupuestos.Controles
             if (comboTipoListado == null || Objeto == null)
                 return;
 
+            ObservableCollection<Nodo> filtrados = null;
+
             if (comboTipoListado.SelectedItem is ComboBoxItem selectedItem && selectedItem.Content != null)
                 {
                 string seleccion = selectedItem.Content.ToString();
@@ -61,37 +95,43 @@ namespace DOP.Presupuestos.Controles
                 switch (seleccion)
                     {
                     case "Materiales":
-                        grillaListados.ItemsSource = new ObservableCollection<Nodo>(
+                        filtrados = new ObservableCollection<Nodo>(
                             Objeto.Insumos?.Where(x => x.Tipo == "M") ?? Enumerable.Empty<Nodo>());
                         break;
                     case "Mano de Obra":
-                        grillaListados.ItemsSource = new ObservableCollection<Nodo>(
+                        filtrados = new ObservableCollection<Nodo>(
                             Objeto.Insumos?.Where(x => x.Tipo == "D") ?? Enumerable.Empty<Nodo>());
                         break;
                     case "Equipos":
-                        grillaListados.ItemsSource = new ObservableCollection<Nodo>(
+                        filtrados = new ObservableCollection<Nodo>(
                             Objeto.Insumos?.Where(x => x.Tipo == "E") ?? Enumerable.Empty<Nodo>());
                         break;
                     case "Subcontratos":
-                        grillaListados.ItemsSource = new ObservableCollection<Nodo>(
+                        filtrados = new ObservableCollection<Nodo>(
                             Objeto.Insumos?.Where(x => x.Tipo == "S") ?? Enumerable.Empty<Nodo>());
                         break;
                     case "Otros":
-                        grillaListados.ItemsSource = new ObservableCollection<Nodo>(
+                        filtrados = new ObservableCollection<Nodo>(
                             Objeto.Insumos?.Where(x => x.Tipo == "O") ?? Enumerable.Empty<Nodo>());
                         break;
                     case "Tareas":
-                        grillaListados.ItemsSource = Objeto.Tareas ?? new ObservableCollection<Nodo>();
+                        filtrados = Objeto.Tareas ?? new ObservableCollection<Nodo>();
                         break;
                     case "Rubros":
-                        grillaListados.ItemsSource = Objeto.Rubros ?? new ObservableCollection<Nodo>();
+                        filtrados = Objeto.Rubros ?? new ObservableCollection<Nodo>();
                         break;
                     default:
-                        grillaListados.ItemsSource = null;
+                        filtrados = null;
                         break;
                     }
+
+                grillaListados.ItemsSource = filtrados;
+
+                // Calcular el total solo de los elementos filtrados
+                decimal totGeneral1 = filtrados?.Sum(i => i.Importe1) ?? 0;
+                var cultura = new CultureInfo("es-ES") { NumberFormat = { NumberGroupSeparator = ".", NumberDecimalSeparator = "," } };
+                colImporte1.HeaderText = $"{totGeneral1.ToString("N2", cultura)}";
                 }
             }
-
         }
 }

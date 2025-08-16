@@ -241,6 +241,8 @@ namespace DOP.Presupuestos.Controles
                 this.grillaArbol.View.Refresh();
                 ExpandeRubro();
                 }
+            Objeto.recalculo(Objeto.Arbol, true, 0, true);
+
             }
 
 
