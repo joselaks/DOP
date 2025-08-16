@@ -4,17 +4,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace DOP.Presupuestos.Controles
     {
@@ -26,15 +18,12 @@ namespace DOP.Presupuestos.Controles
         public Presupuesto Objeto;
         private GridLength? _panSuperioresHeight = null;
 
-
         public UcListado(Presupuesto objeto)
             {
             InitializeComponent();
             Objeto = objeto;
             grillaListados.Loaded += GrillaListados_Loaded;
             Objeto.RecalculoFinalizado += Presupuesto_RecalculoFinalizado;
-
-
 
             this.grillaListados.ItemsSource = Objeto.Insumos;
             }
@@ -56,28 +45,20 @@ namespace DOP.Presupuestos.Controles
                 });
             }
 
-
-
-
         private void GrillaListados_Loaded(object sender, RoutedEventArgs e)
             {
-
-
             }
 
         private void grillaListados_CurrentCellBeginEdit(object sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridCurrentCellBeginEditEventArgs e)
             {
-
             }
 
         private void grillaListados_CurrentCellEndEdit(object sender, Syncfusion.UI.Xaml.Grid.CurrentCellEndEditEventArgs e)
             {
-
             }
 
         private void grillaListados_KeyDown(object sender, KeyEventArgs e)
             {
-
             }
 
         private void grillaListados_SelectionChanged(object sender, Syncfusion.UI.Xaml.Grid.GridSelectionChangedEventArgs e)
@@ -85,11 +66,9 @@ namespace DOP.Presupuestos.Controles
             // Guardar el alto actual antes de ocultar
             _panSuperioresHeight = panSuperiores.Height;
 
-            sepSuperiores.Height = new GridLength(0); ;
-            panSuperiores.Height = new GridLength(0); ;
-
+            sepSuperiores.Height = new GridLength(0);
+            panSuperiores.Height = new GridLength(0);
             }
-
 
         public void CambiarFiltroPorTexto(string texto)
             {
@@ -104,9 +83,6 @@ namespace DOP.Presupuestos.Controles
                 }
             // El evento SelectionChanged ya actualizará la grilla y el TextBlock
             }
-
-
-
 
         private void comboTipoListado_SelectionChanged(object sender, SelectionChangedEventArgs e)
             {
@@ -168,25 +144,55 @@ namespace DOP.Presupuestos.Controles
                 }
             }
 
-        private void VerSuperiores_Click(object sender, RoutedEventArgs e)
+        // NUEVO: Obtiene todos los superiores tipo "T" en todas las ramas
+        private ObservableCollection<Nodo> ObtenerSuperioresTipoT(Nodo nodo)
             {
-            // Obtiene el nodo seleccionado
-            var nodo = grillaListados.SelectedItem as Nodo;
-            if (nodo != null)
-                {
-                string id = nodo.ID;
-                // Aquí puedes mostrar los superiores o realizar la acción deseada
-                sepSuperiores.Height = GridLength.Auto;
-                panSuperiores.Height = new GridLength(300);
+            var superiores = new ObservableCollection<Nodo>();
+            var visitados = new HashSet<string>();
+            BuscarSuperioresTipoTRec(Objeto.Arbol, nodo, superiores, visitados);
+            return superiores;
+            }
 
-                // Lógica adicional para mostrar los superiores...
+        // NUEVO: Búsqueda recursiva de todos los padres tipo "T"
+        private void BuscarSuperioresTipoTRec(IEnumerable<Nodo> arbol, Nodo hijo, ObservableCollection<Nodo> superiores, HashSet<string> visitados)
+            {
+            foreach (var nodo in arbol)
+                {
+                if (nodo.Inferiores != null && nodo.Inferiores.Any(inf => inf.ID == hijo.ID))
+                    {
+                    // Evitar ciclos
+                    if (!visitados.Contains(nodo.ID))
+                        {
+                        visitados.Add(nodo.ID);
+
+                        if (nodo.Tipo == "T")
+                            superiores.Add(nodo);
+
+                        // Buscar recursivamente hacia arriba
+                        BuscarSuperioresTipoTRec(Objeto.Arbol, nodo, superiores, visitados);
+                        }
+                    }
+
+                if (nodo.Inferiores != null)
+                    {
+                    BuscarSuperioresTipoTRec(nodo.Inferiores, hijo, superiores, visitados);
+                    }
                 }
             }
 
+        private void VerSuperiores_Click(object sender, RoutedEventArgs e)
+            {
+            var nodo = grillaListados.SelectedItem as Nodo;
+            if (nodo != null)
+                {
+                // Mostrar panel de superiores
+                gridPrincipal.RowDefinitions[2].Height = GridLength.Auto;
+                gridPrincipal.RowDefinitions[3].Height = new GridLength(300);
 
+                // Obtener y mostrar la colección de superiores tipo "T"
+                var superioresT = ObtenerSuperioresTipoT(nodo);
+                gridSuperiores.ItemsSource = superioresT;
+                }
+            }
         }
-
-
-
     }
-
