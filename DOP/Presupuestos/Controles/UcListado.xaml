@@ -92,10 +92,12 @@
 
     </UserControl.Resources>
 
-    <Grid>
+    <Grid x:Name="gridPrincipal">
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="*" />
+            <RowDefinition x:Name="sepSuperiores" Height="0" />
+            <RowDefinition x:Name="panSuperiores" Height="0" />
         </Grid.RowDefinitions>
         <StackPanel
             x:Name="encabezado"
@@ -119,8 +121,8 @@
                 Margin="20,0,0,0"
                 VerticalAlignment="Center"
                 SelectedIndex="0"
-                Visibility="Collapsed"
-                SelectionChanged="comboTipoListado_SelectionChanged">
+                SelectionChanged="comboTipoListado_SelectionChanged"
+                Visibility="Collapsed">
                 <ComboBoxItem Content="Insumos básicos" />
                 <ComboBoxItem Content="Materiales" />
                 <ComboBoxItem Content="Mano de Obra" />
@@ -141,7 +143,6 @@
         <syncfusion:SfTreeGrid
             x:Name="grillaListados"
             Grid.Row="1"
-            Grid.RowSpan="2"
             AllowDraggingRows="True"
             AllowDrop="True"
             AllowEditing="True"
@@ -153,12 +154,12 @@
             KeyDown="grillaListados_KeyDown"
             SelectionChanged="grillaListados_SelectionChanged"
             SelectionMode="Single">
+            <syncfusion:SfTreeGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Click="VerSuperiores_Click" Header="Ver superiores" />
+                </ContextMenu>
+            </syncfusion:SfTreeGrid.ContextMenu>
             <syncfusion:SfTreeGrid.StackedHeaderRows>
-                <!--<syncfusion:StackedHeaderRow>
-    <syncfusion:StackedHeaderRow.StackedColumns>
-        <syncfusion:StackedColumn ChildColumns="Cantidad,PU1,PU2,Importe1,Importe2" HeaderText="Ejecución" />
-    </syncfusion:StackedHeaderRow.StackedColumns>
-</syncfusion:StackedHeaderRow>-->
                 <syncfusion:StackedHeaderRow>
                     <syncfusion:StackedHeaderRow.StackedColumns>
                         <syncfusion:StackedColumn ChildColumns="Importe1" HeaderText="Total" />
@@ -226,6 +227,19 @@
 
             </syncfusion:SfTreeGrid.Columns>
 
+        </syncfusion:SfTreeGrid>
+
+        <syncfusion:SfGridSplitter
+            Grid.Row="2"
+            Height="5"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Top"
+            EnableCollapseButton="True"
+            ResizeBehavior="PreviousAndNext"
+            ShowsPreview="True" />
+
+        <syncfusion:SfTreeGrid Grid.Row="3">
+            
         </syncfusion:SfTreeGrid>
 
 

@@ -17,24 +17,27 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace DOP.Presupuestos.Controles
-{
+    {
     /// <summary>
     /// Lógica de interacción para UcListado.xaml
     /// </summary>
     public partial class UcListado : UserControl
-    {
-        public Presupuesto Objeto;
-        public UcListado(Presupuesto objeto)
         {
+        public Presupuesto Objeto;
+        private GridLength? _panSuperioresHeight = null;
+
+
+        public UcListado(Presupuesto objeto)
+            {
             InitializeComponent();
-            Objeto= objeto;
+            Objeto = objeto;
             grillaListados.Loaded += GrillaListados_Loaded;
             Objeto.RecalculoFinalizado += Presupuesto_RecalculoFinalizado;
 
 
 
             this.grillaListados.ItemsSource = Objeto.Insumos;
-        }
+            }
 
         private void Presupuesto_RecalculoFinalizado(object sender, EventArgs e)
             {
@@ -59,7 +62,7 @@ namespace DOP.Presupuestos.Controles
         private void GrillaListados_Loaded(object sender, RoutedEventArgs e)
             {
 
-            
+
             }
 
         private void grillaListados_CurrentCellBeginEdit(object sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridCurrentCellBeginEditEventArgs e)
@@ -79,6 +82,12 @@ namespace DOP.Presupuestos.Controles
 
         private void grillaListados_SelectionChanged(object sender, Syncfusion.UI.Xaml.Grid.GridSelectionChangedEventArgs e)
             {
+            // Guardar el alto actual antes de ocultar
+            _panSuperioresHeight = panSuperiores.Height;
+
+            sepSuperiores.Height = new GridLength(0); ;
+            panSuperiores.Height = new GridLength(0); ;
+
             }
 
 
@@ -158,5 +167,26 @@ namespace DOP.Presupuestos.Controles
                 colImporte1.HeaderText = $"{totGeneral1.ToString("N2", cultura)}";
                 }
             }
+
+        private void VerSuperiores_Click(object sender, RoutedEventArgs e)
+            {
+            // Obtiene el nodo seleccionado
+            var nodo = grillaListados.SelectedItem as Nodo;
+            if (nodo != null)
+                {
+                string id = nodo.ID;
+                // Aquí puedes mostrar los superiores o realizar la acción deseada
+                sepSuperiores.Height = GridLength.Auto;
+                panSuperiores.Height = new GridLength(300);
+
+                // Lógica adicional para mostrar los superiores...
+                }
+            }
+
+
         }
-}
+
+
+
+    }
+
