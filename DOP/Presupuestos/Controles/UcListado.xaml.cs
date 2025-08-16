@@ -81,6 +81,24 @@ namespace DOP.Presupuestos.Controles
             {
             }
 
+
+        public void CambiarFiltroPorTexto(string texto)
+            {
+            // Buscar el ComboBoxItem cuyo Content coincide con el texto
+            foreach (var obj in comboTipoListado.Items)
+                {
+                if (obj is ComboBoxItem item && item.Content?.ToString() == texto)
+                    {
+                    comboTipoListado.SelectedItem = item;
+                    break;
+                    }
+                }
+            // El evento SelectionChanged ya actualizará la grilla y el TextBlock
+            }
+
+
+
+
         private void comboTipoListado_SelectionChanged(object sender, SelectionChangedEventArgs e)
             {
             if (comboTipoListado == null || Objeto == null)
@@ -94,6 +112,9 @@ namespace DOP.Presupuestos.Controles
 
                 switch (seleccion)
                     {
+                    case "Insumos básicos":
+                        filtrados = Objeto.Insumos ?? new ObservableCollection<Nodo>();
+                        break;
                     case "Materiales":
                         filtrados = new ObservableCollection<Nodo>(
                             Objeto.Insumos?.Where(x => x.Tipo == "M") ?? Enumerable.Empty<Nodo>());
@@ -127,6 +148,7 @@ namespace DOP.Presupuestos.Controles
                         filtrados = null;
                         break;
                     }
+                SeleccionInsumo.Text = seleccion;
 
                 grillaListados.ItemsSource = filtrados;
 

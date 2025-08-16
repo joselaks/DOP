@@ -105,14 +105,23 @@
                 VerticalAlignment="Center"
                 FontSize="20"
                 FontWeight="Bold"
-                Text="Listado" />
+                Text="Listado de " />
+
+            <TextBlock
+                x:Name="SeleccionInsumo"
+                VerticalAlignment="Center"
+                FontSize="20"
+                FontWeight="Bold"
+                Text="Insumos básicos" />
             <ComboBox
                 x:Name="comboTipoListado"
                 Width="220"
                 Margin="20,0,0,0"
                 VerticalAlignment="Center"
                 SelectedIndex="0"
+                Visibility="Collapsed"
                 SelectionChanged="comboTipoListado_SelectionChanged">
+                <ComboBoxItem Content="Insumos básicos" />
                 <ComboBoxItem Content="Materiales" />
                 <ComboBoxItem Content="Mano de Obra" />
                 <ComboBoxItem Content="Equipos" />

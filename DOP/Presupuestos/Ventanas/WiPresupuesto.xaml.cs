@@ -658,6 +658,21 @@ namespace DOP.Presupuestos.Ventanas
             MaestroPrecios.panPrecio.Width = new GridLength(0);
 
             }
+
+
+        private void comboTipoListado_SelectionChanged(object sender, SelectionChangedEventArgs e)
+            {
+            var combo = sender as Syncfusion.Windows.Tools.Controls.RibbonComboBox;
+            var selectedItem = combo?.SelectedItem as Syncfusion.Windows.Tools.Controls.RibbonComboBoxItem;
+            string seleccion = selectedItem?.Content?.ToString();
+
+            // Verifica que Listado no sea null antes de llamar al método
+            if (Listado != null && !string.IsNullOrEmpty(seleccion))
+                {
+                Listado.CambiarFiltroPorTexto(seleccion);
+                }
+            }
+
         }
 
     }

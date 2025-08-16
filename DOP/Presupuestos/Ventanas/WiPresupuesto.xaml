@@ -213,20 +213,22 @@
                         Unchecked="VentanaListado_Unchecked" />
 
                     <syncfusion:RibbonComboBox
+                        x:Name="comboTipoListado"
                         Width="140"
                         Label="Formato"
                         SelectedIndex="0"
+                        SelectionChanged="comboTipoListado_SelectionChanged"
                         ToolTip="Seleccionar formato">
-
-                        <!--  Marca de agua  -->
-                        <syncfusion:RibbonComboBoxItem Content="Tipo de insumo" IsEnabled="False" />
-
-                        <!--  Opciones reales  -->
+                        <syncfusion:RibbonComboBoxItem Content="Insumos básicos" />
                         <syncfusion:RibbonComboBoxItem Content="Materiales" />
                         <syncfusion:RibbonComboBoxItem Content="Mano de Obra" />
                         <syncfusion:RibbonComboBoxItem Content="Equipos" />
                         <syncfusion:RibbonComboBoxItem Content="Subcontratos" />
                         <syncfusion:RibbonComboBoxItem Content="Otros" />
+                        <syncfusion:RibbonComboBoxItem Content="Auxiliares" />
+                        <Separator />
+                        <syncfusion:RibbonComboBoxItem Content="Rubros" />
+                        <syncfusion:RibbonComboBoxItem Content="Tareas" />
                     </syncfusion:RibbonComboBox>
 
                     <syncfusion:DropDownButtonAdv
@@ -315,10 +317,9 @@
                         x:Name="chkPrecios"
                         Width="140"
                         Checked="chkPrecios_Checked"
-                        Unchecked="chkPrecios_Unchecked"
                         Content="Incluir listas de Precios"
                         IsChecked="false"
-                        />
+                        Unchecked="chkPrecios_Unchecked" />
 
                 </syncfusion:RibbonBar>
 
@@ -370,8 +371,8 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="0" x:Name="sepMaestro" />
-                <ColumnDefinition Width="0" x:Name="panMaestro" />
+                <ColumnDefinition x:Name="sepMaestro" Width="0" />
+                <ColumnDefinition x:Name="panMaestro" Width="0" />
             </Grid.ColumnDefinitions>
             <Grid
                 x:Name="gPlanilla"
