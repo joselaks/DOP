@@ -241,8 +241,9 @@ namespace DOP.Presupuestos.Controles
                 this.grillaArbol.View.Refresh();
                 ExpandeRubro();
                 }
-            Objeto.recalculo(Objeto.Arbol, true, 0, true);
 
+            //
+            Objeto.RecalculoCompleto();
             }
 
 
@@ -337,7 +338,7 @@ namespace DOP.Presupuestos.Controles
                     Objeto.mismoCodigo(Objeto.Arbol, editado);
                     break;
                 }
-            Objeto.recalculo(Objeto.Arbol, true, 0, true);
+            Objeto.RecalculoCompleto();
             }
 
         private void grillaArbol_KeyDown(object sender, KeyEventArgs e)

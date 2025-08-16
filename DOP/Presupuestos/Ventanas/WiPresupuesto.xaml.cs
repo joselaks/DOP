@@ -221,42 +221,9 @@ namespace DOP.Presupuestos.Ventanas
                     {
                     Objeto.Arbol.Add(item);
                     }
-                recalculo();
+                Objeto.RecalculoCompleto();
                 }
 
-            }
-
-        //Recalculo desde la ventana presupuesto.
-        public void recalculo()
-            {
-            Objeto.recalculo(Objeto.Arbol, true, 0, true);
-            Objeto.Rubros.Clear();
-            Objeto.Tareas.Clear();
-            Objeto.Auxiliares.Clear();
-            Objeto.listaRubrosTareasAuxiliares(Objeto.Arbol);
-
-            Objeto.sinCero();
-
-            decimal totMateriales1 = Objeto.Arbol.Sum(i => i.Materiales1);
-            //totMDO1.Value = Objeto.Arbol.Sum(i => i.ManodeObra1);
-            //totEquipos1.Value = Objeto.Arbol.Sum(i => i.Equipos1);
-            //totSubcontratos1.Value = Objeto.Arbol.Sum(i => i.Subcontratos1);
-            //totOtros1.Value = Objeto.Arbol.Sum(i => i.Otros1);
-            //totGeneral1.Value = Objeto.Arbol.Sum(i => i.Importe1);
-            decimal totGeneral1 = Objeto.Arbol.Sum(i => i.Importe1);
-            decimal totalGeneralDol = Objeto.Arbol.Sum(i => i.Importe2);
-
-            // Asignar el valor explícitamente al HeaderText
-            var cultura = new CultureInfo("es-ES") { NumberFormat = { NumberGroupSeparator = ".", NumberDecimalSeparator = "," } };
-            Planilla.colImporte1.HeaderText = $"{totGeneral1.ToString("N2", cultura)}";
-            Planilla.colMateriales1.HeaderText = $"{totMateriales1.ToString("N2", cultura)}";
-            //colImporte2.HeaderText = $"{totalGeneralDol.ToString("N2", cultura)}";
-
-
-            //Totales grillas
-            //listaInsumos.grillaInsumos.CalculateAggregates();
-            //this.GrillaArbol.CalculateAggregates();
-            //graficoInsumos.recalculo();
             }
 
         private void Agregar_Click(object sender, RoutedEventArgs e)
@@ -322,7 +289,7 @@ namespace DOP.Presupuestos.Ventanas
 
         private void Recalculo_Click(object sender, RoutedEventArgs e)
             {
-            recalculo();
+            Objeto.RecalculoCompleto();
 
             }
 

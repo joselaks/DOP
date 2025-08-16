@@ -178,7 +178,7 @@ namespace DOP.Presupuestos.Controles
                     Objeto.mismoCodigo(Objeto.Arbol, editado);
                     break;
                 }
-            Objeto.recalculo(Objeto.Arbol, true, 0, true);
+            Objeto.RecalculoCompleto();
             }
 
         private void grillaDetalle_SelectionChanged(object sender, Syncfusion.UI.Xaml.Grid.GridSelectionChangedEventArgs e)
@@ -275,7 +275,7 @@ namespace DOP.Presupuestos.Controles
                 }
 
             (Nodo nuevoNodo, string mensaje) = Objeto.agregaNodo(tipo, sele);
-            Objeto.recalculo(Objeto.Arbol, true, 0, true);
+            Objeto.RecalculoCompleto();
             }
         }
     }

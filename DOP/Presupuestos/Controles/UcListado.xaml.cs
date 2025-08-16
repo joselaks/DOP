@@ -114,6 +114,9 @@ namespace DOP.Presupuestos.Controles
                         filtrados = new ObservableCollection<Nodo>(
                             Objeto.Insumos?.Where(x => x.Tipo == "O") ?? Enumerable.Empty<Nodo>());
                         break;
+                    case "Auxiliares":
+                        filtrados = Objeto.Auxiliares ?? new ObservableCollection<Nodo>();
+                        break;
                     case "Tareas":
                         filtrados = Objeto.Tareas ?? new ObservableCollection<Nodo>();
                         break;

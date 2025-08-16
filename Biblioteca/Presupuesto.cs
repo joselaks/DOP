@@ -527,8 +527,18 @@ namespace Bibioteca.Clases
 
             }
 
+        public void RecalculoCompleto()
+            {
+                recalculo(Arbol, true, 0);
+                Rubros.Clear();
+                Tareas.Clear();
+                Auxiliares.Clear();
+                listaRubrosTareasAuxiliares(Arbol);
+                //sinCero();
+            }
 
-        public void recalculo(IEnumerable<Nodo> items, bool inicio, decimal FactorSup, bool cInsumos)
+
+        private void recalculo(IEnumerable<Nodo> items, bool inicio, decimal FactorSup)
             {
             if (inicio == true) //comienza el procedimiento
                 {
@@ -566,7 +576,7 @@ namespace Bibioteca.Clases
 
                         }
 
-                    recalculo(item.Inferiores, false, FactorSup * item.Cantidad, true); //Primero sigo hasta abajo
+                    recalculo(item.Inferiores, false, FactorSup * item.Cantidad); //Primero sigo hasta abajo
 
                     #region Calculo de PU y suma de importes por tipo
 
