@@ -23,7 +23,13 @@ namespace DataObra.Presupuestos.Ventanas
         public WiDatosGenerales(PresupuestoDTO encabezado)
             {
             InitializeComponent();
-            // Clona los datos para edición temporal si lo deseas, aquí se enlaza directamente
+
+            // Si MesBase es 01/01/0001, poner la fecha actual
+            if (encabezado.MesBase == DateTime.MinValue)
+                {
+                encabezado.MesBase = DateTime.Today;
+                }
+
             this.DataContext = encabezado;
             }
 

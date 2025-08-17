@@ -1204,6 +1204,8 @@ namespace Bibioteca.Clases
 
             // 4. Clonar el encabezado (PresupuestoDTO) y asignar fecha actual a todas las fechas
             var fechaActual = DateTime.Today;
+            DateTime fechaMinSql = new DateTime(1753, 1, 1);
+
             var encabezadoEmpaquetado = new PresupuestoDTO
                 {
                 ID = encabezado.ID ?? 0,
@@ -1217,8 +1219,8 @@ namespace Bibioteca.Clases
                 PrVentaDirecto = encabezado?.PrVentaDirecto ?? 0,
                 VentaMoneda = encabezado?.VentaMoneda ?? 'P',
                 Superficie = encabezado?.Superficie,
-                MesBase = fechaActual,
-                FechaC = fechaActual,
+                MesBase = (encabezado?.MesBase >= fechaMinSql) ? encabezado.MesBase : fechaActual,
+                FechaC = (encabezado?.FechaC >= fechaMinSql) ? encabezado.FechaC : fechaActual,
                 FechaM = fechaActual,
                 EsModelo = encabezado?.EsModelo ?? false,
                 TipoCambioD = encabezado?.TipoCambioD ?? 0

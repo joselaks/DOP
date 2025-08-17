@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:DOP.Presupuestos.Ventanas"
+    xmlns:presupuestosClases="clr-namespace:DataObra.Presupuestos.Clases"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
     Width="1200"
@@ -14,7 +15,9 @@
     ResizeMode="CanResizeWithGrip"
     WindowStartupLocation="CenterScreen"
     WindowStyle="None">
-    <Window.Resources />
+    <Window.Resources>
+        <presupuestosClases:ValorM2Converter x:Key="ValorM2Converter"/>
+    </Window.Resources>
     <Border
         x:Name="MainBorder"
         Margin="10"
@@ -84,8 +87,6 @@
                     <ColumnDefinition Width="3*" />
                 </Grid.ColumnDefinitions>
 
-
-
                 <syncfusion:TabNavigationControl
                     x:Name="zona00"
                     Margin="15"
@@ -97,7 +98,6 @@
                             </Grid>
                         </syncfusion:TabNavigationItem.Content>
                     </syncfusion:TabNavigationItem>
-
                 </syncfusion:TabNavigationControl>
 
                 <syncfusion:TabControlExt
@@ -187,23 +187,27 @@
                                             HeaderText="Importe"
                                             MappingName="PrEjecTotal"
                                             TextAlignment="Right" />
-
+                                        <syncfusion:GridNumericColumn
+                                            Width="120"
+                                            HeaderText="Superficie"
+                                            MappingName="Superficie"
+                                            TextAlignment="Right" />
+                                        <syncfusion:GridTemplateColumn
+                                            Width="120"
+                                            HeaderText="Valor del m2">
+                                            <syncfusion:GridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Path=., Converter={StaticResource ValorM2Converter}}" TextAlignment="Right"/>
+                                                </DataTemplate>
+                                            </syncfusion:GridTemplateColumn.CellTemplate>
+                                        </syncfusion:GridTemplateColumn>
                                     </syncfusion:SfDataGrid.Columns>
                                 </syncfusion:SfDataGrid>
-
                             </Grid>
-
                         </Grid>
                     </syncfusion:TabItemExt>
                 </syncfusion:TabControlExt>
-
-
-
-
-
-
             </Grid>
-
             <StackPanel
                 Grid.Row="2"
                 Height="30"
