@@ -2,6 +2,7 @@
 using Biblioteca;
 using Biblioteca.DTO;
 using DataObra.Presupuestos.Controles;
+using DataObra.Presupuestos.Ventanas;
 using DOP.Datos;
 using DOP.Presupuestos.Clases;
 using DOP.Presupuestos.Controles;
@@ -673,6 +674,18 @@ namespace DOP.Presupuestos.Ventanas
                 }
             }
 
+        private void btnDatos_Click(object sender, RoutedEventArgs e)
+            {
+            var dlg = new WiDatosGenerales(Objeto.encabezado)
+                {
+                Owner = this
+                };
+            if (dlg.ShowDialog() == true)
+                {
+                // Los cambios ya están reflejados en Objeto.encabezado por el binding
+                // Si necesitas notificar cambios manualmente, hazlo aquí
+                }
+            }
         }
 
     }

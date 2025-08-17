@@ -41,12 +41,44 @@
             <syncfusion:Ribbon.BackStage>
                 <syncfusion:Backstage>
                     <syncfusion:BackstageTabItem Header="Datos">
+
                         <StackPanel>
                             <TextBlock
                                 Margin="10"
                                 FontSize="20"
                                 Text="Datos del presupuesto" />
+
+                            <Grid Margin="10,20,10,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                                    Margin="0,0,8,0"
+                                    VerticalAlignment="Center"
+                                    Text="Descripción:" />
+                                <TextBox
+                                    Grid.Column="1"
+                                    Width="250"
+                                    Text="{Binding Objeto.encabezado.Descrip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </Grid>
+
+                            <Grid Margin="10,10,10,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                                    Margin="0,0,8,0"
+                                    VerticalAlignment="Center"
+                                    Text="Mes base:" />
+                                <DatePicker
+                                    Grid.Column="1"
+                                    Width="250"
+                                    SelectedDate="{Binding Objeto.encabezado.MesBase, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </Grid>
                         </StackPanel>
+
                     </syncfusion:BackstageTabItem>
                     <syncfusion:BackstageTabItem Header="Indirectos">
                         <StackPanel>
@@ -356,6 +388,16 @@
                         SizeForm="Small"
                         SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
                 </syncfusion:RibbonBar>
+
+                <syncfusion:RibbonBar Header="Datos generales">
+                    <syncfusion:RibbonButton
+                        x:Name="btnDatos"
+                        Click="btnDatos_Click"
+                        Label="Datos generales"
+                        LargeIcon="pack://application:,,,/Imagenes/Importar.png"
+                        SizeForm="Large" />
+                </syncfusion:RibbonBar>
+
 
             </syncfusion:RibbonTab>
 

@@ -180,6 +180,7 @@
                                             Width="100"
                                             HeaderText="Mes base"
                                             MappingName="MesBase"
+                                            Pattern="YearMonth"
                                             TextAlignment="Right" />
                                         <syncfusion:GridNumericColumn
                                             Width="200"
