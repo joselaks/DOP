@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:DOP.Presupuestos.Ventanas"
-    xmlns:presupuestosClases="clr-namespace:DataObra.Presupuestos.Clases"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
     Width="1200"
@@ -16,7 +15,6 @@
     WindowStartupLocation="CenterScreen"
     WindowStyle="None">
     <Window.Resources>
-        <presupuestosClases:ValorM2Converter x:Key="ValorM2Converter"/>
     </Window.Resources>
     <Border
         x:Name="MainBorder"
@@ -192,15 +190,11 @@
                                             HeaderText="Superficie"
                                             MappingName="Superficie"
                                             TextAlignment="Right" />
-                                        <syncfusion:GridTemplateColumn
+                                        <syncfusion:GridNumericColumn
                                             Width="120"
-                                            HeaderText="Valor del m2">
-                                            <syncfusion:GridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock Text="{Binding Path=., Converter={StaticResource ValorM2Converter}}" TextAlignment="Right"/>
-                                                </DataTemplate>
-                                            </syncfusion:GridTemplateColumn.CellTemplate>
-                                        </syncfusion:GridTemplateColumn>
+                                            HeaderText="Valor M2"
+                                            MappingName="ValorM2"
+                                            TextAlignment="Right" />
                                     </syncfusion:SfDataGrid.Columns>
                                 </syncfusion:SfDataGrid>
                             </Grid>

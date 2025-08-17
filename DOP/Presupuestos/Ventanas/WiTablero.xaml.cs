@@ -69,6 +69,15 @@ namespace DOP.Presupuestos.Ventanas
             var (success, message, lista) = await DatosWeb.ObtenerPresupuestosUsuarioAsync();
             if (success)
                 {
+                // Calcular ValorM2 para cada presupuesto
+                foreach (var p in lista)
+                    {
+                    if (p.Superficie.HasValue && p.Superficie.Value > 0)
+                        p.ValorM2 = p.PrEjecTotal / p.Superficie.Value;
+                    else
+                        p.ValorM2 = 0;
+                    }
+
                 _presupuestos = new ObservableCollection<PresupuestoDTO>(lista);
                 GrillaPresupuestos.ItemsSource = _presupuestos;
                 }
@@ -221,15 +230,13 @@ namespace DOP.Presupuestos.Ventanas
                     case "Editar":
                         if (GrillaPresupuestos.SelectedItem is PresupuestoDTO seleccionado && seleccionado.ID.HasValue)
                             {
-                            // Obtener conceptos y relaciones antes de abrir la ventana
                             var (ok, msg, conceptos, relaciones) = await DatosWeb.ObtenerConceptosYRelacionesAsync(seleccionado.ID.Value);
                             if (ok)
                                 {
-                                // Aquí puedes pasar conceptos y relaciones a la ventana WiPresupuesto si lo necesitas
-                                var wiPresupuesto = new WiPresupuesto(seleccionado,conceptos,relaciones, _presupuestos);
+                                var copia = PresupuestoDTO.CopiarPresupuestoDTO(seleccionado); // <-- aquí el cambio
+                                var wiPresupuesto = new WiPresupuesto(copia, conceptos, relaciones, _presupuestos);
                                 wiPresupuesto.Owner = this;
                                 wiPresupuesto.ShowDialog();
-                                // Si necesitas usar conceptos y relaciones después, puedes hacerlo aquí
                                 }
                             else
                                 {
@@ -302,7 +309,8 @@ namespace DOP.Presupuestos.Ventanas
                 if (ok)
                     {
                     // Aquí puedes pasar conceptos y relaciones a la ventana WiPresupuesto si lo necesitas
-                    var wiPresupuesto = new WiPresupuesto(seleccionado, conceptos, relaciones, _presupuestos);
+                    var copia = PresupuestoDTO.CopiarPresupuestoDTO(seleccionado);
+                    var wiPresupuesto = new WiPresupuesto(copia, conceptos, relaciones, _presupuestos);
                     wiPresupuesto.Owner = this;
                     wiPresupuesto.ShowDialog();
                     // Si necesitas usar conceptos y relaciones después, puedes hacerlo aquí

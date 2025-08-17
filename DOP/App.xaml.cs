@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Net.Http;
 using System.Windows;
 using System.Windows.Input;
+using System.Threading;
 
 namespace DOP
     {
@@ -20,6 +21,7 @@ namespace DOP
         public static int IdUsuario { get; set; }
         // Propiedad estática para almacenar el estado de la conexión
         public static bool IsConnectionSuccessful { get; private set; }
+        private static Mutex? _singleInstanceMutex;
 
 
         public App()
@@ -56,6 +58,18 @@ namespace DOP
 
         protected override void OnStartup(StartupEventArgs e)
             {
+
+            // Mutex para evitar múltiples instancias
+            bool createdNew;
+            _singleInstanceMutex = new Mutex(true, "DataObra_SingleInstance_Mutex", out createdNew);
+
+            if (!createdNew)
+                {
+                MessageBox.Show("La aplicación ya está en ejecución.", "DataObra", MessageBoxButton.OK, MessageBoxImage.Information);
+                Shutdown();
+                return;
+                }
+
             base.OnStartup(e);
             // Aquí puedes decidir cuál URL usar, por ejemplo, basado en una configuración
 

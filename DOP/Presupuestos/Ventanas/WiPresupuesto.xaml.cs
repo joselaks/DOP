@@ -148,6 +148,10 @@ namespace DOP.Presupuestos.Ventanas
 
         private async void BtnGuardar_Click(object sender, RoutedEventArgs e)
             {
+
+            Objeto.encabezado.PrEjecTotal = Objeto.Arbol.Sum(i => i.Importe1);
+            Objeto.encabezado.FechaM = DateTime.Now;
+
             ProcesaPresupuestoRequest oGrabar = Objeto.EmpaquetarPresupuesto();
 
             // Llamada al servicio web para procesar el presupuesto
@@ -159,17 +163,21 @@ namespace DOP.Presupuestos.Ventanas
                 Objeto.listaConceptosLeer = Objeto.listaConceptosGrabar.Select(x => x).ToList();
                 Objeto.listaRelacionesLeer = Objeto.listaRelacionesGrabar.Select(x => x).ToList();
 
-                MessageBox.Show($"Presupuesto guardado correctamente. ID: {resultado.PresupuestoID}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show($"Presupuesto guardado correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                // Asignar siempre la fecha de modificación actual
-                Objeto.encabezado.FechaM = DateTime.Now;
 
                 if (Objeto.encabezado.ID == null)
                     {
                     // Nuevo presupuesto: asignar fecha de creación y ID, luego agregar a la colección
                     Objeto.encabezado.FechaC = DateTime.Today;
                     Objeto.encabezado.ID = resultado.PresupuestoID;
-                    _presupuestosRef.Add(Objeto.encabezado);
+                    var superficie = Objeto.encabezado.Superficie ?? 0;
+                    if (Objeto.encabezado.Superficie.HasValue && Objeto.encabezado.Superficie.Value > 0)
+                        Objeto.encabezado.ValorM2 = Math.Round(Objeto.encabezado.PrEjecTotal / Objeto.encabezado.Superficie.Value, 2);
+                    else
+                        Objeto.encabezado.ValorM2 = 0;
+
+                    _presupuestosRef.Add(PresupuestoDTO.CopiarPresupuestoDTO(Objeto.encabezado));
                     }
                 else
                     {
@@ -177,8 +185,23 @@ namespace DOP.Presupuestos.Ventanas
                     var existente = _presupuestosRef.FirstOrDefault(p => p.ID == Objeto.encabezado.ID);
                     if (existente != null)
                         {
-                        var idx = _presupuestosRef.IndexOf(existente);
-                        _presupuestosRef[idx] = Objeto.encabezado;
+                        // Copia los valores de Objeto.encabezado (la copia) al objeto original
+                        existente.Descrip = Objeto.encabezado.Descrip;
+                        existente.FechaC = Objeto.encabezado.FechaC;
+                        existente.FechaM = Objeto.encabezado.FechaM;
+                        existente.MesBase = Objeto.encabezado.MesBase;
+                        existente.PrEjecTotal = Objeto.encabezado.PrEjecTotal;
+                        existente.Superficie = Objeto.encabezado.Superficie;
+
+                        // Recalcular ValorM2 de forma segura
+                        if (existente.Superficie.HasValue && existente.Superficie.Value > 0)
+                            existente.ValorM2 = Math.Round(existente.PrEjecTotal / existente.Superficie.Value, 2);
+                        else
+                            existente.ValorM2 = 0;
+
+
+
+                        // ... y el resto de propiedades
                         }
                     else
                         {
@@ -473,7 +496,7 @@ namespace DOP.Presupuestos.Ventanas
             desmarca();
 
             // Guardar el ancho actual antes de ocultar
-           _panMaestroUserWidth = panMaestro.Width;
+            _panMaestroUserWidth = panMaestro.Width;
 
             sepMaestro.Width = new GridLength(0);
             panMaestro.Width = new GridLength(0);
@@ -686,9 +709,26 @@ namespace DOP.Presupuestos.Ventanas
                 // Si necesitas notificar cambios manualmente, hazlo aquí
                 }
             }
+       
         }
-
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

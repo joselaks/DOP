@@ -1212,7 +1212,7 @@ namespace Bibioteca.Clases
                 CuentaID = encabezado?.CuentaID,
                 UsuarioID = encabezado?.UsuarioID ?? 0,
                 Descrip = encabezado?.Descrip,
-                PrEjecTotal = Arbol.Sum(i => i.Importe1),
+                PrEjecTotal = encabezado.PrEjecTotal,
                 PrEjecDirecto = encabezado?.PrEjecDirecto ?? 0,
                 EjecMoneda = encabezado?.EjecMoneda ?? 'P',
                 PrVentaTotal = encabezado?.PrVentaTotal ?? 0,
@@ -1221,7 +1221,7 @@ namespace Bibioteca.Clases
                 Superficie = encabezado?.Superficie,
                 MesBase = (encabezado?.MesBase >= fechaMinSql) ? encabezado.MesBase : fechaActual,
                 FechaC = (encabezado?.FechaC >= fechaMinSql) ? encabezado.FechaC : fechaActual,
-                FechaM = fechaActual,
+                FechaM = encabezado.FechaM,
                 EsModelo = encabezado?.EsModelo ?? false,
                 TipoCambioD = encabezado?.TipoCambioD ?? 0
                 };
