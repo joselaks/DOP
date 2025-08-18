@@ -79,32 +79,16 @@ namespace DOP.Presupuestos.Controles
             panSuperiores.Height = new GridLength(0);
             }
 
-        public void CambiarFiltroPorTexto(string texto)
-            {
-            // Buscar el ComboBoxItem cuyo Content coincide con el texto
-            foreach (var obj in comboTipoListado.Items)
-                {
-                if (obj is ComboBoxItem item && item.Content?.ToString() == texto)
-                    {
-                    comboTipoListado.SelectedItem = item;
-                    break;
-                    }
-                }
-            // El evento SelectionChanged ya actualizará la grilla y el TextBlock
-            }
+      
 
-        private void comboTipoListado_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        public void comboTipoListado_SelectionChanged(string _seleccion)
             {
-            if (comboTipoListado == null || Objeto == null)
+            if (_seleccion==null)
                 return;
 
             ObservableCollection<Nodo> filtrados = null;
 
-            if (comboTipoListado.SelectedItem is ComboBoxItem selectedItem && selectedItem.Content != null)
-                {
-                string seleccion = selectedItem.Content.ToString();
-
-                switch (seleccion)
+                switch (_seleccion)
                     {
                     case "Insumos básicos":
                         filtrados = Objeto.Insumos ?? new ObservableCollection<Nodo>();
@@ -142,7 +126,7 @@ namespace DOP.Presupuestos.Controles
                         filtrados = null;
                         break;
                     }
-                SeleccionInsumo.Text = seleccion;
+                SeleccionInsumo.Text = _seleccion;
 
                 grillaListados.ItemsSource = filtrados;
 
@@ -150,7 +134,7 @@ namespace DOP.Presupuestos.Controles
                 decimal totGeneral1 = filtrados?.Sum(i => i.Importe1) ?? 0;
                 var cultura = new CultureInfo("es-ES") { NumberFormat = { NumberGroupSeparator = ".", NumberDecimalSeparator = "," } };
                 colImporte1.HeaderText = $"{totGeneral1.ToString("N2", cultura)}";
-                }
+               
             }
 
         // Obtiene todos los superiores tipo "T" en todas las ramas

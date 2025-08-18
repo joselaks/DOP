@@ -54,22 +54,25 @@ namespace DOP.Presupuestos.Controles
 
             grillaMaestro.ItemsSource = Objeto.Arbol;
             this.grillaMaestro.View.Filter = FiltrarPorTipo;
+            SelectorTipo_SelectionChanged("Rubros");
             this.grillaMaestro.View.Refresh();
 
 
             }
 
-        private void SelectorTipo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        public void SelectorTipo_SelectionChanged(string _seleccion)
             {
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                if (SelectorTipo == null || grillaMaestro == null || grillaMaestro.View == null)
+                if (_seleccion == null || grillaMaestro == null || grillaMaestro.View == null)
                     return;
 
-                tipoSeleccionado = SelectorTipo.Text;
+                tipoSeleccionado = _seleccion;
                 grillaMaestro.View.Refresh();
             }), System.Windows.Threading.DispatcherPriority.Background);
-            }
+
+            SeleccionMaestro.Text = _seleccion;
+        }
 
 
 

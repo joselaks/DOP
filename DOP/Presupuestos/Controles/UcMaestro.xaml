@@ -22,29 +22,18 @@
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal">
             <TextBlock
-                Margin="5,0,5,0"
-                VerticalAlignment="Center"
-                FontSize="16"
-                FontWeight="Bold"
-                Text="Maestro" />
-            <ComboBox
-    x:Name="SelectorTipo"
-    Width="200"
-    Height="30"
-    HorizontalAlignment="Center"
     VerticalAlignment="Center"
-    SelectedIndex="0"
-    SelectionChanged="SelectorTipo_SelectionChanged">
-                <ComboBoxItem Content="Rubros" />
-                <ComboBoxItem Content="Tareas" />
-                <ComboBoxItem Content="Auxiliares" />
-                <ComboBoxItem Content="----- Insumos -----" IsEnabled="False" />
-                <ComboBoxItem Content="Materiales" />
-                <ComboBoxItem Content="Mano de obra" />
-                <ComboBoxItem Content="Equipos" />
-                <ComboBoxItem Content="Subcontratos" />
-                <ComboBoxItem Content="Otros" />
-            </ComboBox>
+    FontSize="20"
+    FontWeight="Bold"
+    Text="Maestro de " />
+
+            <TextBlock
+    x:Name="SeleccionMaestro"
+    VerticalAlignment="Center"
+    FontSize="20"
+    FontWeight="Bold"
+    Text="Insumos básicos" />
+
             <Button
                 x:Name="obtener"
                 Margin="10,0,0,0"

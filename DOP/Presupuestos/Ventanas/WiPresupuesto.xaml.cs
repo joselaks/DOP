@@ -693,7 +693,8 @@ namespace DOP.Presupuestos.Ventanas
             // Verifica que Listado no sea null antes de llamar al método
             if (Listado != null && !string.IsNullOrEmpty(seleccion))
                 {
-                Listado.CambiarFiltroPorTexto(seleccion);
+
+                Listado.comboTipoListado_SelectionChanged(seleccion);
                 }
             }
 
@@ -709,8 +710,23 @@ namespace DOP.Presupuestos.Ventanas
                 // Si necesitas notificar cambios manualmente, hazlo aquí
                 }
             }
-       
+
+        private void comboTipoMaestro_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var combo = sender as Syncfusion.Windows.Tools.Controls.RibbonComboBox;
+            var selectedItem = combo?.SelectedItem as Syncfusion.Windows.Tools.Controls.RibbonComboBoxItem;
+            string seleccion = selectedItem?.Content?.ToString();
+
+            // Verifica que Listado no sea null antes de llamar al método
+            if (Maestro != null && !string.IsNullOrEmpty(seleccion))
+            {
+                Maestro.SelectorTipo_SelectionChanged(seleccion);
+
+                Listado.comboTipoListado_SelectionChanged(seleccion);
+            }
+
         }
+    }
     }
 
 
