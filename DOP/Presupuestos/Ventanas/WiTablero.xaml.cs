@@ -86,7 +86,13 @@ namespace DOP.Presupuestos.Ventanas
                 MessageBox.Show($"No se pudieron cargar los presupuestos.\n{message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 GrillaPresupuestos.ItemsSource = null;
                 }
-            }
+            txtUsuario.Text = "Usuario: " + App.NombreUsuario;
+            btnBackstage.Visibility = (App.IdUsuario == 1 || App.IdUsuario == 2)
+    ? Visibility.Visible
+    : Visibility.Collapsed;
+
+
+        }
 
 
         #region Comportamiento ventana
@@ -354,7 +360,12 @@ namespace DOP.Presupuestos.Ventanas
                 }
 
             }
+
+        private void btnBackstage_Click(object sender, RoutedEventArgs e)
+        {
+
         }
+    }
 
 
     public class DatoGrafico

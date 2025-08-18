@@ -159,42 +159,56 @@
                                         <syncfusion:GridTextColumn
                                             Width="50"
                                             HeaderText="ID"
-                                            MappingName="ID" />
+                                            MappingName="ID"
+                                            IsHidden="True"/>
                                         <syncfusion:GridTextColumn
-                                            Width="250"
+                                            Width="280"
                                             HeaderText="Descripción"
                                             MappingName="Descrip" />
+                                        <syncfusion:GridNumericColumn
+    Width="150"
+    HeaderText="Importe"
+    MappingName="PrEjecTotal"
+    TextAlignment="Right" 
+                                            NumberDecimalDigits="2"
+NumberDecimalSeparator=","
+NumberGroupSeparator="."
+NumberGroupSizes="3"/>
+                                        <syncfusion:GridNumericColumn
+    Width="120"
+    HeaderText="Superficie"
+    MappingName="Superficie"
+    TextAlignment="Right" 
+                                            NumberDecimalDigits="2"
+NumberDecimalSeparator=","
+NumberGroupSeparator="."
+NumberGroupSizes="3"/>
+                                        <syncfusion:GridNumericColumn
+    Width="120"
+    HeaderText="Valor M2"
+    MappingName="ValorM2"
+    TextAlignment="Right" 
+                                            NumberDecimalDigits="2"
+NumberDecimalSeparator=","
+NumberGroupSeparator="."
+NumberGroupSizes="3"/>
                                         <syncfusion:GridDateTimeColumn
-                                            Width="100"
-                                            HeaderText="Fecha de creación"
+                                            Width="120"
+                                            HeaderText="Fecha creación"
                                             MappingName="FechaC"
                                             TextAlignment="Center" />
                                         <syncfusion:GridDateTimeColumn
-                                            Width="100"
-                                            HeaderText="Fecha de modificación"
+                                            Width="120"
+                                            HeaderText="Fecha modificación"
                                             MappingName="FechaM"
                                             TextAlignment="Right" />
                                         <syncfusion:GridDateTimeColumn
-                                            Width="100"
+                                            Width="120"
                                             HeaderText="Mes base"
                                             MappingName="MesBase"
                                             Pattern="YearMonth"
                                             TextAlignment="Right" />
-                                        <syncfusion:GridNumericColumn
-                                            Width="200"
-                                            HeaderText="Importe"
-                                            MappingName="PrEjecTotal"
-                                            TextAlignment="Right" />
-                                        <syncfusion:GridNumericColumn
-                                            Width="120"
-                                            HeaderText="Superficie"
-                                            MappingName="Superficie"
-                                            TextAlignment="Right" />
-                                        <syncfusion:GridNumericColumn
-                                            Width="120"
-                                            HeaderText="Valor M2"
-                                            MappingName="ValorM2"
-                                            TextAlignment="Right" />
+                                        
                                     </syncfusion:SfDataGrid.Columns>
                                 </syncfusion:SfDataGrid>
                             </Grid>
@@ -202,11 +216,30 @@
                     </syncfusion:TabItemExt>
                 </syncfusion:TabControlExt>
             </Grid>
-            <StackPanel
-                Grid.Row="2"
-                Height="30"
-                Margin="5,0,5,5"
-                Orientation="Horizontal" />
+            <StackPanel x:Name="barraEstado"
+            Grid.Row="2"
+            Height="30"
+            Margin="5,0,5,5"
+            Orientation="Horizontal">
+                <TextBlock x:Name="txtUsuario"
+               FontWeight="DemiBold"
+               Margin="5,0,0,0"
+               VerticalAlignment="Center"
+               Foreground="White" />
+                <Button x:Name="btnBackstage"
+            Content="Backstage"
+            Margin="15,0,0,0"
+            Padding="10,2"
+            VerticalAlignment="Center"
+            Background="#003366"
+            Foreground="White"
+            BorderBrush="White"
+            BorderThickness="1"
+            FontWeight="Bold"
+            Visibility="Collapsed"
+            Click="btnBackstage_Click"/>
+            </StackPanel>
+
         </Grid>
     </Border>
 </Window>

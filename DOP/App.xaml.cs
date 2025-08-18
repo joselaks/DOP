@@ -20,6 +20,8 @@ namespace DOP
         public static string BaseUrl { get; private set; }
         public static int IdUsuario { get; set; }
         // Propiedad estática para almacenar el estado de la conexión
+        public static string NombreUsuario { get; set; }
+        // Propiedad estática para almacenar nombre del usuario
         public static bool IsConnectionSuccessful { get; private set; }
         private static Mutex? _singleInstanceMutex;
 

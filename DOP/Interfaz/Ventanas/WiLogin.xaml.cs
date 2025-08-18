@@ -91,6 +91,7 @@ namespace DOP.Interfaz.Ventanas
                         var (usuarioLocal, passwordLocal) = LeerUsuarioLocal();
                         GuardarUsuarioLocal(txtUsuario.Text, txtContraseña.Password);
                         App.IdUsuario = respuesta.Usuario.DatosUsuario.ID;
+                        App.NombreUsuario = $"{respuesta.Usuario.DatosUsuario.Nombre} {respuesta.Usuario.DatosUsuario.Apellido}";
                         this.DialogResult = true;
                         this.Close();
 
