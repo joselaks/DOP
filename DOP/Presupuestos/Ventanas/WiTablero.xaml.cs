@@ -79,16 +79,10 @@ namespace DOP.Presupuestos.Ventanas
                         p.ValorM2 = 0;
                     }
 
-                if (App.tipoUsuario == 2)
-                    {
-                    _presupuestos = new ObservableCollection<PresupuestoDTO>(lista);
-                    }
-                else
-                    {
-                    _presupuestos = new ObservableCollection<PresupuestoDTO>(lista.Where(p => !p.EsModelo));
-                    }
+                _presupuestos = new ObservableCollection<PresupuestoDTO>(lista.Where(p => p.UsuarioID == App.IdUsuario));
                 _modelos = new ObservableCollection<PresupuestoDTO>(lista.Where(p => p.EsModelo && p.UsuarioID == 4));
                 _modelosPropios = new ObservableCollection<PresupuestoDTO>(lista.Where(p => p.EsModelo && p.UsuarioID == App.IdUsuario));
+
 
                 GrillaPresupuestos.ItemsSource = _presupuestos;
                 }
@@ -195,25 +189,25 @@ namespace DOP.Presupuestos.Ventanas
                 _modelos
                     .Where(m => !string.IsNullOrWhiteSpace(m.Descrip))
                     .Select(m => new DatoGrafico
-                    {
+                        {
                         Tipología = m.Descrip,
                         Importe = (double)m.ValorM2
-                    })
+                        })
             );
 
             // Ejes
             CategoryAxis primaryAxis = new CategoryAxis
-            {
+                {
                 Header = "Tipología",
                 FontSize = 14
-            };
+                };
             graficoBarras.PrimaryAxis = primaryAxis;
 
             NumericalAxis secondaryAxis = new NumericalAxis
-            {
+                {
                 Header = "Valor del m2 (u$s)",
                 FontSize = 14
-            };
+                };
             graficoBarras.SecondaryAxis = secondaryAxis;
 
             // Leyenda
@@ -222,13 +216,13 @@ namespace DOP.Presupuestos.Ventanas
 
             // Serie de columnas
             ColumnSeries series = new ColumnSeries
-            {
+                {
                 ItemsSource = datos,
                 XBindingPath = "Tipología",
                 YBindingPath = "Importe",
                 ShowTooltip = true,
                 Label = "Valor del m2"
-            };
+                };
 
             graficoBarras.Series.Add(series);
             }
@@ -243,7 +237,7 @@ namespace DOP.Presupuestos.Ventanas
                 switch (menuItem.Header?.ToString())
                     {
                     case "Nuevo":
-                        var ventana = new WiNuevoPres(_presupuestos,_modelos,_modelosPropios)
+                        var ventana = new WiNuevoPres(_presupuestos, _modelos, _modelosPropios)
                             {
                             Owner = this,
                             WindowStartupLocation = WindowStartupLocation.CenterOwner

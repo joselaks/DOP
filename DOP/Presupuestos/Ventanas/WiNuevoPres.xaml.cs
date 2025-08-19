@@ -20,7 +20,8 @@ namespace DOP.Presupuestos.Ventanas
             InitializeComponent();
             _presupuestosRef = presupuestosRef;
             _modelos = modelos;
-            // Genera los botones dinámicamente a partir de _modelos
+
+            // Botones para modelos
             foreach (var modelo in _modelos)
                 {
                 var boton = new Button
@@ -34,7 +35,6 @@ namespace DOP.Presupuestos.Ventanas
                     };
                 boton.Focusable = false;
 
-                // Crea el UserControl y asigna los textos desde el modelo
                 var uc = new DOP.Presupuestos.Controles.UcModelo
                     {
                     TituloTexto = modelo.Descrip,
@@ -45,15 +45,46 @@ namespace DOP.Presupuestos.Ventanas
 
                 boton.Content = uc;
 
-                // Evento click con confirmación y paso del modelo seleccionado
                 boton.Click += async (s, e) =>
-                {
+                    {
                     if (Confirmar($"¿Desea crear un presupuesto en base a {modelo.Descrip}?"))
                         CrearCopia(modelo);
-                };
+                    };
 
                 panelModelos.Children.Add(boton);
-                //panelModelosPropios.Children.Add(boton1); // Agrega también a modelos propios
+                }
+
+            // Botones para modelos propios
+            foreach (var modeloPropio in modelosPropios)
+                {
+                var boton1 = new Button
+                    {
+                    Margin = new Thickness(0, 0, 10, 10),
+                    Padding = new Thickness(0),
+                    Background = Brushes.Transparent,
+                    BorderThickness = new Thickness(0),
+                    Cursor = Cursors.Hand,
+                    Style = (Style)FindResource("RoundedButtonStyle")
+                    };
+                boton1.Focusable = false;
+
+                var uc1 = new DOP.Presupuestos.Controles.UcModelo
+                    {
+                    TituloTexto = modeloPropio.Descrip,
+                    CostoTotal = modeloPropio.PrEjecTotal.ToString("N2"),
+                    Superficie = modeloPropio.Superficie.HasValue ? modeloPropio.Superficie.Value.ToString("N2") : "",
+                    ValorM2 = modeloPropio.ValorM2.ToString("N2"),
+                    };
+
+                boton1.Content = uc1;
+
+                boton1.Click += async (s, e) =>
+                    {
+                    if (Confirmar($"¿Desea crear un presupuesto en base a {modeloPropio.Descrip}?"))
+                        CrearCopia(modeloPropio);
+                    };
+
+                panelModelosPropios.Children.Add(boton1);
                 }
             }
 
@@ -78,13 +109,14 @@ namespace DOP.Presupuestos.Ventanas
                     foreach (var r in relaciones)
                         r.PresupuestoID = 0;
 
-                _modelosSeleccionado.ID = 0; // Asegúrate de que el ID sea cero para un nuevo presupuesto
-                _modelosSeleccionado.UsuarioID = App.IdUsuario; // Asigna el ID del usuario actual
-                _modelosSeleccionado.Descrip = $"{_modelosSeleccionado.Descrip} - Copia"; // Modifica la descripción para indicar que es una copia
-                _modelosSeleccionado.EsModelo = false; // Asegúrate de que no sea un modelo
+                var copia = PresupuestoDTO.CopiarPresupuestoDTO(_modelosSeleccionado);
+
+
+                copia.ID = 0; // Asegúrate de que el ID sea cero para un nuevo presupuesto
+                copia.UsuarioID = App.IdUsuario; // Asigna el ID del usuario actual
+                copia.EsModelo = false; // Asegúrate de que no sea un modelo
 
                 // Aquí puedes pasar conceptos y relaciones a la ventana WiPresupuesto si lo necesitas
-                var copia = PresupuestoDTO.CopiarPresupuestoDTO(_modelosSeleccionado);
                 var wiPresupuesto = new WiPresupuesto(copia, conceptos, relaciones, _presupuestosRef);
                 wiPresupuesto.Owner = this;
                 wiPresupuesto.ShowDialog();
