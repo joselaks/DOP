@@ -33,12 +33,12 @@ namespace DOP.Presupuestos.Ventanas
         private double _previousHeight;
         private bool _isCustomMaximized = false;
         private ObservableCollection<PresupuestoDTO> _presupuestos = new();
+        private ObservableCollection<PresupuestoDTO> _modelos = new();
 
         public WiTablero()
             {
             SfSkinManager.SetTheme(this, new Theme("MaterialLight", new string[] { "TabNavigationControl", "TabControlExt" }));
             InitializeComponent();
-            GraficoGraficoBarras();
 
             //// Detectar la resolución de pantalla principal
             var screenWidth = SystemParameters.PrimaryScreenWidth;
@@ -78,7 +78,16 @@ namespace DOP.Presupuestos.Ventanas
                         p.ValorM2 = 0;
                     }
 
-                _presupuestos = new ObservableCollection<PresupuestoDTO>(lista);
+                if (App.tipoUsuario == 2)
+                    {
+                    _presupuestos = new ObservableCollection<PresupuestoDTO>(lista);
+                    }
+                else
+                    {
+                    _presupuestos = new ObservableCollection<PresupuestoDTO>(lista.Where(p => !p.EsModelo));
+                    }
+                _modelos = new ObservableCollection<PresupuestoDTO>(lista.Where(p => p.EsModelo));
+
                 GrillaPresupuestos.ItemsSource = _presupuestos;
                 }
             else
@@ -90,7 +99,8 @@ namespace DOP.Presupuestos.Ventanas
             btnBackstage.Visibility = (App.tipoUsuario == 2)
     ? Visibility.Visible
     : Visibility.Collapsed;
-            
+
+            GraficoGraficoBarras();
 
 
             }
@@ -175,44 +185,49 @@ namespace DOP.Presupuestos.Ventanas
 
         private void GraficoGraficoBarras()
             {
-            // Definir los datos de ejemplo
-            var datos = new ObservableCollection<DatoGrafico>
-            {
-                new DatoGrafico { Tipología = "Vivienda", Importe = 1200 },
-                new DatoGrafico { Tipología = "Edificio", Importe = 1500 },
-                new DatoGrafico { Tipología = "Galpón", Importe = 1100 },
-                new DatoGrafico { Tipología = "Reformas", Importe = 890 },
-                new DatoGrafico { Tipología = "Oficinas", Importe = 1340 }
-            };
+            // Borra series previas para evitar duplicados al recargar
+            graficoBarras.Series.Clear();
 
-            //Adding horizontal axis to the chart 
-            CategoryAxis primaryAxis = new CategoryAxis();
-            primaryAxis.Header = "Tipología";
-            primaryAxis.FontSize = 14;
+            // Construye los datos a partir de la colección _modelos
+            var datos = new ObservableCollection<DatoGrafico>(
+                _modelos
+                    .Where(m => !string.IsNullOrWhiteSpace(m.Descrip))
+                    .Select(m => new DatoGrafico
+                    {
+                        Tipología = m.Descrip,
+                        Importe = (double)m.ValorM2
+                    })
+            );
+
+            // Ejes
+            CategoryAxis primaryAxis = new CategoryAxis
+            {
+                Header = "Tipología",
+                FontSize = 14
+            };
             graficoBarras.PrimaryAxis = primaryAxis;
 
-            //Adding vertical axis to the chart 
-            NumericalAxis secondaryAxis = new NumericalAxis();
-            secondaryAxis.Header = "Valor del m2 (u$s)";
-            secondaryAxis.FontSize = 14;
+            NumericalAxis secondaryAxis = new NumericalAxis
+            {
+                Header = "Valor del m2 (u$s)",
+                FontSize = 14
+            };
             graficoBarras.SecondaryAxis = secondaryAxis;
 
-            //Adding Legends for the chart
+            // Leyenda
             ChartLegend legend = new ChartLegend();
             graficoBarras.Legend = legend;
 
-            //Initializing column series
-            ColumnSeries series = new ColumnSeries();
-            series.ItemsSource = datos;
-            series.XBindingPath = "Tipología";
-            series.YBindingPath = "Importe";
-            series.ShowTooltip = true;
-            series.Label = "Valor del m2";
+            // Serie de columnas
+            ColumnSeries series = new ColumnSeries
+            {
+                ItemsSource = datos,
+                XBindingPath = "Tipología",
+                YBindingPath = "Importe",
+                ShowTooltip = true,
+                Label = "Valor del m2"
+            };
 
-            ////Setting adornment to the chart series
-            //series.AdornmentsInfo = new ChartAdornmentInfo() { ShowLabel = true };
-
-            //Adding Series to the Chart Series Collection
             graficoBarras.Series.Add(series);
             }
 
