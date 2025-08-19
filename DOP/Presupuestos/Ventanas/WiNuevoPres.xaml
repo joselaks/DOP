@@ -92,9 +92,9 @@
                 Text="Crear en base a modelos propios:" />
             <StackPanel
                 x:Name="panelModelosPropios"
-                Grid.Row="1"
                 Margin="0,10,0,0"
                 Orientation="Horizontal" />
+            
         </StackPanel>
         <StackPanel
             Grid.Row="2"

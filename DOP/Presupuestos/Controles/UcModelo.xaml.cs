@@ -31,10 +31,23 @@ namespace DOP.Presupuestos.Controles
             set => Titulo.Text = value;
         }
 
-        public string DescripcionTexto
+
+        public string CostoTotal
         {
-            get => Descripcion.Text;
-            set => Descripcion.Text = value;
+            get => CostoTotalText.Text;
+            set => CostoTotalText.Text = value;
+        }
+
+        public string Superficie
+        {
+            get => SuperficieText.Text;
+            set => SuperficieText.Text = value;
+        }
+
+        public string ValorM2
+        {
+            get => ValorM2Text.Text;
+            set => ValorM2Text.Text = value;
         }
     }
 }

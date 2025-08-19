@@ -34,6 +34,7 @@ namespace DOP.Presupuestos.Ventanas
         private bool _isCustomMaximized = false;
         private ObservableCollection<PresupuestoDTO> _presupuestos = new();
         private ObservableCollection<PresupuestoDTO> _modelos = new();
+        private ObservableCollection<PresupuestoDTO> _modelosPropios = new();
 
         public WiTablero()
             {
@@ -86,7 +87,8 @@ namespace DOP.Presupuestos.Ventanas
                     {
                     _presupuestos = new ObservableCollection<PresupuestoDTO>(lista.Where(p => !p.EsModelo));
                     }
-                _modelos = new ObservableCollection<PresupuestoDTO>(lista.Where(p => p.EsModelo));
+                _modelos = new ObservableCollection<PresupuestoDTO>(lista.Where(p => p.EsModelo && p.UsuarioID == 4));
+                _modelosPropios = new ObservableCollection<PresupuestoDTO>(lista.Where(p => p.EsModelo && p.UsuarioID == App.IdUsuario));
 
                 GrillaPresupuestos.ItemsSource = _presupuestos;
                 }
@@ -241,7 +243,7 @@ namespace DOP.Presupuestos.Ventanas
                 switch (menuItem.Header?.ToString())
                     {
                     case "Nuevo":
-                        var ventana = new WiNuevoPres(_presupuestos,_modelos)
+                        var ventana = new WiNuevoPres(_presupuestos,_modelos,_modelosPropios)
                             {
                             Owner = this,
                             WindowStartupLocation = WindowStartupLocation.CenterOwner
@@ -314,7 +316,7 @@ namespace DOP.Presupuestos.Ventanas
 
         private void BtnNuevo_Click(object sender, RoutedEventArgs e)
             {
-            var ventana = new WiNuevoPres(_presupuestos, _modelos)
+            var ventana = new WiNuevoPres(_presupuestos, _modelos, _modelosPropios)
                 {
                 Owner = this,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner

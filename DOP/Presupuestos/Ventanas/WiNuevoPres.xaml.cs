@@ -15,7 +15,7 @@ namespace DOP.Presupuestos.Ventanas
         private ObservableCollection<PresupuestoDTO> _modelos;
 
 
-        public WiNuevoPres(ObservableCollection<PresupuestoDTO> presupuestosRef, ObservableCollection<PresupuestoDTO> modelos)
+        public WiNuevoPres(ObservableCollection<PresupuestoDTO> presupuestosRef, ObservableCollection<PresupuestoDTO> modelos, ObservableCollection<PresupuestoDTO> modelosPropios)
             {
             InitializeComponent();
             _presupuestosRef = presupuestosRef;
@@ -38,7 +38,9 @@ namespace DOP.Presupuestos.Ventanas
                 var uc = new DOP.Presupuestos.Controles.UcModelo
                     {
                     TituloTexto = modelo.Descrip,
-                    DescripcionTexto = modelo.EsModelo ? "Modelo base" : "Propio"
+                    CostoTotal = modelo.PrEjecTotal.ToString("N2"),
+                    Superficie = modelo.Superficie.HasValue ? modelo.Superficie.Value.ToString("N2") : "",
+                    ValorM2 = modelo.ValorM2.ToString("N2"),
                     };
 
                 boton.Content = uc;
@@ -51,6 +53,7 @@ namespace DOP.Presupuestos.Ventanas
                 };
 
                 panelModelos.Children.Add(boton);
+                //panelModelosPropios.Children.Add(boton1); // Agrega también a modelos propios
                 }
             }
 

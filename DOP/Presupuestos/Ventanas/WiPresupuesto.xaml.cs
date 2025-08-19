@@ -199,6 +199,7 @@ namespace DOP.Presupuestos.Ventanas
                         existente.MesBase = Objeto.encabezado.MesBase;
                         existente.PrEjecTotal = Objeto.encabezado.PrEjecTotal;
                         existente.Superficie = Objeto.encabezado.Superficie;
+                        existente.EsModelo= Objeto.encabezado.EsModelo;
 
                         // Recalcular ValorM2 de forma segura
                         if (existente.Superficie.HasValue && existente.Superficie.Value > 0)
