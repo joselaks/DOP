@@ -77,6 +77,8 @@ namespace DOP.Presupuestos.Ventanas
 
                 _modelosSeleccionado.ID = 0; // Asegúrate de que el ID sea cero para un nuevo presupuesto
                 _modelosSeleccionado.UsuarioID = App.IdUsuario; // Asigna el ID del usuario actual
+                _modelosSeleccionado.Descrip = $"{_modelosSeleccionado.Descrip} - Copia"; // Modifica la descripción para indicar que es una copia
+                _modelosSeleccionado.EsModelo = false; // Asegúrate de que no sea un modelo
 
                 // Aquí puedes pasar conceptos y relaciones a la ventana WiPresupuesto si lo necesitas
                 var copia = PresupuestoDTO.CopiarPresupuestoDTO(_modelosSeleccionado);
@@ -89,11 +91,6 @@ namespace DOP.Presupuestos.Ventanas
                 {
                 MessageBox.Show($"No se pudieron obtener los datos del presupuesto.\n{msg}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-
-
-            var win = new WiPresupuesto(null, null, null, _presupuestosRef);
-            win.Owner = this.Owner;
-            win.Show();
             this.Close();
             }
 

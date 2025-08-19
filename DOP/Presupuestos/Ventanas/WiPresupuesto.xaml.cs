@@ -173,7 +173,7 @@ namespace DOP.Presupuestos.Ventanas
                 MessageBox.Show($"Presupuesto guardado correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
 
 
-                if (Objeto.encabezado.ID == null)
+                if (Objeto.encabezado.ID == null || Objeto.encabezado.ID==0)
                     {
                     // Nuevo presupuesto: asignar fecha de creación y ID, luego agregar a la colección
                     Objeto.encabezado.FechaC = DateTime.Today;

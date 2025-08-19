@@ -265,7 +265,6 @@ namespace Bibioteca.Clases
                 {
                 if (_encabezado.ID==0)
                     {
-                    _encabezado.EsModelo= false;
                     listaConceptosLeer = new List<ConceptoDTO>();
                     listaRelacionesLeer = new List<RelacionDTO>();
                     }
