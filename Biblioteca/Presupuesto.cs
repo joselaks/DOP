@@ -263,12 +263,22 @@ namespace Bibioteca.Clases
                 }
             else
                 {
+                if (_encabezado.ID==0)
+                    {
+                    _encabezado.EsModelo= false;
+                    listaConceptosLeer = new List<ConceptoDTO>();
+                    listaRelacionesLeer = new List<RelacionDTO>();
+                    }
+                else
+                    {
+                    listaConceptosLeer = conceptos;
+                    listaRelacionesLeer = relaciones;
+                    }
+
                 encabezado = _encabezado;
-                listaConceptosLeer = conceptos;
-                listaRelacionesLeer = relaciones;
                 //Tomar los datos del encabezado para los campos editables.
                 //Obtener el detalle del presupuesto.
-                generaPresupuesto(null, listaConceptosLeer, listaRelacionesLeer);
+                generaPresupuesto(null, conceptos, relaciones);
 
                 }
             }
@@ -279,8 +289,8 @@ namespace Bibioteca.Clases
             // No es necesario generar un nuevo objeto, se puede reutilizar el existente.
             Arbol.Clear();
             //instanciar los lostados de origen
-            listaConceptosLeer = listaConceptos;
-            listaRelacionesLeer = listaRelaciones;
+            //listaConceptosLeer = listaConceptos;
+            //listaRelacionesLeer = listaRelaciones;
             //Obtengo lista de relaciones con superior 0, que son los rubros.
             string? raiz;
             if (origen == "fie")

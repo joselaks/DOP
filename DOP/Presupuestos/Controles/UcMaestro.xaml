@@ -139,8 +139,8 @@
         <syncfusion:SfTreeGrid
             x:Name="grillaMaestro"
             Grid.Row="1"
-            AllowDrop="True"
             AllowDraggingRows="True"
+            AllowDrop="True"
             AllowEditing="True"
             AllowResizingColumns="True"
             AutoGenerateColumns="False"
@@ -218,9 +218,7 @@
             AllowEditing="False"
             AllowResizingColumns="True"
             AutoGenerateColumns="True"
-            SelectionMode="Single">
-            
-        </syncfusion:SfTreeGrid>
+            SelectionMode="Single" />
 
 
     </Grid>

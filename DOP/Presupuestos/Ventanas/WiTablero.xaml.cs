@@ -241,7 +241,7 @@ namespace DOP.Presupuestos.Ventanas
                 switch (menuItem.Header?.ToString())
                     {
                     case "Nuevo":
-                        var ventana = new WiNuevoPres(_presupuestos)
+                        var ventana = new WiNuevoPres(_presupuestos,_modelos)
                             {
                             Owner = this,
                             WindowStartupLocation = WindowStartupLocation.CenterOwner
@@ -314,7 +314,7 @@ namespace DOP.Presupuestos.Ventanas
 
         private void BtnNuevo_Click(object sender, RoutedEventArgs e)
             {
-            var ventana = new WiNuevoPres(_presupuestos)
+            var ventana = new WiNuevoPres(_presupuestos, _modelos)
                 {
                 Owner = this,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner

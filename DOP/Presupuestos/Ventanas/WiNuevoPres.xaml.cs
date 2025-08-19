@@ -1,4 +1,6 @@
-﻿using Biblioteca.DTO;
+﻿using Bibioteca.Clases;
+using Biblioteca.DTO;
+using Syncfusion.Windows.Controls.RichTextBoxAdv;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -6,32 +8,21 @@ using System.Windows.Input;
 using System.Windows.Media;
 
 namespace DOP.Presupuestos.Ventanas
-{
-    public partial class WiNuevoPres : Window
     {
-        private ObservableCollection<PresupuestoDTO> _presupuestosRef;
-        public WiNuevoPres(ObservableCollection<PresupuestoDTO> presupuestosRef)
+    public partial class WiNuevoPres : Window
         {
+        private ObservableCollection<PresupuestoDTO> _presupuestosRef;
+        private ObservableCollection<PresupuestoDTO> _modelos;
+
+
+        public WiNuevoPres(ObservableCollection<PresupuestoDTO> presupuestosRef, ObservableCollection<PresupuestoDTO> modelos)
+            {
             InitializeComponent();
             _presupuestosRef = presupuestosRef;
-
-            // Ejemplo: si tienes <StackPanel x:Name="panelModelos" ... /> en tu XAML
-            // Usa panelModelos directamente, no crees un nuevo StackPanel aquí
-
-            var opciones = new[]
-            {
-                new { Titulo = "Modelo 1", Descripcion = "Vivienda Unifamiliar", Parametro = "Modelo:Modelo 1" },
-                new { Titulo = "Modelo 2", Descripcion = "Edificio de Propiedad Horizontal", Parametro = "Modelo:Modelo 2" },
-                new { Titulo = "Modelo 3", Descripcion = "Descripción propia", Parametro = "Propio:Propio 1" },
-                new { Titulo = "Modelo 4", Descripcion = "Descripción breve", Parametro = "Modelo:Modelo 1" },
-                new { Titulo = "Modelo 5", Descripcion = "Otra descripción", Parametro = "Modelo:Modelo 2" },
-                new { Titulo = "Modelo 6", Descripcion = "Descripción breve", Parametro = "Modelo:Modelo 1" },
-                new { Titulo = "Modelo 7", Descripcion = "Otra descripción", Parametro = "Modelo:Modelo 2" },
-                new { Titulo = "Propio 8", Descripcion = "Descripción propia", Parametro = "Propio:Propio 1" }
-            };
-
-            foreach (var opcion in opciones)
-            {
+            _modelos = modelos;
+            // Genera los botones dinámicamente a partir de _modelos
+            foreach (var modelo in _modelos)
+                {
                 var boton = new Button
                     {
                     Margin = new Thickness(0, 0, 10, 10),
@@ -41,44 +32,73 @@ namespace DOP.Presupuestos.Ventanas
                     Cursor = Cursors.Hand,
                     Style = (Style)FindResource("RoundedButtonStyle")
                     };
-                boton.Focusable = false; // <--- Esto elimina el rectángulo celeste de foco
+                boton.Focusable = false;
 
-                // Crea el UserControl y asigna los textos
+                // Crea el UserControl y asigna los textos desde el modelo
                 var uc = new DOP.Presupuestos.Controles.UcModelo
-                {
-                    TituloTexto = opcion.Titulo,
-                    DescripcionTexto = opcion.Descripcion
-                };
+                    {
+                    TituloTexto = modelo.Descrip,
+                    DescripcionTexto = modelo.EsModelo ? "Modelo base" : "Propio"
+                    };
 
                 boton.Content = uc;
 
-                // Evento click con confirmación
-                boton.Click += (s, e) =>
+                // Evento click con confirmación y paso del modelo seleccionado
+                boton.Click += async (s, e) =>
                 {
-                    if (Confirmar($"¿Desea crear un presupuesto en base a {opcion.Titulo}?"))
-                        AbrirPresupuesto(opcion.Parametro);
+                    if (Confirmar($"¿Desea crear un presupuesto en base a {modelo.Descrip}?"))
+                        CrearCopia(modelo);
                 };
 
-                // Agrega el botón al StackPanel existente en tu XAML
                 panelModelos.Children.Add(boton);
+                }
             }
-        }
 
         private bool Confirmar(string mensaje)
-        {
+            {
             return MessageBox.Show(mensaje, "Confirmar", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
-        }
+            }
 
-        private void AbrirPresupuesto(string parametro)
-        {
-            var win = new WiPresupuesto(null,null,null, _presupuestosRef);
+        private async void CrearCopia(PresupuestoDTO _modelosSeleccionado)
+            {
+            // Tengo que crear una copia del modelo, con ID de presupuesto en cero e ID de usuario
+
+
+            var (ok, msg, conceptos, relaciones) = await Datos.DatosWeb.ObtenerConceptosYRelacionesAsync(_modelosSeleccionado.ID.Value);
+            if (ok)
+                {
+                //Asigna PresupuestoID = 0 a todos los conceptos y relaciones
+                if (conceptos != null)
+                    foreach (var c in conceptos)
+                        c.PresupuestoID = 0;
+                if (relaciones != null)
+                    foreach (var r in relaciones)
+                        r.PresupuestoID = 0;
+
+                _modelosSeleccionado.ID = 0; // Asegúrate de que el ID sea cero para un nuevo presupuesto
+                _modelosSeleccionado.UsuarioID = App.IdUsuario; // Asigna el ID del usuario actual
+
+                // Aquí puedes pasar conceptos y relaciones a la ventana WiPresupuesto si lo necesitas
+                var copia = PresupuestoDTO.CopiarPresupuestoDTO(_modelosSeleccionado);
+                var wiPresupuesto = new WiPresupuesto(copia, conceptos, relaciones, _presupuestosRef);
+                wiPresupuesto.Owner = this;
+                wiPresupuesto.ShowDialog();
+                // Si necesitas usar conceptos y relaciones después, puedes hacerlo aquí
+                }
+            else
+                {
+                MessageBox.Show($"No se pudieron obtener los datos del presupuesto.\n{msg}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+
+
+            var win = new WiPresupuesto(null, null, null, _presupuestosRef);
             win.Owner = this.Owner;
             win.Show();
             this.Close();
-        }
+            }
 
         private void btnVacio_Click(object sender, RoutedEventArgs e)
-        {
+            {
             var win = new WiPresupuesto(null, null, null, _presupuestosRef);
             win.Owner = this.Owner;
             win.Show();
@@ -87,9 +107,9 @@ namespace DOP.Presupuestos.Ventanas
             }
 
         private void Button_Click(object sender, RoutedEventArgs e)
-        {
+            {
 
+            }
         }
     }
-}
 
