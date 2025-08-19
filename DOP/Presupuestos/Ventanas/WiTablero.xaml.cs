@@ -87,12 +87,13 @@ namespace DOP.Presupuestos.Ventanas
                 GrillaPresupuestos.ItemsSource = null;
                 }
             txtUsuario.Text = "Usuario: " + App.NombreUsuario;
-            btnBackstage.Visibility = (App.IdUsuario == 1 || App.IdUsuario == 2)
+            btnBackstage.Visibility = (App.tipoUsuario == 2)
     ? Visibility.Visible
     : Visibility.Collapsed;
+            
 
 
-        }
+            }
 
 
         #region Comportamiento ventana
@@ -289,7 +290,7 @@ namespace DOP.Presupuestos.Ventanas
                 }
             }
 
-       
+
 
         private void GrillaPresupuestos_MouseDoubleClick(object sender, MouseButtonEventArgs e)
             {
@@ -362,20 +363,20 @@ namespace DOP.Presupuestos.Ventanas
             }
 
         private void btnBackstage_Click(object sender, RoutedEventArgs e)
-        {
+            {
 
+            }
         }
-    }
 
 
     public class DatoGrafico
-    {
-    public string Tipología { get; set; }
-    public double Importe
         {
-        get; set;
+        public string Tipología { get; set; }
+        public double Importe
+            {
+            get; set;
+            }
         }
-    }
 
-}
+    }
 

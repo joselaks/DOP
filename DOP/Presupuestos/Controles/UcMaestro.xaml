@@ -2,6 +2,7 @@
     x:Class="DOP.Presupuestos.Controles.UcMaestro"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:clases="clr-namespace:DOP.Presupuestos.Clases"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:DOP.Presupuestos.Controles"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -11,28 +12,107 @@
     d:Width="500"
     mc:Ignorable="d">
     <UserControl.Resources>
+        <clases:DecimalToStringConverter x:Key="DecimalToStringConverter" />
+        <Style x:Key="TipoCellStyle" TargetType="syncfusion:TreeGridCell">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
+                    <Setter Property="FontWeight" Value="Bold" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--  DataTemplate para ícono Rubro  -->
+        <DataTemplate x:Key="RubTemplate">
+            <Image
+                Width="15"
+                Height="15"
+                Source="pack://application:,,,/Imagenes/Rubro.png" />
+        </DataTemplate>
+        <!--  DataTemplate para ícono Tarea  -->
+        <DataTemplate x:Key="TarTemplate">
+            <Image
+                Width="15"
+                Height="15"
+                Source="pack://application:,,,/Imagenes/Tarea.png" />
+        </DataTemplate>
+        <!--  DataTemplate para ícono Materiales  -->
+        <DataTemplate x:Key="MatTemplate">
+            <Image
+                Width="15"
+                Height="15"
+                Source="pack://application:,,,/Imagenes/Material.png" />
+        </DataTemplate>
+        <!--  DataTemplate para ícono Mano de obra  -->
+        <DataTemplate x:Key="MdoTemplate">
+            <Image
+                Width="15"
+                Height="15"
+                Source="pack://application:,,,/Imagenes/ManoDeObra.png" />
+        </DataTemplate>
+        <!--  DataTemplate para ícono Equipos  -->
+        <DataTemplate x:Key="EquTemplate">
+            <Image
+                Width="15"
+                Height="15"
+                Source="pack://application:,,,/Imagenes/Equipos.png" />
+        </DataTemplate>
+        <!--  DataTemplate para ícono Subcontratos  -->
+        <DataTemplate x:Key="SubTemplate">
+            <Image
+                Width="15"
+                Height="15"
+                Source="pack://application:,,,/Imagenes/Subcontratos.png" />
+        </DataTemplate>
+        <!--  DataTemplate para ícono Otros  -->
+        <DataTemplate x:Key="OtrTemplate">
+            <Image
+                Width="15"
+                Height="15"
+                Source="pack://application:,,,/Imagenes/Otros.png" />
+        </DataTemplate>
+        <!--  DataTemplate para ícono AuxTemplate  -->
+        <DataTemplate x:Key="AuxTemplate">
+            <Image
+                Width="15"
+                Height="15"
+                Source="pack://application:,,,/Imagenes/Arbol.png" />
+        </DataTemplate>
+        <!--  DataTemplateSelector  -->
+        <local:IconTemplateSelector
+            x:Key="IconTemplateSelector"
+            AuxTemplate="{StaticResource AuxTemplate}"
+            EquTemplate="{StaticResource EquTemplate}"
+            MatTemplate="{StaticResource MatTemplate}"
+            MdoTemplate="{StaticResource MdoTemplate}"
+            OtrTemplate="{StaticResource OtrTemplate}"
+            RubTemplate="{StaticResource RubTemplate}"
+            SubTemplate="{StaticResource SubTemplate}"
+            TarTemplate="{StaticResource TarTemplate}" />
+
         <Style TargetType="syncfusion:TreeGridRowControl">
             <Setter Property="Background" Value="Transparent" />
         </Style>
     </UserControl.Resources>
-    <Grid>
+    <Grid x:Name="gridPrincipal">
         <Grid.RowDefinitions>
-            <RowDefinition Height="40" />
+            <RowDefinition Height="30" />
             <RowDefinition Height="*" />
+            <RowDefinition x:Name="sepSuperiores" Height="0" />
+            <RowDefinition x:Name="panSuperiores" Height="0" />
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal">
             <TextBlock
-    VerticalAlignment="Center"
-    FontSize="20"
-    FontWeight="Bold"
-    Text="Maestro de " />
+                VerticalAlignment="Center"
+                FontSize="20"
+                FontWeight="Bold"
+                Text="Maestro de " />
 
             <TextBlock
-    x:Name="SeleccionMaestro"
-    VerticalAlignment="Center"
-    FontSize="20"
-    FontWeight="Bold"
-    Text="Insumos básicos" />
+                x:Name="SeleccionMaestro"
+                VerticalAlignment="Center"
+                FontSize="20"
+                FontWeight="Bold"
+                Text="Rubros" />
 
             <Button
                 x:Name="obtener"
@@ -59,13 +139,22 @@
         <syncfusion:SfTreeGrid
             x:Name="grillaMaestro"
             Grid.Row="1"
-            AllowDraggingRows="True"
             AllowDrop="True"
+            AllowDraggingRows="True"
             AllowEditing="True"
             AllowResizingColumns="True"
-            AutoGenerateColumns="False">
+            AutoGenerateColumns="False"
+            CurrentCellBeginEdit="grillaMaestro_CurrentCellBeginEdit"
+            CurrentCellEndEdit="grillaMaestro_CurrentCellEndEdit"
+            ExpanderColumn="Descripcion"
+            KeyDown="grillaMaestro_KeyDown"
+            SelectionChanged="grillaMaestro_SelectionChanged"
+            SelectionMode="Single">
             <syncfusion:SfTreeGrid.ContextMenu>
                 <ContextMenu>
+
+                    <MenuItem Click="MenuItem_Click" Header="Ver analisis de costo" />
+
                     <MenuItem
                         Click="MenuItem_Borrar_Click"
                         Header="Borrar"
@@ -80,6 +169,18 @@
             <syncfusion:SfTreeGrid.Columns>
 
                 <syncfusion:TreeGridColumns>
+
+                    <syncfusion:TreeGridTemplateColumn
+                        Width="50"
+                        CellTemplateSelector="{StaticResource IconTemplateSelector}"
+                        HeaderText="Nat"
+                        MappingName="Tipo" />
+
+
+                    <syncfusion:TreeGridTextColumn
+                        Width="50"
+                        IsHidden="true"
+                        MappingName="ID" />
 
                     <syncfusion:TreeGridTextColumn
                         Width="60"
@@ -102,6 +203,25 @@
                 </syncfusion:TreeGridColumns>
             </syncfusion:SfTreeGrid.Columns>
         </syncfusion:SfTreeGrid>
+
+        <syncfusion:SfGridSplitter
+            Grid.Row="2"
+            Height="5"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Top"
+            EnableCollapseButton="True"
+            ResizeBehavior="PreviousAndNext"
+            ShowsPreview="True" />
+        <syncfusion:SfTreeGrid
+            x:Name="gridDetalle"
+            Grid.Row="3"
+            AllowEditing="False"
+            AllowResizingColumns="True"
+            AutoGenerateColumns="True"
+            SelectionMode="Single">
+            
+        </syncfusion:SfTreeGrid>
+
 
     </Grid>
 </UserControl>

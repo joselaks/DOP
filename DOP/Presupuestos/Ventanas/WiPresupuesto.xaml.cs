@@ -125,6 +125,13 @@ namespace DOP.Presupuestos.Ventanas
             colTipo.IsCheckedChanged += columnas_IsCheckedChanged;
             // ... repite para los que corresponda ...
 
+   //         dropColumnasMaestro.Visibility = (App.tipoUsuario == 2)
+   //? Visibility.Visible
+   //: Visibility.Collapsed;
+   //         chkPrecios.Visibility = (App.tipoUsuario == 2)
+   //? Visibility.Visible
+   //: Visibility.Collapsed;
+
 
             }
 
@@ -630,6 +637,35 @@ namespace DOP.Presupuestos.Ventanas
                     }
                 }
             }
+
+        private void columnasMaestro_IsCheckedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+            {
+            // Determinar qué DropDownMenuItem disparó el evento
+            if (d is Syncfusion.Windows.Tools.Controls.DropDownMenuItem menuItem)
+                {
+                // Mapeo entre x:Name del menú y MappingName de la columna
+                var mapping = new Dictionary<string, string>
+        {
+            { "colCodigoMaestro", "ID" },
+            { "colTipoMaestro", "Tipo" },
+            
+        };
+
+                if (mapping.TryGetValue(menuItem.Name, out string nombreCOL))
+                    {
+                    var column = Maestro.grillaMaestro.Columns.FirstOrDefault(c => c.MappingName == nombreCOL);
+                    if (column != null)
+                        {
+                        column.IsHidden = !menuItem.IsChecked;
+                        }
+                    }
+                }
+            }
+
+
+
+
+
 
         private void chkArbol_Checked(object sender, RoutedEventArgs e)
             {

@@ -3,6 +3,7 @@ using Biblioteca;
 using Biblioteca.DTO;
 using DOP.Presupuestos.Clases;
 using Syncfusion.UI.Xaml.TreeGrid;
+using Syncfusion.Windows.Controls.RichTextBoxAdv;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -30,6 +31,8 @@ namespace DOP.Presupuestos.Controles
 
         public Maestro Objeto;
         private string tipoSeleccionado = null;
+        private GridLength? _panSuperioresHeight = null;
+
 
 
         public UcMaestro()
@@ -39,8 +42,6 @@ namespace DOP.Presupuestos.Controles
             this.grillaMaestro.RowDragDropController.DragStart += RowDragDropController_DragStart;
             this.grillaMaestro.Loaded += GrillaMaestro_Loaded;
             this.grillaMaestro.ChildPropertyName = "Inferiores";
-
-
             }
 
         private async void GrillaMaestro_Loaded(object sender, RoutedEventArgs e)
@@ -49,8 +50,37 @@ namespace DOP.Presupuestos.Controles
             // Obtén el usuarioID desde donde corresponda en tu aplicación
             int usuarioID = App.IdUsuario; // Usa el ID del login 
 
-            var (success, message, conceptos, relaciones) = await DOP.Datos.DatosWeb.ObtenerConceptosYRelacionesMaestroAsync(usuarioID);
-            Objeto = new Maestro(conceptos, relaciones, usuarioID);
+            // Esto obtiene de las tablas específicas destinadas a Maestro
+            //var (success, message, conceptos, relaciones) = await DOP.Datos.DatosWeb.ObtenerConceptosYRelacionesMaestroAsync(usuarioID);
+            //Provisorioamente lo obtengo de un presupuesto específico
+            var (ok, msg, conceptos, relaciones) = await DOP.Datos.DatosWeb.ObtenerConceptosYRelacionesAsync(45);
+            //Convertir los conceptos y relaciones a las estructuras necesarias para Maestro
+            // Conversión de ConceptoDTO a ConceptoMDTO
+            List<ConceptoMDTO> conceptosM = conceptos.Select(c => new ConceptoMDTO
+                {
+                UsuarioID = usuarioID,
+                ConceptoID = c.ConceptoID,
+                Descrip = c.Descrip,
+                Tipo = c.Tipo,
+                Unidad = c.Unidad,
+                PrEjec = c.PrEjec,
+                EjecMoneda = c.EjecMoneda,
+                MesBase = c.MesBase,
+                InsumoID = c.InsumoID,
+                }).ToList();
+
+            // Conversión de RelacionDTO a RelacionMDTO
+            List<RelacionMDTO> relacionesM = relaciones.Select(r => new RelacionMDTO
+                {
+                UsuarioID = usuarioID,
+                CodSup = r.CodSup,
+                CodInf = r.CodInf,
+                CanEjec = r.CanEjec,
+                OrdenInt = r.OrdenInt, // Es short en RelacionMDTO, asegúrate de que la conversión sea válida
+                }).ToList();
+
+
+            Objeto = new Maestro(conceptosM, relacionesM, usuarioID);
 
             grillaMaestro.ItemsSource = Objeto.Arbol;
             this.grillaMaestro.View.Filter = FiltrarPorTipo;
@@ -72,7 +102,7 @@ namespace DOP.Presupuestos.Controles
             }), System.Windows.Threading.DispatcherPriority.Background);
 
             SeleccionMaestro.Text = _seleccion;
-        }
+            }
 
 
 
@@ -358,7 +388,50 @@ namespace DOP.Presupuestos.Controles
                 }
             }
 
+        private void grillaMaestro_CurrentCellBeginEdit(object sender, TreeGridCurrentCellBeginEditEventArgs e)
+            {
 
+            }
+
+        private void grillaMaestro_CurrentCellEndEdit(object sender, Syncfusion.UI.Xaml.Grid.CurrentCellEndEditEventArgs e)
+            {
+
+            }
+
+        private void grillaMaestro_KeyDown(object sender, KeyEventArgs e)
+            {
+
+            }
+
+        private void grillaMaestro_SelectionChanged(object sender, Syncfusion.UI.Xaml.Grid.GridSelectionChangedEventArgs e)
+            {
+            // Guardar el alto actual antes de ocultar
+            _panSuperioresHeight = panSuperiores.Height;
+
+            sepSuperiores.Height = new GridLength(0);
+            panSuperiores.Height = new GridLength(0);
+
+
+            }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+            {
+            var nodo = grillaMaestro.SelectedItem as Nodo;
+            if (nodo != null || nodo.Tipo == "T")
+                {
+                // Mostrar panel de análisis.
+                gridPrincipal.RowDefinitions[2].Height = GridLength.Auto;
+                gridPrincipal.RowDefinitions[3].Height = new GridLength(300);
+
+                // Obtener y mostrar la colección de superiores tipo "T"
+                //var superioresT = ObtenerSuperioresTipoT(nodo);
+                //gridSuperiores.ItemsSource = superioresT;
+                }
+            else
+                {
+                MessageBox.Show("Por favor, selecciona un nodo de tipo 'T' para ver su análisis de costo.", "Selección inválida", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
         }
     }
 

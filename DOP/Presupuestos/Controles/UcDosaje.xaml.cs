@@ -67,17 +67,31 @@ namespace DOP.Presupuestos.Controles
             e.Handled = true;
             Nodo nodoMovido = null;
             Nodo nodoReceptor = null;
+            Nodo nodoPadreOriginal = null;
             bool esDragDeMaestro = DragDropContext.DragSourceUserControl is UcMaestro;
-            bool esDragDeListadoo = DragDropContext.DragSourceUserControl is UcListado;
+            bool esDragDeDosaje = DragDropContext.DragSourceUserControl is UcDosaje;
 
             // Solo permitir tipos válidos
             var tiposPermitidos = new[] { "M", "D", "E", "S", "O", "A" };
 
             if (e.DraggingNodes != null && e.DraggingNodes.Count > 0)
                 {
-                    var nodoOriginal = e.DraggingNodes[0].Item as Nodo;
-                    nodoMovido = Objeto.clonar(nodoOriginal, true);
+
+                if (e.DraggingNodes != null && e.DraggingNodes.Count > 0)
+                    {
+                    if (esDragDeDosaje)
+                        {
+                        nodoMovido = e.DraggingNodes[0].Item as Nodo;
+                        nodoPadreOriginal = Objeto.FindParentNode(Objeto.Arbol, nodoMovido, null);
+                        }
+                    else if (esDragDeMaestro)
+                        {
+                        var nodoOriginal = e.DraggingNodes[0].Item as Nodo;
+                        nodoMovido = Objeto.clonar(nodoOriginal, true);
+                        }
                     }
+
+                }
 
             // Validar tipo permitido
             if (nodoMovido == null || !tiposPermitidos.Contains(nodoMovido.Tipo))
@@ -95,6 +109,7 @@ namespace DOP.Presupuestos.Controles
                 if (tipoReceptor == "A")
                     {
                     nodoReceptor.Inferiores.Add(nodoMovido);
+                    
                     }
                 else
                     {
@@ -107,8 +122,11 @@ namespace DOP.Presupuestos.Controles
                 // Si no hay nodo receptor, agregar a la raíz
                 NodoAnalizado.Inferiores.Add(nodoMovido);
                 }
+            if (nodoPadreOriginal != null)
+                nodoPadreOriginal.Inferiores.Remove(nodoMovido);
 
             DragDropContext.DragSourceUserControl = null;
+            Objeto.RecalculoCompleto();
             }
 
         private void Presupuesto_RecalculoFinalizado(object sender, EventArgs e)

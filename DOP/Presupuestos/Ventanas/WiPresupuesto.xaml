@@ -247,10 +247,13 @@
                     <syncfusion:RibbonComboBox
                         x:Name="comboTipoListado"
                         Width="140"
+                        Height="22"
+                        Margin="3,0,3,0"
+                        VerticalAlignment="Top"
                         Label="Formato"
                         SelectedIndex="0"
                         SelectionChanged="comboTipoListado_SelectionChanged"
-                        ToolTip="Seleccionar formato" Height="22" Margin="3,0,3,0" VerticalAlignment="Top">
+                        ToolTip="Seleccionar formato">
                         <syncfusion:RibbonComboBoxItem Content="Insumos básicos" />
                         <syncfusion:RibbonComboBoxItem Content="Materiales" />
                         <syncfusion:RibbonComboBoxItem Content="Mano de Obra" />
@@ -336,7 +339,7 @@
 
                 </syncfusion:RibbonBar>
 
-                <syncfusion:RibbonBar  Header="Maestro">
+                <syncfusion:RibbonBar Header="Maestro">
                     <syncfusion:RibbonCheckBox
                         x:Name="chkMaestro"
                         Width="140"
@@ -346,12 +349,15 @@
                         Unchecked="Maestro_Unchecked" />
 
                     <syncfusion:RibbonComboBox
-      x:Name="comboTipoMaestro"
-      Width="140"
-      Label="Formato"
-      SelectedIndex="0"
-      SelectionChanged="comboTipoMaestro_SelectionChanged"
-      ToolTip="Seleccionar formato" Height="22" Margin="3,0,3,0" VerticalAlignment="Top">
+                        x:Name="comboTipoMaestro"
+                        Width="140"
+                        Height="22"
+                        Margin="3,0,3,0"
+                        VerticalAlignment="Top"
+                        Label="Formato"
+                        SelectedIndex="0"
+                        SelectionChanged="comboTipoMaestro_SelectionChanged"
+                        ToolTip="Seleccionar formato">
                         <syncfusion:RibbonComboBoxItem Content="Rubros" />
                         <syncfusion:RibbonComboBoxItem Content="Tareas" />
                         <syncfusion:RibbonComboBoxItem Content="-----Insumos-----" IsSelected="False" />
@@ -365,13 +371,26 @@
                     </syncfusion:RibbonComboBox>
 
                     <syncfusion:DropDownButtonAdv
-      x:Name="dropColumnasMaestro"
-      Width="140"
-      Label="Columnas"
-      SmallIcon="pack://application:,,,/Imagenes/Columnas24.png"
-      StayDropDownOnClick="True"
-      ToolTip="Visualizar columnas">
-                        <syncfusion:DropDownMenuGroup IsResizable="True" />
+                        x:Name="dropColumnasMaestro"
+                        Width="140"
+                        Label="Columnas"
+                        SmallIcon="pack://application:,,,/Imagenes/Columnas24.png"
+                        StayDropDownOnClick="True"
+                        ToolTip="Visualizar columnas">
+                        <syncfusion:DropDownMenuGroup IsResizable="True">
+                            <syncfusion:DropDownMenuItem
+                                x:Name="colCodigoMaestro"
+                                Padding="8,2"
+                                Header="Código"
+                                IsCheckable="True"
+                                IsCheckedChanged="columnasMaestro_IsCheckedChanged" />
+                            <syncfusion:DropDownMenuItem
+                                x:Name="colTipoMaestro"
+                                Header="Tipo"
+                                IsCheckable="True"
+                                IsCheckedChanged="columnasMaestro_IsCheckedChanged" />
+
+                        </syncfusion:DropDownMenuGroup>
                     </syncfusion:DropDownButtonAdv>
 
 

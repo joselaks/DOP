@@ -14,8 +14,7 @@
     ResizeMode="CanResizeWithGrip"
     WindowStartupLocation="CenterScreen"
     WindowStyle="None">
-    <Window.Resources>
-    </Window.Resources>
+    <Window.Resources />
     <Border
         x:Name="MainBorder"
         Margin="10"
@@ -159,39 +158,39 @@
                                         <syncfusion:GridTextColumn
                                             Width="50"
                                             HeaderText="ID"
-                                            MappingName="ID"
-                                            IsHidden="True"/>
+                                            
+                                            MappingName="ID" />
                                         <syncfusion:GridTextColumn
                                             Width="280"
                                             HeaderText="Descripción"
                                             MappingName="Descrip" />
                                         <syncfusion:GridNumericColumn
-    Width="150"
-    HeaderText="Importe"
-    MappingName="PrEjecTotal"
-    TextAlignment="Right" 
+                                            Width="150"
+                                            HeaderText="Importe"
+                                            MappingName="PrEjecTotal"
                                             NumberDecimalDigits="2"
-NumberDecimalSeparator=","
-NumberGroupSeparator="."
-NumberGroupSizes="3"/>
+                                            NumberDecimalSeparator=","
+                                            NumberGroupSeparator="."
+                                            NumberGroupSizes="3"
+                                            TextAlignment="Right" />
                                         <syncfusion:GridNumericColumn
-    Width="120"
-    HeaderText="Superficie"
-    MappingName="Superficie"
-    TextAlignment="Right" 
+                                            Width="120"
+                                            HeaderText="Superficie"
+                                            MappingName="Superficie"
                                             NumberDecimalDigits="2"
-NumberDecimalSeparator=","
-NumberGroupSeparator="."
-NumberGroupSizes="3"/>
+                                            NumberDecimalSeparator=","
+                                            NumberGroupSeparator="."
+                                            NumberGroupSizes="3"
+                                            TextAlignment="Right" />
                                         <syncfusion:GridNumericColumn
-    Width="120"
-    HeaderText="Valor M2"
-    MappingName="ValorM2"
-    TextAlignment="Right" 
+                                            Width="120"
+                                            HeaderText="Valor M2"
+                                            MappingName="ValorM2"
                                             NumberDecimalDigits="2"
-NumberDecimalSeparator=","
-NumberGroupSeparator="."
-NumberGroupSizes="3"/>
+                                            NumberDecimalSeparator=","
+                                            NumberGroupSeparator="."
+                                            NumberGroupSizes="3"
+                                            TextAlignment="Right" />
                                         <syncfusion:GridDateTimeColumn
                                             Width="120"
                                             HeaderText="Fecha creación"
@@ -208,7 +207,7 @@ NumberGroupSizes="3"/>
                                             MappingName="MesBase"
                                             Pattern="YearMonth"
                                             TextAlignment="Right" />
-                                        
+
                                     </syncfusion:SfDataGrid.Columns>
                                 </syncfusion:SfDataGrid>
                             </Grid>
@@ -216,28 +215,31 @@ NumberGroupSizes="3"/>
                     </syncfusion:TabItemExt>
                 </syncfusion:TabControlExt>
             </Grid>
-            <StackPanel x:Name="barraEstado"
-            Grid.Row="2"
-            Height="30"
-            Margin="5,0,5,5"
-            Orientation="Horizontal">
-                <TextBlock x:Name="txtUsuario"
-               FontWeight="DemiBold"
-               Margin="5,0,0,0"
-               VerticalAlignment="Center"
-               Foreground="White" />
-                <Button x:Name="btnBackstage"
-            Content="Backstage"
-            Margin="15,0,0,0"
-            Padding="10,2"
-            VerticalAlignment="Center"
-            Background="#003366"
-            Foreground="White"
-            BorderBrush="White"
-            BorderThickness="1"
-            FontWeight="Bold"
-            Visibility="Collapsed"
-            Click="btnBackstage_Click"/>
+            <StackPanel
+                x:Name="barraEstado"
+                Grid.Row="2"
+                Height="30"
+                Margin="5,0,5,5"
+                Orientation="Horizontal">
+                <TextBlock
+                    x:Name="txtUsuario"
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    FontWeight="DemiBold"
+                    Foreground="White" />
+                <Button
+                    x:Name="btnBackstage"
+                    Margin="15,0,0,0"
+                    Padding="10,2"
+                    VerticalAlignment="Center"
+                    Background="#003366"
+                    BorderBrush="White"
+                    BorderThickness="1"
+                    Click="btnBackstage_Click"
+                    Content="Backstage"
+                    FontWeight="Bold"
+                    Foreground="White"
+                    Visibility="Collapsed" />
             </StackPanel>
 
         </Grid>

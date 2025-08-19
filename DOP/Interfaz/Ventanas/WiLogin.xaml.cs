@@ -92,6 +92,18 @@ namespace DOP.Interfaz.Ventanas
                         GuardarUsuarioLocal(txtUsuario.Text, txtContraseña.Password);
                         App.IdUsuario = respuesta.Usuario.DatosUsuario.ID;
                         App.NombreUsuario = $"{respuesta.Usuario.DatosUsuario.Nombre} {respuesta.Usuario.DatosUsuario.Apellido}";
+                        if (respuesta.Usuario.DatosUsuario.ID == 1 || respuesta.Usuario.DatosUsuario.ID == 2)
+                            {
+                            App.tipoUsuario = 1; //Administrador
+                            }
+                        else if (respuesta.Usuario.DatosUsuario.ID == 4)
+                            {
+                            App.tipoUsuario = 2; // Contenido
+                            }
+                        else
+                            {
+                            App.tipoUsuario = 3; // Usuario normal
+                            }
                         this.DialogResult = true;
                         this.Close();
 
