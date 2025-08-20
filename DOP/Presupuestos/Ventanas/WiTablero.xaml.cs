@@ -1,5 +1,7 @@
 ﻿using Biblioteca;
 using Biblioteca.DTO;
+using ClosedXML.Excel;
+using Microsoft.Win32;
 using DOP.Datos;
 using DOP.Interfaz.Ventanas;
 using Syncfusion.SfSkinManager;
@@ -7,6 +9,7 @@ using Syncfusion.UI.Xaml.Charts;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
@@ -36,11 +39,17 @@ namespace DOP.Presupuestos.Ventanas
         private ObservableCollection<PresupuestoDTO> _modelos = new();
         private ObservableCollection<PresupuestoDTO> _modelosPropios = new();
 
+        // Agrega esta propiedad en la clase WiTablero
+        public ObservableCollection<ListaArticuloItem> InfoCombo { get; set; } = new();
+
+        // Propiedad para los artículos de la lista seleccionada
+        public ObservableCollection<ArticuloDTO> ArticulosLista { get; set; } = new();
+
         public WiTablero()
             {
             SfSkinManager.SetTheme(this, new Theme("MaterialLight", new string[] { "TabNavigationControl", "TabControlExt" }));
             InitializeComponent();
-
+            this.DataContext = this; // ¡Esto es fundamental para el binding!
             //// Detectar la resolución de pantalla principal
             var screenWidth = SystemParameters.PrimaryScreenWidth;
             var screenHeight = SystemParameters.PrimaryScreenHeight;
@@ -67,6 +76,7 @@ namespace DOP.Presupuestos.Ventanas
 
         private async void WiTablero_Loaded(object sender, RoutedEventArgs e)
             {
+            // 1. Presupuestos
             var (success, message, lista) = await DatosWeb.ObtenerPresupuestosUsuarioAsync();
             if (success)
                 {
@@ -91,6 +101,27 @@ namespace DOP.Presupuestos.Ventanas
                 MessageBox.Show($"No se pudieron cargar los presupuestos.\n{message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 GrillaPresupuestos.ItemsSource = null;
                 }
+
+            // 2. Listas de artículos
+            InfoCombo.Clear();
+            int usuarioID = 4;
+            var (okListas, msgListas, listas) = await DOP.Datos.DatosWeb.ObtenerListasArticulosPorUsuarioAsync(usuarioID);
+
+            if (!okListas)
+                {
+                MessageBox.Show($"No se pudo obtener las listas: {msgListas}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+                }
+
+            foreach (var listaItem in listas)
+                {
+                InfoCombo.Add(new ListaArticuloItem
+                {
+                    ID = listaItem.ID,
+                    Descrip = listaItem.Descrip
+                    });
+                }
+
             txtUsuario.Text = "Usuario: " + App.NombreUsuario;
             btnBackstage.Visibility = (App.tipoUsuario == 2)
     ? Visibility.Visible
@@ -377,7 +408,186 @@ namespace DOP.Presupuestos.Ventanas
             {
 
             }
+
+        private void ExcelDropZone_DragEnter(object sender, DragEventArgs e)
+            {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effects = DragDropEffects.Copy;
+            else
+                e.Effects = DragDropEffects.None;
+            }
+
+        private void ExcelDropZone_DragLeave(object sender, DragEventArgs e)
+            {
+            // Opcional: feedback visual
+            }
+
+        private void ExcelDropZone_Drop(object sender, DragEventArgs e)
+            {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                if (files.Length > 0 && System.IO.Path.GetExtension(files[0]).Equals(".xlsx", StringComparison.OrdinalIgnoreCase))
+                    {
+                    var articulos = LeerArticulosDesdeExcel(files[0]);
+                    // Aquí puedes usar la colección articulos como necesites
+                    MessageBox.Show($"Se importaron {articulos.Count} artículos.");
+                    }
+                else
+                    {
+                    MessageBox.Show("Por favor, suelte un archivo Excel (.xlsx) válido.");
+                    }
+                }
+            }
+
+        private List<ArticuloExceDTO> LeerArticulosDesdeExcel(string filePath)
+            {
+            var lista = new List<ArticuloExceDTO>();
+            using (var workbook = new XLWorkbook(filePath))
+                {
+                var ws = workbook.Worksheets.First();
+                foreach (var row in ws.RowsUsed().Skip(1)) // Salta la cabecera
+                    {
+                    var dto = new ArticuloExceDTO
+                        {
+                        Codigo = row.Cell(1).GetString(),
+                        Descrip = row.Cell(2).GetString(),
+                        Unidad = row.Cell(3).GetString(),
+                        Precio = row.Cell(4).GetValue<decimal>()
+                        };
+                    lista.Add(dto);
+                    }
+                }
+            return lista;
+            }
+
+        private async void BtnBuscarLista_Click(object sender, RoutedEventArgs e)
+            {
+            if (comboListasVer.SelectedValue is int id && id > 0)
+                {
+                var (success, message, articulos) = await DOP.Datos.DatosWeb.ObtenerArticulosPorListaIDAsync((short)id);
+                if (success)
+                    {
+                    ArticulosLista.Clear();
+                    foreach (var art in articulos)
+                        ArticulosLista.Add(art);
+                    GrillaArticulosLista.ItemsSource = ArticulosLista;
+                    }
+                else
+                    {
+                    MessageBox.Show($"No se pudieron obtener los artículos: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    GrillaArticulosLista.ItemsSource = null;
+                    }
+                }
+            else
+                {
+                MessageBox.Show("Seleccione una lista válida.", "Atención", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+
+
+
+        private async void BorrarListaClick(object sender, RoutedEventArgs e)
+            {
+            if (comboListas.SelectedValue is int listaID && listaID > 0)
+                {
+                var result = MessageBox.Show("¿Está seguro que desea eliminar la lista seleccionada? Esta acción no se puede deshacer.", "Confirmar", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                    {
+                    var (success, message) = await DOP.Datos.DatosWeb.EliminarListaArticulosAsync(listaID);
+                    if (success)
+                        {
+                        MessageBox.Show(message, "Eliminado", MessageBoxButton.OK, MessageBoxImage.Information);
+                        // Refrescar las listas de artículos
+                        int usuarioID = App.IdUsuario;
+                        var (okListas, msgListas, listas) = await DOP.Datos.DatosWeb.ObtenerListasArticulosPorUsuarioAsync(4);
+                        if (okListas)
+                            {
+                            InfoCombo.Clear();
+                            foreach (var listaItem in listas)
+                                {
+                                InfoCombo.Add(new ListaArticuloItem
+                                    {
+                                    ID = listaItem.ID,
+                                    Descrip = listaItem.Descrip
+                                    });
+                                }
+                            }
+                        else
+                            {
+                            MessageBox.Show($"No se pudo refrescar la lista de artículos: {msgListas}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
+                        }
+                    else
+                        {
+                        MessageBox.Show($"No se pudo eliminar la lista.\n{message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                }
+            else
+                {
+                MessageBox.Show("Seleccione una lista válida para eliminar.", "Atención", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+            {
+            }
+
+        private void ExcelDropZone_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var dialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = "Archivos Excel (*.xlsx)|*.xlsx",
+                Multiselect = false
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                var articulos = LeerArticulosDesdeExcel(dialog.FileName);
+                // Aquí puedes usar la colección articulos como necesites
+                MessageBox.Show($"Se importaron {articulos.Count} artículos.");
+            }
         }
+
+        private async void NuevaLista_Click(object sender, RoutedEventArgs e)
+        {
+            var ventana = new WiNuevaListaArticulos
+            {
+                Owner = this
+            };
+
+            if (ventana.ShowDialog() == true)
+            {
+                var dto = ventana.NuevaLista;
+                var (success, message, listaId) = await DatosWeb.CrearNuevaListaArticulosAsync(dto);
+
+                if (success)
+                {
+                    MessageBox.Show("Lista creada correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                    // Refresca las listas de artículos
+                    int usuarioID = App.IdUsuario;
+                    var (okListas, msgListas, listas) = await DatosWeb.ObtenerListasArticulosPorUsuarioAsync(4);
+                    if (okListas)
+                    {
+                        InfoCombo.Clear();
+                        foreach (var listaItem in listas)
+                        {
+                            InfoCombo.Add(new ListaArticuloItem
+                            {
+                                ID = listaItem.ID,
+                                Descrip = listaItem.Descrip
+                            });
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show($"No se pudo crear la lista: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+    }
 
 
     public class DatoGrafico
@@ -388,6 +598,7 @@ namespace DOP.Presupuestos.Ventanas
             get; set;
             }
         }
+    
 
     }
 

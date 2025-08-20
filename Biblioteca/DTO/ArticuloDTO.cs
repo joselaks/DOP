@@ -24,4 +24,20 @@ namespace Biblioteca.DTO
         // Si necesitas soportar operaciones tipo 'A', 'M', 'B' puedes agregar:
         public char? Accion { get; set; }
         }
+
+    public class ArticuloExceDTO
+        {
+        public string Codigo { get; set; }
+        public string Descrip { get; set; }
+        public string Unidad { get; set; }
+        public decimal Precio { get; set; }
+        }
+
+
+    public class ListaArticuloItem
+    {
+        public int ID { get; set; }
+        public string Descrip { get; set; }
+    }
+
     }

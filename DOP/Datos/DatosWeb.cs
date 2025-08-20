@@ -189,14 +189,6 @@ namespace DOP.Datos
             }
 
 
-        // Obtener insumos por usuario
-        public static async Task<(bool Success, string Message, List<InsumoDTO> Insumos)> ObtenerInsumosPorUsuarioAsync(int usuarioID)
-            {
-            string url = $"{App.BaseUrl}insumos/usuario/{usuarioID}";
-            var result = await ExecuteRequestAsync<List<InsumoDTO>>(() => httpClient.GetAsync(url), $"Obtener insumos usuario {usuarioID}");
-            return (result.Success, result.Message, result.Data);
-            }
-
         public static async Task<(bool Success, string Message, List<ConceptoMDTO> Conceptos, List<RelacionMDTO> Relaciones)> ObtenerConceptosYRelacionesMaestroAsync(int usuarioID)
             {
             string url = $"{App.BaseUrl}presupuestos/maestro/{usuarioID}";
@@ -270,6 +262,47 @@ namespace DOP.Datos
             return (success, message, data ?? new List<ArticuloDTO>());
             }
 
+        public static async Task<(bool Success, string Message, int ListaID)> CrearNuevaListaArticulosAsync(ArticulosListaDTO dto)
+            {
+            string url = $"{App.BaseUrl}insumos/articulos/lista/nueva";
+            var json = JsonSerializer.Serialize(dto, jsonSerializerOptions);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var (success, message, result) = await ExecuteRequestAsync<CrearListaArticulosResult>(
+                () => httpClient.PostAsync(url, content),
+                "Crear nueva lista de artículos"
+            );
+
+            // Si la respuesta es exitosa, usa el DTO; si no, el mensaje de error ya está en 'message'
+            return (result?.Success ?? false, result?.Message ?? message, result?.ListaID ?? 0);
+            }
+
+
+
+        public static async Task<(bool Success, string Message)> ProcesarArticulosPorListaAsync(int listaID, List<ArticuloDTO> articulos)
+            {
+            string url = $"{App.BaseUrl}insumos/articulos/lista/procesar";
+            var request = new ProcesarArticulosPorListaRequest { ListaID = listaID, Articulos = articulos };
+            var json = JsonSerializer.Serialize(request, jsonSerializerOptions);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var (success, message, result) = await ExecuteRequestAsync<ResultadoOperacion>(
+                () => httpClient.PostAsync(url, content),
+                "Procesar artículos por lista"
+            );
+
+            return (success, message);
+            }
+
+        public static async Task<(bool Success, string Message)> EliminarListaArticulosAsync(int listaID)
+            {
+            string url = $"{App.BaseUrl}insumos/articulos/lista/{listaID}";
+            var (success, message, _) = await ExecuteRequestAsync<object>(
+                () => httpClient.DeleteAsync(url),
+                $"Eliminar lista de artículos {listaID}"
+            );
+            return (success, message);
+            }
         }
 
     // Clase auxiliar para deserializar la respuesta del endpoint
@@ -279,7 +312,13 @@ namespace DOP.Datos
         public List<RelacionMDTO> Relaciones { get; set; }
         }
 
-   
+    public class ProcesarArticulosPorListaRequest
+        {
+        public int ListaID { get; set; }
+        public List<ArticuloDTO> Articulos { get; set; }
+        }
+
+
 
     public class ResultadoOperacion
         {
@@ -293,6 +332,13 @@ namespace DOP.Datos
         {
         public bool Success { get; set; }
         public int PresupuestoID { get; set; }
+        public string Message { get; set; }
+        }
+
+    public class CrearListaArticulosResult
+        {
+        public bool Success { get; set; }
+        public int ListaID { get; set; }
         public string Message { get; set; }
         }
     }

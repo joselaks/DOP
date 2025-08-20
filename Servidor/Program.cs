@@ -202,85 +202,6 @@ pre.MapDelete("/{presupuestoID:int}", async (int presupuestoID, rPresupuestos re
 
 var ins = app.MapGroup("/insumos");
 
-ins.MapGet("/usuario/{usuarioID:int}", async (int usuarioID, rInsumos repo) =>
-{
-    try
-        {
-        var insumos = await repo.ListarInsumosPorUsuarioAsync(usuarioID);
-        return Results.Ok(insumos);
-        }
-    catch (Exception ex)
-        {
-        return Results.BadRequest(new { Message = ex.Message });
-        }
-}).RequireAuthorization();
-
-ins.MapPost("/procesar", async (ProcesaInsumoRequest request, rInsumos repo) =>
-{
-    try
-        {
-        var id = await repo.ProcesarInsumoAsync(request.Insumo, request.Articulos);
-        return Results.Ok(new { Success = true, InsumoID = id, Message = "Insumo procesado exitosamente." });
-        }
-    catch (Exception ex)
-        {
-        return Results.BadRequest(new { Success = false, Message = ex.Message });
-        }
-}).RequireAuthorization();
-
-ins.MapDelete("/{insumoID:int}", async (int insumoID, rInsumos repo) =>
-{
-    try
-        {
-        await repo.EliminarInsumoYArticulosRelAsync(insumoID);
-        return Results.Ok(new { Success = true, Message = "Insumo y artículos relacionados eliminados exitosamente." });
-        }
-    catch (Exception ex)
-        {
-        return Results.BadRequest(new { Success = false, Message = ex.Message });
-        }
-}).RequireAuthorization();
-
-ins.MapPost("/articulos/procesar", async (ProcesaArticulosListaRequest request, rInsumos repo) =>
-{
-    try
-        {
-        var id = await repo.ProcesarArticulosListaAsync(request.Lista, request.Articulos);
-        return Results.Ok(new { Success = true, ListaID = id, Message = "Lista de artículos procesada exitosamente." });
-        }
-    catch (Exception ex)
-        {
-        return Results.BadRequest(new { Success = false, Message = ex.Message });
-        }
-}).RequireAuthorization();
-
-ins.MapDelete("/articulos/{listaID:int}", async (int listaID, rInsumos repo) =>
-{
-    try
-        {
-        await repo.EliminarArticulosListaYArticulosAsync(listaID);
-        return Results.Ok(new { Success = true, Message = "Lista y artículos relacionados eliminados exitosamente." });
-        }
-    catch (Exception ex)
-        {
-        return Results.BadRequest(new { Success = false, Message = ex.Message });
-        }
-}).RequireAuthorization();
-
-ins.MapGet("/articulos/{insumoID:int}", async (int insumoID, rInsumos repo) =>
-{
-    try
-        {
-        var articulos = await repo.ObtenerArticulosPorInsumoAsync(insumoID);
-        return Results.Ok(articulos);
-        }
-    catch (Exception ex)
-        {
-        return Results.BadRequest(new { Success = false, Message = ex.Message });
-        }
-}).RequireAuthorization();
-
-
 pre.MapGet("/maestro/{usuarioID:int}", async (int usuarioID, rPresupuestos repo) =>
 {
     try
@@ -335,12 +256,54 @@ ins.MapGet("/articulos/lista/{listaID:short}", async (short listaID, rInsumos re
         }
 }).RequireAuthorization();
 
+// Crear una nueva lista de artículos
+ins.MapPost("/articulos/lista/nueva", async (ArticulosListaDTO dto, rInsumos repo) =>
+{
+    try
+    {
+        var (newId, mensaje) = await repo.CrearNuevaListaArticulosAsync(dto);
+        return Results.Ok(new { Success = newId > 0, ListaID = newId, Message = mensaje });
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(new { Success = false, Message = ex.Message });
+    }
+}).RequireAuthorization();
 
 
+ins.MapPost("/articulos/lista/procesar", async (ProcesarArticulosPorListaRequest request, rInsumos repo) =>
+{
+    try
+    {
+        await repo.ProcesarArticulosPorListaAsync(request.ListaID, request.Articulos);
+        return Results.Ok(new { Success = true, Message = "Artículos procesados correctamente." });
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(new { Success = false, Message = ex.Message });
+    }
+}).RequireAuthorization();
+
+ins.MapDelete("/articulos/lista/{listaID:int}", async (int listaID, rInsumos repo) =>
+{
+    try
+    {
+        await repo.EliminarArticulosListaYArticulosAsync(listaID);
+        return Results.Ok(new { Success = true, Message = "Lista y artículos eliminados correctamente." });
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(new { Success = false, Message = ex.Message });
+    }
+}).RequireAuthorization();
 #endregion
+
+
 
 #endregion
 
 app.Run();
+
+
 
 
