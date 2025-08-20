@@ -427,14 +427,17 @@ namespace DOP.Presupuestos.Ventanas
                 {
                 if (e.Data.GetDataPresent(DataFormats.FileDrop))
                     {
-                    string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-                    if (files.Length > 0 && System.IO.Path.GetExtension(files[0]).Equals(".xlsx", StringComparison.OrdinalIgnoreCase))
+                    var data = e.Data.GetData(DataFormats.FileDrop);
+                    if (data is string[] files)
                         {
-                        ImportarArticulosDesdeExcel(files[0]);
-                        }
-                    else
-                        {
-                        MessageBox.Show("Por favor, suelte un archivo Excel (.xlsx) válido.", "Archivo inválido", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        if (files.Length > 0 && System.IO.Path.GetExtension(files[0]).Equals(".xlsx", StringComparison.OrdinalIgnoreCase))
+                            {
+                            ImportarArticulosDesdeExcel(files[0]);
+                            }
+                        else
+                            {
+                            MessageBox.Show("Por favor, suelte un archivo Excel (.xlsx) válido.", "Archivo inválido", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            }
                         }
                     }
                 }
@@ -450,19 +453,19 @@ namespace DOP.Presupuestos.Ventanas
             }
 
         private void ImportarArticulosDesdeExcel(string filePath)
-        {
+            {
             var articulos = LeerArticulosDesdeExcel(filePath);
             if (articulos.Count > 0)
-            {
+                {
                 articulosImportados = articulos;
                 OnPropertyChanged(nameof(HayArticulosImportados));
                 MessageBox.Show($"Se importaron {articulosImportados.Count} artículos.", "Importación exitosa", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
+                }
             else
-            {
+                {
                 MessageBox.Show("No se importaron artículos. Verifique el archivo.", "Importación", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
-        }
 
         private List<ArticuloExceDTO> LeerArticulosDesdeExcel(string filePath)
             {
@@ -471,23 +474,42 @@ namespace DOP.Presupuestos.Ventanas
                 {
                 using (var workbook = new XLWorkbook(filePath))
                     {
-                    var ws = workbook.Worksheets.First();
+                    var ws = workbook.Worksheets.FirstOrDefault();
+                    if (ws == null)
+                        {
+                        MessageBox.Show("El archivo Excel no contiene hojas.", "Error de formato", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return lista;
+                        }
+
                     foreach (var row in ws.RowsUsed().Skip(1)) // Salta la cabecera
                         {
+                        // Validar que las celdas existen y no son nulas
+                        var cell1 = row.Cell(1);
+                        var cell2 = row.Cell(2);
+                        var cell3 = row.Cell(3);
+                        var cell4 = row.Cell(4);
+
+                        if (cell1 == null || cell2 == null || cell3 == null || cell4 == null)
+                            continue;
+
                         var dto = new ArticuloExceDTO
                             {
-                            Codigo = row.Cell(1).GetString(),
-                            Descrip = row.Cell(2).GetString(),
-                            Unidad = row.Cell(3).GetString(),
-                            Precio = row.Cell(4).GetValue<decimal>()
+                            Codigo = cell1.GetString() ?? "",
+                            Descrip = cell2.GetString() ?? "",
+                            Unidad = cell3.GetString() ?? "",
+                            Precio = cell4.TryGetValue<decimal>(out var precio) ? precio : 0
                             };
                         lista.Add(dto);
                         }
                     }
                 }
-            catch (IOException ex)
+            catch (IOException)
                 {
                 MessageBox.Show("No se puede acceder al archivo porque está siendo usado por otro proceso. Por favor, cierre el archivo en Excel y vuelva a intentarlo.", "Archivo en uso", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            catch (Exception ex)
+                {
+                MessageBox.Show($"Error inesperado al leer el archivo: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             return lista;
             }
@@ -599,18 +621,18 @@ namespace DOP.Presupuestos.Ventanas
             }
 
         private void ExcelDropZone_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            var dialog = new Microsoft.Win32.OpenFileDialog
             {
+            var dialog = new Microsoft.Win32.OpenFileDialog
+                {
                 Filter = "Archivos Excel (*.xlsx)|*.xlsx",
                 Multiselect = false
-            };
+                };
 
             if (dialog.ShowDialog() == true)
-            {
+                {
                 ImportarArticulosDesdeExcel(dialog.FileName);
+                }
             }
-        }
 
         private async void NuevaLista_Click(object sender, RoutedEventArgs e)
             {

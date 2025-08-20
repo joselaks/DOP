@@ -43,7 +43,7 @@ namespace DOP.Interfaz.Ventanas
                 txtContraseña.Password = password;
                 }
             Inicio = inicio;
-            this.txtVersion.Text = "Versión 0.2005.5";
+            this.txtVersion.Text = "Versión 0.2005.6";
             }
 
 
