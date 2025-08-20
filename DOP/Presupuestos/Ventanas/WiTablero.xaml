@@ -254,7 +254,7 @@
                                 FontWeight="Bold"
                                 Background="#004482"
                                 Foreground="White"
-                                Click="Button_Click_2"/>
+                                Click="ProcesarListaArticulos"/>
                         </Grid>
 
                     </syncfusion:TabItemExt>

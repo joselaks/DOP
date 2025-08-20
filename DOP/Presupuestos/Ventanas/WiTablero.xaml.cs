@@ -1,14 +1,15 @@
 ﻿using Biblioteca;
 using Biblioteca.DTO;
 using ClosedXML.Excel;
-using Microsoft.Win32;
 using DOP.Datos;
 using DOP.Interfaz.Ventanas;
+using Microsoft.Win32;
 using Syncfusion.SfSkinManager;
 using Syncfusion.UI.Xaml.Charts;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
@@ -28,7 +29,7 @@ namespace DOP.Presupuestos.Ventanas
     /// <summary>
     /// Lógica de interacción para WiTablero.xaml
     /// </summary>
-    public partial class WiTablero : Window
+    public partial class WiTablero : Window, INotifyPropertyChanged
         {
         private double _previousLeft;
         private double _previousTop;
@@ -39,11 +40,19 @@ namespace DOP.Presupuestos.Ventanas
         private ObservableCollection<PresupuestoDTO> _modelos = new();
         private ObservableCollection<PresupuestoDTO> _modelosPropios = new();
 
-        // Agrega esta propiedad en la clase WiTablero
         public ObservableCollection<ListaArticuloItem> InfoCombo { get; set; } = new();
 
-        // Propiedad para los artículos de la lista seleccionada
         public ObservableCollection<ArticuloDTO> ArticulosLista { get; set; } = new();
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private List<ArticuloExceDTO> articulosImportados = new();
+        public bool HayArticulosImportados => articulosImportados != null && articulosImportados.Count > 0;
+
+        private void OnPropertyChanged(string propertyName)
+            {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
 
         public WiTablero()
             {
@@ -69,9 +78,6 @@ namespace DOP.Presupuestos.Ventanas
                 Height = 1030;
                 }
             Loaded += WiTablero_Loaded;
-
-
-
             }
 
         private async void WiTablero_Loaded(object sender, RoutedEventArgs e)
@@ -92,7 +98,6 @@ namespace DOP.Presupuestos.Ventanas
                 _presupuestos = new ObservableCollection<PresupuestoDTO>(lista.Where(p => p.UsuarioID == App.IdUsuario));
                 _modelos = new ObservableCollection<PresupuestoDTO>(lista.Where(p => p.EsModelo && p.UsuarioID == 4));
                 _modelosPropios = new ObservableCollection<PresupuestoDTO>(lista.Where(p => p.EsModelo && p.UsuarioID == App.IdUsuario));
-
 
                 GrillaPresupuestos.ItemsSource = _presupuestos;
                 }
@@ -116,7 +121,7 @@ namespace DOP.Presupuestos.Ventanas
             foreach (var listaItem in listas)
                 {
                 InfoCombo.Add(new ListaArticuloItem
-                {
+                    {
                     ID = listaItem.ID,
                     Descrip = listaItem.Descrip
                     });
@@ -124,14 +129,11 @@ namespace DOP.Presupuestos.Ventanas
 
             txtUsuario.Text = "Usuario: " + App.NombreUsuario;
             btnBackstage.Visibility = (App.tipoUsuario == 2)
-    ? Visibility.Visible
-    : Visibility.Collapsed;
+                ? Visibility.Visible
+                : Visibility.Collapsed;
 
             GraficoGraficoBarras();
-
-
             }
-
 
         #region Comportamiento ventana
 
@@ -176,7 +178,6 @@ namespace DOP.Presupuestos.Ventanas
 
         private async void Close_Click(object sender, RoutedEventArgs e)
             {
-
             Close();
             // Obtener la MAC Address de la primera interfaz activa
             string macaddress = NetworkInterface
@@ -332,8 +333,6 @@ namespace DOP.Presupuestos.Ventanas
                 }
             }
 
-
-
         private void GrillaPresupuestos_MouseDoubleClick(object sender, MouseButtonEventArgs e)
             {
 
@@ -424,39 +423,71 @@ namespace DOP.Presupuestos.Ventanas
 
         private void ExcelDropZone_Drop(object sender, DragEventArgs e)
             {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            try
                 {
-                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-                if (files.Length > 0 && System.IO.Path.GetExtension(files[0]).Equals(".xlsx", StringComparison.OrdinalIgnoreCase))
+                if (e.Data.GetDataPresent(DataFormats.FileDrop))
                     {
-                    var articulos = LeerArticulosDesdeExcel(files[0]);
-                    // Aquí puedes usar la colección articulos como necesites
-                    MessageBox.Show($"Se importaron {articulos.Count} artículos.");
-                    }
-                else
-                    {
-                    MessageBox.Show("Por favor, suelte un archivo Excel (.xlsx) válido.");
+                    string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                    if (files.Length > 0 && System.IO.Path.GetExtension(files[0]).Equals(".xlsx", StringComparison.OrdinalIgnoreCase))
+                        {
+                        ImportarArticulosDesdeExcel(files[0]);
+                        }
+                    else
+                        {
+                        MessageBox.Show("Por favor, suelte un archivo Excel (.xlsx) válido.", "Archivo inválido", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        }
                     }
                 }
+            catch (Exception ex)
+                {
+                MessageBox.Show(
+                    $"Ocurrió un error al importar el archivo:\n{ex.Message}",
+                    "Error en importación",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+                }
             }
+
+        private void ImportarArticulosDesdeExcel(string filePath)
+        {
+            var articulos = LeerArticulosDesdeExcel(filePath);
+            if (articulos.Count > 0)
+            {
+                articulosImportados = articulos;
+                OnPropertyChanged(nameof(HayArticulosImportados));
+                MessageBox.Show($"Se importaron {articulosImportados.Count} artículos.", "Importación exitosa", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("No se importaron artículos. Verifique el archivo.", "Importación", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
 
         private List<ArticuloExceDTO> LeerArticulosDesdeExcel(string filePath)
             {
             var lista = new List<ArticuloExceDTO>();
-            using (var workbook = new XLWorkbook(filePath))
+            try
                 {
-                var ws = workbook.Worksheets.First();
-                foreach (var row in ws.RowsUsed().Skip(1)) // Salta la cabecera
+                using (var workbook = new XLWorkbook(filePath))
                     {
-                    var dto = new ArticuloExceDTO
+                    var ws = workbook.Worksheets.First();
+                    foreach (var row in ws.RowsUsed().Skip(1)) // Salta la cabecera
                         {
-                        Codigo = row.Cell(1).GetString(),
-                        Descrip = row.Cell(2).GetString(),
-                        Unidad = row.Cell(3).GetString(),
-                        Precio = row.Cell(4).GetValue<decimal>()
-                        };
-                    lista.Add(dto);
+                        var dto = new ArticuloExceDTO
+                            {
+                            Codigo = row.Cell(1).GetString(),
+                            Descrip = row.Cell(2).GetString(),
+                            Unidad = row.Cell(3).GetString(),
+                            Precio = row.Cell(4).GetValue<decimal>()
+                            };
+                        lista.Add(dto);
+                        }
                     }
+                }
+            catch (IOException ex)
+                {
+                MessageBox.Show("No se puede acceder al archivo porque está siendo usado por otro proceso. Por favor, cierre el archivo en Excel y vuelva a intentarlo.", "Archivo en uso", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             return lista;
             }
@@ -484,8 +515,6 @@ namespace DOP.Presupuestos.Ventanas
                 MessageBox.Show("Seleccione una lista válida.", "Atención", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
-
-
 
         private async void BorrarListaClick(object sender, RoutedEventArgs e)
             {
@@ -530,8 +559,43 @@ namespace DOP.Presupuestos.Ventanas
                 }
             }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private async void ProcesarListaArticulos(object sender, RoutedEventArgs e)
             {
+            if (comboListas.SelectedValue is int listaID && listaID > 0)
+                {
+                if (articulosImportados == null || articulosImportados.Count == 0)
+                    {
+                    MessageBox.Show("Primero debe importar artículos desde un archivo Excel.", "Atención", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                    }
+
+                // Convertir ArticuloExceDTO a ArticuloDTO
+                var articulosDTO = articulosImportados.Select(a => new ArticuloDTO
+                    {
+                    Codigo = a.Codigo,
+                    Descrip = a.Descrip,
+                    Unidad = string.IsNullOrEmpty(a.Unidad) ? "" : a.Unidad.Substring(0, Math.Min(2, a.Unidad.Length)),
+                    Precio = a.Precio,
+                    ListaID = (short)listaID,
+                    // Completa los campos requeridos según tu lógica de negocio:
+                    CuentaID = 0, // Ajusta si tienes el dato
+                    UsuarioID = 4,
+                    Fecha = DateTime.Now,
+                    Moneda = "P", // O el valor que corresponda
+                    UnidadFactor = 1
+                    }).ToList();
+
+                var (success, message) = await DatosWeb.ProcesarArticulosPorListaAsync(listaID, articulosDTO);
+
+                if (success)
+                    MessageBox.Show("Lista procesada correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                else
+                    MessageBox.Show($"No se pudo procesar la lista: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            else
+                {
+                MessageBox.Show("Seleccione una lista válida.", "Atención", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
 
         private void ExcelDropZone_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -544,51 +608,48 @@ namespace DOP.Presupuestos.Ventanas
 
             if (dialog.ShowDialog() == true)
             {
-                var articulos = LeerArticulosDesdeExcel(dialog.FileName);
-                // Aquí puedes usar la colección articulos como necesites
-                MessageBox.Show($"Se importaron {articulos.Count} artículos.");
+                ImportarArticulosDesdeExcel(dialog.FileName);
             }
         }
 
         private async void NuevaLista_Click(object sender, RoutedEventArgs e)
-        {
-            var ventana = new WiNuevaListaArticulos
             {
+            var ventana = new WiNuevaListaArticulos
+                {
                 Owner = this
-            };
+                };
 
             if (ventana.ShowDialog() == true)
-            {
+                {
                 var dto = ventana.NuevaLista;
                 var (success, message, listaId) = await DatosWeb.CrearNuevaListaArticulosAsync(dto);
 
                 if (success)
-                {
+                    {
                     MessageBox.Show("Lista creada correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
                     // Refresca las listas de artículos
                     int usuarioID = App.IdUsuario;
                     var (okListas, msgListas, listas) = await DatosWeb.ObtenerListasArticulosPorUsuarioAsync(4);
                     if (okListas)
-                    {
+                        {
                         InfoCombo.Clear();
                         foreach (var listaItem in listas)
-                        {
-                            InfoCombo.Add(new ListaArticuloItem
                             {
+                            InfoCombo.Add(new ListaArticuloItem
+                                {
                                 ID = listaItem.ID,
                                 Descrip = listaItem.Descrip
-                            });
+                                });
+                            }
                         }
                     }
-                }
                 else
-                {
+                    {
                     MessageBox.Show($"No se pudo crear la lista: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
             }
         }
-    }
-
 
     public class DatoGrafico
         {
@@ -598,7 +659,4 @@ namespace DOP.Presupuestos.Ventanas
             get; set;
             }
         }
-    
-
     }
-
