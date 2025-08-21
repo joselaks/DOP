@@ -44,6 +44,8 @@ namespace DOP.Presupuestos.Ventanas
 
         public ObservableCollection<ArticuloDTO> ArticulosLista { get; set; } = new();
 
+        public ObservableCollection<ArticuloBusquedaDTO> ArticulosBusqueda { get; set; } = new();
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private List<ArticuloExceDTO> articulosImportados = new();
@@ -671,14 +673,67 @@ namespace DOP.Presupuestos.Ventanas
                     }
                 }
             }
-        }
 
-    public class DatoGrafico
-        {
-        public string Tipología { get; set; }
-        public double Importe
+
+
+        private async void BtnBuscarPrecios_Click(object sender, RoutedEventArgs e)
             {
-            get; set;
+            string descripBusqueda = txtBusquedaArticulo.Text?.Trim() ?? "";
+            string tipoSeleccionado = (comboTipoArticulo.SelectedItem as ComboBoxItem)?.Content as string;
+
+            if (string.IsNullOrWhiteSpace(descripBusqueda))
+                {
+                MessageBox.Show("Ingrese una descripción para buscar.", "Atención", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+                }
+            if (string.IsNullOrWhiteSpace(tipoSeleccionado))
+                {
+                MessageBox.Show("Seleccione un tipo de artículo.", "Atención", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+                }
+
+            // Mapear texto a letra
+            string tipoID = tipoSeleccionado switch
+                {
+                    "Materiales" => "M",
+                    "Mano de Obra" => "D",
+                    "Equipos" => "E",
+                    "Subcontratos" => "S",
+                    "Otros" => "O",
+                    _ => ""
+                    };
+
+            if (string.IsNullOrEmpty(tipoID))
+                {
+                MessageBox.Show("Tipo de artículo no válido.", "Atención", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+                }
+
+            int usuarioID = 4;
+
+            var (ok, msg, articulos) = await DatosWeb.BuscarArticulosAsync(usuarioID, tipoID, descripBusqueda);
+
+            ArticulosBusqueda.Clear();
+            if (ok && articulos != null)
+                {
+                foreach (var art in articulos)
+                    ArticulosBusqueda.Add(art);
+                }
+            else
+                {
+                MessageBox.Show($"No se encontraron resultados.\n{msg}", "Búsqueda", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+
+
+
+        public class DatoGrafico
+            {
+            public string Tipología { get; set; }
+            public double Importe
+                {
+                get; set;
+                }
             }
         }
     }

@@ -303,6 +303,16 @@ namespace DOP.Datos
             );
             return (success, message);
             }
+
+        public static async Task<(bool Success, string Message, List<ArticuloBusquedaDTO> Articulos)> BuscarArticulosAsync(int usuarioID, string tipoID, string descripBusqueda)
+            {
+            string url = $"{App.BaseUrl}insumos/articulos/busqueda?usuarioID={usuarioID}&tipoID={tipoID}&descripBusqueda={Uri.EscapeDataString(descripBusqueda)}";
+            var (success, message, data) = await ExecuteRequestAsync<List<ArticuloBusquedaDTO>>(
+                () => httpClient.GetAsync(url),
+                $"Buscar artículos usuarioID={usuarioID}, tipoID={tipoID}, descripBusqueda={descripBusqueda}"
+            );
+            return (success, message, data ?? new List<ArticuloBusquedaDTO>());
+            }
         }
 
     // Clase auxiliar para deserializar la respuesta del endpoint

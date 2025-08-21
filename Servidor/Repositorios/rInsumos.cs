@@ -127,7 +127,7 @@ namespace Servidor.Repositorios
                 }
             }
 
-        public async Task EliminarArticulosListaYArticulosAsync(int listaID)
+        public async Task EliminarArticulosListaYArticulosAsync                                                                                                                                                                             (int listaID)
         {
             using (var db = new SqlConnection(_connectionString))
             {
@@ -144,6 +144,31 @@ namespace Servidor.Repositorios
                 catch (SqlException ex)
                 {
                     throw new Exception($"Error al eliminar la lista y sus artículos asociados (ListaID: {listaID}): {ex.Message}", ex);
+                }
+            }
+        }
+
+        public async Task<List<ArticuloBusquedaDTO>> BuscarArticulosAsync(int usuarioID, string tipoID, string descripBusqueda)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@UsuarioID", usuarioID, DbType.Int32);
+                parameters.Add("@TipoID", tipoID, DbType.AnsiStringFixedLength, size: 1);
+                parameters.Add("@DescripBusqueda", descripBusqueda, DbType.AnsiString, size: 65);
+
+                try
+                {
+                    var result = await db.QueryAsync<ArticuloBusquedaDTO>(
+                        "BusquedaArticulos",
+                        parameters,
+                        commandType: CommandType.StoredProcedure);
+
+                    return result.ToList();
+                }
+                catch (SqlException ex)
+                {
+                    throw new Exception($"Error al buscar artículos: {ex.Message}", ex);
                 }
             }
         }

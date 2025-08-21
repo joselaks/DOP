@@ -287,13 +287,30 @@ ins.MapPost("/articulos/lista/procesar", async (ProcesarArticulosPorListaRequest
 ins.MapDelete("/articulos/lista/{listaID:int}", async (int listaID, rInsumos repo) =>
 {
     try
-    {
+        {
         await repo.EliminarArticulosListaYArticulosAsync(listaID);
         return Results.Ok(new { Success = true, Message = "Lista y artículos eliminados correctamente." });
+        }
+    catch (Exception ex)
+        {
+        return Results.BadRequest(new { Success = false, Message = ex.Message });
+        }
+}).RequireAuthorization();
+
+ins.MapGet("/articulos/busqueda", async (
+    [FromQuery] int usuarioID,
+    [FromQuery] string tipoID,
+    [FromQuery] string descripBusqueda,
+    rInsumos repo) =>
+{
+    try
+    {
+        var articulos = await repo.BuscarArticulosAsync(usuarioID, tipoID, descripBusqueda);
+        return Results.Ok(articulos);
     }
     catch (Exception ex)
     {
-        return Results.BadRequest(new { Success = false, Message = ex.Message });
+        return Results.BadRequest(new { Message = ex.Message });
     }
 }).RequireAuthorization();
 #endregion
@@ -303,6 +320,9 @@ ins.MapDelete("/articulos/lista/{listaID:int}", async (int listaID, rInsumos rep
 #endregion
 
 app.Run();
+
+
+
 
 
 

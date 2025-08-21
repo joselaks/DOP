@@ -1,0 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Biblioteca.DTO
+    {
+    public class ArticuloBusquedaDTO
+        {
+        public int ID { get; set; }
+        public short CuentaID { get; set; }
+        public int UsuarioID { get; set; }
+        public short ListaID { get; set; }
+        public int? EntidadID { get; set; }
+        public string TipoID { get; set; }
+        public string Descrip { get; set; }
+        public string Unidad { get; set; }
+        public decimal UnidadFactor { get; set; }
+        public string Codigo { get; set; }
+        public DateTime Fecha { get; set; }
+        public decimal Precio { get; set; }
+        public string Moneda { get; set; }
+        public string ListaDescrip { get; set; }
+        }
+    }

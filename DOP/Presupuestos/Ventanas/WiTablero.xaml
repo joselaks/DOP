@@ -103,7 +103,56 @@
                     Grid.Column="0"
                     Margin="15"
                     TabItemSelectedForeground="Black">
-                    <syncfusion:TabItemExt Header="Buscar precios" />
+                    <syncfusion:TabItemExt Header="Buscar precios">
+                        <Grid Margin="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                                <TextBlock>Busqueda de Artículos </TextBlock>
+                                
+                                <TextBox
+                                    x:Name="txtBusquedaArticulo"
+                                    Width="200"
+                                    Margin="0,0,10,0"
+                                    VerticalAlignment="Center" />
+
+                                <ComboBox
+                                    x:Name="comboTipoArticulo"
+                                    Width="180"
+                                    Margin="0,0,10,0"
+                                    VerticalAlignment="Center"
+                                    SelectedIndex="0">
+                                    <ComboBoxItem Content="Materiales" />
+                                    <ComboBoxItem Content="Mano de Obra" />
+                                    <ComboBoxItem Content="Equipos" />
+                                    <ComboBoxItem Content="Subcontratos" />
+                                    <ComboBoxItem Content="Otros" />
+                                </ComboBox>
+
+
+
+
+
+
+
+
+
+                                <Button
+                                    Width="80"
+                                    Click="BtnBuscarPrecios_Click"
+                                    Content="Buscar" />
+                            </StackPanel>
+                            <syncfusion:SfDataGrid
+                                x:Name="gridBusquedaArticulos"
+                                Grid.Row="1"
+                                Margin="0,0,0,0"
+                                AutoGenerateColumns="True"
+                                IsReadOnly="True"
+                                ItemsSource="{Binding ArticulosBusqueda}" />
+                        </Grid>
+                    </syncfusion:TabItemExt>
                     <syncfusion:TabItemExt Header="Ver listas">
                         <Grid>
                             <Grid.RowDefinitions>
@@ -180,7 +229,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="*" />
-                                <RowDefinition Height="Auto" /> 
+                                <RowDefinition Height="Auto" />
                                 <!--  Nueva fila para el botón  -->
                             </Grid.RowDefinitions>
 
