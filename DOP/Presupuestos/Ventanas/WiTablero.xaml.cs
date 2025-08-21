@@ -686,6 +686,11 @@ namespace DOP.Presupuestos.Ventanas
                 MessageBox.Show("Ingrese una descripción para buscar.", "Atención", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
                 }
+            if (descripBusqueda.Length < 3)
+                {
+                MessageBox.Show("La búsqueda debe tener al menos tres caracteres.", "Atención", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+                }
             if (string.IsNullOrWhiteSpace(tipoSeleccionado))
                 {
                 MessageBox.Show("Seleccione un tipo de artículo.", "Atención", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -701,7 +706,7 @@ namespace DOP.Presupuestos.Ventanas
                     "Subcontratos" => "S",
                     "Otros" => "O",
                     _ => ""
-                    };
+                };
 
             if (string.IsNullOrEmpty(tipoID))
                 {

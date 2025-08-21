@@ -110,14 +110,14 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
-                                <TextBlock>Busqueda de Artículos </TextBlock>
-                                
+                                <TextBlock Margin="0,0,10,0" FontWeight="DemiBold" VerticalAlignment="Center">Busqueda de Artículos</TextBlock>
+                                <TextBlock VerticalAlignment="Center">Filtro:</TextBlock>
                                 <TextBox
+                                    
                                     x:Name="txtBusquedaArticulo"
                                     Width="200"
                                     Margin="0,0,10,0"
                                     VerticalAlignment="Center" />
-
                                 <ComboBox
                                     x:Name="comboTipoArticulo"
                                     Width="180"
@@ -130,15 +130,6 @@
                                     <ComboBoxItem Content="Subcontratos" />
                                     <ComboBoxItem Content="Otros" />
                                 </ComboBox>
-
-
-
-
-
-
-
-
-
                                 <Button
                                     Width="80"
                                     Click="BtnBuscarPrecios_Click"
@@ -148,9 +139,40 @@
                                 x:Name="gridBusquedaArticulos"
                                 Grid.Row="1"
                                 Margin="0,0,0,0"
-                                AutoGenerateColumns="True"
+                                AutoGenerateColumns="False"
                                 IsReadOnly="True"
-                                ItemsSource="{Binding ArticulosBusqueda}" />
+                                ItemsSource="{Binding ArticulosBusqueda}">
+                                <syncfusion:SfDataGrid.Columns>
+                                    <syncfusion:GridTextColumn
+                                        HeaderText="Descripción"
+                                        MappingName="Descrip"
+                                        Width="250"/>
+                                    <syncfusion:GridTextColumn
+                                        HeaderText="Unidad"
+                                        MappingName="Unidad"
+                                        Width="80"/>
+                                    <syncfusion:GridNumericColumn
+                                        HeaderText="Precio"
+                                        MappingName="Precio"
+                                        Width="120"
+                                        NumberDecimalDigits="2"
+                                        NumberDecimalSeparator=","
+                                        NumberGroupSeparator="."
+                                        NumberGroupSizes="3"
+                                        TextAlignment="Right"/>
+                                    <syncfusion:GridTextColumn
+                                        HeaderText="Lista"
+                                        MappingName="ListaDescrip"
+                                        Width="180"/>
+                                    <syncfusion:GridDateTimeColumn
+                                        HeaderText="Fecha"
+                                        MappingName="Fecha"
+                                        Width="120"
+                                        CustomPattern="dd/MM/yyyy"
+                                        Pattern="ShortDate"
+                                        TextAlignment="Center"/>
+                                </syncfusion:SfDataGrid.Columns>
+                            </syncfusion:SfDataGrid>
                         </Grid>
                     </syncfusion:TabItemExt>
                     <syncfusion:TabItemExt Header="Ver listas">
