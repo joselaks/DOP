@@ -7,6 +7,7 @@ using DOP.Presupuestos.Clases;
 using DOP.Presupuestos.Controles;
 using Microsoft.Win32;
 using Syncfusion.SfSkinManager;
+using Syncfusion.Windows.Shared;
 using Syncfusion.Windows.Tools.Controls;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace DataObra.Presupuestos.Ventanas
     /// <summary>
     /// Lógica de interacción para WiPres.xaml
     /// </summary>
-    public partial class WiPres : RibbonWindow
+    public partial class WiPres : ChromelessWindow
         {
         public Presupuesto Objeto;
         public cUndoRedo UndoRedo;
@@ -151,7 +152,7 @@ namespace DataObra.Presupuestos.Ventanas
                     if (menuItemMaestro.IsChecked == true)
                     {
                         gridBase.ColumnDefinitions[1].Width = new GridLength(1, GridUnitType.Auto);
-                        gridBase.ColumnDefinitions[2].Width = new GridLength(300);
+                        gridBase.ColumnDefinitions[2].Width = new GridLength(600);
                     }
                     else
                     {

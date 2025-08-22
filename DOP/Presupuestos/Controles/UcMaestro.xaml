@@ -105,35 +105,40 @@
                 VerticalAlignment="Center"
                 FontSize="20"
                 FontWeight="Bold"
-                Text="Maestro de " />
+                Text="Maestro " />
 
-            <TextBlock
-                x:Name="SeleccionMaestro"
+            <ComboBox
+                x:Name="comboOrigen"
+                Width="120"
+                Visibility="Collapsed"
+                Margin="10,0,0,0"
                 VerticalAlignment="Center"
-                FontSize="20"
-                FontWeight="Bold"
-                Text="Rubros" />
+                SelectedIndex="0">
+                <ComboBoxItem Content="DataObra" />
+                <ComboBoxItem Content="Propio" />
+            </ComboBox>
 
+            <ComboBox
+                x:Name="comboTipoListado"
+                Width="160"
+                Margin="15,0,0,0"
+                VerticalAlignment="Center"
+                SelectionChanged="comboTipoListado_SelectionChanged">
+                <ComboBoxItem Content="Tareas" IsSelected="True" />
+                <ComboBoxItem Content="Materiales" />
+                <ComboBoxItem Content="Mano de Obra" />
+                <ComboBoxItem Content="Equipos" />
+                <ComboBoxItem Content="Subcontratos" />
+                <ComboBoxItem Content="Otros" />
+                <ComboBoxItem Content="Auxiliares" />
+            </ComboBox>
             <Button
-                x:Name="obtener"
                 Margin="10,0,0,0"
                 Padding="10,2"
                 VerticalAlignment="Center"
-                Click="obtener_Click"
-                Content="Obtener" />
-            <Button
-                Margin="10,0,0,0"
-                Padding="10,2"
-                VerticalAlignment="Center"
-                Click="BtnGuardar_Click"
-                Content="Guardar" />
-
-            <Button
-                Margin="10,0,0,0"
-                Padding="10,2"
-                VerticalAlignment="Center"
+                Visibility="Collapsed"
                 Click="Button_Click"
-                Content="Recalculo" />
+                Content="Guardar cambios" />
         </StackPanel>
 
         <syncfusion:SfTreeGrid
@@ -144,23 +149,9 @@
             AllowEditing="True"
             AllowResizingColumns="True"
             AutoGenerateColumns="False"
-            CurrentCellBeginEdit="grillaMaestro_CurrentCellBeginEdit"
-            CurrentCellEndEdit="grillaMaestro_CurrentCellEndEdit"
             ExpanderColumn="Descripcion"
-            KeyDown="grillaMaestro_KeyDown"
-            SelectionChanged="grillaMaestro_SelectionChanged"
             SelectionMode="Single">
-            <syncfusion:SfTreeGrid.ContextMenu>
-                <ContextMenu>
-
-                    <MenuItem Click="MenuItem_Click" Header="Ver analisis de costo" />
-
-                    <MenuItem
-                        Click="MenuItem_Borrar_Click"
-                        Header="Borrar"
-                        Icon="🗑" />
-                </ContextMenu>
-            </syncfusion:SfTreeGrid.ContextMenu>
+            
             <syncfusion:SfTreeGrid.Resources>
                 <Style TargetType="syncfusion:SfTreeGrid">
                     <Setter Property="Background" Value="LightGray" />
@@ -174,6 +165,7 @@
                         Width="50"
                         CellTemplateSelector="{StaticResource IconTemplateSelector}"
                         HeaderText="Nat"
+                        
                         MappingName="Tipo" />
 
 
@@ -184,6 +176,7 @@
 
                     <syncfusion:TreeGridTextColumn
                         Width="60"
+                        IsHidden="True"
                         MappingName="Tipo"
                         TextAlignment="Right" />
 

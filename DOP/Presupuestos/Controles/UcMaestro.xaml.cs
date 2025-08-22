@@ -29,7 +29,7 @@ namespace DOP.Presupuestos.Controles
     public partial class UcMaestro : UserControl
         {
 
-        public Maestro Objeto;
+        public Presupuesto Objeto;
         private string tipoSeleccionado = null;
         private GridLength? _panSuperioresHeight = null;
 
@@ -47,88 +47,21 @@ namespace DOP.Presupuestos.Controles
         private async void GrillaMaestro_Loaded(object sender, RoutedEventArgs e)
             {
 
-            // Obtén el usuarioID desde donde corresponda en tu aplicación
-            int usuarioID = App.IdUsuario; // Usa el ID del login 
-
-            // Esto obtiene de las tablas específicas destinadas a Maestro
-            //var (success, message, conceptos, relaciones) = await DOP.Datos.DatosWeb.ObtenerConceptosYRelacionesMaestroAsync(usuarioID);
-            //Provisorioamente lo obtengo de un presupuesto específico
+            // Obtiene el presupuesto maestro
             var (ok, msg, conceptos, relaciones) = await DOP.Datos.DatosWeb.ObtenerConceptosYRelacionesAsync(45);
-            //Convertir los conceptos y relaciones a las estructuras necesarias para Maestro
-            // Conversión de ConceptoDTO a ConceptoMDTO
-            List<ConceptoMDTO> conceptosM = conceptos.Select(c => new ConceptoMDTO
+            var PresupuestoDTO = new PresupuestoDTO
                 {
-                UsuarioID = usuarioID,
-                ConceptoID = c.ConceptoID,
-                Descrip = c.Descrip,
-                Tipo = c.Tipo,
-                Unidad = c.Unidad,
-                PrEjec = c.PrEjec,
-                EjecMoneda = c.EjecMoneda,
-                MesBase = c.MesBase,
-                InsumoID = c.InsumoID,
-                }).ToList();
-
-            // Conversión de RelacionDTO a RelacionMDTO
-            List<RelacionMDTO> relacionesM = relaciones.Select(r => new RelacionMDTO
-                {
-                UsuarioID = usuarioID,
-                CodSup = r.CodSup,
-                CodInf = r.CodInf,
-                CanEjec = r.CanEjec,
-                OrdenInt = r.OrdenInt, // Es short en RelacionMDTO, asegúrate de que la conversión sea válida
-                }).ToList();
-
-
-            Objeto = new Maestro(conceptosM, relacionesM, usuarioID);
-
+                ID = 45
+                };
+            Objeto = new Presupuesto(PresupuestoDTO, conceptos, relaciones);
             grillaMaestro.ItemsSource = Objeto.Arbol;
-            this.grillaMaestro.View.Filter = FiltrarPorTipo;
-            SelectorTipo_SelectionChanged("Rubros");
+            // Obtener todos los nodos tipo "T" y "R"
+            var Filtrado = new ObservableCollection<Nodo>(ObtenerNodosPorTipos(Objeto.Arbol, "T"));
+            this.grillaMaestro.ItemsSource = Filtrado;
             this.grillaMaestro.View.Refresh();
-
-
-            }
-
-        public void SelectorTipo_SelectionChanged(string _seleccion)
-            {
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                if (_seleccion == null || grillaMaestro == null || grillaMaestro.View == null)
-                    return;
-
-                tipoSeleccionado = _seleccion;
-                grillaMaestro.View.Refresh();
-            }), System.Windows.Threading.DispatcherPriority.Background);
-
-            SeleccionMaestro.Text = _seleccion;
             }
 
 
-
-        private bool FiltrarPorTipo(object item)
-            {
-            if (item is Nodo nodo)
-                {
-                if (string.IsNullOrEmpty(tipoSeleccionado) || tipoSeleccionado == "Todos")
-                    return true;
-
-                // Mapeo de los textos del ComboBox a los valores de Tipo
-                switch (tipoSeleccionado)
-                    {
-                    case "Rubros": return nodo.Tipo == "R";
-                    case "Tareas": return nodo.Tipo == "T";
-                    case "Materiales": return nodo.Tipo == "M";
-                    case "Mano de obra": return nodo.Tipo == "D";
-                    case "Equipos": return nodo.Tipo == "E";
-                    case "Subcontratos": return nodo.Tipo == "S";
-                    case "Otros": return nodo.Tipo == "O";
-                    case "Auxiliares": return nodo.Tipo == "A";
-                    default: return true;
-                    }
-                }
-            return false;
-            }
 
 
         private UserControl GetParentUserControl(DependencyObject child)
@@ -150,290 +83,104 @@ namespace DOP.Presupuestos.Controles
         private void RowDragDropController_Drop(object? sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridRowDropEventArgs e)
             {
             e.Handled = true;
-            Nodo nodoMovido = null;
-
-            if (e.DraggingNodes != null && e.DraggingNodes.Count > 0)
-                {
-                nodoMovido = e.DraggingNodes[0].Item as Nodo;
-
-                // 1. Copiar los inferiores de nodoMovido a nivel raíz (como antes)
-                if (nodoMovido != null && nodoMovido.Inferiores != null && (nodoMovido.Tipo == "T" || nodoMovido.Tipo == "A"))
-                    {
-                    foreach (var inferior in nodoMovido.Inferiores)
-                        {
-                        var existente = Objeto.Arbol.FirstOrDefault(n => n.ID == inferior.ID);
-                        if (existente == null)
-                            {
-                            Objeto.Arbol.Add(Objeto.clonar(inferior, true));
-                            }
-                        else
-                            {
-                            existente.Descripcion = inferior.Descripcion;
-                            existente.Unidad = inferior.Unidad;
-                            existente.Cantidad = inferior.Cantidad;
-                            existente.PU1 = inferior.PU1;
-                            existente.Tipo = inferior.Tipo;
-                            existente.Inferiores = Objeto.GetClonesInferiores(inferior);
-                            }
-                        }
-                    }
-
-                // 2. Clonar el nodoMovido y agregarlo en la ubicación de drop
-                var nodoClonado = (nodoMovido.Tipo == "T" || nodoMovido.Tipo == "A")
-                        ? Objeto.clonar(nodoMovido, true)
-                        : Objeto.clonar(nodoMovido, false);
-
-                // Determinar el nodo destino y la posición
-                var targetNode = e.TargetNode?.Item as Nodo;
-                var dropPosition = e.DropPosition; // Before, After, or Child
-
-                if (targetNode == null || dropPosition == Syncfusion.UI.Xaml.TreeGrid.DropPosition.DropAsChild)
-                    {
-                    // Si no hay destino o es como hijo, agregar a la raíz o a los inferiores del destino
-                    if (targetNode == null)
-                        {
-                        Objeto.Arbol.Add(nodoClonado);
-                        }
-                    else
-                        {
-                        if (targetNode.Inferiores == null)
-                            targetNode.Inferiores = new ObservableCollection<Nodo>();
-                        targetNode.Inferiores.Add(nodoClonado);
-                        }
-                    }
-                else
-                    {
-                    // Insertar antes o después del nodo destino en la colección correspondiente
-                    var parentNode = e.TargetNode.ParentNode?.Item as Nodo;
-                    ObservableCollection<Nodo> collection;
-                    if (parentNode == null)
-                        collection = Objeto.Arbol;
-                    else
-                        {
-                        if (parentNode.Inferiores == null)
-                            parentNode.Inferiores = new ObservableCollection<Nodo>();
-                        collection = parentNode.Inferiores;
-                        }
-
-                    int index = collection.IndexOf(targetNode);
-                    if (dropPosition == Syncfusion.UI.Xaml.TreeGrid.DropPosition.DropAbove)
-                        collection.Insert(index, nodoClonado);
-                    else // After
-                        collection.Insert(index + 1, nodoClonado);
-                    }
-                }
-            }
-
-        private void MenuItem_Borrar_Click(object sender, RoutedEventArgs e)
-            {
-            if (grillaMaestro.SelectedItem is Nodo nodo)
-                {
-                if (MessageBox.Show($"¿Desea eliminar el nodo '{nodo.Descripcion}'?", "Confirmar eliminación", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
-                    return;
-                //En este caso no es necesaria la recursividad, pero lo dejo por ahora.
-                EliminarNodoRecursivo(Objeto.Arbol, nodo);
-                grillaMaestro.View.Refresh();
-                }
-            }
-
-        private bool EliminarNodoRecursivo(ObservableCollection<Nodo> lista, Nodo nodoAEliminar)
-            {
-            if (lista.Remove(nodoAEliminar))
-                return true;
-
-            foreach (var item in lista)
-                {
-                if (item.Inferiores != null && EliminarNodoRecursivo(item.Inferiores, nodoAEliminar))
-                    return true;
-                }
-            return false;
-            }
-
-
-        public ObservableCollection<Nodo> GetClonesInferiores(Nodo elemento)
-            {
-            if (elemento == null)
-                return null;
-
-            if (!elemento.HasItems)
-                {
-                ObservableCollection<Nodo> inferioresVacios = new ObservableCollection<Nodo>();
-                return inferioresVacios;
-                }
-            else
-                {
-                ObservableCollection<Nodo> inferioresLlenos = new ObservableCollection<Nodo>();
-                foreach (var item in elemento.Inferiores)
-                    {
-                    Nodo respuesta = new Nodo();
-                    respuesta.ID = item.ID;
-                    respuesta.Descripcion = item.Descripcion;
-                    respuesta.Unidad = item.Unidad;
-                    respuesta.Cantidad = item.Cantidad;
-                    respuesta.PU1 = item.PU1;
-                    respuesta.Tipo = item.Tipo;
-                    respuesta.Inferiores = GetClonesInferiores(item);
-                    inferioresLlenos.Add(respuesta);
-                    if (item.HasItems)
-                        {
-                        respuesta.Inferiores = GetClonesInferiores(item);
-                        }
-                    }
-                return inferioresLlenos;
-                }
-            }
-
-        private async void BtnGuardar_Click(object sender, RoutedEventArgs e)
-            {
-            ProcesaTareaMaestroRequest oGrabar = Objeto.EmpaquetarPresupuesto();
-            if (oGrabar != null)
-                {
-                var (success, message) = await DOP.Datos.DatosWeb.ProcesarTareaMaestroAsync(oGrabar);
-
-                if (success)
-                    {
-                    MessageBox.Show("Tareas guardadas correctamente.\n" + message, "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
-                else
-                    {
-                    MessageBox.Show("Error al guardar tareas:\n" + message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
-            else
-                {
-                MessageBox.Show("Error al procesar la solicitud de grabación.");
-                }
+            MessageBox.Show("Funcionalidad en implementación");
 
             }
 
-        private async void obtener_Click(object sender, RoutedEventArgs e)
-            {
-            // Obtén el usuarioID desde donde corresponda en tu aplicación
-            int usuarioID = App.IdUsuario; // Usa el ID del login 
 
-            var (success, message, conceptos, relaciones) = await DOP.Datos.DatosWeb.ObtenerConceptosYRelacionesMaestroAsync(usuarioID);
-            Objeto = new Maestro(conceptos, relaciones, usuarioID);
-
-            grillaMaestro.ItemsSource = Objeto.Arbol;
-            this.grillaMaestro.View.Filter = FiltrarPorTipo;
-            this.grillaMaestro.View.Refresh();
-
-
-            }
         private void Button_Click(object sender, RoutedEventArgs e)
             {
-            // 1. Genera listaInsumos con nodos raíz que no sean de tipo 'T' ni 'A'
-            var listaInsumos = Objeto.Arbol
-                .Where(n => n.Tipo != "T" && n.Tipo != "A")
-                .ToList();
 
-            // 2. Actualiza los nodos hoja desde la lista de insumos si es necesario
-            ActualizaNodosHojaDesdeInsumos(Objeto.Arbol, listaInsumos);
-
-            // 3. Recalcula PU1 y los importes
-            RecalculoPU1(Objeto.Arbol);
             }
 
-
-        public void RecalculoPU1(IEnumerable<Nodo> items)
+        private IEnumerable<Nodo> ObtenerNodosPorTipos(IEnumerable<Nodo> nodos, params string[] tipos)
             {
-            foreach (var item in items)
+            foreach (var nodo in nodos)
                 {
-                RecalculoNodoPU1(item);
-                }
-            }
+                if (tipos.Contains(nodo.Tipo))
+                    yield return nodo;
 
-        private void RecalculoNodoPU1(Nodo nodo)
-            {
-            if (nodo.HasItems && (nodo.Tipo == "T" || nodo.Tipo == "A"))
-                {
-                // Primero recalcula los hijos
-                foreach (var hijo in nodo.Inferiores)
+                if (nodo.Inferiores != null && nodo.Inferiores.Count > 0)
                     {
-                    RecalculoNodoPU1(hijo);
-                    }
-
-                // Calcula PU1 como la suma de los Importe1 de los hijos
-                nodo.PU1 = nodo.Inferiores.Sum(c => c.Importe1);
-
-                // Calcula Importe1 del nodo actual
-                nodo.Importe1 = nodo.Cantidad * nodo.PU1;
-                }
-            else if (!nodo.HasItems)
-                {
-                // Si es hoja, simplemente calcula el Importe1
-                nodo.Importe1 = nodo.Cantidad * nodo.PU1;
-                }
-            }
-
-
-        private void ActualizaNodosHojaDesdeInsumos(IEnumerable<Nodo> items, List<Nodo> listaInsumos)
-            {
-            foreach (var item in items)
-                {
-                if (!item.HasItems)
-                    {
-                    var insumo = listaInsumos.FirstOrDefault(x => x.ID == item.ID);
-                    if (insumo != null)
-                        {
-                        item.Cantidad = insumo.Cantidad;
-                        item.PU1 = insumo.PU1;
-                        item.Unidad = insumo.Unidad;
-                        }
-                    }
-                else
-                    {
-                    ActualizaNodosHojaDesdeInsumos(item.Inferiores, listaInsumos);
+                    foreach (var hijo in ObtenerNodosPorTipos(nodo.Inferiores, tipos))
+                        yield return hijo;
                     }
                 }
             }
 
-        private void grillaMaestro_CurrentCellBeginEdit(object sender, TreeGridCurrentCellBeginEditEventArgs e)
+        public void FiltrarPorTipoDescripcion(string descripcion)
             {
-
-            }
-
-        private void grillaMaestro_CurrentCellEndEdit(object sender, Syncfusion.UI.Xaml.Grid.CurrentCellEndEditEventArgs e)
-            {
-
-            }
-
-        private void grillaMaestro_KeyDown(object sender, KeyEventArgs e)
-            {
-
-            }
-
-        private void grillaMaestro_SelectionChanged(object sender, Syncfusion.UI.Xaml.Grid.GridSelectionChangedEventArgs e)
-            {
-            // Guardar el alto actual antes de ocultar
-            _panSuperioresHeight = panSuperiores.Height;
-
-            sepSuperiores.Height = new GridLength(0);
-            panSuperiores.Height = new GridLength(0);
-
-
-            }
-
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-            {
-            var nodo = grillaMaestro.SelectedItem as Nodo;
-            if (nodo != null || nodo.Tipo == "T")
+            var mapTipo = new Dictionary<string, string>
                 {
-                // Mostrar panel de análisis.
-                gridPrincipal.RowDefinitions[2].Height = GridLength.Auto;
-                gridPrincipal.RowDefinitions[3].Height = new GridLength(300);
+                { "Tareas", "T" },
+                { "Materiales", "M" },
+                { "Mano de Obra", "D" },
+                { "Equipos", "E" },
+                { "Subcontratos", "S" },
+                { "Otros", "O" },
+                { "Auxiliares", "A" }
+            // Agrega más si es necesario
+            };
 
-                // Obtener y mostrar la colección de superiores tipo "T"
-                //var superioresT = ObtenerSuperioresTipoT(nodo);
-                //gridSuperiores.ItemsSource = superioresT;
+            if (!mapTipo.ContainsKey(descripcion))
+                return;
+
+            // Validación para evitar NullReferenceException
+            if (Objeto == null || Objeto.Arbol == null)
+                return;
+
+            string tipo = mapTipo[descripcion];
+
+            ObservableCollection<Nodo> filtrado;
+            if (string.IsNullOrEmpty(tipo))
+                {
+                filtrado = new ObservableCollection<Nodo>(AplanarNodos(Objeto.Arbol));
                 }
             else
                 {
-                MessageBox.Show("Por favor, selecciona un nodo de tipo 'T' para ver su análisis de costo.", "Selección inválida", MessageBoxButton.OK, MessageBoxImage.Warning);
+                filtrado = new ObservableCollection<Nodo>(ObtenerNodosPorTipos(Objeto.Arbol, tipo));
+                }
+
+            this.grillaMaestro.ItemsSource = filtrado;
+            this.grillaMaestro.View.Refresh();
+            }
+
+        // Método auxiliar para aplanar el árbol y mostrar todos los nodos
+        private IEnumerable<Nodo> AplanarNodos(IEnumerable<Nodo> nodos)
+            {
+            foreach (var nodo in nodos)
+                {
+                yield return nodo;
+                if (nodo.Inferiores != null && nodo.Inferiores.Count > 0)
+                    {
+                    foreach (var hijo in AplanarNodos(nodo.Inferiores))
+                        yield return hijo;
+                    }
                 }
             }
+
+        public void comboTipoListado_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+            {
+            var combo = sender as ComboBox;
+            if (combo?.SelectedItem == null)
+                return;
+
+            string descripcion = combo.SelectedItem is ComboBoxItem item
+                ? item.Content?.ToString()
+                : combo.SelectedItem.ToString();
+
+            FiltrarPorTipoDescripcion(descripcion);
+            }
+
+        
         }
     }
+
+
+
+
+
+
 
 
 

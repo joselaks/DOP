@@ -16,17 +16,17 @@
                 FontSize="16"
                 FontWeight="Bold"
                 Text="Título" />
-         
 
-            <!-- NUEVOS CAMPOS CON NOMBRE -->
+
+            <!--  NUEVOS CAMPOS CON NOMBRE  -->
             <TextBlock
                 Margin="0,2,0,0"
                 FontWeight="DemiBold"
                 Text="Costo total:" />
             <TextBlock
                 x:Name="CostoTotalText"
-                Text=""
-                FontSize="10" />
+                FontSize="10"
+                Text="" />
 
             <TextBlock
                 Margin="0,2,0,0"
@@ -34,8 +34,8 @@
                 Text="Superficie:" />
             <TextBlock
                 x:Name="SuperficieText"
-                Text=""
-                FontSize="10" />
+                FontSize="10"
+                Text="" />
 
             <TextBlock
                 Margin="0,2,0,0"
@@ -43,8 +43,8 @@
                 Text="Valor m²:" />
             <TextBlock
                 x:Name="ValorM2Text"
-                Text=""
-                FontSize="10" />
+                FontSize="10"
+                Text="" />
         </StackPanel>
     </Border>
 </UserControl>

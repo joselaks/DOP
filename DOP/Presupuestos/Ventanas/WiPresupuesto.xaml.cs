@@ -757,7 +757,7 @@ namespace DOP.Presupuestos.Ventanas
             // Verifica que Listado no sea null antes de llamar al método
             if (Maestro != null && !string.IsNullOrEmpty(seleccion))
             {
-                Maestro.SelectorTipo_SelectionChanged(seleccion);
+                //Maestro.SelectorTipo_SelectionChanged(seleccion);
 
                 //Listado.comboTipoListado_SelectionChanged(seleccion);
             }
