@@ -12,8 +12,8 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="auto" x:Name="sepPrecio" />
-            <ColumnDefinition Width="*" x:Name="panPrecio" />
+            <ColumnDefinition x:Name="sepPrecio" Width="auto" />
+            <ColumnDefinition x:Name="panPrecio" Width="*" />
         </Grid.ColumnDefinitions>
         <Grid x:Name="gridMaestro" />
         <syncfusion:SfGridSplitter

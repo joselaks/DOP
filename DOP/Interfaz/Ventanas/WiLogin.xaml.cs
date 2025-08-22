@@ -1,4 +1,5 @@
 ﻿using DataObra.Interfaz.Ventanas;
+using DataObra.Presupuestos.Ventanas;
 using DOP.Presupuestos.Ventanas;
 using Microsoft.Data.Sqlite;
 using Syncfusion.XlsIO.Parser.Biff_Records;
@@ -108,13 +109,13 @@ namespace DOP.Interfaz.Ventanas
                         this.DialogResult = true;
                         this.Close();
 
-                        // Crea y asigna la nueva ventana principal
-                        WiTablero tablero = new WiTablero()
-                            {
-                            WindowStartupLocation = WindowStartupLocation.CenterScreen
-                            };
-                        Application.Current.MainWindow = tablero;
-                        tablero.Show();
+                        //// Crea y asigna la nueva ventana principal
+                        //WiTablero tablero = new WiTablero()
+                        //    {
+                        //    WindowStartupLocation = WindowStartupLocation.CenterScreen
+                        //    };
+                        //Application.Current.MainWindow = tablero;
+                        //tablero.Show();
 
                         //Opcion para abrir la ventana de Escritorio
                         //WiEscritorio escritorio = new WiEscritorio()
@@ -123,6 +124,15 @@ namespace DOP.Interfaz.Ventanas
                         //    };
                         //Application.Current.MainWindow = escritorio;
                         //escritorio.Show();
+
+                        //Opcion para abrir la ventana de Escritorio
+                        WiPres escritorio = new WiPres()
+                            {
+                            WindowStartupLocation = WindowStartupLocation.CenterScreen
+                            };
+                        Application.Current.MainWindow = escritorio;
+                        escritorio.Show();
+
 
 
                         // Cierra la ventana de inicio
