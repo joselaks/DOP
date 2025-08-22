@@ -731,7 +731,7 @@ namespace DOP.Presupuestos.Ventanas
             if (Listado != null && !string.IsNullOrEmpty(seleccion))
                 {
 
-                Listado.comboTipoListado_SelectionChanged(seleccion);
+                //Listado.comboTipoListado_SelectionChanged(seleccion);
                 }
             }
 
@@ -759,7 +759,7 @@ namespace DOP.Presupuestos.Ventanas
             {
                 Maestro.SelectorTipo_SelectionChanged(seleccion);
 
-                Listado.comboTipoListado_SelectionChanged(seleccion);
+                //Listado.comboTipoListado_SelectionChanged(seleccion);
             }
 
         }

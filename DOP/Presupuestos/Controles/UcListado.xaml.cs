@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Syncfusion.UI.Xaml.TreeGrid;
+using Syncfusion.Windows.Controls.RichTextBoxAdv;
 
 
 namespace DOP.Presupuestos.Controles
@@ -56,6 +57,7 @@ namespace DOP.Presupuestos.Controles
             {
             }
 
+       
         private void grillaListados_CurrentCellEndEdit(object sender, Syncfusion.UI.Xaml.Grid.CurrentCellEndEditEventArgs e)
             {
             var editado = grillaListados.GetNodeAtRowIndex(e.RowColumnIndex.RowIndex).Item as Nodo;
@@ -79,63 +81,67 @@ namespace DOP.Presupuestos.Controles
             panSuperiores.Height = new GridLength(0);
             }
 
-      
 
-        public void comboTipoListado_SelectionChanged(string _seleccion)
-            {
-            if (_seleccion==null)
+
+        private void comboTipoListado_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (Objeto == null)
                 return;
+
+            var combo = sender as ComboBox;
+            if (combo == null)
+                return;
+
+            var selectedItem = combo.SelectedItem as ComboBoxItem;
+            string _seleccion = selectedItem?.Content?.ToString() ?? "Todos";
 
             ObservableCollection<Nodo> filtrados = null;
 
-                switch (_seleccion)
-                    {
-                    case "Insumos básicos":
-                        filtrados = Objeto.Insumos ?? new ObservableCollection<Nodo>();
-                        break;
-                    case "Materiales":
-                        filtrados = new ObservableCollection<Nodo>(
-                            Objeto.Insumos?.Where(x => x.Tipo == "M") ?? Enumerable.Empty<Nodo>());
-                        break;
-                    case "Mano de Obra":
-                        filtrados = new ObservableCollection<Nodo>(
-                            Objeto.Insumos?.Where(x => x.Tipo == "D") ?? Enumerable.Empty<Nodo>());
-                        break;
-                    case "Equipos":
-                        filtrados = new ObservableCollection<Nodo>(
-                            Objeto.Insumos?.Where(x => x.Tipo == "E") ?? Enumerable.Empty<Nodo>());
-                        break;
-                    case "Subcontratos":
-                        filtrados = new ObservableCollection<Nodo>(
-                            Objeto.Insumos?.Where(x => x.Tipo == "S") ?? Enumerable.Empty<Nodo>());
-                        break;
-                    case "Otros":
-                        filtrados = new ObservableCollection<Nodo>(
-                            Objeto.Insumos?.Where(x => x.Tipo == "O") ?? Enumerable.Empty<Nodo>());
-                        break;
-                    case "Auxiliares":
-                        filtrados = Objeto.Auxiliares ?? new ObservableCollection<Nodo>();
-                        break;
-                    case "Tareas":
-                        filtrados = Objeto.Tareas ?? new ObservableCollection<Nodo>();
-                        break;
-                    case "Rubros":
-                        filtrados = Objeto.Rubros ?? new ObservableCollection<Nodo>();
-                        break;
-                    default:
-                        filtrados = null;
-                        break;
-                    }
+            switch (_seleccion)
+            {
+                case "Todos":
+                    filtrados = Objeto.Insumos ?? new ObservableCollection<Nodo>();
+                    break;
+                case "Materiales":
+                    filtrados = new ObservableCollection<Nodo>(
+                        Objeto.Insumos?.Where(x => x.Tipo == "M") ?? Enumerable.Empty<Nodo>());
+                    break;
+                case "Mano de Obra":
+                    filtrados = new ObservableCollection<Nodo>(
+                        Objeto.Insumos?.Where(x => x.Tipo == "D") ?? Enumerable.Empty<Nodo>());
+                    break;
+                case "Equipos":
+                    filtrados = new ObservableCollection<Nodo>(
+                        Objeto.Insumos?.Where(x => x.Tipo == "E") ?? Enumerable.Empty<Nodo>());
+                    break;
+                case "Subcontratos":
+                    filtrados = new ObservableCollection<Nodo>(
+                        Objeto.Insumos?.Where(x => x.Tipo == "S") ?? Enumerable.Empty<Nodo>());
+                    break;
+                case "Otros":
+                    filtrados = new ObservableCollection<Nodo>(
+                        Objeto.Insumos?.Where(x => x.Tipo == "O") ?? Enumerable.Empty<Nodo>());
+                    break;
+                case "Auxiliares":
+                    filtrados = Objeto.Auxiliares ?? new ObservableCollection<Nodo>();
+                    break;
+                default:
+                    filtrados = new ObservableCollection<Nodo>();
+                    break;
+            }
+
+            if (SeleccionInsumo != null)
                 SeleccionInsumo.Text = _seleccion;
 
-                grillaListados.ItemsSource = filtrados;
+            grillaListados.ItemsSource = filtrados;
 
-                // Calcular el total solo de los elementos filtrados
-                decimal totGeneral1 = filtrados?.Sum(i => i.Importe1) ?? 0;
-                var cultura = new CultureInfo("es-ES") { NumberFormat = { NumberGroupSeparator = ".", NumberDecimalSeparator = "," } };
+            // Calcular el total solo de los elementos filtrados
+            decimal totGeneral1 = filtrados?.Sum(i => i.Importe1) ?? 0;
+            var cultura = new CultureInfo("es-ES") { NumberFormat = { NumberGroupSeparator = ".", NumberDecimalSeparator = "," } };
+            if (colImporte1 != null)
                 colImporte1.HeaderText = $"{totGeneral1.ToString("N2", cultura)}";
-               
-            }
+        }
+
 
         // Obtiene todos los superiores tipo "T" en todas las ramas
         private ObservableCollection<Nodo> ObtenerSuperioresTipoT(Nodo nodo)
@@ -187,5 +193,7 @@ namespace DOP.Presupuestos.Controles
                 gridSuperiores.ItemsSource = superioresT;
                 }
             }
-        }
+
+        
+    }
     }

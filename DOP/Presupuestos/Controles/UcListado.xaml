@@ -114,7 +114,21 @@
                 VerticalAlignment="Center"
                 FontSize="20"
                 FontWeight="Bold"
-                Text="Insumos básicos" />
+                Text="Insumos" />
+            <ComboBox
+    x:Name="comboTipoListado"
+    Width="160"
+    Margin="15,0,0,0"
+    VerticalAlignment="Center"
+    SelectionChanged="comboTipoListado_SelectionChanged">
+                <ComboBoxItem Content="Todos" IsSelected="True"/>
+                <ComboBoxItem Content="Materiales"/>
+                <ComboBoxItem Content="Mano de Obra"/>
+                <ComboBoxItem Content="Equipos"/>
+                <ComboBoxItem Content="Subcontratos"/>
+                <ComboBoxItem Content="Otros"/>
+            </ComboBox>
+
 
 
 

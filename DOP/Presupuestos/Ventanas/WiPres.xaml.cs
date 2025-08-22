@@ -62,7 +62,26 @@ namespace DataObra.Presupuestos.Ventanas
             this.Closing += WiPres_Closing;
             _presupuestosRef = presupuestosRef;
 
+            var screenWidth = SystemParameters.PrimaryScreenWidth;
+            var screenHeight = SystemParameters.PrimaryScreenHeight;
 
+            if (screenWidth <= 1920 && screenHeight <= 1080)
+            {
+                // Maximizar si la resolución es igual o menor a 1920x1080
+
+                WindowState = WindowState.Maximized;
+
+
+            }
+            else
+            {
+                // Centrar y establecer tamaño fijo si la resolución es mayor
+
+                WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                WindowState = WindowState.Normal;
+                Width = 1900;
+                Height = 1030;
+            }
 
         }
 
@@ -245,11 +264,6 @@ namespace DataObra.Presupuestos.Ventanas
 
         }
 
-        private void Renumerar_Click(object sender, RoutedEventArgs e)
-        {
-            Objeto.NumeraItems(Objeto.Arbol, "");
-        }
-
         private void SaleExcel_Click(object sender, RoutedEventArgs e)
         {
             // 1. Crear el Excel con el presupuesto actual
@@ -315,6 +329,8 @@ namespace DataObra.Presupuestos.Ventanas
                 // Si necesitas notificar cambios manualmente, hazlo aquí
             }
         }
+
+
 
     }
 }

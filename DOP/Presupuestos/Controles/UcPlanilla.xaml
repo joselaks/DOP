@@ -65,6 +65,34 @@ Label="Agregar Tarea"
 SmallIcon="pack://application:,,,/Imagenes/Tarea.png">
                 
             </syncfusion:ButtonAdv>
+            <syncfusion:RibbonButton
+     x:Name="Expandir"
+                VerticalAlignment="Center"
+                Margin="5,0,0,5"
+     Click="expandir_Click"
+     Label="Expandir"
+     SizeForm="Small"
+     SmallIcon="pack://application:,,,/Imagenes/Expandir24.png" />
+
+            <syncfusion:RibbonButton
+     x:Name="Contraer"
+     Click="expandir_Click"
+                 VerticalAlignment="Center"
+ Margin="5,0,0,5"
+     Label="Contraer"
+     SizeForm="Small"
+     SmallIcon="pack://application:,,,/Imagenes/Contraer24.png" />
+
+            <syncfusion:RibbonCheckBox
+    x:Name="chkArbol"
+                 VerticalAlignment="Center"
+ Margin="5,0,0,5"
+    Width="140"
+    Checked="chkArbol_Checked"
+    Content="Ver Arbol completo"
+    IsChecked="false"
+    Unchecked="chkArbol_Unchecked"  />
+
 
 
         </StackPanel>
