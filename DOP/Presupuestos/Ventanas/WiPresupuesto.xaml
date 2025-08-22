@@ -272,7 +272,7 @@
                         Label="Columnas"
                         SmallIcon="pack://application:,,,/Imagenes/Columnas24.png"
                         StayDropDownOnClick="True"
-                        ToolTip="Visualizar columnas">
+                        ToolTip="Visualizar columnas" VerticalAlignment="Top">
                         <syncfusion:DropDownMenuGroup IsResizable="True" />
                     </syncfusion:DropDownButtonAdv>
 

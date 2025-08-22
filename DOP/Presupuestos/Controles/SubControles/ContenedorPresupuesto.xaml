@@ -21,6 +21,13 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
+        <Grid
+            x:Name="gridPlanilla"
+            Grid.Row="0"
+            Grid.Column="0"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch" />
+
 
         <syncfusion:SfGridSplitter
             x:Name="sepDetalle"
@@ -33,6 +40,13 @@
             ResizeBehavior="PreviousAndNext"
             ShowsPreview="True" />
 
+        <Grid
+     x:Name="gridDetalle"
+     Grid.Row="2"
+     Grid.Column="0"
+     HorizontalAlignment="Stretch"
+     VerticalAlignment="Stretch" />
+
 
         <syncfusion:SfGridSplitter
             Grid.RowSpan="3"
@@ -43,6 +57,14 @@
             EnableCollapseButton="True"
             ResizeBehavior="PreviousAndNext"
             ShowsPreview="True" />
+
+        <Grid
+x:Name="gridListado"
+Grid.Row="0"
+Grid.Column="2"
+            Grid.RowSpan="3"
+HorizontalAlignment="Stretch"
+VerticalAlignment="Stretch" />
 
     </Grid>
 </UserControl>

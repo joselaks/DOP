@@ -126,7 +126,7 @@ namespace DOP.Interfaz.Ventanas
                         //escritorio.Show();
 
                         //Opcion para abrir la ventana de Escritorio
-                        WiPres escritorio = new WiPres()
+                        WiPres escritorio = new WiPres(null,null,null,null)
                             {
                             WindowStartupLocation = WindowStartupLocation.CenterScreen
                             };
