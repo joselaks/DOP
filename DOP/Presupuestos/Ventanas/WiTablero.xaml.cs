@@ -1,6 +1,7 @@
 ﻿using Biblioteca;
 using Biblioteca.DTO;
 using ClosedXML.Excel;
+using DataObra.Presupuestos.Ventanas;
 using DOP.Datos;
 using DOP.Interfaz.Ventanas;
 using Microsoft.Win32;
@@ -286,7 +287,7 @@ namespace DOP.Presupuestos.Ventanas
                             if (ok)
                                 {
                                 var copia = PresupuestoDTO.CopiarPresupuestoDTO(seleccionado); // <-- aquí el cambio
-                                var wiPresupuesto = new WiPresupuesto(copia, conceptos, relaciones, _presupuestos);
+                                var wiPresupuesto = new WiPres(copia, conceptos, relaciones, _presupuestos);
                                 wiPresupuesto.Owner = this;
                                 wiPresupuesto.ShowDialog();
                                 }
@@ -360,7 +361,7 @@ namespace DOP.Presupuestos.Ventanas
                     {
                     // Aquí puedes pasar conceptos y relaciones a la ventana WiPresupuesto si lo necesitas
                     var copia = PresupuestoDTO.CopiarPresupuestoDTO(seleccionado);
-                    var wiPresupuesto = new WiPresupuesto(copia, conceptos, relaciones, _presupuestos);
+                    var wiPresupuesto = new WiPres(copia, conceptos, relaciones, _presupuestos);
                     wiPresupuesto.Owner = this;
                     wiPresupuesto.ShowDialog();
                     // Si necesitas usar conceptos y relaciones después, puedes hacerlo aquí

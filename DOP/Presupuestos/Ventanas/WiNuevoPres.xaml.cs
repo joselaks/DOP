@@ -1,5 +1,6 @@
 ﻿using Bibioteca.Clases;
 using Biblioteca.DTO;
+using DataObra.Presupuestos.Ventanas;
 using Syncfusion.Windows.Controls.RichTextBoxAdv;
 using System.Collections.ObjectModel;
 using System.Windows;
@@ -117,7 +118,8 @@ namespace DOP.Presupuestos.Ventanas
                 copia.EsModelo = false; // Asegúrate de que no sea un modelo
 
                 // Aquí puedes pasar conceptos y relaciones a la ventana WiPresupuesto si lo necesitas
-                var wiPresupuesto = new WiPresupuesto(copia, conceptos, relaciones, _presupuestosRef);
+                //var wiPresupuesto = new WiPresupuesto(copia, conceptos, relaciones, _presupuestosRef);
+                var wiPresupuesto = new WiPres(copia, conceptos, relaciones, _presupuestosRef);
                 wiPresupuesto.Owner = this;
                 wiPresupuesto.ShowDialog();
                 // Si necesitas usar conceptos y relaciones después, puedes hacerlo aquí
@@ -131,7 +133,7 @@ namespace DOP.Presupuestos.Ventanas
 
         private void btnVacio_Click(object sender, RoutedEventArgs e)
             {
-            var win = new WiPresupuesto(null, null, null, _presupuestosRef);
+            var win = new WiPres(null, null, null, _presupuestosRef);
             win.Owner = this.Owner;
             win.Show();
             this.Close();

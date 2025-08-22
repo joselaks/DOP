@@ -52,7 +52,19 @@
                 FontWeight="Bold"
                 Text="Presupuesto" />
 
+<syncfusion:ButtonAdv SizeMode="Small" Margin="5,0,0,0" 
+                      Click="Agregar_Click" x:Name="Rubro"
+Label=" Agregar Rubro"
 
+SmallIcon="pack://application:,,,/Imagenes/Rubro.png"/>
+            <syncfusion:ButtonAdv SizeMode="Small" Margin="5,0,0,0" 
+                                  x:Name="Tarea"
+Click="Agregar_Click"
+Label="Agregar Tarea"
+
+SmallIcon="pack://application:,,,/Imagenes/Tarea.png">
+                
+            </syncfusion:ButtonAdv>
 
 
         </StackPanel>

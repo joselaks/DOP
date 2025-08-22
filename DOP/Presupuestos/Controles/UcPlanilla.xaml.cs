@@ -220,7 +220,66 @@ namespace DOP.Presupuestos.Controles
                 }
             }
 
+        private void Agregar_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is ButtonAdv boton)
+            {
+                switch (boton.Name)
+                {
+                    case "Rubro":
+                        // Lógica para agregar Rubro
+                        var (nuevoNodo, mensaje) = Objeto.agregaNodo("R", null);
+                        break;
+                    case "Tarea":
+                        // Lógica para agregar Tarea
+                        if (this.grillaArbol.SelectedItem == null)
+                        {
+                            MessageBox.Show("debe seleccionar un rubro para la tarea");
+                        }
+                        else
+                        {
+                            Bibioteca.Clases.Nodo sele = this.grillaArbol.SelectedItem as Bibioteca.Clases.Nodo; //obtine contenido
+                            if (sele.Tipo != "R")
+                            {
+                                MessageBox.Show("debe seleccionar un rubro para la tarea");
+                            }
+                            else
+                            {
+                                Objeto.agregaNodo("T", sele);
 
+
+                                // Obtener la vista del árbol
+                                var view = grillaArbol.View;
+                                if (view != null && sele != null)
+                                {
+                                    var node = FindNodeByData(view.Nodes, sele);
+                                    if (node != null && !node.IsExpanded)
+                                    {
+                                        grillaArbol.ExpandNode(node);
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    default:
+                        // Otro caso
+                        break;
+                }
+            }
+        }
+
+        private TreeNode? FindNodeByData(IEnumerable<TreeNode> nodes, object data)
+        {
+            foreach (var node in nodes)
+            {
+                if (node.Item == data) // Cambia aquí 'Item' si es necesario
+                    return node;
+                var found = FindNodeByData(node.ChildNodes, data);
+                if (found != null)
+                    return found;
+            }
+            return null;
+        }
 
 
         // Le hemos agregado un evento Loaded al TreeGrid para aplicar el filtro una vez que la vista se haya cargado.
@@ -391,7 +450,28 @@ namespace DOP.Presupuestos.Controles
                 }
 
             }
+
+        private void expandir_Click(object sender, RoutedEventArgs e)
+        {
+            if (grillaArbol.View != null)
+            {
+                var boton = sender as RibbonButton;
+                if (boton != null)
+                {
+                    if (boton.Name == "Expandir")
+                    {
+                        ExpandeRubro();
+                    }
+                    else if (boton.Name == "Contraer")
+                    {
+                        grillaArbol.CollapseAllNodes();
+                    }
+                }
+            }
         }
+
+
+    }
     public class Cambios
         {
         public string TipoCambio { get; set; }

@@ -24,14 +24,14 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <StackPanel Background="LightGray"  Grid.ColumnSpan="3" Orientation="Horizontal">
-            <syncfusion:ButtonAdv Margin="5,2,5,2" Label="Guardar" SmallIcon="pack://application:,,,/Imagenes/Guardar48.png"  Background="Transparent"/>
+            <syncfusion:ButtonAdv Width="100" Click="BtnGuardar_Click" Margin="5,2,5,2" Height="30" Label="Guardar" SmallIcon="pack://application:,,,/Imagenes/Guardar48.png"  Background="Transparent"/>
             <syncfusion:DropDownButtonAdv
     x:Name="dropVentanas" Background="Transparent"
-    Width="140"
-    Label="Columnas"
+    Width="100" Margin="5,2,5,2"
+    Label="Ventanas" Height="30"
     SmallIcon="pack://application:,,,/Imagenes/Columnas24.png"
     StayDropDownOnClick="True"
-    ToolTip="Visualizar columnas">
+    ToolTip="Visualizar ventanas">
                 <syncfusion:DropDownMenuGroup IsResizable="True">
                     <syncfusion:DropDownMenuItem
             x:Name="vDetalle"
@@ -54,6 +54,8 @@ IsCheckedChanged="ventanas_IsCheckedChanged" />
 
                 </syncfusion:DropDownMenuGroup>
             </syncfusion:DropDownButtonAdv>
+            <syncfusion:ButtonAdv Width="100" Click="btnDatos_Click"  Margin="5,2,5,2" Height="30" Label="Datos"   Background="Transparent"/>
+
 
 
         </StackPanel>
