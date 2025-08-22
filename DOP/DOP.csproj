@@ -68,4 +68,9 @@
     <Resource Include="Imagenes\Tarea.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Interfaz\Componentes\" />
+    <Folder Include="Presupuestos\Controles\SubControles\" />
+  </ItemGroup>
+
 </Project>

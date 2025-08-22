@@ -1,10 +1,12 @@
-﻿using DOP.Presupuestos.Ventanas;
+﻿using DataObra.Interfaz.Ventanas;
+using DOP.Presupuestos.Ventanas;
 using Microsoft.Data.Sqlite;
 using Syncfusion.XlsIO.Parser.Biff_Records;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +18,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using System.Net.NetworkInformation;
 
 namespace DOP.Interfaz.Ventanas
     {
@@ -114,6 +115,15 @@ namespace DOP.Interfaz.Ventanas
                             };
                         Application.Current.MainWindow = tablero;
                         tablero.Show();
+
+                        //Opcion para abrir la ventana de Escritorio
+                        //WiEscritorio escritorio = new WiEscritorio()
+                        //    {
+                        //    WindowStartupLocation = WindowStartupLocation.CenterScreen
+                        //    };
+                        //Application.Current.MainWindow = escritorio;
+                        //escritorio.Show();
+
 
                         // Cierra la ventana de inicio
                         Inicio.Close();
