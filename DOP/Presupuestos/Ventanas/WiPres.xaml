@@ -10,24 +10,52 @@
 
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
     Title="WiPres"
-    Width="800"
-    Height="450"
+    Width="1090"
+    Height="800"
     mc:Ignorable="d">
-    <Grid>
+    <Grid x:Name="gridBase">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"  />
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="300" />
+            <ColumnDefinition Width="0" />
+            <ColumnDefinition Width="0" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30" />
+            <RowDefinition Height="40" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <StackPanel Background="LightGray"  Grid.ColumnSpan="3" Orientation="Horizontal">
-            <syncfusion:ButtonAdv  Background="Transparent"/>
-            
-            
-            
+            <syncfusion:ButtonAdv Margin="5,2,5,2" Label="Guardar" SmallIcon="pack://application:,,,/Imagenes/Guardar48.png"  Background="Transparent"/>
+            <syncfusion:DropDownButtonAdv
+    x:Name="dropVentanas" Background="Transparent"
+    Width="140"
+    Label="Columnas"
+    SmallIcon="pack://application:,,,/Imagenes/Columnas24.png"
+    StayDropDownOnClick="True"
+    ToolTip="Visualizar columnas">
+                <syncfusion:DropDownMenuGroup IsResizable="True">
+                    <syncfusion:DropDownMenuItem
+            x:Name="vDetalle"
+            Padding="8,2"
+            Header="Detalle"
+            IsCheckable="True"
+            IsCheckedChanged="ventanas_IsCheckedChanged"
+                        />
+                    <syncfusion:DropDownMenuItem
+            x:Name="vListado"
+            Header="Listado"
+            IsCheckable="True"
+            IsCheckedChanged="ventanas_IsCheckedChanged" />
+                    <syncfusion:DropDownMenuItem
+x:Name="vMaestro"
+Header="Maestro"
+IsCheckable="True"
+IsCheckedChanged="ventanas_IsCheckedChanged" />
+                    
+
+                </syncfusion:DropDownMenuGroup>
+            </syncfusion:DropDownButtonAdv>
+
+
         </StackPanel>
 
         <Grid x:Name="gridPres" Grid.Row="1"/>

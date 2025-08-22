@@ -66,5 +66,66 @@ namespace DataObra.Presupuestos.Ventanas
             _contenedor.gridDetalle.Children.Add(Dosaje); 
             gridMaestro.Children.Add(Maestro);
         }
+
+        private void ventanas_IsCheckedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            // vDetalle: filas 2 y 3 de basePres
+            if (d is Syncfusion.Windows.Tools.Controls.DropDownMenuItem menuItemDetalle && menuItemDetalle.Name == "vDetalle")
+            {
+                if (_contenedor.basePres.RowDefinitions.Count >= 3)
+                {
+                    if (menuItemDetalle.IsChecked == true)
+                    {
+                        _contenedor.basePres.RowDefinitions[1].Height = new GridLength(1, GridUnitType.Auto);
+                        _contenedor.basePres.RowDefinitions[2].Height = new GridLength(300);
+                    }
+                    else
+                    {
+                        _contenedor.basePres.RowDefinitions[1].Height = new GridLength(0);
+                        _contenedor.basePres.RowDefinitions[2].Height = new GridLength(0);
+                    }
+                }
+            }
+
+            // vListado: columnas 2 y 3 de basePres
+            if (d is Syncfusion.Windows.Tools.Controls.DropDownMenuItem menuItemListado && menuItemListado.Name == "vListado")
+            {
+                if (_contenedor.basePres.ColumnDefinitions.Count >= 3)
+                {
+                    if (menuItemListado.IsChecked == true)
+                    {
+                        _contenedor.basePres.ColumnDefinitions[1].Width = new GridLength(1, GridUnitType.Auto);
+                        _contenedor.basePres.ColumnDefinitions[2].Width = new GridLength(300);
+                    }
+                    else
+                    {
+                        _contenedor.basePres.ColumnDefinitions[1].Width = new GridLength(0);
+                        _contenedor.basePres.ColumnDefinitions[2].Width = new GridLength(0);
+                    }
+                }
+            }
+
+            // vMaestro: columnas 1 y 2 de gridPres
+            if (d is Syncfusion.Windows.Tools.Controls.DropDownMenuItem menuItemMaestro && menuItemMaestro.Name == "vMaestro")
+            {
+                if (gridBase.ColumnDefinitions.Count >= 2)
+                {
+                    if (menuItemMaestro.IsChecked == true)
+                    {
+                        gridBase.ColumnDefinitions[1].Width = new GridLength(1, GridUnitType.Auto);
+                        gridBase.ColumnDefinitions[2].Width = new GridLength(300);
+                    }
+                    else
+                    {
+                        gridBase.ColumnDefinitions[1].Width = new GridLength(0);
+                        gridBase.ColumnDefinitions[2].Width = new GridLength(0);
+                    }
+                }
+            }
+        }
+
+
+
+
     }
-    }
+}
