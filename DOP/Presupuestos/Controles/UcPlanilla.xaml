@@ -52,46 +52,47 @@
                 FontWeight="Bold"
                 Text="Presupuesto" />
 
-<syncfusion:ButtonAdv SizeMode="Small" Margin="5,0,0,0" 
-                      Click="Agregar_Click" x:Name="Rubro"
-Label=" Agregar Rubro"
-
-SmallIcon="pack://application:,,,/Imagenes/Rubro.png"/>
-            <syncfusion:ButtonAdv SizeMode="Small" Margin="5,0,0,0" 
-                                  x:Name="Tarea"
-Click="Agregar_Click"
-Label="Agregar Tarea"
-
-SmallIcon="pack://application:,,,/Imagenes/Tarea.png">
-                
-            </syncfusion:ButtonAdv>
+            <syncfusion:ButtonAdv
+                x:Name="Rubro"
+                Margin="5,0,0,0"
+                Click="Agregar_Click"
+                Label=" Agregar Rubro"
+                SizeMode="Small"
+                SmallIcon="pack://application:,,,/Imagenes/Rubro.png" />
+            <syncfusion:ButtonAdv
+                x:Name="Tarea"
+                Margin="5,0,0,0"
+                Click="Agregar_Click"
+                Label="Agregar Tarea"
+                SizeMode="Small"
+                SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
             <syncfusion:RibbonButton
-     x:Name="Expandir"
-                VerticalAlignment="Center"
+                x:Name="Expandir"
                 Margin="5,0,0,5"
-     Click="expandir_Click"
-     Label="Expandir"
-     SizeForm="Small"
-     SmallIcon="pack://application:,,,/Imagenes/Expandir24.png" />
+                VerticalAlignment="Center"
+                Click="expandir_Click"
+                Label="Expandir"
+                SizeForm="Small"
+                SmallIcon="pack://application:,,,/Imagenes/Expandir24.png" />
 
             <syncfusion:RibbonButton
-     x:Name="Contraer"
-     Click="expandir_Click"
-                 VerticalAlignment="Center"
- Margin="5,0,0,5"
-     Label="Contraer"
-     SizeForm="Small"
-     SmallIcon="pack://application:,,,/Imagenes/Contraer24.png" />
+                x:Name="Contraer"
+                Margin="5,0,0,5"
+                VerticalAlignment="Center"
+                Click="expandir_Click"
+                Label="Contraer"
+                SizeForm="Small"
+                SmallIcon="pack://application:,,,/Imagenes/Contraer24.png" />
 
             <syncfusion:RibbonCheckBox
-    x:Name="chkArbol"
-                 VerticalAlignment="Center"
- Margin="5,0,0,5"
-    Width="140"
-    Checked="chkArbol_Checked"
-    Content="Ver Arbol completo"
-    IsChecked="false"
-    Unchecked="chkArbol_Unchecked"  />
+                x:Name="chkArbol"
+                Width="140"
+                Margin="5,0,0,5"
+                VerticalAlignment="Center"
+                Checked="chkArbol_Checked"
+                Content="Ver Arbol completo"
+                IsChecked="false"
+                Unchecked="chkArbol_Unchecked" />
 
 
 
