@@ -31,7 +31,7 @@ namespace DataObra.Presupuestos.Ventanas
     /// <summary>
     /// Lógica de interacción para WiPres.xaml
     /// </summary>
-    public partial class WiPres : ChromelessWindow
+    public partial class WiPres : RibbonWindow
         {
         public Presupuesto Objeto;
         public cUndoRedo UndoRedo;
@@ -344,7 +344,83 @@ namespace DataObra.Presupuestos.Ventanas
             }
         }
 
+        private void Recalculo_Click(object sender, RoutedEventArgs e)
+            {
 
+            }
 
-    }
+        private void Recnumerar_Click(object sender, RoutedEventArgs e)
+            {
+
+            }
+
+      
+
+        private void ventanas_Checked(object sender, RoutedEventArgs e)
+            {
+            // vDetalle: filas 2 y 3 de basePres
+            if (sender is Syncfusion.Windows.Tools.Controls.RibbonCheckBox menuItemDetalle && menuItemDetalle.Name == "vDetalle")
+                {
+                if (_contenedor.basePres.RowDefinitions.Count >= 3)
+                    {
+                    if (menuItemDetalle.IsChecked == true)
+                        {
+                        _contenedor.basePres.RowDefinitions[1].Height = new GridLength(1, GridUnitType.Auto);
+                        _contenedor.basePres.RowDefinitions[2].Height = _detalleRow2Height ?? new GridLength(500);
+                        }
+                    else
+                        {
+                        // Solo guardar si aún no se ha guardado
+                        if (_detalleRow2Height == null)
+                            _detalleRow2Height = _contenedor.basePres.RowDefinitions[2].Height;
+
+                        _contenedor.basePres.RowDefinitions[1].Height = new GridLength(0);
+                        _contenedor.basePres.RowDefinitions[2].Height = new GridLength(0);
+                        }
+                    }
+                }
+
+            // vListado: columnas 2 y 3 de basePres
+            if (sender is Syncfusion.Windows.Tools.Controls.RibbonCheckBox menuItemListado && menuItemListado.Name == "vListado")
+                {
+                if (_contenedor.basePres.ColumnDefinitions.Count >= 3)
+                    {
+                    if (menuItemListado.IsChecked == true)
+                        {
+                        _contenedor.basePres.ColumnDefinitions[1].Width = new GridLength(1, GridUnitType.Auto);
+                        _contenedor.basePres.ColumnDefinitions[2].Width = _listadoCol2Width ?? new GridLength(700);
+                        }
+                    else
+                        {
+                        if (_listadoCol2Width == null)
+                            _listadoCol2Width = _contenedor.basePres.ColumnDefinitions[2].Width;
+
+                        _contenedor.basePres.ColumnDefinitions[1].Width = new GridLength(0);
+                        _contenedor.basePres.ColumnDefinitions[2].Width = new GridLength(0);
+                        }
+                    }
+                }
+
+            // vMaestro: columnas 1 y 2 de gridBase
+            if (sender is Syncfusion.Windows.Tools.Controls.RibbonCheckBox menuItemMaestro && menuItemMaestro.Name == "vMaestro")
+                {
+                if (gridBase.ColumnDefinitions.Count >= 3)
+                    {
+                    if (menuItemMaestro.IsChecked == true)
+                        {
+                        gridBase.ColumnDefinitions[1].Width = new GridLength(1, GridUnitType.Auto);
+                        gridBase.ColumnDefinitions[2].Width = _maestroCol2Width ?? new GridLength(600);
+                        }
+                    else
+                        {
+                        if (_maestroCol2Width == null)
+                            _maestroCol2Width = gridBase.ColumnDefinitions[2].Width;
+
+                        gridBase.ColumnDefinitions[1].Width = new GridLength(0);
+                        gridBase.ColumnDefinitions[2].Width = new GridLength(0);
+                        }
+                    }
+                }
+            }
+        }
 }

@@ -1,4 +1,4 @@
-﻿<syncfusion:ChromelessWindow
+﻿<syncfusion:RibbonWindow
     x:Class="DataObra.Presupuestos.Ventanas.WiPres"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -7,13 +7,27 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sfSkinManager="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-    Title="WiPres"
+    Title="DataObra"
     Width="1090"
     Height="800"
     sfSkinManager:SfSkinManager.VisualStyle="Office2016White"
-    TitleFontSize="18"
+    Office2010Icon="pack://application:,,,/Imagenes/Otros.png"
     TitleTextAlignment="Center"
     mc:Ignorable="d">
+    <syncfusion:RibbonWindow.StatusBar>
+        <syncfusion:RibbonStatusBar Background="#004482">
+            <WrapPanel>
+                <TextBlock
+                    Margin="10,0,0,0"
+                    Foreground="AntiqueWhite"
+                    Text="Barra de estado" />
+                <TextBlock
+                    Margin="20,0,0,0"
+                    Foreground="AntiqueWhite"
+                    Text="....." />
+            </WrapPanel>
+        </syncfusion:RibbonStatusBar>
+    </syncfusion:RibbonWindow.StatusBar>
     <Grid x:Name="gridBase">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -21,63 +35,145 @@
             <ColumnDefinition Width="0" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <StackPanel
-            Grid.ColumnSpan="3"
-            Background="LightGray"
-            Orientation="Horizontal">
-            <syncfusion:ButtonAdv
-                Width="100"
-                Height="30"
-                Margin="5,2,5,2"
-                Background="Transparent"
-                Click="BtnGuardar_Click"
-                Label="Guardar"
-                SmallIcon="pack://application:,,,/Imagenes/Guardar48.png" />
-            <syncfusion:DropDownButtonAdv
-                x:Name="dropVentanas"
-                Width="100"
-                Height="30"
-                Margin="5,2,5,2"
-                Background="Transparent"
-                Label="Ventanas"
-                SmallIcon="pack://application:,,,/Imagenes/Columnas24.png"
-                StayDropDownOnClick="True"
-                ToolTip="Visualizar ventanas">
-                <syncfusion:DropDownMenuGroup IsResizable="True">
-                    <syncfusion:DropDownMenuItem
-                        x:Name="vDetalle"
-                        Padding="8,2"
-                        Header="Detalle"
-                        IsCheckable="True"
-                        IsCheckedChanged="ventanas_IsCheckedChanged" />
-                    <syncfusion:DropDownMenuItem
+        <syncfusion:Ribbon BackStageHeader="" Grid.ColumnSpan="3">
+            <syncfusion:RibbonTab Caption="INICIO" IsChecked="True">
+                <syncfusion:RibbonBar
+                    Name="New"
+                    Header="Guardar"
+                    IsLauncherButtonVisible="False">
+                    <syncfusion:RibbonButton
+                        Click="BtnGuardar_Click"
+                        Label="Guardar"
+                        LargeIcon="pack://application:,,,/Imagenes/Guardar48.png"
+                        SizeForm="Large" />
+                    <syncfusion:RibbonButton
+                        x:Name="btnFiebdc"
+                        Click="btnFiebdc_Click"
+                        Label="Importar FIEBDC"
+                        LargeIcon="pack://application:,,,/Imagenes/Importar.png"
+                        SizeForm="Large"
+                        Visibility="Collapsed" />
+                </syncfusion:RibbonBar>
+
+
+
+                <syncfusion:RibbonBar
+                    Width="265"
+                    Header="Datos Generales"
+                    IsLauncherButtonVisible="False">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="195" />
+                        </Grid.ColumnDefinitions>
+
+                        <!--  Fila 1  -->
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Margin="0,0,5,0"
+                            VerticalAlignment="Center"
+                            Text="Nombre:" />
+                        <syncfusion:RibbonTextBox
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Width="195" />
+
+                        <!--  Fila 2  -->
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Margin="0,0,5,0"
+                            VerticalAlignment="Center"
+                            Text="Superficie:" />
+                        <syncfusion:RibbonTextBox
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Width="60"
+                            HorizontalAlignment="Left" />
+
+                        <!--  Fila 3  -->
+
+
+                    </Grid>
+                </syncfusion:RibbonBar>
+                <syncfusion:RibbonBar
+                    Name="Vistas"
+                    Width="80"
+                    Header="Ventanas"
+                    IsLauncherButtonVisible="False">
+
+                    <syncfusion:RibbonCheckBox
                         x:Name="vListado"
-                        Header="Listado"
-                        IsCheckable="True"
-                        IsCheckedChanged="ventanas_IsCheckedChanged" />
-                    <syncfusion:DropDownMenuItem
+                        Width="60"
+                        Checked="ventanas_Checked"
+                        Content="Listado"
+                        IsChecked="False"
+                        Unchecked="ventanas_Checked" />
+                    <syncfusion:RibbonCheckBox
+                        x:Name="vDetalle"
+                        Width="60"
+                        Checked="ventanas_Checked"
+                        Content="Detalle"
+                        IsChecked="False"
+                        Unchecked="ventanas_Checked" />
+                    <syncfusion:RibbonCheckBox
                         x:Name="vMaestro"
-                        Header="Maestro"
-                        IsCheckable="True"
-                        IsCheckedChanged="ventanas_IsCheckedChanged" />
+                        Width="60"
+                        Checked="ventanas_Checked"
+                        Content="Maestro"
+                        IsChecked="False"
+                        Unchecked="ventanas_Checked" />
+
+                </syncfusion:RibbonBar>
+
+                <syncfusion:RibbonBar Name="Respond" Header="Operaciones">
+                    <syncfusion:RibbonButton
+                        x:Name="Recalculo"
+                        Click="Recalculo_Click"
+                        Label="Recalculo"
+                        SizeForm="Small"
+                        SmallIcon="pack://application:,,,/Imagenes/Otros.png" />
+                    <syncfusion:RibbonButton
+                        x:Name="Recnumerar"
+                        Click="Recnumerar_Click"
+                        Label="Renumerar"
+                        SizeForm="Small"
+                        SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
+
+                </syncfusion:RibbonBar>
+                <syncfusion:RibbonBar Header="Informes">
+                    <syncfusion:RibbonButton
+                        x:Name="SaleExcel"
+                        Click="SaleExcel_Click"
+                        Label="Excel"
+                        SizeForm="Small"
+                        SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
+                </syncfusion:RibbonBar>
+
+                <syncfusion:RibbonBar Header="Datos generales">
+                    <syncfusion:RibbonButton
+                        x:Name="btnDatos"
+                        Click="btnDatos_Click"
+                        Label="Datos generales"
+                        LargeIcon="pack://application:,,,/Imagenes/Importar.png"
+                        SizeForm="Large" />
+                </syncfusion:RibbonBar>
 
 
-                </syncfusion:DropDownMenuGroup>
-            </syncfusion:DropDownButtonAdv>
-            <syncfusion:ButtonAdv
-                Width="100"
-                Height="30"
-                Margin="5,2,5,2"
-                Background="Transparent"
-                Click="btnDatos_Click"
-                Label="Datos" />
+            </syncfusion:RibbonTab>
 
 
 
-        </StackPanel>
+        </syncfusion:Ribbon>
 
         <Grid x:Name="gridPres" Grid.Row="1" />
 
@@ -99,4 +195,4 @@
 
 
     </Grid>
-</syncfusion:ChromelessWindow>
+</syncfusion:RibbonWindow>

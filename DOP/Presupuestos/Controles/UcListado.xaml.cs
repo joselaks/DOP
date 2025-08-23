@@ -1,5 +1,9 @@
 ﻿using Bibioteca.Clases;
+using DOP.Presupuestos.Clases;
+
 using Syncfusion.Licensing;
+using Syncfusion.UI.Xaml.TreeGrid;
+using Syncfusion.Windows.Controls.RichTextBoxAdv;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,8 +12,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Syncfusion.UI.Xaml.TreeGrid;
-using Syncfusion.Windows.Controls.RichTextBoxAdv;
+using System.Windows.Media;
 
 
 namespace DOP.Presupuestos.Controles
@@ -27,10 +30,28 @@ namespace DOP.Presupuestos.Controles
             InitializeComponent();
             Objeto = objeto;
             grillaListados.Loaded += GrillaListados_Loaded;
+            this.grillaListados.RowDragDropController.DragStart += grillaListados_DragStart;
             Objeto.RecalculoFinalizado += Presupuesto_RecalculoFinalizado;
 
             this.grillaListados.ItemsSource = Objeto.Insumos;
             }
+
+        private void grillaListados_DragStart(object? sender, TreeGridRowDragStartEventArgs e)
+            {
+            DragDropContext.DragSourceUserControl = GetParentUserControl(this.grillaListados);
+            }
+
+        private UserControl GetParentUserControl(DependencyObject child)
+            {
+            DependencyObject parent = VisualTreeHelper.GetParent(child);
+            while (parent != null && !(parent is UserControl))
+                {
+                parent = VisualTreeHelper.GetParent(parent);
+                }
+            return parent as UserControl;
+            }
+
+
 
         private void Presupuesto_RecalculoFinalizado(object sender, EventArgs e)
             {

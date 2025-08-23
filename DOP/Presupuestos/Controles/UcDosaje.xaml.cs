@@ -70,6 +70,7 @@ namespace DOP.Presupuestos.Controles
             Nodo nodoPadreOriginal = null;
             bool esDragDeMaestro = DragDropContext.DragSourceUserControl is UcMaestro;
             bool esDragDeDosaje = DragDropContext.DragSourceUserControl is UcDosaje;
+            bool esDragDeListado = DragDropContext.DragSourceUserControl is UcListado;
 
             // Solo permitir tipos válidos
             var tiposPermitidos = new[] { "M", "D", "E", "S", "O", "A" };
@@ -84,11 +85,12 @@ namespace DOP.Presupuestos.Controles
                         nodoMovido = e.DraggingNodes[0].Item as Nodo;
                         nodoPadreOriginal = Objeto.FindParentNode(Objeto.Arbol, nodoMovido, null);
                         }
-                    else if (esDragDeMaestro)
+                    else if (esDragDeMaestro || esDragDeListado)
                         {
                         var nodoOriginal = e.DraggingNodes[0].Item as Nodo;
                         nodoMovido = Objeto.clonar(nodoOriginal, true);
                         }
+
                     }
 
                 }
