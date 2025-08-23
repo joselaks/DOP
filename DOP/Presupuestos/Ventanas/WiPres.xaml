@@ -38,7 +38,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <syncfusion:Ribbon BackStageHeader="" Grid.ColumnSpan="3">
+        <syncfusion:Ribbon Grid.ColumnSpan="3" BackStageHeader="">
             <syncfusion:RibbonTab Caption="INICIO" IsChecked="True">
                 <syncfusion:RibbonBar
                     Name="New"
@@ -66,9 +66,9 @@
                     IsLauncherButtonVisible="False">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto" />
@@ -83,9 +83,13 @@
                             VerticalAlignment="Center"
                             Text="Nombre:" />
                         <syncfusion:RibbonTextBox
+                            x:Name="Descrip"
                             Grid.Row="0"
                             Grid.Column="1"
-                            Width="195" />
+                            Width="180"
+                           
+                            HorizontalAlignment="Left"
+                            Text="{Binding Descrip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                         <!--  Fila 2  -->
                         <TextBlock
@@ -94,14 +98,42 @@
                             Margin="0,0,5,0"
                             VerticalAlignment="Center"
                             Text="Superficie:" />
-                        <syncfusion:RibbonTextBox
+                        <StackPanel
                             Grid.Row="1"
                             Grid.Column="1"
-                            Width="60"
-                            HorizontalAlignment="Left" />
+                            Orientation="Horizontal">
+                            <syncfusion:RibbonTextBox
+                                x:Name="Superficie"
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Width="60"
+                               
+                                HorizontalAlignment="Left"
+                                Text="{Binding Superficie, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <syncfusion:RibbonCheckBox
+                                x:Name="EsModelo"
+                                Margin="15,0,0,0"
+                                Content="Es Modelo ?"
+                                IsChecked="{Binding EsModelo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+
 
                         <!--  Fila 3  -->
+                        <TextBlock
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            Margin="0,0,5,0"
+                            VerticalAlignment="Center"
+                            Text="Mes Base:" />
 
+                        <syncfusion:SfDatePicker
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Width="100"
+                            FormatString="MM/yyyy"
+                           HorizontalAlignment="Left"
+                           DataContext="{Binding MesBase, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            />
 
                     </Grid>
                 </syncfusion:RibbonBar>
@@ -157,15 +189,6 @@
                         Label="Excel"
                         SizeForm="Small"
                         SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
-                </syncfusion:RibbonBar>
-
-                <syncfusion:RibbonBar Header="Datos generales">
-                    <syncfusion:RibbonButton
-                        x:Name="btnDatos"
-                        Click="btnDatos_Click"
-                        Label="Datos generales"
-                        LargeIcon="pack://application:,,,/Imagenes/Importar.png"
-                        SizeForm="Large" />
                 </syncfusion:RibbonBar>
 
 

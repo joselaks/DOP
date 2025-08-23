@@ -66,7 +66,9 @@ namespace DataObra.Presupuestos.Ventanas
             this.Closing += WiPres_Closing;
             _presupuestosRef = presupuestosRef;
 
-            var screenWidth = SystemParameters.PrimaryScreenWidth;
+            this.DataContext = Objeto.encabezado;
+
+           var screenWidth = SystemParameters.PrimaryScreenWidth;
             var screenHeight = SystemParameters.PrimaryScreenHeight;
 
             if (screenWidth <= 1920 && screenHeight <= 1080)
