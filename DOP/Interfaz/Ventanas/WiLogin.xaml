@@ -100,9 +100,10 @@
                         TextWrapping="Wrap" />
                     <Button
                         Height="20"
+                        x:Name="bAltaUsuario"
                         Background="#007ACC"
                         Content="Alta de nuevo Usuario"
-                        Foreground="White" />
+                        Foreground="White" Click="bAltaUsuario_Click" />
 
 
 

@@ -295,5 +295,15 @@ namespace DOP.Interfaz.Ventanas
 
             Application.Current.Shutdown();
             }
+
+        private void bAltaUsuario_Click(object sender, RoutedEventArgs e)
+            {
+            WiEscritorio escritorio = new WiEscritorio()
+                {
+                WindowStartupLocation = WindowStartupLocation.CenterScreen
+                };
+            Application.Current.MainWindow = escritorio;
+            escritorio.Show();
+            }
         }
     }
