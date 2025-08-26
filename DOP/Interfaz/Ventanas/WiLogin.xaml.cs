@@ -180,7 +180,11 @@ namespace DOP.Interfaz.Ventanas
             {
             string usuario = string.Empty;
             string password = string.Empty;
-            string path = Directory.GetCurrentDirectory();
+            // Usar la misma ruta segura que GeneraArchivoLocal
+            string path = System.IO.Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "NombreDeTuAplicacion" // Cambia esto por el nombre de tu app
+            );
             string archivo = System.IO.Path.Combine(path, "Config.precosto");
             string cadenaConexion = $"Data Source={archivo}";
 
@@ -217,7 +221,14 @@ namespace DOP.Interfaz.Ventanas
 
         private void GuardarUsuarioLocal(string usuario, string password)
             {
-            string path = Directory.GetCurrentDirectory();
+            // Usar la misma ruta segura que GeneraArchivoLocal
+            string path = System.IO.Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "NombreDeTuAplicacion" // Cambia esto por el nombre de tu app
+            );
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+
             string archivo = System.IO.Path.Combine(path, "Config.precosto");
             string cadenaConexion = $"Data Source={archivo}";
 
