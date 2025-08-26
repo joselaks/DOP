@@ -7,7 +7,7 @@
     xmlns:sfSkinManager="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-    Title="WiEscritorio"
+    Title="DataObra"
     Width="1200"
     Height="800"
     MinWidth="800"
@@ -26,7 +26,7 @@
     </Window.Resources>
     <Grid>
         <syncfusion:TileViewControl
-            x:Name="tileView"
+            x:Name="tSelector"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             MaximizedItemChanged="tileView_MaximizedItemChanged"
@@ -35,7 +35,7 @@
                 x:Name="tPresupuestos"
                 Header="Mis Presupuestos"
                  HeaderTemplate="{StaticResource headerTemplate }"
-                TileViewItemState="Maximized" />
+                 />
             <syncfusion:TileViewItem x:Name="tModelos"  />
             <syncfusion:TileViewItem x:Name="tModelo"  />
             <syncfusion:TileViewItem x:Name="tPrecios"  />

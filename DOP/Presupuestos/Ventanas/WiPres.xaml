@@ -8,11 +8,12 @@
     xmlns:sfSkinManager="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
     Title="DataObra"
+    TitleTextAlignment="Left"
     Width="1090"
     Height="800"
     sfSkinManager:SfSkinManager.VisualStyle="Office2016White"
-    Office2010Icon="pack://application:,,,/Imagenes/Otros.png"
-    TitleTextAlignment="Center"
+    Office2010Icon="pack://application:,,,/Imagenes/DataObra.ico"
+   
     mc:Ignorable="d">
     <syncfusion:RibbonWindow.StatusBar>
         <syncfusion:RibbonStatusBar Background="#004482">
@@ -87,7 +88,6 @@
                             Grid.Row="0"
                             Grid.Column="1"
                             Width="180"
-                           
                             HorizontalAlignment="Left"
                             Text="{Binding Descrip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -107,7 +107,6 @@
                                 Grid.Row="1"
                                 Grid.Column="1"
                                 Width="60"
-                               
                                 HorizontalAlignment="Left"
                                 Text="{Binding Superficie, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <syncfusion:RibbonCheckBox
@@ -127,13 +126,14 @@
                             Text="Mes Base:" />
 
                         <syncfusion:SfDatePicker
+                            x:Name="pMesBase"
                             Grid.Row="3"
                             Grid.Column="1"
                             Width="100"
+                            HorizontalAlignment="Left"
+                            DataContext="{Binding MesBase, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             FormatString="MM/yyyy"
-                           HorizontalAlignment="Left"
-                           DataContext="{Binding MesBase, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                            />
+                            SelectorFormatString="MM/yyyy" />
 
                     </Grid>
                 </syncfusion:RibbonBar>

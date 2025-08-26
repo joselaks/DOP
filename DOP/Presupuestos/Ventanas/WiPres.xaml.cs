@@ -7,6 +7,7 @@ using DOP.Presupuestos.Clases;
 using DOP.Presupuestos.Controles;
 using Microsoft.Win32;
 using Syncfusion.SfSkinManager;
+using Syncfusion.Windows.Controls.Input;
 using Syncfusion.Windows.Shared;
 using Syncfusion.Windows.Tools.Controls;
 using System;
@@ -183,6 +184,21 @@ namespace DataObra.Presupuestos.Ventanas
 
             Objeto.encabezado.PrEjecTotal = Objeto.Arbol.Sum(i => i.Importe1);
             Objeto.encabezado.FechaM = DateTime.Now;
+            DateTime? selectedDate = pMesBase.Value;
+            if (selectedDate.HasValue)
+                {
+                // Extraer mes y año
+                int mes = selectedDate.Value.Month;
+                int año = selectedDate.Value.Year;
+
+                // Día que querés agregar (por ejemplo, el día 15)
+                int dia = 1;
+
+                // Crear nueva fecha con ese día
+                DateTime nuevaFecha = new DateTime(año, mes, dia);
+
+                Objeto.encabezado.MesBase = nuevaFecha;
+                }
 
             ProcesaPresupuestoRequest oGrabar = Objeto.EmpaquetarPresupuesto();
 

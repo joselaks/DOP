@@ -57,7 +57,7 @@ namespace DOP.Presupuestos.Controles
             grillaMaestro.ItemsSource = Objeto.Arbol;
             // Obtener todos los nodos tipo "T" y "R"
             var Filtrado = new ObservableCollection<Nodo>(ObtenerNodosPorTipos(Objeto.Arbol, "T"));
-            this.grillaMaestro.ItemsSource = Filtrado;
+            //this.grillaMaestro.ItemsSource = Filtrado;
             this.grillaMaestro.View.Refresh();
             }
 

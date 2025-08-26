@@ -15,7 +15,18 @@ namespace DataObra.Interfaz.Ventanas
 
         private void tileView_MaximizedItemChanged(object sender, TileViewEventArgs args)
         {
-            
-        }
+            TileViewControl? tileView = sender as TileViewControl;
+            TileViewItem maximizedItem = (TileViewItem)args.Source;
+
+            foreach (var item in tSelector.Items)
+                {
+                var container = tSelector.ItemContainerGenerator.ContainerFromItem(item) as TileViewItem;
+                if (container != null)
+                    {
+                    container.HeaderVisibility = (item == maximizedItem)
+                        ? Visibility.Collapsed : Visibility.Visible;
+                    }
+                }
+            }
     }
 }
