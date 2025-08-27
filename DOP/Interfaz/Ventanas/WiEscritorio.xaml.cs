@@ -65,12 +65,25 @@ namespace DataObra.Interfaz.Ventanas
 
             // Agregar el item al control
             tileViewControl.Items.Add(tModelo);
+
             }
 
+        private void tileViewControl1_MaximizedItemChanged(object sender, Syncfusion.Windows.Shared.TileViewEventArgs args)
+            {
+            TileViewControl? tileView = sender as TileViewControl;
 
 
 
-    }
+
+
+           
+
+
+
+
+
+
+        }
 
 
 
