@@ -20,10 +20,6 @@
     </Window.Resources>
     <Grid>
         <syncfusion:TileViewControl Name="tileViewControl">
-            <syncfusion:TileViewItem Header="Item1" x:Name="tile1"/>
-            <syncfusion:TileViewItem Header="Item2" x:Name="tile2"/>
-            <syncfusion:TileViewItem Header="Item3" x:Name="tile3"/>
-            <syncfusion:TileViewItem Header="Item4" x:Name="tile4"/>
         </syncfusion:TileViewControl>
 
 
