@@ -1,0 +1,15 @@
+﻿<UserControl x:Class="DataObra.Interfaz.Componentes.mMaestro"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DataObra.Interfaz.Componentes"
+             mc:Ignorable="d" 
+             d:DesignHeight="60" d:DesignWidth="180">
+    <Grid>
+        <Label Content="Maestro minimizado" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Button Content="Abrir" HorizontalAlignment="Left"  VerticalAlignment="Top" Click="Maximizar" RenderTransformOrigin="1.661,2.409" Margin="52,30,0,0" Width="60"/>
+
+
+    </Grid>
+</UserControl>

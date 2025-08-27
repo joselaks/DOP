@@ -14,31 +14,18 @@
     mc:Ignorable="d"
      sfSkinManager:SfSkinManager.VisualStyle="Office2016White">
     <Window.Resources>
-        <DataTemplate x:Key="headerTemplate">
-            <Grid>
-                <TextBlock HorizontalAlignment="Center"
-                       Text="{Binding}" 
-                       FontFamily="Verdana"
-                           FontWeight="DemiBold"
-                          FontSize="20"></TextBlock>
-            </Grid>
-        </DataTemplate>
+        <Style TargetType="syncfusion:TileViewItem">
+            <Setter Property="HeaderVisibility" Value="Visible"/>
+        </Style>
     </Window.Resources>
     <Grid>
-        <syncfusion:TileViewControl
-            x:Name="tSelector"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            MaximizedItemChanged="tileView_MaximizedItemChanged"
-            MinimizedItemsOrientation="Left">
-            <syncfusion:TileViewItem
-                x:Name="tPresupuestos"
-                Header="Mis Presupuestos"
-                 HeaderTemplate="{StaticResource headerTemplate }"
-                 />
-            <syncfusion:TileViewItem x:Name="tModelos"  />
-            <syncfusion:TileViewItem x:Name="tModelo"  />
-            <syncfusion:TileViewItem x:Name="tPrecios"  />
+        <syncfusion:TileViewControl Name="tileViewControl">
+            <syncfusion:TileViewItem Header="Item1" x:Name="tile1"/>
+            <syncfusion:TileViewItem Header="Item2" x:Name="tile2"/>
+            <syncfusion:TileViewItem Header="Item3" x:Name="tile3"/>
+            <syncfusion:TileViewItem Header="Item4" x:Name="tile4"/>
         </syncfusion:TileViewControl>
+
+
     </Grid>
 </Window>
