@@ -7,6 +7,10 @@ using Syncfusion.Windows.Tools.Controls;
 
 
 using System.Windows;
+using Biblioteca.DTO;
+using System.ComponentModel;
+using DOP.Datos;
+using DOP;
 
 namespace DataObra.Interfaz.Ventanas
 {
@@ -32,11 +36,86 @@ namespace DataObra.Interfaz.Ventanas
         private mModelos miniModelo;
         private xModelos expanModelo;
 
+        //Presupuestos y modelos
+        public ObservableCollection<PresupuestoDTO> _presupuestos = new();
+        public ObservableCollection<PresupuestoDTO> _modelos = new();
+        public ObservableCollection<PresupuestoDTO> _modelosPropios = new();
+        public ObservableCollection<ListaArticuloItem> InfoCombo { get; set; } = new();
+        public ObservableCollection<ArticuloDTO> ArticulosLista { get; set; } = new();
+        public ObservableCollection<ArticuloBusquedaDTO> ArticulosBusqueda { get; set; } = new();
+        public event PropertyChangedEventHandler PropertyChanged;
+        public List<ArticuloExceDTO> articulosImportados = new();
+        public bool HayArticulosImportados => articulosImportados != null && articulosImportados.Count > 0;
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         public WiEscritorio()
         {
             InitializeComponent();
 
+            
+
+            this.Loaded += WiEscritorio_Loaded;
+        }
+
+
+        private async void WiEscritorio_Loaded(object sender, RoutedEventArgs e)
+        {
+
+            // 1. Presupuestos
+            var (success, message, lista) = await DatosWeb.ObtenerPresupuestosUsuarioAsync();
+            if (success)
+            {
+                // Calcular ValorM2 para cada presupuesto
+                foreach (var p in lista)
+                {
+                    if (p.Superficie.HasValue && p.Superficie.Value > 0)
+                        p.ValorM2 = p.PrEjecTotal / p.Superficie.Value;
+                    else
+                        p.ValorM2 = 0;
+                }
+
+                _presupuestos = new ObservableCollection<PresupuestoDTO>(lista.Where(p => p.UsuarioID == App.IdUsuario));
+                _modelos = new ObservableCollection<PresupuestoDTO>(lista.Where(p => p.EsModelo && p.UsuarioID == 4));
+                _modelosPropios = new ObservableCollection<PresupuestoDTO>(lista.Where(p => p.EsModelo && p.UsuarioID == App.IdUsuario));
+                InstanciaComponentes();
+
+
+
+            }
+            else
+            {
+                MessageBox.Show($"No se pudieron cargar los presupuestos.\n{message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            // 2. Listas de artículos
+            InfoCombo.Clear();
+            int usuarioID = 4;
+            var (okListas, msgListas, listas) = await DOP.Datos.DatosWeb.ObtenerListasArticulosPorUsuarioAsync(usuarioID);
+
+            if (!okListas)
+            {
+                MessageBox.Show($"No se pudo obtener las listas: {msgListas}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            foreach (var listaItem in listas)
+            {
+                InfoCombo.Add(new ListaArticuloItem
+                {
+                    ID = listaItem.ID,
+                    Descrip = listaItem.Descrip
+                });
+            }
+
+
+
+        }
+
+        private void InstanciaComponentes()
+        {
             // Instanciación de los campos
 
             // Presupuesto
@@ -59,18 +138,11 @@ namespace DataObra.Interfaz.Ventanas
             miniModelo = new mModelos(this);
             expanModelo = new xModelos(this);
 
-            this.Loaded += WiEscritorio_Loaded;
-        }
-
-
-        private void WiEscritorio_Loaded(object sender, RoutedEventArgs e)
-        {
-            AgregarTile(normalMaestro, expanMaestro, miniMaestro);
             AgregarTile(normalModelo, expanModelo, miniModelo);
             AgregarTile(normalPresupuesto, expanPresupuesto, miniPresupuesto);
+            AgregarTile(normalMaestro, expanMaestro, miniMaestro);
+
             AgregarTile(normalPrecios, expanPrecios, miniPrecios);
-
-
 
         }
 
