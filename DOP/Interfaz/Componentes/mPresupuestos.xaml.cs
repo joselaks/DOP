@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataObra.Interfaz.Ventanas;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,12 @@ namespace DataObra.Interfaz.Componentes
     /// </summary>
     public partial class mPresupuestos : UserControl
     {
-        public mPresupuestos()
+        private WiEscritorio escritorio;
+
+        public mPresupuestos(WiEscritorio _escritorio)
         {
             InitializeComponent();
+            escritorio = _escritorio;
         }
     }
 }

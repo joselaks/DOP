@@ -12,10 +12,22 @@ namespace DataObra.Interfaz.Ventanas
 {
     public partial class WiEscritorio : Window
     {
+        //Presupuesto
+        private nPresupuestos normalPresupuesto;
+        private mPresupuestos miniPresupuesto;
+        private xPresupuestos expanPresupuesto;
+
+        //Precios
+        private nPrecios normalPrecios;
+        private mPrecios miniPrecios;
+        private xPrecios expanPrecios;
+
+        //Maestro
         private nMaestro normalMaestro;
         private mMaestro miniMaestro;
         private xMaestro expanMaestro;
 
+        //Modelos
         private nModelos normalModelo;
         private mModelos miniModelo;
         private xModelos expanModelo;
@@ -26,13 +38,26 @@ namespace DataObra.Interfaz.Ventanas
             InitializeComponent();
 
             // Instanciación de los campos
+
+            // Presupuesto
+            normalPresupuesto = new nPresupuestos(this);
+            miniPresupuesto = new mPresupuestos(this);
+            expanPresupuesto = new xPresupuestos(this);
+
+            // Precios
+            normalPrecios = new nPrecios(this);
+            miniPrecios = new mPrecios(this);
+            expanPrecios = new xPrecios(this);
+
+            // Maestro
             normalMaestro = new nMaestro(this);
             miniMaestro = new mMaestro(this);
             expanMaestro = new xMaestro(this);
 
-            normalModelo = new nModelos();
-            miniModelo = new mModelos();
-            expanModelo = new xModelos();
+            // Modelos
+            normalModelo = new nModelos(this);
+            miniModelo = new mModelos(this);
+            expanModelo = new xModelos(this);
 
             this.Loaded += WiEscritorio_Loaded;
         }
@@ -40,32 +65,24 @@ namespace DataObra.Interfaz.Ventanas
 
         private void WiEscritorio_Loaded(object sender, RoutedEventArgs e)
         {
-            // Crear el primer TileViewItem y guardar la referencia
-            var tMaestro = new TileViewItem()
+            AgregarTile(normalMaestro, expanMaestro, miniMaestro);
+            AgregarTile(normalModelo, expanModelo, miniModelo);
+            AgregarTile(normalPresupuesto, expanPresupuesto, miniPresupuesto);
+            AgregarTile(normalPrecios, expanPrecios, miniPrecios);
+
+
+
+        }
+
+        private void AgregarTile(object contenidoNormal, object contenidoMax, object contenidoMin)
+        {
+            var tile = new TileViewItem
             {
-                Content = normalMaestro,
+                Content = contenidoNormal,
+                MaximizedItemContent = contenidoMax,
+                MinimizedItemContent = contenidoMin
             };
-
-            // Asignar los contenidos para los estados maximizado y minimizado
-            tMaestro.MaximizedItemContent = expanMaestro;   // Maximizado
-            tMaestro.MinimizedItemContent = miniMaestro;   // Minimizado
-
-            // Agregar el item al control
-            tileEscritorio.Items.Add(tMaestro);
-
-            // Crear el primer TileViewItem y guardar la referencia
-            var tModelo = new TileViewItem()
-            {
-                Content = normalModelo,
-            };
-
-            // Asignar los contenidos para los estados maximizado y minimizado
-            tModelo.MaximizedItemContent = expanModelo;   // Maximizado
-            tModelo.MinimizedItemContent = miniModelo;   // Minimizado
-
-            // Agregar el item al control
-            tileEscritorio.Items.Add(tModelo);
-
+            tileEscritorio.Items.Add(tile);
         }
 
         public void CambioEstado(string nombreTile, string estado)
