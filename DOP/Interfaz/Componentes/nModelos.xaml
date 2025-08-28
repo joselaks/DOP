@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Label Content="Normal Modelos" HorizontalAlignment="Left" Margin="136,96,0,0" VerticalAlignment="Top"/>
+        <Label Content="Normal Modelos" HorizontalAlignment="Left" Margin="27,18,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </UserControl>

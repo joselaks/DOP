@@ -51,39 +51,57 @@ namespace DataObra.Interfaz.Ventanas
             tMaestro.MinimizedItemContent = miniMaestro;   // Minimizado
 
             // Agregar el item al control
-            tileViewControl.Items.Add(tMaestro);
+            tileEscritorio.Items.Add(tMaestro);
 
             // Crear el primer TileViewItem y guardar la referencia
             var tModelo = new TileViewItem()
-                {
+            {
                 Content = normalModelo,
-                };
+            };
 
             // Asignar los contenidos para los estados maximizado y minimizado
             tModelo.MaximizedItemContent = expanModelo;   // Maximizado
             tModelo.MinimizedItemContent = miniModelo;   // Minimizado
 
             // Agregar el item al control
-            tileViewControl.Items.Add(tModelo);
-
-            }
-
-        private void tileViewControl1_MaximizedItemChanged(object sender, Syncfusion.Windows.Shared.TileViewEventArgs args)
-            {
-            TileViewControl? tileView = sender as TileViewControl;
-
-
-
-
-
-           
-
-
-
-
-
+            tileEscritorio.Items.Add(tModelo);
 
         }
+
+        public void CambioEstado(string nombreTile, string estado)
+        {
+            foreach (var item in tileEscritorio.Items)
+            {
+                // Obtener el nombre del tipo del contenido
+                var contenido = (item as TileViewItem)?.Content ?? item;
+                string nombreContenido = contenido.GetType().Name;
+
+                if (nombreContenido.Equals(nombreTile, StringComparison.OrdinalIgnoreCase))
+                {
+                    var container = tileEscritorio.ItemContainerGenerator.ContainerFromItem(item) as TileViewItem;
+                    if (container != null)
+                    {
+                        switch (estado)
+                        {
+                            case "Normal":
+                                container.TileViewItemState = Syncfusion.Windows.Shared.TileViewItemState.Normal;
+                                break;
+                            case "Maximizado":
+                                container.TileViewItemState = Syncfusion.Windows.Shared.TileViewItemState.Maximized;
+                                break;
+                            case "Minimizado":
+                                container.TileViewItemState = Syncfusion.Windows.Shared.TileViewItemState.Minimized;
+                                break;
+                        }
+                    }
+                    break; // Salir tras encontrar el tile correcto
+                }
+            }
+        }
+
+
+
+    }
 
 
 

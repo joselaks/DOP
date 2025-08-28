@@ -15,11 +15,11 @@
      sfSkinManager:SfSkinManager.VisualStyle="Office2016White">
     <Window.Resources>
         <Style TargetType="syncfusion:TileViewItem">
-            <Setter Property="HeaderVisibility" Value="Visible"/>
+            <Setter Property="HeaderVisibility" Value="Collapsed"/>
         </Style>
     </Window.Resources>
     <Grid>
-        <syncfusion:TileViewControl Name="tileViewControl">
+        <syncfusion:TileViewControl Name="tileEscritorio">
         </syncfusion:TileViewControl>
 
 
