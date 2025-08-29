@@ -13,7 +13,32 @@
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
 
-        <!--  Aquí puedes agregar el contenido principal de nPresupuestos en la primera fila  -->
+        <StackPanel Grid.Row="0" Margin="10">
+            <TextBlock Text="Últimos presupuestos editados por el usuario"
+                       FontWeight="Bold"
+                       FontSize="16"
+                       Margin="0,0,0,8"/>
+            <ListBox
+                x:Name="lstUltimosPresupuestos"
+                SelectedIndex="-1">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Descrip}" FontWeight="Bold" Width="250"/>
+                            <TextBlock Text="{Binding FechaM, StringFormat=' - {0:dd/MM/yyyy}'}" Width="150"/>
+                            <TextBlock Text="{Binding PrEjecTotal, StringFormat=' - Total: {0:C2}'}" Width="150"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <TextBlock x:Name="txtNoPresupuestos"
+                       Text="No hay presupuestos editados por el usuario"
+                       Foreground="Gray"
+                       FontStyle="Italic"
+                       Margin="0,8,0,0"
+                       HorizontalAlignment="Left"
+                       Visibility="Collapsed"/>
+        </StackPanel>
 
         <Button
             Grid.Row="1"
