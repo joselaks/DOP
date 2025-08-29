@@ -110,20 +110,20 @@ namespace DOP.Interfaz.Ventanas
                         this.Close();
 
                         //// Crea y asigna la nueva ventana principal
-                        WiTablero tablero = new WiTablero()
-                        {
-                            WindowStartupLocation = WindowStartupLocation.CenterScreen
-                        };
-                        Application.Current.MainWindow = tablero;
-                        tablero.Show();
-
-                        //Opcion para abrir la ventana de Escritorio
-                        //WiEscritorio escritorio = new WiEscritorio()
+                        //WiTablero tablero = new WiTablero()
                         //{
                         //    WindowStartupLocation = WindowStartupLocation.CenterScreen
                         //};
-                        //Application.Current.MainWindow = escritorio;
-                        //escritorio.Show();
+                        //Application.Current.MainWindow = tablero;
+                        //tablero.Show();
+
+                        //Opcion para abrir la ventana de Escritorio
+                        WiEscritorio escritorio = new WiEscritorio()
+                            {
+                            WindowStartupLocation = WindowStartupLocation.CenterScreen
+                            };
+                        Application.Current.MainWindow = escritorio;
+                        escritorio.Show();
 
 
 

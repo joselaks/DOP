@@ -164,6 +164,21 @@ namespace DataObra.Interfaz.Ventanas
                 // Obtener el nombre del tipo del contenido
                 var contenido = (item as TileViewItem)?.Content ?? item;
                 string nombreContenido = contenido.GetType().Name;
+                if (estado == "Normal")
+                    {
+                    foreach (var it in tileEscritorio.Items)
+                        {
+                        var cont = (it as TileViewItem)?.Content ?? it;
+                        string nomCont = cont.GetType().Name;
+                        if (nomCont != nombreTile)
+                            {
+                            var container = tileEscritorio.ItemContainerGenerator.ContainerFromItem(it) as TileViewItem;
+                            container.TileViewItemState = Syncfusion.Windows.Shared.TileViewItemState.Normal;
+
+                            }
+                        }
+                    return;
+                    }
 
                 if (nombreContenido.Equals(nombreTile, StringComparison.OrdinalIgnoreCase))
                 {
@@ -172,9 +187,6 @@ namespace DataObra.Interfaz.Ventanas
                     {
                         switch (estado)
                         {
-                            case "Normal":
-                                container.TileViewItemState = Syncfusion.Windows.Shared.TileViewItemState.Normal;
-                                break;
                             case "Maximizado":
                                 container.TileViewItemState = Syncfusion.Windows.Shared.TileViewItemState.Maximized;
                                 break;

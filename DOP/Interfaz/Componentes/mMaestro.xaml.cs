@@ -29,7 +29,7 @@ namespace DataObra.Interfaz.Componentes
         }
         private void Maximizar(object sender, RoutedEventArgs e)
         {
-            //escritorio.MaximizaTile("tMaestro");
+            escritorio.CambioEstado("nMaestro", "Maximizado");
         }
     }
 }

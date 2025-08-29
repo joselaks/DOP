@@ -29,5 +29,11 @@ namespace DataObra.Interfaz.Componentes
             escritorio = _escritorio;
 
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+            {
+            escritorio.CambioEstado("mModelo", "Normal");
+            }
+        
     }
 }

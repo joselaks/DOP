@@ -110,10 +110,14 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
-                                <TextBlock Margin="0,0,10,0" FontWeight="DemiBold" VerticalAlignment="Center">Busqueda de Artículos</TextBlock>
+                                <TextBlock
+                                    Margin="0,0,10,0"
+                                    VerticalAlignment="Center"
+                                    FontWeight="DemiBold">
+                                    Busqueda de Artículos
+                                </TextBlock>
                                 <TextBlock VerticalAlignment="Center">Filtro:</TextBlock>
                                 <TextBox
-                                    
                                     x:Name="txtBusquedaArticulo"
                                     Width="200"
                                     Margin="0,0,10,0"
@@ -144,33 +148,33 @@
                                 ItemsSource="{Binding ArticulosBusqueda}">
                                 <syncfusion:SfDataGrid.Columns>
                                     <syncfusion:GridTextColumn
+                                        Width="250"
                                         HeaderText="Descripción"
-                                        MappingName="Descrip"
-                                        Width="250"/>
+                                        MappingName="Descrip" />
                                     <syncfusion:GridTextColumn
+                                        Width="80"
                                         HeaderText="Unidad"
-                                        MappingName="Unidad"
-                                        Width="80"/>
+                                        MappingName="Unidad" />
                                     <syncfusion:GridNumericColumn
+                                        Width="120"
                                         HeaderText="Precio"
                                         MappingName="Precio"
-                                        Width="120"
                                         NumberDecimalDigits="2"
                                         NumberDecimalSeparator=","
                                         NumberGroupSeparator="."
                                         NumberGroupSizes="3"
-                                        TextAlignment="Right"/>
+                                        TextAlignment="Right" />
                                     <syncfusion:GridTextColumn
+                                        Width="180"
                                         HeaderText="Lista"
-                                        MappingName="ListaDescrip"
-                                        Width="180"/>
+                                        MappingName="ListaDescrip" />
                                     <syncfusion:GridDateTimeColumn
-                                        HeaderText="Fecha"
-                                        MappingName="Fecha"
                                         Width="120"
                                         CustomPattern="dd/MM/yyyy"
+                                        HeaderText="Fecha"
+                                        MappingName="Fecha"
                                         Pattern="ShortDate"
-                                        TextAlignment="Center"/>
+                                        TextAlignment="Center" />
                                 </syncfusion:SfDataGrid.Columns>
                             </syncfusion:SfDataGrid>
                         </Grid>

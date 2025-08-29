@@ -7,9 +7,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="60" d:DesignWidth="180">
     <Grid>
-        <Label Content="Maestro minimizado" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Button Content="Abrir" HorizontalAlignment="Left"  VerticalAlignment="Top" Click="Maximizar" RenderTransformOrigin="1.661,2.409" Margin="52,30,0,0" Width="60"/>
-
-
+        <Button Content="Maestro" Click="Maximizar" />
     </Grid>
 </UserControl>
