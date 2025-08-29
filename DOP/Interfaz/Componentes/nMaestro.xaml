@@ -1,22 +1,41 @@
-﻿<UserControl
-    x:Class="DataObra.Interfaz.Componentes.nMaestro"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
-    mc:Ignorable="d">
+﻿<UserControl x:Class="DataObra.Interfaz.Componentes.nMaestro"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="30" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
 
-        <!--  Aquí puedes agregar el contenido principal de nMaestro en la primera fila  -->
+        <!-- Título con ícono -->
+        <Grid Grid.Row="0" Margin="10,10,10,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                <Image Source="pack://application:,,,/Imagenes/Material.png" Width="28" Height="28" Margin="0,0,8,0"/>
+                <TextBlock Text="Maestro"
+                           FontSize="22"
+                           FontWeight="Bold"
+                           Foreground="#E53935"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Contenido principal aquí -->
+        <StackPanel Grid.Row="1">
+            <!-- Agrega aquí el contenido principal de nMaestro -->
+        </StackPanel>
 
         <Button
-            Grid.Row="1"
+            Grid.Row="2"
             Width="200"
             Height="20"
             Click="Button_Click"
