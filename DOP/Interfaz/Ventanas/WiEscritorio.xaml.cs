@@ -46,6 +46,7 @@ namespace DataObra.Interfaz.Ventanas
         public event PropertyChangedEventHandler PropertyChanged;
         public List<ArticuloExceDTO> articulosImportados = new();
         public bool HayArticulosImportados => articulosImportados != null && articulosImportados.Count > 0;
+
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

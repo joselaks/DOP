@@ -16,7 +16,7 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Click="Button_Click"
-            Content="Volver a vista normal" />
+            Content="Volver al menú principal" />
         <!--  Aquí puedes agregar el contenido expandido de Maestro  -->
     </Grid>
 </UserControl>
