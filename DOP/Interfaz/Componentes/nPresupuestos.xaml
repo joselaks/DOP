@@ -30,7 +30,7 @@
             </StackPanel>
         </Grid>
 
-        <StackPanel Grid.Row="1">
+        <StackPanel Grid.Row="1" Margin="25">
             <TextBlock Text="Últimos presupuestos editados por el usuario"
                        FontWeight="Bold"
                        FontSize="16"
