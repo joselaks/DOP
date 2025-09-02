@@ -9,9 +9,9 @@
     mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="30" />
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Margin="10,10,10,5">
@@ -20,41 +20,52 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                <Image Source="pack://application:,,,/Imagenes/Material.png" Width="28" Height="28" Margin="0,0,8,0"/>
-                <TextBlock Text="Presupuestos"
-                           FontSize="22"
-                           FontWeight="Bold"
-                           Foreground="#1E88E5"
-                           VerticalAlignment="Center"/>
+            <StackPanel
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <Image
+                    Width="28"
+                    Height="28"
+                    Margin="0,0,8,0"
+                    Source="pack://application:,,,/Imagenes/Material.png" />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontSize="22"
+                    FontWeight="Bold"
+                    Foreground="#1E88E5"
+                    Text="Presupuestos" />
             </StackPanel>
         </Grid>
 
         <StackPanel Grid.Row="1" Margin="25">
-            <TextBlock Text="Últimos presupuestos editados por el usuario"
-                       FontWeight="Bold"
-                       FontSize="16"
-                       Margin="0,0,0,8"/>
-            <ListBox
-                x:Name="lstUltimosPresupuestos"
-                SelectedIndex="-1">
+            <TextBlock
+                Margin="0,0,0,8"
+                FontSize="16"
+                FontWeight="Bold"
+                Text="Últimos presupuestos editados por el usuario" />
+            <ListBox x:Name="lstUltimosPresupuestos" SelectedIndex="-1">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Descrip}" FontWeight="Bold" Width="250"/>
-                            <TextBlock Text="{Binding FechaM, StringFormat=' - {0:dd/MM/yyyy}'}" Width="150"/>
-                            <TextBlock Text="{Binding PrEjecTotal, StringFormat=' - Total: {0:C2}'}" Width="150"/>
+                            <TextBlock
+                                Width="250"
+                                FontWeight="Bold"
+                                Text="{Binding Descrip}" />
+                            <TextBlock Width="150" Text="{Binding FechaM, StringFormat=' - {0:dd/MM/yyyy}'}" />
+                            <TextBlock Width="150" Text="{Binding PrEjecTotal, StringFormat=' - Total: {0:C2}'}" />
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <TextBlock x:Name="txtNoPresupuestos"
-                       Text="No hay presupuestos editados por el usuario"
-                       Foreground="Gray"
-                       FontStyle="Italic"
-                       Margin="0,8,0,0"
-                       HorizontalAlignment="Left"
-                       Visibility="Collapsed"/>
+            <TextBlock
+                x:Name="txtNoPresupuestos"
+                Margin="0,8,0,0"
+                HorizontalAlignment="Left"
+                FontStyle="Italic"
+                Foreground="Gray"
+                Text="No hay presupuestos editados por el usuario"
+                Visibility="Collapsed" />
         </StackPanel>
 
         <Button

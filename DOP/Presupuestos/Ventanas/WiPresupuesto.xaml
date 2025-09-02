@@ -269,10 +269,11 @@
                     <syncfusion:DropDownButtonAdv
                         x:Name="dropColumnasListado"
                         Width="140"
+                        VerticalAlignment="Top"
                         Label="Columnas"
                         SmallIcon="pack://application:,,,/Imagenes/Columnas24.png"
                         StayDropDownOnClick="True"
-                        ToolTip="Visualizar columnas" VerticalAlignment="Top">
+                        ToolTip="Visualizar columnas">
                         <syncfusion:DropDownMenuGroup IsResizable="True" />
                     </syncfusion:DropDownButtonAdv>
 

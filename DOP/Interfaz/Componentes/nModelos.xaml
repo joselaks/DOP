@@ -13,29 +13,37 @@
     mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="30" />
         </Grid.RowDefinitions>
 
-        <!-- Título destacado -->
+        <!--  Título destacado  -->
         <Grid Grid.Row="0" Margin="10,10,10,5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                <Image Source="pack://application:,,,/Imagenes/Material.png" Width="28" Height="28" Margin="0,0,8,0"/>
-                <TextBlock Text="Modelos"
-                           FontSize="22"
-                           FontWeight="Bold"
-                           Foreground="#FB8C00"
-                           VerticalAlignment="Center"/>
+            <StackPanel
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <Image
+                    Width="28"
+                    Height="28"
+                    Margin="0,0,8,0"
+                    Source="pack://application:,,,/Imagenes/Material.png" />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontSize="22"
+                    FontWeight="Bold"
+                    Foreground="#FB8C00"
+                    Text="Modelos" />
             </StackPanel>
         </Grid>
 
-        <!-- Contenido principal existente -->
+        <!--  Contenido principal existente  -->
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />

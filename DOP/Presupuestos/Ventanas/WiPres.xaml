@@ -8,12 +8,11 @@
     xmlns:sfSkinManager="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
     Title="DataObra"
-    TitleTextAlignment="Left"
     Width="1090"
     Height="800"
     sfSkinManager:SfSkinManager.VisualStyle="Office2016White"
     Office2010Icon="pack://application:,,,/Imagenes/DataObra.ico"
-   
+    TitleTextAlignment="Left"
     mc:Ignorable="d">
     <syncfusion:RibbonWindow.StatusBar>
         <syncfusion:RibbonStatusBar Background="#004482">
@@ -39,7 +38,10 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <syncfusion:Ribbon Grid.ColumnSpan="3" BackStageHeader="">
+        <syncfusion:Ribbon
+            Grid.ColumnSpan="3"
+            BackStageHeader=""
+            IsBackStageVisible="False">
             <syncfusion:RibbonTab Caption="INICIO" IsChecked="True">
                 <syncfusion:RibbonBar
                     Name="New"
