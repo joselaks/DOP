@@ -32,6 +32,7 @@ namespace DOP.Presupuestos.Controles
         public Presupuesto Objeto;
         private string tipoSeleccionado = null;
         private GridLength? _panSuperioresHeight = null;
+        private List<ConceptoDTO> Conceptos;
 
 
 
@@ -41,7 +42,7 @@ namespace DOP.Presupuestos.Controles
             this.grillaMaestro.RowDragDropController.Drop += RowDragDropController_Drop;
             this.grillaMaestro.RowDragDropController.DragStart += RowDragDropController_DragStart;
             this.grillaMaestro.Loaded += GrillaMaestro_Loaded;
-            this.grillaMaestro.ChildPropertyName = "Inferiores";
+            //this.grillaMaestro.ChildPropertyName = "Inferiores";
             }
 
         private async void GrillaMaestro_Loaded(object sender, RoutedEventArgs e)
@@ -49,6 +50,7 @@ namespace DOP.Presupuestos.Controles
 
             // Obtiene el presupuesto maestro
             var (ok, msg, conceptos, relaciones) = await DOP.Datos.DatosWeb.ObtenerConceptosYRelacionesAsync(45);
+            Conceptos = conceptos; // Guarda los conceptos para usarlos después
             var PresupuestoDTO = new PresupuestoDTO
                 {
                 ID = 45
@@ -57,8 +59,11 @@ namespace DOP.Presupuestos.Controles
             grillaMaestro.ItemsSource = Objeto.Arbol;
             // Obtener todos los nodos tipo "T" y "R"
             var Filtrado = new ObservableCollection<Nodo>(ObtenerNodosPorTipos(Objeto.Arbol, "T"));
-            //this.grillaMaestro.ItemsSource = Filtrado;
+            this.grillaMaestro.ItemsSource = Filtrado;
             this.grillaMaestro.View.Refresh();
+
+            // Selecciona el primer item ("Tareas") del ComboBox
+            comboTipoListado.SelectedIndex = 0;
             }
 
 
@@ -169,18 +174,33 @@ namespace DOP.Presupuestos.Controles
                 ? item.Content?.ToString()
                 : combo.SelectedItem.ToString();
 
+            // Mostrar u ocultar el combo de Rubros según la selección
+            if (descripcion == "Tareas")
+                {
+                comboRubros.Visibility = Visibility.Visible;
+                if (Objeto != null && Objeto.Arbol != null)
+                    {
+                    // Obtiene los nodos tipo "R" (Rubros) y llena el combo con sus descripciones
+                    var rubros = ObtenerNodosPorTipos(Objeto.Arbol, "R")
+                                 .Select(n => n.Descripcion)
+                                 .Distinct()
+                                 .ToList();
+                    comboRubros.ItemsSource = rubros;
+                    }
+                else
+                    {
+                    comboRubros.ItemsSource = null;
+                    }
+                }
+            else
+                {
+                comboRubros.Visibility = Visibility.Collapsed;
+                comboRubros.ItemsSource = null;
+                }
+
             FiltrarPorTipoDescripcion(descripcion);
             }
 
         
         }
     }
-
-
-
-
-
-
-
-
-
