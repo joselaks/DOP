@@ -369,11 +369,17 @@ namespace Bibioteca.Clases
                         }
                         else
                         {
-                            newItem.Tipo = concepto.Tipo.ToString();
+                            // Detectar si es nodo de último nivel
+                            bool esUltimoNivel = !listaRelaciones.Any(r => r.CodSup == concepto.ConceptoID);
+                            if (esUltimoNivel && !"MDES".Contains(concepto.Tipo))
+                            {
+                                newItem.Tipo = "O";
+                            }
+                            else
+                            {
+                                newItem.Tipo = concepto.Tipo.ToString();
+                            }
                         }
-
-
-
 
                         newItem.Inferiores = new ObservableCollection<Nodo>();
                         // Recurrencia para obtener los elementos hijos de este elemento.

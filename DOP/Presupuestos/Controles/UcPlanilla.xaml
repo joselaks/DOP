@@ -316,7 +316,7 @@ Header="Solo Tareas" />
 
                     <syncfusion:TreeGridTextColumn
                         Width="50"
-                        IsHidden="True"
+                        IsHidden="false"
                         MappingName="Tipo" />
 
 

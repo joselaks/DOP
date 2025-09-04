@@ -528,7 +528,7 @@ namespace DOP.Presupuestos.Controles
                     this.grillaArbol.ItemsSource = Objeto.Rubros;
                     break;
                 case "T":
-                    this.grillaArbol.AllowSorting = true ;
+                    this.grillaArbol.AllowSorting = true;
                     this.grillaArbol.ChildPropertyName = null;
                     this.grillaArbol.ItemsSource = Objeto.Tareas;
                     break;
