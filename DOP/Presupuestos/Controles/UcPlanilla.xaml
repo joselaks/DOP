@@ -52,37 +52,62 @@
                 FontWeight="Bold"
                 Text="Presupuesto" />
 
-            <syncfusion:ButtonAdv
+            <syncfusion:DropDownButton
+                Name="_dropAgregar"
+                Width="100"
+                Margin="5,0,5,0"
+                BorderBrush="Black"
+                BorderThickness="1"
+                Label="Agregar"
+                SizeForm="Small"
+                SmallIcon="pack://application:,,,/Imagenes/Rubro.png">
+                <syncfusion:DropDownMenuItem
+                    x:Name="Rubro"
+                    Click="Agregar_Click"
+                    Header="Rubro" />
+                <syncfusion:DropDownMenuItem
+                    x:Name="Tarea"
+                    Click="Agregar_Click"
+                    Header="Tarea" />
+            </syncfusion:DropDownButton>
+
+
+
+            <!--<syncfusion:ButtonAdv
                 x:Name="Rubro"
-                Margin="5,0,0,0"
+                Margin="5,0,5,0"
                 Click="Agregar_Click"
                 Label=" Agregar Rubro"
                 SizeMode="Small"
                 SmallIcon="pack://application:,,,/Imagenes/Rubro.png" />
             <syncfusion:ButtonAdv
                 x:Name="Tarea"
-                Margin="5,0,0,0"
+                Margin="5,0,5,0"
                 Click="Agregar_Click"
                 Label="Agregar Tarea"
                 SizeMode="Small"
-                SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
-            <syncfusion:RibbonButton
-                x:Name="Expandir"
-                Margin="5,0,0,5"
-                VerticalAlignment="Center"
-                Click="expandir_Click"
+                SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />-->
+
+            <syncfusion:DropDownButton
+                Name="_dropDownButton"
+                Width="100"
+                BorderBrush="Black"
+                BorderThickness="1"
                 Label="Expandir"
                 SizeForm="Small"
-                SmallIcon="pack://application:,,,/Imagenes/Expandir24.png" />
+                SmallIcon="pack://application:,,,/Imagenes/Expandir24.png">
+                <syncfusion:DropDownMenuItem
+                    x:Name="Expandir"
+                    Click="expandir_Click"
+                    Header="Expandir" />
+                <syncfusion:DropDownMenuItem
+                    x:Name="Contraer"
+                    Click="expandir_Click"
+                    Header="Contraer" />
+            </syncfusion:DropDownButton>
 
-            <syncfusion:RibbonButton
-                x:Name="Contraer"
-                Margin="5,0,0,5"
-                VerticalAlignment="Center"
-                Click="expandir_Click"
-                Label="Contraer"
-                SizeForm="Small"
-                SmallIcon="pack://application:,,,/Imagenes/Contraer24.png" />
+
+
 
             <syncfusion:RibbonCheckBox
                 x:Name="chkArbol"
@@ -187,9 +212,9 @@
                         <syncfusion:TreeGridNumericColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock
+                                    Margin="0,0,3,0"
                                     VerticalAlignment="Center"
                                     Text="{Binding PU1, Converter={StaticResource DecimalToStringConverter}}"
-                                    Margin="0,0,3,0"
                                     TextAlignment="Right">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">

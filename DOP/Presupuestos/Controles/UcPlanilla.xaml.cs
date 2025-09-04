@@ -222,7 +222,7 @@ namespace DOP.Presupuestos.Controles
 
         private void Agregar_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is ButtonAdv boton)
+            if (sender is DropDownMenuItem boton)
             {
                 switch (boton.Name)
                 {
@@ -455,7 +455,7 @@ namespace DOP.Presupuestos.Controles
         {
             if (grillaArbol.View != null)
             {
-                var boton = sender as RibbonButton;
+                var boton = sender as DropDownMenuItem;
                 if (boton != null)
                 {
                     if (boton.Name == "Expandir")
