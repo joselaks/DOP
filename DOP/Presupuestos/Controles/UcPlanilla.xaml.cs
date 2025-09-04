@@ -37,6 +37,8 @@ namespace DOP.Presupuestos.Controles
         private Stack<Cambios> undoStack;
         private Stack<Cambios> redoStack;
         private CultureInfo cultura = new CultureInfo("es-ES") { NumberFormat = { NumberGroupSeparator = ".", NumberDecimalSeparator = "," } };
+        private HashSet<string> nodosExpandidosRT = new HashSet<string>();
+
 
 
 
@@ -500,10 +502,107 @@ namespace DOP.Presupuestos.Controles
             }
         }
 
+        private void Vistas_Click(object sender, RoutedEventArgs e)
+        {
+            var vista = sender as DropDownMenuItem;
+            if (vista == null) return;
 
+            // Guardar filtro actual
+            var filtroActual = grillaArbol.View?.Filter;
 
+            // Guardar nodos expandidos solo si estamos saliendo de RT
+            if (grillaArbol.View != null && grillaArbol.ChildPropertyName == "Inferiores")
+            {
+                GuardarNodosExpandidosRT();
+            }
+
+            switch (vista.Name)
+            {
+                case "RT":
+                    this.grillaArbol.AllowSorting = false;
+                    this.grillaArbol.ChildPropertyName = "Inferiores";
+                    this.grillaArbol.ItemsSource = Objeto.Arbol;
+                    grillaArbol.SortColumnDescriptions.Clear();
+                    break;
+                case "R":
+                    this.grillaArbol.AllowSorting = true;
+                    this.grillaArbol.ChildPropertyName = null;
+                    this.grillaArbol.ItemsSource = Objeto.Rubros;
+                    break;
+                case "T":
+                    this.grillaArbol.AllowSorting = true ;
+                    this.grillaArbol.ChildPropertyName = null;
+                    this.grillaArbol.ItemsSource = Objeto.Tareas;
+                    break;
+            }
+
+            // Restaurar filtro y limpiar orden en R y T
+            if (grillaArbol.View != null)
+            {
+                grillaArbol.View.Filter = filtroActual;
+                grillaArbol.View.Refresh();
+
+                // Limpiar orden anterior para permitir reordenar en R y T
+                if (vista.Name == "R" || vista.Name == "T")
+                {
+                    grillaArbol.SortColumnDescriptions.Clear();
+                }
+
+                // Restaurar nodos expandidos solo para RT
+                if (vista.Name == "RT")
+                {
+                    RestaurarNodosExpandidosRT();
+                }
+            }
         }
-        public class Cambios
+
+
+        private void GuardarNodosExpandidosRT()
+        {
+            nodosExpandidosRT.Clear();
+            if (grillaArbol.View != null)
+            {
+                foreach (var node in grillaArbol.View.Nodes)
+                {
+                    GuardarNodosExpandidosRecursivo(node, nodosExpandidosRT);
+                }
+            }
+        }
+
+        private void RestaurarNodosExpandidosRT()
+        {
+            if (grillaArbol.View != null && nodosExpandidosRT.Count > 0)
+            {
+                foreach (var node in grillaArbol.View.Nodes)
+                {
+                    RestaurarNodosExpandidosRecursivo(node, nodosExpandidosRT);
+                }
+            }
+        }
+
+        private void GuardarNodosExpandidosRecursivo(TreeNode node, HashSet<string> expandidos)
+        {
+            if (node.IsExpanded && node.Item is Nodo n && !string.IsNullOrEmpty(n.ID))
+                expandidos.Add(n.ID);
+
+            foreach (var child in node.ChildNodes)
+                GuardarNodosExpandidosRecursivo(child, expandidos);
+        }
+
+        private void RestaurarNodosExpandidosRecursivo(TreeNode node, HashSet<string> expandidos)
+        {
+            if (node.Item is Nodo n && expandidos.Contains(n.ID))
+                grillaArbol.ExpandNode(node);
+
+            foreach (var child in node.ChildNodes)
+                RestaurarNodosExpandidosRecursivo(child, expandidos);
+        }
+
+
+
+
+    }
+    public class Cambios
         {
             public string TipoCambio { get; set; }
             public Nodo antesCambio { get; set; }

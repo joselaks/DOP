@@ -106,6 +106,30 @@
                     Header="Contraer" />
             </syncfusion:DropDownButton>
 
+            <syncfusion:DropDownButton
+    Name="_dropVistas"
+    Width="100"
+    BorderBrush="Black"
+    BorderThickness="1"
+    Label="Vistas"
+    SizeForm="Small"
+    SmallIcon="pack://application:,,,/Imagenes/Expandir24.png">
+                <syncfusion:DropDownMenuItem
+        x:Name="RT"
+        Click="Vistas_Click"
+        Header="Rubros y tareas" />
+                <syncfusion:DropDownMenuItem
+        x:Name="R"
+        Click="Vistas_Click"
+        Header="Solo Rubros" />
+                <syncfusion:DropDownMenuItem
+x:Name="T"
+Click="Vistas_Click"
+Header="Solo Tareas" />
+
+
+            </syncfusion:DropDownButton>
+
 
 
 
