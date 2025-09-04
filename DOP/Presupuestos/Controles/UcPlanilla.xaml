@@ -97,13 +97,17 @@
                 SizeForm="Small"
                 SmallIcon="pack://application:,,,/Imagenes/Expandir24.png">
                 <syncfusion:DropDownMenuItem
+                    x:Name="Contraer"
+                    Click="expandir_Click"
+                    Header="Contraer" />
+                <syncfusion:DropDownMenuItem
                     x:Name="Expandir"
                     Click="expandir_Click"
                     Header="Expandir" />
                 <syncfusion:DropDownMenuItem
-                    x:Name="Contraer"
+                    x:Name="ExpandirTodo"
                     Click="expandir_Click"
-                    Header="Contraer" />
+                    Header="Expandir todo" />
             </syncfusion:DropDownButton>
 
             <syncfusion:DropDownButton
@@ -129,20 +133,6 @@ Header="Solo Tareas" />
 
 
             </syncfusion:DropDownButton>
-
-
-
-
-            <syncfusion:RibbonCheckBox
-                x:Name="chkArbol"
-                Width="140"
-                Margin="5,0,0,5"
-                VerticalAlignment="Center"
-                Checked="chkArbol_Checked"
-                Content="Ver Arbol completo"
-                IsChecked="false"
-                Unchecked="chkArbol_Unchecked" />
-
 
 
         </StackPanel>

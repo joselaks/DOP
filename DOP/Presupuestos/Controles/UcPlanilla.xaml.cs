@@ -462,45 +462,43 @@ namespace DOP.Presupuestos.Controles
                 {
                     if (boton.Name == "Expandir")
                     {
+                        if (grillaArbol.View.Filter == null)
+                        {
+                            grillaArbol.View.Filter = FiltrarPorTipo;
+                            grillaArbol.View.Refresh();
+                        }
                         ExpandeRubro();
                     }
                     else if (boton.Name == "Contraer")
                     {
+                        if (grillaArbol.View.Filter == null)
+                        {
+                            grillaArbol.View.Filter = FiltrarPorTipo;
+                            grillaArbol.View.Refresh();
+                        }
                         grillaArbol.CollapseAllNodes();
+                    }
+                    else if (boton.Name == "ExpandirTodo")
+                    {
+                        if (grillaArbol.View != null)
+                        {
+                            // Quitar el filtro
+                            grillaArbol.View.Filter = null;
+                            grillaArbol.View.Refresh();
+                            ExpandeRubro();
+                        }
                     }
                 }
             }
         }
 
 
+
         private void Renumerar_Click(object sender, RoutedEventArgs e)
         {
             Objeto.NumeraItems(Objeto.Arbol, "");
         }
-
-        private void chkArbol_Checked(object sender, RoutedEventArgs e)
-        {
-            if (grillaArbol.View != null)
-            {
-                // Quitar el filtro
-                grillaArbol.View.Filter = null;
-                grillaArbol.View.Refresh();
-                ExpandeRubro();
-            }
-        }
-
-
-        private void chkArbol_Unchecked(object sender, RoutedEventArgs e)
-        {
-
-            if (grillaArbol.View != null)
-            {
-                // Activar el filtro
-                grillaArbol.View.Filter = FiltrarPorTipo;
-                grillaArbol.View.Refresh();
-                ExpandeRubro();
-            }
-        }
+       
 
         private void Vistas_Click(object sender, RoutedEventArgs e)
         {

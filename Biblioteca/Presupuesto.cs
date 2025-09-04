@@ -360,8 +360,21 @@ namespace Bibioteca.Clases
                         newItem.Cantidad = item.CanEjec;
                         newItem.Sup = false;
                         newItem.Unidad = concepto.Unidad;
-                        //newItem.Tipo = (concepto.Tipo == "0") ? _nivel.ToString() : concepto.Tipo;
-                        newItem.Tipo = concepto.Tipo.ToString();
+
+
+                        // Cambia el tipo a "A" si el padre es "T" y el hijo también es "T"
+                        if (elemento.Tipo == "T" && concepto.Tipo.ToString() == "T")
+                        {
+                            newItem.Tipo = "A";
+                        }
+                        else
+                        {
+                            newItem.Tipo = concepto.Tipo.ToString();
+                        }
+
+
+
+
                         newItem.Inferiores = new ObservableCollection<Nodo>();
                         // Recurrencia para obtener los elementos hijos de este elemento.
                         var subelementosHijos = GetElementosHijos(newItem, listaConceptos, listaRelaciones, _nivel + 1);
@@ -753,6 +766,11 @@ namespace Bibioteca.Clases
                     registro.PU2 = item.PU2;
                     registro.Importe1 = item.Importe1;
                     registro.Importe2 = item.Importe2;
+                    registro.ManodeObra1 = item.ManodeObra1;
+                    registro.Materiales1 = item.Materiales1;
+                    registro.Equipos1 = item.Equipos1;
+                    registro.Subcontratos1 = item.Subcontratos1;
+                    registro.Otros1 = item.Otros1;
                     registro.Tipo = item.Tipo;
 
                     if (item.Tipo == "R")

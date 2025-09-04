@@ -58,7 +58,7 @@
                         Label="Importar FIEBDC"
                         LargeIcon="pack://application:,,,/Imagenes/Importar.png"
                         SizeForm="Large"
-                        Visibility="Collapsed" />
+                        Visibility="Visible" />
                 </syncfusion:RibbonBar>
 
 
