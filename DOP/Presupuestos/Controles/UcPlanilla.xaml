@@ -158,6 +158,14 @@ Header="Solo Tareas" />
             SelectionChanged="grillaArbol_SelectionChanged"
             SelectionForeground="Black"
             SelectionMode="Single">
+
+            <syncfusion:SfTreeGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Agregar Rubro" Name="menuAgregarRubro" Click="Agregar_Click"/>
+                    <MenuItem Header="Agregar Tarea" Name="menuAgregarTarea" Click="Agregar_Click"/>
+                </ContextMenu>
+            </syncfusion:SfTreeGrid.ContextMenu>
+
             <syncfusion:SfTreeGrid.StackedHeaderRows>
                 <!--<syncfusion:StackedHeaderRow>
                 <syncfusion:StackedHeaderRow.StackedColumns>
@@ -175,8 +183,14 @@ Header="Solo Tareas" />
                     </syncfusion:StackedHeaderRow.StackedColumns>
                 </syncfusion:StackedHeaderRow>
             </syncfusion:SfTreeGrid.StackedHeaderRows>
+            
+            
+            
+
             <syncfusion:SfTreeGrid.Columns>
                 <syncfusion:TreeGridColumns>
+                    
+                    
 
                     <syncfusion:TreeGridTextColumn Width="50" MappingName="Item" />
 

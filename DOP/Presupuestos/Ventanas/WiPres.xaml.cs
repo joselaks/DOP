@@ -358,7 +358,7 @@ namespace DataObra.Presupuestos.Ventanas
                 }
 
             // Calcula un tercio de la altura
-            double alturaTercio = totalHeight / 2.0;
+            double alturaTercio = totalHeight / 3.0;
 
 
             // vDetalle: filas 2 y 3 de basePres
@@ -380,10 +380,7 @@ namespace DataObra.Presupuestos.Ventanas
                         }
                     else
                         {
-                        // Solo guardar si aún no se ha guardado
-                        if (_detalleRow2Height == null)
-                            _detalleRow2Height = _contenedor.basePres.RowDefinitions[2].Height;
-
+                        _detalleRow2Height = _contenedor.basePres.RowDefinitions[2].Height;
                         _contenedor.basePres.RowDefinitions[1].Height = new GridLength(0);
                         _contenedor.basePres.RowDefinitions[2].Height = new GridLength(0);
                         }
@@ -399,12 +396,15 @@ namespace DataObra.Presupuestos.Ventanas
                         {
                         _contenedor.basePres.ColumnDefinitions[1].Width = new GridLength(1, GridUnitType.Auto);
                         _contenedor.basePres.ColumnDefinitions[2].Width = _listadoCol2Width ?? new GridLength(700);
+                        if(vMaestro.IsChecked==true)
+                        {
+                            vMaestro.IsChecked = false;
                         }
+                    }
+
                     else
                         {
-                        if (_listadoCol2Width == null)
-                            _listadoCol2Width = _contenedor.basePres.ColumnDefinitions[2].Width;
-
+                        _listadoCol2Width = _contenedor.basePres.ColumnDefinitions[2].Width;
                         _contenedor.basePres.ColumnDefinitions[1].Width = new GridLength(0);
                         _contenedor.basePres.ColumnDefinitions[2].Width = new GridLength(0);
                         }
@@ -420,12 +420,14 @@ namespace DataObra.Presupuestos.Ventanas
                         {
                         gridBase.ColumnDefinitions[1].Width = new GridLength(1, GridUnitType.Auto);
                         gridBase.ColumnDefinitions[2].Width = _maestroCol2Width ?? new GridLength(600);
+                        if (vListado.IsChecked == true)
+                        {
+                            vListado.IsChecked = false;
                         }
+                    }
                     else
                         {
-                        if (_maestroCol2Width == null)
-                            _maestroCol2Width = gridBase.ColumnDefinitions[2].Width;
-
+                        _maestroCol2Width = gridBase.ColumnDefinitions[2].Width;
                         gridBase.ColumnDefinitions[1].Width = new GridLength(0);
                         gridBase.ColumnDefinitions[2].Width = new GridLength(0);
                         }

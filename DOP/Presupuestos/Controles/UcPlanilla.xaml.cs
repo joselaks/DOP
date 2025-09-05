@@ -224,51 +224,57 @@ namespace DOP.Presupuestos.Controles
 
         private void Agregar_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is DropDownMenuItem boton)
+            string? accion = null;
+
+            // Detectar si el evento viene de un DropDownMenuItem (Ribbon) o MenuItem (ContextMenu)
+            if (sender is DropDownMenuItem dropDown)
             {
-                switch (boton.Name)
-                {
-                    case "Rubro":
-                        // Lógica para agregar Rubro
-                        var (nuevoNodo, mensaje) = Objeto.agregaNodo("R", null);
-                        break;
-                    case "Tarea":
-                        // Lógica para agregar Tarea
-                        if (this.grillaArbol.SelectedItem == null)
-                        {
-                            MessageBox.Show("debe seleccionar un rubro para la tarea");
-                        }
-                        else
-                        {
-                            Bibioteca.Clases.Nodo sele = this.grillaArbol.SelectedItem as Bibioteca.Clases.Nodo; //obtine contenido
-                            if (sele.Tipo != "R")
-                            {
-                                MessageBox.Show("debe seleccionar un rubro para la tarea");
-                            }
-                            else
-                            {
-                                Objeto.agregaNodo("T", sele);
+                accion = dropDown.Name;
+            }
+            else if (sender is MenuItem menuItem)
+            {
+                // Puedes usar Name si lo defines, o Header si solo usas el texto
+                accion = menuItem.Name;
+                if (string.IsNullOrEmpty(accion) && menuItem.Header is string header)
+                    accion = header;
+            }
 
+            switch (accion)
+            {
+                case "Rubro":
+                case "menuAgregarRubro":
+                case "Agregar Rubro":
+                    Objeto.agregaNodo("R", null);
+                    break;
+                case "Tarea":
+                case "menuAgregarTarea":
+                case "Agregar Tarea":
+                    if (this.grillaArbol.SelectedItem is Nodo sele && sele.Tipo == "R")
+                    {
+                        Objeto.agregaNodo("T", sele);
 
-                                // Obtener la vista del árbol
-                                var view = grillaArbol.View;
-                                if (view != null && sele != null)
-                                {
-                                    var node = FindNodeByData(view.Nodes, sele);
-                                    if (node != null && !node.IsExpanded)
-                                    {
-                                        grillaArbol.ExpandNode(node);
-                                    }
-                                }
+                        // Expandir el nodo Rubro si no está expandido
+                        var view = grillaArbol.View;
+                        if (view != null)
+                        {
+                            var node = FindNodeByData(view.Nodes, sele);
+                            if (node != null && !node.IsExpanded)
+                            {
+                                grillaArbol.ExpandNode(node);
                             }
                         }
-                        break;
-                    default:
-                        // Otro caso
-                        break;
-                }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Debe seleccionar un rubro para agregar una tarea.");
+                    }
+                    break;
+                default:
+                    // Otro caso o no reconocido
+                    break;
             }
         }
+
 
         private TreeNode? FindNodeByData(IEnumerable<TreeNode> nodes, object data)
         {
@@ -510,7 +516,7 @@ namespace DOP.Presupuestos.Controles
         {
             Objeto.NumeraItems(Objeto.Arbol, "");
         }
-       
+
 
         private void Vistas_Click(object sender, RoutedEventArgs e)
         {
@@ -613,18 +619,18 @@ namespace DOP.Presupuestos.Controles
 
     }
     public class Cambios
-        {
-            public string TipoCambio { get; set; }
-            public Nodo antesCambio { get; set; }
-            public Nodo despuesCambio { get; set; }
-            public string PropiedadCambiada { get; set; }
-            public object OldValue { get; set; }
-            public object NewValue { get; set; }
-            public Nodo NodoPadre { get; set; }
-            public Nodo NodoMovido { get; set; }
-            public Nodo NodoPadreNuevo { get; set; }
-            public Nodo NodoPadreAnterior { get; set; }
-            public int Posicion { get; set; }
-        }
+    {
+        public string TipoCambio { get; set; }
+        public Nodo antesCambio { get; set; }
+        public Nodo despuesCambio { get; set; }
+        public string PropiedadCambiada { get; set; }
+        public object OldValue { get; set; }
+        public object NewValue { get; set; }
+        public Nodo NodoPadre { get; set; }
+        public Nodo NodoMovido { get; set; }
+        public Nodo NodoPadreNuevo { get; set; }
+        public Nodo NodoPadreAnterior { get; set; }
+        public int Posicion { get; set; }
     }
+}
 
