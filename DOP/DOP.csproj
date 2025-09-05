@@ -23,11 +23,13 @@
     <None Remove="Imagenes\Expandir24.png" />
     <None Remove="Imagenes\Guardar.png" />
     <None Remove="Imagenes\Guardar48.png" />
+    <None Remove="Imagenes\GuardarSalir.png" />
     <None Remove="Imagenes\Importar.png" />
     <None Remove="Imagenes\ManoDeObra.png" />
     <None Remove="Imagenes\Material.png" />
     <None Remove="Imagenes\Otros.png" />
     <None Remove="Imagenes\Rubro.png" />
+    <None Remove="Imagenes\Salir.png" />
     <None Remove="Imagenes\Subcontratos.png" />
     <None Remove="Imagenes\Tarea.png" />
   </ItemGroup>
@@ -59,11 +61,13 @@
     <Resource Include="Imagenes\Expandir24.png" />
     <Resource Include="Imagenes\Guardar.png" />
     <Resource Include="Imagenes\Guardar48.png" />
+    <Resource Include="Imagenes\GuardarSalir.png" />
     <Resource Include="Imagenes\Importar.png" />
     <Resource Include="Imagenes\ManoDeObra.png" />
     <Resource Include="Imagenes\Material.png" />
     <Resource Include="Imagenes\Otros.png" />
     <Resource Include="Imagenes\Rubro.png" />
+    <Resource Include="Imagenes\Salir.png" />
     <Resource Include="Imagenes\Subcontratos.png" />
     <Resource Include="Imagenes\Tarea.png" />
   </ItemGroup>

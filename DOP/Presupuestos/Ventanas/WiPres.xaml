@@ -57,13 +57,13 @@
                         Click="BtnGuardar_Click"
                         x:Name="BtnGuardarSalir"
                         Label="Guardar y Salir"
-                        LargeIcon="pack://application:,,,/Imagenes/Guardar48.png"
+                        LargeIcon="pack://application:,,,/Imagenes/GuardarSalir.png"
                         SizeForm="Large" />
                     <syncfusion:RibbonButton
                         Click="BtnGuardar_Click"
                         x:Name="BtnSalir"
                         Label="Salir sin cambios"
-                        LargeIcon="pack://application:,,,/Imagenes/Guardar48.png"
+                        LargeIcon="pack://application:,,,/Imagenes/Salir.png"
                         SizeForm="Large" />
 
 

@@ -99,11 +99,12 @@
                         TextAlignment="Center"
                         TextWrapping="Wrap" />
                     <Button
-                        Height="20"
                         x:Name="bAltaUsuario"
+                        Height="20"
                         Background="#007ACC"
+                        Click="bAltaUsuario_Click"
                         Content="Alta de nuevo Usuario"
-                        Foreground="White" Click="bAltaUsuario_Click" />
+                        Foreground="White" />
 
 
 
