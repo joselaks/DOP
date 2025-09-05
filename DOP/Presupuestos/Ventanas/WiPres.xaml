@@ -49,16 +49,31 @@
                     IsLauncherButtonVisible="False">
                     <syncfusion:RibbonButton
                         Click="BtnGuardar_Click"
+                        x:Name="BrnGuardar"
                         Label="Guardar"
                         LargeIcon="pack://application:,,,/Imagenes/Guardar48.png"
                         SizeForm="Large" />
+                    <syncfusion:RibbonButton
+                        Click="BtnGuardar_Click"
+                        x:Name="BtnGuardarSalir"
+                        Label="Guardar y Salir"
+                        LargeIcon="pack://application:,,,/Imagenes/Guardar48.png"
+                        SizeForm="Large" />
+                    <syncfusion:RibbonButton
+                        Click="BtnGuardar_Click"
+                        x:Name="BtnSalir"
+                        Label="Salir sin cambios"
+                        LargeIcon="pack://application:,,,/Imagenes/Guardar48.png"
+                        SizeForm="Large" />
+
+
                     <syncfusion:RibbonButton
                         x:Name="btnFiebdc"
                         Click="btnFiebdc_Click"
                         Label="Importar FIEBDC"
                         LargeIcon="pack://application:,,,/Imagenes/Importar.png"
                         SizeForm="Large"
-                        Visibility="Visible" />
+                        Visibility="Collapsed" />
                 </syncfusion:RibbonBar>
 
 

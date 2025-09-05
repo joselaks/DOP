@@ -48,6 +48,7 @@ namespace DataObra.Presupuestos.Ventanas
         private GridLength? _detalleRow2Height;
         private GridLength? _listadoCol2Width;
         private GridLength? _maestroCol2Width;
+        private bool _cierreSolicitadoPorUsuario = false;
 
         public WiPres(PresupuestoDTO? _encabezado, List<ConceptoDTO> conceptos, List<RelacionDTO> relaciones, ObservableCollection<PresupuestoDTO> presupuestosRef)
             {
@@ -92,17 +93,27 @@ namespace DataObra.Presupuestos.Ventanas
 
         }
 
+        private void SolicitarCierre()
+        {
+            _cierreSolicitadoPorUsuario = true;
+            this.Close();
+        }
+
+
         private void WiPres_Closing(object? sender, CancelEventArgs e)
         {
-            // Ejemplo: Confirmar cierre
-            var result = MessageBox.Show("¿Está seguro que desea cerrar el presupuesto?", "Confirmar cierre", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (result != MessageBoxResult.Yes)
+            // Solo preguntar si el cierre NO fue solicitado explícitamente por el usuario desde los botones del Ribbon
+            if (!_cierreSolicitadoPorUsuario)
             {
-                e.Cancel = true; // Cancela el cierre
+                var result = MessageBox.Show("¿Está seguro que desea cerrar el presupuesto?", "Confirmar cierre", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result != MessageBoxResult.Yes)
+                {
+                    e.Cancel = true; // Cancela el cierre
+                }
             }
-
-            // Aquí puedes agregar lógica adicional, como guardar cambios, liberar recursos, etc.
+            // Si _cierreSolicitadoPorUsuario es true, no pregunta y deja cerrar.
         }
+
 
         private void WiPres_Loaded(object sender, RoutedEventArgs e)
         {
@@ -115,24 +126,54 @@ namespace DataObra.Presupuestos.Ventanas
 
         private async void BtnGuardar_Click(object sender, RoutedEventArgs e)
         {
+            if (sender is RibbonButton boton)
+            {
+                switch (boton.Name)
+                {
+                    case "BrnGuardar":
+                        if (await GuardarPresupuestoAsync())
+                            MessageBox.Show("Presupuesto guardado correctamente.", "Guardar", MessageBoxButton.OK, MessageBoxImage.Information);
+                        break;
+                    case "BtnGuardarSalir":
+                        var resultGuardarSalir = MessageBox.Show(
+                            "¿Desea guardar los cambios y salir?",
+                            "Confirmar",
+                            MessageBoxButton.YesNo,
+                            MessageBoxImage.Question);
+                        if (resultGuardarSalir == MessageBoxResult.Yes)
+                        {
+                            if (await GuardarPresupuestoAsync())
+                                SolicitarCierre();
+                        }
+                        break;
+                    case "BtnSalir":
+                        var resultSalir = MessageBox.Show(
+                            "¿Está seguro que desea salir sin guardar los cambios?",
+                            "Confirmar salida",
+                            MessageBoxButton.YesNo,
+                            MessageBoxImage.Warning);
+                        if (resultSalir == MessageBoxResult.Yes)
+                            SolicitarCierre();
+                        break;
+                }
+            }
+        }
 
+
+        private async Task<bool> GuardarPresupuestoAsync()
+        {
+            // Actualiza totales y fechas
             Objeto.encabezado.PrEjecTotal = Objeto.Arbol.Sum(i => i.Importe1);
             Objeto.encabezado.FechaM = DateTime.Now;
             DateTime? selectedDate = pMesBase.Value;
             if (selectedDate.HasValue)
-                {
-                // Extraer mes y año
+            {
                 int mes = selectedDate.Value.Month;
                 int año = selectedDate.Value.Year;
-
-                // Día que querés agregar (por ejemplo, el día 15)
                 int dia = 1;
-
-                // Crear nueva fecha con ese día
                 DateTime nuevaFecha = new DateTime(año, mes, dia);
-
                 Objeto.encabezado.MesBase = nuevaFecha;
-                }
+            }
 
             ProcesaPresupuestoRequest oGrabar = Objeto.EmpaquetarPresupuesto();
 
@@ -141,16 +182,12 @@ namespace DataObra.Presupuestos.Ventanas
 
             if (resultado.Success)
             {
-                // --- ACTUALIZACIÓN DE LISTAS PARA PRÓXIMA EJECUCIÓN ---
+                // Actualiza listas para próxima ejecución
                 Objeto.listaConceptosLeer = Objeto.listaConceptosGrabar.Select(x => x).ToList();
                 Objeto.listaRelacionesLeer = Objeto.listaRelacionesGrabar.Select(x => x).ToList();
 
-                MessageBox.Show($"Presupuesto guardado correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-
-
                 if (Objeto.encabezado.ID == null || Objeto.encabezado.ID == 0)
                 {
-                    // Nuevo presupuesto: asignar fecha de creación y ID, luego agregar a la colección
                     Objeto.encabezado.FechaC = DateTime.Today;
                     Objeto.encabezado.ID = resultado.PresupuestoID;
                     var superficie = Objeto.encabezado.Superficie ?? 0;
@@ -163,11 +200,9 @@ namespace DataObra.Presupuestos.Ventanas
                 }
                 else
                 {
-                    // Edición: buscar y reemplazar en la colección
                     var existente = _presupuestosRef.FirstOrDefault(p => p.ID == Objeto.encabezado.ID);
                     if (existente != null)
                     {
-                        // Copia los valores de Objeto.encabezado (la copia) al objeto original
                         existente.Descrip = Objeto.encabezado.Descrip;
                         existente.FechaC = Objeto.encabezado.FechaC;
                         existente.FechaM = Objeto.encabezado.FechaM;
@@ -175,29 +210,27 @@ namespace DataObra.Presupuestos.Ventanas
                         existente.PrEjecTotal = Objeto.encabezado.PrEjecTotal;
                         existente.Superficie = Objeto.encabezado.Superficie;
                         existente.EsModelo = Objeto.encabezado.EsModelo;
-
-                        // Recalcular ValorM2 de forma segura
                         if (existente.Superficie.HasValue && existente.Superficie.Value > 0)
                             existente.ValorM2 = Math.Round(existente.PrEjecTotal / existente.Superficie.Value, 2);
                         else
                             existente.ValorM2 = 0;
-
-
-
-                        // ... y el resto de propiedades
                     }
                     else
                     {
-                        // Si no se encuentra, lo agrega (caso raro)
                         _presupuestosRef.Add(Objeto.encabezado);
                     }
                 }
+                return true;
             }
             else
             {
                 MessageBox.Show($"Error al guardar el presupuesto: {resultado.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
             }
         }
+
+
+
 
         private void btnFiebdc_Click(object sender, RoutedEventArgs e)
         {
