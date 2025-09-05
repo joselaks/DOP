@@ -142,14 +142,44 @@ namespace DOP.Presupuestos.Controles
 
 
         public void MostrarInferiores(Nodo analizado)
-            {
+        {
             NodoAnalizado = analizado;
             grillaDetalle.ItemsSource = NodoAnalizado.Inferiores;
             nombreTarea.Text = NodoAnalizado.Descripcion;
-            // Asignar el valor explícitamente al HeaderText
             colImporte1.HeaderText = $"{NodoAnalizado.PU1.ToString("N2", cultura)}";
+        }
 
+        // Sobrecarga para buscar por ID
+        public void MostrarInferiores(string id)
+        {
+            var nodo = BuscarNodoPorId(Objeto.Arbol, id);
+            if (nodo != null)
+            {
+                MostrarInferiores(nodo);
             }
+            else
+            {
+                MessageBox.Show($"No se encontró el nodo con ID: {id}", "Nodo no encontrado", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        // Método auxiliar para búsqueda recursiva
+        private Nodo BuscarNodoPorId(IEnumerable<Nodo> nodos, string id)
+        {
+            foreach (var nodo in nodos)
+            {
+                if (nodo.ID == id)
+                    return nodo;
+                if (nodo.Inferiores != null && nodo.Inferiores.Count > 0)
+                {
+                    var encontrado = BuscarNodoPorId(nodo.Inferiores, id);
+                    if (encontrado != null)
+                        return encontrado;
+                }
+            }
+            return null;
+        }
+
 
         private void grillaDetalle_CurrentCellBeginEdit(object sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridCurrentCellBeginEditEventArgs e)
             {

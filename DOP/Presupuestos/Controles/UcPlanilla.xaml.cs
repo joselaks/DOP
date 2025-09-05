@@ -446,12 +446,24 @@ namespace DOP.Presupuestos.Controles
 
         private void grillaArbol_SelectionChanged(object sender, GridSelectionChangedEventArgs e)
         {
-            if (grillaArbol.SelectedItem is Nodo nodoSeleccionado && Dosaje != null && nodoSeleccionado.Tipo == "T")
-            {
-                Dosaje.MostrarInferiores(nodoSeleccionado);
-            }
+            if (Dosaje == null)
+                return;
 
+            if (grillaArbol.SelectedItem is Nodo nodoSeleccionado && nodoSeleccionado.Tipo == "T")
+            {
+                // Si el ItemsSource es Objeto.Arbol, pasamos el nodo directamente
+                if (ReferenceEquals(grillaArbol.ItemsSource, Objeto.Arbol))
+                {
+                    Dosaje.MostrarInferiores(nodoSeleccionado);
+                }
+                // Si el ItemsSource es Objeto.Tareas, pasamos el ID
+                else if (ReferenceEquals(grillaArbol.ItemsSource, Objeto.Tareas))
+                {
+                    Dosaje.MostrarInferiores(nodoSeleccionado.ID);
+                }
+            }
         }
+
 
         private void expandir_Click(object sender, RoutedEventArgs e)
         {

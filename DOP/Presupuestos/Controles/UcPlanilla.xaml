@@ -107,7 +107,7 @@
                 <syncfusion:DropDownMenuItem
                     x:Name="ExpandirTodo"
                     Click="expandir_Click"
-                    Header="Expandir todo" />
+                    Header="Ver Insumos" />
             </syncfusion:DropDownButton>
 
             <syncfusion:DropDownButton
