@@ -21,6 +21,7 @@ namespace Biblioteca.DTO
         public DateTime Fecha { get; set; }
         public decimal Precio { get; set; }
         public string Moneda { get; set; }
+        public string Nota { get; set; }
         // Si necesitas soportar operaciones tipo 'A', 'M', 'B' puedes agregar:
         public char? Accion { get; set; }
         }

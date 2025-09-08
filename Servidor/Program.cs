@@ -313,6 +313,26 @@ ins.MapGet("/articulos/busqueda", async (
         return Results.BadRequest(new { Message = ex.Message });
     }
 }).RequireAuthorization();
+
+ins.MapPost("/articulos/lista/editar", async (ProcesarArticulosPorListaRequest request, rInsumos repo) =>
+{
+    try
+        {
+        await repo.EditarArticulosAsync(request.ListaID, request.Articulos);
+        return Results.Ok(new { Success = true, Message = "Artículos editados correctamente." });
+        }
+    catch (Exception ex)
+        {
+        return Results.BadRequest(new { Success = false, Message = ex.Message });
+        }
+}).RequireAuthorization();
+
+
+
+
+
+
+
 #endregion
 
 

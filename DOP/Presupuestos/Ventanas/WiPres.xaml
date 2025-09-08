@@ -48,20 +48,20 @@
                     Header="Guardar"
                     IsLauncherButtonVisible="False">
                     <syncfusion:RibbonButton
-                        Click="BtnGuardar_Click"
                         x:Name="BrnGuardar"
+                        Click="BtnGuardar_Click"
                         Label="Guardar"
                         LargeIcon="pack://application:,,,/Imagenes/Guardar48.png"
                         SizeForm="Large" />
                     <syncfusion:RibbonButton
-                        Click="BtnGuardar_Click"
                         x:Name="BtnGuardarSalir"
+                        Click="BtnGuardar_Click"
                         Label="Guardar y Salir"
                         LargeIcon="pack://application:,,,/Imagenes/GuardarSalir.png"
                         SizeForm="Large" />
                     <syncfusion:RibbonButton
-                        Click="BtnGuardar_Click"
                         x:Name="BtnSalir"
+                        Click="BtnGuardar_Click"
                         Label="Salir sin cambios"
                         LargeIcon="pack://application:,,,/Imagenes/Salir.png"
                         SizeForm="Large" />

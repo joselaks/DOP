@@ -127,51 +127,113 @@ namespace Servidor.Repositorios
                 }
             }
 
-        public async Task EliminarArticulosListaYArticulosAsync                                                                                                                                                                             (int listaID)
-        {
-            using (var db = new SqlConnection(_connectionString))
+        public async Task EliminarArticulosListaYArticulosAsync(int listaID)
             {
+            using (var db = new SqlConnection(_connectionString))
+                {
                 var parameters = new DynamicParameters();
                 parameters.Add("@ListaID", listaID, DbType.Int32);
 
                 try
-                {
+                    {
                     await db.ExecuteAsync(
                         "EliminarArticulosListaYArticulos",
                         parameters,
                         commandType: CommandType.StoredProcedure);
-                }
+                    }
                 catch (SqlException ex)
-                {
+                    {
                     throw new Exception($"Error al eliminar la lista y sus artículos asociados (ListaID: {listaID}): {ex.Message}", ex);
+                    }
                 }
             }
-        }
 
         public async Task<List<ArticuloBusquedaDTO>> BuscarArticulosAsync(int usuarioID, string tipoID, string descripBusqueda)
-        {
-            using (var db = new SqlConnection(_connectionString))
             {
+            using (var db = new SqlConnection(_connectionString))
+                {
                 var parameters = new DynamicParameters();
                 parameters.Add("@UsuarioID", usuarioID, DbType.Int32);
                 parameters.Add("@TipoID", tipoID, DbType.AnsiStringFixedLength, size: 1);
                 parameters.Add("@DescripBusqueda", descripBusqueda, DbType.AnsiString, size: 65);
 
                 try
-                {
+                    {
                     var result = await db.QueryAsync<ArticuloBusquedaDTO>(
                         "BusquedaArticulos",
                         parameters,
                         commandType: CommandType.StoredProcedure);
 
                     return result.ToList();
-                }
+                    }
                 catch (SqlException ex)
-                {
+                    {
                     throw new Exception($"Error al buscar artículos: {ex.Message}", ex);
+                    }
                 }
             }
-        }
+
+        public async Task EditarArticulosAsync(int listaID, IEnumerable<ArticuloDTO> articulos)
+            {
+            using (var db = new SqlConnection(_connectionString))
+                {
+                // Crear DataTable para el parámetro tipo tabla
+                var table = new DataTable();
+                table.Columns.Add("ID", typeof(int));
+                table.Columns.Add("CuentaID", typeof(short));
+                table.Columns.Add("UsuarioID", typeof(int));
+                table.Columns.Add("ListaID", typeof(short));
+                table.Columns.Add("EntidadID", typeof(int));
+                table.Columns.Add("TipoID", typeof(string));
+                table.Columns.Add("Descrip", typeof(string));
+                table.Columns.Add("Unidad", typeof(string));
+                table.Columns.Add("UnidadFactor", typeof(decimal));
+                table.Columns.Add("Codigo", typeof(string));
+                table.Columns.Add("Fecha", typeof(DateTime));
+                table.Columns.Add("Precio", typeof(decimal));
+                table.Columns.Add("Moneda", typeof(string));
+                table.Columns.Add("Nota", typeof(string));
+                table.Columns.Add("Accion", typeof(string));
+
+                foreach (var art in articulos)
+                    {
+                    table.Rows.Add(
+                        art.ID,
+                        art.CuentaID,
+                        art.UsuarioID,
+                        art.ListaID,
+                        art.EntidadID ?? (object)DBNull.Value,
+                        art.TipoID,
+                        art.Descrip,
+                        art.Unidad,
+                        art.UnidadFactor,
+                        art.Codigo,
+                        art.Fecha,
+                        art.Precio,
+                        art.Moneda,
+                        art.Nota,
+                        art.Accion?.ToString()
+                    );
+                    }
+
+                var parameters = new DynamicParameters();
+                parameters.Add("@ListaID", listaID, DbType.Int32);
+                parameters.Add("@Articulos", table.AsTableValuedParameter("dbo.ArticuloEditarTableType"));
+
+                try
+                    {
+                    await db.ExecuteAsync(
+                        "EditarArticulos",
+                        parameters,
+                        commandType: CommandType.StoredProcedure);
+                    }
+                catch (SqlException ex)
+                    {
+                    throw new Exception($"Error al editar los artículos para la lista {listaID}: {ex.Message}", ex);
+                    }
+                }
+            }
+
         }
 
     // Procesar artículos para una lista específica
