@@ -341,6 +341,7 @@
 
                     <syncfusion:TreeGridNumericColumn
                         Width="60"
+                        CellStyle="{StaticResource TipoCellStyle}"
                         HeaderText="Incidencia"
                         MappingName="Incidencia"
                         NumberDecimalDigits="2"

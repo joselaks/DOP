@@ -301,13 +301,13 @@ namespace DOP.Interfaz.Ventanas
             }
 
         private void bAltaUsuario_Click(object sender, RoutedEventArgs e)
-            {
-            WiEscritorio escritorio = new WiEscritorio()
-                {
-                WindowStartupLocation = WindowStartupLocation.CenterScreen
-                };
-            Application.Current.MainWindow = escritorio;
-            escritorio.Show();
-            }
+        {
+            MessageBox.Show(
+                "En esta versión beta no está habilitada el alta automática de usuarios.",
+                "Funcionalidad no disponible",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information
+            );
+        }
         }
     }
