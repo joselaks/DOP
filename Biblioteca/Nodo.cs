@@ -11,6 +11,7 @@ namespace Bibioteca.Clases
         private bool sup;
         private string id;
         private string item;
+        private decimal incidencia;
         private int ordenInt;
         private string descripcion;
         private string unidad;
@@ -36,6 +37,7 @@ namespace Bibioteca.Clases
         private ObservableCollection<Nodo> inferiores;
 
         public string Item { get => item; set { item = value; OnPropertyChanged(nameof(Item)); } }
+        public decimal Incidencia { get => incidencia; set { incidencia = value; OnPropertyChanged(nameof(Incidencia)); } }
         public bool Sup { get => sup; set { sup = value; OnPropertyChanged(nameof(Sup)); } }
         public string ID { get => id; set { id = value; OnPropertyChanged(nameof(ID)); } }
         public int OrdenInt { get => ordenInt; set { ordenInt = value; OnPropertyChanged(nameof(OrdenInt)); } }

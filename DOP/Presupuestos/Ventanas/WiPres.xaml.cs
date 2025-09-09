@@ -333,12 +333,6 @@ namespace DataObra.Presupuestos.Ventanas
             {
 
             }
-
-        private void Recnumerar_Click(object sender, RoutedEventArgs e)
-            {
-
-            }
-
       
 
         private void ventanas_Checked(object sender, RoutedEventArgs e)
@@ -433,6 +427,17 @@ namespace DataObra.Presupuestos.Ventanas
                         }
                     }
                 }
+            }
+
+        private void Incidencias_Click(object sender, RoutedEventArgs e)
+            {
+            Objeto.CalcularIncidencia();
+            }
+
+        private void Renumerar_Click(object sender, RoutedEventArgs e)
+            {
+                 Objeto.NumeraItems(Objeto.Arbol, "");
+
             }
         }
 }

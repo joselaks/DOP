@@ -192,9 +192,15 @@
                         SizeForm="Small"
                         SmallIcon="pack://application:,,,/Imagenes/Otros.png" />
                     <syncfusion:RibbonButton
-                        x:Name="Recnumerar"
-                        Click="Recnumerar_Click"
+                        x:Name="Renumerar"
+                        Click="Renumerar_Click"
                         Label="Renumerar"
+                        SizeForm="Small"
+                        SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
+                    <syncfusion:RibbonButton
+                        x:Name="Incidencias"
+                        Click="Incidencias_Click"
+                        Label="Incidencias"
                         SizeForm="Small"
                         SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
 

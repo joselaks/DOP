@@ -816,6 +816,40 @@ namespace Bibioteca.Clases
                 contador++;
                 }
             }
+        public void CalcularIncidencia()
+            {
+            // 1. Calcular el total de importes de los nodos superiores (por ejemplo, los rubros en Arbol)
+            decimal totalImporteSuperiores = Arbol.Sum(n => n.Importe1);
+
+            // 2. Calcular la incidencia de cada nodo superior respecto al total
+            foreach (var nodoSup in Arbol)
+                {
+                nodoSup.Incidencia = (totalImporteSuperiores == 0) ? 0 : (nodoSup.Importe1 / totalImporteSuperiores) * 100;
+                // 3. Calcular recursivamente la incidencia de los inferiores respecto a su inmediato superior
+                CalcularIncidenciaInferiores(nodoSup);
+                }
+            }
+
+        /// <summary>
+        /// Calcula la incidencia de los nodos inferiores respecto a su inmediato superior.
+        /// </summary>
+        private void CalcularIncidenciaInferiores(Nodo nodoSuperior)
+            {
+            if (nodoSuperior.Inferiores == null || nodoSuperior.Inferiores.Count == 0)
+                return;
+
+            decimal totalImporteInferiores = nodoSuperior.Inferiores.Sum(n => n.Importe1);
+
+            foreach (var nodoInf in nodoSuperior.Inferiores)
+                {
+                nodoInf.Incidencia = (totalImporteInferiores == 0) ? 0 : (nodoInf.Importe1 / totalImporteInferiores) * 100;
+                // Llamada recursiva para los siguientes niveles
+                CalcularIncidenciaInferiores(nodoInf);
+                }
+            }
+
+
+
 
         public Nodo FindParentNode(IEnumerable<Nodo> items, Nodo inferior, Nodo superior)
             {

@@ -517,6 +517,11 @@ namespace DOP.Presupuestos.Controles
             Objeto.NumeraItems(Objeto.Arbol, "");
         }
 
+        public void CalcularIncidencia()
+            {
+
+            }
+
 
         private void Vistas_Click(object sender, RoutedEventArgs e)
         {

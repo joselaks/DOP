@@ -111,25 +111,25 @@
             </syncfusion:DropDownButton>
 
             <syncfusion:DropDownButton
-    Name="_dropVistas"
-    Width="100"
-    BorderBrush="Black"
-    BorderThickness="1"
-    Label="Vistas"
-    SizeForm="Small"
-    SmallIcon="pack://application:,,,/Imagenes/Expandir24.png">
+                Name="_dropVistas"
+                Width="100"
+                BorderBrush="Black"
+                BorderThickness="1"
+                Label="Vistas"
+                SizeForm="Small"
+                SmallIcon="pack://application:,,,/Imagenes/Expandir24.png">
                 <syncfusion:DropDownMenuItem
-        x:Name="RT"
-        Click="Vistas_Click"
-        Header="Rubros y tareas" />
+                    x:Name="RT"
+                    Click="Vistas_Click"
+                    Header="Rubros y tareas" />
                 <syncfusion:DropDownMenuItem
-        x:Name="R"
-        Click="Vistas_Click"
-        Header="Solo Rubros" />
+                    x:Name="R"
+                    Click="Vistas_Click"
+                    Header="Solo Rubros" />
                 <syncfusion:DropDownMenuItem
-x:Name="T"
-Click="Vistas_Click"
-Header="Solo Tareas" />
+                    x:Name="T"
+                    Click="Vistas_Click"
+                    Header="Solo Tareas" />
 
 
             </syncfusion:DropDownButton>
@@ -161,8 +161,14 @@ Header="Solo Tareas" />
 
             <syncfusion:SfTreeGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Agregar Rubro" Name="menuAgregarRubro" Click="Agregar_Click"/>
-                    <MenuItem Header="Agregar Tarea" Name="menuAgregarTarea" Click="Agregar_Click"/>
+                    <MenuItem
+                        Name="menuAgregarRubro"
+                        Click="Agregar_Click"
+                        Header="Agregar Rubro" />
+                    <MenuItem
+                        Name="menuAgregarTarea"
+                        Click="Agregar_Click"
+                        Header="Agregar Tarea" />
                 </ContextMenu>
             </syncfusion:SfTreeGrid.ContextMenu>
 
@@ -183,14 +189,14 @@ Header="Solo Tareas" />
                     </syncfusion:StackedHeaderRow.StackedColumns>
                 </syncfusion:StackedHeaderRow>
             </syncfusion:SfTreeGrid.StackedHeaderRows>
-            
-            
-            
+
+
+
 
             <syncfusion:SfTreeGrid.Columns>
                 <syncfusion:TreeGridColumns>
-                    
-                    
+
+
 
                     <syncfusion:TreeGridTextColumn Width="50" MappingName="Item" />
 
@@ -332,6 +338,15 @@ Header="Solo Tareas" />
                         Width="50"
                         IsHidden="false"
                         MappingName="Tipo" />
+
+                    <syncfusion:TreeGridNumericColumn
+                        Width="60"
+                        HeaderText="Incidencia"
+                        MappingName="Incidencia"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3" />
 
 
 
