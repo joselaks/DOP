@@ -4,14 +4,17 @@ using DataObra.Interfaz.Ventanas;
 using DOP;
 using DOP.Datos;
 using DOP.Presupuestos.Ventanas;
+using Syncfusion.UI.Xaml.Grid;
 using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Syncfusion.UI.Xaml.ScrollAxis;
+
 
 namespace DataObra.Interfaz.Componentes
-{
+    {
     /// <summary>
     /// Lógica de interacción para xPrecios.xaml
     /// </summary>
@@ -21,22 +24,23 @@ namespace DataObra.Interfaz.Componentes
         private List<ArticuloExceDTO> articulosImportados = new();
         public bool HayArticulosImportados => articulosImportados != null && articulosImportados.Count > 0;
         public event PropertyChangedEventHandler PropertyChanged;
+        private List<ArticuloDTO> ArticulosOrigen = new();
         private void OnPropertyChanged(string propertyName)
             {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
 
         public xPrecios(WiEscritorio _escritorio)
-        {
+            {
             InitializeComponent();
             escritorio = _escritorio;
             this.DataContext = escritorio;
             }
 
         private void Button_Click(object sender, RoutedEventArgs e)
-        {
+            {
             escritorio.CambioEstado("nPrecios", "Normal");
-        }
+            }
 
         private void ExcelDropZone_DragEnter(object sender, DragEventArgs e)
             {
@@ -111,7 +115,7 @@ namespace DataObra.Interfaz.Componentes
 
                     foreach (var row in ws.RowsUsed().Skip(1)) // Salta la cabecera
                         {
-                        // Validar que las celdas existen y no son nulas
+                        // Validar que las celdas existentes y no son nulas
                         var cell1 = row.Cell(1);
                         var cell2 = row.Cell(2);
                         var cell3 = row.Cell(3);
@@ -153,6 +157,25 @@ namespace DataObra.Interfaz.Componentes
                     foreach (var art in articulos)
                         escritorio.ArticulosLista.Add(art);
                     GrillaArticulosLista.ItemsSource = escritorio.ArticulosLista;
+
+                    // Copia profunda para comparación posterior
+                    ArticulosOrigen = articulos.Select(a => new ArticuloDTO
+                        {
+                        ID = a.ID,
+                        CuentaID = a.CuentaID,
+                        UsuarioID = a.UsuarioID,
+                        ListaID = a.ListaID,
+                        EntidadID = a.EntidadID,
+                        TipoID = a.TipoID,
+                        Descrip = a.Descrip,
+                        Unidad = a.Unidad,
+                        UnidadFactor = a.UnidadFactor,
+                        Codigo = a.Codigo,
+                        Fecha = a.Fecha,
+                        Precio = a.Precio,
+                        Moneda = a.Moneda,
+                        Nota = a.Nota
+                        }).ToList();
                     }
                 else
                     {
@@ -298,13 +321,6 @@ namespace DataObra.Interfaz.Componentes
                     MessageBox.Show($"No se pudo crear la lista: {message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
-
-
-
-
-
-
-
             }
 
         private async void BtnBuscarPrecios_Click(object sender, RoutedEventArgs e)
@@ -361,6 +377,209 @@ namespace DataObra.Interfaz.Componentes
                 }
             }
 
+        private void BtnBorrarArticulo_Click(object sender, RoutedEventArgs e)
+        {
+            if (GrillaArticulosLista.SelectedItem is Biblioteca.DTO.ArticuloDTO seleccionado &&
+                GrillaArticulosLista.ItemsSource is System.Collections.IList lista)
+            {
+                var result = MessageBox.Show(
+                    $"¿Está seguro que desea borrar el artículo '{seleccionado.Descrip}'?",
+                    "Confirmar borrado",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    lista.Remove(seleccionado);
+                }
+            }
+        }
+
+        private void GrillaArticulosLista_KeyDown(object sender, KeyEventArgs e)
+            {
+            if (e.Key == Key.Delete)
+                {
+                if (GrillaArticulosLista.SelectedItem is Biblioteca.DTO.ArticuloDTO seleccionado &&
+                    GrillaArticulosLista.ItemsSource is System.Collections.IList lista)
+                    {
+                    var result = MessageBox.Show(
+                        $"¿Está seguro que desea borrar el artículo '{seleccionado.Descrip}'?",
+                        "Confirmar borrado",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Warning);
+
+                    if (result == MessageBoxResult.Yes)
+                        {
+                        lista.Remove(seleccionado);
+                        e.Handled = true;
+                        }
+                    }
+                }
+            }
+
+
+
+        private void BtnAgregarArticulo_Click(object sender, RoutedEventArgs e)
+            {
+            if (GrillaArticulosLista.ItemsSource is System.Collections.IList lista)
+                {
+                var nuevo = new Biblioteca.DTO.ArticuloDTO
+                    {
+                    Fecha = DateTime.Now
+                    };
+                lista.Add(nuevo);
+
+                // Selecciona la nueva fila
+                int rowIndex = GrillaArticulosLista.ResolveToRowIndex(nuevo);
+                if (rowIndex > 0)
+                    {
+                    GrillaArticulosLista.SelectedIndex = rowIndex - 1; // 0-based
+                    var cellIndex = new RowColumnIndex(rowIndex, 1); // 1 = primera columna visible
+                    GrillaArticulosLista.MoveCurrentCell(cellIndex);
+
+                    // Simula la tecla F2 para iniciar la edición de la celda actual
+                    GrillaArticulosLista.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        var args = new KeyEventArgs(
+                            Keyboard.PrimaryDevice,
+                            PresentationSource.FromVisual(GrillaArticulosLista),
+                            0,
+                            Key.F2)
+                            {
+                            RoutedEvent = Keyboard.KeyDownEvent
+                            };
+                        InputManager.Current.ProcessInput(args);
+                    }));
+                    }
+                }
+            }
+
+        private async void BtnGuardarArticulos_Click(object sender, RoutedEventArgs e)
+            {
+            if (comboListasVer.SelectedValue is int listaID &&
+                GrillaArticulosLista.ItemsSource is System.Collections.IEnumerable items)
+                {
+                var articulosActuales = items.OfType<ArticuloDTO>().ToList();
+                var listaCambios = new List<ArticuloDTO>();
+
+                // Índice por código para búsquedas rápidas
+                var origenPorCodigo = ArticulosOrigen.ToDictionary(a => a.Codigo, a => a);
+                var actualesPorCodigo = articulosActuales.ToDictionary(a => a.Codigo, a => a);
+
+                // Borrados: en origen pero no en actuales
+                foreach (var art in ArticulosOrigen)
+                {
+                    if (!actualesPorCodigo.ContainsKey(art.Codigo))
+                    {
+                        var borrado = new ArticuloDTO
+                        {
+                            Codigo = art.Codigo,
+                            Accion = 'B',
+                            ID = art.ID
+                        };
+                        listaCambios.Add(borrado);
+                    }
+                }
+
+                // Modificados: en ambos pero con algún dato distinto
+                foreach (var art in articulosActuales)
+                {
+                    if (origenPorCodigo.TryGetValue(art.Codigo, out var original))
+                    {
+                        if (
+                            (art.Descrip != original.Descrip) ||
+                            (art.Unidad != original.Unidad) ||
+                            (art.Precio != original.Precio) ||
+                            (art.Fecha != original.Fecha) ||
+                            (art.Nota != original.Nota) ||
+                            (art.Moneda != original.Moneda)
+                        )
+                        {
+                            var modificado = new ArticuloDTO
+                            {
+                                ID = art.ID,
+                                CuentaID = art.CuentaID,
+                                UsuarioID = art.UsuarioID,
+                                ListaID = art.ListaID,
+                                EntidadID = art.EntidadID,
+                                TipoID = art.TipoID,
+                                Descrip = art.Descrip,
+                                Unidad = art.Unidad,
+                                UnidadFactor = art.UnidadFactor,
+                                Codigo = art.Codigo,
+                                Fecha = art.Fecha,
+                                Precio = art.Precio,
+                                Moneda = art.Moneda,
+                                Nota = art.Nota,
+                                Accion = 'M'
+                            };
+                            listaCambios.Add(modificado);
+                        }
+                    }
+                }
+
+                // Agregados: en actuales pero no en origen
+                foreach (var art in articulosActuales)
+                {
+                    if (!origenPorCodigo.ContainsKey(art.Codigo))
+                    {
+                        var agregado = new ArticuloDTO
+                        {
+                            ID = art.ID,
+                            CuentaID = art.CuentaID,
+                            UsuarioID = art.UsuarioID,
+                            ListaID = art.ListaID,
+                            EntidadID = art.EntidadID,
+                            TipoID = art.TipoID,
+                            Descrip = art.Descrip,
+                            Unidad = art.Unidad,
+                            UnidadFactor = art.UnidadFactor,
+                            Codigo = art.Codigo,
+                            Fecha = art.Fecha,
+                            Precio = art.Precio,
+                            Moneda = art.Moneda,
+                            Nota = art.Nota,
+                            Accion = 'A'
+                        };
+                        listaCambios.Add(agregado);
+                    }
+                }
+
+                // Llama al método de guardado solo con los cambios
+                var (success, message) = await DOP.Datos.DatosWeb.EditarArticulosPorListaAsync(listaID, listaCambios);
+
+                MessageBox.Show(message, success ? "Éxito" : "Error", MessageBoxButton.OK,
+                    success ? MessageBoxImage.Information : MessageBoxImage.Error);
+
+                if (success)
+                {
+                    // Actualiza ArticulosOrigen con una copia profunda de los actuales
+                    ArticulosOrigen = articulosActuales.Select(a => new ArticuloDTO
+                    {
+                        ID = a.ID,
+                        CuentaID = a.CuentaID,
+                        UsuarioID = a.UsuarioID,
+                        ListaID = a.ListaID,
+                        EntidadID = a.EntidadID,
+                        TipoID = a.TipoID,
+                        Descrip = a.Descrip,
+                        Unidad = a.Unidad,
+                        UnidadFactor = a.UnidadFactor,
+                        Codigo = a.Codigo,
+                        Fecha = a.Fecha,
+                        Precio = a.Precio,
+                        Moneda = a.Moneda,
+                        Nota = a.Nota
+                        // No copies Accion, ya que es solo para la operación
+                    }).ToList();
+                }
+                }
+            else
+                {
+                MessageBox.Show("Debe seleccionar una lista y tener artículos para guardar.", "Atención", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+
 
         }
-}
+    }

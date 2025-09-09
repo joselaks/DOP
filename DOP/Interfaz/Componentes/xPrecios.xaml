@@ -145,15 +145,38 @@
                             HorizontalAlignment="Left"
                             Click="BtnBuscarLista_Click"
                             Content="Buscar" />
-                    </StackPanel>
+                        <Button
+                            Width="100"
+                            Margin="10,0,0,0"
+                            HorizontalAlignment="Left"
+                            Click="BtnAgregarArticulo_Click"
+                            Content="Agregar" />
+                        <Button
+                            Width="100"
+                            Margin="10,0,0,0"
+                            HorizontalAlignment="Left"
+                            Click="BtnBorrarArticulo_Click"
+                            Content="Borrar" />
+                        <Button
+                            Width="100"
+                            Margin="10,0,0,0"
+                            HorizontalAlignment="Left"
+                            Click="BtnGuardarArticulos_Click"
+                            Content="Guardar" />
 
+
+
+
+                    </StackPanel>
                     <syncfusion:SfDataGrid
                         x:Name="GrillaArticulosLista"
                         Grid.Row="2"
                         Margin="10"
+                        AllowEditing="True"
                         AllowResizingColumns="True"
                         AutoGenerateColumns="False"
-                        IsReadOnly="True">
+                        IsReadOnly="False"
+                        KeyDown="GrillaArticulosLista_KeyDown">
                         <syncfusion:SfDataGrid.Columns>
                             <syncfusion:GridTextColumn
                                 Width="120"
@@ -183,6 +206,10 @@
                                 MappingName="Fecha"
                                 Pattern="ShortDate"
                                 TextAlignment="Center" />
+                            <syncfusion:GridTextColumn
+                                Width="80"
+                                HeaderText="Nota"
+                                MappingName="Nota" />
                         </syncfusion:SfDataGrid.Columns>
                     </syncfusion:SfDataGrid>
                 </Grid>

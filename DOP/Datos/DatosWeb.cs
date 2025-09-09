@@ -313,6 +313,26 @@ namespace DOP.Datos
             );
             return (success, message, data ?? new List<ArticuloBusquedaDTO>());
             }
+
+        public static async Task<(bool Success, string Message)> EditarArticulosPorListaAsync(int listaID, List<ArticuloDTO> articulos)
+            {
+            string url = $"{App.BaseUrl}insumos/articulos/lista/editar";
+            var request = new ProcesarArticulosPorListaRequest { ListaID = listaID, Articulos = articulos };
+            var json = JsonSerializer.Serialize(request, jsonSerializerOptions);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var (success, message, result) = await ExecuteRequestAsync<ResultadoOperacion>(
+                () => httpClient.PostAsync(url, content),
+                "Editar artículos por lista"
+            );
+
+            return (success, message);
+            }
+
+
+
+
+
         }
 
     // Clase auxiliar para deserializar la respuesta del endpoint
