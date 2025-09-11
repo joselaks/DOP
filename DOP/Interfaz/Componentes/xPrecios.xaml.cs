@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Syncfusion.UI.Xaml.ScrollAxis;
+using Syncfusion.UI.Xaml.Grid.Cells;
 
 
 namespace DataObra.Interfaz.Componentes
@@ -36,6 +37,48 @@ namespace DataObra.Interfaz.Componentes
             InitializeComponent();
             escritorio = _escritorio;
             this.DataContext = escritorio;
+            GrillaArticulosLista.AllowEditing = true;
+            // Remove existing TextBox Renderer
+            this.GrillaArticulosLista.CellRenderers.Remove("TextBox");
+            // Add customized TextBox Renderer.
+            this.GrillaArticulosLista.CellRenderers.Add("TextBox", new GridCellTextBoxRendererExt());
+
+            }
+
+        public class GridCellTextBoxRendererExt : GridCellTextBoxRenderer
+            {
+            public override void OnInitializeEditElement(Syncfusion.UI.Xaml.Grid.DataColumnBase dataColumn, TextBox uiElement, object dataContext)
+                {
+                if (dataColumn.GridColumn != null && dataColumn.GridColumn.MappingName == "Codigo")
+                    {
+                    uiElement.MaxLength = 20;
+                    }
+                else if (dataColumn.GridColumn != null && dataColumn.GridColumn.MappingName == "Descrip")
+                    {
+                    uiElement.MaxLength = 65;
+                    }
+                else if (dataColumn.GridColumn != null && dataColumn.GridColumn.MappingName == "Unidad")
+                    {
+                    uiElement.MaxLength = 6;
+                    }
+                else if (dataColumn.GridColumn != null && dataColumn.GridColumn.MappingName == "Precio")
+                    {
+                    uiElement.MaxLength = 20;
+                    }
+                else if (dataColumn.GridColumn != null && dataColumn.GridColumn.MappingName == "Nota")
+                    {
+                    uiElement.MaxLength = 50;
+                    }
+                else if (dataColumn.GridColumn != null && dataColumn.GridColumn.MappingName == "URL")
+                    {
+                    uiElement.MaxLength = 2048;
+                    }
+                else
+                    {
+                    uiElement.MaxLength = 100;
+                    }
+                base.OnInitializeEditElement(dataColumn, uiElement, dataContext);
+                }
             }
 
         private void Button_Click(object sender, RoutedEventArgs e)

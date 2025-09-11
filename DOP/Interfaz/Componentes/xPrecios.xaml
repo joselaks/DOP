@@ -176,10 +176,8 @@
                         x:Name="GrillaArticulosLista"
                         Grid.Row="2"
                         Margin="10"
-                        AllowEditing="True"
                         AllowResizingColumns="True"
                         AutoGenerateColumns="False"
-                        EditTrigger="OnTap"
                         IsReadOnly="False"
                         KeyDown="GrillaArticulosLista_KeyDown">
                         <syncfusion:SfDataGrid.Columns>
