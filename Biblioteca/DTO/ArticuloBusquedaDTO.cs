@@ -21,6 +21,8 @@ namespace Biblioteca.DTO
         public DateTime Fecha { get; set; }
         public decimal Precio { get; set; }
         public string Moneda { get; set; }
+        public string Nota { get; set; }
+        public string URL { get; set; } // Nueva propiedad  
         public string ListaDescrip { get; set; }
         }
     }

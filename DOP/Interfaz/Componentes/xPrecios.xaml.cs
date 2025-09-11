@@ -25,6 +25,7 @@ namespace DataObra.Interfaz.Componentes
         public bool HayArticulosImportados => articulosImportados != null && articulosImportados.Count > 0;
         public event PropertyChangedEventHandler PropertyChanged;
         private List<ArticuloDTO> ArticulosOrigen = new();
+        private string tipoID;
         private void OnPropertyChanged(string propertyName)
             {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -148,6 +149,12 @@ namespace DataObra.Interfaz.Componentes
 
         private async void BtnBuscarLista_Click(object sender, RoutedEventArgs e)
             {
+            if (comboListasVer.SelectedItem is ListaArticuloItem itemSeleccionado)
+                {
+                tipoID = itemSeleccionado.TipoID;
+                }
+
+
             if (comboListasVer.SelectedValue is int id && id > 0)
                 {
                 var (success, message, articulos) = await DOP.Datos.DatosWeb.ObtenerArticulosPorListaIDAsync((short)id);
@@ -174,7 +181,8 @@ namespace DataObra.Interfaz.Componentes
                         Fecha = a.Fecha,
                         Precio = a.Precio,
                         Moneda = a.Moneda,
-                        Nota = a.Nota
+                        Nota = a.Nota,
+                        URL = a.URL
                         }).ToList();
                     }
                 else
@@ -311,7 +319,7 @@ namespace DataObra.Interfaz.Componentes
                             escritorio.InfoCombo.Add(new ListaArticuloItem
                                 {
                                 ID = listaItem.ID,
-                                Descrip = listaItem.Descrip
+                                Descrip = listaItem.Descrip,
                                 });
                             }
                         }
@@ -425,7 +433,7 @@ namespace DataObra.Interfaz.Componentes
                 {
                 var nuevo = new Biblioteca.DTO.ArticuloDTO
                     {
-                    Fecha = DateTime.Now
+                    Fecha = DateTime.Now,
                     };
                 lista.Add(nuevo);
 
@@ -492,7 +500,8 @@ namespace DataObra.Interfaz.Componentes
                             (art.Precio != original.Precio) ||
                             (art.Fecha != original.Fecha) ||
                             (art.Nota != original.Nota) ||
-                            (art.Moneda != original.Moneda)
+                            (art.Moneda != original.Moneda) ||
+                            (art.URL != original.URL)
                         )
                         {
                             var modificado = new ArticuloDTO
@@ -511,6 +520,7 @@ namespace DataObra.Interfaz.Componentes
                                 Precio = art.Precio,
                                 Moneda = art.Moneda,
                                 Nota = art.Nota,
+                                URL = art.URL,
                                 Accion = 'M'
                             };
                             listaCambios.Add(modificado);
@@ -530,15 +540,16 @@ namespace DataObra.Interfaz.Componentes
                             UsuarioID = art.UsuarioID,
                             ListaID = art.ListaID,
                             EntidadID = art.EntidadID,
-                            TipoID = art.TipoID,
+                            TipoID = tipoID,
                             Descrip = art.Descrip,
                             Unidad = art.Unidad,
-                            UnidadFactor = art.UnidadFactor,
+                            UnidadFactor = 1,
                             Codigo = art.Codigo,
                             Fecha = art.Fecha,
                             Precio = art.Precio,
-                            Moneda = art.Moneda,
+                            Moneda = "P",
                             Nota = art.Nota,
+                            URL = art.URL,
                             Accion = 'A'
                         };
                         listaCambios.Add(agregado);

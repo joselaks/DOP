@@ -193,6 +193,7 @@ namespace Servidor.Repositorios
                 table.Columns.Add("Precio", typeof(decimal));
                 table.Columns.Add("Moneda", typeof(string));
                 table.Columns.Add("Nota", typeof(string));
+                table.Columns.Add("URL", typeof(string)); // Nueva columna
                 table.Columns.Add("Accion", typeof(string));
 
                 foreach (var art in articulos)
@@ -212,13 +213,14 @@ namespace Servidor.Repositorios
                         art.Precio,
                         art.Moneda,
                         art.Nota,
+                        art.URL, // Nueva columna
                         art.Accion?.ToString()
                     );
                     }
 
                 var parameters = new DynamicParameters();
                 parameters.Add("@ListaID", listaID, DbType.Int32);
-                parameters.Add("@Articulos", table.AsTableValuedParameter("dbo.ArticuloEditarTableType"));
+                parameters.Add("@Articulos", table.AsTableValuedParameter("dbo.TT_Articulos"));
 
                 try
                     {

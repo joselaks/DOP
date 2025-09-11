@@ -111,6 +111,10 @@
                                 MappingName="Fecha"
                                 Pattern="ShortDate"
                                 TextAlignment="Center" />
+                            <syncfusion:GridTextColumn
+                                Width="300"
+                                HeaderText="URL"
+                                MappingName="URL" />
                         </syncfusion:SfDataGrid.Columns>
                     </syncfusion:SfDataGrid>
                 </Grid>
@@ -175,6 +179,7 @@
                         AllowEditing="True"
                         AllowResizingColumns="True"
                         AutoGenerateColumns="False"
+                        EditTrigger="OnTap"
                         IsReadOnly="False"
                         KeyDown="GrillaArticulosLista_KeyDown">
                         <syncfusion:SfDataGrid.Columns>
@@ -187,8 +192,8 @@
                                 HeaderText="Descripción"
                                 MappingName="Descrip" />
                             <syncfusion:GridTextColumn
-                                Width="80"
-                                HeaderText="Unidad"
+                                Width="40"
+                                HeaderText="Ud."
                                 MappingName="Unidad" />
                             <syncfusion:GridNumericColumn
                                 Width="120"
@@ -210,6 +215,10 @@
                                 Width="80"
                                 HeaderText="Nota"
                                 MappingName="Nota" />
+                            <syncfusion:GridTextColumn
+                                Width="300"
+                                HeaderText="URL"
+                                MappingName="URL" />
                         </syncfusion:SfDataGrid.Columns>
                     </syncfusion:SfDataGrid>
                 </Grid>

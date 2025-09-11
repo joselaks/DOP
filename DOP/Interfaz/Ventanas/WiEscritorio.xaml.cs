@@ -107,7 +107,8 @@ namespace DataObra.Interfaz.Ventanas
                 InfoCombo.Add(new ListaArticuloItem
                 {
                     ID = listaItem.ID,
-                    Descrip = listaItem.Descrip
+                    Descrip = listaItem.Descrip,
+                    TipoID = listaItem.TipoID
                 });
             }
 
