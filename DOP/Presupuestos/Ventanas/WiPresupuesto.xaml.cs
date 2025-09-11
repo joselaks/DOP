@@ -37,7 +37,6 @@ namespace DOP.Presupuestos.Ventanas
     public partial class WiPresupuesto : RibbonWindow
         {
         public Presupuesto Objeto;
-        public cUndoRedo UndoRedo;
         public UcPlanilla Planilla;
         public UcListado Listado;
         public UcDosaje Dosaje;

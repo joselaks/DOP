@@ -84,7 +84,7 @@
 
     </UserControl.Resources>
 
-    <Grid>
+    <Grid x:Name="grillaBase">
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="*" />
@@ -142,8 +142,8 @@
 
                     <syncfusion:TreeGridTextColumn
                         x:Name="ID"
-                        HeaderText="Código"
                         Width="50"
+                        HeaderText="Código"
                         IsHidden="True"
                         MappingName="ID" />
 
@@ -156,9 +156,9 @@
 
 
                     <syncfusion:TreeGridTextColumn
-                        HeaderText="Tipo"
                         x:Name="Tipo"
                         Width="50"
+                        HeaderText="Tipo"
                         IsHidden="True"
                         MappingName="Tipo" />
 

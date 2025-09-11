@@ -1,4 +1,5 @@
 ﻿using Bibioteca.Clases;
+using Biblioteca;
 using DOP.Presupuestos.Clases;
 using Syncfusion.UI.Xaml.Grid;
 using Syncfusion.UI.Xaml.TreeGrid;
@@ -143,10 +144,13 @@ namespace DOP.Presupuestos.Controles
 
         public void MostrarInferiores(Nodo analizado)
         {
+            this.grillaBase.Visibility = Visibility.Visible;
+
             NodoAnalizado = analizado;
             grillaDetalle.ItemsSource = NodoAnalizado.Inferiores;
             nombreTarea.Text = NodoAnalizado.Descripcion;
             colImporte1.HeaderText = $"{NodoAnalizado.PU1.ToString("N2", cultura)}";
+
         }
 
         // Sobrecarga para buscar por ID
@@ -156,10 +160,11 @@ namespace DOP.Presupuestos.Controles
             if (nodo != null)
             {
                 MostrarInferiores(nodo);
-            }
+                this.grillaBase.Visibility = Visibility.Visible;
+                }
             else
             {
-                MessageBox.Show($"No se encontró el nodo con ID: {id}", "Nodo no encontrado", MessageBoxButton.OK, MessageBoxImage.Warning);
+                this.grillaBase.Visibility= Visibility.Collapsed;
             }
         }
 
@@ -198,7 +203,7 @@ namespace DOP.Presupuestos.Controles
             {
             var column = grillaDetalle.Columns[e.RowColumnIndex.ColumnIndex].MappingName;
             var editado = grillaDetalle.GetNodeAtRowIndex(e.RowColumnIndex.RowIndex).Item as Nodo;
-            edicion(editado, column);
+            Objeto.edicion(editado, column, _originalValue != null ? _originalValue.ToString() : null);
             var undoRegistro = new Cambios
                 {
                 TipoCambio = "Tipeo",
@@ -208,28 +213,9 @@ namespace DOP.Presupuestos.Controles
                 OldValue = _originalValue,
                 NewValue = editado.GetType().GetProperty(column).GetValue(editado)
                 };
-            }
 
-        private void edicion(Nodo? editado, string column)
-            {
-            switch (column)
-                {
-                case "ID":
-                    Objeto.cambiaCodigo(Objeto.Arbol, editado.ID, _originalValue.ToString());
-                    break;
-                case "Cantidad":
-                    CambioAuxiliar dato = new CambioAuxiliar();
-                    dato.IdInferior = editado.ID;
-                    dato.IdSuperior = Objeto.FindParentNode(Objeto.Arbol, editado, null).ID;
-                    dato.Cantidad = editado.Cantidad;
-                    Objeto.cambioCantidadAuxiliar(Objeto.Arbol, dato);
-                    break;
-                default:
-                    Objeto.mismoCodigo(Objeto.Arbol, editado);
-                    break;
-                }
-            Objeto.RecalculoCompleto();
             }
+        
 
         private void grillaDetalle_SelectionChanged(object sender, Syncfusion.UI.Xaml.Grid.GridSelectionChangedEventArgs e)
             {

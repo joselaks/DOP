@@ -35,7 +35,6 @@ namespace DataObra.Presupuestos.Ventanas
     public partial class WiPres : RibbonWindow
         {
         public Presupuesto Objeto;
-        public cUndoRedo UndoRedo;
         public UcPlanilla Planilla;
         public UcListado Listado;
         public UcDosaje Dosaje;
@@ -438,6 +437,16 @@ namespace DataObra.Presupuestos.Ventanas
             {
                  Objeto.NumeraItems(Objeto.Arbol, "");
 
+            }
+
+        private void Hacer_Click(object sender, RoutedEventArgs e)
+            {
+            Objeto.Rehacer();
+            }
+
+        private void Deshacer_Click(object sender, RoutedEventArgs e)
+            {
+            Objeto.Deshacer();
             }
         }
 }

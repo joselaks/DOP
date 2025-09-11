@@ -1,4 +1,5 @@
 ﻿using Bibioteca.Clases;
+using Biblioteca;
 using DOP.Presupuestos.Clases;
 using Syncfusion.UI.Xaml.Grid;
 using Syncfusion.UI.Xaml.TreeGrid;
@@ -34,8 +35,6 @@ namespace DOP.Presupuestos.Controles
         public UcDosaje Dosaje;
         Nodo anterior = new Nodo();
         private object _originalValue;
-        private Stack<Cambios> undoStack;
-        private Stack<Cambios> redoStack;
         private CultureInfo cultura = new CultureInfo("es-ES") { NumberFormat = { NumberGroupSeparator = ".", NumberDecimalSeparator = "," } };
         private HashSet<string> nodosExpandidosRT = new HashSet<string>();
 
@@ -101,6 +100,8 @@ namespace DOP.Presupuestos.Controles
             e.Handled = true;
             Nodo nodoMovido = null;
             Nodo nodoReceptor = null;
+            Nodo nodoPadreOriginal = null;
+            int itemIndex = -1;
             bool esDragDePlanilla = DragDropContext.DragSourceUserControl is UcPlanilla;
             bool esDragDeMaestro = DragDropContext.DragSourceUserControl is UcMaestro;
 
@@ -109,7 +110,18 @@ namespace DOP.Presupuestos.Controles
                 if (esDragDePlanilla)
                 {
                     nodoMovido = e.DraggingNodes[0].Item as Nodo;
-                }
+                    nodoPadreOriginal = Objeto.FindParentNode(Objeto.Arbol, nodoMovido, null);
+                    if (nodoPadreOriginal != null)
+                        {
+                        itemIndex = nodoPadreOriginal.Inferiores.IndexOf(nodoMovido);
+                        }
+                    else
+                        {
+                        itemIndex = Objeto.Arbol.IndexOf(nodoMovido);
+                        }
+
+
+                    }
                 else if (esDragDeMaestro)
                 {
                     var nodoOriginal = e.DraggingNodes[0].Item as Nodo;
@@ -132,7 +144,7 @@ namespace DOP.Presupuestos.Controles
                     case ("R", "R"):
                         if (esDragDePlanilla)
                         {
-                            var nodoPadreOriginal = Objeto.FindParentNode(Objeto.Arbol, nodoMovido, null);
+                            nodoPadreOriginal = Objeto.FindParentNode(Objeto.Arbol, nodoMovido, null);
                             if (nodoPadreOriginal != null)
                                 nodoPadreOriginal.Inferiores.Remove(nodoMovido);
                             else
@@ -148,7 +160,7 @@ namespace DOP.Presupuestos.Controles
                     case ("R", "T"):
                         if (esDragDePlanilla)
                         {
-                            var nodoPadreOriginal = Objeto.FindParentNode(Objeto.Arbol, nodoMovido, null);
+                            nodoPadreOriginal = Objeto.FindParentNode(Objeto.Arbol, nodoMovido, null);
                             if (nodoPadreOriginal != null)
                                 nodoPadreOriginal.Inferiores.Remove(nodoMovido);
                             else
@@ -160,7 +172,7 @@ namespace DOP.Presupuestos.Controles
                     case ("T", "T"):
                         if (esDragDePlanilla)
                         {
-                            var nodoPadreOriginal = Objeto.FindParentNode(Objeto.Arbol, nodoMovido, null);
+                            nodoPadreOriginal = Objeto.FindParentNode(Objeto.Arbol, nodoMovido, null);
                             if (nodoPadreOriginal != null)
                                 nodoPadreOriginal.Inferiores.Remove(nodoMovido);
                             else
@@ -178,7 +190,7 @@ namespace DOP.Presupuestos.Controles
                         {
                             if (esDragDePlanilla)
                             {
-                                var nodoPadreOriginal = Objeto.FindParentNode(Objeto.Arbol, nodoMovido, null);
+                                nodoPadreOriginal = Objeto.FindParentNode(Objeto.Arbol, nodoMovido, null);
                                 if (nodoPadreOriginal != null)
                                     nodoPadreOriginal.Inferiores.Remove(nodoMovido);
                                 else
@@ -187,7 +199,9 @@ namespace DOP.Presupuestos.Controles
                             Objeto.Arbol.Add(nodoMovido);
                         }
                         break;
-                }
+                        // Crear un registro de cambio y agregarlo a undoStack
+                       
+                    }
             }
             else
             {
@@ -196,7 +210,7 @@ namespace DOP.Presupuestos.Controles
                 {
                     if (esDragDePlanilla)
                     {
-                        var nodoPadreOriginal = Objeto.FindParentNode(Objeto.Arbol, nodoMovido, null);
+                        nodoPadreOriginal = Objeto.FindParentNode(Objeto.Arbol, nodoMovido, null);
                         if (nodoPadreOriginal != null)
                             nodoPadreOriginal.Inferiores.Remove(nodoMovido);
                         else
@@ -205,6 +219,18 @@ namespace DOP.Presupuestos.Controles
                     Objeto.Arbol.Add(nodoMovido);
                 }
             }
+            // Crear un registro de cambio y agregarlo a undoStack
+            var undoRegistro = new Cambios
+                {
+                TipoCambio = "Mover",
+                NodoMovido = nodoMovido,
+                NodoPadreNuevo = nodoReceptor,
+                NodoPadreAnterior = nodoPadreOriginal,
+                Posicion = itemIndex
+                };
+            Objeto.undoStack.Push(undoRegistro);
+            Objeto.redoStack.Clear(); // Limpiar la pila de rehacer cuando se realiza una nueva operación
+
 
             DragDropContext.DragSourceUserControl = null;
         }
@@ -238,20 +264,38 @@ namespace DOP.Presupuestos.Controles
                 if (string.IsNullOrEmpty(accion) && menuItem.Header is string header)
                     accion = header;
             }
-
             switch (accion)
             {
                 case "Rubro":
                 case "menuAgregarRubro":
                 case "Agregar Rubro":
-                    Objeto.agregaNodo("R", null);
+                    var (nuevoNodo, mensaje) = Objeto.agregaNodo("R", null);
+                    var undoRegistro = new Cambios
+                        {
+                        TipoCambio = "Nuevo",
+                        despuesCambio = nuevoNodo,
+                        NodoPadre = null,
+                        Posicion = Objeto.Arbol.IndexOf(nuevoNodo)
+                        };
+
+                    Objeto.undoStack.Push(undoRegistro);
+                    Objeto.redoStack.Clear(); // Limpiar la pila de rehacer cuando se realiza una nueva operación
                     break;
                 case "Tarea":
                 case "menuAgregarTarea":
                 case "Agregar Tarea":
                     if (this.grillaArbol.SelectedItem is Nodo sele && sele.Tipo == "R")
                     {
-                        Objeto.agregaNodo("T", sele);
+                        var (nuevoNodo2, mensaje2) = Objeto.agregaNodo("T", sele);
+                        var undoRegistro2 = new Cambios
+                            {
+                            TipoCambio = "Nuevo",
+                            despuesCambio = nuevoNodo2,
+                            NodoPadre = null,
+                            Posicion = Objeto.Arbol.IndexOf(nuevoNodo2)
+                            };
+                        Objeto.undoStack.Push(undoRegistro2);
+                        Objeto.redoStack.Clear(); // Limpiar la pila de rehacer cuando se realiza una nueva operación
 
                         // Expandir el nodo Rubro si no está expandido
                         var view = grillaArbol.View;
@@ -272,7 +316,9 @@ namespace DOP.Presupuestos.Controles
                 default:
                     // Otro caso o no reconocido
                     break;
-            }
+              }
+
+
         }
 
 
@@ -374,7 +420,7 @@ namespace DOP.Presupuestos.Controles
         {
             var column = grillaArbol.Columns[e.RowColumnIndex.ColumnIndex].MappingName;
             var editado = grillaArbol.GetNodeAtRowIndex(e.RowColumnIndex.RowIndex).Item as Nodo;
-            edicion(editado, column);
+            Objeto.edicion(editado, column, _originalValue != null ? _originalValue.ToString() : null);
             var undoRegistro = new Cambios
             {
                 TipoCambio = "Tipeo",
@@ -384,29 +430,11 @@ namespace DOP.Presupuestos.Controles
                 OldValue = _originalValue,
                 NewValue = editado.GetType().GetProperty(column).GetValue(editado)
             };
+            Objeto.undoStack.Push(undoRegistro);
 
-        }
 
-        private void edicion(Nodo? editado, string column)
-        {
-            switch (column)
-            {
-                case "ID":
-                    Objeto.cambiaCodigo(Objeto.Arbol, editado.ID, _originalValue.ToString());
-                    break;
-                case "Cantidad":
-                    CambioAuxiliar dato = new CambioAuxiliar();
-                    dato.IdInferior = editado.ID;
-                    dato.IdSuperior = Objeto.FindParentNode(Objeto.Arbol, editado, null).ID;
-                    dato.Cantidad = editado.Cantidad;
-                    Objeto.cambioCantidadAuxiliar(Objeto.Arbol, dato);
-                    break;
-                default:
-                    Objeto.mismoCodigo(Objeto.Arbol, editado);
-                    break;
+
             }
-            Objeto.RecalculoCompleto();
-        }
 
         private void grillaArbol_KeyDown(object sender, KeyEventArgs e)
         {
@@ -419,10 +447,22 @@ namespace DOP.Presupuestos.Controles
                     itemsToRemove.Add(item as Nodo);
                 }
                 foreach (var item in itemsToRemove)
-                {
+                    {
                     var result = RemoveItemRecursively(Objeto.Arbol, item);
+                    if (result.Item1)
+                        {
+                        var undoRegistro = new Cambios
+                            {
+                            TipoCambio = "Borrado",
+                            despuesCambio = item,
+                            NodoPadre = result.Item2,
+                            Posicion = result.Item3
+                            };
+                        Objeto.undoStack.Push(undoRegistro);
 
-                }
+
+                        }
+                    }
             }
         }
 
@@ -456,18 +496,22 @@ namespace DOP.Presupuestos.Controles
                 return;
 
             if (grillaArbol.SelectedItem is Nodo nodoSeleccionado && nodoSeleccionado.Tipo == "T")
-            {
+                {
                 // Si el ItemsSource es Objeto.Arbol, pasamos el nodo directamente
                 if (ReferenceEquals(grillaArbol.ItemsSource, Objeto.Arbol))
-                {
+                    {
                     Dosaje.MostrarInferiores(nodoSeleccionado);
-                }
+                    }
                 // Si el ItemsSource es Objeto.Tareas, pasamos el ID
                 else if (ReferenceEquals(grillaArbol.ItemsSource, Objeto.Tareas))
-                {
+                    {
                     Dosaje.MostrarInferiores(nodoSeleccionado.ID);
+                    }
                 }
-            }
+            else 
+                {
+                Dosaje.MostrarInferiores("0");
+                }
         }
 
 
@@ -623,19 +667,6 @@ namespace DOP.Presupuestos.Controles
 
 
     }
-    public class Cambios
-    {
-        public string TipoCambio { get; set; }
-        public Nodo antesCambio { get; set; }
-        public Nodo despuesCambio { get; set; }
-        public string PropiedadCambiada { get; set; }
-        public object OldValue { get; set; }
-        public object NewValue { get; set; }
-        public Nodo NodoPadre { get; set; }
-        public Nodo NodoMovido { get; set; }
-        public Nodo NodoPadreNuevo { get; set; }
-        public Nodo NodoPadreAnterior { get; set; }
-        public int Posicion { get; set; }
-    }
+    
 }
 

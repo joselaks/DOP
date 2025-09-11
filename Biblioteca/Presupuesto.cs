@@ -12,6 +12,8 @@ namespace Bibioteca.Clases
     public class Presupuesto : ObjetoNotificable
         {
         public Nodo respuesta;
+        public Stack<Cambios> undoStack;
+        public Stack<Cambios> redoStack;
 
         #region Estructura
 
@@ -280,6 +282,9 @@ namespace Bibioteca.Clases
                 generaPresupuesto(null, conceptos, relaciones);
 
                 }
+            undoStack = new Stack<Cambios>();
+            redoStack = new Stack<Cambios>();
+
             }
 
         // Procedimiento que en base a una lista de conceptos y relaciones, genera un presupuesto arbol.
@@ -512,6 +517,29 @@ namespace Bibioteca.Clases
                     }
                 }
             }
+
+        public void edicion(Nodo? editado, string column, string? IdOriginal)
+            {
+            switch (column)
+                {
+                case "ID":
+                    cambiaCodigo(Arbol, editado.ID, IdOriginal);
+                    break;
+                case "Cantidad":
+                    CambioAuxiliar dato = new CambioAuxiliar();
+                    dato.IdInferior = editado.ID;
+                    dato.IdSuperior = FindParentNode(Arbol, editado, null).ID;
+                    dato.Cantidad = editado.Cantidad;
+                    cambioCantidadAuxiliar(Arbol, dato);
+                    break;
+                default:
+                    mismoCodigo(Arbol, editado);
+                    break;
+                }
+            RecalculoCompleto();
+            }
+
+
 
         public void cambioCantidadAuxiliar(IEnumerable<Nodo> items, CambioAuxiliar dato)
             {
@@ -847,9 +875,6 @@ namespace Bibioteca.Clases
                 CalcularIncidenciaInferiores(nodoInf);
                 }
             }
-
-
-
 
         public Nodo FindParentNode(IEnumerable<Nodo> items, Nodo inferior, Nodo superior)
             {
@@ -1313,13 +1338,69 @@ namespace Bibioteca.Clases
             return request;
             }
 
+        public void Deshacer()
+            {
+
+            if (undoStack.Count > 0)
+                {
+                Cambios lastChange = undoStack.Pop();
+                switch (lastChange.TipoCambio)
+                    {
+                    case "Nuevo":
+                        borraNodo(Arbol, lastChange.despuesCambio);
+                        break;
+                    case "Borrado":
+                        RestaurarNodo(lastChange.despuesCambio, lastChange.NodoPadre, lastChange.Posicion);
+                        break;
+                    case "Tipeo":
+                        edicion(lastChange.antesCambio, lastChange.PropiedadCambiada, null);
+                        break;
+                    case "Mover":
+                        // Deshacer el movimiento
+                        borraNodo(Arbol, lastChange.NodoMovido);
+                        RestaurarNodo(lastChange.NodoMovido, lastChange.NodoPadreAnterior, lastChange.Posicion);
+                        break;
+                    default:
+                        break;
+                    }
+                redoStack.Push(lastChange);
+                }
+            }
+
+        public void Rehacer()
+            {
+            if (redoStack.Count > 0)
+                {
+                Cambios lastChange = redoStack.Pop();
+                switch (lastChange.TipoCambio)
+                    {
+                    case "Nuevo":
+                        RestaurarNodo(lastChange.despuesCambio, lastChange.NodoPadre, lastChange.Posicion);
+                        break;
+                    case "Borrado":
+                        borraNodo(Arbol, lastChange.despuesCambio);
+                        break;
+                    case "Tipeo":
+                        edicion(lastChange.despuesCambio, lastChange.PropiedadCambiada, null);
+                        break;
+                    case "Mover":
+                        // Rehacer el movimiento
+                        borraNodo(Arbol, lastChange.NodoMovido);
+                        RestaurarNodo(lastChange.NodoMovido, lastChange.NodoPadreNuevo, lastChange.Posicion);
+                        break;
+                    default:
+                        break;
+                    }
+                undoStack.Push(lastChange);
+                }
 
 
 
 
+                }
 
 
 
-        }
+            }
 
     }

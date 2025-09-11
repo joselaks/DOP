@@ -213,6 +213,25 @@
                         SizeForm="Small"
                         SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
                 </syncfusion:RibbonBar>
+                <syncfusion:RibbonBar
+                    Name="HacerDeshacer"
+                    Width="80"
+                    Header="Hacer Deshacer"
+                    IsLauncherButtonVisible="False">
+                    <syncfusion:RibbonButton
+                        x:Name="Deshacer"
+                        Click="Deshacer_Click"
+                        Label="DesHacer"
+                        SizeForm="Small"
+                        SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
+                    <syncfusion:RibbonButton
+                        x:Name="Hacer"
+                        Click="Hacer_Click"
+                        Label="Hacer"
+                        SizeForm="Small"
+                        SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
+
+                </syncfusion:RibbonBar>
 
 
             </syncfusion:RibbonTab>
