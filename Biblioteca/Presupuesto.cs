@@ -1337,7 +1337,6 @@ namespace Bibioteca.Clases
 
         public void Deshacer()
             {
-
             if (undoStack.Count > 0)
                 {
                 Cambios lastChange = undoStack.Pop();
@@ -1347,15 +1346,22 @@ namespace Bibioteca.Clases
                         borraNodo(Arbol, lastChange.despuesCambio);
                         break;
                     case "Borrado":
-                        RestaurarNodo(lastChange.despuesCambio, lastChange.NodoPadre, lastChange.Posicion);
+                        RestaurarNodo(lastChange.despuesCambio, lastChange.NodoPadre!, lastChange.Posicion);
                         break;
                     case "Tipeo":
                         edicion(lastChange.antesCambio, lastChange.PropiedadCambiada, null);
                         break;
                     case "Mover":
-                        // Deshacer el movimiento
-                        borraNodo(Arbol, lastChange.NodoMovido);
-                        RestaurarNodo(lastChange.NodoMovido, lastChange.NodoPadreAnterior, lastChange.Posicion);
+                        // Eliminar de la colección de destino
+                        ObservableCollection<Nodo> coleccionDestino = lastChange.NodoPadreNuevo == null
+                            ? Arbol
+                            : lastChange.NodoPadreNuevo.Inferiores;
+                        borraNodo(coleccionDestino, lastChange.NodoMovido);
+                        // Restaurar en la colección de origen y posición original
+                        ObservableCollection<Nodo> coleccionOrigen = lastChange.NodoPadreAnterior == null
+                            ? Arbol
+                            : lastChange.NodoPadreAnterior.Inferiores;
+                        RestaurarNodo(lastChange.NodoMovido, lastChange.NodoPadreAnterior, lastChange.PosicionOriginal);
                         break;
                     default:
                         break;
@@ -1372,7 +1378,7 @@ namespace Bibioteca.Clases
                 switch (lastChange.TipoCambio)
                     {
                     case "Nuevo":
-                        RestaurarNodo(lastChange.despuesCambio, lastChange.NodoPadre, lastChange.Posicion);
+                        RestaurarNodo(lastChange.despuesCambio, lastChange.NodoPadre!, lastChange.Posicion);
                         break;
                     case "Borrado":
                         borraNodo(Arbol, lastChange.despuesCambio);
@@ -1381,8 +1387,15 @@ namespace Bibioteca.Clases
                         edicion(lastChange.despuesCambio, lastChange.PropiedadCambiada, null);
                         break;
                     case "Mover":
-                        // Rehacer el movimiento
-                        borraNodo(Arbol, lastChange.NodoMovido);
+                        // Eliminar de la colección de origen
+                        ObservableCollection<Nodo> coleccionOrigen = lastChange.NodoPadreAnterior == null
+                            ? Arbol
+                            : lastChange.NodoPadreAnterior.Inferiores;
+                        borraNodo(coleccionOrigen, lastChange.NodoMovido);
+                        // Insertar en la colección de destino y posición destino
+                        ObservableCollection<Nodo> coleccionDestino = lastChange.NodoPadreNuevo == null
+                            ? Arbol
+                            : lastChange.NodoPadreNuevo.Inferiores;
                         RestaurarNodo(lastChange.NodoMovido, lastChange.NodoPadreNuevo, lastChange.Posicion);
                         break;
                     default:
@@ -1390,14 +1403,10 @@ namespace Bibioteca.Clases
                     }
                 undoStack.Push(lastChange);
                 }
-
-
-
-
-                }
-
-
-
             }
+
+
+
+        }
 
     }

@@ -105,191 +105,103 @@ namespace DOP.Presupuestos.Controles
             bool esDragDePlanilla = DragDropContext.DragSourceUserControl is UcPlanilla;
             bool esDragDeMaestro = DragDropContext.DragSourceUserControl is UcMaestro;
 
+            // 1. Determinar el nodo a mover/clonar y el padre original si aplica
             if (e.DraggingNodes != null && e.DraggingNodes.Count > 0)
                 {
                 if (esDragDePlanilla)
                     {
                     nodoMovido = e.DraggingNodes[0].Item as Nodo;
                     nodoPadreOriginal = Objeto.FindParentNode(Objeto.Arbol, nodoMovido, null);
-                    if (nodoPadreOriginal != null)
-                        {
-                        itemIndex = nodoPadreOriginal.Inferiores.IndexOf(nodoMovido);
-                        }
-                    else
-                        {
-                        itemIndex = Objeto.Arbol.IndexOf(nodoMovido);
-                        }
-
-
+                    itemIndex = nodoPadreOriginal != null
+                        ? nodoPadreOriginal.Inferiores.IndexOf(nodoMovido)
+                        : Objeto.Arbol.IndexOf(nodoMovido);
                     }
                 else if (esDragDeMaestro)
                     {
                     var nodoOriginal = e.DraggingNodes[0].Item as Nodo;
                     nodoMovido = Objeto.clonar(nodoOriginal, true);
-
-                    Nodo padreDestino = null;
-                    int posicionDestino = -1;
-
-                    if (e.TargetNode != null)
-                        {
-                        nodoReceptor = e.TargetNode.Item as Nodo;
-                        padreDestino = nodoReceptor;
-                        if (nodoReceptor.Inferiores == null)
-                            nodoReceptor.Inferiores = new ObservableCollection<Nodo>();
-                        posicionDestino = nodoReceptor.Inferiores.Count;
-                        nodoReceptor.Inferiores.Add(nodoMovido);
-                        }
-                    else
-                        {
-                        padreDestino = null;
-                        posicionDestino = Objeto.Arbol.Count;
-                        Objeto.Arbol.Add(nodoMovido);
-                        }
-
-                    var undoRegistro = new Cambios
-                        {
-                        TipoCambio = "Nuevo",
-                        despuesCambio = nodoMovido,
-                        NodoPadre = padreDestino,
-                        Posicion = posicionDestino
-                        };
-                    Objeto.undoStack.Push(undoRegistro);
-                    Objeto.redoStack.Clear();
-
-                    DragDropContext.DragSourceUserControl = null;
-                    return; // <-- Esto evita la doble inserción
                     }
                 }
+
+            // 2. Determinar el nodo receptor y la colección destino
+            ObservableCollection<Nodo> coleccionDestino;
+            Nodo padreDestino;
+            int posicionDestino;
 
             if (e.TargetNode != null)
                 {
                 nodoReceptor = e.TargetNode.Item as Nodo;
-                var tipoReceptor = nodoReceptor?.Tipo;
-                var tipoMovido = nodoMovido?.Tipo;
 
-                switch ((tipoReceptor, tipoMovido))
+                // --- AJUSTE: Si se suelta una tarea sobre un rubro, agregar como hijo ---
+                if (nodoMovido != null && nodoMovido.Tipo == "T" && nodoReceptor != null && nodoReceptor.Tipo == "R")
                     {
-                    case ("T", "R"):
-                        MessageBox.Show("No se puede mover un rubro dentro de una tarea");
-                        break;
-
-                    case ("R", "R"):
-                        if (esDragDePlanilla)
-                            {
-                            nodoPadreOriginal = Objeto.FindParentNode(Objeto.Arbol, nodoMovido, null);
-                            if (nodoPadreOriginal != null)
-                                nodoPadreOriginal.Inferiores.Remove(nodoMovido);
-                            else
-                                Objeto.Arbol.Remove(nodoMovido);
-                            }
-                        var padreDestinoRR = Objeto.FindParentNode(Objeto.Arbol, nodoReceptor, null);
-                        var coleccionDestinoRR = padreDestinoRR != null ? padreDestinoRR.Inferiores : Objeto.Arbol;
-                        int idxRR = coleccionDestinoRR.IndexOf(nodoReceptor);
-                        int insertIdxRR = e.DropPosition == Syncfusion.UI.Xaml.TreeGrid.DropPosition.DropAbove ? idxRR : idxRR + 1;
-                        coleccionDestinoRR.Insert(insertIdxRR, nodoMovido);
-                        break;
-
-                    case ("R", "T"):
-                        if (esDragDePlanilla)
-                            {
-                            nodoPadreOriginal = Objeto.FindParentNode(Objeto.Arbol, nodoMovido, null);
-                            if (nodoPadreOriginal != null)
-                                nodoPadreOriginal.Inferiores.Remove(nodoMovido);
-                            else
-                                Objeto.Arbol.Remove(nodoMovido);
-                            }
-                        nodoReceptor.Inferiores.Add(nodoMovido);
-                        break;
-
-                    case ("T", "T"):
-                        if (esDragDePlanilla)
-                            {
-                            nodoPadreOriginal = Objeto.FindParentNode(Objeto.Arbol, nodoMovido, null);
-                            if (nodoPadreOriginal != null)
-                                nodoPadreOriginal.Inferiores.Remove(nodoMovido);
-                            else
-                                Objeto.Arbol.Remove(nodoMovido);
-                            }
-                        var padreDestinoTT = Objeto.FindParentNode(Objeto.Arbol, nodoReceptor, null);
-                        var coleccionDestinoTT = padreDestinoTT != null ? padreDestinoTT.Inferiores : Objeto.Arbol;
-                        int idxTT = coleccionDestinoTT.IndexOf(nodoReceptor);
-                        int insertIdxTT = e.DropPosition == Syncfusion.UI.Xaml.TreeGrid.DropPosition.DropAbove ? idxTT : idxTT + 1;
-                        coleccionDestinoTT.Insert(insertIdxTT, nodoMovido);
-                        break;
-
-                    default:
-                        if (nodoMovido != null)
-                            {
-                            if (esDragDePlanilla)
-                                {
-                                nodoPadreOriginal = Objeto.FindParentNode(Objeto.Arbol, nodoMovido, null);
-                                if (nodoPadreOriginal != null)
-                                    nodoPadreOriginal.Inferiores.Remove(nodoMovido);
-                                else
-                                    Objeto.Arbol.Remove(nodoMovido);
-                                }
-                            Objeto.Arbol.Add(nodoMovido);
-                            }
-                        break;
-                        // Crear un registro de cambio y agregarlo a undoStack
-
+                    if (nodoReceptor.Inferiores == null)
+                        nodoReceptor.Inferiores = new ObservableCollection<Nodo>();
+                    coleccionDestino = nodoReceptor.Inferiores;
+                    padreDestino = nodoReceptor;
+                    posicionDestino = coleccionDestino.Count; // al final de los hijos
+                    }
+                else
+                    {
+                    padreDestino = Objeto.FindParentNode(Objeto.Arbol, nodoReceptor, null);
+                    coleccionDestino = padreDestino != null ? padreDestino.Inferiores : Objeto.Arbol;
+                    int idx = coleccionDestino.IndexOf(nodoReceptor);
+                    posicionDestino = (e.DropPosition == Syncfusion.UI.Xaml.TreeGrid.DropPosition.DropAbove) ? idx : idx + 1;
                     }
                 }
             else
                 {
-                // Si no hay nodo receptor, se agrega a la raíz
-                if (nodoMovido != null)
-                    {
-                    if (esDragDePlanilla)
-                        {
-                        nodoPadreOriginal = Objeto.FindParentNode(Objeto.Arbol, nodoMovido, null);
-                        if (nodoPadreOriginal != null)
-                            nodoPadreOriginal.Inferiores.Remove(nodoMovido);
-                        else
-                            Objeto.Arbol.Remove(nodoMovido);
-                        }
-                    Objeto.Arbol.Add(nodoMovido);
-                    }
+                padreDestino = null;
+                coleccionDestino = Objeto.Arbol;
+                posicionDestino = coleccionDestino.Count;
                 }
-            // Crear un registro de cambio y agregarlo a undoStack
 
+            // 3. Validar reglas de negocio (ejemplo: no mover rubro dentro de tarea)
+            if (esDragDePlanilla && nodoReceptor != null && nodoReceptor.Tipo == "T" && nodoMovido.Tipo == "R")
+                {
+                MessageBox.Show("No se puede mover un rubro dentro de una tarea");
+                return;
+                }
 
+            // 4. Eliminar el nodo de su colección original si es drag interno
             if (esDragDePlanilla)
                 {
-                // Determina el padre de destino y la posición de inserción real
-                Nodo padreDestino = null;
-                int posicionDestino = -1;
-
-                if (nodoReceptor != null)
-                    {
-                    padreDestino = Objeto.FindParentNode(Objeto.Arbol, nodoReceptor, null);
-                    var coleccionDestino = padreDestino != null ? padreDestino.Inferiores : Objeto.Arbol;
-                    int idx = coleccionDestino.IndexOf(nodoReceptor);
-                    posicionDestino = (e.DropPosition == Syncfusion.UI.Xaml.TreeGrid.DropPosition.DropAbove) ? idx : idx + 1;
-                    }
+                if (nodoPadreOriginal != null)
+                    nodoPadreOriginal.Inferiores.Remove(nodoMovido);
                 else
-                    {
-                    // Si no hay receptor, se agrega a la raíz al final
-                    padreDestino = null;
-                    posicionDestino = Objeto.Arbol.Count - 1;
-                    }
+                    Objeto.Arbol.Remove(nodoMovido);
+                }
 
+            // 5. Insertar el nodo en la colección destino
+            coleccionDestino.Insert(posicionDestino, nodoMovido);
+
+            // 6. Registrar undo/redo
+            if (esDragDePlanilla)
+                {
                 var undoRegistro = new Cambios
                     {
                     TipoCambio = "Mover",
                     NodoMovido = nodoMovido,
-                    NodoPadreAnterior = nodoPadreOriginal, // padre antes de mover
-                    NodoPadreNuevo = padreDestino,         // padre después de mover
-                    Posicion = posicionDestino             // índice en la colección de destino
+                    NodoPadreAnterior = nodoPadreOriginal,
+                    NodoPadreNuevo = padreDestino,
+                    Posicion = posicionDestino,
+                    PosicionOriginal = itemIndex // <-- aquí guardas la posición original
+                    };
+                Objeto.undoStack.Push(undoRegistro);
+                }
+            else if (esDragDeMaestro)
+                {
+                var undoRegistro = new Cambios
+                    {
+                    TipoCambio = "Nuevo",
+                    despuesCambio = nodoMovido,
+                    NodoPadre = padreDestino,
+                    Posicion = posicionDestino
                     };
                 Objeto.undoStack.Push(undoRegistro);
                 }
 
-
-
-            Objeto.redoStack.Clear(); // Limpiar la pila de rehacer cuando se realiza una nueva operación
-
-
+            Objeto.redoStack.Clear();
             DragDropContext.DragSourceUserControl = null;
             }
 

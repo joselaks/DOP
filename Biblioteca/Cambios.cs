@@ -19,6 +19,7 @@ namespace Biblioteca
         public Nodo NodoMovido { get; set; }
         public Nodo NodoPadreNuevo { get; set; }
         public Nodo NodoPadreAnterior { get; set; }
-        public int Posicion { get; set; }
+        public int Posicion { get; set; } // posición de destino
+        public int PosicionOriginal { get; set; } // posición original antes del movimiento
         }
     }
