@@ -126,6 +126,38 @@ namespace DOP.Presupuestos.Controles
                     {
                     var nodoOriginal = e.DraggingNodes[0].Item as Nodo;
                     nodoMovido = Objeto.clonar(nodoOriginal, true);
+
+                    Nodo padreDestino = null;
+                    int posicionDestino = -1;
+
+                    if (e.TargetNode != null)
+                        {
+                        nodoReceptor = e.TargetNode.Item as Nodo;
+                        padreDestino = nodoReceptor;
+                        if (nodoReceptor.Inferiores == null)
+                            nodoReceptor.Inferiores = new ObservableCollection<Nodo>();
+                        posicionDestino = nodoReceptor.Inferiores.Count;
+                        nodoReceptor.Inferiores.Add(nodoMovido);
+                        }
+                    else
+                        {
+                        padreDestino = null;
+                        posicionDestino = Objeto.Arbol.Count;
+                        Objeto.Arbol.Add(nodoMovido);
+                        }
+
+                    var undoRegistro = new Cambios
+                        {
+                        TipoCambio = "Nuevo",
+                        despuesCambio = nodoMovido,
+                        NodoPadre = padreDestino,
+                        Posicion = posicionDestino
+                        };
+                    Objeto.undoStack.Push(undoRegistro);
+                    Objeto.redoStack.Clear();
+
+                    DragDropContext.DragSourceUserControl = null;
+                    return; // <-- Esto evita la doble inserción
                     }
                 }
 

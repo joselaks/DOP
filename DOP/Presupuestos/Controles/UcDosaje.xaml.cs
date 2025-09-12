@@ -140,28 +140,63 @@ namespace DOP.Presupuestos.Controles
             // Crear un registro de cambio y agregarlo a undoStack
             if (esDragDeDosaje)
                 {
-                // Es un movimiento dentro de la misma planilla
+                // Movimiento dentro de la misma planilla de dosaje
+                // Determinar el padre de destino y la posición real de inserción
+                Nodo padreDestino = null;
+                int posicionDestino = -1;
+
+                if (e.TargetNode != null)
+                    {
+                    if (nodoReceptor != null && nodoReceptor.Tipo == "A")
+                        {
+                        padreDestino = nodoReceptor;
+                        posicionDestino = nodoReceptor.Inferiores.IndexOf(nodoMovido);
+                        }
+                    else
+                        {
+                        padreDestino = NodoAnalizado;
+                        posicionDestino = NodoAnalizado.Inferiores.IndexOf(nodoMovido);
+                        }
+                    }
+                else
+                    {
+                    padreDestino = NodoAnalizado;
+                    posicionDestino = NodoAnalizado.Inferiores.IndexOf(nodoMovido);
+                    }
+
                 var undoRegistro = new Cambios
                     {
                     TipoCambio = "Mover",
                     NodoMovido = nodoMovido,
-                    NodoPadreNuevo = nodoReceptor,
                     NodoPadreAnterior = nodoPadreOriginal,
-                    Posicion = itemIndex
+                    NodoPadreNuevo = padreDestino,
+                    Posicion = posicionDestino
                     };
                 Objeto.undoStack.Push(undoRegistro);
                 }
             else if (esDragDeMaestro || esDragDeListado)
                 {
-                // Es un agregado desde el maestro (clonación)
+                // Alta desde maestro o listado
+                Nodo padreDestino = null;
+                int posicionDestino = -1;
+
+                if (e.TargetNode != null && nodoReceptor != null && nodoReceptor.Tipo == "A")
+                    {
+                    padreDestino = nodoReceptor;
+                    posicionDestino = nodoReceptor.Inferiores.IndexOf(nodoMovido);
+                    }
+                else
+                    {
+                    padreDestino = NodoAnalizado;
+                    posicionDestino = NodoAnalizado.Inferiores.IndexOf(nodoMovido);
+                    }
+
                 var undoRegistro = new Cambios
                     {
                     TipoCambio = "Nuevo",
                     despuesCambio = nodoMovido,
-                    NodoPadre = nodoReceptor,
-                    Posicion = (nodoReceptor != null && nodoReceptor.Inferiores != null)
-                        ? nodoReceptor.Inferiores.IndexOf(nodoMovido)
-                        : Objeto.Arbol.IndexOf(nodoMovido)
+                    NodoPadre = padreDestino,
+                    Posicion = posicionDestino
                     };
                 Objeto.undoStack.Push(undoRegistro);
                 }
@@ -372,8 +407,8 @@ namespace DOP.Presupuestos.Controles
                 {
                 TipoCambio = "Nuevo",
                 despuesCambio = nuevoNodo,
-                NodoPadre = null,
-                Posicion = Objeto.Arbol.IndexOf(nuevoNodo)
+                NodoPadre = sele,
+                Posicion = sele.Inferiores.IndexOf(nuevoNodo)
                 };
 
             Objeto.undoStack.Push(undoRegistro);
