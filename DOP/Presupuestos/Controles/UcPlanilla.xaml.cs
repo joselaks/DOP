@@ -220,33 +220,41 @@ namespace DOP.Presupuestos.Controles
                     }
                 }
             // Crear un registro de cambio y agregarlo a undoStack
+
+
             if (esDragDePlanilla)
                 {
-                // Es un movimiento dentro de la misma planilla
+                // Determina el padre de destino y la posición de inserción real
+                Nodo padreDestino = null;
+                int posicionDestino = -1;
+
+                if (nodoReceptor != null)
+                    {
+                    padreDestino = Objeto.FindParentNode(Objeto.Arbol, nodoReceptor, null);
+                    var coleccionDestino = padreDestino != null ? padreDestino.Inferiores : Objeto.Arbol;
+                    int idx = coleccionDestino.IndexOf(nodoReceptor);
+                    posicionDestino = (e.DropPosition == Syncfusion.UI.Xaml.TreeGrid.DropPosition.DropAbove) ? idx : idx + 1;
+                    }
+                else
+                    {
+                    // Si no hay receptor, se agrega a la raíz al final
+                    padreDestino = null;
+                    posicionDestino = Objeto.Arbol.Count - 1;
+                    }
+
                 var undoRegistro = new Cambios
                     {
                     TipoCambio = "Mover",
                     NodoMovido = nodoMovido,
-                    NodoPadreNuevo = nodoReceptor,
-                    NodoPadreAnterior = nodoPadreOriginal,
-                    Posicion = itemIndex
+                    NodoPadreAnterior = nodoPadreOriginal, // padre antes de mover
+                    NodoPadreNuevo = padreDestino,         // padre después de mover
+                    Posicion = posicionDestino             // índice en la colección de destino
                     };
                 Objeto.undoStack.Push(undoRegistro);
                 }
-            else if (esDragDeMaestro)
-                {
-                // Es un agregado desde el maestro (clonación)
-                var undoRegistro = new Cambios
-                    {
-                    TipoCambio = "Nuevo",
-                    despuesCambio = nodoMovido,
-                    NodoPadre = nodoReceptor,
-                    Posicion = (nodoReceptor != null && nodoReceptor.Inferiores != null)
-                        ? nodoReceptor.Inferiores.IndexOf(nodoMovido)
-                        : Objeto.Arbol.IndexOf(nodoMovido)
-                    };
-                Objeto.undoStack.Push(undoRegistro);
-                }
+
+
+
             Objeto.redoStack.Clear(); // Limpiar la pila de rehacer cuando se realiza una nueva operación
 
 
@@ -287,21 +295,23 @@ namespace DOP.Presupuestos.Controles
                 case "Rubro":
                 case "menuAgregarRubro":
                 case "Agregar Rubro":
+                    // Agregar Rubro (a la raíz)
                     var (nuevoNodo, mensaje) = Objeto.agregaNodo("R", null);
                     var undoRegistro = new Cambios
                         {
                         TipoCambio = "Nuevo",
                         despuesCambio = nuevoNodo,
-                        NodoPadre = null,
+                        NodoPadre = null, // raíz
                         Posicion = Objeto.Arbol.IndexOf(nuevoNodo)
                         };
 
                     Objeto.undoStack.Push(undoRegistro);
-                    Objeto.redoStack.Clear(); // Limpiar la pila de rehacer cuando se realiza una nueva operación
+                    Objeto.redoStack.Clear();
                     break;
                 case "Tarea":
                 case "menuAgregarTarea":
                 case "Agregar Tarea":
+                    // Agregar Tarea (a un Rubro)
                     if (this.grillaArbol.SelectedItem is Nodo sele && sele.Tipo == "R")
                         {
                         var (nuevoNodo2, mensaje2) = Objeto.agregaNodo("T", sele);
@@ -309,11 +319,11 @@ namespace DOP.Presupuestos.Controles
                             {
                             TipoCambio = "Nuevo",
                             despuesCambio = nuevoNodo2,
-                            NodoPadre = null,
-                            Posicion = Objeto.Arbol.IndexOf(nuevoNodo2)
+                            NodoPadre = sele, // el Rubro seleccionado es el padre
+                            Posicion = sele.Inferiores.IndexOf(nuevoNodo2)
                             };
                         Objeto.undoStack.Push(undoRegistro2);
-                        Objeto.redoStack.Clear(); // Limpiar la pila de rehacer cuando se realiza una nueva operación
+                        Objeto.redoStack.Clear();
 
                         // Expandir el nodo Rubro si no está expandido
                         var view = grillaArbol.View;

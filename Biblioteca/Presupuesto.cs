@@ -1180,14 +1180,11 @@ namespace Bibioteca.Clases
 
         public void RestaurarNodo(Nodo nodo, Nodo nodoPadre, int posicion)
             {
-            if (nodoPadre == null)
-                {
-                Arbol.Insert(posicion, nodo);
-                }
-            else
-                {
-                nodoPadre.Inferiores.Insert(posicion, nodo);
-                }
+            ObservableCollection<Nodo> coleccionDestino = nodoPadre == null ? Arbol : nodoPadre.Inferiores;
+            // Validar el rango del índice
+            if (posicion < 0) posicion = 0;
+            if (posicion > coleccionDestino.Count) posicion = coleccionDestino.Count;
+            coleccionDestino.Insert(posicion, nodo);
             }
 
         public void borraNodo(ObservableCollection<Nodo> collection, Nodo nodoABorrar)
