@@ -69,6 +69,7 @@ namespace DOP.Presupuestos.Controles
             Nodo nodoMovido = null;
             Nodo nodoReceptor = null;
             Nodo nodoPadreOriginal = null;
+            int itemIndex = -1;
             bool esDragDeMaestro = DragDropContext.DragSourceUserControl is UcMaestro;
             bool esDragDeDosaje = DragDropContext.DragSourceUserControl is UcDosaje;
             bool esDragDeListado = DragDropContext.DragSourceUserControl is UcListado;
@@ -85,6 +86,14 @@ namespace DOP.Presupuestos.Controles
                         {
                         nodoMovido = e.DraggingNodes[0].Item as Nodo;
                         nodoPadreOriginal = Objeto.FindParentNode(Objeto.Arbol, nodoMovido, null);
+                        if (nodoPadreOriginal != null)
+                            {
+                            itemIndex = nodoPadreOriginal.Inferiores.IndexOf(nodoMovido);
+                            }
+                        else
+                            {
+                            itemIndex = Objeto.Arbol.IndexOf(nodoMovido);
+                            }
                         }
                     else if (esDragDeMaestro || esDragDeListado)
                         {
@@ -112,7 +121,7 @@ namespace DOP.Presupuestos.Controles
                 if (tipoReceptor == "A")
                     {
                     nodoReceptor.Inferiores.Add(nodoMovido);
-                    
+
                     }
                 else
                     {
@@ -127,6 +136,39 @@ namespace DOP.Presupuestos.Controles
                 }
             if (nodoPadreOriginal != null)
                 nodoPadreOriginal.Inferiores.Remove(nodoMovido);
+
+            // Crear un registro de cambio y agregarlo a undoStack
+            if (esDragDeDosaje)
+                {
+                // Es un movimiento dentro de la misma planilla
+                var undoRegistro = new Cambios
+                    {
+                    TipoCambio = "Mover",
+                    NodoMovido = nodoMovido,
+                    NodoPadreNuevo = nodoReceptor,
+                    NodoPadreAnterior = nodoPadreOriginal,
+                    Posicion = itemIndex
+                    };
+                Objeto.undoStack.Push(undoRegistro);
+                }
+            else if (esDragDeMaestro || esDragDeListado)
+                {
+                // Es un agregado desde el maestro (clonación)
+                var undoRegistro = new Cambios
+                    {
+                    TipoCambio = "Nuevo",
+                    despuesCambio = nodoMovido,
+                    NodoPadre = nodoReceptor,
+                    Posicion = (nodoReceptor != null && nodoReceptor.Inferiores != null)
+                        ? nodoReceptor.Inferiores.IndexOf(nodoMovido)
+                        : Objeto.Arbol.IndexOf(nodoMovido)
+                    };
+                Objeto.undoStack.Push(undoRegistro);
+                }
+            Objeto.redoStack.Clear(); // Limpiar la pila de rehacer cuando se realiza una nueva operación
+
+
+
 
             DragDropContext.DragSourceUserControl = null;
             Objeto.RecalculoCompleto();
@@ -143,7 +185,7 @@ namespace DOP.Presupuestos.Controles
 
 
         public void MostrarInferiores(Nodo analizado)
-        {
+            {
             this.grillaBase.Visibility = Visibility.Visible;
 
             NodoAnalizado = analizado;
@@ -151,39 +193,39 @@ namespace DOP.Presupuestos.Controles
             nombreTarea.Text = NodoAnalizado.Descripcion;
             colImporte1.HeaderText = $"{NodoAnalizado.PU1.ToString("N2", cultura)}";
 
-        }
+            }
 
         // Sobrecarga para buscar por ID
         public void MostrarInferiores(string id)
-        {
+            {
             var nodo = BuscarNodoPorId(Objeto.Arbol, id);
             if (nodo != null)
-            {
+                {
                 MostrarInferiores(nodo);
                 this.grillaBase.Visibility = Visibility.Visible;
                 }
             else
-            {
-                this.grillaBase.Visibility= Visibility.Collapsed;
+                {
+                this.grillaBase.Visibility = Visibility.Collapsed;
+                }
             }
-        }
 
         // Método auxiliar para búsqueda recursiva
         private Nodo BuscarNodoPorId(IEnumerable<Nodo> nodos, string id)
-        {
-            foreach (var nodo in nodos)
             {
+            foreach (var nodo in nodos)
+                {
                 if (nodo.ID == id)
                     return nodo;
                 if (nodo.Inferiores != null && nodo.Inferiores.Count > 0)
-                {
+                    {
                     var encontrado = BuscarNodoPorId(nodo.Inferiores, id);
                     if (encontrado != null)
                         return encontrado;
+                    }
                 }
-            }
             return null;
-        }
+            }
 
 
         private void grillaDetalle_CurrentCellBeginEdit(object sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridCurrentCellBeginEditEventArgs e)
@@ -213,9 +255,12 @@ namespace DOP.Presupuestos.Controles
                 OldValue = _originalValue,
                 NewValue = editado.GetType().GetProperty(column).GetValue(editado)
                 };
+            Objeto.undoStack.Push(undoRegistro);
+            Objeto.redoStack.Clear(); // Limpiar la pila de rehacer cuando se realiza una nueva operación
+
 
             }
-        
+
 
         private void grillaDetalle_SelectionChanged(object sender, Syncfusion.UI.Xaml.Grid.GridSelectionChangedEventArgs e)
             {
@@ -235,8 +280,20 @@ namespace DOP.Presupuestos.Controles
                 foreach (var item in itemsToRemove)
                     {
                     var result = RemoveItemRecursively(Objeto.Arbol, item);
+                    if (result.Item1)
+                        {
+                        var undoRegistro = new Cambios
+                            {
+                            TipoCambio = "Borrado",
+                            despuesCambio = item,
+                            NodoPadre = result.Item2,
+                            Posicion = result.Item3
+                            };
+                        Objeto.undoStack.Push(undoRegistro);
 
+                        }
                     }
+
                 }
             }
 
@@ -311,6 +368,16 @@ namespace DOP.Presupuestos.Controles
                 }
 
             (Nodo nuevoNodo, string mensaje) = Objeto.agregaNodo(tipo, sele);
+            var undoRegistro = new Cambios
+                {
+                TipoCambio = "Nuevo",
+                despuesCambio = nuevoNodo,
+                NodoPadre = null,
+                Posicion = Objeto.Arbol.IndexOf(nuevoNodo)
+                };
+
+            Objeto.undoStack.Push(undoRegistro);
+            Objeto.redoStack.Clear(); // Limpiar la pila de rehacer cuando se realiza una nueva operación
             Objeto.RecalculoCompleto();
             }
         }
