@@ -28,10 +28,12 @@
     <None Remove="Imagenes\ManoDeObra.png" />
     <None Remove="Imagenes\Material.png" />
     <None Remove="Imagenes\Otros.png" />
+    <None Remove="Imagenes\Redo.png" />
     <None Remove="Imagenes\Rubro.png" />
     <None Remove="Imagenes\Salir.png" />
     <None Remove="Imagenes\Subcontratos.png" />
     <None Remove="Imagenes\Tarea.png" />
+    <None Remove="Imagenes\Undo.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -66,10 +68,12 @@
     <Resource Include="Imagenes\ManoDeObra.png" />
     <Resource Include="Imagenes\Material.png" />
     <Resource Include="Imagenes\Otros.png" />
+    <Resource Include="Imagenes\Redo.png" />
     <Resource Include="Imagenes\Rubro.png" />
     <Resource Include="Imagenes\Salir.png" />
     <Resource Include="Imagenes\Subcontratos.png" />
     <Resource Include="Imagenes\Tarea.png" />
+    <Resource Include="Imagenes\Undo.png" />
   </ItemGroup>
 
 </Project>

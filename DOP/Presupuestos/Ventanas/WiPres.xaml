@@ -215,21 +215,21 @@
                 </syncfusion:RibbonBar>
                 <syncfusion:RibbonBar
                     Name="HacerDeshacer"
-                    Width="80"
+               
                     Header="Hacer Deshacer"
                     IsLauncherButtonVisible="False">
                     <syncfusion:RibbonButton
                         x:Name="Deshacer"
                         Click="Deshacer_Click"
-                        Label="DesHacer"
-                        SizeForm="Small"
-                        SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
+                        Label="Deshacer"
+                        SizeForm="Large"
+                        LargeIcon="pack://application:,,,/Imagenes/Undo.png" />
                     <syncfusion:RibbonButton
                         x:Name="Hacer"
                         Click="Hacer_Click"
-                        Label="Hacer"
-                        SizeForm="Small"
-                        SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
+                        Label="Rehacer"
+                        SizeForm="Large"
+                        LargeIcon="pack://application:,,,/Imagenes/Redo.png" />
 
                 </syncfusion:RibbonBar>
 
