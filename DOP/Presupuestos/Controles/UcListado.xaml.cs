@@ -95,11 +95,13 @@ namespace DOP.Presupuestos.Controles
 
         private void grillaListados_SelectionChanged(object sender, Syncfusion.UI.Xaml.Grid.GridSelectionChangedEventArgs e)
             {
-            // Guardar el alto actual antes de ocultar
-            _panSuperioresHeight = panSuperiores.Height;
-
-            sepSuperiores.Height = new GridLength(0);
-            panSuperiores.Height = new GridLength(0);
+            var nodo = grillaListados.SelectedItem as Nodo;
+            if (nodo != null)
+                {
+                // Mostrar panel de superiores
+                var superioresT = ObtenerSuperioresTipoT(nodo);
+                gridSuperiores.ItemsSource = superioresT;
+                }
             }
 
 

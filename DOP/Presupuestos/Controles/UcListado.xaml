@@ -95,9 +95,9 @@
     <Grid x:Name="gridPrincipal">
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
-            <RowDefinition Height="*" />
-            <RowDefinition x:Name="sepSuperiores" Height="0" />
-            <RowDefinition x:Name="panSuperiores" Height="0" />
+            <RowDefinition Height="3*" />
+            <RowDefinition x:Name="sepSuperiores" Height="auto" />
+            <RowDefinition x:Name="panSuperiores" Height="*" />
         </Grid.RowDefinitions>
         <StackPanel
             x:Name="encabezado"
