@@ -251,6 +251,9 @@ namespace DOP.Presupuestos.Controles
 
                     Objeto.undoStack.Push(undoRegistro);
                     Objeto.redoStack.Clear();
+
+                    // Seleccionar el nuevo nodo en la grilla
+                    this.grillaArbol.SelectedItem = nuevoNodo;
                     break;
                 case "Tarea":
                 case "menuAgregarTarea":
