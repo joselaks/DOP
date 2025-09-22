@@ -1,4 +1,5 @@
 ﻿using Bibioteca.Clases;
+using DataObra.Presupuestos.Controles.SubControles;
 using DOP.Presupuestos.Clases;
 
 using Syncfusion.Licensing;
@@ -24,11 +25,13 @@ namespace DOP.Presupuestos.Controles
         {
         public Presupuesto Objeto;
         private GridLength? _panSuperioresHeight = null;
+        UcPlanilla planilla;
 
-        public UcListado(Presupuesto objeto)
+        public UcListado(Presupuesto objeto, UcPlanilla _planilla)
             {
             InitializeComponent();
             Objeto = objeto;
+            planilla = _planilla;
             grillaListados.Loaded += GrillaListados_Loaded;
             this.grillaListados.RowDragDropController.DragStart += grillaListados_DragStart;
             Objeto.RecalculoFinalizado += Presupuesto_RecalculoFinalizado;
@@ -72,6 +75,7 @@ namespace DOP.Presupuestos.Controles
 
         private void GrillaListados_Loaded(object sender, RoutedEventArgs e)
             {
+
             }
 
         private void grillaListados_CurrentCellBeginEdit(object sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridCurrentCellBeginEditEventArgs e)
@@ -202,21 +206,22 @@ namespace DOP.Presupuestos.Controles
                 }
             }
 
+        // Ver superiores en una ventana
         private void VerSuperiores_Click(object sender, RoutedEventArgs e)
             {
             var nodo = grillaListados.SelectedItem as Nodo;
             if (nodo != null)
                 {
-                // Mostrar panel de superiores
-                gridPrincipal.RowDefinitions[2].Height = GridLength.Auto;
-                gridPrincipal.RowDefinitions[3].Height = new GridLength(300);
-
                 // Obtener y mostrar la colección de superiores tipo "T"
                 var superioresT = ObtenerSuperioresTipoT(nodo);
-                gridSuperiores.ItemsSource = superioresT;
+                var ventana = new VentanaGraficoNodos(nodo, superioresT, planilla);
+                ventana.Owner = Window.GetWindow(this);
+                ventana.ShowDialog();
+
+
+
                 }
             }
 
-        
-    }
+        }
     }

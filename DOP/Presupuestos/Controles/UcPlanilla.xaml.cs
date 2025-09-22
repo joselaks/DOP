@@ -2,6 +2,7 @@
 using Biblioteca;
 using DOP.Presupuestos.Clases;
 using Syncfusion.UI.Xaml.Grid;
+using Syncfusion.UI.Xaml.ScrollAxis;
 using Syncfusion.UI.Xaml.TreeGrid;
 using Syncfusion.UI.Xaml.TreeGrid.Helpers;
 using Syncfusion.Windows.Tools.Controls;
@@ -37,10 +38,6 @@ namespace DOP.Presupuestos.Controles
         private object _originalValue;
         private CultureInfo cultura = new CultureInfo("es-ES") { NumberFormat = { NumberGroupSeparator = ".", NumberDecimalSeparator = "," } };
         private HashSet<string> nodosExpandidosRT = new HashSet<string>();
-
-
-
-
 
         public UcPlanilla(Presupuesto objeto, UcDosaje dosaje)
             {
@@ -638,9 +635,19 @@ namespace DOP.Presupuestos.Controles
                 RestaurarNodosExpandidosRecursivo(child, expandidos);
             }
 
+        public void SeleccionarNodoEnArbol(Nodo nodo)
+            {
+            this.grillaArbol.SelectedItem = nodo;
+            // Obtiene el índice de la fila correspondiente al nodo
+            var rowIndex = grillaArbol.ResolveToRowIndex(nodo);
+            if (rowIndex > -1)
+                {
+                var rowColumnIndex = new RowColumnIndex(rowIndex, 0); // Columna 0 por defecto
+                grillaArbol.ScrollInView(rowColumnIndex);
+                }
 
 
-
+            }
         }
 
     }

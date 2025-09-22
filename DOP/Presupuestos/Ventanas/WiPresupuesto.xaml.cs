@@ -63,7 +63,7 @@ namespace DOP.Presupuestos.Ventanas
 
             Dosaje = new UcDosaje(Objeto);
             Planilla = new UcPlanilla(Objeto, Dosaje);
-            Listado = new UcListado(Objeto);
+            Listado = new UcListado(Objeto, Planilla);
             Maestro = new UcMaestro();
             Articulos = new UcArticulos();
             PlanillaListado = new UcPlanillaListado();
