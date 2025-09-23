@@ -26,12 +26,14 @@ namespace DOP.Presupuestos.Controles
         public Presupuesto Objeto;
         private GridLength? _panSuperioresHeight = null;
         UcPlanilla planilla;
+        UcPrecioInsumo ucPrecioInsumo;
 
         public UcListado(Presupuesto objeto, UcPlanilla _planilla)
             {
             InitializeComponent();
             Objeto = objeto;
             planilla = _planilla;
+            ucPrecioInsumo = new UcPrecioInsumo();
             grillaListados.Loaded += GrillaListados_Loaded;
             this.grillaListados.RowDragDropController.DragStart += grillaListados_DragStart;
             Objeto.RecalculoFinalizado += Presupuesto_RecalculoFinalizado;
@@ -75,7 +77,7 @@ namespace DOP.Presupuestos.Controles
 
         private void GrillaListados_Loaded(object sender, RoutedEventArgs e)
             {
-
+            this.grillaInsumoPrecio.Children.Add(ucPrecioInsumo);
             }
 
         private void grillaListados_CurrentCellBeginEdit(object sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridCurrentCellBeginEditEventArgs e)
@@ -104,7 +106,7 @@ namespace DOP.Presupuestos.Controles
                 {
                 // Mostrar panel de superiores
                 var superioresT = ObtenerSuperioresTipoT(nodo);
-                gridSuperiores.ItemsSource = superioresT;
+                //gridSuperiores.ItemsSource = superioresT;
                 }
             }
 

@@ -95,7 +95,7 @@
     <Grid x:Name="gridPrincipal">
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
-            <RowDefinition Height="3*" />
+            <RowDefinition Height="2*" />
             <RowDefinition x:Name="sepSuperiores" Height="auto" />
             <RowDefinition x:Name="panSuperiores" Height="*" />
         </Grid.RowDefinitions>
@@ -233,7 +233,12 @@
             ResizeBehavior="PreviousAndNext"
             ShowsPreview="True" />
 
-        <syncfusion:SfTreeGrid
+        <Grid Grid.Row="3" x:Name="grillaInsumoPrecio">
+            
+            
+        </Grid>
+
+        <!--<syncfusion:SfTreeGrid
             x:Name="gridSuperiores"
             Grid.Row="3"
             AllowEditing="False"
@@ -261,7 +266,7 @@
                     NumberDecimalSeparator=","
                     NumberGroupSeparator="." />
             </syncfusion:SfTreeGrid.Columns>
-        </syncfusion:SfTreeGrid>
+        </syncfusion:SfTreeGrid>-->
 
 
 
