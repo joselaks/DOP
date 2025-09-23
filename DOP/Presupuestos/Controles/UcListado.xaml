@@ -233,10 +233,7 @@
             ResizeBehavior="PreviousAndNext"
             ShowsPreview="True" />
 
-        <Grid Grid.Row="3" x:Name="grillaInsumoPrecio">
-            
-            
-        </Grid>
+        <Grid x:Name="grillaInsumoPrecio" Grid.Row="3" />
 
         <!--<syncfusion:SfTreeGrid
             x:Name="gridSuperiores"

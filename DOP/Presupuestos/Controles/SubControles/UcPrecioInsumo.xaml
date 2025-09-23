@@ -27,6 +27,62 @@
                 FontSize="20"
                 FontWeight="Bold"
                 Text="Precios del insumo" />
+            <syncfusion:SfDataGrid
+                x:Name="gridArticulosInsumos"
+                AllowDrop="True"
+                Grid.Row="1"
+                Margin="0,0,0,0"
+                AutoGenerateColumns="False"
+                IsReadOnly="False"
+                ItemsSource="{Binding ArticulosInsumos}">
+                <syncfusion:SfDataGrid.Columns>
+                    <syncfusion:GridCheckBoxColumn
+                        Width="50"
+                        HeaderText="Selec."
+                        MappingName="Seleccionado" />
+                    <syncfusion:GridTextColumn
+                        Width="250"
+                        HeaderText="Descripción"
+                        MappingName="Descrip" />
+                    <syncfusion:GridTextColumn
+                        Width="80"
+                        HeaderText="Unidad"
+                        MappingName="Unidad" />
+                    <syncfusion:GridNumericColumn
+                        Width="120"
+                        HeaderText="Factor"
+                        MappingName="FactorUnidad"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3"
+                        TextAlignment="Right" />
+                    <syncfusion:GridNumericColumn
+                        Width="120"
+                        HeaderText="Precio"
+                        MappingName="Precio"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3"
+                        TextAlignment="Right" />
+                    <syncfusion:GridTextColumn
+                        Width="180"
+                        HeaderText="Lista"
+                        MappingName="ListaDescrip" />
+                    <syncfusion:GridDateTimeColumn
+                        Width="120"
+                        CustomPattern="dd/MM/yyyy"
+                        HeaderText="Fecha"
+                        MappingName="Fecha"
+                        Pattern="ShortDate"
+                        TextAlignment="Center" />
+                    <syncfusion:GridTextColumn
+                        Width="300"
+                        HeaderText="URL"
+                        MappingName="URL" />
+                </syncfusion:SfDataGrid.Columns>
+            </syncfusion:SfDataGrid>
 
         </Grid>
 
@@ -45,11 +101,81 @@
                 <RowDefinition Height="30" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <TextBlock
-    VerticalAlignment="Center"
-    FontSize="20"
-    FontWeight="Bold"
-    Text="Buscador de precios" />
+
+            <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                <TextBlock
+                    Margin="0,0,10,0"
+                    VerticalAlignment="Center"
+                    FontSize="20"
+                    FontWeight="Bold"
+                    Text="Buscador de precios" />
+                <TextBlock VerticalAlignment="Center">Filtro:</TextBlock>
+                <TextBox
+                    x:Name="txtBusquedaArticulo"
+                    Width="200"
+                    Margin="0,0,10,0"
+                    VerticalAlignment="Center" />
+                <ComboBox
+                    x:Name="comboTipoArticulo"
+                    Width="180"
+                    Margin="0,0,10,0"
+                    VerticalAlignment="Center"
+                    SelectedIndex="0">
+                    <ComboBoxItem Content="Materiales" />
+                    <ComboBoxItem Content="Mano de Obra" />
+                    <ComboBoxItem Content="Equipos" />
+                    <ComboBoxItem Content="Subcontratos" />
+                    <ComboBoxItem Content="Otros" />
+                </ComboBox>
+                <Button
+                    Width="80"
+                    Click="BtnBuscarPrecios_Click"
+                    Content="Buscar" />
+            </StackPanel>
+            <syncfusion:SfDataGrid
+                x:Name="gridBusquedaArticulos"
+                AllowDraggingRows="True"
+                Grid.Row="1"
+                Margin="0,0,0,0"
+                AutoGenerateColumns="False"
+                IsReadOnly="True"
+                ItemsSource="{Binding ArticulosBusqueda}">
+                <syncfusion:SfDataGrid.Columns>
+                    <syncfusion:GridTextColumn
+                        Width="250"
+                        HeaderText="Descripción"
+                        MappingName="Descrip" />
+                    <syncfusion:GridTextColumn
+                        Width="80"
+                        HeaderText="Unidad"
+                        MappingName="Unidad" />
+                    <syncfusion:GridNumericColumn
+                        Width="120"
+                        HeaderText="Precio"
+                        MappingName="Precio"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3"
+                        TextAlignment="Right" />
+                    <syncfusion:GridTextColumn
+                        Width="180"
+                        HeaderText="Lista"
+                        MappingName="ListaDescrip" />
+                    <syncfusion:GridDateTimeColumn
+                        Width="120"
+                        CustomPattern="dd/MM/yyyy"
+                        HeaderText="Fecha"
+                        MappingName="Fecha"
+                        Pattern="ShortDate"
+                        TextAlignment="Center" />
+                    <syncfusion:GridTextColumn
+                        Width="300"
+                        HeaderText="URL"
+                        MappingName="URL" />
+                </syncfusion:SfDataGrid.Columns>
+            </syncfusion:SfDataGrid>
+
 
 
 
