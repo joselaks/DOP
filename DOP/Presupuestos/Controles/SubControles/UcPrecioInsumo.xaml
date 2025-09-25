@@ -5,9 +5,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:DataObra.Presupuestos.Controles.SubControles"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sfSkinManager="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    sfSkinManager:SfSkinManager.VisualStyle="MaterialLight"
     mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
@@ -29,9 +31,10 @@
                 Text="Precios del insumo" />
             <syncfusion:SfDataGrid
                 x:Name="gridArticulosInsumos"
-                AllowDrop="True"
                 Grid.Row="1"
                 Margin="0,0,0,0"
+                AllowDrop="True"
+                AllowDraggingRows="True"
                 AutoGenerateColumns="False"
                 IsReadOnly="False"
                 ItemsSource="{Binding ArticulosInsumos}">
@@ -39,7 +42,7 @@
                     <syncfusion:GridCheckBoxColumn
                         Width="50"
                         HeaderText="Selec."
-                        MappingName="Seleccionado" />
+                        MappingName="Seleccionado" AllowEditing="True" />
                     <syncfusion:GridTextColumn
                         Width="250"
                         HeaderText="Descripción"
@@ -102,7 +105,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+            <StackPanel Margin="0,5,0,10" Orientation="Horizontal">
                 <TextBlock
                     Margin="0,0,10,0"
                     VerticalAlignment="Center"
@@ -134,9 +137,9 @@
             </StackPanel>
             <syncfusion:SfDataGrid
                 x:Name="gridBusquedaArticulos"
-                AllowDraggingRows="True"
                 Grid.Row="1"
                 Margin="0,0,0,0"
+                AllowDraggingRows="True"
                 AutoGenerateColumns="False"
                 IsReadOnly="True"
                 ItemsSource="{Binding ArticulosBusqueda}">

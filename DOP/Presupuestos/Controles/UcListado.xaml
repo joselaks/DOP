@@ -7,9 +7,11 @@
     xmlns:local="clr-namespace:DOP.Presupuestos.Controles"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:numberformat="clr-namespace:System.Globalization;assembly=mscorlib"
+    xmlns:sfSkinManager="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    sfSkinManager:SfSkinManager.VisualStyle="MaterialLight"
     mc:Ignorable="d">
     <UserControl.Resources>
         <clases:DecimalToStringConverter x:Key="DecimalToStringConverter" />
@@ -95,7 +97,7 @@
     <Grid x:Name="gridPrincipal">
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
-            <RowDefinition Height="2*" />
+            <RowDefinition Height="*" />
             <RowDefinition x:Name="sepSuperiores" Height="auto" />
             <RowDefinition x:Name="panSuperiores" Height="*" />
         </Grid.RowDefinitions>

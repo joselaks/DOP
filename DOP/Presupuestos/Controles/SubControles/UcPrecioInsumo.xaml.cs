@@ -1,21 +1,12 @@
 ﻿using Biblioteca.DTO;
-using DataObra.Interfaz.Ventanas;
 using DOP.Datos;
+using Syncfusion.Data;
+using Syncfusion.UI.Xaml.Grid;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace DataObra.Presupuestos.Controles.SubControles
     {
@@ -24,7 +15,6 @@ namespace DataObra.Presupuestos.Controles.SubControles
     /// </summary>
     public partial class UcPrecioInsumo : UserControl
         {
-
         public ObservableCollection<ArticuloBusquedaDTO> ArticulosBusqueda { get; set; } = new();
         public ObservableCollection<ArticuloInsumoDTO> ArticulosInsumos { get; set; } = new();
 
@@ -32,10 +22,84 @@ namespace DataObra.Presupuestos.Controles.SubControles
             {
             InitializeComponent();
             this.DataContext = this;
+            this.Loaded += UcPrecioInsumo_Loaded;
+            }
 
-            gridBusquedaArticulos.PreviewMouseLeftButtonDown += GridBusquedaArticulos_PreviewMouseLeftButtonDown;
-            gridArticulosInsumos.Drop += GridArticulosInsumos_Drop;
-            gridArticulosInsumos.DragOver += GridArticulosInsumos_DragOver;
+        private void UcPrecioInsumo_Loaded(object sender, RoutedEventArgs e)
+            {
+            // Suscribir eventos aquí, cuando los controles ya están inicializados
+            gridBusquedaArticulos.RowDragDropController.DragStart += GridBusquedaArticulos_DragStart;
+            gridArticulosInsumos.RowDragDropController.Drop += GridArticulosInsumos_Drop;
+            gridArticulosInsumos.CurrentCellValueChanged += GridArticulosInsumos_CurrentCellValueChanged;
+            }
+
+        private void GridBusquedaArticulos_DragStart(object? sender, GridRowDragStartEventArgs e)
+            {
+            // Aquí puedes personalizar el inicio del drag si lo necesitas.
+            // Por ejemplo, puedes cancelar el drag para ciertas filas:
+            // if (e.RowData is ArticuloBusquedaDTO art && !art.PermitirDrag)
+            //     e.Cancel = true;
+            }
+
+        private void GridArticulosInsumos_Drop(object sender, GridRowDropEventArgs e)
+            {
+            if (e.IsFromOutSideSource)
+                {
+                ObservableCollection<object> DraggingRecords = new ObservableCollection<object>();
+                DraggingRecords = e.Data.GetData("Records") as ObservableCollection<object>;
+                if (DraggingRecords != null)
+                    {
+                    foreach (var item in DraggingRecords)
+                        {
+                        if (item is ArticuloBusquedaDTO articuloBusqueda)
+                            AgregarInsumoDesdeBusqueda(articuloBusqueda);
+                        }
+                    }
+
+                }
+            }
+        private void GridArticulosInsumos_CurrentCellValueChanged(object? sender, Syncfusion.UI.Xaml.Grid.CurrentCellValueChangedEventArgs e)
+            {
+            if (e.Column.MappingName == "Seleccionado")
+                {
+                var grid = sender as SfDataGrid;
+                if (grid?.View == null) return;
+
+                // Obtiene el registro afectado
+                var changedItem = grid.View.Records[e.RowColumnIndex.RowIndex - 1].Data as ArticuloInsumoDTO;
+                if (changedItem != null && changedItem.Seleccionado)
+                    {
+                    foreach (var item in ArticulosInsumos)
+                        {
+                        if (!ReferenceEquals(item, changedItem) && item.Seleccionado)
+                            item.Seleccionado = false;
+                        }
+                    }
+                }
+            }
+
+
+        private void AgregarInsumoDesdeBusqueda(ArticuloBusquedaDTO articuloBusqueda)
+            {
+            var insumo = new ArticuloInsumoDTO
+                {
+                ArticuloID = articuloBusqueda.ID,
+                InsumoID = 0,
+                Descrip = articuloBusqueda.Descrip,
+                TipoID = articuloBusqueda.TipoID,
+                Unidad = articuloBusqueda.Unidad,
+                FactorPrecio = articuloBusqueda.Precio,
+                FactorUnidad = articuloBusqueda.UnidadFactor,
+                Seleccionado = false,
+                Fecha = articuloBusqueda.Fecha,
+                Moneda = articuloBusqueda.Moneda,
+                Nota = articuloBusqueda.Nota,
+                URL = articuloBusqueda.URL,
+                ListaDescrip = articuloBusqueda.ListaDescrip
+                };
+
+            if (!ArticulosInsumos.Any(x => x.ArticuloID == insumo.ArticuloID))
+                ArticulosInsumos.Add(insumo);
             }
 
         private async void BtnBuscarPrecios_Click(object sender, RoutedEventArgs e)
@@ -89,57 +153,6 @@ namespace DataObra.Presupuestos.Controles.SubControles
             else
                 {
                 MessageBox.Show($"No se encontraron resultados.\n{msg}", "Búsqueda", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-            }
-
-        private void GridBusquedaArticulos_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-            {
-            var row = gridBusquedaArticulos.SelectedItem as ArticuloBusquedaDTO;
-            if (row != null)
-                {
-                DragDrop.DoDragDrop(gridBusquedaArticulos, row, DragDropEffects.Copy);
-                }
-            }
-
-        private void GridArticulosInsumos_DragOver(object sender, DragEventArgs e)
-            {
-            if (e.Data.GetDataPresent(typeof(ArticuloBusquedaDTO)))
-                e.Effects = DragDropEffects.Copy;
-            else
-                e.Effects = DragDropEffects.None;
-
-            e.Handled = true;
-            }
-
-        private void GridArticulosInsumos_Drop(object sender, DragEventArgs e)
-            {
-            if (e.Data.GetDataPresent(typeof(ArticuloBusquedaDTO)))
-                {
-                var articuloBusqueda = e.Data.GetData(typeof(ArticuloBusquedaDTO)) as ArticuloBusquedaDTO;
-                if (articuloBusqueda != null)
-                    {
-                    // Conversión de ArticuloBusquedaDTO a ArticuloInsumoDTO
-                    var insumo = new ArticuloInsumoDTO
-                        {
-                        ArticuloID = articuloBusqueda.ID,
-                        InsumoID = 0, // Asigna el valor adecuado si corresponde
-                        Descrip = articuloBusqueda.Descrip,
-                        TipoID = articuloBusqueda.TipoID,
-                        Unidad = articuloBusqueda.Unidad,
-                        FactorPrecio = articuloBusqueda.Precio,
-                        FactorUnidad = articuloBusqueda.UnidadFactor,
-                        Seleccionado = false,
-                        Fecha = articuloBusqueda.Fecha,
-                        Moneda = articuloBusqueda.Moneda,
-                        Nota = articuloBusqueda.Nota,
-                        URL = articuloBusqueda.URL,
-                        ListaDescrip = articuloBusqueda.ListaDescrip
-                        };
-
-                    // Evita duplicados si es necesario
-                    if (!ArticulosInsumos.Any(x => x.ArticuloID == insumo.ArticuloID))
-                        ArticulosInsumos.Add(insumo);
-                    }
                 }
             }
         }
