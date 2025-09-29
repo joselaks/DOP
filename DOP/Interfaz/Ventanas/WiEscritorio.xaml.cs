@@ -21,6 +21,12 @@ namespace DataObra.Interfaz.Ventanas
         private mPresupuestos miniPresupuesto;
         private xPresupuestos expanPresupuesto;
 
+        //Gastos
+        private nGastos normalGastos;
+        private mGastos miniGastos;
+        private xGastos expanGastos;
+
+
         //Precios
         private nPrecios normalPrecios;
         private mPrecios miniPrecios;
@@ -35,6 +41,8 @@ namespace DataObra.Interfaz.Ventanas
         private nModelos normalModelo;
         private mModelos miniModelo;
         private xModelos expanModelo;
+
+
 
         //Presupuestos y modelos
         public ObservableCollection<PresupuestoDTO> _presupuestos = new();
@@ -55,9 +63,6 @@ namespace DataObra.Interfaz.Ventanas
         public WiEscritorio()
         {
             InitializeComponent();
-
-            
-
             this.Loaded += WiEscritorio_Loaded;
         }
 
@@ -125,6 +130,12 @@ namespace DataObra.Interfaz.Ventanas
             miniPresupuesto = new mPresupuestos(this);
             expanPresupuesto = new xPresupuestos(this);
 
+            // Gastos
+            normalGastos = new nGastos(this);
+            miniGastos = new mGastos(this);
+            expanGastos = new xGastos(this);
+
+
             // Precios
             normalPrecios = new nPrecios(this);
             miniPrecios = new mPrecios(this);
@@ -140,15 +151,16 @@ namespace DataObra.Interfaz.Ventanas
             miniModelo = new mModelos(this);
             expanModelo = new xModelos(this);
 
-            AgregarTile(normalModelo, expanModelo, miniModelo);
-            AgregarTile(normalPresupuesto, expanPresupuesto, miniPresupuesto);
-            AgregarTile(normalMaestro, expanMaestro, miniMaestro);
+            AgregarTileOperativo( expanPresupuesto, normalPresupuesto, miniPresupuesto);
+            AgregarTileOperativo(normalGastos, expanGastos, miniGastos);
 
-            AgregarTile(normalPrecios, expanPrecios, miniPrecios);
+            AgregarTileMercado(normalModelo, expanModelo, miniModelo);
+            AgregarTileMercado(normalMaestro, expanMaestro, miniMaestro);
+            AgregarTileMercado(normalPrecios, expanPrecios, miniPrecios);
 
         }
 
-        private void AgregarTile(object contenidoNormal, object contenidoMax, object contenidoMin)
+        private void AgregarTileMercado(object contenidoNormal, object contenidoMax, object contenidoMin)
         {
             var tile = new TileViewItem
             {
@@ -156,55 +168,74 @@ namespace DataObra.Interfaz.Ventanas
                 MaximizedItemContent = contenidoMax,
                 MinimizedItemContent = contenidoMin
             };
-            tileEscritorio.Items.Add(tile);
+            tileEscritorioMercado.Items.Add(tile);
         }
 
-        public void CambioEstado(string nombreTile, string estado)
-        {
-            foreach (var item in tileEscritorio.Items)
+        private void AgregarTileOperativo(object contenidoNormal, object contenidoMax, object contenidoMin)
             {
+            var tile = new TileViewItem
+                {
+                Content = contenidoNormal,
+                MaximizedItemContent = contenidoMax,
+                MinimizedItemContent = contenidoMin
+                };
+            tileEscritorioOperativo.Items.Add(tile);
+            }
+
+        public void CambioEstado(string nombreTile, string estado, string contenedor)
+            {
+            TileViewControl tileView = null;
+            if (contenedor == "M")
+                tileView = tileEscritorioMercado;
+            else if (contenedor == "O")
+                tileView = tileEscritorioOperativo;
+            else
+                return;
+
+            foreach (var item in tileView.Items)
+                {
                 // Obtener el nombre del tipo del contenido
                 var contenido = (item as TileViewItem)?.Content ?? item;
                 string nombreContenido = contenido.GetType().Name;
                 if (estado == "Normal")
                     {
-                    foreach (var it in tileEscritorio.Items)
+                    foreach (var it in tileView.Items)
                         {
                         var cont = (it as TileViewItem)?.Content ?? it;
                         string nomCont = cont.GetType().Name;
                         if (nomCont != nombreTile)
                             {
-                            var container = tileEscritorio.ItemContainerGenerator.ContainerFromItem(it) as TileViewItem;
-                            container.TileViewItemState = Syncfusion.Windows.Shared.TileViewItemState.Normal;
-
+                            var container = tileView.ItemContainerGenerator.ContainerFromItem(it) as TileViewItem;
+                            if (container != null)
+                                container.TileViewItemState = Syncfusion.Windows.Shared.TileViewItemState.Normal;
                             }
                         }
                     return;
                     }
 
                 if (nombreContenido.Equals(nombreTile, StringComparison.OrdinalIgnoreCase))
-                {
-                    var container = tileEscritorio.ItemContainerGenerator.ContainerFromItem(item) as TileViewItem;
-                    if (container != null)
                     {
-                        switch (estado)
+                    var container = tileView.ItemContainerGenerator.ContainerFromItem(item) as TileViewItem;
+                    if (container != null)
                         {
+                        switch (estado)
+                            {
                             case "Maximizado":
                                 container.TileViewItemState = Syncfusion.Windows.Shared.TileViewItemState.Maximized;
                                 break;
                             case "Minimizado":
                                 container.TileViewItemState = Syncfusion.Windows.Shared.TileViewItemState.Minimized;
                                 break;
+                            }
                         }
-                    }
                     break; // Salir tras encontrar el tile correcto
+                    }
                 }
             }
+
+
+
         }
-
-
-
-    }
 
 
 

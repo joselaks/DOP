@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="DataObra.Interfaz.Componentes.nPresupuestos"
+    x:Class="DataObra.Interfaz.Componentes.nGastos"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -34,11 +34,11 @@
                     FontSize="22"
                     FontWeight="Bold"
                     Foreground="#1E88E5"
-                    Text="Presupuestos" />
+                    Text="Gastos de obra" />
             </StackPanel>
         </Grid>
 
-       
+
 
         <Button
             Grid.Row="2"

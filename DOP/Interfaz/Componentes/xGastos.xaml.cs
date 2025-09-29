@@ -15,21 +15,22 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace DataObra.Interfaz.Componentes
-{
-    /// <summary>
-    /// Lógica de interacción para mMaestro.xaml
-    /// </summary>
-    public partial class mMaestro : UserControl
     {
+    /// <summary>
+    /// Lógica de interacción para xGastos.xaml
+    /// </summary>
+    public partial class xGastos : UserControl
+        {
         private WiEscritorio escritorio;
-        public mMaestro(WiEscritorio _escritorio)
-        {
+        public xGastos(WiEscritorio escritorio)
+            {
             InitializeComponent();
-            escritorio = _escritorio;
-        }
-        private void Maximizar(object sender, RoutedEventArgs e)
-        {
-            escritorio.CambioEstado("nMaestro", "Maximizado", "M");
+            this.escritorio = escritorio;
+            }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+            {
+            escritorio.CambioEstado("nGastos", "Normal", "O");
+            }
         }
     }
-}

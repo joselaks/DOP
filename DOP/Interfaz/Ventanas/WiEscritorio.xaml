@@ -19,7 +19,67 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <syncfusion:TileViewControl Name="tileEscritorio" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+
+        <!--  Texto en la fila 0  -->
+        <Grid Grid.Row="0" Grid.Column="0" Background="LightGray">
+            <TextBlock
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="16"
+                FontWeight="Bold"
+                Text="Datos de mercado" />
+
+        </Grid>
+        <TextBlock
+            Grid.Row="0"
+            Grid.Column="2"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontSize="16"
+            FontWeight="Bold"
+            Text="Zona operativa" />
+
+        <!--  Controles existentes  -->
+        <Grid   Background="LightGray"           Grid.Row="1"
+            Grid.Column="0"
+>
+            <syncfusion:TileViewControl
+            Name="tileEscritorioMercado"
+            Margin="20,20,20,20"
+            ColumnCount="1"
+            MinimizedItemsOrientation="Bottom"
+            RowCount="3" />
+
+
+        </Grid>
+        <syncfusion:TileViewControl
+            Name="tileEscritorioOperativo"
+            Grid.Row="1"
+            Grid.Column="2"
+            Margin="20,20,20,20"
+            ColumnCount="1"
+            MinimizedItemsOrientation="Bottom"
+            RowCount="2" />
+
+        <syncfusion:SfGridSplitter
+            Grid.Row="0"
+            Grid.RowSpan="3"
+            Grid.Column="1"
+            Width="5"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Stretch"
+            EnableCollapseButton="True"
+            ResizeBehavior="PreviousAndNext"
+            ShowsPreview="True" />
 
 
     </Grid>

@@ -15,18 +15,11 @@ namespace DataObra.Interfaz.Componentes
             InitializeComponent();
             escritorio = _escritorio;
 
-            // Mostrar los últimos 10 presupuestos editados, ordenados por FechaM descendente
-            var ultimos = escritorio._presupuestos
-                .OrderByDescending(p => p.FechaM)
-                .Take(10)
-                .ToList();
-
-            lstUltimosPresupuestos.ItemsSource = ultimos;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            escritorio.CambioEstado("nPresupuestos", "Maximizado");
+            escritorio.CambioEstado("nPresupuestos", "Maximizado", "O");
         }
     }
 }

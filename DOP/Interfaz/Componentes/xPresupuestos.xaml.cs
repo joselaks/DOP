@@ -34,7 +34,7 @@ namespace DataObra.Interfaz.Componentes
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            escritorio.CambioEstado("nPresupuestos", "Normal");
+            escritorio.CambioEstado("nPresupuestos", "Normal", "O");
         }
 
         private void BtnNuevo_Click(object sender, RoutedEventArgs e)

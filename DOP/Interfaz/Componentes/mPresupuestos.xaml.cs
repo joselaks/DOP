@@ -16,7 +16,7 @@ namespace DataObra.Interfaz.Componentes
 
         private void Maximizar(object sender, RoutedEventArgs e)
         {
-            escritorio.CambioEstado("nPresupuestos", "Maximizado");
+            escritorio.CambioEstado("nPresupuestos", "Maximizado", "O");
         }
     }
 }

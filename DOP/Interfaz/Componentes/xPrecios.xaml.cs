@@ -83,7 +83,7 @@ namespace DataObra.Interfaz.Componentes
 
         private void Button_Click(object sender, RoutedEventArgs e)
             {
-            escritorio.CambioEstado("nPrecios", "Normal");
+            escritorio.CambioEstado("nPrecios", "Normal", "O");
             }
 
         private void ExcelDropZone_DragEnter(object sender, DragEventArgs e)

@@ -44,32 +44,6 @@
         </Grid>
 
         <!--  Contenido principal existente  -->
-        <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="30" />
-            </Grid.RowDefinitions>
-
-            <syncfusion:TabNavigationControl
-                x:Name="zona00"
-                Margin="15"
-                TabStripVisibility="Visible">
-                <syncfusion:TabNavigationItem Header="Valor de m2 en modelos de DataObra">
-                    <syncfusion:TabNavigationItem.Content>
-                        <Grid>
-                            <syncfusion:SfChart x:Name="graficoBarras" Margin="20,2,20,0" />
-                        </Grid>
-                    </syncfusion:TabNavigationItem.Content>
-                </syncfusion:TabNavigationItem>
-                <syncfusion:TabNavigationItem Header="Valor de m2 en modelos propios">
-                    <syncfusion:TabNavigationItem.Content>
-                        <Grid>
-                            <syncfusion:SfChart x:Name="graficoModelosPropios" />
-                        </Grid>
-                    </syncfusion:TabNavigationItem.Content>
-                </syncfusion:TabNavigationItem>
-            </syncfusion:TabNavigationControl>
-        </Grid>
 
         <Button
             Grid.Row="2"

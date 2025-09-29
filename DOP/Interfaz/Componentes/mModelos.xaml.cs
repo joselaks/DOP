@@ -16,7 +16,7 @@ namespace DataObra.Interfaz.Componentes
 
         private void Maximizar(object sender, RoutedEventArgs e)
         {
-            escritorio.CambioEstado("nModelos", "Maximizado");
+            escritorio.CambioEstado("nModelos", "Maximizado", "M");
         }
     }
 }

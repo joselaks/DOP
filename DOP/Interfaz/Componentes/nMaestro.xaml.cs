@@ -16,7 +16,7 @@ namespace DataObra.Interfaz.Componentes
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            escritorio.CambioEstado("nMaestro", "Maximizado");
+            escritorio.CambioEstado("nMaestro", "Maximizado", "M");
         }
     }
 }
