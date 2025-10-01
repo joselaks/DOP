@@ -152,7 +152,7 @@ namespace DataObra.Interfaz.Ventanas
             expanModelo = new xModelos(this);
 
             AgregarTileOperativo( expanPresupuesto, normalPresupuesto, miniPresupuesto);
-            AgregarTileOperativo(normalGastos, expanGastos, miniGastos);
+            AgregarTileOperativo(expanGastos, normalGastos, miniGastos);
 
             AgregarTileMercado(normalModelo, expanModelo, miniModelo);
             AgregarTileMercado(normalMaestro, expanMaestro, miniMaestro);
@@ -166,7 +166,8 @@ namespace DataObra.Interfaz.Ventanas
             {
                 Content = contenidoNormal,
                 MaximizedItemContent = contenidoMax,
-                MinimizedItemContent = contenidoMin
+                MinimizedItemContent = contenidoMin,
+                Margin = new Thickness(5)
             };
             tileEscritorioMercado.Items.Add(tile);
         }
@@ -177,7 +178,8 @@ namespace DataObra.Interfaz.Ventanas
                 {
                 Content = contenidoNormal,
                 MaximizedItemContent = contenidoMax,
-                MinimizedItemContent = contenidoMin
+                MinimizedItemContent = contenidoMin,
+                Margin = new Thickness(5)
                 };
             tileEscritorioOperativo.Items.Add(tile);
             }

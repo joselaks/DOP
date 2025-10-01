@@ -14,13 +14,12 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="30" />
         </Grid.RowDefinitions>
 
         <StackPanel
             Grid.Column="1"
             VerticalAlignment="Center"
-            Orientation="Horizontal">
+            Orientation="Horizontal" HorizontalAlignment="Center">
             <Image
                 Width="28"
                 Height="28"
@@ -33,13 +32,6 @@
                 Foreground="#43A047"
                 Text="Gastos de Obra" />
         </StackPanel>
-
-        <Button
-            Grid.Row="2"
-            Width="200"
-            Height="30"
-            Click="Button_Click"
-            Content="Volver a menú principal" />
         <!--  Aquí puedes agregar el contenido expandido de Precios  -->
     </Grid>
 </UserControl>

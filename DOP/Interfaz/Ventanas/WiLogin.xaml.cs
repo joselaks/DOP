@@ -120,7 +120,8 @@ namespace DOP.Interfaz.Ventanas
                         //Opcion para abrir la ventana de Escritorio
                         WiEscritorio escritorio = new WiEscritorio()
                             {
-                            WindowStartupLocation = WindowStartupLocation.CenterScreen
+                            WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                            WindowState = WindowState.Maximized
                             };
                         Application.Current.MainWindow = escritorio;
                         escritorio.Show();

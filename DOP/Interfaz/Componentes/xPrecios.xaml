@@ -14,7 +14,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="30" />
         </Grid.RowDefinitions>
 
         <StackPanel
@@ -309,12 +308,6 @@
 
             </syncfusion:TabItemExt>
         </syncfusion:TabControlExt>
-        <Button
-            Grid.Row="2"
-            Width="200"
-            Height="30"
-            Click="Button_Click"
-            Content="Volver a menú principal" />
         <!--  Aquí puedes agregar el contenido expandido de Precios  -->
     </Grid>
 </UserControl>
