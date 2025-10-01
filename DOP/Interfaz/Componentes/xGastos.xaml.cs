@@ -32,5 +32,30 @@ namespace DataObra.Interfaz.Componentes
             {
             escritorio.CambioEstado("nGastos", "Normal", "O");
             }
+
+        private void btnNuevo_Click(object sender, RoutedEventArgs e)
+            {
+
+            }
+
+        private void btnEditar_Click(object sender, RoutedEventArgs e)
+            {
+
+            }
+
+        private void btnBorrar_Click(object sender, RoutedEventArgs e)
+            {
+
+            }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+            {
+
+            }
+
+        private void GrillaPresupuestos_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+            {
+
+            }
         }
     }

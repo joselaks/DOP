@@ -18,8 +18,9 @@
 
         <StackPanel
             Grid.Column="1"
+            HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Orientation="Horizontal" HorizontalAlignment="Center">
+            Orientation="Horizontal">
             <Image
                 Width="28"
                 Height="28"
@@ -32,6 +33,93 @@
                 Foreground="#43A047"
                 Text="Gastos de Obra" />
         </StackPanel>
-        <!--  Aquí puedes agregar el contenido expandido de Precios  -->
+
+
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel
+                Margin="0,0,0,0"
+                HorizontalAlignment="Left"
+                Orientation="Horizontal">
+                <Button
+                    Name="btnNuevo"
+                    Width="80"
+                    Margin="2"
+                    Click="btnNuevo_Click"
+                    Content="Nuevo" />
+                <Button
+                    Name="btnEditar"
+                    Width="80"
+                    Margin="2"
+                    Click="btnEditar_Click"
+                    Content="Editar" />
+                <Button
+                    Name="btnBorrar"
+                    Width="80"
+                    Margin="2"
+                    Click="btnBorrar_Click"
+                    Content="Borrar" />
+            </StackPanel>
+            <Grid Grid.Row="2">
+                <syncfusion:SfDataGrid
+                    Name="GrillaGastos"
+                    AllowResizingColumns="True"
+                    AutoGenerateColumns="False"
+                    IsReadOnly="True"
+                    MouseDoubleClick="GrillaPresupuestos_MouseDoubleClick">
+                    <syncfusion:SfDataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Click="MenuItem_Click" Header="Nuevo" />
+                            <MenuItem Click="MenuItem_Click" Header="Editar" />
+                            <MenuItem Click="MenuItem_Click" Header="Borrar" />
+                        </ContextMenu>
+                    </syncfusion:SfDataGrid.ContextMenu>
+                    <syncfusion:SfDataGrid.Columns>
+                        <syncfusion:GridDateTimeColumn
+                            Width="120"
+                            HeaderText="Fecha"
+                            MappingName="FechaC"
+                            TextAlignment="Center" />
+
+                        <syncfusion:GridTextColumn
+                            Width="130"
+                            HeaderText="Proveedor"
+                            MappingName="Descrip" />
+                        <syncfusion:GridNumericColumn
+                            Width="150"
+                            HeaderText="Importe"
+                            MappingName="PrEjecTotal"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3"
+                            TextAlignment="Right" />
+                        <syncfusion:GridTextColumn
+                            Width="130"
+                            HeaderText="Presupuesto destino"
+                            MappingName="Descrip" />
+                        <syncfusion:GridTextColumn
+                            Width="80"
+                            HeaderText="Link Archivo"
+                            MappingName="Descrip" />
+                        <syncfusion:GridTextColumn
+                            Width="200"
+                            HeaderText="Nota"
+                            MappingName="Descrip" />
+
+
+
+
+
+
+                    </syncfusion:SfDataGrid.Columns>
+                </syncfusion:SfDataGrid>
+            </Grid>
+        </Grid>
+
+        <!--  Aquí puedes agregar el contenido expandido de Presupuestos  -->
     </Grid>
 </UserControl>

@@ -49,7 +49,7 @@
                             Margin="0,0,10,0"
                             VerticalAlignment="Center"
                             FontWeight="DemiBold">
-                            Busqueda de Artículos
+                            Busqueda de Precios
                         </TextBlock>
                         <TextBlock VerticalAlignment="Center">Filtro:</TextBlock>
                         <TextBox
