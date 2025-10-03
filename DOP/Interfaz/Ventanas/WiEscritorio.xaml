@@ -34,7 +34,7 @@
             <TextBlock
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                FontSize="16"
+                FontSize="26"
                 FontWeight="Bold"
                 Text="Datos de mercado" />
 
@@ -44,7 +44,7 @@
             Grid.Column="2"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            FontSize="16"
+            FontSize="26"
             FontWeight="Bold"
             Text="Zona operativa" />
 

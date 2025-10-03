@@ -27,7 +27,7 @@
                 FontSize="22"
                 FontWeight="Bold"
                 Foreground="#E53935"
-                Text="Análisis de costo" />
+                Text="Maestro" />
         </StackPanel>
         <Button
             Grid.Row="2"
