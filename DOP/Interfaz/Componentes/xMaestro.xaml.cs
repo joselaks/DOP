@@ -15,7 +15,7 @@ namespace DataObra.Interfaz.Componentes
         {
             InitializeComponent();
             escritorio = _escritorio;
-        }
+            }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {

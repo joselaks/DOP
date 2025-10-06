@@ -149,7 +149,7 @@ namespace DataObra.Interfaz.Ventanas
             // Modelos
             normalModelo = new nModelos(this);
             miniModelo = new mModelos(this);
-            expanModelo = new xModelos(this);
+            expanModelo = new xModelos(this, _modelosPropios);
 
             AgregarTileOperativo( expanPresupuesto, normalPresupuesto, miniPresupuesto);
             AgregarTileOperativo(expanGastos, normalGastos, miniGastos);

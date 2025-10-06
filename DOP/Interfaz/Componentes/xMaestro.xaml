@@ -11,7 +11,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="30" />
         </Grid.RowDefinitions>
         <StackPanel
             Grid.Column="1"
@@ -29,12 +28,7 @@
                 Foreground="#E53935"
                 Text="Maestro" />
         </StackPanel>
-        <Button
-            Grid.Row="2"
-            Width="200"
-            Height="20"
-            Click="Button_Click"
-            Content="Volver al menú principal" />
-        <!--  Aquí puedes agregar el contenido expandido de Maestro  -->
+        <!-- WrapPanel para botones dinámicos y responsive -->
+        
     </Grid>
 </UserControl>

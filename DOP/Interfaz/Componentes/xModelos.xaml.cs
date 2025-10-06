@@ -1,4 +1,7 @@
-﻿using DataObra.Interfaz.Ventanas;
+﻿using Biblioteca.DTO;
+using DataObra.Interfaz.Ventanas;
+using DataObra.Presupuestos.Ventanas;
+using DOP;
 using Syncfusion.UI.Xaml.Charts;
 using System;
 using System.Collections.Generic;
@@ -25,67 +28,103 @@ namespace DataObra.Interfaz.Componentes
     public partial class xModelos : UserControl
     {
         private WiEscritorio escritorio;
+        private ObservableCollection<PresupuestoDTO> _modelos;
 
-        public xModelos(WiEscritorio _escritorio)
+
+        public xModelos(WiEscritorio _escritorio, ObservableCollection<PresupuestoDTO> modelos)
         {
             InitializeComponent();
             escritorio = _escritorio;
+            _modelos = modelos;
+
             this.Loaded += XModelos_Loaded;
 
             }
 
         private void XModelos_Loaded(object sender, RoutedEventArgs e)
             {
-                 //GraficoGraficoBarras();
+
+            // Botones para modelos
+            foreach (var modelo in _modelos)
+                {
+                var boton = new Button
+                    {
+                    Margin = new Thickness(0, 0, 10, 10),
+                    Padding = new Thickness(0),
+                    Background = Brushes.Transparent,
+                    BorderThickness = new Thickness(0),
+                    Cursor = Cursors.Hand,
+                    Style = (Style)FindResource("RoundedButtonStyle")
+                    };
+                boton.Focusable = false;
+
+                var uc = new DOP.Presupuestos.Controles.UcModelo
+                    {
+                    TituloTexto = modelo.Descrip,
+                    CostoTotal = modelo.PrEjecTotal.ToString("N2"),
+                    Superficie = modelo.Superficie.HasValue ? modelo.Superficie.Value.ToString("N2") : "",
+                    ValorM2 = modelo.ValorM2.ToString("N2"),
+                    };
+
+                boton.Content = uc;
+
+                boton.MouseDoubleClick += async (s, e) =>
+                {
+                    // Deshabilita todos los botones
+                    foreach (Button b in PanelModelos.Children.OfType<Button>())
+                        b.IsEnabled = false;
+
+                    CrearCopia(modelo);
+                };
+
+                PanelModelos.Children.Add(boton);
+                }
+
+
+
             }
 
-        //private void GraficoGraficoBarras()
-        //    {
-        //    // Borra series previas para evitar duplicados al recargar
-        //    graficoBarras.Series.Clear();
+        private bool Confirmar(string mensaje)
+            {
+            return MessageBox.Show(mensaje, "Confirmar", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
+            }
 
-        //    // Construye los datos a partir de la colección _modelos
-        //    var datos = new ObservableCollection<DatoGrafico>(
-        //        escritorio._modelos
-        //            .Where(m => !string.IsNullOrWhiteSpace(m.Descrip))
-        //            .Select(m => new DatoGrafico
-        //                {
-        //                Tipología = m.Descrip,
-        //                Importe = (double)m.ValorM2
-        //                })
-        //    );
+        private async void CrearCopia(PresupuestoDTO _modelosSeleccionado)
+            {
+            var (ok, msg, conceptos, relaciones) = await DOP.Datos.DatosWeb.ObtenerConceptosYRelacionesAsync(_modelosSeleccionado.ID.Value);
+            if (ok)
+                {
+                if (conceptos != null)
+                    foreach (var c in conceptos)
+                        c.PresupuestoID = 0;
+                if (relaciones != null)
+                    foreach (var r in relaciones)
+                        r.PresupuestoID = 0;
 
-        //    // Ejes
-        //    CategoryAxis primaryAxis = new CategoryAxis
-        //        {
-        //        Header = "Tipología",
-        //        FontSize = 14
-        //        };
-        //    graficoBarras.PrimaryAxis = primaryAxis;
+                var copia = PresupuestoDTO.CopiarPresupuestoDTO(_modelosSeleccionado);
 
-        //    NumericalAxis secondaryAxis = new NumericalAxis
-        //        {
-        //        Header = "Valor del m2 (u$s)",
-        //        FontSize = 14
-        //        };
-        //    graficoBarras.SecondaryAxis = secondaryAxis;
 
-        //    // Leyenda
-        //    ChartLegend legend = new ChartLegend();
-        //    graficoBarras.Legend = legend;
+                copia.ID = 0; // Asegúrate de que el ID sea cero para un nuevo presupuesto
+                copia.UsuarioID = App.IdUsuario; // Asigna el ID del usuario actual
+                copia.EsModelo = false; // Asegúrate de que no sea un modelo
 
-        //    // Serie de columnas
-        //    ColumnSeries series = new ColumnSeries
-        //        {
-        //        ItemsSource = datos,
-        //        XBindingPath = "Tipología",
-        //        YBindingPath = "Importe",
-        //        ShowTooltip = true,
-        //        Label = "Valor del m2"
-        //        };
+                var wiPresupuesto = new WiPres(copia, conceptos, relaciones, null);
 
-        //    graficoBarras.Series.Add(series);
-        //    }
+                // Suscríbete al evento Closed para habilitar los botones
+                wiPresupuesto.Closed += (s, e) =>
+                {
+                    foreach (Button b in PanelModelos.Children.OfType<Button>())
+                        b.IsEnabled = true;
+                };
+
+                wiPresupuesto.ShowDialog();
+                }
+            else
+                {
+                MessageBox.Show($"No se pudieron obtener los datos del presupuesto.\n{msg}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
 
         private void Button_Click(object sender, RoutedEventArgs e)
             {
