@@ -128,7 +128,7 @@
                                     MappingName="MesBase"
                                     Pattern="YearMonth"
                                     TextAlignment="Right" />
-                                <syncfusion:GridCheckBoxColumn HeaderText="Modelo" MappingName="EsModelo" />
+                                <!--<syncfusion:GridCheckBoxColumn HeaderText="Modelo" MappingName="EsModelo" />-->
 
 
                             </syncfusion:SfDataGrid.Columns>

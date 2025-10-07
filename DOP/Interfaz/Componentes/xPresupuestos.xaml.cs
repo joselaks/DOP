@@ -1,6 +1,7 @@
 ﻿using Biblioteca.DTO;
 using DataObra.Interfaz.Ventanas;
 using DataObra.Presupuestos.Ventanas;
+using DocumentFormat.OpenXml.Drawing.Charts;
 using DOP;
 using DOP.Datos;
 using DOP.Presupuestos.Ventanas;
@@ -39,12 +40,8 @@ namespace DataObra.Interfaz.Componentes
 
         private void BtnNuevo_Click(object sender, RoutedEventArgs e)
             {
-            var ventana = new WiNuevoPres(escritorio._presupuestos, escritorio._modelos, escritorio._modelosPropios)
-                {
-                Owner = escritorio,
-                WindowStartupLocation = WindowStartupLocation.CenterOwner
-                };
-            ventana.ShowDialog();
+            var win = new WiPres(null, null, null, escritorio._presupuestos);
+            win.ShowDialog();
             }
 
         private async void btnEditar_Click(object sender, RoutedEventArgs e)
@@ -115,14 +112,9 @@ namespace DataObra.Interfaz.Componentes
                 switch (menuItem.Header?.ToString())
                     {
                     case "Nuevo":
-                        var ventana = new WiNuevoPres(escritorio._presupuestos, escritorio._modelos, escritorio._modelosPropios)
-                            {
-                            Owner = escritorio,
-                            WindowStartupLocation = WindowStartupLocation.CenterOwner
-                            };
-                        ventana.ShowDialog();
+                        var win = new WiPres(null, null, null, escritorio._presupuestos);
+                        win.ShowDialog();
                         break;
-
                     case "Editar":
                         if (GrillaPresupuestos.SelectedItem is PresupuestoDTO seleccionado && seleccionado.ID.HasValue)
                             {

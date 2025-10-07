@@ -28,7 +28,7 @@
                 Foreground="#E53935"
                 Text="Maestro" />
         </StackPanel>
-        <!-- WrapPanel para botones dinámicos y responsive -->
-        
+        <!-- Contenedor para el UcMaestro -->
+        <Grid x:Name="ContenedorUcMaestro" Grid.Row="1"/>
     </Grid>
 </UserControl>

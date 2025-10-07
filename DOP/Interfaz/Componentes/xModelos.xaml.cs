@@ -18,7 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using static DOP.Presupuestos.Ventanas.WiTablero;
+
 
 namespace DataObra.Interfaz.Componentes
 {
@@ -36,14 +36,6 @@ namespace DataObra.Interfaz.Componentes
             InitializeComponent();
             escritorio = _escritorio;
             _modelos = modelos;
-
-            this.Loaded += XModelos_Loaded;
-
-            }
-
-        private void XModelos_Loaded(object sender, RoutedEventArgs e)
-            {
-
             // Botones para modelos
             foreach (var modelo in _modelos)
                 {
@@ -82,6 +74,15 @@ namespace DataObra.Interfaz.Componentes
 
 
 
+            this.Loaded += XModelos_Loaded;
+
+            }
+
+        private void XModelos_Loaded(object sender, RoutedEventArgs e)
+            {
+
+
+
             }
 
         private bool Confirmar(string mensaje)
@@ -104,9 +105,9 @@ namespace DataObra.Interfaz.Componentes
                 var copia = PresupuestoDTO.CopiarPresupuestoDTO(_modelosSeleccionado);
 
 
-                copia.ID = 0; // Asegúrate de que el ID sea cero para un nuevo presupuesto
-                copia.UsuarioID = App.IdUsuario; // Asigna el ID del usuario actual
-                copia.EsModelo = false; // Asegúrate de que no sea un modelo
+                copia.ID = 0; // que el ID sea cero para un nuevo presupuesto
+                copia.UsuarioID = App.IdUsuario; // el ID del usuario actual
+                copia.EsModelo = false; // que no sea un modelo
 
                 var wiPresupuesto = new WiPres(copia, conceptos, relaciones, null);
 
