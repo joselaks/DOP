@@ -76,4 +76,9 @@
     <Resource Include="Imagenes\Undo.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Documentos\Controles\" />
+    <Folder Include="Documentos\Ventanas\" />
+  </ItemGroup>
+
 </Project>

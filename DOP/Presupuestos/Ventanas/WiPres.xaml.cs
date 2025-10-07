@@ -317,15 +317,6 @@ namespace DataObra.Presupuestos.Ventanas
 
         private void btnDatos_Click(object sender, RoutedEventArgs e)
         {
-            var dlg = new WiDatosGenerales(Objeto.encabezado)
-            {
-                Owner = this
-            };
-            if (dlg.ShowDialog() == true)
-            {
-                // Los cambios ya están reflejados en Objeto.encabezado por el binding
-                // Si necesitas notificar cambios manualmente, hazlo aquí
-            }
         }
 
         private void Recalculo_Click(object sender, RoutedEventArgs e)
