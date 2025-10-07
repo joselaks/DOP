@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sfSkinManager="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-    Title="DataObra"
+    Title="Presupuesto"
     Width="1090"
     Height="800"
     sfSkinManager:SfSkinManager.VisualStyle="Office2016White"

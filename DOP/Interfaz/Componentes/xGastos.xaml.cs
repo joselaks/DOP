@@ -1,4 +1,6 @@
-﻿using DataObra.Interfaz.Ventanas;
+﻿using DataObra.Documentos.Ventanas;
+using DataObra.Interfaz.Ventanas;
+using DataObra.Presupuestos.Ventanas;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +37,8 @@ namespace DataObra.Interfaz.Componentes
 
         private void btnNuevo_Click(object sender, RoutedEventArgs e)
             {
+            var win = new WiGasto();
+            win.ShowDialog();
 
             }
 

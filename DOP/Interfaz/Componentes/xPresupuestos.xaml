@@ -18,8 +18,9 @@
 
         <StackPanel
             Grid.Column="1"
+            HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Orientation="Horizontal" HorizontalAlignment="Center">
+            Orientation="Horizontal">
             <Image
                 Width="28"
                 Height="28"
@@ -33,109 +34,118 @@
                 Text="Presupuestos" />
         </StackPanel>
 
-       
-                <Grid Grid.Row="1" Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="30" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <StackPanel
-                        Margin="0,0,0,0"
-                        HorizontalAlignment="Left"
-                        Orientation="Horizontal">
-                        <Button
-                            Name="btnNuevo"
-                            Width="80"
-                            Margin="2"
-                            Click="BtnNuevo_Click"
-                            Content="Nuevo" />
-                        <Button
-                            Name="btnEditar"
-                            Width="80"
-                            Margin="2"
-                            Click="btnEditar_Click"
-                            Content="Editar" />
-                        <Button
-                            Name="btnBorrar"
-                            Width="80"
-                            Margin="2"
-                            Click="btnBorrar_Click"
-                            Content="Borrar" />
-                    </StackPanel>
-                    <Grid Grid.Row="2">
-                        <syncfusion:SfDataGrid
-                            Name="GrillaPresupuestos"
-                            AllowResizingColumns="True"
-                            AutoGenerateColumns="False"
-                            IsReadOnly="True"
-                            MouseDoubleClick="GrillaPresupuestos_MouseDoubleClick">
-                            <syncfusion:SfDataGrid.ContextMenu>
-                                <ContextMenu>
-                                    <MenuItem Click="MenuItem_Click" Header="Nuevo" />
-                                    <MenuItem Click="MenuItem_Click" Header="Editar" />
-                                    <MenuItem Click="MenuItem_Click" Header="Borrar" />
-                                </ContextMenu>
-                            </syncfusion:SfDataGrid.ContextMenu>
-                            <syncfusion:SfDataGrid.Columns>
-                                <syncfusion:GridTextColumn
-                                    Width="50"
-                                    HeaderText="ID"
-                                    MappingName="ID" />
-                                <syncfusion:GridTextColumn
-                                    Width="280"
-                                    HeaderText="Descripción"
-                                    MappingName="Descrip" />
-                                <syncfusion:GridNumericColumn
-                                    Width="150"
-                                    HeaderText="Importe"
-                                    MappingName="PrEjecTotal"
-                                    NumberDecimalDigits="2"
-                                    NumberDecimalSeparator=","
-                                    NumberGroupSeparator="."
-                                    NumberGroupSizes="3"
-                                    TextAlignment="Right" />
-                                <syncfusion:GridNumericColumn
-                                    Width="120"
-                                    HeaderText="Superficie"
-                                    MappingName="Superficie"
-                                    NumberDecimalDigits="2"
-                                    NumberDecimalSeparator=","
-                                    NumberGroupSeparator="."
-                                    NumberGroupSizes="3"
-                                    TextAlignment="Right" />
-                                <syncfusion:GridNumericColumn
-                                    Width="120"
-                                    HeaderText="Valor M2"
-                                    MappingName="ValorM2"
-                                    NumberDecimalDigits="2"
-                                    NumberDecimalSeparator=","
-                                    NumberGroupSeparator="."
-                                    NumberGroupSizes="3"
-                                    TextAlignment="Right" />
-                                <syncfusion:GridDateTimeColumn
-                                    Width="120"
-                                    HeaderText="Fecha creación"
-                                    MappingName="FechaC"
-                                    TextAlignment="Center" />
-                                <syncfusion:GridDateTimeColumn
-                                    Width="120"
-                                    HeaderText="Fecha modificación"
-                                    MappingName="FechaM"
-                                    TextAlignment="Right" />
-                                <syncfusion:GridDateTimeColumn
-                                    Width="120"
-                                    HeaderText="Mes base"
-                                    MappingName="MesBase"
-                                    Pattern="YearMonth"
-                                    TextAlignment="Right" />
-                                <!--<syncfusion:GridCheckBoxColumn HeaderText="Modelo" MappingName="EsModelo" />-->
+
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel
+                Margin="0,0,0,0"
+                HorizontalAlignment="Left"
+                Orientation="Horizontal">
+                <Button
+                    Name="btnNuevo"
+                    Width="80"
+                    Margin="2"
+                    Click="BtnNuevo_Click"
+                    Content="Nuevo" />
+                <Button
+                    Name="btnEditar"
+                    Width="80"
+                    Margin="2"
+                    Click="btnEditar_Click"
+                    Content="Editar" />
+                <Button
+                    Name="btnBorrar"
+                    Width="80"
+                    Margin="2"
+                    Click="btnBorrar_Click"
+                    Content="Borrar" />
+            </StackPanel>
+            <Grid Grid.Row="2">
+                <syncfusion:SfDataGrid
+                    Name="GrillaPresupuestos"
+                    AllowResizingColumns="True"
+                    AutoGenerateColumns="False"
+                    IsReadOnly="True"
+                    MouseDoubleClick="GrillaPresupuestos_MouseDoubleClick">
+                    <syncfusion:SfDataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Click="MenuItem_Click" Header="Nuevo" />
+                            <MenuItem Click="MenuItem_Click" Header="Editar" />
+                            <MenuItem Click="MenuItem_Click" Header="Borrar" />
+                        </ContextMenu>
+                    </syncfusion:SfDataGrid.ContextMenu>
+                    <syncfusion:SfDataGrid.Columns>
+                        <syncfusion:GridTextColumn
+                            Width="50"
+                            HeaderText="ID"
+                            MappingName="ID" />
+                        <syncfusion:GridTextColumn
+                            Width="280"
+                            HeaderText="Descripción"
+                            MappingName="Descrip" />
+                        <syncfusion:GridNumericColumn
+                            Width="150"
+                            HeaderText="Importe"
+                            MappingName="PrEjecTotal"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3"
+                            TextAlignment="Right" />
+                        <syncfusion:GridNumericColumn
+                            Width="120"
+                            HeaderText="Superficie"
+                            MappingName="Superficie"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3"
+                            TextAlignment="Right" />
+                        <syncfusion:GridNumericColumn
+                            Width="120"
+                            HeaderText="Valor M2"
+                            MappingName="ValorM2"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3"
+                            TextAlignment="Right" />
+                        <syncfusion:GridDateTimeColumn
+                            Width="120"
+                            HeaderText="Fecha creación"
+                            MappingName="FechaC"
+                            TextAlignment="Center" />
+                        <syncfusion:GridDateTimeColumn
+                            Width="120"
+                            HeaderText="Fecha modificación"
+                            MappingName="FechaM"
+                            TextAlignment="Right" />
+                        <syncfusion:GridDateTimeColumn
+                            Width="120"
+                            HeaderText="Mes base"
+                            MappingName="MesBase"
+                            Pattern="YearMonth"
+                            TextAlignment="Right" />
+                        <syncfusion:GridNumericColumn
+                            Width="150"
+                            HeaderText="Gastos"
+                            MappingName="Gastos"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3"
+                            TextAlignment="Right" />
+                        <!--<syncfusion:GridCheckBoxColumn HeaderText="Modelo" MappingName="EsModelo" />-->
 
 
-                            </syncfusion:SfDataGrid.Columns>
-                        </syncfusion:SfDataGrid>
-                    </Grid>
-                </Grid>
-           
+                    </syncfusion:SfDataGrid.Columns>
+                </syncfusion:SfDataGrid>
+            </Grid>
+        </Grid>
+
         <!--  Aquí puedes agregar el contenido expandido de Presupuestos  -->
     </Grid>
 </UserControl>
