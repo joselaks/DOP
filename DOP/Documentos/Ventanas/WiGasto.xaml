@@ -10,9 +10,79 @@
     Title="Gasto"
     Width="1090"
     Height="800"
-    sfSkinManager:SfSkinManager.VisualStyle="Office2016White"
+     sfSkinManager:SfSkinManager.VisualStyle="MaterialLight"
     Office2010Icon="pack://application:,,,/Imagenes/DataObra.ico"
     TitleTextAlignment="Left"
     mc:Ignorable="d">
-    <Grid />
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid x:Name="gridGasto" />
+        <Grid x:Name="gridPresupuesto">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="35" />
+            </Grid.RowDefinitions>
+            <!--  GridDetalle: columnas mapeadas a GastoDetalleDTO  -->
+            <syncfusion:SfDataGrid
+                x:Name="gridDetalle"
+                Grid.Row="1"
+                AllowEditing="True"
+                AutoGenerateColumns="False">
+                <syncfusion:SfDataGrid.Columns>
+                    <syncfusion:GridTextColumn
+                        Width="80"
+                        HeaderText="Tipo"
+                        MappingName="TipoID" />
+                    <syncfusion:GridTextColumn
+                        Width="200"
+                        HeaderText="Descripción"
+                        MappingName="Descrip" />
+                    <syncfusion:GridTextColumn
+                        Width="80"
+                        HeaderText="Unidad"
+                        MappingName="Unidad" />
+                    <syncfusion:GridNumericColumn
+                        Width="100"
+                        HeaderText="Cantidad"
+                        MappingName="Cantidad"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        />
+                    <syncfusion:GridNumericColumn
+                        Width="120"
+                        HeaderText="Precio unit."
+                        MappingName="PrecioUnitario"
+                         />
+                    <syncfusion:GridNumericColumn
+                        Width="120"
+                        HeaderText="Importe"
+                        MappingName="Importe"
+                         />
+                    <syncfusion:GridNumericColumn
+                        Width="100"
+                        HeaderText="Presupuesto"
+                        MappingName="PresupuestoID"
+                         />
+                    <syncfusion:GridTextColumn
+                        Width="110"
+                        HeaderText="Insumo"
+                        MappingName="InsumoID" />
+                    <syncfusion:GridTextColumn
+                        Width="110"
+                        HeaderText="Rubro"
+                        MappingName="RubroID" />
+                    <syncfusion:GridTextColumn
+                        Width="110"
+                        HeaderText="Tarea"
+                        MappingName="TareaID" />
+                </syncfusion:SfDataGrid.Columns>
+            </syncfusion:SfDataGrid>
+        </Grid>
+    </Grid>
 </syncfusion:RibbonWindow>

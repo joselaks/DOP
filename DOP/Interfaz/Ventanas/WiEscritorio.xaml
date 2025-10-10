@@ -30,7 +30,10 @@
         </Grid.ColumnDefinitions>
 
         <!--  Texto en la fila 0  -->
-        <Grid Grid.Row="0" Grid.Column="0" Background="LightGray">
+        <Grid
+            Grid.Row="0"
+            Grid.Column="0"
+            Background="LightGray">
             <TextBlock
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
@@ -49,15 +52,16 @@
             Text="Zona operativa" />
 
         <!--  Controles existentes  -->
-        <Grid   Background="LightGray"           Grid.Row="1"
+        <Grid
+            Grid.Row="1"
             Grid.Column="0"
->
+            Background="LightGray">
             <syncfusion:TileViewControl
-            Name="tileEscritorioMercado"
-            Margin="20,20,20,20"
-            ColumnCount="1"
-            MinimizedItemsOrientation="Bottom"
-            RowCount="3" />
+                Name="tileEscritorioMercado"
+                Margin="20,20,20,20"
+                ColumnCount="1"
+                MinimizedItemsOrientation="Bottom"
+                RowCount="3" />
 
 
         </Grid>
