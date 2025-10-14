@@ -61,5 +61,10 @@ namespace DataObra.Interfaz.Componentes
             {
 
             }
+
+        private void btnControl_Click(object sender, RoutedEventArgs e)
+            {
+
+            }
         }
     }

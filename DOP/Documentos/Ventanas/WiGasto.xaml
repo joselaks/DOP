@@ -10,7 +10,7 @@
     Title="Gasto"
     Width="1090"
     Height="800"
-     sfSkinManager:SfSkinManager.VisualStyle="MaterialLight"
+    sfSkinManager:SfSkinManager.VisualStyle="MaterialLight"
     Office2010Icon="pack://application:,,,/Imagenes/DataObra.ico"
     TitleTextAlignment="Left"
     mc:Ignorable="d">
@@ -20,69 +20,169 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100" />
+            <!--  encabezado  -->
+            <RowDefinition Height="*" />
+            <!--  detalle / tabla  -->
+            <RowDefinition Height="35" />
+            <!--  pie  -->
+        </Grid.RowDefinitions>
+        <Border
+            x:Name="encabezado"
+            Grid.Row="0"
+            Grid.Column="0"
+            Margin="5,5,5,5"
+            BorderBrush="#FF3399FF"
+            BorderThickness="3">
+            <Grid x:Name="gridGasto" Margin="5,5,5,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                </Grid.RowDefinitions>
 
-        <Grid x:Name="gridGasto" />
-        <Grid x:Name="gridPresupuesto">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="100" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="35" />
-            </Grid.RowDefinitions>
-            <!--  GridDetalle: columnas mapeadas a GastoDetalleDTO  -->
-            <syncfusion:SfDataGrid
-                x:Name="gridDetalle"
-                Grid.Row="1"
-                AllowEditing="True"
-                AutoGenerateColumns="False">
-                <syncfusion:SfDataGrid.Columns>
-                    <syncfusion:GridTextColumn
-                        Width="80"
-                        HeaderText="Tipo"
-                        MappingName="TipoID" />
-                    <syncfusion:GridTextColumn
-                        Width="200"
-                        HeaderText="Descripción"
-                        MappingName="Descrip" />
-                    <syncfusion:GridTextColumn
-                        Width="80"
-                        HeaderText="Unidad"
-                        MappingName="Unidad" />
-                    <syncfusion:GridNumericColumn
-                        Width="100"
-                        HeaderText="Cantidad"
-                        MappingName="Cantidad"
-                        NumberDecimalDigits="2"
-                        NumberDecimalSeparator=","
-                        />
-                    <syncfusion:GridNumericColumn
-                        Width="120"
-                        HeaderText="Precio unit."
-                        MappingName="PrecioUnitario"
-                         />
-                    <syncfusion:GridNumericColumn
-                        Width="120"
-                        HeaderText="Importe"
-                        MappingName="Importe"
-                         />
-                    <syncfusion:GridNumericColumn
-                        Width="100"
-                        HeaderText="Presupuesto"
-                        MappingName="PresupuestoID"
-                         />
-                    <syncfusion:GridTextColumn
-                        Width="110"
-                        HeaderText="Insumo"
-                        MappingName="InsumoID" />
-                    <syncfusion:GridTextColumn
-                        Width="110"
-                        HeaderText="Rubro"
-                        MappingName="RubroID" />
-                    <syncfusion:GridTextColumn
-                        Width="110"
-                        HeaderText="Tarea"
-                        MappingName="TareaID" />
-                </syncfusion:SfDataGrid.Columns>
-            </syncfusion:SfDataGrid>
-        </Grid>
+                <TextBlock
+                    Grid.Column="0"
+                    Margin="11,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Text="Fecha: " />
+
+                <TextBlock
+                    Grid.Row="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Text="Número: " />
+
+                <TextBlock
+                    Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Text="Moneda: " />
+
+
+                <TextBox
+                    x:Name="txtNumero1"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Width="90"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Right"
+                    Background="AliceBlue"
+                    Text="{Binding Documento, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <syncfusion:DateTimeEdit
+                    x:Name="cFecha2"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Width="90"
+                    HorizontalAlignment="Center"
+                    Background="AliceBlue"
+                    CultureInfo="bs-Latn-BA"
+                    Pattern="ShortDate"
+                    Text="{Binding Fecha2, StringFormat='{}{0:dd/MM/yy}'}" />
+
+
+
+            </Grid>
+
+        </Border>
+
+        <syncfusion:SfDataGrid
+            x:Name="gridDetalle"
+            Grid.Row="1"
+            Margin="5,5,5,5"
+            AllowEditing="True"
+            AllowResizingColumns="True"
+            AutoGenerateColumns="False"
+            BorderBrush="#FF3399FF"
+            BorderThickness="3">
+            <syncfusion:SfDataGrid.Columns>
+                <syncfusion:GridTextColumn
+                    Width="80"
+                    HeaderText="Tipo"
+                    MappingName="TipoID" />
+                <syncfusion:GridTextColumn
+                    Width="200"
+                    HeaderText="Descripción"
+                    MappingName="Descrip" />
+                <syncfusion:GridTextColumn
+                    Width="80"
+                    HeaderText="Unidad"
+                    MappingName="Unidad" />
+                <syncfusion:GridNumericColumn
+                    Width="100"
+                    HeaderText="Cantidad"
+                    MappingName="Cantidad"
+                    NumberDecimalDigits="2"
+                    NumberDecimalSeparator="," />
+                <syncfusion:GridNumericColumn
+                    Width="120"
+                    HeaderText="Precio unit."
+                    MappingName="PrecioUnitario" />
+                <syncfusion:GridNumericColumn
+                    Width="120"
+                    HeaderText="Importe"
+                    MappingName="Importe" />
+                <syncfusion:GridTextColumn
+                    Width="100"
+                    HeaderText="Presupuesto"
+                    MappingName="Presupuesto" />
+                <syncfusion:GridTextColumn
+                    Width="110"
+                    HeaderText="Insumo"
+                    MappingName="Insumo" />
+                <syncfusion:GridTextColumn
+                    Width="110"
+                    HeaderText="Rubro"
+                    MappingName="Rubro" />
+                <syncfusion:GridTextColumn
+                    Width="110"
+                    HeaderText="Tarea"
+                    MappingName="Tarea" />
+                <syncfusion:GridTextColumn
+                    Width="110"
+                    HeaderText="Lista de Precios"
+                    MappingName="ListaDePrecios" />
+                <syncfusion:GridTextColumn
+                    Width="110"
+                    HeaderText="Artículo"
+                    MappingName="Articulo" />
+                <syncfusion:GridTextColumn
+                    Width="110"
+                    HeaderText="Maestro"
+                    MappingName="Maestro" />
+                <syncfusion:GridTextColumn
+                    Width="110"
+                    HeaderText="Item Maestro"
+                    MappingName="ConceptoMaestro" />
+            </syncfusion:SfDataGrid.Columns>
+        </syncfusion:SfDataGrid>
+        <syncfusion:SfGridSplitter
+            Grid.Row="0"
+            Grid.RowSpan="3"
+            Grid.Column="1"
+            Width="5"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Stretch"
+            EnableCollapseButton="True"
+            ResizeBehavior="PreviousAndNext"
+            ShowsPreview="True" />
+        <Border
+            x:Name="grillaPresupuesto"
+            Grid.RowSpan="3"
+            Grid.Column="2"
+            Margin="5,5,5,5"
+            BorderBrush="#FF3399FF"
+            BorderThickness="3" />
+
     </Grid>
 </syncfusion:RibbonWindow>

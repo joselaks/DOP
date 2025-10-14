@@ -10,6 +10,49 @@
     d:DesignWidth="800"
     sfSkinManager:SfSkinManager.VisualStyle="MaterialLight"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style x:Key="RedButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#D32F2F" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderBrush" Value="#B71C1C" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="6,2" />
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border
+                            x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="2"
+                            SnapsToDevicePixels="True">
+                            <ContentPresenter
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                RecognizesAccessKey="True" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#C62828" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#E57373" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#E57373" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="border" Property="Opacity" Value="0.6" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -33,7 +76,6 @@
                 Foreground="#1E88E5"
                 Text="Presupuestos" />
         </StackPanel>
-
 
         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.RowDefinitions>
@@ -62,6 +104,13 @@
                     Margin="2"
                     Click="btnBorrar_Click"
                     Content="Borrar" />
+                <Button
+                    Name="btnControl"
+                    Width="80"
+                    Margin="20,2,2,2"
+                    Content="Control"
+                    Click="btnControl_Click"
+                    Style="{StaticResource RedButtonStyle}" />
             </StackPanel>
             <Grid Grid.Row="2">
                 <syncfusion:SfDataGrid
@@ -139,8 +188,6 @@
                             NumberGroupSizes="3"
                             TextAlignment="Right" />
                         <!--<syncfusion:GridCheckBoxColumn HeaderText="Modelo" MappingName="EsModelo" />-->
-
-
                     </syncfusion:SfDataGrid.Columns>
                 </syncfusion:SfDataGrid>
             </Grid>

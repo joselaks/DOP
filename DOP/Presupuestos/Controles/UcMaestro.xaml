@@ -110,10 +110,10 @@
             <ComboBox
                 x:Name="comboOrigen"
                 Width="120"
-                Visibility="Collapsed"
                 Margin="10,0,0,0"
                 VerticalAlignment="Center"
-                SelectedIndex="0">
+                SelectedIndex="0"
+                Visibility="Collapsed">
                 <ComboBoxItem Content="DataObra" />
                 <ComboBoxItem Content="Propio" />
             </ComboBox>
@@ -124,7 +124,7 @@
                 Margin="15,0,0,0"
                 VerticalAlignment="Center"
                 SelectionChanged="comboTipoListado_SelectionChanged">
-                <ComboBoxItem Content="Tareas"/>
+                <ComboBoxItem Content="Tareas" />
                 <ComboBoxItem Content="Materiales" />
                 <ComboBoxItem Content="Mano de Obra" />
                 <ComboBoxItem Content="Equipos" />
@@ -133,20 +133,19 @@
                 <ComboBoxItem Content="Auxiliares" />
             </ComboBox>
 
-            <ComboBox x:Name="comboRubros"
-                      Visibility="Collapsed"
-                      Width="200"
-                      Margin="10,0,0,0"
-                      VerticalAlignment="Center"
-                      
-                      />
+            <ComboBox
+                x:Name="comboRubros"
+                Width="200"
+                Margin="10,0,0,0"
+                VerticalAlignment="Center"
+                Visibility="Collapsed" />
             <Button
                 Margin="10,0,0,0"
                 Padding="10,2"
                 VerticalAlignment="Center"
-                Visibility="Collapsed"
                 Click="Button_Click"
-                Content="Guardar cambios" />
+                Content="Guardar cambios"
+                Visibility="Collapsed" />
         </StackPanel>
 
         <syncfusion:SfTreeGrid
@@ -159,7 +158,7 @@
             AutoGenerateColumns="False"
             ExpanderColumn="Descripcion"
             SelectionMode="Single">
-            
+
             <syncfusion:SfTreeGrid.Resources>
                 <Style TargetType="syncfusion:SfTreeGrid">
                     <Setter Property="Background" Value="LightGray" />
@@ -173,7 +172,6 @@
                         Width="50"
                         CellTemplateSelector="{StaticResource IconTemplateSelector}"
                         HeaderText="Nat"
-                        
                         MappingName="Tipo" />
 
 
