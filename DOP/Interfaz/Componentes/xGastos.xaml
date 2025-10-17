@@ -132,6 +132,7 @@
                             HeaderText="Fecha"
                             MappingName="FechaDoc"
                             TextAlignment="Center" />
+                        
 
                         <syncfusion:GridTextColumn
                             Width="130"
