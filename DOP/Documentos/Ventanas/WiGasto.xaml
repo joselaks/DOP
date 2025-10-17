@@ -18,7 +18,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="0" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="100" />
@@ -132,23 +132,30 @@
                     Width="120"
                     HeaderText="Importe"
                     MappingName="Importe" />
-                <syncfusion:GridTextColumn
+
+                <syncfusion:GridNumericColumn
+                    Width="100"
+                    HeaderText="Pres ID"
+                    MappingName="PresupuestoID"
+                    NumberDecimalDigits="0"/>
+
+                <!--<syncfusion:GridTextColumn
                     Width="100"
                     HeaderText="Presupuesto"
-                    MappingName="Presupuesto" />
+                    MappingName="Presupuesto" />-->
                 <syncfusion:GridTextColumn
                     Width="110"
-                    HeaderText="Insumo"
-                    MappingName="Insumo" />
-                <syncfusion:GridTextColumn
+                    HeaderText="Ins.ID"
+                    MappingName="InsumoID" />
+                <!--<syncfusion:GridTextColumn
                     Width="110"
                     HeaderText="Rubro"
-                    MappingName="Rubro" />
+                    MappingName="Rubro" />-->
                 <syncfusion:GridTextColumn
                     Width="110"
-                    HeaderText="Tarea"
-                    MappingName="Tarea" />
-                <syncfusion:GridTextColumn
+                    HeaderText="Tarea ID"
+                    MappingName="TareaID" />
+                <!--<syncfusion:GridTextColumn
                     Width="110"
                     HeaderText="Lista de Precios"
                     MappingName="ListaDePrecios" />
@@ -163,7 +170,7 @@
                 <syncfusion:GridTextColumn
                     Width="110"
                     HeaderText="Item Maestro"
-                    MappingName="ConceptoMaestro" />
+                    MappingName="ConceptoMaestro" />-->
             </syncfusion:SfDataGrid.Columns>
         </syncfusion:SfDataGrid>
         <syncfusion:SfGridSplitter

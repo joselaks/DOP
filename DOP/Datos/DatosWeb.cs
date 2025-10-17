@@ -22,6 +22,7 @@ namespace DOP.Datos
             {
             // En cualquier parte de tu aplicación
             httpClient = ((App)Application.Current).HttpClient;
+
             }
 
         private static async Task<(bool Success, string Message, T Data)> ExecuteRequestAsync<T>(Func<Task<HttpResponseMessage>> httpRequest, string logMessage)
@@ -329,8 +330,62 @@ namespace DOP.Datos
             return (success, message);
             }
 
+        //Documentos
 
+        public static async Task<(bool Success, string Message, List<GastoDTO> Gastos)> ObtenerGastosPorUsuarioAsync(int usuarioID)
+            {
+            string url = $"{App.BaseUrl}documentos/gastos/usuario/{usuarioID}";
+            var (success, message, data) = await ExecuteRequestAsync<List<GastoDTO>>(
+                () => httpClient.GetAsync(url),
+                $"Obtener gastos del usuario {usuarioID}"
+            );
 
+            return (success, message, data ?? new List<GastoDTO>());
+            }
+
+        public static async Task<(bool Success, string Message, int DocumentoID)> ProcesarGastoAsync(ProcesarGastoRequest request)
+            {
+            string url = $"{App.BaseUrl}documentos/gastos/procesar";
+            var json = JsonSerializer.Serialize(request, jsonSerializerOptions);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            try
+                {
+                var response = await httpClient.PostAsync(url, content);
+                var responseString = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                    {
+                    var result = JsonSerializer.Deserialize<ProcesarGastoResult>(responseString, jsonSerializerOptions);
+                    return (result?.Success ?? true, result?.Message ?? "Operación exitosa.", result?.DocumentoID ?? 0);
+                    }
+                else
+                    {
+                    var error = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, jsonSerializerOptions);
+                    string errorMessage = !string.IsNullOrEmpty(error?.Message)
+                        ? error.Message
+                        : !string.IsNullOrEmpty(error?.Mensaje)
+                            ? error.Mensaje
+                            : "Error desconocido";
+                    return (false, errorMessage, 0);
+                    }
+                }
+            catch (Exception ex)
+                {
+                return (false, $"Error: {ex.Message}", 0);
+                }
+            }
+
+        public static async Task<(bool Success, string Message, List<GastoDetalleDTO> Detalles)> ObtenerDetalleGastoAsync(int gastoID)
+            {
+            string url = $"{App.BaseUrl}documentos/gastos/{gastoID}/detalle";
+            var (success, message, data) = await ExecuteRequestAsync<List<GastoDetalleDTO>>(
+                () => httpClient.GetAsync(url),
+                $"Obtener detalle del gasto {gastoID}"
+            );
+
+            return (success, message, data ?? new List<GastoDetalleDTO>());
+            }
 
 
         }
@@ -347,8 +402,6 @@ namespace DOP.Datos
         public int ListaID { get; set; }
         public List<ArticuloDTO> Articulos { get; set; }
         }
-
-
 
     public class ResultadoOperacion
         {
@@ -371,4 +424,12 @@ namespace DOP.Datos
         public int ListaID { get; set; }
         public string Message { get; set; }
         }
+
+    public class ProcesarGastoResult
+        {
+        public bool Success { get; set; }
+        public string? Message { get; set; }
+        public int DocumentoID { get; set; }
+        }
+
     }

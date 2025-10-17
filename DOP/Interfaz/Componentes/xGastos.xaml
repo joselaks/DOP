@@ -130,17 +130,17 @@
                         <syncfusion:GridDateTimeColumn
                             Width="120"
                             HeaderText="Fecha"
-                            MappingName="FechaC"
+                            MappingName="FechaDoc"
                             TextAlignment="Center" />
 
                         <syncfusion:GridTextColumn
                             Width="130"
                             HeaderText="Proveedor"
-                            MappingName="Descrip" />
+                            MappingName="Entidad" />
                         <syncfusion:GridNumericColumn
                             Width="150"
                             HeaderText="Importe"
-                            MappingName="PrEjecTotal"
+                            MappingName="Importe"
                             NumberDecimalDigits="2"
                             NumberDecimalSeparator=","
                             NumberGroupSeparator="."
@@ -148,12 +148,9 @@
                             TextAlignment="Right" />
                         <syncfusion:GridTextColumn
                             Width="130"
-                            HeaderText="Presupuesto destino"
+                            HeaderText="Descripción"
                             MappingName="Descrip" />
-                        <syncfusion:GridTextColumn
-                            Width="80"
-                            HeaderText="Link Archivo"
-                            MappingName="Descrip" />
+                        
                         <syncfusion:GridTextColumn
                             Width="200"
                             HeaderText="Nota"

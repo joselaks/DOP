@@ -190,9 +190,6 @@
                 </syncfusion:StackedHeaderRow>
             </syncfusion:SfTreeGrid.StackedHeaderRows>
 
-
-
-
             <syncfusion:SfTreeGrid.Columns>
                 <syncfusion:TreeGridColumns>
 
@@ -283,6 +280,7 @@
                         Width="120"
                         CellStyle="{StaticResource TipoCellStyle}"
                         HeaderText="{Binding totMateriales1}"
+                        IsHidden="True"
                         MappingName="Materiales1"
                         NumberDecimalDigits="2"
                         NumberDecimalSeparator=","
@@ -294,6 +292,7 @@
                         Width="120"
                         CellStyle="{StaticResource TipoCellStyle}"
                         HeaderText="{Binding totManoDeObra1}"
+                        IsHidden="True"
                         MappingName="ManodeObra1"
                         NumberDecimalDigits="2"
                         NumberDecimalSeparator=","
@@ -305,6 +304,7 @@
                         Width="120"
                         CellStyle="{StaticResource TipoCellStyle}"
                         HeaderText="{Binding totEquipos1}"
+                        IsHidden="True"
                         MappingName="Equipos1"
                         NumberDecimalDigits="2"
                         NumberDecimalSeparator=","
@@ -316,6 +316,7 @@
                         Width="120"
                         CellStyle="{StaticResource TipoCellStyle}"
                         HeaderText="{Binding totSubcontratos1}"
+                        IsHidden="True"
                         MappingName="Subcontratos1"
                         NumberDecimalDigits="2"
                         NumberDecimalSeparator=","
@@ -336,18 +337,23 @@
 
                     <syncfusion:TreeGridTextColumn
                         Width="50"
-                        IsHidden="false"
+                        IsHidden="True"
                         MappingName="Tipo" />
 
                     <syncfusion:TreeGridNumericColumn
                         Width="60"
                         CellStyle="{StaticResource TipoCellStyle}"
                         HeaderText="Incidencia"
+                        IsHidden="True"
                         MappingName="Incidencia"
                         NumberDecimalDigits="2"
                         NumberDecimalSeparator=","
                         NumberGroupSeparator="."
                         NumberGroupSizes="3" />
+
+                    <syncfusion:TreeGridTextColumn
+                        Width="50"
+                        MappingName="ID" />
 
 
 

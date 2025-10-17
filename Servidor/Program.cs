@@ -45,6 +45,7 @@ string connectionString = "Server=tcp:ghu95zexx2.database.windows.net,1433;Initi
 builder.Services.AddSingleton(new rUsuarios(connectionString));
 builder.Services.AddSingleton(new rPresupuestos(connectionString));
 builder.Services.AddSingleton(new rInsumos(connectionString));
+builder.Services.AddSingleton(new rDocumentos(connectionString));
 
 // Configurar servicios de Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -328,13 +329,55 @@ ins.MapPost("/articulos/lista/editar", async (ProcesarArticulosPorListaRequest r
 }).RequireAuthorization();
 
 
+#endregion
+
+#region Grupo de rutas: /doc
+
+var doc = app.MapGroup("/documentos");
+
+doc.MapGet("/gastos/usuario/{usuarioID:int}", async (int usuarioID, rDocumentos repo) =>
+{
+    try
+        {
+        var gastos = await repo.ListarGastosPorUsuarioAsync(usuarioID);
+        return Results.Ok(gastos);
+        }
+    catch (Exception ex)
+        {
+        return Results.BadRequest(new { Message = ex.Message });
+        }
+}).RequireAuthorization();
 
 
+doc.MapPost("/gastos/procesar", async (ProcesarGastoRequest request, rDocumentos repo) =>
+{
+    try
+    {
+        var id = await repo.ProcesarGastoAsync(request.Gasto, request.Detalles);
+        return Results.Ok(new { Success = true, DocumentoID = id, Message = "Gasto procesado exitosamente." });
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(new { Success = false, Message = ex.Message });
+    }
+}).RequireAuthorization();
 
+
+doc.MapGet("/gastos/{gastoID:int}/detalle", async (int gastoID, rDocumentos repo) =>
+{
+    try
+        {
+        var detalles = await repo.ObtenerDetalleGastoAsync(gastoID);
+        return Results.Ok(detalles);
+        }
+    catch (Exception ex)
+        {
+        return Results.BadRequest(new { Message = ex.Message });
+        }
+}).RequireAuthorization();
 
 
 #endregion
-
 
 
 #endregion

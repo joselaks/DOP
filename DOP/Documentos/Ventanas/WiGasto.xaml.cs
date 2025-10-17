@@ -1,4 +1,5 @@
 ﻿using Bibioteca.Clases;
+using Biblioteca;
 using Biblioteca.DTO;
 using DataObra.Presupuestos.Controles;
 using DataObra.Presupuestos.Controles.SubControles;
@@ -28,43 +29,25 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 namespace DataObra.Documentos.Ventanas
-{
+    {
     /// <summary>
     /// Lógica de interacción para WiGasto.xaml
     /// </summary>
     public partial class WiGasto : RibbonWindow
-    {
+        {
         // Colección que alimenta gridDetalle
-        private ObservableCollection<GastoDetalleDTO> _detalleCollection;
+        public Gasto objeto;
 
-        public WiGasto()
-        {
-            InitializeComponent();
-
-            _detalleCollection = new ObservableCollection<GastoDetalleDTO>();
-            gridDetalle.ItemsSource = _detalleCollection;
-            CrearRegistroDetalle();
-        }
-
-        public void CrearRegistroDetalle()
-        {
-            var nuevo = new GastoDetalleDTO
+        public WiGasto(GastoDTO encabezado, List<GastoDetalleDTO> detalle)
             {
-                ID = 10,
-                GastoID = 10,
-                UsuarioID = 10,
-                TipoID = 'M',
-                Presupuesto = "Vivienda unif. calle 13",
-                Descrip = "Cemento",
-                Unidad = "Bolsa",
-                Cantidad = 12,
-                PrecioUnitario = 1000,
-                Moneda = 'P',
-            };
+            InitializeComponent();
+            objeto = new Gasto(encabezado, detalle);
+            this.DataContext = objeto;
+            gridDetalle.ItemsSource = objeto.detalleGrabar;
+            }
 
-            _detalleCollection.Add(nuevo);
 
         }
 
     }
-}
+

@@ -39,5 +39,12 @@ namespace Biblioteca.DTO
         public List<RelacionMDTO> Relaciones { get; set; }
         }
 
+    public class ProcesarGastoRequest
+        {
+        public GastoDTO Gasto { get; set; }
+        public List<GastoDetalleDTO> Detalles { get; set; }
+        }
+
+
     }
 

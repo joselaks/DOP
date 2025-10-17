@@ -12,6 +12,7 @@ namespace Biblioteca.DTO
         public int ID { get; set; }
         public int GastoID { get; set; }
         public int UsuarioID { get; set; }
+        public int CuentaID { get; set; }
         public char TipoID { get; set; }
         public int? PresupuestoID { get; set; }
         public string? Presupuesto { get; set; }
