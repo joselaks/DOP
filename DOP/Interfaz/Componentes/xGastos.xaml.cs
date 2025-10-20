@@ -72,7 +72,7 @@ namespace DataObra.Interfaz.Componentes
 
         private void btnNuevo_Click(object sender, RoutedEventArgs e)
             {
-            var win = new WiGasto(null, null);
+            var win = new WiGasto(_gastos, null, null);
             win.ShowDialog();
 
             }
@@ -93,7 +93,7 @@ namespace DataObra.Interfaz.Componentes
                         }
 
                     // Abrir ventana de edición (usa el constructor que tengas)
-                    var win = new WiGasto(seleccionado, detalles);
+                    var win = new WiGasto(_gastos, seleccionado, detalles);
                     // Si WiGasto tiene un método o propiedad para cargar el gasto y sus detalles, asignarlo aquí:
                     // win.CargarGasto(seleccionado, detalles);
                     win.ShowDialog();

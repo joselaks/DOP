@@ -37,13 +37,17 @@ namespace DataObra.Documentos.Ventanas
         {
         // Colección que alimenta gridDetalle
         public Gasto objeto;
+        public ObservableCollection<GastoDTO> gastos = new();
+        // Guardar la referencia del encabezado original pasado al constructor
+        private GastoDTO? originalEncabezado;
 
-        public WiGasto(GastoDTO encabezado, List<GastoDetalleDTO> detalle)
+
+        public WiGasto(ObservableCollection<GastoDTO> _gastos, GastoDTO encabezado, List<GastoDetalleDTO> detalle)
             {
             InitializeComponent();
             objeto = new Gasto(encabezado, detalle);
             this.DataContext = objeto;
-
+            gastos = _gastos;
             // Vincular el encabezado (GastoDTO) como DataContext de la grilla de encabezado
             if (grillaEncabezado != null)
                 grillaEncabezado.DataContext = objeto.encabezado;
@@ -59,6 +63,8 @@ namespace DataObra.Documentos.Ventanas
                 {
                 ID = 0,
                 GastoID = objeto?.encabezado?.ID ?? 0,
+                UsuarioID = objeto?.encabezado?.UsuarioID ?? 0,
+                Moneda = objeto?.encabezado?.Moneda ?? 'P',
                 Cantidad = 0,
                 PrecioUnitario = 0,
                 Importe = 0,
@@ -80,10 +86,29 @@ namespace DataObra.Documentos.Ventanas
             gridDetalle.Focus();
             }
 
-        private void BtnGuardar_Click(object sender, RoutedEventArgs e)
+        private async void BtnGuardar_Click(object sender, RoutedEventArgs e)
+            {
+            // Ejecuta el guardado asincrónico y cierra/indica resultado igual que en WiPres
+            if (await GuardarGastoAsync())
+                {
+                MessageBox.Show("Gasto guardado correctamente.", "Guardar", MessageBoxButton.OK, MessageBoxImage.Information);
+                try
+                    {
+                    this.DialogResult = true;
+                    }
+                catch (InvalidOperationException)
+                    {
+                    // No fue abierto como diálogo; seguir
+                    }
+                this.Close();
+                }
+            }
+
+        private void BtnSalirSinGuardar_Click(object sender, RoutedEventArgs e)
             {
             try
                 {
+                this.DialogResult = false;
                 }
             catch (InvalidOperationException)
                 {
@@ -91,15 +116,84 @@ namespace DataObra.Documentos.Ventanas
             this.Close();
             }
 
-        private void BtnSalirSinGuardar_Click(object sender, RoutedEventArgs e)
+        private async Task<bool> GuardarGastoAsync()
             {
+            // Actualizar totales y marcas temporales
             try
                 {
+                // Actualizar importe total desde detalleGrabar
+                if (objeto?.detalleGrabar != null)
+                    {
+                    objeto.encabezado.Importe = objeto.detalleGrabar.Sum(d => d?.Importe ?? 0);
+                    }
+
+                objeto.encabezado.FechaEditado = DateTime.Now;
+
+                // Asegurar UsuarioID si existe App.IdUsuario en la app (como WiPres)
+                try
+                    {
+                    objeto.encabezado.UsuarioID = App.IdUsuario;
+                    }
+                catch
+                    {
+                    // Si no existe App.IdUsuario no hacemos nada
+                    }
+
+                // Empaquetar request usando la lógica de Gasto (compara detalleLeer y detalleGrabar)
+                var oGrabar = objeto.EmpaquetarGasto();
+
+                // Llamada al servicio web para procesar el gasto
+                var resultado = await DOP.Datos.DatosWeb.ProcesarGastoAsync(oGrabar);
+
+                if (resultado.Success)
+                    {
+                    // Actualiza listas para próxima ejecución (sincronizar versiones)
+                    objeto.detalleLeer = objeto.detalleGrabar.Select(x => x).ToList();
+
+                    // Si fue nuevo, asignar ID y FechaC/FechaCreado si la API devolvió GastoID
+                    if ((objeto.encabezado.ID == 0 || objeto.encabezado.ID == null) && resultado.DocumentoID > 0)
+                        {
+                        objeto.encabezado.FechaCreado = DateTime.Today;
+                        objeto.encabezado.ID = resultado.DocumentoID;
+                        }
+                    // Reemplazar en la colección 'gastos' la instancia original por la instancia actualizada
+                    if (gastos != null)
+                        {
+                        int idx = -1;
+                        // Primero intentar por referencia (la instancia que se pasó al constructor)
+                        if (originalEncabezado != null)
+                            idx = gastos.IndexOf(originalEncabezado);
+
+                        // Si no está por referencia, intentar localizar por ID (después de haber podido asignar DocumentoID)
+                        if (idx == -1 && objeto.encabezado.ID != 0)
+                            idx = gastos.ToList().FindIndex(g => g.ID == objeto.encabezado.ID);
+
+                        if (idx >= 0)
+                            {
+                            // Reemplazo: la colección recibe la nueva instancia (objeto.encabezado)
+                            gastos[idx] = objeto.encabezado;
+                            }
+                        else
+                            {
+                            // Si no existía en la colección, añadirla
+                            gastos.Add(objeto.encabezado);
+                            }
+                        }
+
+                    return true;
+                    }
+                else
+                    {
+                    var msg = string.IsNullOrEmpty(resultado.Message) ? "Error desconocido al guardar el gasto." : resultado.Message;
+                    MessageBox.Show($"Error al guardar el gasto: {msg}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
+                    }
                 }
-            catch (InvalidOperationException)
+            catch (Exception ex)
                 {
+                MessageBox.Show($"Excepción al guardar el gasto: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
                 }
-            this.Close();
             }
         }
     }
