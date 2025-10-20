@@ -22,16 +22,16 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border
-                         x:Name="border"
-                         Background="{TemplateBinding Background}"
-                         BorderBrush="{TemplateBinding BorderBrush}"
-                         BorderThickness="{TemplateBinding BorderThickness}"
-                         CornerRadius="2"
-                         SnapsToDevicePixels="True">
+                            x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="2"
+                            SnapsToDevicePixels="True">
                             <ContentPresenter
-                             HorizontalAlignment="Center"
-                             VerticalAlignment="Center"
-                             RecognizesAccessKey="True" />
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                RecognizesAccessKey="True" />
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -105,12 +105,12 @@
                     Click="btnBorrar_Click"
                     Content="Borrar" />
                 <Button
-     Name="btnControl"
-     Width="80"
-     Margin="20,2,2,2"
-     Click="btnControl_Click"
-     Content="Control"
-     Style="{StaticResource RedButtonStyle}" />
+                    Name="btnControl"
+                    Width="80"
+                    Margin="20,2,2,2"
+                    Click="btnControl_Click"
+                    Content="Control"
+                    Style="{StaticResource RedButtonStyle}" />
             </StackPanel>
             <Grid Grid.Row="2">
                 <syncfusion:SfDataGrid
@@ -132,7 +132,7 @@
                             HeaderText="Fecha"
                             MappingName="FechaDoc"
                             TextAlignment="Center" />
-                        
+
 
                         <syncfusion:GridTextColumn
                             Width="130"
@@ -151,12 +151,12 @@
                             Width="130"
                             HeaderText="Descripción"
                             MappingName="Descrip" />
-                        
+
                         <syncfusion:GridTextColumn
                             Width="200"
                             HeaderText="Nota"
                             MappingName="Descrip" />
-                       
+
 
                     </syncfusion:SfDataGrid.Columns>
                 </syncfusion:SfDataGrid>

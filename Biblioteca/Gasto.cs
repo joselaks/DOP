@@ -28,7 +28,7 @@ namespace Biblioteca
                 }
             else
                 { 
-                encabezado = _encabezado;
+                encabezado = CloneEncabezado(_encabezado);
                 }
 
             if (_detalle == null)
@@ -43,6 +43,26 @@ namespace Biblioteca
                 }   
 
             }
+
+        private static GastoDTO CloneEncabezado(GastoDTO source)
+        {
+            if (source == null) return new GastoDTO();
+            return new GastoDTO
+            {
+                ID = source.ID,
+                CuentaID = source.CuentaID,
+                UsuarioID = source.UsuarioID,
+                FechaDoc = source.FechaDoc,
+                FechaCreado = source.FechaCreado,
+                FechaEditado = source.FechaEditado,
+                Entidad = source.Entidad,
+                Documento = source.Documento,
+                Descrip = source.Descrip,
+                Notas = source.Notas,
+                Importe = source.Importe,
+                Moneda = source.Moneda
+            };
+        }
 
         private static List<GastoDetalleDTO> CloneDetallesDeep(IEnumerable<GastoDetalleDTO>? source)
         {
@@ -80,11 +100,6 @@ namespace Biblioteca
                 Accion = d.Accion
             }).ToList();
         }
-
-        
-
-
-
 
         }
     }
