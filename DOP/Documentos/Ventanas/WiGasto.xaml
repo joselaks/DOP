@@ -84,9 +84,10 @@
                     Grid.Row="0"
                     Grid.Column="1"
                     Width="120"
+                    Height="15"
                     HorizontalAlignment="Left"
                     Background="AliceBlue"
-                    CultureInfo="bs-Latn-BA"
+                    CultureInfo="es-AR"
                     Pattern="ShortDate"
                     Text="{Binding FechaDoc, Mode=TwoWay, StringFormat='{}{0:dd/MM/yyyy}', UpdateSourceTrigger=PropertyChanged}" />
 
@@ -95,7 +96,6 @@
                     Grid.Row="1"
                     Grid.Column="1"
                     Width="150"
-                    Height="15"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     HorizontalContentAlignment="Right"
@@ -127,7 +127,7 @@
                     Margin="0,0,8,0"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
-                    Text="Descropción:" />
+                    Text="Descripción:" />
 
                 <TextBlock
                     Grid.Column="4"
@@ -174,20 +174,19 @@
                 <!--  Columna 5  -->
 
 
-                <TextBox
+                <ComboBox
+                    x:Name="comboMoneda"
                     Grid.Column="5"
-                    Width="40"
-                    Height="15"
+                    Width="80"
+                    Height="20"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     Background="AliceBlue"
-                    MaxLength="1"
-                    Text="{Binding Moneda, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-
-
-
-
+                    SelectedValue="{Binding Moneda, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    SelectedValuePath="Tag">
+                    <ComboBoxItem Tag="P">Pesos</ComboBoxItem>
+                    <ComboBoxItem Tag="D">Dólares</ComboBoxItem>
+                </ComboBox>
 
 
             </Grid>
@@ -203,10 +202,10 @@
             AutoGenerateColumns="False"
             BorderBrush="#FF3399FF"
             BorderThickness="3">
-            <!-- menú contextual para agregar registro -->
+            <!--  menú contextual para agregar registro  -->
             <syncfusion:SfDataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Agregar registro" Click="AgregarRegistro_Click" />
+                    <MenuItem Click="AgregarRegistro_Click" Header="Agregar registro" />
                 </ContextMenu>
             </syncfusion:SfDataGrid.ContextMenu>
             <syncfusion:SfDataGrid.Columns>
@@ -295,10 +294,26 @@
             BorderBrush="#FF3399FF"
             BorderThickness="3" />
 
-        <!-- Botones en la fila 2 -->
-        <StackPanel Grid.Row="2" Grid.ColumnSpan="4" Orientation="Horizontal" HorizontalAlignment="Center"  VerticalAlignment="Center"  >
-            <Button x:Name="btnGuardar" Width="100" Height="22" Content="Guardar" Click="BtnGuardar_Click" Margin="0,0,10,0" />
-            <Button x:Name="btnSalirSinGuardar" Width="130" Height="22" Content="Salir sin guardar" Click="BtnSalirSinGuardar_Click" />
+        <!--  Botones en la fila 2  -->
+        <StackPanel
+            Grid.Row="2"
+            Grid.ColumnSpan="4"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Orientation="Horizontal">
+            <Button
+                x:Name="btnGuardar"
+                Width="100"
+                Height="22"
+                Margin="0,0,10,0"
+                Click="BtnGuardar_Click"
+                Content="Guardar" />
+            <Button
+                x:Name="btnSalirSinGuardar"
+                Width="130"
+                Height="22"
+                Click="BtnSalirSinGuardar_Click"
+                Content="Salir sin guardar" />
         </StackPanel>
 
     </Grid>
