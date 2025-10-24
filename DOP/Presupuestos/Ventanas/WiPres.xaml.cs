@@ -17,6 +17,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -209,6 +210,7 @@ namespace DataObra.Presupuestos.Ventanas
                         existente.PrEjecTotal = Objeto.encabezado.PrEjecTotal;
                         existente.Superficie = Objeto.encabezado.Superficie;
                         existente.EsModelo = Objeto.encabezado.EsModelo;
+                        existente.TipoCambioD = Objeto.encabezado.TipoCambioD;
                         if (existente.Superficie.HasValue && existente.Superficie.Value > 0)
                             existente.ValorM2 = Math.Round(existente.PrEjecTotal / existente.Superficie.Value, 2);
                         else
@@ -439,5 +441,42 @@ namespace DataObra.Presupuestos.Ventanas
             {
             Objeto.Deshacer();
             }
+
+
+private static readonly Regex _regex = new Regex(@"^\d*([.,]\d{0,2})?$");
+
+    private void DecimalTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+        TextBox textBox = sender as TextBox;
+        string fullText = GetFullTextAfterInput(textBox, e.Text);
+        e.Handled = !_regex.IsMatch(fullText);
         }
+
+    private void DecimalTextBox_Pasting(object sender, DataObjectPastingEventArgs e)
+        {
+        if (e.DataObject.GetDataPresent(typeof(string)))
+            {
+            string pastedText = (string)e.DataObject.GetData(typeof(string));
+            TextBox textBox = sender as TextBox;
+            string fullText = GetFullTextAfterInput(textBox, pastedText);
+            if (!_regex.IsMatch(fullText))
+                {
+                e.CancelCommand();
+                }
+            }
+        else
+            {
+            e.CancelCommand();
+            }
+        }
+
+    private string GetFullTextAfterInput(TextBox textBox, string input)
+        {
+        string currentText = textBox.Text;
+        int selectionStart = textBox.SelectionStart;
+        int selectionLength = textBox.SelectionLength;
+        return currentText.Remove(selectionStart, selectionLength).Insert(selectionStart, input);
+        }
+
+    }
 }

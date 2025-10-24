@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,6 +21,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Text.Json;
+using System.IO.Compression;
 
 namespace DataObra.Interfaz.Componentes
     {
@@ -124,9 +128,64 @@ namespace DataObra.Interfaz.Componentes
 
             }
 
-        private void btnControl_Click(object sender, RoutedEventArgs e)
+        private async void btnControl_Click(object sender, RoutedEventArgs e)
             {
+            string apiKey = "ak_Cg6FNLTUjpGl7eaMSIdr"; // Tu API Key
+            string url = $"https://api.alphacast.io/datasets/5902/data?from=2025-01-01&to=2025-02-28&filter=variable:Materiales";
+            try
+                {
+                // Forzar handler que descomprima gzip/deflate automáticamente
+                var handler = new HttpClientHandler
+                    {
+                    AutomaticDecompression = System.Net.DecompressionMethods.GZip | System.Net.DecompressionMethods.Deflate
+                    };
 
+                using var client = new HttpClient(handler);
+
+                // Autenticación con Basic Auth
+                var byteArray = Encoding.ASCII.GetBytes($"{apiKey}:");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+
+                // Aceptar JSON
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                HttpResponseMessage response = await client.GetAsync(url);
+                string json = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                    {
+                    string prettyJson;
+                    try
+                        {
+                        using var doc = JsonDocument.Parse(json);
+                        prettyJson = JsonSerializer.Serialize(doc, new JsonSerializerOptions { WriteIndented = true });
+                        }
+                    catch (Exception ex)
+                        {
+                        prettyJson = $"Error al parsear JSON:\n{ex.Message}\n\nContenido crudo:\n{json}";
+                        }
+
+                    const int maxDisplayLength = 10000;
+                    if (prettyJson.Length > maxDisplayLength)
+                        {
+                        string parcial = prettyJson.Substring(0, maxDisplayLength) + "\n\n... (truncado)";
+                        MessageBox.Show(parcial, "Datos obtenidos (parcial)", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                    else
+                        {
+                        MessageBox.Show(prettyJson, "Datos obtenidos", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                    }
+                else
+                    {
+                    MessageBox.Show($"Error al consultar API:\n{response.StatusCode}\n\n{json}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            catch (Exception ex)
+                {
+                MessageBox.Show($"Excepción inesperada:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
     }
