@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.ComponentModel;
 
 namespace Bibioteca.Clases
-{
-    public class Nodo : ObjetoNotificable
     {
+    public class Nodo : ObjetoNotificable
+        {
         private bool sup;
         private string id;
         private string item;
@@ -42,10 +43,6 @@ namespace Bibioteca.Clases
         private decimal equipos3;
         private decimal subcontratos3;
         private decimal otros3;
-
-
-
-
 
         private ObservableCollection<Nodo> inferiores;
 
@@ -85,12 +82,12 @@ namespace Bibioteca.Clases
         public decimal Subcontratos3 { get => subcontratos3; set { subcontratos3 = value; OnPropertyChanged(nameof(Subcontratos3)); } }
         public decimal Otros3 { get => otros3; set { otros3 = value; OnPropertyChanged(nameof(Otros3)); } }
 
-
         public bool HasItems => Inferiores != null && Inferiores.Count > 0;
 
-        // Nuevo: true si algún inferior tiene PU1 distinto de 0
+        // true si algún inferior tiene PU1/PU2/PU3 distinto de 0
         public bool HasItem1 => Inferiores != null && Inferiores.Any(i => i != null && i.PU1 != 0m);
-
+        public bool HasItem2 => Inferiores != null && Inferiores.Any(i => i != null && i.PU2 != 0m);
+        public bool HasItem3 => Inferiores != null && Inferiores.Any(i => i != null && i.PU3 != 0m);
 
         public Nodo Copia() => (Nodo)this.MemberwiseClone();
 
@@ -100,22 +97,85 @@ namespace Bibioteca.Clases
             set
                 {
                 if (inferiores != null)
+                    {
                     inferiores.CollectionChanged -= Inferiores_CollectionChanged;
+                    DetachHandlersFromInferiores(inferiores);
+                    }
 
                 inferiores = value;
 
                 if (inferiores != null)
+                    {
                     inferiores.CollectionChanged += Inferiores_CollectionChanged;
+                    AttachHandlersToInferiores(inferiores);
+                    }
 
                 OnPropertyChanged(nameof(Inferiores));
                 OnPropertyChanged(nameof(HasItems));
+                OnPropertyChanged(nameof(HasItem1));
+                OnPropertyChanged(nameof(HasItem2));
+                OnPropertyChanged(nameof(HasItem3));
                 }
             }
 
         private void Inferiores_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
             {
+            // Adjuntar/detachar handlers para items añadidos o eliminados
+            if (e.NewItems != null)
+                {
+                foreach (var obj in e.NewItems)
+                    {
+                    if (obj is Nodo n)
+                        n.PropertyChanged += Inferior_PropertyChanged;
+                    }
+                }
+
+            if (e.OldItems != null)
+                {
+                foreach (var obj in e.OldItems)
+                    {
+                    if (obj is Nodo n)
+                        n.PropertyChanged -= Inferior_PropertyChanged;
+                    }
+                }
+
             OnPropertyChanged(nameof(HasItems));
+            OnPropertyChanged(nameof(HasItem1));
+            OnPropertyChanged(nameof(HasItem2));
+            OnPropertyChanged(nameof(HasItem3));
+            }
+
+        private void AttachHandlersToInferiores(ObservableCollection<Nodo> list)
+            {
+            if (list == null) return;
+            foreach (var n in list)
+                if (n != null)
+                    n.PropertyChanged += Inferior_PropertyChanged;
+            }
+
+        private void DetachHandlersFromInferiores(ObservableCollection<Nodo> list)
+            {
+            if (list == null) return;
+            foreach (var n in list)
+                if (n != null)
+                    n.PropertyChanged -= Inferior_PropertyChanged;
+            }
+
+        private void Inferior_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+            {
+            // Si cambia PU1/PU2/PU3 en un inferior, actualizar las propiedades HasItemX
+            if (string.IsNullOrEmpty(e.PropertyName))
+                return;
+
+            if (e.PropertyName == nameof(PU1))
+                OnPropertyChanged(nameof(HasItem1));
+
+            if (e.PropertyName == nameof(PU2))
+                OnPropertyChanged(nameof(HasItem2));
+
+            if (e.PropertyName == nameof(PU3))
+                OnPropertyChanged(nameof(HasItem3));
             }
         }
-}
+    }
 

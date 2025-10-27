@@ -216,6 +216,7 @@ namespace DOP.Presupuestos.Controles
 
             // Asignar el valor explícitamente al HeaderText
             colImporte1.HeaderText = $"{NodoAnalizado.PU1.ToString("N2", cultura)}";
+            colImporte2.HeaderText = $"{NodoAnalizado.PU2.ToString("N2", cultura)}";
             }
 
 

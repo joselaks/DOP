@@ -250,7 +250,7 @@
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding HasItems1}" Value="True">
+                                                <DataTrigger Binding="{Binding HasItem1}" Value="True">
                                                     <Setter Property="Foreground" Value="Blue" />
                                                 </DataTrigger>
                                             </Style.Triggers>
@@ -275,7 +275,7 @@
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding HasItems2}" Value="True">
+                                                <DataTrigger Binding="{Binding HasItem2}" Value="True">
                                                     <Setter Property="Foreground" Value="Blue" />
                                                 </DataTrigger>
                                             </Style.Triggers>
@@ -293,6 +293,17 @@
                         CellStyle="{StaticResource TipoCellStyle}"
                         HeaderText="{Binding totGeneral1}"
                         MappingName="Importe1"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3" />
+
+                    <syncfusion:TreeGridNumericColumn
+                        x:Name="colImporte2"
+                        Width="120"
+                        CellStyle="{StaticResource TipoCellStyle}"
+                        HeaderText="{Binding totGeneral2}"
+                        MappingName="Importe2"
                         NumberDecimalDigits="2"
                         NumberDecimalSeparator=","
                         NumberGroupSeparator="."

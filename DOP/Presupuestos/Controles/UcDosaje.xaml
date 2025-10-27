@@ -190,17 +190,34 @@
                         NumberDecimalSeparator=","
                         NumberGroupSeparator="."
                         NumberGroupSizes="3" />
+                    <syncfusion:TreeGridNumericColumn
+                        Width="80"
+                        HeaderText="P.U.2"
+                        MappingName="PU2"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3" />
 
 
                     <syncfusion:TreeGridNumericColumn
                         x:Name="colImporte1"
                         Width="120"
-                        HeaderText="{Binding PUTarea}"
                         MappingName="Importe1"
                         NumberDecimalDigits="2"
                         NumberDecimalSeparator=","
                         NumberGroupSeparator="."
                         NumberGroupSizes="3" />
+
+                    <syncfusion:TreeGridNumericColumn
+                        x:Name="colImporte2"
+                        Width="120"
+                        MappingName="Importe2"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3" />
+
 
 
 
