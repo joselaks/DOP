@@ -190,57 +190,6 @@ namespace DOP.Datos
             }
 
 
-        public static async Task<(bool Success, string Message, List<ConceptoMDTO> Conceptos, List<RelacionMDTO> Relaciones)> ObtenerConceptosYRelacionesMaestroAsync(int usuarioID)
-            {
-            string url = $"{App.BaseUrl}presupuestos/maestro/{usuarioID}";
-            var (success, message, data) = await ExecuteRequestAsync<ConceptosRelacionesMaestroResult>(
-                () => httpClient.GetAsync(url),
-                $"Obtener conceptos y relaciones maestro del usuario {usuarioID}"
-            );
-
-            if (success && data != null)
-                return (true, "Operación exitosa.", data.Conceptos ?? new List<ConceptoMDTO>(), data.Relaciones ?? new List<RelacionMDTO>());
-            else
-                return (false, message, new List<ConceptoMDTO>(), new List<RelacionMDTO>());
-            }
-
-        // Ojo... no procesa solo tareas. Ver que da un error.
-        public static async Task<(bool Success, string Message)> ProcesarTareaMaestroAsync(ProcesaTareaMaestroRequest request)
-            {
-            string url = $"{App.BaseUrl}presupuestos/maestro/procesar";
-            var json = JsonSerializer.Serialize(request, jsonSerializerOptions);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            try
-                {
-                var response = await httpClient.PostAsync(url, content);
-                var responseString = await response.Content.ReadAsStringAsync();
-
-                if (response.IsSuccessStatusCode)
-                    {
-                    var result = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, jsonSerializerOptions);
-                    string message = !string.IsNullOrEmpty(result?.Message)
-                        ? result.Message
-                        : "Operación realizada correctamente.";
-                    return (result?.Success ?? true, message);
-                    }
-                else
-                    {
-                    var error = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, jsonSerializerOptions);
-                    string errorMessage = !string.IsNullOrEmpty(error?.Message)
-                        ? error.Message
-                        : !string.IsNullOrEmpty(error?.Mensaje)
-                            ? error.Mensaje
-                            : "Error desconocido al procesar el maestro.";
-                    return (false, errorMessage);
-                    }
-                }
-            catch (Exception ex)
-                {
-                return (false, $"Error: {ex.Message}");
-                }
-            }
-
         // Obtener listas de artículos por usuario
         public static async Task<(bool Success, string Message, List<ArticulosListaDTO> Listas)> ObtenerListasArticulosPorUsuarioAsync(int usuarioID)
             {
@@ -390,12 +339,6 @@ namespace DOP.Datos
 
         }
 
-    // Clase auxiliar para deserializar la respuesta del endpoint
-    public class ConceptosRelacionesMaestroResult
-        {
-        public List<ConceptoMDTO> Conceptos { get; set; }
-        public List<RelacionMDTO> Relaciones { get; set; }
-        }
 
     public class ProcesarArticulosPorListaRequest
         {

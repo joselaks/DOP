@@ -1074,6 +1074,8 @@ namespace Bibioteca.Clases
                     registroC.Descrip = item.Descripcion;
                     registroC.Tipo = item.Tipo[0];
                     registroC.PrEjec = item.PU1;
+                    //decimal importeEjec = item.Importe1;
+
                     registroC.PrVent = item.PU2;
                     registroC.Unidad = item.Unidad;
                     registroC.MesBase = DateTime.Now;

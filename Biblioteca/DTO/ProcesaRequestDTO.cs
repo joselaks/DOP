@@ -32,13 +32,6 @@ namespace Biblioteca.DTO
         public List<ArticuloDTO> Articulos { get; set; }
         }
 
-    public class ProcesaTareaMaestroRequest
-        {
-        public int UsuarioID { get; set; }
-        public List<ConceptoMDTO> Conceptos { get; set; }
-        public List<RelacionMDTO> Relaciones { get; set; }
-        }
-
     public class ProcesarGastoRequest
         {
         public GastoDTO Gasto { get; set; }

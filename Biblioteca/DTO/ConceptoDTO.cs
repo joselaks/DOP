@@ -14,6 +14,8 @@ namespace Biblioteca.DTO
         public char Tipo { get; set; }
         public string Unidad { get; set; }
         public decimal PrEjec { get; set; }
+        public decimal PrEjec1 { get; set; }
+        public decimal PrEjec2 { get; set; }
         public decimal PrVent { get; set; }
         public char EjecMoneda { get; set; }
         public char VentMoneda { get; set; }
@@ -21,20 +23,6 @@ namespace Biblioteca.DTO
         public decimal CanTotalEjec { get; set; }
         public int? InsumoID { get; set; }
         public char? Accion { get; set; } // Solo necesario si usas el procedimiento de alta/modificación/borrado
-        }
-
-    public class ConceptoMDTO
-        {
-        public int UsuarioID { get; set; }
-        public string ConceptoID { get; set; }
-        public string Descrip { get; set; }
-        public char Tipo { get; set; }
-        public string Unidad { get; set; }
-        public decimal PrEjec { get; set; }
-        public char EjecMoneda { get; set; }
-        public DateTime MesBase { get; set; }
-        public int? InsumoID { get; set; }
-        public char Accion { get; set; } // 'A', 'M', 'B'
         }
 
     }
