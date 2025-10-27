@@ -106,10 +106,10 @@ namespace DataObra.Presupuestos.Ventanas
             moneda1.SelectedValuePath = nameof(Currency.Codigo);
             moneda1.SelectionChanged += Moneda1_SelectionChanged;
 
-            moneda2.ItemsSource = App.Monedas;
-            moneda2.DisplayMemberPath = nameof(Currency.Moneda);
-            moneda2.SelectedValuePath = nameof(Currency.Codigo);
-            moneda2.SelectionChanged += Moneda2_SelectionChanged;
+            //moneda2.ItemsSource = App.Monedas;
+            //moneda2.DisplayMemberPath = nameof(Currency.Moneda);
+            //moneda2.SelectedValuePath = nameof(Currency.Codigo);
+            //moneda2.SelectionChanged += Moneda2_SelectionChanged;
             }
 
         private void Moneda_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -128,14 +128,14 @@ namespace DataObra.Presupuestos.Ventanas
             if (DataContext is PresupuestoDTO dto)
                 dto.EjecMoneda1 = codigo[0];
             }
-        private void Moneda2_SelectionChanged(object sender, SelectionChangedEventArgs e)
-            {
-            var codigo = moneda2.SelectedValue as string ?? (moneda2.SelectedItem as Currency)?.Codigo;
-            if (string.IsNullOrEmpty(codigo)) return;
+        //private void Moneda2_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //    {
+        //    var codigo = moneda2.SelectedValue as string ?? (moneda2.SelectedItem as Currency)?.Codigo;
+        //    if (string.IsNullOrEmpty(codigo)) return;
 
-            if (DataContext is PresupuestoDTO dto)
-                dto.EjecMoneda2 = codigo[0];
-            }
+        //    if (DataContext is PresupuestoDTO dto)
+        //        dto.EjecMoneda2 = codigo[0];
+        //    }
 
         // Sincroniza la selección de los combos con los valores actuales en Objeto.encabezado
         private void SyncSelectionsFromModel()
@@ -147,7 +147,7 @@ namespace DataObra.Presupuestos.Ventanas
             // Usar string del char, o null si char es '\0'
             moneda.SelectedValue = encabezado.EjecMoneda != '\0' ? encabezado.EjecMoneda.ToString() : null;
             moneda1.SelectedValue = encabezado.EjecMoneda1 != '\0' ? encabezado.EjecMoneda1.ToString() : null;
-            moneda2.SelectedValue = encabezado.EjecMoneda2 != '\0' ? encabezado.EjecMoneda2.ToString() : null;
+            //moneda2.SelectedValue = encabezado.EjecMoneda2 != '\0' ? encabezado.EjecMoneda2.ToString() : null;
             }
 
 

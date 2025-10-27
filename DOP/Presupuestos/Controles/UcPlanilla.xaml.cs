@@ -210,7 +210,7 @@ namespace DOP.Presupuestos.Controles
             if (record != null && record.Tipo == "R")
                 {
                 //Customize here based on your requirement
-                e.Range = new TreeGridCoveredCellInfo(2, 5, e.RowColumnIndex.RowIndex);
+                e.Range = new TreeGridCoveredCellInfo(2, 6, e.RowColumnIndex.RowIndex);
                 e.Handled = true;
                 }
             }

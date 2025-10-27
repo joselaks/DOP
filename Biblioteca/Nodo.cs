@@ -21,7 +21,9 @@ namespace Bibioteca.Clases
         private decimal factor;
         // Moneda 1
         private decimal pu1;
+        private decimal pu1Consolidado;
         private decimal importe1;
+        private decimal importe1Consolidado;
         private decimal materiales1;
         private decimal manodeobra1;
         private decimal equipos1;
@@ -59,7 +61,9 @@ namespace Bibioteca.Clases
         //Nodos con dos monedas
         // Moneda 1
         public decimal PU1 { get => pu1; set { pu1 = value; OnPropertyChanged(nameof(PU1)); } }
+        public decimal PU1Consolidado { get => pu1Consolidado; set { pu1Consolidado = value; OnPropertyChanged(nameof(PU1Consolidado)); } }
         public decimal Importe1 { get => importe1; set { importe1 = value; OnPropertyChanged(nameof(Importe1)); } }
+        public decimal Importe1Consolidado { get => importe1Consolidado; set { importe1Consolidado = value; OnPropertyChanged(nameof(Importe1Consolidado)); } }
         public decimal Materiales1 { get => materiales1; set { materiales1 = value; OnPropertyChanged(nameof(Materiales1)); } }
         public decimal ManodeObra1 { get => manodeobra1; set { manodeobra1 = value; OnPropertyChanged(nameof(ManodeObra1)); } }
         public decimal Equipos1 { get => equipos1; set { equipos1 = value; OnPropertyChanged(nameof(Equipos1)); } }
