@@ -254,17 +254,25 @@
                             VerticalAlignment="Center"
                             Text="Moneda Base" />
                         <syncfusion:ComboBoxAdv
-                            x:Name="moneda1"
+                            x:Name="moneda"
                             Grid.Row="0"
-                            Width="100" />
+                            Width="100"
+                            DisplayMemberPath="Moneda"
+                            SelectedValuePath="Codigo" />
+
+                        <syncfusion:ComboBoxAdv
+                            x:Name="moneda1"
+                            Grid.Row="1"
+                            Width="100"
+                            DisplayMemberPath="Moneda"
+                            SelectedValuePath="Codigo" />
+
                         <syncfusion:ComboBoxAdv
                             x:Name="moneda2"
-                            Grid.Row="1"
-                            Width="100" />
-                        <syncfusion:ComboBoxAdv
-                            x:Name="moneda3"
                             Grid.Row="2"
-                            Width="100" />
+                            Width="100"
+                            DisplayMemberPath="Moneda"
+                            SelectedValuePath="Codigo" />
 
                         <syncfusion:DoubleTextBox
                             x:Name="nTipoCambio1"

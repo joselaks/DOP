@@ -54,6 +54,20 @@ namespace Biblioteca.DTO
             set { if (_ejecMoneda != value) { _ejecMoneda = value; OnPropertyChanged(nameof(EjecMoneda)); } }
             }
 
+        private char _ejecMoneda1;
+        public char EjecMoneda1
+            {
+            get => _ejecMoneda1;
+            set { if (_ejecMoneda1 != value) { _ejecMoneda1 = value; OnPropertyChanged(nameof(EjecMoneda1)); } }
+            }
+
+        private char _ejecMoneda2;
+        public char EjecMoneda2
+            {
+            get => _ejecMoneda2;
+            set { if (_ejecMoneda2 != value) { _ejecMoneda2 = value; OnPropertyChanged(nameof(EjecMoneda2)); } }
+            }
+
         private decimal _prVentaTotal;
         public decimal PrVentaTotal
             {
@@ -117,6 +131,20 @@ namespace Biblioteca.DTO
             set { if (_tipoCambioD != value) { _tipoCambioD = value; OnPropertyChanged(nameof(TipoCambioD)); } }
             }
 
+        private decimal _tipoCambio1;
+        public decimal TipoCambio1
+            {
+            get => _tipoCambio1;
+            set { if (_tipoCambio1 != value) { _tipoCambio1 = value; OnPropertyChanged(nameof(TipoCambio1)); } }
+            }
+
+        private decimal _tipoCambio2;
+        public decimal TipoCambio2
+            {
+            get => _tipoCambioD;
+            set { if (_tipoCambio2 != value) { _tipoCambio2 = value; OnPropertyChanged(nameof(TipoCambio2)); } }
+            }
+
         private decimal _valorM2;
         public decimal ValorM2
             {
@@ -134,6 +162,8 @@ namespace Biblioteca.DTO
             copia.PrEjecTotal = original.PrEjecTotal;
             copia.PrEjecDirecto = original.PrEjecDirecto;
             copia.EjecMoneda = original.EjecMoneda;
+            copia.EjecMoneda1 = original.EjecMoneda1;
+            copia.EjecMoneda2 = original.EjecMoneda2;
             copia.PrVentaTotal = original.PrVentaTotal;
             copia.PrVentaDirecto = original.PrVentaDirecto;
             copia.VentaMoneda = original.VentaMoneda;

@@ -6,9 +6,13 @@ using System.Net.Http;
 using System.Windows;
 using System.Windows.Input;
 using System.Threading;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DOP
     {
+    public record Currency(string Moneda, string Codigo);
+
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
@@ -27,6 +31,17 @@ namespace DOP
         public static bool IsConnectionSuccessful { get; private set; }
         private static Mutex? _singleInstanceMutex;
 
+        // Colección global de monedas (Moneda, Codigo)
+        public static IReadOnlyList<Currency> Monedas { get; } = new List<Currency>
+            {
+            new Currency("Peso argentino", "P"),
+            new Currency("Dólar", "D"),
+            new Currency("Unidad Indexada", "U")
+            };
+
+        // Diccionario para acceso rápido por código (case-insensitive)
+        public static IReadOnlyDictionary<string, Currency> MonedaPorCodigo { get; } =
+            Monedas.ToDictionary(m => m.Codigo, StringComparer.OrdinalIgnoreCase);
 
         public App()
             {

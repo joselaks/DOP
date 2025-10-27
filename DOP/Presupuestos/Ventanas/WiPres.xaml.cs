@@ -93,6 +93,64 @@ namespace DataObra.Presupuestos.Ventanas
 
         }
 
+        private void InitializeCurrencyCombos()
+            {
+            // Asigna la colección global a los combos y muestra solo el nombre de la moneda
+            moneda.ItemsSource = App.Monedas;
+            moneda.DisplayMemberPath = nameof(Currency.Moneda);
+            moneda.SelectedValuePath = nameof(Currency.Codigo);
+            moneda.SelectionChanged += Moneda_SelectionChanged;
+
+            moneda1.ItemsSource = App.Monedas;
+            moneda1.DisplayMemberPath = nameof(Currency.Moneda);
+            moneda1.SelectedValuePath = nameof(Currency.Codigo);
+            moneda1.SelectionChanged += Moneda1_SelectionChanged;
+
+            moneda2.ItemsSource = App.Monedas;
+            moneda2.DisplayMemberPath = nameof(Currency.Moneda);
+            moneda2.SelectedValuePath = nameof(Currency.Codigo);
+            moneda2.SelectionChanged += Moneda2_SelectionChanged;
+            }
+
+        private void Moneda_SelectionChanged(object sender, SelectionChangedEventArgs e)
+            {
+            var codigo = moneda.SelectedValue as string ?? (moneda.SelectedItem as Currency)?.Codigo;
+            if (string.IsNullOrEmpty(codigo)) return;
+
+            if (DataContext is PresupuestoDTO dto)
+                dto.EjecMoneda = codigo[0];
+            }
+        private void Moneda1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+            {
+            var codigo = moneda1.SelectedValue as string ?? (moneda1.SelectedItem as Currency)?.Codigo;
+            if (string.IsNullOrEmpty(codigo)) return;
+
+            if (DataContext is PresupuestoDTO dto)
+                dto.EjecMoneda1 = codigo[0];
+            }
+        private void Moneda2_SelectionChanged(object sender, SelectionChangedEventArgs e)
+            {
+            var codigo = moneda2.SelectedValue as string ?? (moneda2.SelectedItem as Currency)?.Codigo;
+            if (string.IsNullOrEmpty(codigo)) return;
+
+            if (DataContext is PresupuestoDTO dto)
+                dto.EjecMoneda2 = codigo[0];
+            }
+
+        // Sincroniza la selección de los combos con los valores actuales en Objeto.encabezado
+        private void SyncSelectionsFromModel()
+            {
+            var encabezado = Objeto?.encabezado;
+            if (encabezado == null) return;
+
+            // Asegurarse de que los ItemsSource ya están asignados
+            // Usar string del char, o null si char es '\0'
+            moneda.SelectedValue = encabezado.EjecMoneda != '\0' ? encabezado.EjecMoneda.ToString() : null;
+            moneda1.SelectedValue = encabezado.EjecMoneda1 != '\0' ? encabezado.EjecMoneda1.ToString() : null;
+            moneda2.SelectedValue = encabezado.EjecMoneda2 != '\0' ? encabezado.EjecMoneda2.ToString() : null;
+            }
+
+
         private void SolicitarCierre()
         {
             _cierreSolicitadoPorUsuario = true;
@@ -121,7 +179,9 @@ namespace DataObra.Presupuestos.Ventanas
             _contenedor.gridListado.Children.Add(Listado);
             _contenedor.gridDetalle.Children.Add(Dosaje); 
             gridMaestro.Children.Add(Maestro);
-        }
+            InitializeCurrencyCombos();
+            SyncSelectionsFromModel();
+            }
 
 
         private async void BtnGuardar_Click(object sender, RoutedEventArgs e)
@@ -211,6 +271,12 @@ namespace DataObra.Presupuestos.Ventanas
                         existente.Superficie = Objeto.encabezado.Superficie;
                         existente.EsModelo = Objeto.encabezado.EsModelo;
                         existente.TipoCambioD = Objeto.encabezado.TipoCambioD;
+                        existente.TipoCambio1 = Objeto.encabezado.TipoCambio1;
+                        existente.TipoCambio2 = Objeto.encabezado.TipoCambio2;
+                        existente.EjecMoneda = Objeto.encabezado.EjecMoneda;
+                        existente.EjecMoneda1 = Objeto.encabezado.EjecMoneda1;
+                        existente.EjecMoneda2 = Objeto.encabezado.EjecMoneda2;
+
                         if (existente.Superficie.HasValue && existente.Superficie.Value > 0)
                             existente.ValorM2 = Math.Round(existente.PrEjecTotal / existente.Superficie.Value, 2);
                         else

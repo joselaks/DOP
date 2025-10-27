@@ -1306,6 +1306,8 @@ namespace Bibioteca.Clases
                 PrEjecTotal = encabezado.PrEjecTotal,
                 PrEjecDirecto = encabezado?.PrEjecDirecto ?? 0,
                 EjecMoneda = encabezado?.EjecMoneda ?? 'P',
+                EjecMoneda1 = encabezado.EjecMoneda1,
+                EjecMoneda2 = encabezado.EjecMoneda2,
                 PrVentaTotal = encabezado?.PrVentaTotal ?? 0,
                 PrVentaDirecto = encabezado?.PrVentaDirecto ?? 0,
                 VentaMoneda = encabezado?.VentaMoneda ?? 'P',
