@@ -238,7 +238,7 @@
 
                     <syncfusion:TreeGridNumericColumn
                         Width="80"
-                        HeaderText="P.U."
+                        HeaderText="P.U.1"
                         MappingName="PU1">
                         <syncfusion:TreeGridNumericColumn.CellTemplate>
                             <DataTemplate>
@@ -250,7 +250,32 @@
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding HasItems}" Value="True">
+                                                <DataTrigger Binding="{Binding HasItems1}" Value="True">
+                                                    <Setter Property="Foreground" Value="Blue" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </DataTemplate>
+                        </syncfusion:TreeGridNumericColumn.CellTemplate>
+                    </syncfusion:TreeGridNumericColumn>
+
+                    <syncfusion:TreeGridNumericColumn
+                        Width="80"
+                        HeaderText="P.U.2"
+                        MappingName="PU2">
+                        <syncfusion:TreeGridNumericColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    Margin="0,0,3,0"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding PU2, Converter={StaticResource DecimalToStringConverter}}"
+                                    TextAlignment="Right">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding HasItems2}" Value="True">
                                                     <Setter Property="Foreground" Value="Blue" />
                                                 </DataTrigger>
                                             </Style.Triggers>
@@ -351,9 +376,7 @@
                         NumberGroupSeparator="."
                         NumberGroupSizes="3" />
 
-                    <syncfusion:TreeGridTextColumn
-                        Width="50"
-                        MappingName="ID" />
+                    <syncfusion:TreeGridTextColumn Width="50" MappingName="ID" />
 
 
 

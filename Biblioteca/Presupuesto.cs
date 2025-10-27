@@ -361,7 +361,8 @@ namespace Bibioteca.Clases
                         newItem.ID = concepto.ConceptoID;
                         newItem.Descripcion = concepto.Descrip;
                         newItem.PU1 = (decimal)concepto.PrEjec;
-                        newItem.PU2 = (decimal)concepto.PrVent;
+                        newItem.PU2 = (decimal)concepto.PrEjec1;
+                        newItem.PU3 = (decimal)concepto.PrEjec2;
                         newItem.Cantidad = item.CanEjec;
                         newItem.Sup = false;
                         newItem.Unidad = concepto.Unidad;

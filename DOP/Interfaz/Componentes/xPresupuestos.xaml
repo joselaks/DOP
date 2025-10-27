@@ -108,8 +108,8 @@
                     Name="btnControl"
                     Width="80"
                     Margin="20,2,2,2"
-                    Content="Control"
                     Click="btnControl_Click"
+                    Content="Control"
                     Style="{StaticResource RedButtonStyle}" />
             </StackPanel>
             <Grid Grid.Row="2">
