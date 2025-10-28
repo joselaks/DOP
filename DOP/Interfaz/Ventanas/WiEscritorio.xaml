@@ -56,12 +56,15 @@
             Grid.Row="1"
             Grid.Column="0"
             Background="LightGray">
-            <syncfusion:TileViewControl
+            <Grid x:Name="grillaModelos" Background="White" Margin="10">
+                
+            </Grid>
+            <!--<syncfusion:TileViewControl
                 Name="tileEscritorioMercado"
                 Margin="20,20,20,20"
                 ColumnCount="1"
                 MinimizedItemsOrientation="Bottom"
-                RowCount="3" />
+                RowCount="3" />-->
 
 
         </Grid>

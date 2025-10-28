@@ -74,7 +74,7 @@
 
         
 
-            <WrapPanel Grid.Row="1"
+            <WrapPanel Grid.Row="1" Margin="0,20,0,0"
                 x:Name="PanelModelos"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Top" />

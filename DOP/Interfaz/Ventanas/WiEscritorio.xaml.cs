@@ -28,14 +28,14 @@ namespace DataObra.Interfaz.Ventanas
 
 
         //Precios
-        private nPrecios normalPrecios;
-        private mPrecios miniPrecios;
-        private xPrecios expanPrecios;
+        //private nPrecios normalPrecios;
+        //private mPrecios miniPrecios;
+        //private xPrecios expanPrecios;
 
         //Maestro
-        private nMaestro normalMaestro;
-        private mMaestro miniMaestro;
-        private xMaestro expanMaestro;
+        //private nMaestro normalMaestro;
+        //private mMaestro miniMaestro;
+        //private xMaestro expanMaestro;
 
         //Modelos
         private nModelos normalModelo;
@@ -97,25 +97,25 @@ namespace DataObra.Interfaz.Ventanas
             }
 
             // 2. Listas de artículos
-            InfoCombo.Clear();
-            int usuarioID = 4;
-            var (okListas, msgListas, listas) = await DOP.Datos.DatosWeb.ObtenerListasArticulosPorUsuarioAsync(usuarioID);
+            //InfoCombo.Clear();
+            //int usuarioID = 4;
+            //var (okListas, msgListas, listas) = await DOP.Datos.DatosWeb.ObtenerListasArticulosPorUsuarioAsync(usuarioID);
 
-            if (!okListas)
-            {
-                MessageBox.Show($"No se pudo obtener las listas: {msgListas}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
+            //if (!okListas)
+            //{
+            //    MessageBox.Show($"No se pudo obtener las listas: {msgListas}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            //    return;
+            //}
 
-            foreach (var listaItem in listas)
-            {
-                InfoCombo.Add(new ListaArticuloItem
-                {
-                    ID = listaItem.ID,
-                    Descrip = listaItem.Descrip,
-                    TipoID = listaItem.TipoID
-                });
-            }
+            //foreach (var listaItem in listas)
+            //{
+            //    InfoCombo.Add(new ListaArticuloItem
+            //    {
+            //        ID = listaItem.ID,
+            //        Descrip = listaItem.Descrip,
+            //        TipoID = listaItem.TipoID
+            //    });
+            //}
 
 
 
@@ -137,40 +137,43 @@ namespace DataObra.Interfaz.Ventanas
 
 
             // Precios
-            normalPrecios = new nPrecios(this);
-            miniPrecios = new mPrecios(this);
-            expanPrecios = new xPrecios(this);
+            //normalPrecios = new nPrecios(this);
+            //miniPrecios = new mPrecios(this);
+            //expanPrecios = new xPrecios(this);
 
             // Maestro
-            normalMaestro = new nMaestro(this);
-            miniMaestro = new mMaestro(this);
-            expanMaestro = new xMaestro(this);
+            //normalMaestro = new nMaestro(this);
+            //miniMaestro = new mMaestro(this);
+            //expanMaestro = new xMaestro(this);
 
             // Modelos
-            normalModelo = new nModelos(this);
-            miniModelo = new mModelos(this);
+            //normalModelo = new nModelos(this);
+            //miniModelo = new mModelos(this);
             expanModelo = new xModelos(this, _modelosPropios);
 
             AgregarTileOperativo( expanPresupuesto, normalPresupuesto, miniPresupuesto);
             AgregarTileOperativo(expanGastos, normalGastos, miniGastos);
 
-            AgregarTileMercado(normalModelo, expanModelo, miniModelo);
-            AgregarTileMercado(normalMaestro, expanMaestro, miniMaestro);
-            AgregarTileMercado(normalPrecios, expanPrecios, miniPrecios);
+            //AgregarTileMercado(normalModelo, expanModelo, miniModelo);
+            //AgregarTileMercado(normalMaestro, expanMaestro, miniMaestro);
+            //AgregarTileMercado(normalPrecios, expanPrecios, miniPrecios);
 
-        }
+            this.grillaModelos.Children.Add(expanModelo);
 
-        private void AgregarTileMercado(object contenidoNormal, object contenidoMax, object contenidoMin)
-        {
-            var tile = new TileViewItem
-            {
-                Content = contenidoNormal,
-                MaximizedItemContent = contenidoMax,
-                MinimizedItemContent = contenidoMin,
-                Margin = new Thickness(5)
-            };
-            tileEscritorioMercado.Items.Add(tile);
-        }
+            }
+
+        //private void AgregarTileMercado(object contenidoNormal, object contenidoMax, object contenidoMin)
+        //{
+        //    var tile = new TileViewItem
+        //    {
+        //        Content = contenidoNormal,
+        //        MaximizedItemContent = contenidoMax,
+        //        MinimizedItemContent = contenidoMin,
+        //        Margin = new Thickness(5)
+        //    };
+        //    tileEscritorioMercado.Items.Add(tile);
+       
+        //}
 
         private void AgregarTileOperativo(object contenidoNormal, object contenidoMax, object contenidoMin)
             {
@@ -182,57 +185,57 @@ namespace DataObra.Interfaz.Ventanas
                 Margin = new Thickness(5)
                 };
             tileEscritorioOperativo.Items.Add(tile);
-            }
+        }
 
         public void CambioEstado(string nombreTile, string estado, string contenedor)
             {
-            TileViewControl tileView = null;
-            if (contenedor == "M")
-                tileView = tileEscritorioMercado;
-            else if (contenedor == "O")
-                tileView = tileEscritorioOperativo;
-            else
-                return;
+            //TileViewControl tileView = null;
+            //if (contenedor == "M")
+            //    tileView = tileEscritorioMercado;
+            //else if (contenedor == "O")
+            //    tileView = tileEscritorioOperativo;
+            //else
+            //    return;
 
-            foreach (var item in tileView.Items)
-                {
-                // Obtener el nombre del tipo del contenido
-                var contenido = (item as TileViewItem)?.Content ?? item;
-                string nombreContenido = contenido.GetType().Name;
-                if (estado == "Normal")
-                    {
-                    foreach (var it in tileView.Items)
-                        {
-                        var cont = (it as TileViewItem)?.Content ?? it;
-                        string nomCont = cont.GetType().Name;
-                        if (nomCont != nombreTile)
-                            {
-                            var container = tileView.ItemContainerGenerator.ContainerFromItem(it) as TileViewItem;
-                            if (container != null)
-                                container.TileViewItemState = Syncfusion.Windows.Shared.TileViewItemState.Normal;
-                            }
-                        }
-                    return;
-                    }
+            //foreach (var item in tileView.Items)
+            //    {
+            //    // Obtener el nombre del tipo del contenido
+            //    var contenido = (item as TileViewItem)?.Content ?? item;
+            //    string nombreContenido = contenido.GetType().Name;
+            //    if (estado == "Normal")
+            //        {
+            //        foreach (var it in tileView.Items)
+            //            {
+            //            var cont = (it as TileViewItem)?.Content ?? it;
+            //            string nomCont = cont.GetType().Name;
+            //            if (nomCont != nombreTile)
+            //                {
+            //                var container = tileView.ItemContainerGenerator.ContainerFromItem(it) as TileViewItem;
+            //                if (container != null)
+            //                    container.TileViewItemState = Syncfusion.Windows.Shared.TileViewItemState.Normal;
+            //                }
+            //            }
+            //        return;
+            //        }
 
-                if (nombreContenido.Equals(nombreTile, StringComparison.OrdinalIgnoreCase))
-                    {
-                    var container = tileView.ItemContainerGenerator.ContainerFromItem(item) as TileViewItem;
-                    if (container != null)
-                        {
-                        switch (estado)
-                            {
-                            case "Maximizado":
-                                container.TileViewItemState = Syncfusion.Windows.Shared.TileViewItemState.Maximized;
-                                break;
-                            case "Minimizado":
-                                container.TileViewItemState = Syncfusion.Windows.Shared.TileViewItemState.Minimized;
-                                break;
-                            }
-                        }
-                    break; // Salir tras encontrar el tile correcto
-                    }
-                }
+            //    if (nombreContenido.Equals(nombreTile, StringComparison.OrdinalIgnoreCase))
+            //        {
+            //        var container = tileView.ItemContainerGenerator.ContainerFromItem(item) as TileViewItem;
+            //        if (container != null)
+            //            {
+            //            switch (estado)
+            //                {
+            //                case "Maximizado":
+            //                    container.TileViewItemState = Syncfusion.Windows.Shared.TileViewItemState.Maximized;
+            //                    break;
+            //                case "Minimizado":
+            //                    container.TileViewItemState = Syncfusion.Windows.Shared.TileViewItemState.Minimized;
+            //                    break;
+            //                }
+            //            }
+            //        break; // Salir tras encontrar el tile correcto
+            //        }
+            //    }
             }
 
 

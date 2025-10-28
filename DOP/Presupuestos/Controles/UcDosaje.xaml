@@ -184,7 +184,7 @@
 
                     <syncfusion:TreeGridNumericColumn
                         Width="80"
-                        HeaderText="P.U."
+                        HeaderText="P.U. $"
                         MappingName="PU1"
                         NumberDecimalDigits="2"
                         NumberDecimalSeparator=","
@@ -192,7 +192,7 @@
                         NumberGroupSizes="3" />
                     <syncfusion:TreeGridNumericColumn
                         Width="80"
-                        HeaderText="P.U.2"
+                        HeaderText="P.U.u$s"
                         MappingName="PU2"
                         NumberDecimalDigits="2"
                         NumberDecimalSeparator=","

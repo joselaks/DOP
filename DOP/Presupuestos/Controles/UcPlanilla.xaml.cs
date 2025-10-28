@@ -60,6 +60,7 @@ namespace DOP.Presupuestos.Controles
             //Objeto.sinCero();
 
             decimal totGeneral1 = Objeto.Arbol.Sum(i => i.Importe1);
+            decimal totGeneral2 = Objeto.Arbol.Sum(i => i.Importe2);
             decimal totMateriales1 = Objeto.Arbol.Sum(i => i.Materiales1);
             decimal totManoDeObra1 = Objeto.Arbol.Sum(i => i.ManodeObra1);
             decimal totEquipos1 = Objeto.Arbol.Sum(i => i.Equipos1);
@@ -69,6 +70,7 @@ namespace DOP.Presupuestos.Controles
             // Asignar el valor explícitamente al HeaderText
             var cultura = new CultureInfo("es-ES") { NumberFormat = { NumberGroupSeparator = ".", NumberDecimalSeparator = "," } };
             colImporte1.HeaderText = $"{totGeneral1.ToString("N2", cultura)}";
+            colImporte2.HeaderText = $"{totGeneral2.ToString("N2", cultura)}";
             colMateriales1.HeaderText = $"{totMateriales1.ToString("N2", cultura)}";
             colManoDeObra1.HeaderText = $"{totManoDeObra1.ToString("N2", cultura)}";
             colEquipos1.HeaderText = $"{totEquipos1.ToString("N2", cultura)}";

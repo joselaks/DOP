@@ -180,7 +180,8 @@
             </syncfusion:StackedHeaderRow>-->
                 <syncfusion:StackedHeaderRow>
                     <syncfusion:StackedHeaderRow.StackedColumns>
-                        <syncfusion:StackedColumn ChildColumns="Importe1" HeaderText="Total" />
+                        <syncfusion:StackedColumn ChildColumns="Importe1" HeaderText="Total Pesos" />
+                        <syncfusion:StackedColumn ChildColumns="Importe2" HeaderText="Total Dólar" />
                         <syncfusion:StackedColumn ChildColumns="Materiales1" HeaderText="Materiales" />
                         <syncfusion:StackedColumn ChildColumns="ManodeObra1" HeaderText="Mano de Obra" />
                         <syncfusion:StackedColumn ChildColumns="Equipos1" HeaderText="Equipos" />
@@ -238,7 +239,7 @@
 
                     <syncfusion:TreeGridNumericColumn
                         Width="80"
-                        HeaderText="P.U.1"
+                        HeaderText="P.U.$"
                         MappingName="PU1">
                         <syncfusion:TreeGridNumericColumn.CellTemplate>
                             <DataTemplate>
@@ -263,7 +264,7 @@
 
                     <syncfusion:TreeGridNumericColumn
                         Width="80"
-                        HeaderText="P.U.2"
+                        HeaderText="P.U.u$s"
                         MappingName="PU2">
                         <syncfusion:TreeGridNumericColumn.CellTemplate>
                             <DataTemplate>
@@ -387,7 +388,10 @@
                         NumberGroupSeparator="."
                         NumberGroupSizes="3" />
 
-                    <syncfusion:TreeGridTextColumn Width="50" MappingName="ID" />
+                    <syncfusion:TreeGridTextColumn
+                        Width="50"
+                        IsHidden="True"
+                        MappingName="ID" />
 
 
 
