@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Biblioteca;
+using Biblioteca.DTO;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using System.Collections.ObjectModel;
-using Biblioteca;
-using Biblioteca.DTO;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Bibioteca.Clases
@@ -671,6 +672,20 @@ namespace Bibioteca.Clases
                     item.Otros2 = (from c in item.Inferiores
                                    select c.Otros2).Sum() * item.Cantidad;
 
+                    item.PU3 = (from c in item.Inferiores
+                                select c.Importe3).Sum();
+
+                    item.Materiales3 = (from c in item.Inferiores
+                                        select c.Materiales3).Sum() * item.Cantidad;
+                    item.ManodeObra3 = (from c in item.Inferiores
+                                        select c.ManodeObra3).Sum() * item.Cantidad;
+                    item.Equipos3 = (from c in item.Inferiores
+                                     select c.Equipos3).Sum() * item.Cantidad;
+                    item.Subcontratos3 = (from c in item.Inferiores
+                                          select c.Subcontratos3).Sum() * item.Cantidad;
+                    item.Otros3 = (from c in item.Inferiores
+                                   select c.Otros3).Sum() * item.Cantidad;
+
                     #endregion
                     }
                 else //es el ultimo del arbol
@@ -690,6 +705,11 @@ namespace Bibioteca.Clases
                             item.Equipos2 = 0;
                             item.Subcontratos2 = 0;
                             item.Otros2 = 0;
+                            item.Materiales3 = item.Cantidad * item.PU3;
+                            item.ManodeObra3 = 0;
+                            item.Equipos3 = 0;
+                            item.Subcontratos3 = 0;
+                            item.Otros3 = 0;
                             break;
                         case "D":
                             item.ManodeObra1 = item.Cantidad * item.PU1;
@@ -702,6 +722,12 @@ namespace Bibioteca.Clases
                             item.Equipos2 = 0;
                             item.Subcontratos2 = 0;
                             item.Otros2 = 0;
+                            item.Materiales3 = 0;
+                            item.ManodeObra3 = item.Cantidad * item.PU3;
+                            item.Equipos3 = 0;
+                            item.Subcontratos3 = 0;
+                            item.Otros3 = 0;
+
                             break;
                         case "E":
                             item.Equipos1 = item.Cantidad * item.PU1;
@@ -714,6 +740,12 @@ namespace Bibioteca.Clases
                             item.Materiales2 = 0;
                             item.Subcontratos2 = 0;
                             item.Otros2 = 0;
+                            item.Materiales3 = 0;
+                            item.ManodeObra3 = 0;
+                            item.Equipos3 = item.Cantidad * item.PU3;
+                            item.Subcontratos3 = 0;
+                            item.Otros3 = 0;
+
 
                             break;
                         case "S":
@@ -727,6 +759,12 @@ namespace Bibioteca.Clases
                             item.ManodeObra2 = 0;
                             item.Equipos2 = 0;
                             item.Otros2 = 0;
+                            item.Materiales3 = 0;
+                            item.ManodeObra3 = 0;
+                            item.Equipos3 = 0;
+                            item.Subcontratos3 = item.Cantidad * item.PU3;
+                            item.Otros3 = 0;
+
 
                             break;
                         case "O":
@@ -740,6 +778,12 @@ namespace Bibioteca.Clases
                             item.Equipos2 = 0;
                             item.Subcontratos2 = 0;
                             item.Equipos2 = 0;
+                            item.Materiales3 = 0;
+                            item.ManodeObra3 = 0;
+                            item.Equipos3 = 0;
+                            item.Subcontratos3 = 0;
+                            item.Otros3 = item.Cantidad * item.PU3;
+
 
                             break;
                         default:
@@ -758,8 +802,10 @@ namespace Bibioteca.Clases
                         registro.Unidad = item.Unidad;
                         registro.PU1 = item.PU1;
                         registro.PU2 = item.PU2;
+                        registro.PU3 = item.PU1 + item.PU2 * encabezado.TipoCambioD;
                         registro.Importe1 = registro.Cantidad * registro.PU1;
                         registro.Importe2 = registro.Cantidad * registro.PU2;
+                        registro.Importe3 = registro.Cantidad * registro.PU3;
                         registro.Tipo = item.Tipo;
                         Insumos.Add(registro);
                         }
@@ -769,15 +815,19 @@ namespace Bibioteca.Clases
                         sele.Unidad = item.Unidad;
                         sele.PU1 = item.PU1;
                         sele.PU2 = item.PU2;
+                        sele.PU3 = item.PU1 + item.PU2 * encabezado.TipoCambioD;
                         sele.Cantidad = sele.Cantidad + (item.Cantidad * FactorSup);
                         sele.Tipo = item.Tipo;
                         sele.Importe1 = sele.PU1 * sele.Cantidad;
                         sele.Importe2 = sele.PU2 * sele.Cantidad;
+                        sele.Importe3 = sele.PU3 * sele.Cantidad;
                         }
                     }
 
                 item.Importe1 = item.Cantidad * item.PU1;
                 item.Importe2 = item.Cantidad * item.PU2;
+                item.Importe3 = item.Cantidad * (item.PU1 + item.PU2 * encabezado.TipoCambioD);
+
                 item.Factor = FactorSup;
                 }
 

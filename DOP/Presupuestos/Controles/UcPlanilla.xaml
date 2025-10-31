@@ -287,6 +287,31 @@
                         </syncfusion:TreeGridNumericColumn.CellTemplate>
                     </syncfusion:TreeGridNumericColumn>
 
+                    <syncfusion:TreeGridNumericColumn
+                        Width="80"
+                        HeaderText="PU Cons$"
+                        MappingName="PU3">
+                        <syncfusion:TreeGridNumericColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    Margin="0,0,3,0"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding PU3, Converter={StaticResource DecimalToStringConverter}}"
+                                    TextAlignment="Right">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding HasItem2}" Value="True">
+                                                    <Setter Property="Foreground" Value="Blue" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </DataTemplate>
+                        </syncfusion:TreeGridNumericColumn.CellTemplate>
+                    </syncfusion:TreeGridNumericColumn>
+
 
                     <syncfusion:TreeGridNumericColumn
                         x:Name="colImporte1"
@@ -305,6 +330,17 @@
                         CellStyle="{StaticResource TipoCellStyle}"
                         HeaderText="{Binding totGeneral2}"
                         MappingName="Importe2"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3" />
+
+                    <syncfusion:TreeGridNumericColumn
+                        x:Name="colImporte3"
+                        Width="120"
+                        CellStyle="{StaticResource TipoCellStyle}"
+                        HeaderText="{Binding totGeneral3}"
+                        MappingName="Importe3"
                         NumberDecimalDigits="2"
                         NumberDecimalSeparator=","
                         NumberGroupSeparator="."
