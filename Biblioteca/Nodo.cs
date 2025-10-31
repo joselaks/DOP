@@ -91,7 +91,7 @@ namespace Bibioteca.Clases
         // true si algún inferior tiene PU1/PU2/PU3 distinto de 0
         public bool HasItem1 => Inferiores != null && Inferiores.Any(i => i != null && i.PU1 != 0m);
         public bool HasItem2 => Inferiores != null && Inferiores.Any(i => i != null && i.PU2 != 0m);
-        public bool HasItem3 => Inferiores != null && Inferiores.Any(i => i != null && i.PU3 != 0m);
+        //public bool HasItem3 => Inferiores != null && Inferiores.Any(i => i != null && i.PU3 != 0m);
 
         public Nodo Copia() => (Nodo)this.MemberwiseClone();
 
@@ -118,7 +118,7 @@ namespace Bibioteca.Clases
                 OnPropertyChanged(nameof(HasItems));
                 OnPropertyChanged(nameof(HasItem1));
                 OnPropertyChanged(nameof(HasItem2));
-                OnPropertyChanged(nameof(HasItem3));
+                //OnPropertyChanged(nameof(HasItem3));
                 }
             }
 
@@ -146,7 +146,7 @@ namespace Bibioteca.Clases
             OnPropertyChanged(nameof(HasItems));
             OnPropertyChanged(nameof(HasItem1));
             OnPropertyChanged(nameof(HasItem2));
-            OnPropertyChanged(nameof(HasItem3));
+            //OnPropertyChanged(nameof(HasItem3));
             }
 
         private void AttachHandlersToInferiores(ObservableCollection<Nodo> list)
@@ -177,8 +177,8 @@ namespace Bibioteca.Clases
             if (e.PropertyName == nameof(PU2))
                 OnPropertyChanged(nameof(HasItem2));
 
-            if (e.PropertyName == nameof(PU3))
-                OnPropertyChanged(nameof(HasItem3));
+            //if (e.PropertyName == nameof(PU3))
+            //    OnPropertyChanged(nameof(HasItem3));
             }
         }
     }

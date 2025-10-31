@@ -131,19 +131,19 @@ namespace Biblioteca.DTO
             set { if (_tipoCambioD != value) { _tipoCambioD = value; OnPropertyChanged(nameof(TipoCambioD)); } }
             }
 
-        private decimal _tipoCambio1;
-        public decimal TipoCambio1
-            {
-            get => _tipoCambio1;
-            set { if (_tipoCambio1 != value) { _tipoCambio1 = value; OnPropertyChanged(nameof(TipoCambio1)); } }
-            }
+        //private decimal _tipoCambio1;
+        //public decimal TipoCambio1
+        //    {
+        //    get => _tipoCambio1;
+        //    set { if (_tipoCambio1 != value) { _tipoCambio1 = value; OnPropertyChanged(nameof(TipoCambio1)); } }
+        //    }
 
-        private decimal _tipoCambio2;
-        public decimal TipoCambio2
-            {
-            get => _tipoCambioD;
-            set { if (_tipoCambio2 != value) { _tipoCambio2 = value; OnPropertyChanged(nameof(TipoCambio2)); } }
-            }
+        //private decimal _tipoCambio2;
+        //public decimal TipoCambio2
+        //    {
+        //    get => _tipoCambioD;
+        //    set { if (_tipoCambio2 != value) { _tipoCambio2 = value; OnPropertyChanged(nameof(TipoCambio2)); } }
+        //    }
 
         private decimal _valorM2;
         public decimal ValorM2

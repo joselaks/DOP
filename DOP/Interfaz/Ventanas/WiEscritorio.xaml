@@ -39,7 +39,7 @@
                 VerticalAlignment="Center"
                 FontSize="26"
                 FontWeight="Bold"
-                Text="Datos de mercado" />
+                Text="Modelos" />
 
         </Grid>
         <TextBlock

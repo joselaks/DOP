@@ -70,28 +70,28 @@ namespace DataObra.Presupuestos.Ventanas
 
             this.DataContext = Objeto.encabezado;
 
-           var screenWidth = SystemParameters.PrimaryScreenWidth;
+            var screenWidth = SystemParameters.PrimaryScreenWidth;
             var screenHeight = SystemParameters.PrimaryScreenHeight;
 
             if (screenWidth <= 1920 && screenHeight <= 1080)
-            {
+                {
                 // Maximizar si la resolución es igual o menor a 1920x1080
 
                 WindowState = WindowState.Maximized;
 
 
-            }
+                }
             else
-            {
+                {
                 // Centrar y establecer tamaño fijo si la resolución es mayor
 
                 WindowStartupLocation = WindowStartupLocation.CenterScreen;
                 WindowState = WindowState.Normal;
                 Width = 1900;
                 Height = 1030;
-            }
+                }
 
-        }
+            }
 
         private void InitializeCurrencyCombos()
             {
@@ -152,32 +152,32 @@ namespace DataObra.Presupuestos.Ventanas
 
 
         private void SolicitarCierre()
-        {
+            {
             _cierreSolicitadoPorUsuario = true;
             this.Close();
-        }
+            }
 
 
         private void WiPres_Closing(object? sender, CancelEventArgs e)
-        {
+            {
             // Solo preguntar si el cierre NO fue solicitado explícitamente por el usuario desde los botones del Ribbon
             if (!_cierreSolicitadoPorUsuario)
-            {
+                {
                 var result = MessageBox.Show("¿Está seguro que desea cerrar el presupuesto?", "Confirmar cierre", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result != MessageBoxResult.Yes)
-                {
+                    {
                     e.Cancel = true; // Cancela el cierre
+                    }
                 }
-            }
             // Si _cierreSolicitadoPorUsuario es true, no pregunta y deja cerrar.
-        }
+            }
 
 
         private void WiPres_Loaded(object sender, RoutedEventArgs e)
-        {
+            {
             _contenedor.gridPlanilla.Children.Add(Planilla);
             _contenedor.gridListado.Children.Add(Listado);
-            _contenedor.gridDetalle.Children.Add(Dosaje); 
+            _contenedor.gridDetalle.Children.Add(Dosaje);
             gridMaestro.Children.Add(Maestro);
             InitializeCurrencyCombos();
             SyncSelectionsFromModel();
@@ -185,11 +185,11 @@ namespace DataObra.Presupuestos.Ventanas
 
 
         private async void BtnGuardar_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is RibbonButton boton)
             {
-                switch (boton.Name)
+            if (sender is RibbonButton boton)
                 {
+                switch (boton.Name)
+                    {
                     case "BrnGuardar":
                         if (await GuardarPresupuestoAsync())
                             MessageBox.Show("Presupuesto guardado correctamente.", "Guardar", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -201,10 +201,10 @@ namespace DataObra.Presupuestos.Ventanas
                             MessageBoxButton.YesNo,
                             MessageBoxImage.Question);
                         if (resultGuardarSalir == MessageBoxResult.Yes)
-                        {
+                            {
                             if (await GuardarPresupuestoAsync())
                                 SolicitarCierre();
-                        }
+                            }
                         break;
                     case "BtnSalir":
                         var resultSalir = MessageBox.Show(
@@ -215,25 +215,25 @@ namespace DataObra.Presupuestos.Ventanas
                         if (resultSalir == MessageBoxResult.Yes)
                             SolicitarCierre();
                         break;
+                    }
                 }
             }
-        }
 
 
         private async Task<bool> GuardarPresupuestoAsync()
-        {
+            {
             // Actualiza totales y fechas
             Objeto.encabezado.PrEjecTotal = Objeto.Arbol.Sum(i => i.Importe1);
             Objeto.encabezado.FechaM = DateTime.Now;
             DateTime? selectedDate = pMesBase.Value;
             if (selectedDate.HasValue)
-            {
+                {
                 int mes = selectedDate.Value.Month;
                 int año = selectedDate.Value.Year;
                 int dia = 1;
                 DateTime nuevaFecha = new DateTime(año, mes, dia);
                 Objeto.encabezado.MesBase = nuevaFecha;
-            }
+                }
 
             ProcesaPresupuestoRequest oGrabar = Objeto.EmpaquetarPresupuesto();
 
@@ -241,13 +241,13 @@ namespace DataObra.Presupuestos.Ventanas
             var resultado = await DOP.Datos.DatosWeb.ProcesarPresupuestoAsync(oGrabar);
 
             if (resultado.Success)
-            {
+                {
                 // Actualiza listas para próxima ejecución
                 Objeto.listaConceptosLeer = Objeto.listaConceptosGrabar.Select(x => x).ToList();
                 Objeto.listaRelacionesLeer = Objeto.listaRelacionesGrabar.Select(x => x).ToList();
 
                 if (Objeto.encabezado.ID == null || Objeto.encabezado.ID == 0)
-                {
+                    {
                     Objeto.encabezado.FechaC = DateTime.Today;
                     Objeto.encabezado.ID = resultado.PresupuestoID;
                     var superficie = Objeto.encabezado.Superficie ?? 0;
@@ -257,12 +257,12 @@ namespace DataObra.Presupuestos.Ventanas
                         Objeto.encabezado.ValorM2 = 0;
 
                     _presupuestosRef.Add(PresupuestoDTO.CopiarPresupuestoDTO(Objeto.encabezado));
-                }
+                    }
                 else
-                {
+                    {
                     var existente = _presupuestosRef.FirstOrDefault(p => p.ID == Objeto.encabezado.ID);
                     if (existente != null)
-                    {
+                        {
                         existente.Descrip = Objeto.encabezado.Descrip;
                         existente.FechaC = Objeto.encabezado.FechaC;
                         existente.FechaM = Objeto.encabezado.FechaM;
@@ -271,70 +271,70 @@ namespace DataObra.Presupuestos.Ventanas
                         existente.Superficie = Objeto.encabezado.Superficie;
                         existente.EsModelo = Objeto.encabezado.EsModelo;
                         existente.TipoCambioD = Objeto.encabezado.TipoCambioD;
-                        existente.TipoCambio1 = Objeto.encabezado.TipoCambio1;
-                        existente.TipoCambio2 = Objeto.encabezado.TipoCambio2;
+                        //existente.TipoCambio1 = Objeto.encabezado.TipoCambio1;
+                        //existente.TipoCambio2 = Objeto.encabezado.TipoCambio2;
                         existente.EjecMoneda = Objeto.encabezado.EjecMoneda;
                         existente.EjecMoneda1 = Objeto.encabezado.EjecMoneda1;
-                        existente.EjecMoneda2 = Objeto.encabezado.EjecMoneda2;
+                        //existente.EjecMoneda2 = Objeto.encabezado.EjecMoneda2;
 
                         if (existente.Superficie.HasValue && existente.Superficie.Value > 0)
                             existente.ValorM2 = Math.Round(existente.PrEjecTotal / existente.Superficie.Value, 2);
                         else
                             existente.ValorM2 = 0;
-                    }
+                        }
                     else
-                    {
+                        {
                         _presupuestosRef.Add(Objeto.encabezado);
+                        }
                     }
-                }
                 return true;
-            }
+                }
             else
-            {
+                {
                 MessageBox.Show($"Error al guardar el presupuesto: {resultado.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
+                }
             }
-        }
 
 
 
 
         private void btnFiebdc_Click(object sender, RoutedEventArgs e)
-        {
+            {
             OpenFileDialog openFileDialog = new OpenFileDialog();
 
             openFileDialog.Multiselect = false;
             openFileDialog.Filter = "Archivo Fiebdc|*.bc3";
 
             if (openFileDialog.ShowDialog().Value)
-            {
+                {
                 FileStream stream = File.OpenRead(openFileDialog.FileName);
                 string textoFie;
                 using (StreamReader reader = new StreamReader(stream, Encoding.Default, true))
-                {
+                    {
                     textoFie = reader.ReadToEnd();
                     //this.txtArchivoActualiza.Text = "Archivo seleccionado";
                     string txtNombre = stream.Name;
-                }
+                    }
                 Bibioteca.Clases.Fiebdc fie = new Bibioteca.Clases.Fiebdc(textoFie);
                 Bibioteca.Clases.Presupuesto pres = new Bibioteca.Clases.Presupuesto(null, null, null);
 
                 Bibioteca.Clases.Presupuesto objetofieb = new Bibioteca.Clases.Presupuesto(null, null, null);
                 objetofieb.generaPresupuesto("fie", fie.listaConceptos, fie.listaRelaciones);
                 foreach (var item in objetofieb.Arbol)
-                {
+                    {
                     Objeto.Arbol.Add(item);
-                }
+                    }
                 Objeto.RecalculoCompleto();
+                }
+
             }
 
-        }
-
         private void SaleExcel_Click(object sender, RoutedEventArgs e)
-        {
+            {
             // 1. Crear el Excel con el presupuesto actual
             using (var excel = new DOP.Presupuestos.Clases.Excel(Objeto))
-            {
+                {
                 // 2. Generar la hoja que desees (puedes cambiar el método)
                 excel.PresupuestoEjecutivo();
                 //excel.PresupuestoTipos(); // Genera la hoja de tipos de presupuesto
@@ -346,52 +346,52 @@ namespace DataObra.Presupuestos.Ventanas
 
                 // 4. Intentar abrir el archivo con Excel
                 try
-                {
-                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
                     {
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                        {
                         FileName = tempPath,
                         UseShellExecute = true
-                    });
-                }
+                        });
+                    }
                 catch (Exception ex)
-                {
+                    {
                     // Si no se pudo abrir, permitir al usuario elegir dónde guardar el archivo
                     var saveDialog = new Microsoft.Win32.SaveFileDialog
-                    {
+                        {
                         Title = "Guardar archivo Excel",
                         Filter = "Archivos de Excel (*.xlsx)|*.xlsx",
                         FileName = "Presupuesto.xlsx"
-                    };
+                        };
 
                     if (saveDialog.ShowDialog() == true)
-                    {
-                        try
                         {
+                        try
+                            {
                             File.Copy(tempPath, saveDialog.FileName, true);
                             MessageBox.Show($"Archivo guardado en:\n{saveDialog.FileName}", "Guardado exitoso", MessageBoxButton.OK, MessageBoxImage.Information);
-                        }
+                            }
                         catch (Exception copyEx)
-                        {
+                            {
                             MessageBox.Show($"No se pudo guardar el archivo.\nError: {copyEx.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
                         }
-                    }
                     else
-                    {
+                        {
                         MessageBox.Show($"No se pudo abrir Excel automáticamente.\nArchivo temporal generado en:\n{tempPath}\n\nError: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
                     }
                 }
             }
-        }
 
         private void btnDatos_Click(object sender, RoutedEventArgs e)
-        {
-        }
+            {
+            }
 
         private void Recalculo_Click(object sender, RoutedEventArgs e)
             {
 
             }
-      
+
 
         private void ventanas_Checked(object sender, RoutedEventArgs e)
             {
@@ -422,13 +422,13 @@ namespace DataObra.Presupuestos.Ventanas
                         {
                         _contenedor.basePres.RowDefinitions[1].Height = new GridLength(1, GridUnitType.Auto);
                         if (_detalleRow2Height != null)
-                        {
+                            {
                             _contenedor.basePres.RowDefinitions[2].Height = _detalleRow2Height.Value;
-                        }
+                            }
                         else
-                        {
+                            {
                             _contenedor.basePres.RowDefinitions[2].Height = new GridLength(alturaTercio, GridUnitType.Pixel);
-                        }
+                            }
                         }
                     else
                         {
@@ -448,11 +448,11 @@ namespace DataObra.Presupuestos.Ventanas
                         {
                         _contenedor.basePres.ColumnDefinitions[1].Width = new GridLength(1, GridUnitType.Auto);
                         _contenedor.basePres.ColumnDefinitions[2].Width = _listadoCol2Width ?? new GridLength(700);
-                        if(vMaestro.IsChecked==true)
-                        {
+                        if (vMaestro.IsChecked == true)
+                            {
                             vMaestro.IsChecked = false;
+                            }
                         }
-                    }
 
                     else
                         {
@@ -473,10 +473,10 @@ namespace DataObra.Presupuestos.Ventanas
                         gridBase.ColumnDefinitions[1].Width = new GridLength(1, GridUnitType.Auto);
                         gridBase.ColumnDefinitions[2].Width = _maestroCol2Width ?? new GridLength(600);
                         if (vListado.IsChecked == true)
-                        {
+                            {
                             vListado.IsChecked = false;
+                            }
                         }
-                    }
                     else
                         {
                         _maestroCol2Width = gridBase.ColumnDefinitions[2].Width;
@@ -494,7 +494,7 @@ namespace DataObra.Presupuestos.Ventanas
 
         private void Renumerar_Click(object sender, RoutedEventArgs e)
             {
-                 Objeto.NumeraItems(Objeto.Arbol, "");
+            Objeto.NumeraItems(Objeto.Arbol, "");
 
             }
 
@@ -509,34 +509,72 @@ namespace DataObra.Presupuestos.Ventanas
             }
 
 
-private static readonly Regex _regex = new Regex(@"^\d*([.,]\d{0,2})?$");
+        private static readonly Regex _regex = new Regex(@"^\d*([.,]\d{0,2})?$");
 
-    private void DecimalTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-        TextBox textBox = sender as TextBox;
-        string fullText = GetFullTextAfterInput(textBox, e.Text);
-        e.Handled = !_regex.IsMatch(fullText);
-        }
-
-    private void DecimalTextBox_Pasting(object sender, DataObjectPastingEventArgs e)
-        {
-        if (e.DataObject.GetDataPresent(typeof(string)))
+        private void DecimalTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
             {
-            string pastedText = (string)e.DataObject.GetData(typeof(string));
             TextBox textBox = sender as TextBox;
-            string fullText = GetFullTextAfterInput(textBox, pastedText);
-            if (!_regex.IsMatch(fullText))
+            string fullText = GetFullTextAfterInput(textBox, e.Text);
+            e.Handled = !_regex.IsMatch(fullText);
+            }
+
+        private void DecimalTextBox_Pasting(object sender, DataObjectPastingEventArgs e)
+            {
+            if (e.DataObject.GetDataPresent(typeof(string)))
+                {
+                string pastedText = (string)e.DataObject.GetData(typeof(string));
+                TextBox textBox = sender as TextBox;
+                string fullText = GetFullTextAfterInput(textBox, pastedText);
+                if (!_regex.IsMatch(fullText))
+                    {
+                    e.CancelCommand();
+                    }
+                }
+            else
                 {
                 e.CancelCommand();
                 }
             }
-        else
-            {
-            e.CancelCommand();
-            }
-        }
 
-    private string GetFullTextAfterInput(TextBox textBox, string input)
+        public void SetMultimonedaEnabled(bool enabled)
+            {
+            // Asegura ejecución en el hilo de UI
+            if (!Dispatcher.CheckAccess())
+                {
+                Dispatcher.Invoke(() => SetMultimonedaEnabled(enabled));
+                return;
+                }
+
+            if (txtMonedaBase != null)
+                {
+                txtMonedaBase.Opacity = enabled ? 1.0 : 0.6;
+                }
+
+            if (moneda != null)
+                {
+                moneda.IsEnabled = enabled;
+                moneda.IsHitTestVisible = enabled;
+                moneda.Opacity = enabled ? 1.0 : 0.6;
+                }
+
+            if (moneda1 != null)
+                {
+                moneda1.IsEnabled = enabled;
+                moneda1.IsHitTestVisible = enabled;
+                moneda1.Opacity = enabled ? 1.0 : 0.6;
+                }
+
+            if (nTipoCambio1 != null)
+                {
+                nTipoCambio1.IsEnabled = enabled;
+                nTipoCambio1.IsHitTestVisible = enabled;
+                nTipoCambio1.Opacity = enabled ? 1.0 : 0.6;
+                }
+            }
+
+
+
+        private string GetFullTextAfterInput(TextBox textBox, string input)
         {
         string currentText = textBox.Text;
         int selectionStart = textBox.SelectionStart;
@@ -544,5 +582,15 @@ private static readonly Regex _regex = new Regex(@"^\d*([.,]\d{0,2})?$");
         return currentText.Remove(selectionStart, selectionLength).Insert(selectionStart, input);
         }
 
-    }
+        private void chkBimonetario_Checked(object sender, RoutedEventArgs e)
+            {
+                SetMultimonedaEnabled(true);
+            }
+
+
+        private void chkBimonetario_Unchecked(object sender, RoutedEventArgs e)
+            {
+            SetMultimonedaEnabled(false);
+            }
+        }
 }

@@ -610,9 +610,11 @@ namespace Bibioteca.Clases
                         item.Cantidad = 0;
                         item.PU1 = 0;
                         item.PU2 = 0;
-                        item.Unidad = null;
+                        item.PU3 = 0;
+                        item.Unidad = string.Empty;
                         item.Importe1 = 0;
                         item.Importe2 = 0;
+                        item.Importe3 = 0;
                         }
                     }
                 ordenint = 1;

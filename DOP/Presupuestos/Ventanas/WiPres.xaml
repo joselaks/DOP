@@ -247,14 +247,16 @@
                             <ColumnDefinition Width="100" />
                             <ColumnDefinition Width="100" />
                         </Grid.ColumnDefinitions>
+
+                        <syncfusion:RibbonCheckBox
+                        x:Name="chkBimonetario"
+                        Grid.ColumnSpan="2"
+                        Checked="chkBimonetario_Checked"
+                        Content="Activar Bimonetario"
+                        IsChecked="False"
+                        Unchecked="chkBimonetario_Unchecked"/>
                         <TextBlock
-                            Grid.Row="0"
-                            Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            Margin="20,0,5,0"
-                            VerticalAlignment="Center"
-                            Text="Configuracion de Moneda" />
-                        <TextBlock
+                            x:Name="txtMonedaBase"
                             Grid.Row="1"
                             Grid.Column="1"
                             Margin="10,0,5,0"

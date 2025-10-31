@@ -24,7 +24,6 @@ namespace DOP.Presupuestos.Controles
     public partial class UcListado : UserControl
         {
         public Presupuesto Objeto;
-        private GridLength? _panSuperioresHeight = null;
         UcPlanilla planilla;
         UcPrecioInsumo ucPrecioInsumo;
 

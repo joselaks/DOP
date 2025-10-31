@@ -58,23 +58,11 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-            <Image
-                Width="28"
-                Height="28"
-                Margin="0,0,8,0"
-                Source="pack://application:,,,/Imagenes/Material.png" />
-            <TextBlock
-                VerticalAlignment="Center"
-                FontSize="22"
-                FontWeight="Bold"
-                Foreground="#FB8C00"
-                Text="Modelos" />
-        </StackPanel>
+        <StackPanel VerticalAlignment="Center" Orientation="Horizontal"/>
 
-        
 
-            <WrapPanel Grid.Row="1" Margin="0,20,0,0"
+
+        <WrapPanel Grid.Row="1" Margin="0,20,0,0"
                 x:Name="PanelModelos"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Top" />

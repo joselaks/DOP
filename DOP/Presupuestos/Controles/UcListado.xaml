@@ -98,8 +98,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="*" />
-            <RowDefinition x:Name="sepSuperiores" Height="auto" />
-            <RowDefinition x:Name="panSuperiores" Height="*" />
+            <RowDefinition x:Name="sepSuperiores" Height="0" />
+            <RowDefinition x:Name="panSuperiores" Height="0" />
         </Grid.RowDefinitions>
         <StackPanel
             x:Name="encabezado"
@@ -189,6 +189,8 @@
 
                 <syncfusion:TreeGridTextColumn Width="250" MappingName="Descripcion" />
 
+                <syncfusion:TreeGridTextColumn Width="60" MappingName="Unidad" TextAlignment="Right" />
+
 
                 <syncfusion:TreeGridNumericColumn
                     Width="60"
@@ -237,35 +239,7 @@
 
         <Grid x:Name="grillaInsumoPrecio" Grid.Row="3" />
 
-        <!--<syncfusion:SfTreeGrid
-            x:Name="gridSuperiores"
-            Grid.Row="3"
-            AllowEditing="False"
-            AllowResizingColumns="True"
-            AutoGenerateColumns="False"
-            SelectionMode="Single">
-            <syncfusion:SfTreeGrid.Columns>
-                <syncfusion:TreeGridTextColumn
-                    Width="50"
-                    HeaderText="ID"
-                    MappingName="ID" />
-                <syncfusion:TreeGridTextColumn
-                    Width="250"
-                    HeaderText="Descripción"
-                    MappingName="Descripcion" />
-                <syncfusion:TreeGridTextColumn
-                    Width="50"
-                    HeaderText="Tipo"
-                    MappingName="Tipo" />
-                <syncfusion:TreeGridNumericColumn
-                    Width="80"
-                    HeaderText="Importe"
-                    MappingName="Importe1"
-                    NumberDecimalDigits="2"
-                    NumberDecimalSeparator=","
-                    NumberGroupSeparator="." />
-            </syncfusion:SfTreeGrid.Columns>
-        </syncfusion:SfTreeGrid>-->
+
 
 
 
