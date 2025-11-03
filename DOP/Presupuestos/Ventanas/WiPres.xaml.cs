@@ -123,10 +123,53 @@ namespace DataObra.Presupuestos.Ventanas
         private void Moneda1_SelectionChanged(object sender, SelectionChangedEventArgs e)
             {
             var codigo = moneda1.SelectedValue as string ?? (moneda1.SelectedItem as Currency)?.Codigo;
+            var nombreMoneda = (moneda1.SelectedItem as Currency)?.Moneda ?? string.Empty;
             if (string.IsNullOrEmpty(codigo)) return;
 
             if (DataContext is PresupuestoDTO dto)
                 dto.EjecMoneda1 = codigo[0];
+
+            // 10 decimales para peso argentino (código 'P' o nombre que contenga "peso"), 2 para el resto
+            int decimales = (codigo.Equals("P", StringComparison.OrdinalIgnoreCase) ||
+                             nombreMoneda.IndexOf("peso", StringComparison.OrdinalIgnoreCase) >= 0)
+                             ? 10 : 2;
+
+            if (nTipoCambio1 != null)
+                {
+                // Ajuste visual estándar
+                nTipoCambio1.NumberDecimalDigits = decimales;
+
+                // Intento de compatibilidad: si la versión de Syncfusion expone DecimalDigits/DecimalPlaces
+                try
+                    {
+                    var t = nTipoCambio1.GetType();
+                    var prop = t.GetProperty("DecimalDigits");
+                    if (prop != null && prop.CanWrite)
+                        prop.SetValue(nTipoCambio1, Convert.ChangeType(decimales, prop.PropertyType));
+                    else
+                        {
+                        prop = t.GetProperty("DecimalPlaces");
+                        if (prop != null && prop.CanWrite)
+                            prop.SetValue(nTipoCambio1, Convert.ChangeType(decimales, prop.PropertyType));
+                        }
+                    }
+                catch
+                    {
+                    // No fallar si la propiedad no existe en la versión de la librería
+                    }
+                }
+
+            // Opcional: redondear el valor ligado en el DTO para coherencia visual
+            if (DataContext is PresupuestoDTO dto2)
+                {
+                var pi = dto2.GetType().GetProperty("TipoCambioD");
+                if (pi != null)
+                    {
+                    var val = pi.GetValue(dto2);
+                    if (val is decimal decVal) pi.SetValue(dto2, Math.Round(decVal, decimales));
+                    else if (val is double dblVal) pi.SetValue(dto2, Math.Round(dblVal, decimales));
+                    }
+                }
             }
         //private void Moneda2_SelectionChanged(object sender, SelectionChangedEventArgs e)
         //    {
@@ -592,5 +635,6 @@ namespace DataObra.Presupuestos.Ventanas
             {
             SetMultimonedaEnabled(false);
             }
-        }
+
+    }
 }
