@@ -45,6 +45,14 @@ namespace Bibioteca.Clases
         private decimal equipos3;
         private decimal subcontratos3;
         private decimal otros3;
+        // Moneda 4
+        private decimal pu4;
+        private decimal importe4;
+        private decimal materiales4;
+        private decimal manodeobra4;
+        private decimal equipos4;
+        private decimal subcontratos4;
+        private decimal otros4;
 
         private ObservableCollection<Nodo> inferiores;
 
@@ -85,6 +93,14 @@ namespace Bibioteca.Clases
         public decimal Equipos3 { get => equipos3; set { equipos3 = value; OnPropertyChanged(nameof(Equipos3)); } }
         public decimal Subcontratos3 { get => subcontratos3; set { subcontratos3 = value; OnPropertyChanged(nameof(Subcontratos3)); } }
         public decimal Otros3 { get => otros3; set { otros3 = value; OnPropertyChanged(nameof(Otros3)); } }
+        // Moneda 4 
+        public decimal PU4 { get => pu4; set { pu4 = value; OnPropertyChanged(nameof(PU4)); } }
+        public decimal Importe4 { get => importe4; set { importe4 = value; OnPropertyChanged(nameof(Importe4)); } }
+        public decimal Materiales4 { get => materiales4; set { materiales4 = value; OnPropertyChanged(nameof(Materiales4)); } }
+        public decimal ManodeObra4 { get => manodeobra3; set { manodeobra4 = value; OnPropertyChanged(nameof(ManodeObra4)); } }
+        public decimal Equipos4 { get => equipos4; set { equipos4 = value; OnPropertyChanged(nameof(Equipos4)); } }
+        public decimal Subcontratos4 { get => subcontratos3; set { subcontratos4 = value; OnPropertyChanged(nameof(Subcontratos4)); } }
+        public decimal Otros4 { get => otros4; set { otros4 = value; OnPropertyChanged(nameof(Otros4)); } }
 
         public bool HasItems => Inferiores != null && Inferiores.Count > 0;
 

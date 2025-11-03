@@ -61,11 +61,18 @@ namespace Biblioteca.DTO
             set { if (_ejecMoneda1 != value) { _ejecMoneda1 = value; OnPropertyChanged(nameof(EjecMoneda1)); } }
             }
 
-        private char _ejecMoneda2;
-        public char EjecMoneda2
+        private char _ejecConsolidado;
+        public char EjecConsolidado
             {
-            get => _ejecMoneda2;
-            set { if (_ejecMoneda2 != value) { _ejecMoneda2 = value; OnPropertyChanged(nameof(EjecMoneda2)); } }
+            get => _ejecConsolidado;
+            set { if (_ejecConsolidado != value) { _ejecConsolidado = value; OnPropertyChanged(nameof(EjecConsolidado)); } }
+            }
+
+        private char _ejecConsolidado1;
+        public char EjecConsolidado1
+            {
+            get => _ejecConsolidado1;
+            set { if (_ejecConsolidado1 != value) { _ejecConsolidado1 = value; OnPropertyChanged(nameof(EjecConsolidado1)); } }
             }
 
         private decimal _prVentaTotal;
@@ -163,7 +170,8 @@ namespace Biblioteca.DTO
             copia.PrEjecDirecto = original.PrEjecDirecto;
             copia.EjecMoneda = original.EjecMoneda;
             copia.EjecMoneda1 = original.EjecMoneda1;
-            copia.EjecMoneda2 = original.EjecMoneda2;
+            copia.EjecConsolidado = original.EjecConsolidado;
+            copia.EjecConsolidado1 = original.EjecConsolidado1;
             copia.PrVentaTotal = original.PrVentaTotal;
             copia.PrVentaDirecto = original.PrVentaDirecto;
             copia.VentaMoneda = original.VentaMoneda;

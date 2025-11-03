@@ -616,6 +616,7 @@ namespace Bibioteca.Clases
                         item.Importe1 = 0;
                         item.Importe2 = 0;
                         item.Importe3 = 0;
+                        item.Importe4 = 0;
                         }
                     }
                 ordenint = 1;
@@ -685,6 +686,20 @@ namespace Bibioteca.Clases
                                           select c.Subcontratos3).Sum() * item.Cantidad;
                     item.Otros3 = (from c in item.Inferiores
                                    select c.Otros3).Sum() * item.Cantidad;
+
+                    item.PU4 = (from c in item.Inferiores
+                                select c.Importe4).Sum();
+
+                    item.Materiales4 = (from c in item.Inferiores
+                                        select c.Materiales4).Sum() * item.Cantidad;
+                    item.ManodeObra4 = (from c in item.Inferiores
+                                        select c.ManodeObra4).Sum() * item.Cantidad;
+                    item.Equipos4 = (from c in item.Inferiores
+                                     select c.Equipos4).Sum() * item.Cantidad;
+                    item.Subcontratos4 = (from c in item.Inferiores
+                                          select c.Subcontratos4).Sum() * item.Cantidad;
+                    item.Otros4 = (from c in item.Inferiores
+                                   select c.Otros4).Sum() * item.Cantidad;
 
                     #endregion
                     }
@@ -803,6 +818,7 @@ namespace Bibioteca.Clases
                         registro.PU1 = item.PU1;
                         registro.PU2 = item.PU2;
                         registro.PU3 = item.PU1 + item.PU2 * encabezado.TipoCambioD;
+                        registro.PU4 = item.PU2 + item.PU1 / encabezado.TipoCambioD;
                         registro.Importe1 = registro.Cantidad * registro.PU1;
                         registro.Importe2 = registro.Cantidad * registro.PU2;
                         registro.Importe3 = registro.Cantidad * registro.PU3;
@@ -816,17 +832,20 @@ namespace Bibioteca.Clases
                         sele.PU1 = item.PU1;
                         sele.PU2 = item.PU2;
                         sele.PU3 = item.PU1 + item.PU2 * encabezado.TipoCambioD;
+                        sele.PU4 = item.PU2 + item.PU1 / encabezado.TipoCambioD;
                         sele.Cantidad = sele.Cantidad + (item.Cantidad * FactorSup);
                         sele.Tipo = item.Tipo;
                         sele.Importe1 = sele.PU1 * sele.Cantidad;
                         sele.Importe2 = sele.PU2 * sele.Cantidad;
                         sele.Importe3 = sele.PU3 * sele.Cantidad;
+                        sele.Importe4 = sele.PU4 * sele.Cantidad;
                         }
                     }
 
                 item.Importe1 = item.Cantidad * item.PU1;
                 item.Importe2 = item.Cantidad * item.PU2;
                 item.Importe3 = item.Cantidad * (item.PU1 + item.PU2 * encabezado.TipoCambioD);
+                item.Importe4 = item.Cantidad * (item.PU2 + item.PU1 / encabezado.TipoCambioD);
 
                 item.Factor = FactorSup;
                 }
@@ -1360,7 +1379,8 @@ namespace Bibioteca.Clases
                 PrEjecDirecto = encabezado?.PrEjecDirecto ?? 0,
                 EjecMoneda = encabezado?.EjecMoneda ?? 'P',
                 EjecMoneda1 = encabezado.EjecMoneda1,
-                EjecMoneda2 = encabezado.EjecMoneda2,
+                EjecConsolidado = encabezado.EjecConsolidado,
+                EjecConsolidado1 = encabezado.EjecConsolidado1,
                 PrVentaTotal = encabezado?.PrVentaTotal ?? 0,
                 PrVentaDirecto = encabezado?.PrVentaDirecto ?? 0,
                 VentaMoneda = encabezado?.VentaMoneda ?? 'P',

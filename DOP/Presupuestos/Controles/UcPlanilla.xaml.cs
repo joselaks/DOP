@@ -57,11 +57,10 @@ namespace DOP.Presupuestos.Controles
         private void Presupuesto_RecalculoFinalizado(object sender, EventArgs e)
             {
 
-            //Objeto.sinCero();
-
             decimal totGeneral1 = Objeto.Arbol.Sum(i => i.Importe1);
             decimal totGeneral2 = Objeto.Arbol.Sum(i => i.Importe2);
             decimal totGeneral3 = Objeto.Arbol.Sum(i => i.Importe3);
+            decimal totGeneral4 = Objeto.Arbol.Sum(i => i.Importe4);
             decimal totMateriales1 = Objeto.Arbol.Sum(i => i.Materiales1);
             decimal totManoDeObra1 = Objeto.Arbol.Sum(i => i.ManodeObra1);
             decimal totEquipos1 = Objeto.Arbol.Sum(i => i.Equipos1);
@@ -72,13 +71,16 @@ namespace DOP.Presupuestos.Controles
             var cultura = new CultureInfo("es-ES") { NumberFormat = { NumberGroupSeparator = ".", NumberDecimalSeparator = "," } };
             colImporte1.HeaderText = $"{totGeneral1.ToString("N2", cultura)}";
             colImporte2.HeaderText = $"{totGeneral2.ToString("N2", cultura)}";
-            colImporte2.HeaderText = $"{totGeneral2.ToString("N2", cultura)}";
+            colImporte3.HeaderText = $"{totGeneral3.ToString("N2", cultura)}";
+            colImporte4.HeaderText = $"{totGeneral4.ToString("N2", cultura)}";
             colMateriales1.HeaderText = $"{totMateriales1.ToString("N2", cultura)}";
             colManoDeObra1.HeaderText = $"{totManoDeObra1.ToString("N2", cultura)}";
             colEquipos1.HeaderText = $"{totEquipos1.ToString("N2", cultura)}";
             colSubcontratos1.HeaderText = $"{totSubcontratos1.ToString("N2", cultura)}";
             colOtros1.HeaderText = $"{totOtros1.ToString("N2", cultura)}";
 
+            // Actualiza los StackedColumn.HeaderText en la primera fila de StackedHeaderRows
+            TitulosColumnas("a", "b", "c", "d", "e", "f", "g", "h");
             }
 
         private UserControl GetParentUserControl(DependencyObject child)
@@ -214,7 +216,7 @@ namespace DOP.Presupuestos.Controles
             if (record != null && record.Tipo == "R")
                 {
                 //Customize here based on your requirement
-                e.Range = new TreeGridCoveredCellInfo(2, 6, e.RowColumnIndex.RowIndex);
+                e.Range = new TreeGridCoveredCellInfo(2, 8, e.RowColumnIndex.RowIndex);
                 e.Handled = true;
                 }
             }
@@ -323,6 +325,10 @@ namespace DOP.Presupuestos.Controles
             colEquipos1.HeaderText = $"{inicio.ToString("N2", cultura)}";
             colSubcontratos1.HeaderText = $"{inicio.ToString("N2", cultura)}";
             colOtros1.HeaderText = $"{inicio.ToString("N2", cultura)}";
+
+            // Inicializa títulos apilados
+            TitulosColumnas("a", "b", "c", "d", "e", "f", "g", "h");
+
 
             if (this.grillaArbol.View != null)
                 {
@@ -652,6 +658,49 @@ namespace DOP.Presupuestos.Controles
 
 
             }
+
+        private void TitulosColumnas(
+    string headerPU1,
+    string headerPU2,
+    string headerPU3,
+    string headerPU4,
+    string stackedTituloPU,
+    string stackedTituloPU1,
+    string stackedTituloPU3,
+    string stackedTituloPU4)
+            {
+            try
+                {
+                if (grillaArbol == null) return;
+
+                // Actualiza columnas PU por MappingName (robusto)
+                void SetHeaderByMapping(string mapping, string text)
+                    {
+                    var col = grillaArbol.Columns
+                        .FirstOrDefault(c => string.Equals(c?.MappingName ?? string.Empty, mapping, StringComparison.OrdinalIgnoreCase));
+                    if (col != null) col.HeaderText = text;
+                    }
+
+                SetHeaderByMapping("PU1", headerPU1);
+                SetHeaderByMapping("PU2", headerPU2);
+                SetHeaderByMapping("PU3", headerPU3);
+                SetHeaderByMapping("PU4", headerPU4);
+
+                stackImporte1.HeaderText = stackedTituloPU;
+                stackImporte2.HeaderText = stackedTituloPU1;
+                stackImporte3.HeaderText = stackedTituloPU3;
+                stackImporte4.HeaderText = stackedTituloPU4;
+
+
+                }
+            catch (Exception ex)
+                {
+                System.Diagnostics.Debug.WriteLine($"TitulosColumnas error: {ex}");
+                }
+            }
+
+
+
         }
 
     }
