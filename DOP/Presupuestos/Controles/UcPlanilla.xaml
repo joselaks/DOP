@@ -172,26 +172,7 @@
                 </ContextMenu>
             </syncfusion:SfTreeGrid.ContextMenu>
 
-            <syncfusion:SfTreeGrid.StackedHeaderRows>
-                <!--<syncfusion:StackedHeaderRow>
-                <syncfusion:StackedHeaderRow.StackedColumns>
-                    <syncfusion:StackedColumn ChildColumns="Cantidad,PU1,PU2,Importe1,Importe2" HeaderText="Ejecución" />
-                </syncfusion:StackedHeaderRow.StackedColumns>
-            </syncfusion:StackedHeaderRow>-->
-                <syncfusion:StackedHeaderRow>
-                    <syncfusion:StackedHeaderRow.StackedColumns>
-                        <syncfusion:StackedColumn x:Name="stackImporte1" ChildColumns="Importe1"  />
-                        <syncfusion:StackedColumn x:Name="stackImporte2" ChildColumns="Importe2" />
-                        <syncfusion:StackedColumn x:Name="stackImporte3" ChildColumns="Importe3"  />
-                        <syncfusion:StackedColumn x:Name="stackImporte4" ChildColumns="Importe4" />
-                        <syncfusion:StackedColumn ChildColumns="Materiales1" HeaderText="Materiales" />
-                        <syncfusion:StackedColumn ChildColumns="ManodeObra1" HeaderText="Mano de Obra" />
-                        <syncfusion:StackedColumn ChildColumns="Equipos1" HeaderText="Equipos" />
-                        <syncfusion:StackedColumn ChildColumns="Subcontratos1" HeaderText="Subcontratos" />
-                        <syncfusion:StackedColumn ChildColumns="Otros1" HeaderText="Otros" />
-                    </syncfusion:StackedHeaderRow.StackedColumns>
-                </syncfusion:StackedHeaderRow>
-            </syncfusion:SfTreeGrid.StackedHeaderRows>
+
 
             <syncfusion:SfTreeGrid.Columns>
                 <syncfusion:TreeGridColumns>
@@ -289,9 +270,7 @@
                         </syncfusion:TreeGridNumericColumn.CellTemplate>
                     </syncfusion:TreeGridNumericColumn>
 
-                    <syncfusion:TreeGridNumericColumn
-                        Width="80"
-                        MappingName="PU3">
+                    <syncfusion:TreeGridNumericColumn Width="80" MappingName="PU3">
                         <syncfusion:TreeGridNumericColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock
@@ -313,9 +292,7 @@
                         </syncfusion:TreeGridNumericColumn.CellTemplate>
                     </syncfusion:TreeGridNumericColumn>
 
-                    <syncfusion:TreeGridNumericColumn
-                        Width="80"
-                        MappingName="PU4">
+                    <syncfusion:TreeGridNumericColumn Width="80" MappingName="PU4">
                         <syncfusion:TreeGridNumericColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock
@@ -370,7 +347,7 @@
                         NumberDecimalSeparator=","
                         NumberGroupSeparator="."
                         NumberGroupSizes="3" />
-                    
+
                     <syncfusion:TreeGridNumericColumn
                         x:Name="colImporte4"
                         Width="120"
@@ -466,11 +443,19 @@
                         IsHidden="True"
                         MappingName="ID" />
 
-
-
-
                 </syncfusion:TreeGridColumns>
             </syncfusion:SfTreeGrid.Columns>
+
+            <syncfusion:SfTreeGrid.StackedHeaderRows>
+                <syncfusion:StackedHeaderRow>
+                    <syncfusion:StackedHeaderRow.StackedColumns>
+                        <syncfusion:StackedColumn x:Name="stackImporte1" ChildColumns="Importe1" />
+                        <syncfusion:StackedColumn x:Name="stackImporte2" ChildColumns="Importe2" />
+                        <syncfusion:StackedColumn x:Name="stackImporte3" ChildColumns="Importe3" />
+                        <syncfusion:StackedColumn x:Name="stackImporte4" ChildColumns="Importe4" />
+                    </syncfusion:StackedHeaderRow.StackedColumns>
+                </syncfusion:StackedHeaderRow>
+            </syncfusion:SfTreeGrid.StackedHeaderRows>
         </syncfusion:SfTreeGrid>
     </Grid>
 </UserControl>

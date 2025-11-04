@@ -119,29 +119,53 @@ namespace DataObra.Presupuestos.Ventanas
 
             if (DataContext is PresupuestoDTO dto)
                 dto.EjecMoneda = codigo[0];
+
+            // Calcula textos para títulos según la moneda base y la moneda secundaria actual
+            var codigo1 = moneda1.SelectedValue as string ?? (moneda1.SelectedItem as Currency)?.Codigo ?? string.Empty;
+
+            string headerPU1 = codigo.Equals("P", StringComparison.OrdinalIgnoreCase) ? "P.U.$" : "P.U.u$s";
+            string headerPU2 = codigo1.Equals("P", StringComparison.OrdinalIgnoreCase) ? "P.U.$" : "P.U.u$s";
+            string headerPU3 = "PU Cons$";
+            string headerPU4 = "PU Cons u$s";
+
+            string stackedPU1 = codigo.Equals("P", StringComparison.OrdinalIgnoreCase) ? "PU $" : "PU u$s";
+            string stackedPU2 = codigo1.Equals("P", StringComparison.OrdinalIgnoreCase) ? "PU $" : "PU u$s";
+            string stackedPU3 = "Consolidado Pesos";
+            string stackedPU4 = "Consolidado Dólar";
+
+            // Llamada segura al control Planilla (si está inicializado)
+            if (Planilla != null)
+                Planilla.ActualizarColumnasMonedas(headerPU1, headerPU2, headerPU3, headerPU4, stackedPU1, stackedPU2, stackedPU3, stackedPU4);
             }
+
         private void Moneda1_SelectionChanged(object sender, SelectionChangedEventArgs e)
             {
             var codigo = moneda1.SelectedValue as string ?? (moneda1.SelectedItem as Currency)?.Codigo;
-            var nombreMoneda = (moneda1.SelectedItem as Currency)?.Moneda ?? string.Empty;
             if (string.IsNullOrEmpty(codigo)) return;
 
             if (DataContext is PresupuestoDTO dto)
                 dto.EjecMoneda1 = codigo[0];
 
-            // 10 decimales para peso argentino (código 'P' o nombre que contenga "peso"), 2 para el resto
+            // Calcula textos para títulos según la moneda base y la moneda secundaria actual
+            var codigoBase = moneda.SelectedValue as string ?? (moneda.SelectedItem as Currency)?.Codigo ?? string.Empty;
 
-            if (codigo == "P")
-                {
-                nTipoCambio1.NumberDecimalDigits = 10;
-                }
-            else
-                {
-                nTipoCambio1.NumberDecimalDigits = 2;
-                }
+            string headerPU1 = codigoBase.Equals("P", StringComparison.OrdinalIgnoreCase) ? "P.U.$" : "P.U.u$s";
+            string headerPU2 = codigo.Equals("P", StringComparison.OrdinalIgnoreCase) ? "P.U.$" : "P.U.u$s";
+            string headerPU3 = "PU Cons$";
+            string headerPU4 = "PU Cons u$s";
+
+            string stackedPU1 = codigoBase.Equals("P", StringComparison.OrdinalIgnoreCase) ? "PU $" : "PU u$s";
+            string stackedPU2 = codigo.Equals("P", StringComparison.OrdinalIgnoreCase) ? "PU $" : "PU u$s";
+            string stackedPU3 = "Consolidado Pesos";
+            string stackedPU4 = "Consolidado Dólar";
+
+            if (Planilla != null)
+                Planilla.ActualizarColumnasMonedas(headerPU1, headerPU2, headerPU3, headerPU4, stackedPU1, stackedPU2, stackedPU3, stackedPU4);
+
+            // (Opcional) Ajustes adicionales al nTipoCambio1 los tienes en tu método previo.
             }
 
-              
+
         //private void Moneda2_SelectionChanged(object sender, SelectionChangedEventArgs e)
         //    {
         //    var codigo = moneda2.SelectedValue as string ?? (moneda2.SelectedItem as Currency)?.Codigo;

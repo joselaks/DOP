@@ -38,6 +38,15 @@ namespace DOP.Presupuestos.Controles
         private object _originalValue;
         private CultureInfo cultura = new CultureInfo("es-ES") { NumberFormat = { NumberGroupSeparator = ".", NumberDecimalSeparator = "," } };
         private HashSet<string> nodosExpandidosRT = new HashSet<string>();
+        string PU1 = "PU1 $";
+        string PU2 = "PU2 u$s";
+        string PU3 = "PU cons $";
+        string PU4 = "PU cons u$s";
+        string Imp1 = "Importe $";
+        string Imp2 = "Importe u$s";
+        string Imp3 = "Importe cons $";
+        string Imp4 = "Importe cons u$s";
+
 
         public UcPlanilla(Presupuesto objeto, UcDosaje dosaje)
             {
@@ -52,6 +61,7 @@ namespace DOP.Presupuestos.Controles
             this.grillaArbol.RowDragDropController.Drop += RowDragDropController_Drop;
             this.grillaArbol.RowDragDropController.DragStart += RowDragDropController_DragStart;
             this.grillaArbol.QueryCoveredRange += OnQueryCoveredRange;
+            TitulosColumnas(PU1, PU2, PU3, PU4, Imp1 , Imp2, Imp3 , Imp4);
             }
 
         private void Presupuesto_RecalculoFinalizado(object sender, EventArgs e)
@@ -80,7 +90,6 @@ namespace DOP.Presupuestos.Controles
             colOtros1.HeaderText = $"{totOtros1.ToString("N2", cultura)}";
 
             // Actualiza los StackedColumn.HeaderText en la primera fila de StackedHeaderRows
-            TitulosColumnas("a", "b", "c", "d", "e", "f", "g", "h");
             }
 
         private UserControl GetParentUserControl(DependencyObject child)
@@ -326,9 +335,7 @@ namespace DOP.Presupuestos.Controles
             colSubcontratos1.HeaderText = $"{inicio.ToString("N2", cultura)}";
             colOtros1.HeaderText = $"{inicio.ToString("N2", cultura)}";
 
-            // Inicializa títulos apilados
-            TitulosColumnas("a", "b", "c", "d", "e", "f", "g", "h");
-
+          
 
             if (this.grillaArbol.View != null)
                 {
@@ -659,7 +666,7 @@ namespace DOP.Presupuestos.Controles
 
             }
 
-        private void TitulosColumnas(
+        public void ActualizarColumnasMonedas(
     string headerPU1,
     string headerPU2,
     string headerPU3,
@@ -668,6 +675,31 @@ namespace DOP.Presupuestos.Controles
     string stackedTituloPU1,
     string stackedTituloPU3,
     string stackedTituloPU4)
+            {
+            // Asegura ejecución en hilo de UI y delega al método interno
+            if (!Dispatcher.CheckAccess())
+                {
+                Dispatcher.Invoke(() => TitulosColumnas(
+                    headerPU1, headerPU2, headerPU3, headerPU4,
+                    stackedTituloPU, stackedTituloPU1, stackedTituloPU3, stackedTituloPU4));
+                return;
+                }
+
+            TitulosColumnas(
+                headerPU1, headerPU2, headerPU3, headerPU4,
+                stackedTituloPU, stackedTituloPU1, stackedTituloPU3, stackedTituloPU4);
+            }
+
+
+        private void TitulosColumnas(
+                                    string headerPU1,
+                                    string headerPU2,
+                                    string headerPU3,
+                                    string headerPU4,
+                                    string stackedTituloPU,
+                                    string stackedTituloPU1,
+                                    string stackedTituloPU3,
+                                    string stackedTituloPU4)
             {
             try
                 {
