@@ -275,12 +275,34 @@ namespace DOP.Presupuestos.Controles
                 {
                 _originalValue = record.ID;
                 }
+
+            if (column == "PU1")
+                {
+                if (record.PU2 != 0m)
+                    {
+                    MessageBox.Show("No se puede editar PU1 cuando PU2 es distinto de cero.", "Edición no permitida", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    e.Cancel = true;
+                    return;
+                    }
+                }
+            else if (column == "PU2")
+                {
+                if (record.PU1 != 0m)
+                    {
+                    MessageBox.Show("No se puede editar PU2 cuando PU1 es distinto de cero.", "Edición no permitida", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    e.Cancel = true;
+                    return;
+                    }
+                }
+
             }
+
 
         private void grillaDetalle_CurrentCellEndEdit(object sender, Syncfusion.UI.Xaml.Grid.CurrentCellEndEditEventArgs e)
             {
             var column = grillaDetalle.Columns[e.RowColumnIndex.ColumnIndex].MappingName;
             var editado = grillaDetalle.GetNodeAtRowIndex(e.RowColumnIndex.RowIndex).Item as Nodo;
+
             Objeto.edicion(editado, column, _originalValue != null ? _originalValue.ToString() : null);
             var undoRegistro = new Cambios
                 {
@@ -329,6 +351,7 @@ namespace DOP.Presupuestos.Controles
 
                         }
                     }
+                Objeto.RecalculoCompleto();
 
                 }
             }

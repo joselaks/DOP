@@ -14,6 +14,7 @@
 
     <UserControl.Resources>
         <clases:DecimalToStringConverter x:Key="DecimalToStringConverter" />
+
         <Style x:Key="TipoCellStyle" TargetType="syncfusion:TreeGridCell">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
@@ -21,13 +22,18 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        <Style x:Key="TieneInferiores" TargetType="syncfusion:TreeGridCell">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=HasItems}" Value="True">
-                    <!--<Setter Property="CellForeground" Value="Blue" />-->
-                </DataTrigger>
-            </Style.Triggers>
+
+        <Style x:Key="NoEditable" TargetType="syncfusion:TreeGridCell">
+            <Setter Property="Background" Value="#FFF5F5F5" />
         </Style>
+
+        <!-- Nuevo: combina TipoCellStyle + NoEditable -->
+        <Style x:Key="TipoNoEditable" TargetType="syncfusion:TreeGridCell" BasedOn="{StaticResource TipoCellStyle}">
+            <!-- aplicamos aquí lo de NoEditable -->
+            <Setter Property="Background" Value="#FFF5F5F5" />
+        </Style>
+
+
         <Style x:Key="expanderCellStyle" TargetType="syncfusion:TreeGridExpanderCell">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
@@ -145,7 +151,6 @@
             Grid.Row="1"
             AllowDraggingRows="True"
             AllowDrop="True"
-            AllowEditing="True"
             AllowResizingColumns="True"
             AllowSorting="False"
             AutoGenerateColumns="False"
@@ -185,6 +190,7 @@
 
                     <syncfusion:TreeGridTextColumn
                         Width="50"
+                        AllowEditing="True"
                         IsHidden="True"
                         MappingName="ID" />
 
@@ -202,17 +208,20 @@
 
                     <syncfusion:TreeGridTextColumn
                         Width="250"
+                        AllowEditing="True"
                         CellStyle="{StaticResource TipoCellStyle}"
                         MappingName="Descripcion" />
 
                     <syncfusion:TreeGridTextColumn
                         Width="60"
+                        AllowEditing="True"
                         MappingName="Unidad"
                         TextAlignment="Right" />
 
 
                     <syncfusion:TreeGridNumericColumn
                         Width="60"
+                        AllowEditing="True"
                         HeaderText="Cant."
                         MappingName="Cantidad"
                         NumberDecimalDigits="2"
@@ -222,103 +231,36 @@
 
                     <syncfusion:TreeGridNumericColumn
                         Width="80"
+                        AllowEditing="False"
+                        CellStyle="{StaticResource NoEditable}"
                         HeaderText="P.U.$"
-                        MappingName="PU1">
-                        <syncfusion:TreeGridNumericColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock
-                                    Margin="0,0,3,0"
-                                    VerticalAlignment="Center"
-                                    Text="{Binding PU1, Converter={StaticResource DecimalToStringConverter}}"
-                                    TextAlignment="Right">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding HasItem1}" Value="True">
-                                                    <Setter Property="Foreground" Value="Blue" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                            </DataTemplate>
-                        </syncfusion:TreeGridNumericColumn.CellTemplate>
-                    </syncfusion:TreeGridNumericColumn>
+                        MappingName="PU1" />
 
                     <syncfusion:TreeGridNumericColumn
                         Width="80"
+                        AllowEditing="False"
+                        CellStyle="{StaticResource NoEditable}"
                         HeaderText="P.U.u$s"
-                        MappingName="PU2">
-                        <syncfusion:TreeGridNumericColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock
-                                    Margin="0,0,3,0"
-                                    VerticalAlignment="Center"
-                                    Text="{Binding PU2, Converter={StaticResource DecimalToStringConverter}}"
-                                    TextAlignment="Right">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding HasItem2}" Value="True">
-                                                    <Setter Property="Foreground" Value="Blue" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                            </DataTemplate>
-                        </syncfusion:TreeGridNumericColumn.CellTemplate>
-                    </syncfusion:TreeGridNumericColumn>
+                        MappingName="PU2" />
 
-                    <syncfusion:TreeGridNumericColumn Width="80" MappingName="PU3">
-                        <syncfusion:TreeGridNumericColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock
-                                    Margin="0,0,3,0"
-                                    VerticalAlignment="Center"
-                                    Text="{Binding PU3, Converter={StaticResource DecimalToStringConverter}}"
-                                    TextAlignment="Right">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding HasItem2}" Value="True">
-                                                    <Setter Property="Foreground" Value="Blue" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                            </DataTemplate>
-                        </syncfusion:TreeGridNumericColumn.CellTemplate>
-                    </syncfusion:TreeGridNumericColumn>
+                    <syncfusion:TreeGridNumericColumn
+                        Width="80"
+                        AllowEditing="False"
+                        CellStyle="{StaticResource NoEditable}"
+                        MappingName="PU3" />
 
-                    <syncfusion:TreeGridNumericColumn Width="80" MappingName="PU4">
-                        <syncfusion:TreeGridNumericColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock
-                                    Margin="0,0,3,0"
-                                    VerticalAlignment="Center"
-                                    Text="{Binding PU4, Converter={StaticResource DecimalToStringConverter}}"
-                                    TextAlignment="Right">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding HasItem2}" Value="True">
-                                                    <Setter Property="Foreground" Value="Blue" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                            </DataTemplate>
-                        </syncfusion:TreeGridNumericColumn.CellTemplate>
-                    </syncfusion:TreeGridNumericColumn>
+                    <syncfusion:TreeGridNumericColumn
+                        Width="80"
+                        AllowEditing="False"
+                        CellStyle="{StaticResource NoEditable}"
+                        MappingName="PU4" />
 
 
                     <syncfusion:TreeGridNumericColumn
                         x:Name="colImporte1"
                         Width="120"
-                        CellStyle="{StaticResource TipoCellStyle}"
+                        AllowEditing="False"
+                        CellStyle="{StaticResource TipoNoEditable}"
                         HeaderText="{Binding totGeneral1}"
                         MappingName="Importe1"
                         NumberDecimalDigits="2"
@@ -329,6 +271,7 @@
                     <syncfusion:TreeGridNumericColumn
                         x:Name="colImporte2"
                         Width="120"
+                        AllowEditing="False"
                         CellStyle="{StaticResource TipoCellStyle}"
                         HeaderText="{Binding totGeneral2}"
                         MappingName="Importe2"
@@ -340,6 +283,7 @@
                     <syncfusion:TreeGridNumericColumn
                         x:Name="colImporte3"
                         Width="120"
+                        AllowEditing="False"
                         CellStyle="{StaticResource TipoCellStyle}"
                         HeaderText="{Binding totGeneral3}"
                         MappingName="Importe3"
@@ -351,6 +295,7 @@
                     <syncfusion:TreeGridNumericColumn
                         x:Name="colImporte4"
                         Width="120"
+                        AllowEditing="False"
                         CellStyle="{StaticResource TipoCellStyle}"
                         HeaderText="{Binding totGeneral4}"
                         MappingName="Importe4"
@@ -365,6 +310,7 @@
                     <syncfusion:TreeGridNumericColumn
                         x:Name="colMateriales1"
                         Width="120"
+                        AllowEditing="False"
                         CellStyle="{StaticResource TipoCellStyle}"
                         HeaderText="{Binding totMateriales1}"
                         IsHidden="True"
@@ -377,6 +323,7 @@
                     <syncfusion:TreeGridNumericColumn
                         x:Name="colManoDeObra1"
                         Width="120"
+                        AllowEditing="False"
                         CellStyle="{StaticResource TipoCellStyle}"
                         HeaderText="{Binding totManoDeObra1}"
                         IsHidden="True"
@@ -389,6 +336,7 @@
                     <syncfusion:TreeGridNumericColumn
                         x:Name="colEquipos1"
                         Width="120"
+                        AllowEditing="False"
                         CellStyle="{StaticResource TipoCellStyle}"
                         HeaderText="{Binding totEquipos1}"
                         IsHidden="True"
@@ -401,6 +349,7 @@
                     <syncfusion:TreeGridNumericColumn
                         x:Name="colSubcontratos1"
                         Width="120"
+                        AllowEditing="False"
                         CellStyle="{StaticResource TipoCellStyle}"
                         HeaderText="{Binding totSubcontratos1}"
                         IsHidden="True"
@@ -413,6 +362,7 @@
                     <syncfusion:TreeGridNumericColumn
                         x:Name="colOtros1"
                         Width="120"
+                        AllowEditing="False"
                         CellStyle="{StaticResource TipoCellStyle}"
                         HeaderText="{Binding totOtros1}"
                         IsHidden="True"
@@ -424,19 +374,16 @@
 
                     <syncfusion:TreeGridTextColumn
                         Width="50"
+                        AllowEditing="True"
                         IsHidden="True"
                         MappingName="Tipo" />
 
-                    <syncfusion:TreeGridNumericColumn
+                    <syncfusion:TreeGridPercentColumn
                         Width="60"
+                        AllowEditing="False"
                         CellStyle="{StaticResource TipoCellStyle}"
                         HeaderText="Incidencia"
-                        IsHidden="True"
-                        MappingName="Incidencia"
-                        NumberDecimalDigits="2"
-                        NumberDecimalSeparator=","
-                        NumberGroupSeparator="."
-                        NumberGroupSizes="3" />
+                        IsHidden="True" />
 
                     <syncfusion:TreeGridTextColumn
                         Width="50"

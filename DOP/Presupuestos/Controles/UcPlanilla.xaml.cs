@@ -452,6 +452,7 @@ namespace DOP.Presupuestos.Controles
 
                         }
                     }
+                Objeto.RecalculoCompleto();
                 }
             }
 
