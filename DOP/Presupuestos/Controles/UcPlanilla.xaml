@@ -27,10 +27,12 @@
             <Setter Property="Background" Value="#FFF5F5F5" />
         </Style>
 
-        <!-- Nuevo: combina TipoCellStyle + NoEditable -->
-        <Style x:Key="TipoNoEditable" TargetType="syncfusion:TreeGridCell" BasedOn="{StaticResource TipoCellStyle}">
-            <!-- aplicamos aquí lo de NoEditable -->
-            <Setter Property="Background" Value="#FFF5F5F5" />
+        <!--  Nuevo: combina TipoCellStyle + NoEditable  -->
+        <Style
+            x:Key="TipoNoEditable"
+            BasedOn="{StaticResource TipoCellStyle}"
+            TargetType="syncfusion:TreeGridCell">
+            <!--  aplicamos aquí lo de NoEditable  -->
         </Style>
 
 
