@@ -482,6 +482,18 @@ namespace DOP.Presupuestos.Controles
 
         private void grillaArbol_SelectionChanged(object sender, GridSelectionChangedEventArgs e)
             {
+
+            var treeGrid = sender as SfTreeGrid;
+            foreach (var item in e.RemovedItems)
+                {
+                treeGrid.UpdateDataRow((item as TreeGridRowInfo).RowIndex);
+                }
+            foreach (var item in e.AddedItems)
+                {
+                treeGrid.UpdateDataRow((item as TreeGridRowInfo).RowIndex);
+                }
+
+
             if (Dosaje == null)
                 return;
 

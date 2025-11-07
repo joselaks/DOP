@@ -261,6 +261,7 @@ namespace Bibioteca.Clases
                 {
                 encabezado = new PresupuestoDTO();
                 encabezado.Descrip = "Nuevo Presupuesto";
+                encabezado.TipoCambioD = 1;
                 listaConceptosLeer = new List<ConceptoDTO>();
                 listaRelacionesLeer = new List<RelacionDTO>();
                 }
@@ -1146,9 +1147,7 @@ namespace Bibioteca.Clases
                     registroC.Descrip = item.Descripcion;
                     registroC.Tipo = item.Tipo[0];
                     registroC.PrEjec = item.PU1;
-                    //decimal importeEjec = item.Importe1;
-
-                    registroC.PrVent = item.PU2;
+                    registroC.PrEjec1 = item.PU2;
                     registroC.Unidad = item.Unidad;
                     registroC.MesBase = DateTime.Now;
                     listaConceptosGrabar.Add(registroC);
@@ -1299,6 +1298,7 @@ namespace Bibioteca.Clases
                         Tipo = concepto.Tipo,
                         Unidad = concepto.Unidad,
                         PrEjec = concepto.PrEjec,
+                        PrEjec1 = concepto.PrEjec1,
                         PrVent = concepto.PrVent,
                         EjecMoneda = concepto.EjecMoneda,
                         VentMoneda = concepto.VentMoneda,
@@ -1376,6 +1376,7 @@ namespace Bibioteca.Clases
                 UsuarioID = encabezado?.UsuarioID ?? 0,
                 Descrip = encabezado?.Descrip,
                 PrEjecTotal = encabezado.PrEjecTotal,
+                PrEjecTotal1 = encabezado.PrEjecTotal1,
                 PrEjecDirecto = encabezado?.PrEjecDirecto ?? 0,
                 EjecMoneda = encabezado?.EjecMoneda ?? 'P',
                 EjecMoneda1 = encabezado.EjecMoneda1,

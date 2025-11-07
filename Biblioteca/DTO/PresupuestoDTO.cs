@@ -40,6 +40,13 @@ namespace Biblioteca.DTO
             set { if (_prEjecTotal != value) { _prEjecTotal = value; OnPropertyChanged(nameof(PrEjecTotal)); } }
             }
 
+        private decimal _prEjecTotal1;
+        public decimal PrEjecTotal1
+            {
+            get => _prEjecTotal1;
+            set { if (_prEjecTotal1 != value) { _prEjecTotal1 = value; OnPropertyChanged(nameof(PrEjecTotal1)); } }
+            }
+
         private decimal _prEjecDirecto;
         public decimal PrEjecDirecto
             {
@@ -167,6 +174,7 @@ namespace Biblioteca.DTO
             copia.UsuarioID = original.UsuarioID;
             copia.Descrip = original.Descrip;
             copia.PrEjecTotal = original.PrEjecTotal;
+            copia.PrEjecTotal1 = original.PrEjecTotal1;
             copia.PrEjecDirecto = original.PrEjecDirecto;
             copia.EjecMoneda = original.EjecMoneda;
             copia.EjecMoneda1 = original.EjecMoneda1;

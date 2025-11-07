@@ -4,6 +4,20 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:DOP"
     ShutdownMode="OnLastWindowClose"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
     StartupUri="Interfaz/Ventanas/WiInicio.xaml">
-    <Application.Resources />
+    <Application.Resources>
+        <local:SelectorClass x:Key="styleSelector" />
+        <Style x:Key="NoEditable" TargetType="syncfusion:TreeGridCell">
+            <Setter Property="Background" Value="#FFF5F5F5"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
+                    <Setter Property="FontWeight" Value="Bold" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="Selected" TargetType="syncfusion:TreeGridCell">
+            <Setter Property="Background" Value="LightGray" />
+        </Style>
+    </Application.Resources>
 </Application>

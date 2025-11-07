@@ -137,8 +137,17 @@
                             MappingName="Descrip" />
                         <syncfusion:GridNumericColumn
                             Width="150"
-                            HeaderText="Importe"
+                            HeaderText="Importe $"
                             MappingName="PrEjecTotal"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3"
+                            TextAlignment="Right" />
+                        <syncfusion:GridNumericColumn
+                            Width="150"
+                            HeaderText="Importe u$s"
+                            MappingName="PrEjecTotal1"
                             NumberDecimalDigits="2"
                             NumberDecimalSeparator=","
                             NumberGroupSeparator="."

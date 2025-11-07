@@ -114,6 +114,7 @@ namespace DataObra.Presupuestos.Ventanas
 
         private void Moneda_SelectionChanged(object sender, SelectionChangedEventArgs e)
             {
+            return;
             var codigo = moneda.SelectedValue as string ?? (moneda.SelectedItem as Currency)?.Codigo;
             if (string.IsNullOrEmpty(codigo)) return;
 
@@ -140,6 +141,7 @@ namespace DataObra.Presupuestos.Ventanas
 
         private void Moneda1_SelectionChanged(object sender, SelectionChangedEventArgs e)
             {
+            return;
             var codigo = moneda1.SelectedValue as string ?? (moneda1.SelectedItem as Currency)?.Codigo;
             if (string.IsNullOrEmpty(codigo)) return;
 
@@ -262,6 +264,7 @@ namespace DataObra.Presupuestos.Ventanas
             {
             // Actualiza totales y fechas
             Objeto.encabezado.PrEjecTotal = Objeto.Arbol.Sum(i => i.Importe1);
+            Objeto.encabezado.PrEjecTotal1 = Objeto.Arbol.Sum(i => i.Importe2);
             Objeto.encabezado.FechaM = DateTime.Now;
             DateTime? selectedDate = pMesBase.Value;
             if (selectedDate.HasValue)
@@ -306,6 +309,7 @@ namespace DataObra.Presupuestos.Ventanas
                         existente.FechaM = Objeto.encabezado.FechaM;
                         existente.MesBase = Objeto.encabezado.MesBase;
                         existente.PrEjecTotal = Objeto.encabezado.PrEjecTotal;
+                        existente.PrEjecTotal1 = Objeto.encabezado.PrEjecTotal1;
                         existente.Superficie = Objeto.encabezado.Superficie;
                         existente.EsModelo = Objeto.encabezado.EsModelo;
                         existente.TipoCambioD = Objeto.encabezado.TipoCambioD;
