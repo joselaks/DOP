@@ -226,23 +226,43 @@
                         Width="80"
                         AllowEditing="False"
                         HeaderText="P.U.$"
-                        MappingName="PU1" />
+                        MappingName="PU1"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3" />
+
 
                     <syncfusion:TreeGridNumericColumn
                         Width="80"
                         AllowEditing="False"
                         HeaderText="P.U.u$s"
-                        MappingName="PU2" />
+                        MappingName="PU2"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3" />
+
 
                     <syncfusion:TreeGridNumericColumn
                         Width="80"
                         AllowEditing="False"
-                        MappingName="PU3" />
+                        MappingName="PU3"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3" />
+
 
                     <syncfusion:TreeGridNumericColumn
                         Width="80"
                         AllowEditing="False"
-                        MappingName="PU4" />
+                        MappingName="PU4"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3" />
+
 
 
                     <syncfusion:TreeGridNumericColumn
