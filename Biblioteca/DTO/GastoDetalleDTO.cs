@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Biblioteca.DTO
+{
+    public class GastoDetalleDTO
     {
-    public class GastoDetalleDTO 
-        {
         public int ID { get; set; }
         public int GastoID { get; set; }
         public int UsuarioID { get; set; }
@@ -24,9 +19,10 @@ namespace Biblioteca.DTO
         public string? Auxiliar { get; set; }
         public string? InsumoID { get; set; }
         public string? Insumo { get; set; }
-        public string? Descrip { get; set; }
-        public string? Unidad { get; set; }
+        public string Descrip { get; set; } = string.Empty;    // DB: NOT NULL
+        public string Unidad { get; set; } = string.Empty;     // DB: NOT NULL (CHAR(6))
         public decimal Cantidad { get; set; }
+        public decimal FactorCantidad { get; set; } = 1.0000m; // Nuevo: coincide con DocumentosDet
         public decimal PrecioUnitario { get; set; }
         public int? ArticuloID { get; set; }
         public string? Articulo { get; set; }
@@ -38,5 +34,5 @@ namespace Biblioteca.DTO
         public char Moneda { get; set; }
         public decimal Importe { get; set; } = 0;
         public char Accion { get; set; }
-        }
     }
+}

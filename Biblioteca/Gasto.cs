@@ -60,7 +60,8 @@ namespace Biblioteca
                 Descrip = source.Descrip,
                 Notas = source.Notas,
                 Importe = source.Importe,
-                Moneda = source.Moneda
+                Moneda = source.Moneda,
+                TipoCambioD = source.TipoCambioD
             };
         }
 
@@ -87,6 +88,7 @@ namespace Biblioteca
                 Descrip = d.Descrip,
                 Unidad = d.Unidad,
                 Cantidad = d.Cantidad,
+                FactorCantidad = d.FactorCantidad,
                 PrecioUnitario = d.PrecioUnitario,
                 ArticuloID = d.ArticuloID,
                 Articulo = d.Articulo,
@@ -133,6 +135,7 @@ namespace Biblioteca
                         Descrip = dLeer.Descrip,
                         Unidad = dLeer.Unidad,
                         Cantidad = dLeer.Cantidad,
+                        FactorCantidad = dLeer.FactorCantidad,
                         PrecioUnitario = dLeer.PrecioUnitario,
                         ArticuloID = dLeer.ArticuloID,
                         Articulo = dLeer.Articulo,
@@ -181,7 +184,8 @@ namespace Biblioteca
                 Descrip = encabezado.Descrip,
                 Notas = encabezado.Notas,
                 Importe = encabezado.Importe,
-                Moneda = encabezado.Moneda
+                Moneda = encabezado.Moneda,
+                TipoCambioD = encabezado.TipoCambioD
                 };
 
             // Si el encabezado original representaba uno nuevo (ID == 0) puedes dejar ID=0 o marcar según tu API.

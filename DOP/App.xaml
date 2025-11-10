@@ -3,13 +3,13 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:DOP"
-    ShutdownMode="OnLastWindowClose"
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    ShutdownMode="OnLastWindowClose"
     StartupUri="Interfaz/Ventanas/WiInicio.xaml">
     <Application.Resources>
         <local:SelectorClass x:Key="styleSelector" />
         <Style x:Key="NoEditable" TargetType="syncfusion:TreeGridCell">
-            <Setter Property="Background" Value="#FFF5F5F5"/>
+            <Setter Property="Background" Value="#FFF5F5F5" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
                     <Setter Property="FontWeight" Value="Bold" />
