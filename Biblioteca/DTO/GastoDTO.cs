@@ -5,8 +5,9 @@ namespace Biblioteca.DTO
     public class GastoDTO
     {
         public int ID { get; set; }
-        public int CuentaID { get; set; }               // Cambiado de short a int para homogeneidad con repositorio/SP
+        public int CuentaID { get; set; }               // Se mantiene int por compatibilidad con repositorio/API
         public int UsuarioID { get; set; }
+        public byte TipoID { get; set; }                // Nuevo: corresponde a Documentos.TipoID (tinyint NOT NULL)
         public DateTime FechaDoc { get; set; }
         public DateTime FechaCreado { get; set; }
         public DateTime FechaEditado { get; set; }
@@ -16,7 +17,7 @@ namespace Biblioteca.DTO
         public string? Notas { get; set; }
         public decimal Importe { get; set; }
         public char Moneda { get; set; }
-        public decimal TipoCambioD { get; set; } = 1.0000000000m; // Nuevo: coincide con columna NOT NULL decimal(19,10)
+        public decimal TipoCambioD { get; set; } = 1.0000000000m; // Coincide con Documentos.TipoCambioD (decimal(19,10))
     }
 }
 

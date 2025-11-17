@@ -135,6 +135,11 @@ namespace DOP.Presupuestos.Controles
                     }
                 }
 
+            // preparacion de colección origen (para comparaciones)
+            var coleccionOrigen = nodoPadreOriginal != null ? nodoPadreOriginal.Inferiores : Objeto.Arbol;
+            if (coleccionOrigen == null)
+                coleccionOrigen = Objeto.Arbol;
+
             // 2. Determinar el nodo receptor y la colección destino
             ObservableCollection<Nodo> coleccionDestino;
             Nodo padreDestino;
@@ -166,6 +171,13 @@ namespace DOP.Presupuestos.Controles
                 padreDestino = null;
                 coleccionDestino = Objeto.Arbol;
                 posicionDestino = coleccionDestino.Count;
+                }
+
+            // Verificación inicial: si se está intentando mover dentro del mismo superior y ese superior sólo tiene un hijo, no hacer nada
+            if (ReferenceEquals(coleccionOrigen, coleccionDestino) && coleccionOrigen != null && coleccionOrigen.Count == 1)
+                {
+                // Nada que mover: único elemento en el mismo padre / raíz.
+                return;
                 }
 
             // 3. Validar reglas de negocio (ejemplo: no mover rubro dentro de tarea)

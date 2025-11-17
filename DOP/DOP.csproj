@@ -25,9 +25,11 @@
     <None Remove="Imagenes\Guardar48.png" />
     <None Remove="Imagenes\GuardarSalir.png" />
     <None Remove="Imagenes\Importar.png" />
+    <None Remove="Imagenes\IngresosEgresos.png" />
     <None Remove="Imagenes\ManoDeObra.png" />
     <None Remove="Imagenes\Material.png" />
     <None Remove="Imagenes\Otros.png" />
+    <None Remove="Imagenes\Presupuestos.png" />
     <None Remove="Imagenes\Redo.png" />
     <None Remove="Imagenes\Rubro.png" />
     <None Remove="Imagenes\Salir.png" />
@@ -65,9 +67,11 @@
     <Resource Include="Imagenes\Guardar48.png" />
     <Resource Include="Imagenes\GuardarSalir.png" />
     <Resource Include="Imagenes\Importar.png" />
+    <Resource Include="Imagenes\IngresosEgresos.png" />
     <Resource Include="Imagenes\ManoDeObra.png" />
     <Resource Include="Imagenes\Material.png" />
     <Resource Include="Imagenes\Otros.png" />
+    <Resource Include="Imagenes\Presupuestos.png" />
     <Resource Include="Imagenes\Redo.png" />
     <Resource Include="Imagenes\Rubro.png" />
     <Resource Include="Imagenes\Salir.png" />

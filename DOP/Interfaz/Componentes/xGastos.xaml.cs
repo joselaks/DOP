@@ -23,6 +23,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Text.Json;
 using System.IO.Compression;
+using Syncfusion.XlsIO;
 
 namespace DataObra.Interfaz.Componentes
     {
@@ -88,23 +89,28 @@ namespace DataObra.Interfaz.Componentes
                 {
                 try
                     {
-                    // Obtener detalles del gasto (usa DatosWeb helper)
-                    var (success, message, detalles) = await DatosWeb.ObtenerDetalleGastoAsync(id);
+                    bool esCobro = false;
+                    if (seleccionado.TipoID == 20)
+                        {
+                        esCobro = true;
+                        }
+
+
+                    // Obtener detalles del gasto/cobro (usa DatosWeb helper con el flag)
+                    var (success, message, detalles) = await DatosWeb.ObtenerDetalleGastoAsync(id, esCobro);
                     if (!success)
                         {
-                        MessageBox.Show($"No se pudieron obtener los detalles del gasto.\n{message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show($"No se pudieron obtener los detalles del {(esCobro ? "cobro" : "gasto")}.\n{message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
                         }
 
-                    // Abrir ventana de edición (usa el constructor que tengas)
+                    // Abrir ventana de edición con los detalles recuperados
                     var win = new WiGasto(_gastos, seleccionado, detalles);
-                    // Si WiGasto tiene un método o propiedad para cargar el gasto y sus detalles, asignarlo aquí:
-                    // win.CargarGasto(seleccionado, detalles);
                     win.ShowDialog();
                     }
                 catch (Exception ex)
                     {
-                    MessageBox.Show($"Error al editar gasto: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show($"Error al editar {(seleccionado.TipoID == 20 ? "cobro" : "gasto")}: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             else

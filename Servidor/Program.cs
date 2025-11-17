@@ -338,17 +338,19 @@ doc.MapPost("/gastos/procesar", async (ProcesarGastoRequest request, rDocumentos
 }).RequireAuthorization();
 
 
-doc.MapGet("/gastos/{gastoID:int}/detalle", async (int gastoID, rDocumentos repo) =>
+doc.MapGet("/gastos/{gastoID:int}/detalle", async (int gastoID, rDocumentos repo, [FromQuery(Name = "esCobro")] int esCobro = 0) =>
 {
     try
-        {
-        var detalles = await repo.ObtenerDetalleGastoAsync(gastoID);
+    {
+        // Convertir 1->true, 0->false (compatible con llamadas ?esCobro=1 o ?esCobro=true si las hay)
+        bool esCobroBool = esCobro == 1;
+        var detalles = await repo.ObtenerDetalleGastoAsync(gastoID, esCobroBool);
         return Results.Ok(detalles);
-        }
+    }
     catch (Exception ex)
-        {
+    {
         return Results.BadRequest(new { Message = ex.Message });
-        }
+    }
 }).RequireAuthorization();
 
 
@@ -358,6 +360,44 @@ doc.MapGet("/gastos/{gastoID:int}/detalle", async (int gastoID, rDocumentos repo
 #endregion
 
 app.Run();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

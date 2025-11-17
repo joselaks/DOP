@@ -62,9 +62,6 @@ namespace DataObra.Documentos.Ventanas
             var nuevo = new GastoDetalleDTO
                 {
                 ID = 0,
-                GastoID = objeto?.encabezado?.ID ?? 0,
-                UsuarioID = objeto?.encabezado?.UsuarioID ?? 0,
-                Moneda = objeto?.encabezado?.Moneda ?? 'P',
                 Cantidad = 0,
                 PrecioUnitario = 0,
                 Importe = 0,

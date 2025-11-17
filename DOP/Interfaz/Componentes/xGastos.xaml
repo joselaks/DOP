@@ -70,13 +70,13 @@
                 Width="28"
                 Height="28"
                 Margin="0,0,8,0"
-                Source="pack://application:,,,/Imagenes/Material.png" />
+                Source="pack://application:,,,/Imagenes/IngresosEgresos.png" />
             <TextBlock
                 VerticalAlignment="Center"
                 FontSize="22"
                 FontWeight="Bold"
                 Foreground="#43A047"
-                Text="Gastos de Obra" />
+                Text="Ingresos y Gastos de obra" />
         </StackPanel>
 
 

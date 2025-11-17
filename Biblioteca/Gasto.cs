@@ -50,6 +50,7 @@ namespace Biblioteca
             return new GastoDTO
             {
                 ID = source.ID,
+                TipoID = source.TipoID,
                 CuentaID = source.CuentaID,
                 UsuarioID = source.UsuarioID,
                 FechaDoc = source.FechaDoc,
@@ -72,6 +73,7 @@ namespace Biblioteca
             {
                 ID = d.ID,
                 GastoID = d.GastoID,
+                CobroID = d.CobroID,
                 UsuarioID = d.UsuarioID,
                 CuentaID = d.CuentaID,
                 TipoID = d.TipoID,
@@ -119,6 +121,7 @@ namespace Biblioteca
                         {
                         ID = dLeer.ID,
                         GastoID = dLeer.GastoID,
+                        CobroID = dLeer.CobroID,
                         UsuarioID = dLeer.UsuarioID,
                         CuentaID = dLeer.CuentaID,
                         TipoID = dLeer.TipoID,
@@ -174,6 +177,7 @@ namespace Biblioteca
             var encabezadoEmpaquetado = new GastoDTO
                 {
                 ID = encabezado.ID,
+                TipoID = encabezado.TipoID,
                 CuentaID = encabezado.CuentaID,
                 UsuarioID = encabezado.UsuarioID,
                 FechaDoc = (encabezado.FechaDoc >= fechaMinSql) ? encabezado.FechaDoc : fechaActual,

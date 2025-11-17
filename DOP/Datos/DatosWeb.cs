@@ -325,15 +325,51 @@ namespace DOP.Datos
                 }
             }
 
-        public static async Task<(bool Success, string Message, List<GastoDetalleDTO> Detalles)> ObtenerDetalleGastoAsync(int gastoID)
+        public static async Task<(bool Success, string Message, List<GastoDetalleDTO> Detalles)> ObtenerDetalleGastoAsync(int gastoID, bool esCobro = false)
             {
-            string url = $"{App.BaseUrl}documentos/gastos/{gastoID}/detalle";
-            var (success, message, data) = await ExecuteRequestAsync<List<GastoDetalleDTO>>(
-                () => httpClient.GetAsync(url),
-                $"Obtener detalle del gasto {gastoID}"
-            );
+            var url = $"{App.BaseUrl}documentos/gastos/{gastoID}/detalle";
+            if (esCobro)
+                url += "?esCobro=1";
 
-            return (success, message, data ?? new List<GastoDetalleDTO>());
+            try
+                {
+                var response = await httpClient.GetAsync(url);
+                var responseString = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                    {
+                    // Intentar parsear objeto de error estructurado; si no, devolver body crudo
+                    try
+                        {
+                        var err = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, jsonSerializerOptions);
+                        var msg = !string.IsNullOrEmpty(err?.Message) ? err.Message : (!string.IsNullOrEmpty(err?.Mensaje) ? err.Mensaje : responseString);
+                        return (false, $"HTTP {(int)response.StatusCode}: {msg}", new List<GastoDetalleDTO>());
+                        }
+                    catch
+                        {
+                        return (false, $"HTTP {(int)response.StatusCode}: {response.ReasonPhrase}. Body: {responseString}", new List<GastoDetalleDTO>());
+                        }
+                    }
+
+                try
+                    {
+                    var data = JsonSerializer.Deserialize<List<GastoDetalleDTO>>(responseString, jsonSerializerOptions);
+                    return (true, string.Empty, data ?? new List<GastoDetalleDTO>());
+                    }
+                catch (JsonException jex)
+                    {
+                    // Devuelve el cuerpo crudo para depuración si no es JSON válido
+                    return (false, $"Respuesta inválida JSON: {jex.Message}. Body: {responseString}", new List<GastoDetalleDTO>());
+                    }
+                }
+            catch (HttpRequestException hex)
+                {
+                return (false, $"Error HTTP: {hex.Message}", new List<GastoDetalleDTO>());
+                }
+            catch (Exception ex)
+                {
+                return (false, $"Error: {ex.Message}", new List<GastoDetalleDTO>());
+                }
             }
 
 
