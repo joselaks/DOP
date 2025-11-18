@@ -193,7 +193,6 @@ namespace Bibioteca.Clases
                     try
                     {
                         registro.PrEjec = Convert.ToDecimal(vLinea[4], new CultureInfo("es-ES"));
-                        registro.PrVent = 0;
 
                     }
                     catch (Exception)

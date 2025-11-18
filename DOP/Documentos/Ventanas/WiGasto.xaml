@@ -187,7 +187,7 @@
                 <syncfusion:IntegerTextBox 
                     Grid.Row="1"
                     Grid.Column="7"
-                    Value="{Binding TipoID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    Value="{Binding TipoID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="true"/>
 
 
 

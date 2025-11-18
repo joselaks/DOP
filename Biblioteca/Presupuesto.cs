@@ -267,7 +267,7 @@ namespace Bibioteca.Clases
                 }
             else
                 {
-                if (_encabezado.ID==0)
+                if (_encabezado.ID == 0)
                     {
                     listaConceptosLeer = new List<ConceptoDTO>();
                     listaRelacionesLeer = new List<RelacionDTO>();
@@ -364,7 +364,6 @@ namespace Bibioteca.Clases
                         newItem.Descripcion = concepto.Descrip;
                         newItem.PU1 = (decimal)concepto.PrEjec;
                         newItem.PU2 = (decimal)concepto.PrEjec1;
-                        newItem.PU3 = (decimal)concepto.PrEjec2;
                         newItem.Cantidad = item.CanEjec;
                         newItem.Sup = false;
                         newItem.Unidad = concepto.Unidad;
@@ -372,22 +371,24 @@ namespace Bibioteca.Clases
 
                         // Cambia el tipo a "A" si el padre es "T" y el hijo también es "T"
                         if (elemento.Tipo == "T" && concepto.Tipo.ToString() == "T")
-                        {
+                            {
                             newItem.Tipo = "A";
-                        }
+                            }
                         else
-                        {
+                            {
                             // Detectar si es nodo de último nivel
                             bool esUltimoNivel = !listaRelaciones.Any(r => r.CodSup == concepto.ConceptoID);
                             if (esUltimoNivel && !"MDES".Contains(concepto.Tipo))
-                            {
-                                newItem.Tipo = "O";
-                            }
-                            else
-                            {
+                                {
                                 newItem.Tipo = concepto.Tipo.ToString();
+
+                                //newItem.Tipo = "O";
+                                }
+                            else
+                                {
+                                newItem.Tipo = concepto.Tipo.ToString();
+                                }
                             }
-                        }
 
                         newItem.Inferiores = new ObservableCollection<Nodo>();
                         // Recurrencia para obtener los elementos hijos de este elemento.
@@ -588,12 +589,12 @@ namespace Bibioteca.Clases
 
         public void RecalculoCompleto()
             {
-                recalculo(Arbol, true, 0);
-                Rubros.Clear();
-                Tareas.Clear();
-                Auxiliares.Clear();
-                listaRubrosTareasAuxiliares(Arbol);
-                //sinCero();
+            recalculo(Arbol, true, 0);
+            Rubros.Clear();
+            Tareas.Clear();
+            Auxiliares.Clear();
+            listaRubrosTareasAuxiliares(Arbol);
+            //sinCero();
             }
 
 
@@ -1299,12 +1300,9 @@ namespace Bibioteca.Clases
                         Unidad = concepto.Unidad,
                         PrEjec = concepto.PrEjec,
                         PrEjec1 = concepto.PrEjec1,
-                        PrVent = concepto.PrVent,
                         EjecMoneda = concepto.EjecMoneda,
-                        VentMoneda = concepto.VentMoneda,
                         MesBase = DateTime.Today,
                         CanTotalEjec = concepto.CanTotalEjec,
-                        InsumoID = concepto.InsumoID,
                         Accion = 'B'
                         };
                     listaConceptosGrabar.Add(conceptoBaja);
@@ -1340,7 +1338,6 @@ namespace Bibioteca.Clases
                         CodSup = relacion.CodSup,
                         CodInf = relacion.CodInf,
                         CanEjec = relacion.CanEjec,
-                        CanVenta = relacion.CanVenta,
                         OrdenInt = relacion.OrdenInt,
                         Accion = 'B'
                         };
@@ -1377,14 +1374,10 @@ namespace Bibioteca.Clases
                 Descrip = encabezado?.Descrip,
                 PrEjecTotal = encabezado.PrEjecTotal,
                 PrEjecTotal1 = encabezado.PrEjecTotal1,
-                PrEjecDirecto = encabezado?.PrEjecDirecto ?? 0,
                 EjecMoneda = encabezado?.EjecMoneda ?? 'P',
                 EjecMoneda1 = encabezado.EjecMoneda1,
                 EjecConsolidado = encabezado.EjecConsolidado,
                 EjecConsolidado1 = encabezado.EjecConsolidado1,
-                PrVentaTotal = encabezado?.PrVentaTotal ?? 0,
-                PrVentaDirecto = encabezado?.PrVentaDirecto ?? 0,
-                VentaMoneda = encabezado?.VentaMoneda ?? 'P',
                 Superficie = encabezado?.Superficie,
                 MesBase = (encabezado?.MesBase >= fechaMinSql) ? encabezado.MesBase : fechaActual,
                 FechaC = (encabezado?.FechaC >= fechaMinSql) ? encabezado.FechaC : fechaActual,

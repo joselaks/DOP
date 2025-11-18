@@ -90,11 +90,17 @@
                 HorizontalAlignment="Left"
                 Orientation="Horizontal">
                 <Button
-                    Name="btnNuevo"
+                    Name="btnNuevoEgr"
                     Width="80"
                     Margin="2"
                     Click="btnNuevo_Click"
-                    Content="Nuevo" />
+                    Content="Nuevo Gasto" />
+                <Button
+                    Name="btnNuevoIng"
+                    Width="80"
+                    Margin="2"
+                    Click="btnNuevo_Click"
+                    Content="Nuevo Cobro" />
                 <Button
                     Name="btnEditar"
                     Width="80"

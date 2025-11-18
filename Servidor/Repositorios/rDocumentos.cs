@@ -172,5 +172,26 @@ namespace Servidor.Repositorios
                 }
             }
         }
-    }
+
+        public async Task BorrarGastoAsync(int gastoID)
+            {
+            using (var db = new SqlConnection(_connectionString))
+                {
+                var parameters = new DynamicParameters();
+                parameters.Add("@ID", gastoID, DbType.Int32);
+
+                try
+                    {
+                    await db.ExecuteAsync(
+                        "BorrarGasto",
+                        parameters,
+                        commandType: CommandType.StoredProcedure);
+                    }
+                catch (SqlException ex)
+                    {
+                    throw new Exception($"Error al borrar el gasto con ID {gastoID}: {ex.Message}", ex);
+                    }
+                }
+            }
+        }
 }

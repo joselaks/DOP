@@ -17,14 +17,16 @@ namespace Biblioteca
         public List<GastoDetalleDTO> detalleGrabar;
         #endregion
 
-        public Gasto(GastoDTO _encabezado, List<GastoDetalleDTO> _detalle)
+        public Gasto(GastoDTO _encabezado, List<GastoDetalleDTO> _detalle, bool tipoGasto)
             {
             if (_encabezado == null)
                 {
                 encabezado = new GastoDTO
                     {
                     ID = 0,
+                    TipoID = tipoGasto ? (byte)10 : (byte)20
                     };
+                   
                 }
             else
                 { 

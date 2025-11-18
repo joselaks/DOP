@@ -12,19 +12,9 @@ namespace Biblioteca.DTO
         public string CodSup { get; set; }
         public string CodInf { get; set; }
         public decimal CanEjec { get; set; }
-        public decimal CanVenta { get; set; }
+        public decimal? CanReal { get; set; }    // nuevo / nullable
         public short OrdenInt { get; set; }
-        public char? Accion { get; set; } // Solo necesario si usas el procedimiento de alta/modificación/borrado
-        }
-
-    public class RelacionMDTO
-        {
-        public int UsuarioID { get; set; }
-        public string CodSup { get; set; }
-        public string CodInf { get; set; }
-        public decimal CanEjec { get; set; }
-        public short? OrdenInt { get; set; }
-        public char Accion { get; set; } // 'A', 'M', 'B'
+        public char? Accion { get; set; }        // 'A' = Alta, 'M' = Modificar, 'B' = Borrar (para TVP)
         }
 
     }

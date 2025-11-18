@@ -353,6 +353,19 @@ doc.MapGet("/gastos/{gastoID:int}/detalle", async (int gastoID, rDocumentos repo
     }
 }).RequireAuthorization();
 
+doc.MapDelete("/gastos/{gastoID:int}", async (int gastoID, rDocumentos repo) =>
+{
+    try
+        {
+        await repo.BorrarGastoAsync(gastoID);
+        return Results.Ok(new { Success = true, Message = "Gasto eliminado exitosamente." });
+        }
+    catch (Exception ex)
+        {
+        return Results.BadRequest(new { Success = false, Message = ex.Message });
+        }
+}).RequireAuthorization();
+
 
 #endregion
 

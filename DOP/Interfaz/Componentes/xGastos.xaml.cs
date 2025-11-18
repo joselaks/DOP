@@ -77,9 +77,16 @@ namespace DataObra.Interfaz.Componentes
 
         private void btnNuevo_Click(object sender, RoutedEventArgs e)
             {
-            var win = new WiGasto(_gastos, null, null);
-            win.ShowDialog();
+            // Determinar si se pulsó el botón "Nuevo Gasto" (btnNuevoEgr)
+            bool tipoGasto = false;
+            if (sender is System.Windows.Controls.Button btn)
+                {
+                tipoGasto = string.Equals(btn.Name, "btnNuevoEgr", StringComparison.OrdinalIgnoreCase);
+                }
 
+            // Abrir la ventana pasando el flag tipoGasto
+            var win = new WiGasto(_gastos, null, null, tipoGasto);
+            win.ShowDialog();
             }
 
         private async void btnEditar_Click(object sender, RoutedEventArgs e)
@@ -90,9 +97,11 @@ namespace DataObra.Interfaz.Componentes
                 try
                     {
                     bool esCobro = false;
+                    bool tipoGasto = false;
                     if (seleccionado.TipoID == 20)
                         {
                         esCobro = true;
+                        tipoGasto = false;
                         }
 
 
@@ -105,7 +114,7 @@ namespace DataObra.Interfaz.Componentes
                         }
 
                     // Abrir ventana de edición con los detalles recuperados
-                    var win = new WiGasto(_gastos, seleccionado, detalles);
+                    var win = new WiGasto(_gastos, seleccionado, detalles, tipoGasto);
                     win.ShowDialog();
                     }
                 catch (Exception ex)
@@ -119,9 +128,41 @@ namespace DataObra.Interfaz.Componentes
                 }
             }
 
-        private void btnBorrar_Click(object sender, RoutedEventArgs e)
+        private async void btnBorrar_Click(object sender, RoutedEventArgs e)
             {
+            // Validar selección
+            if (!(GrillaGastos.SelectedItem is GastoDTO { ID: var id } seleccionado) || id <= 0)
+                {
+                MessageBox.Show("Seleccione un gasto válido para borrar.", "Atención", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+                }
 
+            // Confirmación del usuario
+            var confirmar = MessageBox.Show($"¿Confirma eliminar el {(seleccionado.TipoID == 20 ? "cobro" : "gasto")} ID {id}?\nEsta acción eliminará también sus detalles.",
+                                            "Confirmar borrado", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (confirmar != MessageBoxResult.Yes) return;
+
+            try
+                {
+                // Llamada al servicio web para borrar
+                var (success, message) = await DatosWeb.BorrarGastoAsync(id);
+                if (success)
+                    {
+                    // Eliminar de la colección local y actualizar UI
+                    if (_gastos.Contains(seleccionado))
+                        _gastos.Remove(seleccionado);
+
+                    MessageBox.Show(message ?? "Gasto eliminado correctamente.", "Eliminar", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                else
+                    {
+                    MessageBox.Show($"No se pudo eliminar el {(seleccionado.TipoID == 20 ? "cobro" : "gasto")}.\n{message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            catch (Exception ex)
+                {
+                MessageBox.Show($"Excepción al eliminar: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -136,62 +177,7 @@ namespace DataObra.Interfaz.Componentes
 
         private async void btnControl_Click(object sender, RoutedEventArgs e)
             {
-            string apiKey = "ak_Cg6FNLTUjpGl7eaMSIdr"; // Tu API Key
-            string url = $"https://api.alphacast.io/datasets/5902/data?from=2025-01-01&to=2025-02-28&filter=variable:Materiales";
-            try
-                {
-                // Forzar handler que descomprima gzip/deflate automáticamente
-                var handler = new HttpClientHandler
-                    {
-                    AutomaticDecompression = System.Net.DecompressionMethods.GZip | System.Net.DecompressionMethods.Deflate
-                    };
 
-                using var client = new HttpClient(handler);
-
-                // Autenticación con Basic Auth
-                var byteArray = Encoding.ASCII.GetBytes($"{apiKey}:");
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
-
-                // Aceptar JSON
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                HttpResponseMessage response = await client.GetAsync(url);
-                string json = await response.Content.ReadAsStringAsync();
-
-                if (response.IsSuccessStatusCode)
-                    {
-                    string prettyJson;
-                    try
-                        {
-                        using var doc = JsonDocument.Parse(json);
-                        prettyJson = JsonSerializer.Serialize(doc, new JsonSerializerOptions { WriteIndented = true });
-                        }
-                    catch (Exception ex)
-                        {
-                        prettyJson = $"Error al parsear JSON:\n{ex.Message}\n\nContenido crudo:\n{json}";
-                        }
-
-                    const int maxDisplayLength = 10000;
-                    if (prettyJson.Length > maxDisplayLength)
-                        {
-                        string parcial = prettyJson.Substring(0, maxDisplayLength) + "\n\n... (truncado)";
-                        MessageBox.Show(parcial, "Datos obtenidos (parcial)", MessageBoxButton.OK, MessageBoxImage.Information);
-                        }
-                    else
-                        {
-                        MessageBox.Show(prettyJson, "Datos obtenidos", MessageBoxButton.OK, MessageBoxImage.Information);
-                        }
-                    }
-                else
-                    {
-                    MessageBox.Show($"Error al consultar API:\n{response.StatusCode}\n\n{json}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
-            catch (Exception ex)
-                {
-                MessageBox.Show($"Excepción inesperada:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
             }
         }
     }

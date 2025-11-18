@@ -42,10 +42,10 @@ namespace DataObra.Documentos.Ventanas
         private GastoDTO? originalEncabezado;
 
 
-        public WiGasto(ObservableCollection<GastoDTO> _gastos, GastoDTO encabezado, List<GastoDetalleDTO> detalle)
+        public WiGasto(ObservableCollection<GastoDTO> _gastos, GastoDTO encabezado, List<GastoDetalleDTO> detalle, bool tipoGasto)
             {
             InitializeComponent();
-            objeto = new Gasto(encabezado, detalle);
+            objeto = new Gasto(encabezado, detalle, tipoGasto);
             this.DataContext = objeto;
             gastos = _gastos;
             // Vincular el encabezado (GastoDTO) como DataContext de la grilla de encabezado
