@@ -292,7 +292,7 @@ namespace DOP.Datos
             return (success, message, data ?? new List<GastoDTO>());
             }
 
-        public static async Task<(bool Success, string Message, int DocumentoID)> ProcesarGastoAsync(ProcesarGastoRequest request)
+        public static async Task<(bool Success, string Message, ProcesarGastoResult Result)> ProcesarGastoAsync(ProcesarGastoRequest request)
             {
             string url = $"{App.BaseUrl}documentos/gastos/procesar";
             var json = JsonSerializer.Serialize(request, jsonSerializerOptions);
@@ -306,7 +306,7 @@ namespace DOP.Datos
                 if (response.IsSuccessStatusCode)
                     {
                     var result = JsonSerializer.Deserialize<ProcesarGastoResult>(responseString, jsonSerializerOptions);
-                    return (result?.Success ?? true, result?.Message ?? "Operación exitosa.", result?.DocumentoID ?? 0);
+                    return (result?.Success ?? true, result?.Message ?? "Operación exitosa.", result ?? new ProcesarGastoResult { DocumentoID = 0 });
                     }
                 else
                     {
@@ -316,12 +316,12 @@ namespace DOP.Datos
                         : !string.IsNullOrEmpty(error?.Mensaje)
                             ? error.Mensaje
                             : "Error desconocido";
-                    return (false, errorMessage, 0);
+                    return (false, errorMessage, new ProcesarGastoResult { DocumentoID = 0 });
                     }
                 }
             catch (Exception ex)
                 {
-                return (false, $"Error: {ex.Message}", 0);
+                return (false, $"Error: {ex.Message}", new ProcesarGastoResult { DocumentoID = 0 });
                 }
             }
 

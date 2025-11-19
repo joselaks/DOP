@@ -6,56 +6,56 @@ using System.Data.SqlClient;
 
 
 namespace Servidor.Repositorios
-{
-    public class rDocumentos
     {
+    public class rDocumentos
+        {
         private readonly string _connectionString;
 
         public rDocumentos(string connectionString)
-        {
+            {
             _connectionString = connectionString;
-        }
+            }
 
         public async Task<List<GastoDTO>> ListarGastosPorUsuarioAsync(int usuarioID)
-        {
-            using (var db = new SqlConnection(_connectionString))
             {
+            using (var db = new SqlConnection(_connectionString))
+                {
                 var parameters = new DynamicParameters();
                 parameters.Add("@UsuarioID", usuarioID, DbType.Int32);
 
                 try
-                {
+                    {
                     var result = await db.QueryAsync<GastoDTO>(
                         "ListarGastosPorUsuario",
                         parameters,
                         commandType: CommandType.StoredProcedure);
 
                     return result.ToList();
-                }
+                    }
                 catch (SqlException ex)
-                {
+                    {
                     throw new Exception($"Error al listar los gastos del usuario {usuarioID}: {ex.Message}", ex);
+                    }
                 }
             }
-        }
 
-        public async Task<int> ProcesarGastoAsync(GastoDTO gasto, List<GastoDetalleDTO> detalles)
-            {
+        public async Task<ProcesarGastoResult> ProcesarGastoAsync(GastoDTO gasto, List<GastoDetalleDTO> detalles)
+        {
             using (var db = new SqlConnection(_connectionString))
-                {
+            {
                 if (gasto == null) throw new ArgumentNullException(nameof(gasto));
                 if (detalles == null) detalles = new List<GastoDetalleDTO>();
                 if (gasto.Moneda == '\0')
                     throw new ArgumentException("Moneda del gasto es requerida.", nameof(gasto.Moneda));
 
-                // Crear DataTable para Detalles (orden y nombres deben coincidir exactamente con dbo.TT_GastoDetalle)
                 var tableDetalles = new DataTable();
                 tableDetalles.Columns.Add("ID", typeof(int));
+                tableDetalles.Columns.Add("Accion", typeof(char));
                 tableDetalles.Columns.Add("GastoID", typeof(int));
                 tableDetalles.Columns.Add("CobroID", typeof(int));
                 tableDetalles.Columns.Add("UsuarioID", typeof(int));
                 tableDetalles.Columns.Add("CuentaID", typeof(int));
-                tableDetalles.Columns.Add("TipoID", typeof(char));                // CHAR(1)
+                tableDetalles.Columns.Add("TipoID", typeof(char));
                 tableDetalles.Columns.Add("PresupuestoID", typeof(int));
                 tableDetalles.Columns.Add("RubroID", typeof(string));
                 tableDetalles.Columns.Add("TareaID", typeof(string));
@@ -66,48 +66,45 @@ namespace Servidor.Repositorios
                 tableDetalles.Columns.Add("Cantidad", typeof(decimal));
                 tableDetalles.Columns.Add("FactorCantidad", typeof(decimal));
                 tableDetalles.Columns.Add("PrecioUnitario", typeof(decimal));
-                tableDetalles.Columns.Add("Moneda", typeof(char));                // CHAR(1)
+                tableDetalles.Columns.Add("Moneda", typeof(char));
                 tableDetalles.Columns.Add("TipoCambioD", typeof(decimal));
                 tableDetalles.Columns.Add("ArticuloID", typeof(int));
-                tableDetalles.Columns.Add("MaestroID", typeof(int));
-                tableDetalles.Columns.Add("ConceptoMaestroID", typeof(string));
                 tableDetalles.Columns.Add("Fecha", typeof(DateTime));
-                tableDetalles.Columns.Add("Accion", typeof(char));                // CHAR(1)
 
                 bool esNuevo = gasto.ID == 0;
 
                 foreach (var d in detalles)
-                    {
-                    // Normalizar valores obligatorios como char
+                {
+                    // Normalizar valores obligatorios
+                    char accionChar = d.Accion == '\0' ? 'A' : d.Accion; // Accion es NOT NULL en el TYPE
                     char tipoChar = d.TipoID == '\0' ? '0' : d.TipoID;
-                    char monedaChar = gasto.Moneda;
-                    char accionChar = d.Accion;
+                    char monedaChar = gasto.Moneda; // siempre usar moneda del encabezado
+                    object gastoIdObj = esNuevo ? (object)DBNull.Value : (d.GastoID.HasValue ? (object)d.GastoID.Value : DBNull.Value);
+                    int usuario = d.UsuarioID;
                     object cobroObj = d.CobroID.HasValue ? (object)d.CobroID.Value : DBNull.Value;
 
                     tableDetalles.Rows.Add(
-                        d.ID == 0 ? (object)DBNull.Value : d.ID,
-                        esNuevo ? (object)DBNull.Value : d.GastoID,
-                        cobroObj,
-                        d.UsuarioID,
-                        d.CuentaID == 0 ? (object)DBNull.Value : d.CuentaID,
-                        tipoChar,
-                        d.PresupuestoID.HasValue ? (object)d.PresupuestoID.Value : DBNull.Value,
-                        string.IsNullOrEmpty(d.RubroID) ? (object)DBNull.Value : d.RubroID,
-                        string.IsNullOrEmpty(d.TareaID) ? (object)DBNull.Value : d.TareaID,
-                        string.IsNullOrEmpty(d.AuxiliarID) ? (object)DBNull.Value : d.AuxiliarID,
-                        string.IsNullOrEmpty(d.InsumoID) ? (object)DBNull.Value : d.InsumoID,
-                        string.IsNullOrEmpty(d.Descrip) ? (object)DBNull.Value : d.Descrip,
-                        string.IsNullOrEmpty(d.Unidad) ? (object)DBNull.Value : d.Unidad,
-                        d.Cantidad,
-                        d.FactorCantidad,
-                        d.PrecioUnitario,
-                        monedaChar,
-                        d.TipoCambioD,
-                        d.ArticuloID.HasValue ? (object)d.ArticuloID.Value : DBNull.Value,
-                        d.MaestroID.HasValue ? (object)d.MaestroID.Value : DBNull.Value,
-                        string.IsNullOrEmpty(d.ConceptoMaestroID) ? (object)DBNull.Value : d.ConceptoMaestroID,
-                        d.Fecha.HasValue ? (object)d.Fecha.Value : (object)DBNull.Value,
-                        accionChar
+                        d.ID == 0 ? (object)DBNull.Value : d.ID,                                 // ID
+                        accionChar,                                                               // Accion
+                        gastoIdObj,                                                               // GastoID
+                        cobroObj,                                                                 // CobroID
+                        usuario,                  // UsuarioID
+                        d.CuentaID == 0 ? (object)DBNull.Value : d.CuentaID,                     // CuentaID
+                        tipoChar,                                                                 // TipoID
+                        d.PresupuestoID.HasValue ? (object)d.PresupuestoID.Value : DBNull.Value, // PresupuestoID
+                        string.IsNullOrEmpty(d.RubroID) ? (object)DBNull.Value : d.RubroID,      // RubroID
+                        string.IsNullOrEmpty(d.TareaID) ? (object)DBNull.Value : d.TareaID,      // TareaID
+                        string.IsNullOrEmpty(d.AuxiliarID) ? (object)DBNull.Value : d.AuxiliarID,// AuxiliarID
+                        string.IsNullOrEmpty(d.InsumoID) ? (object)DBNull.Value : d.InsumoID,    // InsumoID
+                        string.IsNullOrEmpty(d.Descrip) ? (object)DBNull.Value : d.Descrip,      // Descrip
+                        string.IsNullOrEmpty(d.Unidad) ? (object)DBNull.Value : d.Unidad,        // Unidad
+                        d.Cantidad,                                                               // Cantidad
+                        d.FactorCantidad,                                                         // FactorCantidad
+                        d.PrecioUnitario,                                                         // PrecioUnitario
+                        monedaChar,                                                               // Moneda
+                        d.TipoCambioD,                                                            // TipoCambioD
+                        d.ArticuloID.HasValue ? (object)d.ArticuloID.Value : DBNull.Value,       // ArticuloID
+                        d.Fecha.HasValue ? (object)d.Fecha.Value : (object)DBNull.Value          // Fecha (date)
                     );
                     }
 
@@ -134,44 +131,68 @@ namespace Servidor.Repositorios
                 parameters.Add("@Detalles", tableDetalles.AsTableValuedParameter("dbo.TT_GastoDetalle"));
 
                 try
-                    {
-                    var result = await db.QueryFirstOrDefaultAsync<int>(
+                {
+                    using var multi = await db.QueryMultipleAsync(
                         "ProcesarGasto",
                         parameters,
                         commandType: CommandType.StoredProcedure);
 
-                    return result;
-                    }
-                catch (SqlException ex)
+                    int documentoId = 0;
+                    if (!multi.IsConsumed)
+                        documentoId = await multi.ReadFirstOrDefaultAsync<int>();
+
+                    List<int> presupuestoIds = new List<int>();
+                    if (!multi.IsConsumed)
                     {
-                    throw new Exception($"Error al procesar el gasto: {ex.Message}", ex);
+                        try { presupuestoIds = (await multi.ReadAsync<int>()).ToList(); }
+                        catch { presupuestoIds = new List<int>(); }
                     }
+
+                    List<PresupuestoResumen> resumenes = new List<PresupuestoResumen>();
+                    if (!multi.IsConsumed)
+                    {
+                        try { resumenes = (await multi.ReadAsync<PresupuestoResumen>()).ToList(); }
+                        catch { resumenes = new List<PresupuestoResumen>(); }
+                    }
+
+                    return new ProcesarGastoResult
+                    {
+                        DocumentoID = documentoId,
+                        PresupuestoIDs = presupuestoIds,
+                        Resumenes = resumenes
+                    };
+                }
+                catch (SqlException ex)
+                {
+                    throw new Exception($"Error al procesar el gasto: {ex.Message}", ex);
                 }
             }
+        }
+
 
         public async Task<List<GastoDetalleDTO>> ObtenerDetalleGastoAsync(int GastoID, bool esCobro = false)
-        {
-            using (var db = new SqlConnection(_connectionString))
             {
+            using (var db = new SqlConnection(_connectionString))
+                {
                 var parameters = new DynamicParameters();
                 parameters.Add("@GastoID", GastoID, DbType.Int32);
                 parameters.Add("@EsCobro", esCobro ? 1 : 0, DbType.Boolean);
 
                 try
-                {
+                    {
                     var result = await db.QueryAsync<GastoDetalleDTO>(
                         "ObtenerDetalleGasto",
                         parameters,
                         commandType: CommandType.StoredProcedure);
 
                     return result.ToList();
-                }
+                    }
                 catch (SqlException ex)
-                {
+                    {
                     throw new Exception($"Error al listar el detalle del gasto {GastoID}: {ex.Message}", ex);
+                    }
                 }
             }
-        }
 
         public async Task BorrarGastoAsync(int gastoID)
             {
@@ -193,5 +214,22 @@ namespace Servidor.Repositorios
                     }
                 }
             }
+
+        // DTOs auxiliares para leer los result sets devueltos por el SP
+        public class ProcesarGastoResult
+            {
+            public int DocumentoID { get; set; }
+            public List<int> PresupuestoIDs { get; set; } = new List<int>();
+            public List<PresupuestoResumen> Resumenes { get; set; } = new List<PresupuestoResumen>();
+            }
+
+        public class PresupuestoResumen
+            {
+            public int PresupuestoID { get; set; }
+            public string Moneda { get; set; } = string.Empty;
+            public decimal TotalGasto { get; set; }
+            public decimal TotalCobro { get; set; }
+            }
         }
-}
+    }
+

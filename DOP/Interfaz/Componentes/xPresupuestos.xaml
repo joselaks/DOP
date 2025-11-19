@@ -154,6 +154,43 @@
                             NumberGroupSizes="3"
                             TextAlignment="Right" />
                         <syncfusion:GridNumericColumn
+                            Width="150"
+                            HeaderText="Gastos en $"
+                            MappingName="EgresosTotales"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3"
+                            TextAlignment="Right" />
+                        <syncfusion:GridNumericColumn
+                            Width="150"
+                            HeaderText="Gastos en u$s"
+                            MappingName="EgresosTotales1"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3"
+                            TextAlignment="Right" />
+                        <syncfusion:GridNumericColumn
+                            Width="150"
+                            HeaderText="Cobros en $"
+                            MappingName="IngresosTotales"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3"
+                            TextAlignment="Right" />
+                        <syncfusion:GridNumericColumn
+                            Width="150"
+                            HeaderText="Cobros en u$s"
+                            MappingName="IngresosTotales1"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3"
+                            TextAlignment="Right" />
+
+                        <syncfusion:GridNumericColumn
                             Width="120"
                             HeaderText="Superficie"
                             MappingName="Superficie"

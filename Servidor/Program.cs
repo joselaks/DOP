@@ -328,8 +328,15 @@ doc.MapPost("/gastos/procesar", async (ProcesarGastoRequest request, rDocumentos
 {
     try
     {
-        var id = await repo.ProcesarGastoAsync(request.Gasto, request.Detalles);
-        return Results.Ok(new { Success = true, DocumentoID = id, Message = "Gasto procesado exitosamente." });
+        var result = await repo.ProcesarGastoAsync(request.Gasto, request.Detalles);
+        return Results.Ok(new
+        {
+            Success = true,
+            DocumentoID = result.DocumentoID,
+            PresupuestoIDs = result.PresupuestoIDs,
+            Resumenes = result.Resumenes,
+            Message = "Gasto procesado exitosamente."
+        });
     }
     catch (Exception ex)
     {
@@ -373,6 +380,48 @@ doc.MapDelete("/gastos/{gastoID:int}", async (int gastoID, rDocumentos repo) =>
 #endregion
 
 app.Run();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

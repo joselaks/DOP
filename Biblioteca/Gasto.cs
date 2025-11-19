@@ -103,8 +103,8 @@ namespace Biblioteca
                 ConceptoMaestro = d.ConceptoMaestro,
                 Moneda = d.Moneda,
                 Importe = d.Importe,
-                Accion = d.Accion
-            }).ToList();
+                Accion = 'R'
+                }).ToList();
         }
 
         public Biblioteca.DTO.ProcesarGastoRequest EmpaquetarGasto()
@@ -160,9 +160,10 @@ namespace Biblioteca
             // Marcar altas: los que están en detallesParaGrabar pero no existían en detalleLeer => 'A'
             foreach (var det in detallesParaGrabar)
                 {
-                bool existiaAntes = (detalleLeer ?? Enumerable.Empty<GastoDetalleDTO>()).Any(d => d.ID == det.ID);
-                if (!existiaAntes)
+                if (det.ID == 0)
+                    {
                     det.Accion = 'A';
+                    }
                 }
 
             // Marcar modificaciones: los que no estén marcados como 'A' o 'B' => 'M'
@@ -170,6 +171,54 @@ namespace Biblioteca
                 {
                 if (det.Accion != 'A' && det.Accion != 'B')
                     det.Accion = 'M';
+                }
+
+            // Normalizar campos de detalles para evitar errores al crear el TVP / al SP
+            foreach (var det in detallesParaGrabar)
+                {
+                //// Accion obligatorio en el TYPE
+                //if (det.Accion == '\0')
+                //    det.Accion = det.ID == 0 ? 'A' : 'M';
+
+                // TipoID: normalizar a '0' si no viene
+                if (det.TipoID == '\0')
+                    det.TipoID = '0';
+
+                // Moneda: tomar la moneda del encabezado si no está especificada
+                if (det.Moneda == '\0' && encabezado != null && encabezado.Moneda != '\0')
+                    det.Moneda = encabezado.Moneda;
+
+                // FactorCantidad por defecto 1
+                if (det.FactorCantidad == 0)
+                    det.FactorCantidad = 1.0000m;
+
+                // Evitar nulos en campos NOT NULL en la BD y truncar cadenas a la longitud máxima
+                det.Descrip = det.Descrip ?? string.Empty;
+                if (det.Descrip.Length > 65)
+                    det.Descrip = det.Descrip.Substring(0, 65);
+
+                det.Unidad = det.Unidad ?? string.Empty;
+                if (det.Unidad.Length > 6)
+                    det.Unidad = det.Unidad.Substring(0, 6);
+
+                det.RubroID = string.IsNullOrWhiteSpace(det.RubroID) ? null : det.RubroID;
+                if (det.RubroID != null && det.RubroID.Length > 13)
+                    det.RubroID = det.RubroID.Substring(0, 13);
+
+                det.TareaID = string.IsNullOrWhiteSpace(det.TareaID) ? null : det.TareaID;
+                if (det.TareaID != null && det.TareaID.Length > 13)
+                    det.TareaID = det.TareaID.Substring(0, 13);
+
+                det.AuxiliarID = string.IsNullOrWhiteSpace(det.AuxiliarID) ? null : det.AuxiliarID;
+                if (det.AuxiliarID != null && det.AuxiliarID.Length > 13)
+                    det.AuxiliarID = det.AuxiliarID.Substring(0, 13);
+
+                det.InsumoID = string.IsNullOrWhiteSpace(det.InsumoID) ? null : det.InsumoID;
+                if (det.InsumoID != null && det.InsumoID.Length > 13)
+                    det.InsumoID = det.InsumoID.Substring(0, 13);
+
+                // PrecioUnitario y Cantidad: dejar tal cual (0 es válido), pero asegurar tipos
+                // Fecha: mantener null si no hay valor (TVP acepta NULL)
                 }
 
             // Clonar encabezado para el request y normalizar fechas mínimas
@@ -194,7 +243,10 @@ namespace Biblioteca
                 TipoCambioD = encabezado.TipoCambioD
                 };
 
-            // Si el encabezado original representaba uno nuevo (ID == 0) puedes dejar ID=0 o marcar según tu API.
+            // Asegurar moneda en encabezado
+            if (encabezadoEmpaquetado.Moneda == '\0')
+                encabezadoEmpaquetado.Moneda = 'P';
+
             // Empaquetar request
             var request = new Biblioteca.DTO.ProcesarGastoRequest
                 {

@@ -140,19 +140,20 @@ namespace DataObra.Documentos.Ventanas
                 var oGrabar = objeto.EmpaquetarGasto();
 
                 // Llamada al servicio web para procesar el gasto
-                var resultado = await DOP.Datos.DatosWeb.ProcesarGastoAsync(oGrabar);
+                var (success, message, procesaResult) = await DOP.Datos.DatosWeb.ProcesarGastoAsync(oGrabar);
 
-                if (resultado.Success)
+                if (success)
                     {
                     // Actualiza listas para próxima ejecución (sincronizar versiones)
                     objeto.detalleLeer = objeto.detalleGrabar.Select(x => x).ToList();
 
-                    // Si fue nuevo, asignar ID y FechaC/FechaCreado si la API devolvió GastoID
-                    if ((objeto.encabezado.ID == 0 || objeto.encabezado.ID == null) && resultado.DocumentoID > 0)
+                    // Si fue nuevo, asignar ID y FechaC/FechaCreado si la API devolvió DocumentoID
+                    if ((objeto.encabezado.ID == 0) && (procesaResult?.DocumentoID ?? 0) > 0)
                         {
                         objeto.encabezado.FechaCreado = DateTime.Today;
-                        objeto.encabezado.ID = resultado.DocumentoID;
+                        objeto.encabezado.ID = procesaResult.DocumentoID;
                         }
+
                     // Reemplazar en la colección 'gastos' la instancia original por la instancia actualizada
                     if (gastos != null)
                         {
@@ -181,7 +182,7 @@ namespace DataObra.Documentos.Ventanas
                     }
                 else
                     {
-                    var msg = string.IsNullOrEmpty(resultado.Message) ? "Error desconocido al guardar el gasto." : resultado.Message;
+                    var msg = string.IsNullOrEmpty(message) ? "Error desconocido al guardar el gasto." : message;
                     MessageBox.Show($"Error al guardar el gasto: {msg}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return false;
                     }
@@ -192,6 +193,7 @@ namespace DataObra.Documentos.Ventanas
                 return false;
                 }
             }
+
         }
     }
 
