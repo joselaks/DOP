@@ -11,7 +11,7 @@
     Title="Control del Presupuesto"
     Width="1090"
     Height="800"
-    sfSkinManager:SfSkinManager.VisualStyle="Office2016White"
+    sfSkinManager:SfSkinManager.VisualStyle="FluentLight"
     Office2010Icon="pack://application:,,,/Imagenes/DataObra.ico"
     TitleTextAlignment="Left"
     mc:Ignorable="d">
@@ -65,25 +65,7 @@
                     <StackPanel
                         Margin="2,30,2,0"
                         VerticalAlignment="Center"
-                        Orientation="Horizontal">
-                        <TextBlock
-                            Margin="4,0"
-                            VerticalAlignment="Center"
-                            Text="Presupuesto a controlar" />
-                        <ComboBox
-                            x:Name="comboPresupuestos"
-                            Width="260"
-                            Margin="4,0"
-                            DisplayMemberPath="Descrip"
-                            ItemsSource="{Binding PresupuestosRef}"
-                            SelectedItem="{Binding SelectedPresupuesto, Mode=TwoWay}" />
-                        <syncfusion:RibbonButton
-                            x:Name="BtnControlar"
-                            Margin="8,0"
-                            Click="BtnControlar_Click"
-                            Label="Controlar"
-                            SizeForm="Small" />
-                    </StackPanel>
+                        Orientation="Horizontal"/>
 
                 </syncfusion:RibbonBar>
 

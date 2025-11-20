@@ -47,15 +47,12 @@ namespace DataObra.Presupuestos.Ventanas
             }
         }
 
-        public WiControlPres(ObservableCollection<PresupuestoDTO> presupuestosRef)
+        public WiControlPres(PresupuestoDTO presupuestosRef)
         {
             InitializeComponent();
 
-            PresupuestosRef = presupuestosRef ?? new ObservableCollection<PresupuestoDTO>();
-            DataContext = this;
 
             // opcional: seleccionar el primero si existe
-            SelectedPresupuesto = PresupuestosRef.FirstOrDefault();
         }
 
         private void SaleExcel_Click(object sender, RoutedEventArgs e)
@@ -78,17 +75,6 @@ namespace DataObra.Presupuestos.Ventanas
 
         }
 
-        private void BtnControlar_Click(object sender, RoutedEventArgs e)
-        {
-            if (SelectedPresupuesto == null)
-            {
-                MessageBox.Show("Seleccione un presupuesto.", "Controlar presupuesto", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            // Placeholder: reemplaza por la lógica real de control
-            MessageBox.Show($"Iniciando control del presupuesto: {SelectedPresupuesto.Descrip}", "Controlar presupuesto", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName) =>
