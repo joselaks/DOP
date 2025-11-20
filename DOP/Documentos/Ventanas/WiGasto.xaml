@@ -233,6 +233,7 @@
             Grid.Row="1"
             Margin="5,5,5,5"
             AllowEditing="True"
+            AllowDeleting="True"
             AllowResizingColumns="True"
             AutoGenerateColumns="False"
             BorderBrush="#FF3399FF"

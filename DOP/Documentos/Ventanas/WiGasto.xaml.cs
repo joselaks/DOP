@@ -50,13 +50,63 @@ namespace DataObra.Documentos.Ventanas
             objeto = new Gasto(encabezado, detalle, tipoGasto);
             this.DataContext = objeto;
             gastos = _gastos;
-            // Vincular el encabezado (GastoDTO) como DataContext de la grilla de encabezado
+
             if (grillaEncabezado != null)
                 grillaEncabezado.DataContext = objeto.encabezado;
 
             gridDetalle.ItemsSource = objeto.detalleGrabar;
+            this.gridDetalle.RecordDeleting += GridDetalle_RecordDeleting;
+
+            RecalcularImportesInicial();
             }
 
+        private void RecalcularImportesInicial()
+            {
+            if (objeto?.detalleGrabar == null)
+                return;
+
+            foreach (var det in objeto.detalleGrabar)
+                {
+                det.Importe = det.Cantidad * det.PrecioUnitario;
+                }
+
+            objeto.encabezado.Importe = objeto.detalleGrabar.Sum(d => d?.Importe ?? 0);
+
+            if (grillaEncabezado != null)
+                {
+                grillaEncabezado.DataContext = null;
+                grillaEncabezado.DataContext = objeto.encabezado;
+                }
+            }
+
+        private void GridDetalle_RecordDeleting(object? sender, RecordDeletingEventArgs e)
+            {
+            try
+                {
+                var eliminados = e.Items?.OfType<GastoDetalleDTO>().ToList() ?? new List<GastoDetalleDTO>();
+                if (eliminados.Count == 0)
+                    return;
+
+                // Recalcular total excluyendo los que se eliminan (todavía están en la lista en este evento)
+                var setEliminados = new HashSet<GastoDetalleDTO>(eliminados);
+                var nuevoTotal = objeto.detalleGrabar
+                                        .Where(d => d != null && !setEliminados.Contains(d))
+                                        .Sum(d => d!.Importe);
+
+                objeto.encabezado.Importe = nuevoTotal;
+
+                // Refrescar encabezado
+                if (grillaEncabezado != null)
+                    {
+                    grillaEncabezado.DataContext = null;
+                    grillaEncabezado.DataContext = objeto.encabezado;
+                    }
+                }
+            catch (Exception ex)
+                {
+                MessageBox.Show($"Error al recalcular total tras borrar: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
 
         private void AgregarRegistro_Click(object sender, RoutedEventArgs e)
             {
