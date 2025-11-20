@@ -14,7 +14,7 @@
     sfSkinManager:SfSkinManager.VisualStyle="FluentLight"
     Office2010Icon="pack://application:,,,/Imagenes/DataObra.ico"
     TitleTextAlignment="Left"
-    mc:Ignorable="d">
+    mc:Ignorable="d" WindowStartupLocation="CenterOwner">
     <syncfusion:RibbonWindow.Resources>
         <clases:DecimalToStringConverter x:Key="DecimalToStringConverter" />
         <Style x:Key="TipoCellStyle" TargetType="syncfusion:TreeGridCell">
