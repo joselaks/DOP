@@ -9,7 +9,7 @@
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    sfSkinManager:SfSkinManager.VisualStyle="MaterialLight"
+    sfSkinManager:SfSkinManager.VisualStyle="FluentLight"
     mc:Ignorable="d">
     <UserControl.Resources>
         <Style x:Key="RedButtonStyle" TargetType="Button">

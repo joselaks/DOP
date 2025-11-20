@@ -62,6 +62,7 @@ namespace DataObra.Documentos.Ventanas
             var nuevo = new GastoDetalleDTO
                 {
                 ID = 0,
+                TipoID= 'M',
                 Cantidad = 0,
                 PrecioUnitario = 0,
                 Importe = 0,

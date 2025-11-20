@@ -10,7 +10,7 @@
     Title="Presupuesto"
     Width="1090"
     Height="800"
-    sfSkinManager:SfSkinManager.VisualStyle="Office2016White"
+    sfSkinManager:SfSkinManager.VisualStyle="FluentLight"
     Office2010Icon="pack://application:,,,/Imagenes/DataObra.ico"
     TitleTextAlignment="Left"
     mc:Ignorable="d">

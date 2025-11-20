@@ -24,6 +24,7 @@ namespace Biblioteca
                 encabezado = new GastoDTO
                     {
                     ID = 0,
+                    FechaDoc = DateTime.Today,
                     TipoID = tipoGasto ? (byte)10 : (byte)20
                     };
                    
