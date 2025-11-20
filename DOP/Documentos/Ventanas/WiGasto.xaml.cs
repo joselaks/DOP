@@ -3,6 +3,7 @@ using Biblioteca;
 using Biblioteca.DTO;
 using DataObra.Presupuestos.Controles;
 using DataObra.Presupuestos.Controles.SubControles;
+using DocumentFormat.OpenXml.Wordprocessing;
 using DOP;
 using DOP.Presupuestos.Clases;
 using DOP.Presupuestos.Controles;
@@ -27,6 +28,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Syncfusion.UI.Xaml.Grid;
 
 namespace DataObra.Documentos.Ventanas
     {
@@ -208,6 +210,52 @@ namespace DataObra.Documentos.Ventanas
                 return false;
                 }
             }
+
+        private void gridDetalle_CurrentCellBeginEdit(object sender, Syncfusion.UI.Xaml.Grid.CurrentCellBeginEditEventArgs e)
+            {
+
+            }
+
+        private void gridDetalle_CurrentCellEndEdit(object sender, Syncfusion.UI.Xaml.Grid.CurrentCellEndEditEventArgs e)
+            {
+            try
+                {
+                int colIndex = e.RowColumnIndex.ColumnIndex;
+                if (colIndex < 0 || colIndex >= gridDetalle.Columns.Count)
+                    return;
+
+                var mappingName = gridDetalle.Columns[colIndex].MappingName;
+                if (mappingName != "Cantidad" && mappingName != "PrecioUnitario")
+                    return;
+
+                // Obtener el item actual (la fila en la que se estaba editando)
+                var item = gridDetalle.CurrentItem as GastoDetalleDTO 
+                           ?? gridDetalle.SelectedItem as GastoDetalleDTO;
+                if (item == null)
+                    return;
+
+                // Recalcular importe
+                item.Importe = item.Cantidad * item.PrecioUnitario;
+
+                // Recalcular total encabezado
+                if (objeto?.detalleGrabar != null)
+                    {
+                    objeto.encabezado.Importe = objeto.detalleGrabar.Sum(d => d?.Importe ?? 0);
+
+                    // Forzar refresco del encabezado si no se actualiza solo
+                    if (grillaEncabezado != null)
+                        {
+                        grillaEncabezado.DataContext = null;
+                        grillaEncabezado.DataContext = objeto.encabezado;
+                        }
+                    }
+                }
+            catch (Exception ex)
+                {
+                MessageBox.Show($"Error al recalcular importe: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
 
         }
 

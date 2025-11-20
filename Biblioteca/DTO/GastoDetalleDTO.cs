@@ -1,15 +1,16 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace Biblioteca.DTO
 {
-    public class GastoDetalleDTO
+    public class GastoDetalleDTO : INotifyPropertyChanged
     {
         public int ID { get; set; }
         public int? GastoID { get; set; }
-        public int? CobroID { get; set; }                // Coincide con DocumentosDet.CobroID
+        public int? CobroID { get; set; }
         public int UsuarioID { get; set; }
         public int CuentaID { get; set; }
-        public char TipoID { get; set; } = '0';          // CHAR(1) (se normaliza en el repositorio si es '\0')
+        public char TipoID { get; set; } = '0';
         public int? PresupuestoID { get; set; }
         public string? Presupuesto { get; set; }
         public string? RubroID { get; set; }
@@ -20,11 +21,55 @@ namespace Biblioteca.DTO
         public string? Auxiliar { get; set; }
         public string? InsumoID { get; set; }
         public string? Insumo { get; set; }
-        public string Descrip { get; set; } = string.Empty;    // DB: NOT NULL (varchar(65))
-        public string Unidad { get; set; } = string.Empty;     // DB: NOT NULL (char(6))
-        public decimal Cantidad { get; set; }
-        public decimal FactorCantidad { get; set; } = 1.0000m; // Coincide con DocumentosDet.FactorConcepto
-        public decimal PrecioUnitario { get; set; }
+        public string Descrip { get; set; } = string.Empty;
+        public string Unidad { get; set; } = string.Empty;
+
+        private decimal _cantidad;
+        public decimal Cantidad
+        {
+            get => _cantidad;
+            set
+            {
+                if (_cantidad != value)
+                {
+                    _cantidad = value;
+                    OnPropertyChanged(nameof(Cantidad));
+                    RecalcularImporte();
+                }
+            }
+        }
+
+        public decimal FactorCantidad { get; set; } = 1.0000m;
+
+        private decimal _precioUnitario;
+        public decimal PrecioUnitario
+        {
+            get => _precioUnitario;
+            set
+            {
+                if (_precioUnitario != value)
+                {
+                    _precioUnitario = value;
+                    OnPropertyChanged(nameof(PrecioUnitario));
+                    RecalcularImporte();
+                }
+            }
+        }
+
+        private decimal _importe;
+        public decimal Importe
+        {
+            get => _importe;
+            set
+            {
+                if (_importe != value)
+                {
+                    _importe = value;
+                    OnPropertyChanged(nameof(Importe));
+                }
+            }
+        }
+
         public int? ArticuloID { get; set; }
         public string? Articulo { get; set; }
         public string? ListaDePrecios { get; set; }
@@ -32,10 +77,18 @@ namespace Biblioteca.DTO
         public string? Maestro { get; set; }
         public string? ConceptoMaestroID { get; set; }
         public string? ConceptoMaestro { get; set; }
-        public char Moneda { get; set; } = 'P';                    // CHAR(1)
-        public decimal TipoCambioD { get; set; } = 1.0000000000m;  // Coincide con DocumentosDet.TipoCambioD
-        public DateTime? Fecha { get; set; }                       // Coincide con DocumentosDet.Fecha (NULLABLE)
-        public decimal Importe { get; set; } = 0m;
-        public char Accion { get; set; } = 'A';                    // 'A' = Alta, 'M' = Modificar, 'B' = Borrar (para TVP)
+        public char Moneda { get; set; } = 'P';
+        public decimal TipoCambioD { get; set; } = 1.0000000000m;
+        public DateTime? Fecha { get; set; }
+        public char Accion { get; set; } = 'A';
+
+        private void RecalcularImporte()
+        {
+            Importe = Cantidad * PrecioUnitario;
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged(string propertyName) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
