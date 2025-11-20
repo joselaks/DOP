@@ -292,38 +292,19 @@ namespace DOP.Datos
             return (success, message, data ?? new List<GastoDTO>());
             }
 
-        public static async Task<(bool Success, string Message, ProcesarGastoResult Result)> ProcesarGastoAsync(ProcesarGastoRequest request)
-            {
-            string url = $"{App.BaseUrl}documentos/gastos/procesar";
-            var json = JsonSerializer.Serialize(request, jsonSerializerOptions);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
+        public static async Task<(bool Success, string Message, Biblioteca.DTO.ProcesarGastoResult Result)> ProcesarGastoAsync(Biblioteca.DTO.ProcesarGastoRequest request)
+{
+    string url = $"{App.BaseUrl}documentos/gastos/procesar";
+    var json = JsonSerializer.Serialize(request, jsonSerializerOptions);
+    var contentFactory = new Func<Task<HttpResponseMessage>>(() => httpClient.PostAsync(url, new StringContent(json, Encoding.UTF8, "application/json")));
 
-            try
-                {
-                var response = await httpClient.PostAsync(url, content);
-                var responseString = await response.Content.ReadAsStringAsync();
+    var (success, message, data) = await ExecuteRequestAsync<Biblioteca.DTO.ProcesarGastoResult>(contentFactory, "Procesar Gasto");
 
-                if (response.IsSuccessStatusCode)
-                    {
-                    var result = JsonSerializer.Deserialize<ProcesarGastoResult>(responseString, jsonSerializerOptions);
-                    return (result?.Success ?? true, result?.Message ?? "Operación exitosa.", result ?? new ProcesarGastoResult { DocumentoID = 0 });
-                    }
-                else
-                    {
-                    var error = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, jsonSerializerOptions);
-                    string errorMessage = !string.IsNullOrEmpty(error?.Message)
-                        ? error.Message
-                        : !string.IsNullOrEmpty(error?.Mensaje)
-                            ? error.Mensaje
-                            : "Error desconocido";
-                    return (false, errorMessage, new ProcesarGastoResult { DocumentoID = 0 });
-                    }
-                }
-            catch (Exception ex)
-                {
-                return (false, $"Error: {ex.Message}", new ProcesarGastoResult { DocumentoID = 0 });
-                }
-            }
+    if (data == null)
+        data = new Biblioteca.DTO.ProcesarGastoResult { DocumentoID = 0, PresupuestoIDs = new List<int>(), Resumenes = new List<Biblioteca.DTO.PresupuestoResumen>() };
+
+    return (success, message, data);
+}
 
         public static async Task<(bool Success, string Message, List<GastoDetalleDTO> Detalles)> ObtenerDetalleGastoAsync(int gastoID, bool esCobro = false)
             {
@@ -372,9 +353,16 @@ namespace DOP.Datos
                 }
             }
 
-        public static async Task<(bool Success, string Message)> BorrarGastoAsync(int gastoID)
+public static async Task<(bool Success, string Message, Biblioteca.DTO.ProcesarGastoResult Result)> BorrarGastoAsync(int gastoID, List<int>? presupuestos = null)
             {
+            // Construir URL con query params repetidos: ?presupuestos=1&presupuestos=2...
             string url = $"{App.BaseUrl}documentos/gastos/{gastoID}";
+            if (presupuestos != null && presupuestos.Any())
+                {
+                var qs = string.Join("&", presupuestos.Distinct().Select(p => $"presupuestos={p}"));
+                url = $"{url}?{qs}";
+                }
+
             try
                 {
                 var response = await httpClient.DeleteAsync(url);
@@ -382,35 +370,82 @@ namespace DOP.Datos
 
                 if (response.IsSuccessStatusCode)
                     {
-                    var result = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, jsonSerializerOptions);
-                    string message = !string.IsNullOrEmpty(result?.Message)
-                        ? result.Message
-                        : !string.IsNullOrEmpty(result?.Mensaje)
-                            ? result.Mensaje
-                            : "Gasto eliminado correctamente.";
-                    return (true, message);
+                    // Leer mensaje si viene
+                    string message = "Gasto eliminado correctamente.";
+                    try
+                        {
+                        using var doc = JsonDocument.Parse(responseString);
+                        if (doc.RootElement.TryGetProperty("Message", out var m) && m.ValueKind == JsonValueKind.String)
+                            message = m.GetString() ?? message;
+                        }
+                    catch { /* ignorar parseo de Message */ }
+
+                    // Intentar deserializar ProcesarGastoResult (DocumentoID, PresupuestoIDs, Resumenes)
+                    try
+                        {
+                        var result = JsonSerializer.Deserialize<Biblioteca.DTO.ProcesarGastoResult>(responseString, jsonSerializerOptions)
+                                     ?? new Biblioteca.DTO.ProcesarGastoResult
+                                         {
+                                         DocumentoID = 0,
+                                         PresupuestoIDs = new List<int>(),
+                                         Resumenes = new List<Biblioteca.DTO.PresupuestoResumen>()
+                                         };
+
+                        return (true, message, result);
+                        }
+                    catch (JsonException)
+                        {
+                        // Respuesta exitosa pero no con el formato esperado: devolver objeto vacío pero éxito
+                        var empty = new Biblioteca.DTO.ProcesarGastoResult
+                            {
+                            DocumentoID = 0,
+                            PresupuestoIDs = new List<int>(),
+                            Resumenes = new List<Biblioteca.DTO.PresupuestoResumen>()
+                            };
+                        return (true, message, empty);
+                        }
                     }
                 else
                     {
-                    var error = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, jsonSerializerOptions);
-                    string errorMessage = !string.IsNullOrEmpty(error?.Message)
-                        ? error.Message
-                        : !string.IsNullOrEmpty(error?.Mensaje)
-                            ? error.Mensaje
-                            : "Error desconocido al eliminar el gasto.";
-                    return (false, errorMessage);
+                    // Error: intentar parsear mensaje de error estructurado
+                    try
+                        {
+                        var error = JsonSerializer.Deserialize<ResultadoOperacion>(responseString, jsonSerializerOptions);
+                        string errorMessage = !string.IsNullOrEmpty(error?.Message)
+                            ? error.Message
+                            : !string.IsNullOrEmpty(error?.Mensaje)
+                                ? error.Mensaje
+                                : "Error desconocido al eliminar el gasto.";
+                        return (false, errorMessage, new Biblioteca.DTO.ProcesarGastoResult
+                            {
+                            DocumentoID = 0,
+                            PresupuestoIDs = new List<int>(),
+                            Resumenes = new List<Biblioteca.DTO.PresupuestoResumen>()
+                            });
+                        }
+                    catch
+                        {
+                        return (false, $"HTTP {(int)response.StatusCode}: {response.ReasonPhrase}", new Biblioteca.DTO.ProcesarGastoResult
+                            {
+                            DocumentoID = 0,
+                            PresupuestoIDs = new List<int>(),
+                            Resumenes = new List<Biblioteca.DTO.PresupuestoResumen>()
+                            });
+                        }
                     }
                 }
             catch (Exception ex)
                 {
-                return (false, $"Error: {ex.Message}");
+                return (false, $"Error: {ex.Message}", new Biblioteca.DTO.ProcesarGastoResult
+                    {
+                    DocumentoID = 0,
+                    PresupuestoIDs = new List<int>(),
+                    Resumenes = new List<Biblioteca.DTO.PresupuestoResumen>()
+                    });
                 }
             }
 
-
-
-        }
-
+    }
 
     public class ProcesarArticulosPorListaRequest
         {
@@ -440,11 +475,25 @@ namespace DOP.Datos
         public string Message { get; set; }
         }
 
-    public class ProcesarGastoResult
+    public class ProcesarGastoRequest
         {
-        public bool Success { get; set; }
-        public string? Message { get; set; }
-        public int DocumentoID { get; set; }
+        public GastoDTO Gasto { get; set; }
+        public List<GastoDetalleDTO> Detalles { get; set; } = new List<GastoDetalleDTO>();
+        public List<int> PresupuestosAfectados { get; set; } = new List<int>();
         }
 
+    public class ProcesarGastoResult
+        {
+        public int DocumentoID { get; set; }
+        public List<int> PresupuestoIDs { get; set; } = new List<int>();
+        public List<PresupuestoResumen> Resumenes { get; set; } = new List<PresupuestoResumen>();
+        }
+
+    public class PresupuestoResumen
+        {
+        public int PresupuestoID { get; set; }
+        public string Moneda { get; set; } = string.Empty;
+        public decimal TotalGasto { get; set; }
+        public decimal TotalCobro { get; set; }
+        }
     }

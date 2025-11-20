@@ -1,6 +1,7 @@
 ﻿using Bibioteca.Clases;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +26,6 @@ namespace Biblioteca.DTO
         public List<ArticuloRelDTO> Articulos { get; set; }
         }
 
-    // DTO para procesar lista de artículos y sus artículos
     public class ProcesaArticulosListaRequest
         {
         public ArticulosListaDTO Lista { get; set; }
@@ -36,8 +36,25 @@ namespace Biblioteca.DTO
         {
         public GastoDTO Gasto { get; set; }
         public List<GastoDetalleDTO> Detalles { get; set; }
+
+        // Nueva propiedad: lista opcional de PresupuestoID a procesar (llenará dbo.TT_IntList)
+        public List<int> PresupuestosAfectados { get; set; } = new List<int>();
         }
 
+    // Resultado devuelto por Servidor.Repositorios.rDocumentos.ProcesarGastoAsync
+    public class ProcesarGastoResult
+        {
+        public int DocumentoID { get; set; }
+        public List<int> PresupuestoIDs { get; set; } = new List<int>();
+        public List<PresupuestoResumen> Resumenes { get; set; } = new List<PresupuestoResumen>();
+        }
+
+    public class PresupuestoResumen
+        {
+        public int PresupuestoID { get; set; }
+        public string Moneda { get; set; } = string.Empty;
+        public decimal TotalGasto { get; set; }
+        public decimal TotalCobro { get; set; }
+        }
 
     }
-

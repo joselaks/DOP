@@ -39,7 +39,7 @@ namespace Servidor.Repositorios
                 }
             }
 
-        public async Task<ProcesarGastoResult> ProcesarGastoAsync(GastoDTO gasto, List<GastoDetalleDTO> detalles)
+        public async Task<ProcesarGastoResult> ProcesarGastoAsync(GastoDTO gasto, List<GastoDetalleDTO> detalles, List<int> presupuestosAfectados)
         {
             using (var db = new SqlConnection(_connectionString))
             {
@@ -75,40 +75,39 @@ namespace Servidor.Repositorios
 
                 foreach (var d in detalles)
                 {
-                    // Normalizar valores obligatorios
-                    char accionChar = d.Accion == '\0' ? 'A' : d.Accion; // Accion es NOT NULL en el TYPE
+                    char accionChar = d.Accion == '\0' ? 'A' : d.Accion;
                     char tipoChar = d.TipoID == '\0' ? '0' : d.TipoID;
-                    char monedaChar = gasto.Moneda; // siempre usar moneda del encabezado
+                    char monedaChar = gasto.Moneda;
                     object gastoIdObj = esNuevo ? (object)DBNull.Value : (d.GastoID.HasValue ? (object)d.GastoID.Value : DBNull.Value);
                     int usuario = d.UsuarioID;
                     object cobroObj = d.CobroID.HasValue ? (object)d.CobroID.Value : DBNull.Value;
 
                     tableDetalles.Rows.Add(
-                        d.ID == 0 ? (object)DBNull.Value : d.ID,                                 // ID
-                        accionChar,                                                               // Accion
-                        gastoIdObj,                                                               // GastoID
-                        cobroObj,                                                                 // CobroID
-                        usuario,                  // UsuarioID
-                        d.CuentaID == 0 ? (object)DBNull.Value : d.CuentaID,                     // CuentaID
-                        tipoChar,                                                                 // TipoID
-                        d.PresupuestoID.HasValue ? (object)d.PresupuestoID.Value : DBNull.Value, // PresupuestoID
-                        string.IsNullOrEmpty(d.RubroID) ? (object)DBNull.Value : d.RubroID,      // RubroID
-                        string.IsNullOrEmpty(d.TareaID) ? (object)DBNull.Value : d.TareaID,      // TareaID
-                        string.IsNullOrEmpty(d.AuxiliarID) ? (object)DBNull.Value : d.AuxiliarID,// AuxiliarID
-                        string.IsNullOrEmpty(d.InsumoID) ? (object)DBNull.Value : d.InsumoID,    // InsumoID
-                        string.IsNullOrEmpty(d.Descrip) ? (object)DBNull.Value : d.Descrip,      // Descrip
-                        string.IsNullOrEmpty(d.Unidad) ? (object)DBNull.Value : d.Unidad,        // Unidad
-                        d.Cantidad,                                                               // Cantidad
-                        d.FactorCantidad,                                                         // FactorCantidad
-                        d.PrecioUnitario,                                                         // PrecioUnitario
-                        monedaChar,                                                               // Moneda
-                        d.TipoCambioD,                                                            // TipoCambioD
-                        d.ArticuloID.HasValue ? (object)d.ArticuloID.Value : DBNull.Value,       // ArticuloID
-                        d.Fecha.HasValue ? (object)d.Fecha.Value : (object)DBNull.Value          // Fecha (date)
+                        d.ID == 0 ? (object)DBNull.Value : d.ID,
+                        accionChar,
+                        gastoIdObj,
+                        cobroObj,
+                        usuario,
+                        d.CuentaID == 0 ? (object)DBNull.Value : d.CuentaID,
+                        tipoChar,
+                        d.PresupuestoID.HasValue ? (object)d.PresupuestoID.Value : DBNull.Value,
+                        string.IsNullOrEmpty(d.RubroID) ? (object)DBNull.Value : d.RubroID,
+                        string.IsNullOrEmpty(d.TareaID) ? (object)DBNull.Value : d.TareaID,
+                        string.IsNullOrEmpty(d.AuxiliarID) ? (object)DBNull.Value : d.AuxiliarID,
+                        string.IsNullOrEmpty(d.InsumoID) ? (object)DBNull.Value : d.InsumoID,
+                        string.IsNullOrEmpty(d.Descrip) ? (object)DBNull.Value : d.Descrip,
+                        string.IsNullOrEmpty(d.Unidad) ? (object)DBNull.Value : d.Unidad,
+                        d.Cantidad,
+                        d.FactorCantidad,
+                        d.PrecioUnitario,
+                        monedaChar,
+                        d.TipoCambioD,
+                        d.ArticuloID.HasValue ? (object)d.ArticuloID.Value : DBNull.Value,
+                        d.Fecha.HasValue ? (object)d.Fecha.Value : (object)DBNull.Value
                     );
                     }
 
-                // Comprobación rápida antes de llamar al SP
+                // Validación TVP Detalles
                 var filasConMonedaNull = tableDetalles.Rows.Cast<DataRow>().Where(r => r.IsNull("Moneda")).ToList();
                 if (filasConMonedaNull.Any())
                     throw new Exception("Hay filas en el TVP con Moneda = NULL. Revisa los detalles antes de llamar al procedimiento.");
@@ -128,6 +127,26 @@ namespace Servidor.Repositorios
                 parameters.Add("@Importe", gasto.Importe, DbType.Decimal);
                 parameters.Add("@Moneda", gasto.Moneda, DbType.AnsiStringFixedLength, size: 1);
                 parameters.Add("@TipoCambioD", gasto.TipoCambioD, DbType.Decimal);
+
+                // Opción A (recomendada): enviar @Presupuestos SOLO si la lista tiene elementos
+                if (presupuestosAfectados != null && presupuestosAfectados.Any())
+                {
+                    var tablePresupuestos = new DataTable();
+                    tablePresupuestos.Columns.Add("ID", typeof(int));
+                    foreach (var pid in presupuestosAfectados.Distinct())
+                        tablePresupuestos.Rows.Add(pid);
+
+                    parameters.Add("@Presupuestos", tablePresupuestos.AsTableValuedParameter("dbo.TT_IntList"));
+                }
+                // Opción B (si el SP exige siempre el parámetro): enviar un TVP vacío cuando la lista es null/empty
+                // else
+                // {
+                //     var tablePresupuestosEmpty = new DataTable();
+                //     tablePresupuestosEmpty.Columns.Add("ID", typeof(int));
+                //     parameters.Add("@Presupuestos", tablePresupuestosEmpty.AsTableValuedParameter("dbo.TT_IntList"));
+                // }
+
+                // Siempre enviar detalles
                 parameters.Add("@Detalles", tableDetalles.AsTableValuedParameter("dbo.TT_GastoDetalle"));
 
                 try
@@ -194,26 +213,62 @@ namespace Servidor.Repositorios
                 }
             }
 
-        public async Task BorrarGastoAsync(int gastoID)
-            {
+        public async Task<ProcesarGastoResult> BorrarGastoAsync(int gastoID, List<int>? presupuestosAfectados = null)
+        {
             using (var db = new SqlConnection(_connectionString))
-                {
+            {
                 var parameters = new DynamicParameters();
                 parameters.Add("@ID", gastoID, DbType.Int32);
 
+                // Siempre enviar @Presupuestos (TVP), vacío si no hay elementos
+                var tablePresupuestos = new DataTable();
+                tablePresupuestos.Columns.Add("ID", typeof(int));
+                if (presupuestosAfectados != null)
+                {
+                    foreach (var pid in presupuestosAfectados.Distinct())
+                        tablePresupuestos.Rows.Add(pid);
+                }
+                parameters.Add("@Presupuestos", tablePresupuestos.AsTableValuedParameter("dbo.TT_IntList"));
+
                 try
-                    {
-                    await db.ExecuteAsync(
+                {
+                    using var multi = await db.QueryMultipleAsync(
                         "BorrarGasto",
                         parameters,
                         commandType: CommandType.StoredProcedure);
-                    }
-                catch (SqlException ex)
+
+                    int documentoId = 0;
+                    if (!multi.IsConsumed)
+                        documentoId = await multi.ReadFirstOrDefaultAsync<int>();
+
+                    List<int> presupuestoIds = new List<int>();
+                    if (!multi.IsConsumed)
                     {
-                    throw new Exception($"Error al borrar el gasto con ID {gastoID}: {ex.Message}", ex);
+                        try { presupuestoIds = (await multi.ReadAsync<int>()).ToList(); }
+                        catch { presupuestoIds = new List<int>(); }
                     }
+
+                    List<PresupuestoResumen> resumenes = new List<PresupuestoResumen>();
+                    if (!multi.IsConsumed)
+                    {
+                        try { resumenes = (await multi.ReadAsync<PresupuestoResumen>()).ToList(); }
+                        catch { resumenes = new List<PresupuestoResumen>(); }
+                    }
+
+                    return new ProcesarGastoResult
+                    {
+                        DocumentoID = documentoId,
+                        PresupuestoIDs = presupuestoIds,
+                        Resumenes = resumenes
+                    };
+                }
+                catch (SqlException ex)
+                {
+                    throw new Exception($"Error al borrar el gasto con ID {gastoID}: {ex.Message}", ex);
                 }
             }
+        }
+
 
         // DTOs auxiliares para leer los result sets devueltos por el SP
         public class ProcesarGastoResult

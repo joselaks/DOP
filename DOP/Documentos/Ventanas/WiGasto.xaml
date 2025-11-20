@@ -56,25 +56,28 @@
 
                 <TextBlock
                     Grid.Column="0"
+                    Width="35"
                     Height="15"
                     Margin="17,0,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Text="Fecha:" Width="35" />
+                    Text="Fecha:" />
 
                 <TextBlock
                     Grid.Row="1"
+                    Width="46"
                     Height="15"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Text="Número:" Width="46" />
+                    Text="Número:" />
 
                 <TextBlock
                     Grid.Row="2"
+                    Width="44"
                     Height="15"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Text="Entidad:" Width="44" />
+                    Text="Entidad:" />
 
                 <!--  Columna 1  -->
 
@@ -95,11 +98,12 @@
                     Grid.Row="1"
                     Grid.Column="1"
                     Width="150"
+                    Height="15"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     HorizontalContentAlignment="Right"
                     Background="AliceBlue"
-                    Text="{Binding Documento, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="15" />
+                    Text="{Binding Documento, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                 <TextBox
                     Grid.Row="2"
@@ -113,28 +117,31 @@
 
                 <TextBlock
                     Grid.Column="2"
+                    Width="45"
                     Height="15"
                     Margin="47,0,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Text="Importe:" Width="45" />
+                    Text="Importe:" />
 
                 <TextBlock
                     Grid.Row="1"
                     Grid.Column="2"
+                    Width="66"
                     Height="15"
                     Margin="26,0,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Text="Descripción:" Width="66" />
+                    Text="Descripción:" />
 
                 <TextBlock
                     Grid.Column="4"
+                    Width="46"
                     Height="15"
                     Margin="5,0,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Text="Moneda:" Width="46" />
+                    Text="Moneda:" />
 
 
 
@@ -169,11 +176,12 @@
                 <!--  Columna 4  -->
                 <TextBlock
                     Grid.Column="6"
+                    Width="85"
                     Height="15"
                     Margin="5,0,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Text="Tipo de cambio:" Width="85" />
+                    Text="Tipo de cambio:" />
 
                 <syncfusion:DoubleTextBox
                     x:Name="nTipoCambio1"
@@ -184,10 +192,11 @@
                     HorizontalContentAlignment="Right"
                     Value="{Binding TipoCambioD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                <syncfusion:IntegerTextBox 
+                <syncfusion:IntegerTextBox
                     Grid.Row="1"
                     Grid.Column="7"
-                    Value="{Binding TipoID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="true"/>
+                    IsReadOnly="true"
+                    Value="{Binding TipoID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
 
 
@@ -209,13 +218,14 @@
                 </ComboBox>
 
                 <TextBlock
-                    Grid.Column="6"
                     Grid.Row="1"
+                    Grid.Column="6"
+                    Width="106"
                     Height="15"
                     Margin="5,0,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Text="Tipo de documento:" Width="106" />
+                    Text="Tipo de documento:" />
 
 
             </Grid>

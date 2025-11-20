@@ -176,10 +176,6 @@ namespace Biblioteca
             // Normalizar campos de detalles para evitar errores al crear el TVP / al SP
             foreach (var det in detallesParaGrabar)
                 {
-                //// Accion obligatorio en el TYPE
-                //if (det.Accion == '\0')
-                //    det.Accion = det.ID == 0 ? 'A' : 'M';
-
                 // TipoID: normalizar a '0' si no viene
                 if (det.TipoID == '\0')
                     det.TipoID = '0';
@@ -217,8 +213,21 @@ namespace Biblioteca
                 if (det.InsumoID != null && det.InsumoID.Length > 13)
                     det.InsumoID = det.InsumoID.Substring(0, 13);
 
-                // PrecioUnitario y Cantidad: dejar tal cual (0 es válido), pero asegurar tipos
+                // PrecioUnitario y Cantidad: dejar tal cual (0 es válido)
                 // Fecha: mantener null si no hay valor (TVP acepta NULL)
+                }
+
+            // Construir lista de PresupuestosAfectados a partir de PresupuestoID en detallesParaGrabar y detalleLeer
+            var presupuestosSet = new HashSet<int>();
+            foreach (var d in detallesParaGrabar)
+                {
+                if (d.PresupuestoID.HasValue)
+                    presupuestosSet.Add(d.PresupuestoID.Value);
+                }
+            foreach (var d in detalleLeer ?? Enumerable.Empty<GastoDetalleDTO>())
+                {
+                if (d.PresupuestoID.HasValue)
+                    presupuestosSet.Add(d.PresupuestoID.Value);
                 }
 
             // Clonar encabezado para el request y normalizar fechas mínimas
@@ -247,11 +256,12 @@ namespace Biblioteca
             if (encabezadoEmpaquetado.Moneda == '\0')
                 encabezadoEmpaquetado.Moneda = 'P';
 
-            // Empaquetar request
+            // Empaquetar request incluyendo PresupuestosAfectados
             var request = new Biblioteca.DTO.ProcesarGastoRequest
                 {
                 Gasto = encabezadoEmpaquetado,
-                Detalles = detallesParaGrabar
+                Detalles = detallesParaGrabar,
+                PresupuestosAfectados = presupuestosSet.ToList()
                 };
 
             return request;

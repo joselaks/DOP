@@ -137,10 +137,14 @@ namespace DataObra.Documentos.Ventanas
                     }
 
                 // Empaquetar request usando la lógica de Gasto (compara detalleLeer y detalleGrabar)
-                var oGrabar = objeto.EmpaquetarGasto();
+                Biblioteca.DTO.ProcesarGastoRequest oGrabar = objeto.EmpaquetarGasto();
 
                 // Llamada al servicio web para procesar el gasto
-                var (success, message, procesaResult) = await DOP.Datos.DatosWeb.ProcesarGastoAsync(oGrabar);
+                // Llamada al servicio web para procesar el gasto
+                var procesarTaskResult = await DOP.Datos.DatosWeb.ProcesarGastoAsync(oGrabar);
+                var success = procesarTaskResult.Success;
+                var message = procesarTaskResult.Message;
+                var procesaResult = procesarTaskResult.Result;
 
                 if (success)
                     {
@@ -178,6 +182,16 @@ namespace DataObra.Documentos.Ventanas
                             }
                         }
 
+                    var escritorio = Application.Current.Windows
+                                    .OfType<DataObra.Interfaz.Ventanas.WiEscritorio>()
+                                    .FirstOrDefault();
+
+                    if (escritorio != null && procesaResult != null)
+                        {
+                        // Ejecutar en el hilo de UI del escritorio
+                        escritorio.Dispatcher.Invoke(() => escritorio.UpdatePresupuestosFromGastoResult(procesaResult));
+                        }
+
                     return true;
                     }
                 else
@@ -195,5 +209,11 @@ namespace DataObra.Documentos.Ventanas
             }
 
         }
-    }
 
+    public class ProcesarGastoRequest
+        {
+        public GastoDTO Gasto { get; set; }
+        public List<GastoDetalleDTO> Detalles { get; set; } = new List<GastoDetalleDTO>();
+        public List<int> PresupuestosAfectados { get; set; } = new List<int>();
+        }
+    }

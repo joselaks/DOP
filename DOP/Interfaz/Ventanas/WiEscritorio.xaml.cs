@@ -238,7 +238,33 @@ namespace DataObra.Interfaz.Ventanas
             //    }
             }
 
+        public void UpdatePresupuestosFromGastoResult(Biblioteca.DTO.ProcesarGastoResult result)
+            {
+            if (result == null || result.Resumenes == null) return;
 
+            // Actualiza solo presupuestos ya cargados en _presupuestos.
+            foreach (var resumen in result.Resumenes)
+                {
+                // PresupuestoDTO.ID es int? en tu modelo
+                var pres = _presupuestos.FirstOrDefault(p => p.ID.HasValue && p.ID.Value == resumen.PresupuestoID);
+                if (pres == null) continue;
+
+                // El SP devuelve Moneda = 'P' o 'D'
+                if (!string.IsNullOrEmpty(resumen.Moneda) && resumen.Moneda.Trim() == "P")
+                    {
+                    pres.EgresosTotales = resumen.TotalGasto;
+                    pres.IngresosTotales = resumen.TotalCobro;
+                    }
+                else if (!string.IsNullOrEmpty(resumen.Moneda) && resumen.Moneda.Trim() == "D")
+                    {
+                    pres.EgresosTotales1 = resumen.TotalGasto;
+                    pres.IngresosTotales1 = resumen.TotalCobro;
+                    }
+
+                // Si tus propiedades implementan INotifyPropertyChanged internamente,
+                // los bindings se refrescarán automáticamente al setearlas.
+                }
+            }
 
         }
 

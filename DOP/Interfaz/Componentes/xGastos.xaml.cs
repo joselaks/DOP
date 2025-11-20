@@ -144,8 +144,9 @@ namespace DataObra.Interfaz.Componentes
 
             try
                 {
-                // Llamada al servicio web para borrar
-                var (success, message) = await DatosWeb.BorrarGastoAsync(id);
+                // Llamada al servicio web para borrar (la nueva firma devuelve también ProcesarGastoResult)
+                var (success, message, result) = await DatosWeb.BorrarGastoAsync(id);
+
                 if (success)
                     {
                     // Eliminar de la colección local y actualizar UI
@@ -153,6 +154,20 @@ namespace DataObra.Interfaz.Componentes
                         _gastos.Remove(seleccionado);
 
                     MessageBox.Show(message ?? "Gasto eliminado correctamente.", "Eliminar", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    // Si el servicio devolvió resumenes/IDs, actualizar presupuestos en el escritorio
+                    if (result != null && ((result.PresupuestoIDs != null && result.PresupuestoIDs.Any()) || (result.Resumenes != null && result.Resumenes.Any())))
+                        {
+                        // Asegurar ejecución en el hilo UI del escritorio
+                        try
+                            {
+                            escritorio?.Dispatcher.Invoke(() => escritorio.UpdatePresupuestosFromGastoResult(result));
+                            }
+                        catch
+                            {
+                            // No impedir el flujo si la actualización visual falla; ya mostramos el mensaje de éxito.
+                            }
+                        }
                     }
                 else
                     {
