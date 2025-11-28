@@ -303,6 +303,13 @@
                     Width="110"
                     HeaderText="Tarea ID"
                     MappingName="TareaID" />
+                <syncfusion:GridCheckBoxColumn
+                    Width="80"
+                    HeaderText="Unico"
+                    MappingName="UnicoUso">
+                    
+                </syncfusion:GridCheckBoxColumn>
+        
                 <!--<syncfusion:GridTextColumn
                     Width="110"
                     HeaderText="Lista de Precios"

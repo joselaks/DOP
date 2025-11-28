@@ -3,7 +3,6 @@ using Biblioteca;
 using Biblioteca.DTO;
 using DataObra.Presupuestos.Controles;
 using DataObra.Presupuestos.Controles.SubControles;
-using DocumentFormat.OpenXml.Wordprocessing;
 using DOP;
 using DOP.Presupuestos.Clases;
 using DOP.Presupuestos.Controles;
@@ -43,13 +42,15 @@ namespace DataObra.Documentos.Ventanas
         // Guardar la referencia del encabezado original pasado al constructor
         private GastoDTO? originalEncabezado;
 
-
         public WiGasto(ObservableCollection<GastoDTO> _gastos, GastoDTO encabezado, List<GastoDetalleDTO> detalle, bool tipoGasto)
             {
             InitializeComponent();
             objeto = new Gasto(encabezado, detalle, tipoGasto);
             this.DataContext = objeto;
             gastos = _gastos;
+
+            // Guardar la referencia del encabezado original para reemplazo en la colección
+            originalEncabezado = encabezado;
 
             if (grillaEncabezado != null)
                 grillaEncabezado.DataContext = objeto.encabezado;
@@ -110,15 +111,23 @@ namespace DataObra.Documentos.Ventanas
 
         private void AgregarRegistro_Click(object sender, RoutedEventArgs e)
             {
-            // Crear un nuevo detalle con valores por defecto mínimos
+            // Crear un nuevo detalle con valores por defecto coherentes con el encabezado
             var nuevo = new GastoDetalleDTO
                 {
                 ID = 0,
-                TipoID= 'M',
+                // TipoID de detalle por defecto; si manejas tipos ('M','S', etc.), ajusta aquí
+                TipoID = '0',
+                UsuarioID = objeto.encabezado.UsuarioID,
+                CuentaID = objeto.encabezado.CuentaID,
+                Moneda = objeto.encabezado.Moneda,
+                Fecha = objeto.encabezado.FechaDoc,
+                FactorCantidad = 1.0000m,
+
                 Cantidad = 0,
                 PrecioUnitario = 0,
                 Importe = 0,
-                Descrip = string.Empty
+                Descrip = string.Empty,
+                Unidad = string.Empty
                 };
 
             // Asegurar la lista y añadir
@@ -138,7 +147,7 @@ namespace DataObra.Documentos.Ventanas
 
         private async void BtnGuardar_Click(object sender, RoutedEventArgs e)
             {
-            // Ejecuta el guardado asincrónico y cierra/indica resultado igual que en WiPres
+            // Ejecuta el guardado asincrónico y cierra/indica resultado
             if (await GuardarGastoAsync())
                 {
                 MessageBox.Show("Gasto guardado correctamente.", "Guardar", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -179,7 +188,7 @@ namespace DataObra.Documentos.Ventanas
 
                 objeto.encabezado.FechaEditado = DateTime.Now;
 
-                // Asegurar UsuarioID si existe App.IdUsuario en la app (como WiPres)
+                // Asegurar UsuarioID si existe App.IdUsuario
                 try
                     {
                     objeto.encabezado.UsuarioID = App.IdUsuario;
@@ -193,7 +202,6 @@ namespace DataObra.Documentos.Ventanas
                 Biblioteca.DTO.ProcesarGastoRequest oGrabar = objeto.EmpaquetarGasto();
 
                 // Llamada al servicio web para procesar el gasto
-                // Llamada al servicio web para procesar el gasto
                 var procesarTaskResult = await DOP.Datos.DatosWeb.ProcesarGastoAsync(oGrabar);
                 var success = procesarTaskResult.Success;
                 var message = procesarTaskResult.Message;
@@ -204,7 +212,7 @@ namespace DataObra.Documentos.Ventanas
                     // Actualiza listas para próxima ejecución (sincronizar versiones)
                     objeto.detalleLeer = objeto.detalleGrabar.Select(x => x).ToList();
 
-                    // Si fue nuevo, asignar ID y FechaC/FechaCreado si la API devolvió DocumentoID
+                    // Si fue nuevo, asignar ID y FechaCreado si la API devolvió DocumentoID
                     if ((objeto.encabezado.ID == 0) && (procesaResult?.DocumentoID ?? 0) > 0)
                         {
                         objeto.encabezado.FechaCreado = DateTime.Today;
@@ -219,18 +227,16 @@ namespace DataObra.Documentos.Ventanas
                         if (originalEncabezado != null)
                             idx = gastos.IndexOf(originalEncabezado);
 
-                        // Si no está por referencia, intentar localizar por ID (después de haber podido asignar DocumentoID)
+                        // Si no está por referencia, intentar localizar por ID
                         if (idx == -1 && objeto.encabezado.ID != 0)
                             idx = gastos.ToList().FindIndex(g => g.ID == objeto.encabezado.ID);
 
                         if (idx >= 0)
                             {
-                            // Reemplazo: la colección recibe la nueva instancia (objeto.encabezado)
                             gastos[idx] = objeto.encabezado;
                             }
                         else
                             {
-                            // Si no existía en la colección, añadirla
                             gastos.Add(objeto.encabezado);
                             }
                         }
@@ -279,7 +285,7 @@ namespace DataObra.Documentos.Ventanas
                     return;
 
                 // Obtener el item actual (la fila en la que se estaba editando)
-                var item = gridDetalle.CurrentItem as GastoDetalleDTO 
+                var item = gridDetalle.CurrentItem as GastoDetalleDTO
                            ?? gridDetalle.SelectedItem as GastoDetalleDTO;
                 if (item == null)
                     return;
@@ -305,14 +311,5 @@ namespace DataObra.Documentos.Ventanas
                 MessageBox.Show($"Error al recalcular importe: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-
-
-        }
-
-    public class ProcesarGastoRequest
-        {
-        public GastoDTO Gasto { get; set; }
-        public List<GastoDetalleDTO> Detalles { get; set; } = new List<GastoDetalleDTO>();
-        public List<int> PresupuestosAfectados { get; set; } = new List<int>();
         }
     }

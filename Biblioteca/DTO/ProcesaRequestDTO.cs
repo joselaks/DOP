@@ -34,19 +34,17 @@ namespace Biblioteca.DTO
 
     public class ProcesarGastoRequest
         {
-        public GastoDTO Gasto { get; set; }
-        public List<GastoDetalleDTO> Detalles { get; set; }
-
-        // Nueva propiedad: lista opcional de PresupuestoID a procesar (llenará dbo.TT_IntList)
-        public List<int> PresupuestosAfectados { get; set; } = new List<int>();
+        public GastoDTO Gasto { get; set; } = new();
+        public List<GastoDetalleDTO> Detalles { get; set; } = new();
+        public List<int> PresupuestosAfectados { get; set; } = new();
         }
 
     // Resultado devuelto por Servidor.Repositorios.rDocumentos.ProcesarGastoAsync
     public class ProcesarGastoResult
         {
         public int DocumentoID { get; set; }
-        public List<int> PresupuestoIDs { get; set; } = new List<int>();
-        public List<PresupuestoResumen> Resumenes { get; set; } = new List<PresupuestoResumen>();
+        public List<int> PresupuestoIDs { get; set; } = new();
+        public List<PresupuestoResumen> Resumenes { get; set; } = new();
         }
 
     public class PresupuestoResumen

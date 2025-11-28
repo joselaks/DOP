@@ -40,153 +40,139 @@ namespace Servidor.Repositorios
             }
 
         public async Task<ProcesarGastoResult> ProcesarGastoAsync(GastoDTO gasto, List<GastoDetalleDTO> detalles, List<int> presupuestosAfectados)
-        {
-            using (var db = new SqlConnection(_connectionString))
             {
-                if (gasto == null) throw new ArgumentNullException(nameof(gasto));
-                if (detalles == null) detalles = new List<GastoDetalleDTO>();
-                if (gasto.Moneda == '\0')
-                    throw new ArgumentException("Moneda del gasto es requerida.", nameof(gasto.Moneda));
+            using var db = new SqlConnection(_connectionString);
 
-                var tableDetalles = new DataTable();
-                tableDetalles.Columns.Add("ID", typeof(int));
-                tableDetalles.Columns.Add("Accion", typeof(char));
-                tableDetalles.Columns.Add("GastoID", typeof(int));
-                tableDetalles.Columns.Add("CobroID", typeof(int));
-                tableDetalles.Columns.Add("UsuarioID", typeof(int));
-                tableDetalles.Columns.Add("CuentaID", typeof(int));
-                tableDetalles.Columns.Add("TipoID", typeof(char));
-                tableDetalles.Columns.Add("PresupuestoID", typeof(int));
-                tableDetalles.Columns.Add("RubroID", typeof(string));
-                tableDetalles.Columns.Add("TareaID", typeof(string));
-                tableDetalles.Columns.Add("AuxiliarID", typeof(string));
-                tableDetalles.Columns.Add("InsumoID", typeof(string));
-                tableDetalles.Columns.Add("Descrip", typeof(string));
-                tableDetalles.Columns.Add("Unidad", typeof(string));
-                tableDetalles.Columns.Add("Cantidad", typeof(decimal));
-                tableDetalles.Columns.Add("FactorCantidad", typeof(decimal));
-                tableDetalles.Columns.Add("PrecioUnitario", typeof(decimal));
-                tableDetalles.Columns.Add("Moneda", typeof(char));
-                tableDetalles.Columns.Add("TipoCambioD", typeof(decimal));
-                tableDetalles.Columns.Add("ArticuloID", typeof(int));
-                tableDetalles.Columns.Add("Fecha", typeof(DateTime));
+            if (gasto == null) throw new ArgumentNullException(nameof(gasto));
+            if (detalles == null) detalles = new List<GastoDetalleDTO>();
+            if (gasto.Moneda == '\0')
+                throw new ArgumentException("Moneda del gasto es requerida.", nameof(gasto.Moneda));
 
-                bool esNuevo = gasto.ID == 0;
+            var tableDetalles = new DataTable();
+            tableDetalles.Columns.Add("ID", typeof(int));
+            tableDetalles.Columns.Add("Accion", typeof(char));
+            tableDetalles.Columns.Add("GastoID", typeof(int));
+            tableDetalles.Columns.Add("CobroID", typeof(int));
+            tableDetalles.Columns.Add("UsuarioID", typeof(int));
+            tableDetalles.Columns.Add("CuentaID", typeof(int));
+            tableDetalles.Columns.Add("TipoID", typeof(char));
+            tableDetalles.Columns.Add("PresupuestoID", typeof(int));
+            tableDetalles.Columns.Add("InsumoID", typeof(string));
+            tableDetalles.Columns.Add("TareaID", typeof(string));
+            tableDetalles.Columns.Add("UnicoUso", typeof(bool));
+            tableDetalles.Columns.Add("Descrip", typeof(string));
+            tableDetalles.Columns.Add("Unidad", typeof(string));
+            tableDetalles.Columns.Add("Cantidad", typeof(decimal));
+            tableDetalles.Columns.Add("FactorCantidad", typeof(decimal));
+            tableDetalles.Columns.Add("PrecioUnitario", typeof(decimal));
+            tableDetalles.Columns.Add("Moneda", typeof(char));
+            tableDetalles.Columns.Add("TipoCambioD", typeof(decimal));
+            tableDetalles.Columns.Add("ArticuloID", typeof(int));
+            tableDetalles.Columns.Add("Fecha", typeof(DateTime));
 
-                foreach (var d in detalles)
+            bool esNuevo = gasto.ID == 0;
+
+            foreach (var d in detalles)
                 {
-                    char accionChar = d.Accion == '\0' ? 'A' : d.Accion;
-                    char tipoChar = d.TipoID == '\0' ? '0' : d.TipoID;
-                    char monedaChar = gasto.Moneda;
-                    object gastoIdObj = esNuevo ? (object)DBNull.Value : (d.GastoID.HasValue ? (object)d.GastoID.Value : DBNull.Value);
-                    int usuario = d.UsuarioID;
-                    object cobroObj = d.CobroID.HasValue ? (object)d.CobroID.Value : DBNull.Value;
+                char accionChar = d.Accion == '\0' ? 'A' : d.Accion;
+                char tipoChar = d.TipoID == '\0' ? '0' : d.TipoID;
+                char monedaChar = gasto.Moneda;
 
-                    tableDetalles.Rows.Add(
-                        d.ID == 0 ? (object)DBNull.Value : d.ID,
-                        accionChar,
-                        gastoIdObj,
-                        cobroObj,
-                        usuario,
-                        d.CuentaID == 0 ? (object)DBNull.Value : d.CuentaID,
-                        tipoChar,
-                        d.PresupuestoID.HasValue ? (object)d.PresupuestoID.Value : DBNull.Value,
-                        string.IsNullOrEmpty(d.RubroID) ? (object)DBNull.Value : d.RubroID,
-                        string.IsNullOrEmpty(d.TareaID) ? (object)DBNull.Value : d.TareaID,
-                        string.IsNullOrEmpty(d.AuxiliarID) ? (object)DBNull.Value : d.AuxiliarID,
-                        string.IsNullOrEmpty(d.InsumoID) ? (object)DBNull.Value : d.InsumoID,
-                        string.IsNullOrEmpty(d.Descrip) ? (object)DBNull.Value : d.Descrip,
-                        string.IsNullOrEmpty(d.Unidad) ? (object)DBNull.Value : d.Unidad,
-                        d.Cantidad,
-                        d.FactorCantidad,
-                        d.PrecioUnitario,
-                        monedaChar,
-                        d.TipoCambioD,
-                        d.ArticuloID.HasValue ? (object)d.ArticuloID.Value : DBNull.Value,
-                        d.Fecha.HasValue ? (object)d.Fecha.Value : (object)DBNull.Value
-                    );
-                    }
+                object gastoIdObj = esNuevo
+                    ? (object)DBNull.Value
+                    : (d.GastoID.HasValue ? (object)d.GastoID.Value : DBNull.Value);
 
-                // Validación TVP Detalles
-                var filasConMonedaNull = tableDetalles.Rows.Cast<DataRow>().Where(r => r.IsNull("Moneda")).ToList();
-                if (filasConMonedaNull.Any())
-                    throw new Exception("Hay filas en el TVP con Moneda = NULL. Revisa los detalles antes de llamar al procedimiento.");
+                object cobroObj = d.CobroID.HasValue ? (object)d.CobroID.Value : DBNull.Value;
 
-                var parameters = new DynamicParameters();
-                parameters.Add("@ID", gasto.ID == 0 ? (object)DBNull.Value : gasto.ID, DbType.Int32);
-                parameters.Add("@CuentaID", gasto.CuentaID == 0 ? (object)DBNull.Value : (short)gasto.CuentaID, DbType.Int16);
-                parameters.Add("@UsuarioID", gasto.UsuarioID, DbType.Int32);
-                parameters.Add("@TipoID", gasto.TipoID, DbType.Byte);
-                parameters.Add("@FechaDoc", gasto.FechaDoc, DbType.Date);
-                parameters.Add("@FechaCreado", gasto.FechaCreado, DbType.Date);
-                parameters.Add("@FechaEditado", gasto.FechaEditado, DbType.Date);
-                parameters.Add("@Entidad", gasto.Entidad, DbType.String);
-                parameters.Add("@Documento", gasto.Documento, DbType.String);
-                parameters.Add("@Descrip", gasto.Descrip, DbType.String);
-                parameters.Add("@Notas", gasto.Notas, DbType.String);
-                parameters.Add("@Importe", gasto.Importe, DbType.Decimal);
-                parameters.Add("@Moneda", gasto.Moneda, DbType.AnsiStringFixedLength, size: 1);
-                parameters.Add("@TipoCambioD", gasto.TipoCambioD, DbType.Decimal);
-
-                // Opción A (recomendada): enviar @Presupuestos SOLO si la lista tiene elementos
-                if (presupuestosAfectados != null && presupuestosAfectados.Any())
-                {
-                    var tablePresupuestos = new DataTable();
-                    tablePresupuestos.Columns.Add("ID", typeof(int));
-                    foreach (var pid in presupuestosAfectados.Distinct())
-                        tablePresupuestos.Rows.Add(pid);
-
-                    parameters.Add("@Presupuestos", tablePresupuestos.AsTableValuedParameter("dbo.TT_IntList"));
+                tableDetalles.Rows.Add(
+                    d.ID == 0 ? (object)DBNull.Value : d.ID,
+                    accionChar,
+                    gastoIdObj,
+                    cobroObj,
+                    d.UsuarioID,
+                    d.CuentaID == 0 ? (object)DBNull.Value : d.CuentaID,
+                    tipoChar,
+                    d.PresupuestoID.HasValue ? (object)d.PresupuestoID.Value : DBNull.Value,
+                    string.IsNullOrEmpty(d.InsumoID) ? (object)DBNull.Value : d.InsumoID,
+                    string.IsNullOrEmpty(d.TareaID) ? (object)DBNull.Value : d.TareaID,
+                    d.UnicoUso.HasValue ? (object)d.UnicoUso.Value : DBNull.Value,
+                    string.IsNullOrEmpty(d.Descrip) ? (object)DBNull.Value : d.Descrip,
+                    string.IsNullOrEmpty(d.Unidad) ? (object)DBNull.Value : d.Unidad,
+                    d.Cantidad,
+                    d.FactorCantidad,
+                    d.PrecioUnitario,
+                    monedaChar,
+                    d.TipoCambioD,
+                    d.ArticuloID.HasValue ? (object)d.ArticuloID.Value : DBNull.Value,
+                    d.Fecha.HasValue ? (object)d.Fecha.Value : (object)DBNull.Value
+                );
                 }
-                // Opción B (si el SP exige siempre el parámetro): enviar un TVP vacío cuando la lista es null/empty
-                // else
-                // {
-                //     var tablePresupuestosEmpty = new DataTable();
-                //     tablePresupuestosEmpty.Columns.Add("ID", typeof(int));
-                //     parameters.Add("@Presupuestos", tablePresupuestosEmpty.AsTableValuedParameter("dbo.TT_IntList"));
-                // }
 
-                // Siempre enviar detalles
-                parameters.Add("@Detalles", tableDetalles.AsTableValuedParameter("dbo.TT_GastoDetalle"));
+            var filasConMonedaNull = tableDetalles.Rows.Cast<DataRow>().Where(r => r.IsNull("Moneda")).ToList();
+            if (filasConMonedaNull.Any())
+                throw new Exception("Hay filas en el TVP con Moneda = NULL.");
 
-                try
+            var parameters = new DynamicParameters();
+            parameters.Add("@ID", gasto.ID == 0 ? (object)DBNull.Value : gasto.ID, DbType.Int32);
+            parameters.Add("@CuentaID", gasto.CuentaID == 0 ? (object)DBNull.Value : (short)gasto.CuentaID, DbType.Int16);
+            parameters.Add("@UsuarioID", gasto.UsuarioID, DbType.Int32);
+            parameters.Add("@TipoID", gasto.TipoID, DbType.Byte);
+            parameters.Add("@FechaDoc", gasto.FechaDoc, DbType.Date);
+            parameters.Add("@FechaCreado", gasto.FechaCreado, DbType.Date);
+            parameters.Add("@FechaEditado", gasto.FechaEditado, DbType.Date);
+            parameters.Add("@Entidad", gasto.Entidad, DbType.String);
+            parameters.Add("@Documento", gasto.Documento, DbType.String);
+            parameters.Add("@Descrip", gasto.Descrip, DbType.String);
+            parameters.Add("@Notas", gasto.Notas, DbType.String);
+            parameters.Add("@Importe", gasto.Importe, DbType.Decimal);
+            parameters.Add("@Moneda", gasto.Moneda, DbType.AnsiStringFixedLength, size: 1);
+            parameters.Add("@TipoCambioD", gasto.TipoCambioD, DbType.Decimal);
+
+            if (presupuestosAfectados != null && presupuestosAfectados.Any())
                 {
-                    using var multi = await db.QueryMultipleAsync(
-                        "ProcesarGasto",
-                        parameters,
-                        commandType: CommandType.StoredProcedure);
+                var tablePresupuestos = new DataTable();
+                tablePresupuestos.Columns.Add("ID", typeof(int));
+                foreach (var pid in presupuestosAfectados.Distinct())
+                    tablePresupuestos.Rows.Add(pid);
+                parameters.Add("@Presupuestos", tablePresupuestos.AsTableValuedParameter("dbo.TT_IntList"));
+                }
 
-                    int documentoId = 0;
-                    if (!multi.IsConsumed)
-                        documentoId = await multi.ReadFirstOrDefaultAsync<int>();
+            parameters.Add("@Detalles", tableDetalles.AsTableValuedParameter("dbo.TT_GastoDetalle"));
 
-                    List<int> presupuestoIds = new List<int>();
-                    if (!multi.IsConsumed)
+            try
+                {
+                using var multi = await db.QueryMultipleAsync("ProcesarGasto", parameters, commandType: CommandType.StoredProcedure);
+
+                int documentoId = 0;
+                if (!multi.IsConsumed)
+                    documentoId = await multi.ReadFirstOrDefaultAsync<int>();
+
+                List<int> presupuestoIds = new();
+                if (!multi.IsConsumed)
                     {
-                        try { presupuestoIds = (await multi.ReadAsync<int>()).ToList(); }
-                        catch { presupuestoIds = new List<int>(); }
+                    try { presupuestoIds = (await multi.ReadAsync<int>()).ToList(); }
+                    catch { presupuestoIds = new List<int>(); }
                     }
 
-                    List<PresupuestoResumen> resumenes = new List<PresupuestoResumen>();
-                    if (!multi.IsConsumed)
+                List<PresupuestoResumen> resumenes = new();
+                if (!multi.IsConsumed)
                     {
-                        try { resumenes = (await multi.ReadAsync<PresupuestoResumen>()).ToList(); }
-                        catch { resumenes = new List<PresupuestoResumen>(); }
+                    try { resumenes = (await multi.ReadAsync<PresupuestoResumen>()).ToList(); }
+                    catch { resumenes = new List<PresupuestoResumen>(); }
                     }
 
-                    return new ProcesarGastoResult
+                return new ProcesarGastoResult
                     {
-                        DocumentoID = documentoId,
-                        PresupuestoIDs = presupuestoIds,
-                        Resumenes = resumenes
+                    DocumentoID = documentoId,
+                    PresupuestoIDs = presupuestoIds,
+                    Resumenes = resumenes
                     };
                 }
-                catch (SqlException ex)
+            catch (SqlException ex)
                 {
-                    throw new Exception($"Error al procesar el gasto: {ex.Message}", ex);
+                throw new Exception($"Error al procesar el gasto: {ex.Message}", ex);
                 }
             }
-        }
 
 
         public async Task<List<GastoDetalleDTO>> ObtenerDetalleGastoAsync(int GastoID, bool esCobro = false)
