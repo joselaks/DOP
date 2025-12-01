@@ -46,6 +46,7 @@ builder.Services.AddSingleton(new rUsuarios(connectionString));
 builder.Services.AddSingleton(new rPresupuestos(connectionString));
 builder.Services.AddSingleton(new rInsumos(connectionString));
 builder.Services.AddSingleton(new rDocumentos(connectionString));
+builder.Services.AddSingleton(new rControl(connectionString));
 
 // Configurar servicios de Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -382,6 +383,32 @@ doc.MapDelete("/gastos/{gastoID:int}", async (int gastoID, [FromQuery(Name = "pr
     catch (Exception ex)
         {
         return Results.BadRequest(new { Success = false, Message = ex.Message });
+        }
+}).RequireAuthorization();
+
+
+#endregion
+
+#region Grupo de rutas: /cont
+
+var cont = app.MapGroup("/control");
+
+// Obtener Conceptos, Relaciones y DocumentosDet por PresupuestoID
+cont.MapGet("/presupuestos/{presupuestoID:int}/conceptos-relaciones-detalles", async (int presupuestoID, rControl repo) =>
+{
+    try
+        {
+        var data = await repo.ObtenerConceptosRelacionesYDetallesAsync(presupuestoID);
+        return Results.Ok(new
+            {
+            Conceptos = data.Conceptos,
+            Relaciones = data.Relaciones,
+            Detalles = data.Detalles
+            });
+        }
+    catch (Exception ex)
+        {
+        return Results.BadRequest(new { Message = ex.Message });
         }
 }).RequireAuthorization();
 

@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -445,7 +446,32 @@ public static async Task<(bool Success, string Message, Biblioteca.DTO.ProcesarG
                 }
             }
 
-    }
+        public static async Task<(bool Success, string Message, List<ConceptoDTO> Conceptos, List<RelacionDTO> Relaciones, List<GastoDetalleDTO> Detalles)>
+    ObtenerConceptosRelacionesYDetallesAsync(int presupuestoID)
+            {
+            string url = $"{App.BaseUrl}control/presupuestos/{presupuestoID}/conceptos-relaciones-detalles";
+
+            var (success, message, data) = await ExecuteRequestAsync<ConceptosRelacionesDetallesResponse>(
+                () => httpClient.GetAsync(url),
+                $"Obtener conceptos, relaciones y detalles del presupuesto {presupuestoID}"
+            );
+
+            // Normalizar listas vacías
+            var conceptos = data?.Conceptos ?? new List<ConceptoDTO>();
+            var relaciones = data?.Relaciones ?? new List<RelacionDTO>();
+            var detalles = data?.Detalles ?? new List<GastoDetalleDTO>();
+
+            // Calcular Importe en cliente según tu regla
+            foreach (var d in detalles)
+                {
+                d.Importe = Math.Round(d.Cantidad * d.PrecioUnitario, 2, MidpointRounding.AwayFromZero);
+                }
+
+            return (success, message, conceptos, relaciones, detalles);
+            }
+
+
+        }
 
     public class ProcesarArticulosPorListaRequest
         {
@@ -496,4 +522,17 @@ public static async Task<(bool Success, string Message, Biblioteca.DTO.ProcesarG
         public decimal TotalGasto { get; set; }
         public decimal TotalCobro { get; set; }
         }
+    // DTO interno para deserializar la respuesta del endpoint /control
+    public class ConceptosRelacionesDetallesResponse
+        {
+        [JsonPropertyName("Conceptos")]
+        public List<ConceptoDTO>? Conceptos { get; set; }
+
+        [JsonPropertyName("Relaciones")]
+        public List<RelacionDTO>? Relaciones { get; set; }
+
+        [JsonPropertyName("Detalles")]
+        public List<GastoDetalleDTO>? Detalles { get; set; }
+        }
+
     }
