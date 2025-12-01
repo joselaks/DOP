@@ -21,7 +21,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Biblioteca; // <-- agregado para ControlPresupuesto
+using Biblioteca;
+using Syncfusion.UI.Xaml.TreeGrid; // <-- agregado para ControlPresupuesto
 
 namespace DataObra.Presupuestos.Ventanas
     {
@@ -44,9 +45,22 @@ namespace DataObra.Presupuestos.Ventanas
             InitializeComponent();
             _encabezado = presupuestosRef;
             grillaArbol.ChildPropertyName = "Inferiores";
+            this.grillaArbol.QueryCoveredRange += OnQueryCoveredRange;
             Loaded += WiControlPres_Loaded;
 
             // opcional: seleccionar el primero si existe
+            }
+
+        private void OnQueryCoveredRange(object? sender, TreeGridQueryCoveredRangeEventArgs e)
+            {
+            var record = e.Record as Nodo;
+            if (record != null && record.Tipo == "R")
+                {
+                //Customize here based on your requirement
+                e.Range = new TreeGridCoveredCellInfo(2, 7, e.RowColumnIndex.RowIndex);
+                e.Handled = true;
+                }
+
             }
 
         private async void WiControlPres_Loaded(object sender, RoutedEventArgs e)

@@ -53,9 +53,13 @@ namespace Bibioteca.Clases
         private decimal subcontratos4;
         private decimal otros4;
 
+        // Nuevos campos solicitados
+        private decimal pur1Real;
+        private decimal cantidadReal;
+        private decimal importeReal1;
+
         private ObservableCollection<Nodo> inferiores;
 
-        // Seguimiento de adjuntos profundos
         private readonly HashSet<Nodo> _deepAttachedNodes = new();
         private readonly Dictionary<Nodo, ObservableCollection<Nodo>?> _deepAttachedCollections = new();
 
@@ -69,7 +73,6 @@ namespace Bibioteca.Clases
         public string Tipo { get => tipo; set { tipo = value; OnPropertyChanged(nameof(Tipo)); } }
         public decimal Cantidad { get => cantidad; set { cantidad = value; OnPropertyChanged(nameof(Cantidad)); } }
         public decimal Factor { get => factor; set { factor = value; OnPropertyChanged(nameof(Factor)); } }
-        // Moneda 1
         public decimal PU1 { get => pu1; set { pu1 = value; OnPropertyChanged(nameof(PU1)); } }
         public decimal PU1Consolidado { get => pu1Consolidado; set { pu1Consolidado = value; OnPropertyChanged(nameof(PU1Consolidado)); } }
         public decimal Importe1 { get => importe1; set { importe1 = value; OnPropertyChanged(nameof(Importe1)); } }
@@ -79,7 +82,6 @@ namespace Bibioteca.Clases
         public decimal Equipos1 { get => equipos1; set { equipos1 = value; OnPropertyChanged(nameof(Equipos1)); } }
         public decimal Subcontratos1 { get => subcontratos1; set { subcontratos1 = value; OnPropertyChanged(nameof(Subcontratos1)); } }
         public decimal Otros1 { get => otros1; set { otros1 = value; OnPropertyChanged(nameof(Otros1)); } }
-        // Moneda 2 
         public decimal PU2 { get => pu2; set { pu2 = value; OnPropertyChanged(nameof(PU2)); } }
         public decimal Importe2 { get => importe2; set { importe2 = value; OnPropertyChanged(nameof(Importe2)); } }
         public decimal Materiales2 { get => materiales2; set { materiales2 = value; OnPropertyChanged(nameof(Materiales2)); } }
@@ -87,7 +89,6 @@ namespace Bibioteca.Clases
         public decimal Equipos2 { get => equipos2; set { equipos2 = value; OnPropertyChanged(nameof(Equipos2)); } }
         public decimal Subcontratos2 { get => subcontratos2; set { subcontratos2 = value; OnPropertyChanged(nameof(Subcontratos2)); } }
         public decimal Otros2 { get => otros2; set { otros2 = value; OnPropertyChanged(nameof(Otros2)); } }
-        // Moneda 3 
         public decimal PU3 { get => pu3; set { pu3 = value; OnPropertyChanged(nameof(PU3)); } }
         public decimal Importe3 { get => importe3; set { importe3 = value; OnPropertyChanged(nameof(Importe3)); } }
         public decimal Materiales3 { get => materiales3; set { materiales3 = value; OnPropertyChanged(nameof(Materiales3)); } }
@@ -95,22 +96,27 @@ namespace Bibioteca.Clases
         public decimal Equipos3 { get => equipos3; set { equipos3 = value; OnPropertyChanged(nameof(Equipos3)); } }
         public decimal Subcontratos3 { get => subcontratos3; set { subcontratos3 = value; OnPropertyChanged(nameof(Subcontratos3)); } }
         public decimal Otros3 { get => otros3; set { otros3 = value; OnPropertyChanged(nameof(Otros3)); } }
-        // Moneda 4 
         public decimal PU4 { get => pu4; set { pu4 = value; OnPropertyChanged(nameof(PU4)); } }
         public decimal Importe4 { get => importe4; set { importe4 = value; OnPropertyChanged(nameof(Importe4)); } }
         public decimal Materiales4 { get => materiales4; set { materiales4 = value; OnPropertyChanged(nameof(Materiales4)); } }
-        public decimal ManodeObra4 { get => manodeobra4; set { manodeobra4 = value; OnPropertyChanged(nameof(ManodeObra4)); } } // fix
+        public decimal ManodeObra4 { get => manodeobra4; set { manodeobra4 = value; OnPropertyChanged(nameof(ManodeObra4)); } }
         public decimal Equipos4 { get => equipos4; set { equipos4 = value; OnPropertyChanged(nameof(Equipos4)); } }
-        public decimal Subcontratos4 { get => subcontratos4; set { subcontratos4 = value; OnPropertyChanged(nameof(Subcontratos4)); } } // fix
+        public decimal Subcontratos4 { get => subcontratos4; set { subcontratos4 = value; OnPropertyChanged(nameof(Subcontratos4)); } }
         public decimal Otros4 { get => otros4; set { otros4 = value; OnPropertyChanged(nameof(Otros4)); } }
 
-        public bool HasItems => Inferiores != null && Inferiores.Count > 0;
+        // Nuevas propiedades en el formato solicitado
+        public decimal Pur1 { get => pur1Real; set { pur1Real = value; RecalcularImporteReal1(); OnPropertyChanged(nameof(Pur1)); } }
+        public decimal CantidadReal { get => cantidadReal; set { cantidadReal = value; RecalcularImporteReal1(); OnPropertyChanged(nameof(CantidadReal)); } }
+        public decimal ImporteReal1 { get => importeReal1; private set { importeReal1 = value; OnPropertyChanged(nameof(ImporteReal1)); } }
 
-        // Propagación profunda: true si algún descendiente (no solo hijo directo) tiene PU1/PU2 != 0
+        private void RecalcularImporteReal1()
+            {
+            ImporteReal1 = Math.Round(pur1Real * cantidadReal, 2, MidpointRounding.AwayFromZero);
+            }
+
+        public bool HasItems => Inferiores != null && Inferiores.Count > 0;
         public bool HasItem1 => Inferiores != null && Inferiores.Any(i => i != null && (i.PU1 != 0m || i.HasItem1));
         public bool HasItem2 => Inferiores != null && Inferiores.Any(i => i != null && (i.PU2 != 0m || i.HasItem2));
-        //public bool HasItem3 => Inferiores != null && Inferiores.Any(i => i != null && (i.PU3 != 0m || i.HasItem3));
-
         public Nodo Copia() => (Nodo)this.MemberwiseClone();
 
         public ObservableCollection<Nodo> Inferiores
@@ -136,38 +142,27 @@ namespace Bibioteca.Clases
                 OnPropertyChanged(nameof(HasItems));
                 OnPropertyChanged(nameof(HasItem1));
                 OnPropertyChanged(nameof(HasItem2));
-                //OnPropertyChanged(nameof(HasItem3));
                 }
             }
 
         private void Inferiores_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
             {
-            // Adjuntar/detachar handlers para items añadidos o eliminados (nivel inmediato)
             if (e.NewItems != null)
                 {
                 foreach (var obj in e.NewItems)
-                    {
-                    if (obj is Nodo n)
-                        AttachHandlersDeep(n);
-                    }
+                    if (obj is Nodo n) AttachHandlersDeep(n);
                 }
-
             if (e.OldItems != null)
                 {
                 foreach (var obj in e.OldItems)
-                    {
-                    if (obj is Nodo n)
-                        DetachHandlersDeep(n);
-                    }
+                    if (obj is Nodo n) DetachHandlersDeep(n);
                 }
 
             OnPropertyChanged(nameof(HasItems));
             OnPropertyChanged(nameof(HasItem1));
             OnPropertyChanged(nameof(HasItem2));
-            //OnPropertyChanged(nameof(HasItem3));
             }
 
-        // Propagación profunda: adjuntar recursivamente
         private void AttachHandlersToInferiores(ObservableCollection<Nodo> list)
             {
             if (list == null) return;
@@ -175,7 +170,6 @@ namespace Bibioteca.Clases
                 AttachHandlersDeep(n);
             }
 
-        // Propagación profunda: desadjuntar recursivamente
         private void DetachHandlersFromInferiores(ObservableCollection<Nodo> list)
             {
             if (list == null) return;
@@ -187,26 +181,19 @@ namespace Bibioteca.Clases
             {
             if (node == null) return;
 
-            // Suscribirse al PropertyChanged del nodo si no lo está
             if (_deepAttachedNodes.Add(node))
-                {
                 node.PropertyChanged += Inferior_PropertyChanged;
-                }
 
-            // Vigilar cambios en su colección Inferiores
             var coll = node.Inferiores;
             if (!_deepAttachedCollections.TryGetValue(node, out var current) || !ReferenceEquals(current, coll))
                 {
                 if (current != null)
                     current.CollectionChanged -= ChildInferiores_CollectionChanged;
-
                 if (coll != null)
                     coll.CollectionChanged += ChildInferiores_CollectionChanged;
-
                 _deepAttachedCollections[node] = coll;
                 }
 
-            // Recursión
             if (coll != null)
                 {
                 foreach (var child in coll)
@@ -218,13 +205,9 @@ namespace Bibioteca.Clases
             {
             if (node == null) return;
 
-            // Desuscribirse del PropertyChanged del nodo
             if (_deepAttachedNodes.Remove(node))
-                {
                 node.PropertyChanged -= Inferior_PropertyChanged;
-                }
 
-            // Desuscribirse de cambios de su colección y procesar recursivamente
             if (_deepAttachedCollections.TryGetValue(node, out var coll))
                 {
                 if (coll != null)
@@ -237,7 +220,6 @@ namespace Bibioteca.Clases
                 }
             }
 
-        // Handler para cambios en colecciones Inferiores de cualquier descendiente
         private void ChildInferiores_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
             {
             if (e.NewItems != null)
@@ -251,10 +233,8 @@ namespace Bibioteca.Clases
                     if (obj is Nodo n) DetachHandlersDeep(n);
                 }
 
-            // Cualquier cambio estructural puede afectar a HasItemX
             OnPropertyChanged(nameof(HasItem1));
             OnPropertyChanged(nameof(HasItem2));
-            //OnPropertyChanged(nameof(HasItem3));
             }
 
         private void Inferior_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -262,15 +242,10 @@ namespace Bibioteca.Clases
             if (string.IsNullOrEmpty(e.PropertyName))
                 return;
 
-            // Cualquier cambio relevante en un descendiente dispara actualización
             if (e.PropertyName == nameof(PU1) || e.PropertyName == nameof(HasItem1) || e.PropertyName == nameof(Inferiores))
                 OnPropertyChanged(nameof(HasItem1));
-
             if (e.PropertyName == nameof(PU2) || e.PropertyName == nameof(HasItem2) || e.PropertyName == nameof(Inferiores))
                 OnPropertyChanged(nameof(HasItem2));
-
-            //if (e.PropertyName == nameof(PU3) || e.PropertyName == nameof(HasItem3) || e.PropertyName == nameof(Inferiores))
-            //    OnPropertyChanged(nameof(HasItem3));
             }
         }
     }
