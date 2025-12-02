@@ -168,7 +168,7 @@
 
                             <syncfusion:TreeGridTextColumn
                                 Width="50"
-                                IsHidden="True"
+                                IsHidden="False"
                                 MappingName="ID" />
 
                             <syncfusion:TreeGridTextColumn

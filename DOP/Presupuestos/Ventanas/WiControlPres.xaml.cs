@@ -147,7 +147,7 @@ namespace DataObra.Presupuestos.Ventanas
 
         private void grillaArbol_CurrentCellEndEdit(object sender, Syncfusion.UI.Xaml.Grid.CurrentCellEndEditEventArgs e)
             {
-
+            _control.RecalculoCompleto();
             }
 
         private void grillaArbol_KeyDown(object sender, KeyEventArgs e)

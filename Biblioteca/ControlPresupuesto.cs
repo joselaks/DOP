@@ -17,12 +17,17 @@ namespace Biblioteca
         public ObservableCollection<Nodo> Tareas { get; private set; } = new();
         public ObservableCollection<Nodo> Auxiliares { get; private set; } = new();
 
+        // NUEVO: caché de detalles para consultas de InsumoID
+        private List<GastoDetalleDTO> _detallesRelacionados = new();
+
         // Construye el árbol base y agrega el Rubro "Insumos no imputados"
         public void Construir(List<ConceptoDTO> conceptos, List<RelacionDTO> relaciones, List<GastoDetalleDTO> detalles)
             {
             if (conceptos == null) conceptos = new List<ConceptoDTO>();
             if (relaciones == null) relaciones = new List<RelacionDTO>();
             if (detalles == null) detalles = new List<GastoDetalleDTO>();
+
+            _detallesRelacionados = detalles;
 
             // 1) Armar árbol como en Presupuesto.generaPresupuesto (raíz = "0")
             Arbol.Clear();
@@ -68,11 +73,15 @@ namespace Biblioteca
         // NUEVO: Procedimiento similar a Presupuesto.RecalculoCompleto
         public void RecalculoCompleto()
             {
-            Recalcular(Arbol, true, 0);
+            ArmarArbol(Arbol, true, 0);
+            var cantidadesPorInsumo = ObtenerIdsInsumosDeDetalles();
+            var idsSolo = cantidadesPorInsumo.Keys.ToHashSet(StringComparer.OrdinalIgnoreCase);
+            var nodosConGastos = SeleccionarNodosConInferioresEnIds(Arbol, idsSolo, incluirDescendientes: true);
+
             }
 
         // Recálculo recursivo (basado en Presupuesto.recalculo)
-        private void Recalcular(IEnumerable<Nodo> items, bool inicio, decimal factorSup)
+        private void ArmarArbol(IEnumerable<Nodo> items, bool inicio, decimal factorSup)
             {
             int orden = 1;
 
@@ -90,7 +99,7 @@ namespace Biblioteca
                     if (item.Sup)
                         factorSup = item.Cantidad;
 
-                    Recalcular(item.Inferiores, false, factorSup * item.Cantidad);
+                    ArmarArbol(item.Inferiores, false, factorSup * item.Cantidad);
 
                     item.Factor = factorSup;
 
@@ -109,6 +118,86 @@ namespace Biblioteca
                 if (!item.HasItems)
                     item.Factor = factorSup;
                 }
+            }
+
+        // Suma de Cantidad por cada InsumoID presente en los detalles
+        private Dictionary<string, decimal> ObtenerIdsInsumosDeDetalles()
+            {
+            var resultado = new Dictionary<string, decimal>(StringComparer.OrdinalIgnoreCase);
+
+            if (_detallesRelacionados == null || _detallesRelacionados.Count == 0)
+                return resultado;
+
+            foreach (var d in _detallesRelacionados)
+                {
+                var id = d?.InsumoID?.Trim();
+                if (string.IsNullOrWhiteSpace(id)) continue;
+
+                // Acumular cantidad (puede venir en distintas filas con mismo InsumoID)
+                if (resultado.TryGetValue(id, out var acum))
+                    resultado[id] = acum + d.Cantidad;
+                else
+                    resultado[id] = d.Cantidad;
+                }
+
+            return resultado;
+            }
+
+        // Nodos con CantidadReal != 0 y al menos un inferior (hijo o descendiente) cuyo ID ∈ idsInsumos.
+        private static List<Nodo> SeleccionarNodosConInferioresEnIds(IEnumerable<Nodo> raiz, HashSet<string> idsInsumos, bool incluirDescendientes = true)
+            {
+            var resultado = new List<Nodo>();
+            if (raiz == null || idsInsumos == null || idsInsumos.Count == 0) return resultado;
+
+            foreach (var n in raiz)
+                {
+                if (n == null) continue;
+
+                bool tieneInferiorEnIds = false;
+
+                if (n.Inferiores != null && n.Inferiores.Count > 0)
+                    {
+                    if (incluirDescendientes)
+                        {
+                        tieneInferiorEnIds = n.Inferiores.Any(h =>
+                            h != null && (
+                                (!string.IsNullOrWhiteSpace(h.ID) && idsInsumos.Contains(h.ID)) ||
+                                SubarbolContieneId(h, idsInsumos)
+                            ));
+                        }
+                    else
+                        {
+                        tieneInferiorEnIds = n.Inferiores.Any(h =>
+                            h != null && !string.IsNullOrWhiteSpace(h.ID) && idsInsumos.Contains(h.ID));
+                        }
+                    }
+
+                if (n.CantidadReal != 0m && tieneInferiorEnIds)
+                    resultado.Add(n);
+
+                // Seguir recorriendo el árbol para encontrar otros candidatos
+                if (n.Inferiores != null && n.Inferiores.Count > 0)
+                    resultado.AddRange(SeleccionarNodosConInferioresEnIds(n.Inferiores, idsInsumos, incluirDescendientes));
+                }
+
+            return resultado;
+            }
+
+        private static bool SubarbolContieneId(Nodo nodo, HashSet<string> idsInsumos)
+            {
+            if (nodo == null || nodo.Inferiores == null || nodo.Inferiores.Count == 0) return false;
+
+            foreach (var h in nodo.Inferiores)
+                {
+                if (h == null) continue;
+                if (!string.IsNullOrWhiteSpace(h.ID) && idsInsumos.Contains(h.ID))
+                    return true;
+
+                if (SubarbolContieneId(h, idsInsumos))
+                    return true;
+                }
+
+            return false;
             }
 
 
