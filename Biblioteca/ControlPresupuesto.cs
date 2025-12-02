@@ -4,23 +4,24 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.ComponentModel;
 
 namespace Biblioteca
     {
-    // Genera un árbol de presupuesto para control, agregando el Rubro "Insumos no imputados"
     public class ControlPresupuesto : ObjetoNotificable
         {
         public ObservableCollection<Nodo> Arbol { get; private set; } = new();
 
-        // Colecciones derivadas (como en Presupuesto)
         public ObservableCollection<Nodo> Rubros { get; private set; } = new();
         public ObservableCollection<Nodo> Tareas { get; private set; } = new();
         public ObservableCollection<Nodo> Auxiliares { get; private set; } = new();
 
-        // NUEVO: caché de detalles para consultas de InsumoID
         private List<GastoDetalleDTO> _detallesRelacionados = new();
 
-        // Construye el árbol base y agrega el Rubro "Insumos no imputados"
+        // NUEVO: control de recálculo y nodos observados
+        private bool _recalcEnProgreso = false;
+        private readonly HashSet<Nodo> _nodosObservados = new();
+
         public void Construir(List<ConceptoDTO> conceptos, List<RelacionDTO> relaciones, List<GastoDetalleDTO> detalles)
             {
             if (conceptos == null) conceptos = new List<ConceptoDTO>();
@@ -28,8 +29,6 @@ namespace Biblioteca
             if (detalles == null) detalles = new List<GastoDetalleDTO>();
 
             _detallesRelacionados = detalles;
-
-            // 1) Armar árbol como en Presupuesto.generaPresupuesto (raíz = "0")
             Arbol.Clear();
 
             var relacionesRaiz = relaciones
@@ -54,38 +53,76 @@ namespace Biblioteca
                     Inferiores = new ObservableCollection<Nodo>()
                     };
 
-                // Hijos
                 var hijos = GetElementosHijos(nodoRubro, conceptos, relaciones, 1);
                 if (hijos != null && hijos.Count > 0)
-                    {
                     nodoRubro.Inferiores = new ObservableCollection<Nodo>(hijos);
-                    }
 
                 Arbol.Add(nodoRubro);
                 }
 
-            // 2) Agregar rubro "Insumos no imputados" con un T por cada naturaleza en detalles.TipoID
             AgregarInsumosNoImputados(detalles);
 
+            // Recálculo inicial
             RecalculoCompleto();
 
+            // NUEVO: enganchar eventos
+            AdjuntarEventosArbol();
             }
 
-        // NUEVO: Procedimiento similar a Presupuesto.RecalculoCompleto
-        public void RecalculoCompleto()
+        // NUEVO: recálculo completo público reutilizable
+        public void RecalcularRedistribucion()
             {
-            var cantidadesPorInsumo = ObtenerIdsInsumosDeDetalles();
-            var idsSolo = cantidadesPorInsumo.Keys.ToHashSet(StringComparer.OrdinalIgnoreCase);
-            var nodosConGastos = SeleccionarNodosConInferioresEnIds(Arbol, idsSolo, incluirDescendientes: true);
-            RedistribuirCantidadesPorInsumo(cantidadesPorInsumo, nodosConGastos);
-            AsignarPrecioReal();
-            CalcularArbol(Arbol, true, 0);
+            if (_recalcEnProgreso) return;
+            try
+                {
+                _recalcEnProgreso = true;
+                var cantidadesPorInsumo = ObtenerIdsInsumosDeDetalles();
+                var idsSolo = cantidadesPorInsumo.Keys.ToHashSet(StringComparer.OrdinalIgnoreCase);
+                var nodosConGastos = SeleccionarNodosConInferioresEnIds(Arbol, idsSolo, incluirDescendientes: true);
+                RedistribuirCantidadesPorInsumo(cantidadesPorInsumo, nodosConGastos);
+                AsignarPrecioReal();
+                CalcularArbol(Arbol, true, 0);
+                }
+            finally
+                {
+                _recalcEnProgreso = false;
+                }
+            }
 
+        // Recalculo inicial (retiene nombre original para compatibilidad interna)
+        public void RecalculoCompleto() => RecalcularRedistribucion();
+
+        // NUEVO: enganchar eventos (solo una vez por nodo)
+        private void AdjuntarEventosArbol()
+            {
+            foreach (var raiz in Arbol)
+                AdjuntarEventosNodoRecursivo(raiz);
+            }
+
+        private void AdjuntarEventosNodoRecursivo(Nodo n)
+            {
+            if (n == null || !_nodosObservados.Add(n)) return;
+            if (n is INotifyPropertyChanged inpc)
+                inpc.PropertyChanged += Nodo_PropertyChanged;
+
+            if (n.Inferiores != null)
+                foreach (var h in n.Inferiores)
+                    AdjuntarEventosNodoRecursivo(h);
+            }
+
+        // Handler: si cambia CantidadReal de tarea (Tipo="T"), recalcular redistribución
+        private void Nodo_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+            {
+            if (sender is not Nodo nodo) return;
+            if (_recalcEnProgreso) return;
+            if (e.PropertyName != nameof(Nodo.CantidadReal)) return;
+            if (!string.Equals(nodo.Tipo, "T", StringComparison.OrdinalIgnoreCase)) return;
+
+            RecalcularRedistribucion();
             }
 
         private void AsignarPrecioReal()
             {
-            // 1) PU promedio ponderado por InsumoID = suma(Cantidad * PrecioUnitario) / suma(Cantidad)
             var acumuladores = new Dictionary<string, (decimal cant, decimal imp)>(StringComparer.OrdinalIgnoreCase);
 
             if (_detallesRelacionados != null && _detallesRelacionados.Count > 0)
@@ -94,7 +131,6 @@ namespace Biblioteca
                     {
                     var id = d?.InsumoID?.Trim();
                     if (string.IsNullOrWhiteSpace(id)) continue;
-
                     var cant = d.Cantidad;
                     var imp = d.Cantidad * d.PrecioUnitario;
 
@@ -112,11 +148,9 @@ namespace Biblioteca
                 puPromedio[kv.Key] = cant == 0m ? 0m : imp / cant;
                 }
 
-            // 2) Recorrer árbol post-orden: hojas => asigna Pur1; compuestos => consolida Pur1 = Σ(CantReal*Pur1)
             foreach (var raiz in Arbol)
                 ProcesarNodo(raiz);
 
-            // ---- locales ----
             void ProcesarNodo(Nodo n)
                 {
                 if (n == null) return;
@@ -127,43 +161,37 @@ namespace Biblioteca
                         ProcesarNodo(h);
 
                     var sumaUnitReal = n.Inferiores.Sum(h => (h?.CantidadReal ?? 0m) * (h?.Pur1 ?? 0m));
-                    n.Pur1 = sumaUnitReal; // PU real consolidado del nodo
+                    n.Pur1 = sumaUnitReal;
                     }
                 else
                     {
                     var key = ExtraerInsumoIdDesdeNodo(n.ID);
                     if (key != null && puPromedio.TryGetValue(key, out var pu))
-                        n.Pur1 = pu; // PU real en hojas
+                        n.Pur1 = pu;
+                    else
+                        n.Pur1 = 0m;
                     }
                 }
 
             static string? ExtraerInsumoIdDesdeNodo(string idNodo)
                 {
                 if (string.IsNullOrWhiteSpace(idNodo)) return null;
-
-                // Caso "I-INP-{nat}-{insumoId}" => recuperar insumoId
                 const string pref = "I-INP-";
                 if (idNodo.StartsWith(pref, StringComparison.OrdinalIgnoreCase))
                     {
-                    // saltar "I-INP-" + nat (1 char) + "-" => pref.Length + 2
                     if (idNodo.Length > pref.Length + 2)
                         return idNodo.Substring(pref.Length + 2);
                     }
-
-                // Por defecto usar el ID completo del nodo
                 return idNodo;
                 }
             }
 
-        // Recálculo recursivo (basado en Presupuesto.recalculo)
+        // Ajustado: no toca Pur1, solo recalcula importes previstos y reales
         private void CalcularArbol(IEnumerable<Nodo> items, bool inicio, decimal factorSup)
             {
             int orden = 1;
-
             if (inicio)
-                {
                 foreach (var n in items) n.OrdenInt = 0;
-                }
 
             foreach (var item in items)
                 {
@@ -178,20 +206,15 @@ namespace Biblioteca
 
                     item.Factor = factorSup;
 
-                    // Previsto (como antes)
                     var importeHijos = item.Inferiores.Sum(x => x.Importe1);
                     item.PU1 = importeHijos;
                     item.Importe1 = item.Cantidad * item.PU1;
 
-                    // Real: NO tocar Pur1 aquí. Solo recalcular ImporteReal1 con el Pur1 ya asignado.
                     item.ImporteReal1 = item.CantidadReal * item.Pur1;
                     }
                 else
                     {
-                    // Previsto hoja
                     item.Importe1 = item.Cantidad * item.PU1;
-
-                    // Real hoja: NO tocar Pur1, solo ImporteReal1
                     item.ImporteReal1 = item.CantidadReal * item.Pur1;
                     }
 
@@ -200,30 +223,23 @@ namespace Biblioteca
                 }
             }
 
-        // Suma de Cantidad por cada InsumoID presente en los detalles
         private Dictionary<string, decimal> ObtenerIdsInsumosDeDetalles()
             {
             var resultado = new Dictionary<string, decimal>(StringComparer.OrdinalIgnoreCase);
-
-            if (_detallesRelacionados == null || _detallesRelacionados.Count == 0)
-                return resultado;
+            if (_detallesRelacionados == null || _detallesRelacionados.Count == 0) return resultado;
 
             foreach (var d in _detallesRelacionados)
                 {
                 var id = d?.InsumoID?.Trim();
                 if (string.IsNullOrWhiteSpace(id)) continue;
-
-                // Acumular cantidad (puede venir en distintas filas con mismo InsumoID)
                 if (resultado.TryGetValue(id, out var acum))
                     resultado[id] = acum + d.Cantidad;
                 else
                     resultado[id] = d.Cantidad;
                 }
-
             return resultado;
             }
 
-        // Nodos con CantidadReal != 0 y al menos un inferior (hijo o descendiente) cuyo ID ∈ idsInsumos.
         private static List<Nodo> SeleccionarNodosConInferioresEnIds(IEnumerable<Nodo> raiz, HashSet<string> idsInsumos, bool incluirDescendientes = true)
             {
             var resultado = new List<Nodo>();
@@ -232,7 +248,6 @@ namespace Biblioteca
             foreach (var n in raiz)
                 {
                 if (n == null) continue;
-
                 bool tieneInferiorEnIds = false;
 
                 if (n.Inferiores != null && n.Inferiores.Count > 0)
@@ -252,31 +267,26 @@ namespace Biblioteca
                         }
                     }
 
-                if (n.CantidadReal != 0m && tieneInferiorEnIds)
+                if (string.Equals(n.Tipo, "T", StringComparison.OrdinalIgnoreCase) && n.CantidadReal != 0m && tieneInferiorEnIds)
                     resultado.Add(n);
 
-                // Seguir recorriendo el árbol para encontrar otros candidatos
                 if (n.Inferiores != null && n.Inferiores.Count > 0)
                     resultado.AddRange(SeleccionarNodosConInferioresEnIds(n.Inferiores, idsInsumos, incluirDescendientes));
                 }
-
             return resultado;
             }
 
         private static bool SubarbolContieneId(Nodo nodo, HashSet<string> idsInsumos)
             {
             if (nodo == null || nodo.Inferiores == null || nodo.Inferiores.Count == 0) return false;
-
             foreach (var h in nodo.Inferiores)
                 {
                 if (h == null) continue;
                 if (!string.IsNullOrWhiteSpace(h.ID) && idsInsumos.Contains(h.ID))
                     return true;
-
                 if (SubarbolContieneId(h, idsInsumos))
                     return true;
                 }
-
             return false;
             }
 
@@ -286,9 +296,17 @@ namespace Biblioteca
             if (cantidadesPorInsumo == null || cantidadesPorInsumo.Count == 0) return;
             if (nodosConGastos == null || nodosConGastos.Count == 0) return;
 
-            // Recolectar candidatos (nodos cuyo ID ∈ cantidadesPorInsumo) dentro de los subárboles de nodosConGastos
+            // 0) Reset: poner en 0 la CantidadReal de todos los nodos cuyo ID ∈ cantidadesPorInsumo en todo el árbol.
+            //    Esto evita que queden asignaciones previas en tareas que ahora quedaron en cero.
+            var idsAfectados = new HashSet<string>(cantidadesPorInsumo.Keys, StringComparer.OrdinalIgnoreCase);
+            foreach (var n in EnumerarArbol(Arbol))
+                {
+                if (!string.IsNullOrWhiteSpace(n.ID) && idsAfectados.Contains(n.ID))
+                    n.CantidadReal = 0m;
+                }
+
             var candidatosPorId = new Dictionary<string, List<(Nodo node, Nodo parent)>>(StringComparer.OrdinalIgnoreCase);
-            var visitados = new HashSet<Nodo>(); // para evitar duplicados por solapamiento de subárboles
+            var visitados = new HashSet<Nodo>();
 
             foreach (var raiz in nodosConGastos)
                 {
@@ -311,7 +329,6 @@ namespace Biblioteca
                     }
                 }
 
-            // Para cada InsumoID, repartir su total entre los candidatos según incidencia
             foreach (var kv in candidatosPorId)
                 {
                 var insumoId = kv.Key;
@@ -321,7 +338,6 @@ namespace Biblioteca
                 var lista = kv.Value;
                 if (lista == null || lista.Count == 0) continue;
 
-                // Incidencia = Importe1(node) / suma Importe1(hijos del padre)
                 var incidencias = new List<(Nodo node, decimal inc)>(lista.Count);
                 foreach (var (node, parent) in lista)
                     {
@@ -331,7 +347,6 @@ namespace Biblioteca
 
                 decimal sumaInc = incidencias.Sum(x => x.inc);
 
-                // Fallbacks si la suma de incidencias fuese 0
                 if (sumaInc == 0m)
                     {
                     var sumaImportes = lista.Sum(x => x.node.Importe1);
@@ -340,24 +355,38 @@ namespace Biblioteca
                         incidencias = lista
                             .Select(x => (x.node, inc: (sumaImportes == 0m ? 0m : x.node.Importe1 / sumaImportes)))
                             .ToList();
-                        sumaInc = 1m; // ya están normalizadas a 1
+                        sumaInc = 1m;
                         }
                     else
                         {
-                        // Reparto uniforme
                         var eq = 1m / lista.Count;
                         incidencias = lista.Select(x => (x.node, inc: eq)).ToList();
                         sumaInc = 1m;
                         }
                     }
 
-                // Asignar CantidadReal proporcional
                 foreach (var (node, inc) in incidencias)
                     {
                     var proporcion = (sumaInc == 0m) ? 0m : (inc / sumaInc);
                     node.CantidadReal = totalCantidad * proporcion;
                     }
+                }
 
+            // Local: recorrido completo del árbol
+            static IEnumerable<Nodo> EnumerarArbol(IEnumerable<Nodo> raices)
+                {
+                if (raices == null) yield break;
+                var stack = new Stack<Nodo>(raices.Where(r => r != null));
+                while (stack.Count > 0)
+                    {
+                    var n = stack.Pop();
+                    yield return n;
+                    if (n.Inferiores != null && n.Inferiores.Count > 0)
+                        {
+                        foreach (var h in n.Inferiores)
+                            if (h != null) stack.Push(h);
+                        }
+                    }
                 }
             }
 
@@ -381,9 +410,7 @@ namespace Biblioteca
 
             var stack = new Stack<(Nodo node, Nodo parent)>();
             foreach (var h in root.Inferiores)
-                {
                 if (h != null) stack.Push((h, root));
-                }
 
             while (stack.Count > 0)
                 {
@@ -393,9 +420,7 @@ namespace Biblioteca
                 if (n.Inferiores != null && n.Inferiores.Count > 0)
                     {
                     foreach (var c in n.Inferiores)
-                        {
                         if (c != null) stack.Push((c, n));
-                        }
                     }
                 }
             }
@@ -405,7 +430,6 @@ namespace Biblioteca
             if (elemento == null) return null;
 
             var hijos = new ObservableCollection<Nodo>();
-
             var rels = listaRelaciones
                 .Where(r => r.CodSup == elemento.ID)
                 .OrderBy(r => r.OrdenInt)
@@ -446,7 +470,6 @@ namespace Biblioteca
 
                 hijos.Add(n);
                 }
-
             return hijos;
             }
 
@@ -467,7 +490,8 @@ namespace Biblioteca
                 Descripcion = "Insumos no imputados",
                 Tipo = "R",
                 Unidad = "Gl",
-               CantidadReal = 1,
+                Cantidad = 1,
+                CantidadReal = 1,
                 Sup = true,
                 Inferiores = new ObservableCollection<Nodo>()
                 };
@@ -484,12 +508,12 @@ namespace Biblioteca
                     Descripcion = desc,
                     Tipo = "T",
                     Unidad = "Gl",
+                    Cantidad = 1,
                     CantidadReal = 1,
                     Sup = false,
                     Inferiores = new ObservableCollection<Nodo>()
                     };
 
-                // Agregar un nodo hoja por cada GastoDetalleDTO de la naturaleza
                 var hijos = g
                     .Where(d => d != null)
                     .OrderBy(d => d.Descrip)
@@ -497,8 +521,9 @@ namespace Biblioteca
                         {
                         ID = $"I-INP-{nat}-{(d.InsumoID ?? d.ID.ToString())}",
                         Descripcion = d.Descrip ?? $"Insumo {d.ID}",
-                        Tipo = nat.ToString(),          // Se usa la naturaleza para permitir consolidaciones por tipo
+                        Tipo = nat.ToString(),
                         Unidad = d.Unidad ?? "Gl",
+                        Cantidad = d.Cantidad,
                         CantidadReal = d.Cantidad,
                         Pur1 = d.PrecioUnitario,
                         Sup = false,
@@ -509,9 +534,10 @@ namespace Biblioteca
                     nodoT.Inferiores.Add(h);
 
                 rubroNoImputados.Inferiores.Add(nodoT);
-                }
 
-            Arbol.Add(rubroNoImputados);
+
+                Arbol.Add(rubroNoImputados);
+                }
             }
 
         private static string NaturalezaDescripcion(char tipo)
