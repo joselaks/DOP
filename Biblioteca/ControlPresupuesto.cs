@@ -276,12 +276,16 @@ namespace Biblioteca
             if (cantidadesPorInsumo == null || cantidadesPorInsumo.Count == 0) return;
             if (nodosConGastos == null || nodosConGastos.Count == 0) return;
 
-            // 0) Reset de CantidadReal en todos los nodos afectados por InsumoID
             var idsAfectados = new HashSet<string>(cantidadesPorInsumo.Keys, StringComparer.OrdinalIgnoreCase);
-            foreach (var n in EnumerarArbol(Arbol))
+
+            // 0) Reset SOLO dentro de las ramas de nodosConGastos
+            foreach (var raiz in nodosConGastos)
                 {
-                if (!string.IsNullOrWhiteSpace(n.ID) && idsAfectados.Contains(n.ID))
-                    n.CantidadReal = 0m;
+                foreach (var n in EnumerarArbol(new[] { raiz }))
+                    {
+                    if (!string.IsNullOrWhiteSpace(n.ID) && idsAfectados.Contains(n.ID))
+                        n.CantidadReal = 0m;
+                    }
                 }
 
             var candidatosPorId = new Dictionary<string, List<(Nodo node, Nodo parent)>>(StringComparer.OrdinalIgnoreCase);
@@ -348,10 +352,10 @@ namespace Biblioteca
                     {
                     var proporcion = (sumaInc == 0m) ? 0m : (inc / sumaInc);
 
-                    // NUEVO: ajustar por la CantidadReal del nodo superior
+                    // Ajuste por CantidadReal del padre para distribuir dentro de la tarea actual
                     var parent = lista.First(p => p.node == node).parent;
                     var cantPadre = (parent?.CantidadReal ?? 1m);
-                    if (cantPadre == 0m) cantPadre = 1m; // evitar división por cero
+                    if (cantPadre == 0m) cantPadre = 1m;
 
                     node.CantidadReal = (totalCantidad * proporcion) / cantPadre;
                     }
