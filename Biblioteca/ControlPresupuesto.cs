@@ -49,6 +49,7 @@ namespace Biblioteca
                     Tipo = (rubro.Tipo == '0') ? "R" : rubro.Tipo.ToString(),
                     Unidad = rubro.Unidad,
                     Cantidad = 1,
+                    CantidadReal = 1,
                     Sup = true,
                     Inferiores = new ObservableCollection<Nodo>()
                     };
@@ -73,17 +74,89 @@ namespace Biblioteca
         // NUEVO: Procedimiento similar a Presupuesto.RecalculoCompleto
         public void RecalculoCompleto()
             {
-            ArmarArbol(Arbol, true, 0);
             var cantidadesPorInsumo = ObtenerIdsInsumosDeDetalles();
             var idsSolo = cantidadesPorInsumo.Keys.ToHashSet(StringComparer.OrdinalIgnoreCase);
             var nodosConGastos = SeleccionarNodosConInferioresEnIds(Arbol, idsSolo, incluirDescendientes: true);
-
-            // NUEVO: redistribución de CantidadReal por InsumoID usando incidencia porcentual (Importe1 hijo / suma Importes del padre)
             RedistribuirCantidadesPorInsumo(cantidadesPorInsumo, nodosConGastos);
+            AsignarPrecioReal();
+            CalcularArbol(Arbol, true, 0);
+
+            }
+
+        private void AsignarPrecioReal()
+            {
+            // 1) PU promedio ponderado por InsumoID = suma(Cantidad * PrecioUnitario) / suma(Cantidad)
+            var acumuladores = new Dictionary<string, (decimal cant, decimal imp)>(StringComparer.OrdinalIgnoreCase);
+
+            if (_detallesRelacionados != null && _detallesRelacionados.Count > 0)
+                {
+                foreach (var d in _detallesRelacionados)
+                    {
+                    var id = d?.InsumoID?.Trim();
+                    if (string.IsNullOrWhiteSpace(id)) continue;
+
+                    var cant = d.Cantidad;
+                    var imp = d.Cantidad * d.PrecioUnitario;
+
+                    if (acumuladores.TryGetValue(id, out var acc))
+                        acumuladores[id] = (acc.cant + cant, acc.imp + imp);
+                    else
+                        acumuladores[id] = (cant, imp);
+                    }
+                }
+
+            var puPromedio = new Dictionary<string, decimal>(StringComparer.OrdinalIgnoreCase);
+            foreach (var kv in acumuladores)
+                {
+                var (cant, imp) = kv.Value;
+                puPromedio[kv.Key] = cant == 0m ? 0m : imp / cant;
+                }
+
+            // 2) Recorrer árbol post-orden: hojas => asigna Pur1; compuestos => consolida Pur1 = Σ(CantReal*Pur1)
+            foreach (var raiz in Arbol)
+                ProcesarNodo(raiz);
+
+            // ---- locales ----
+            void ProcesarNodo(Nodo n)
+                {
+                if (n == null) return;
+
+                if (n.Inferiores != null && n.Inferiores.Count > 0)
+                    {
+                    foreach (var h in n.Inferiores)
+                        ProcesarNodo(h);
+
+                    var sumaUnitReal = n.Inferiores.Sum(h => (h?.CantidadReal ?? 0m) * (h?.Pur1 ?? 0m));
+                    n.Pur1 = sumaUnitReal; // PU real consolidado del nodo
+                    }
+                else
+                    {
+                    var key = ExtraerInsumoIdDesdeNodo(n.ID);
+                    if (key != null && puPromedio.TryGetValue(key, out var pu))
+                        n.Pur1 = pu; // PU real en hojas
+                    }
+                }
+
+            static string? ExtraerInsumoIdDesdeNodo(string idNodo)
+                {
+                if (string.IsNullOrWhiteSpace(idNodo)) return null;
+
+                // Caso "I-INP-{nat}-{insumoId}" => recuperar insumoId
+                const string pref = "I-INP-";
+                if (idNodo.StartsWith(pref, StringComparison.OrdinalIgnoreCase))
+                    {
+                    // saltar "I-INP-" + nat (1 char) + "-" => pref.Length + 2
+                    if (idNodo.Length > pref.Length + 2)
+                        return idNodo.Substring(pref.Length + 2);
+                    }
+
+                // Por defecto usar el ID completo del nodo
+                return idNodo;
+                }
             }
 
         // Recálculo recursivo (basado en Presupuesto.recalculo)
-        private void ArmarArbol(IEnumerable<Nodo> items, bool inicio, decimal factorSup)
+        private void CalcularArbol(IEnumerable<Nodo> items, bool inicio, decimal factorSup)
             {
             int orden = 1;
 
@@ -101,20 +174,25 @@ namespace Biblioteca
                     if (item.Sup)
                         factorSup = item.Cantidad;
 
-                    ArmarArbol(item.Inferiores, false, factorSup * item.Cantidad);
+                    CalcularArbol(item.Inferiores, false, factorSup * item.Cantidad);
 
                     item.Factor = factorSup;
 
-                    // Consolidado
+                    // Previsto (como antes)
                     var importeHijos = item.Inferiores.Sum(x => x.Importe1);
-
-                    // Igual que Presupuesto: PU1 = suma hijos y luego Importe1 = Cantidad * PU1
                     item.PU1 = importeHijos;
                     item.Importe1 = item.Cantidad * item.PU1;
+
+                    // Real: NO tocar Pur1 aquí. Solo recalcular ImporteReal1 con el Pur1 ya asignado.
+                    item.ImporteReal1 = item.CantidadReal * item.Pur1;
                     }
                 else
                     {
+                    // Previsto hoja
                     item.Importe1 = item.Cantidad * item.PU1;
+
+                    // Real hoja: NO tocar Pur1, solo ImporteReal1
+                    item.ImporteReal1 = item.CantidadReal * item.Pur1;
                     }
 
                 if (!item.HasItems)
@@ -389,7 +467,7 @@ namespace Biblioteca
                 Descripcion = "Insumos no imputados",
                 Tipo = "R",
                 Unidad = "Gl",
-                Cantidad = 1,
+               CantidadReal = 1,
                 Sup = true,
                 Inferiores = new ObservableCollection<Nodo>()
                 };
@@ -406,7 +484,7 @@ namespace Biblioteca
                     Descripcion = desc,
                     Tipo = "T",
                     Unidad = "Gl",
-                    Cantidad = 1,
+                    CantidadReal = 1,
                     Sup = false,
                     Inferiores = new ObservableCollection<Nodo>()
                     };
@@ -421,8 +499,8 @@ namespace Biblioteca
                         Descripcion = d.Descrip ?? $"Insumo {d.ID}",
                         Tipo = nat.ToString(),          // Se usa la naturaleza para permitir consolidaciones por tipo
                         Unidad = d.Unidad ?? "Gl",
-                        Cantidad = d.Cantidad,
-                        PU1 = d.PrecioUnitario,
+                        CantidadReal = d.Cantidad,
+                        Pur1 = d.PrecioUnitario,
                         Sup = false,
                         Inferiores = new ObservableCollection<Nodo>()
                         });

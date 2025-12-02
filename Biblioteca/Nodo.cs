@@ -104,12 +104,15 @@ namespace Bibioteca.Clases
         public decimal Subcontratos4 { get => subcontratos4; set { subcontratos4 = value; OnPropertyChanged(nameof(Subcontratos4)); } }
         public decimal Otros4 { get => otros4; set { otros4 = value; OnPropertyChanged(nameof(Otros4)); } }
 
-        // Nuevas propiedades en el formato solicitado
-        public decimal Pur1 { get => pur1Real; set { pur1Real = value; RecalcularImporteReal1(); OnPropertyChanged(nameof(Pur1)); } }
-        public decimal CantidadReal { get => cantidadReal; set { cantidadReal = value; RecalcularImporteReal1(); OnPropertyChanged(nameof(CantidadReal)); } }
-        public decimal ImporteReal1 { get => importeReal1; private set { importeReal1 = value; OnPropertyChanged(nameof(ImporteReal1)); } }
+        // Nuevas propiedades en el formato solicitado (sin recálculo automático)
+        public decimal Pur1 { get => pur1Real; set { pur1Real = value; OnPropertyChanged(nameof(Pur1)); } }
+        public decimal CantidadReal { get => cantidadReal; set { cantidadReal = value; OnPropertyChanged(nameof(CantidadReal)); } }
 
-        private void RecalcularImporteReal1()
+        // Hacer el setter público para asignarlo manualmente desde los recálculos
+        public decimal ImporteReal1 { get => importeReal1; set { importeReal1 = value; OnPropertyChanged(nameof(ImporteReal1)); } }
+
+        // Exponer el método para recalcular manualmente cuando se desee
+        public void RecalcularImporteReal1()
             {
             ImporteReal1 = Math.Round(pur1Real * cantidadReal, 2, MidpointRounding.AwayFromZero);
             }
