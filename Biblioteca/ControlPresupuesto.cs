@@ -65,12 +65,10 @@ namespace Biblioteca
             // Recálculo inicial
             RecalculoCompleto();
 
-            // NUEVO: enganchar eventos
-            AdjuntarEventosArbol();
             }
 
         // NUEVO: recálculo completo público reutilizable
-        public void RecalcularRedistribucion()
+        public void RecalculoCompleto()
             {
             if (_recalcEnProgreso) return;
             try
@@ -89,26 +87,8 @@ namespace Biblioteca
                 }
             }
 
-        // Recalculo inicial (retiene nombre original para compatibilidad interna)
-        public void RecalculoCompleto() => RecalcularRedistribucion();
 
-        // NUEVO: enganchar eventos (solo una vez por nodo)
-        private void AdjuntarEventosArbol()
-            {
-            foreach (var raiz in Arbol)
-                AdjuntarEventosNodoRecursivo(raiz);
-            }
-
-        private void AdjuntarEventosNodoRecursivo(Nodo n)
-            {
-            if (n == null || !_nodosObservados.Add(n)) return;
-            if (n is INotifyPropertyChanged inpc)
-                inpc.PropertyChanged += Nodo_PropertyChanged;
-
-            if (n.Inferiores != null)
-                foreach (var h in n.Inferiores)
-                    AdjuntarEventosNodoRecursivo(h);
-            }
+        
 
         // Handler: si cambia CantidadReal de tarea (Tipo="T"), recalcular redistribución
         private void Nodo_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -118,7 +98,7 @@ namespace Biblioteca
             if (e.PropertyName != nameof(Nodo.CantidadReal)) return;
             if (!string.Equals(nodo.Tipo, "T", StringComparison.OrdinalIgnoreCase)) return;
 
-            RecalcularRedistribucion();
+            RecalculoCompleto();
             }
 
         private void AsignarPrecioReal()
@@ -296,8 +276,7 @@ namespace Biblioteca
             if (cantidadesPorInsumo == null || cantidadesPorInsumo.Count == 0) return;
             if (nodosConGastos == null || nodosConGastos.Count == 0) return;
 
-            // 0) Reset: poner en 0 la CantidadReal de todos los nodos cuyo ID ∈ cantidadesPorInsumo en todo el árbol.
-            //    Esto evita que queden asignaciones previas en tareas que ahora quedaron en cero.
+            // 0) Reset de CantidadReal en todos los nodos afectados por InsumoID
             var idsAfectados = new HashSet<string>(cantidadesPorInsumo.Keys, StringComparer.OrdinalIgnoreCase);
             foreach (var n in EnumerarArbol(Arbol))
                 {
@@ -368,7 +347,13 @@ namespace Biblioteca
                 foreach (var (node, inc) in incidencias)
                     {
                     var proporcion = (sumaInc == 0m) ? 0m : (inc / sumaInc);
-                    node.CantidadReal = totalCantidad * proporcion;
+
+                    // NUEVO: ajustar por la CantidadReal del nodo superior
+                    var parent = lista.First(p => p.node == node).parent;
+                    var cantPadre = (parent?.CantidadReal ?? 1m);
+                    if (cantPadre == 0m) cantPadre = 1m; // evitar división por cero
+
+                    node.CantidadReal = (totalCantidad * proporcion) / cantPadre;
                     }
                 }
 
@@ -534,10 +519,10 @@ namespace Biblioteca
                     nodoT.Inferiores.Add(h);
 
                 rubroNoImputados.Inferiores.Add(nodoT);
-
-
-                Arbol.Add(rubroNoImputados);
                 }
+
+            // Agregar SOLO UNA VEZ
+            Arbol.Add(rubroNoImputados);
             }
 
         private static string NaturalezaDescripcion(char tipo)
