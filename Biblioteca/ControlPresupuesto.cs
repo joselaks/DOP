@@ -78,6 +78,8 @@ namespace Biblioteca
             var idsSolo = cantidadesPorInsumo.Keys.ToHashSet(StringComparer.OrdinalIgnoreCase);
             var nodosConGastos = SeleccionarNodosConInferioresEnIds(Arbol, idsSolo, incluirDescendientes: true);
 
+            // NUEVO: redistribución de CantidadReal por InsumoID usando incidencia porcentual (Importe1 hijo / suma Importes del padre)
+            RedistribuirCantidadesPorInsumo(cantidadesPorInsumo, nodosConGastos);
             }
 
         // Recálculo recursivo (basado en Presupuesto.recalculo)
@@ -200,7 +202,125 @@ namespace Biblioteca
             return false;
             }
 
+        // NUEVO: redistribuye CantidadReal por InsumoID a nodos existentes ponderando por incidencia (Importe1 hijo / suma Importes del padre)
+        private void RedistribuirCantidadesPorInsumo(Dictionary<string, decimal> cantidadesPorInsumo, List<Nodo> nodosConGastos)
+            {
+            if (cantidadesPorInsumo == null || cantidadesPorInsumo.Count == 0) return;
+            if (nodosConGastos == null || nodosConGastos.Count == 0) return;
 
+            // Recolectar candidatos (nodos cuyo ID ∈ cantidadesPorInsumo) dentro de los subárboles de nodosConGastos
+            var candidatosPorId = new Dictionary<string, List<(Nodo node, Nodo parent)>>(StringComparer.OrdinalIgnoreCase);
+            var visitados = new HashSet<Nodo>(); // para evitar duplicados por solapamiento de subárboles
+
+            foreach (var raiz in nodosConGastos)
+                {
+                if (raiz?.Inferiores == null || raiz.Inferiores.Count == 0) continue;
+
+                foreach (var (node, parent) in EnumerarDescendenciaConPadre(raiz))
+                    {
+                    if (node == null) continue;
+                    var id = node.ID;
+                    if (string.IsNullOrWhiteSpace(id)) continue;
+                    if (!cantidadesPorInsumo.ContainsKey(id)) continue;
+                    if (!visitados.Add(node)) continue;
+
+                    if (!candidatosPorId.TryGetValue(id, out var lista))
+                        {
+                        lista = new List<(Nodo node, Nodo parent)>();
+                        candidatosPorId[id] = lista;
+                        }
+                    lista.Add((node, parent));
+                    }
+                }
+
+            // Para cada InsumoID, repartir su total entre los candidatos según incidencia
+            foreach (var kv in candidatosPorId)
+                {
+                var insumoId = kv.Key;
+                if (!cantidadesPorInsumo.TryGetValue(insumoId, out var totalCantidad) || totalCantidad == 0m)
+                    continue;
+
+                var lista = kv.Value;
+                if (lista == null || lista.Count == 0) continue;
+
+                // Incidencia = Importe1(node) / suma Importe1(hijos del padre)
+                var incidencias = new List<(Nodo node, decimal inc)>(lista.Count);
+                foreach (var (node, parent) in lista)
+                    {
+                    decimal inc = CalcularIncidenciaRespectoAlPadre(node, parent);
+                    incidencias.Add((node, inc));
+                    }
+
+                decimal sumaInc = incidencias.Sum(x => x.inc);
+
+                // Fallbacks si la suma de incidencias fuese 0
+                if (sumaInc == 0m)
+                    {
+                    var sumaImportes = lista.Sum(x => x.node.Importe1);
+                    if (sumaImportes > 0m)
+                        {
+                        incidencias = lista
+                            .Select(x => (x.node, inc: (sumaImportes == 0m ? 0m : x.node.Importe1 / sumaImportes)))
+                            .ToList();
+                        sumaInc = 1m; // ya están normalizadas a 1
+                        }
+                    else
+                        {
+                        // Reparto uniforme
+                        var eq = 1m / lista.Count;
+                        incidencias = lista.Select(x => (x.node, inc: eq)).ToList();
+                        sumaInc = 1m;
+                        }
+                    }
+
+                // Asignar CantidadReal proporcional
+                foreach (var (node, inc) in incidencias)
+                    {
+                    var proporcion = (sumaInc == 0m) ? 0m : (inc / sumaInc);
+                    node.CantidadReal = totalCantidad * proporcion;
+                    }
+
+                }
+            }
+
+        private static decimal CalcularIncidenciaRespectoAlPadre(Nodo node, Nodo parent)
+            {
+            if (node == null) return 0m;
+            if (parent == null) return 1m;
+
+            decimal totalPadre = 0m;
+            if (parent.Inferiores != null && parent.Inferiores.Count > 0)
+                totalPadre = parent.Inferiores.Sum(c => c?.Importe1 ?? 0m);
+
+            if (totalPadre == 0m) return 0m;
+            return node.Importe1 / totalPadre;
+            }
+
+        private static IEnumerable<(Nodo node, Nodo parent)> EnumerarDescendenciaConPadre(Nodo root)
+            {
+            if (root == null) yield break;
+            if (root.Inferiores == null || root.Inferiores.Count == 0) yield break;
+
+            var stack = new Stack<(Nodo node, Nodo parent)>();
+            foreach (var h in root.Inferiores)
+                {
+                if (h != null) stack.Push((h, root));
+                }
+
+            while (stack.Count > 0)
+                {
+                var (n, p) = stack.Pop();
+                yield return (n, p);
+
+                if (n.Inferiores != null && n.Inferiores.Count > 0)
+                    {
+                    foreach (var c in n.Inferiores)
+                        {
+                        if (c != null) stack.Push((c, n));
+                        }
+                    }
+                }
+            }
 
         private ObservableCollection<Nodo> GetElementosHijos(Nodo elemento, List<ConceptoDTO> listaConceptos, List<RelacionDTO> listaRelaciones, int nivel)
             {
