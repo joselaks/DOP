@@ -64,7 +64,6 @@ namespace Biblioteca
 
             // Recálculo inicial
             RecalculoCompleto();
-
             }
 
         // NUEVO: recálculo completo público reutilizable
@@ -86,9 +85,6 @@ namespace Biblioteca
                 _recalcEnProgreso = false;
                 }
             }
-
-
-        
 
         // Handler: si cambia CantidadReal de tarea (Tipo="T"), recalcular redistribución
         private void Nodo_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -220,6 +216,7 @@ namespace Biblioteca
             return resultado;
             }
 
+        // AJUSTE: incluir tareas aunque su CantidadReal sea 0 para poder resetear descendencia.
         private static List<Nodo> SeleccionarNodosConInferioresEnIds(IEnumerable<Nodo> raiz, HashSet<string> idsInsumos, bool incluirDescendientes = true)
             {
             var resultado = new List<Nodo>();
@@ -247,7 +244,8 @@ namespace Biblioteca
                         }
                     }
 
-                if (string.Equals(n.Tipo, "T", StringComparison.OrdinalIgnoreCase) && n.CantidadReal != 0m && tieneInferiorEnIds)
+                // Incluye toda tarea con inferiores relevantes, aunque su CantidadReal sea 0.
+                if (string.Equals(n.Tipo, "T", StringComparison.OrdinalIgnoreCase) && tieneInferiorEnIds)
                     resultado.Add(n);
 
                 if (n.Inferiores != null && n.Inferiores.Count > 0)
@@ -271,6 +269,7 @@ namespace Biblioteca
             }
 
         // NUEVO: redistribuye CantidadReal por InsumoID a nodos existentes ponderando por incidencia (Importe1 hijo / suma Importes del padre)
+        // AJUSTE: si una tarea tiene CantidadReal == 0, toda su descendencia queda en 0 y no se distribuye en su rama.
         private void RedistribuirCantidadesPorInsumo(Dictionary<string, decimal> cantidadesPorInsumo, List<Nodo> nodosConGastos)
             {
             if (cantidadesPorInsumo == null || cantidadesPorInsumo.Count == 0) return;
@@ -278,7 +277,17 @@ namespace Biblioteca
 
             var idsAfectados = new HashSet<string>(cantidadesPorInsumo.Keys, StringComparer.OrdinalIgnoreCase);
 
-            // 0) Reset SOLO dentro de las ramas de nodosConGastos
+            // A) Reset de descendencia para tareas con CantidadReal == 0
+            foreach (var tarea in nodosConGastos.Where(t => string.Equals(t.Tipo, "T", StringComparison.OrdinalIgnoreCase) && t.CantidadReal == 0m))
+                {
+                foreach (var n in EnumerarArbol(new[] { tarea }))
+                    {
+                    if (!ReferenceEquals(n, tarea))
+                        n.CantidadReal = 0m;
+                    }
+                }
+
+            // B) Reset SOLO dentro de las ramas de nodosConGastos para IDs afectados
             foreach (var raiz in nodosConGastos)
                 {
                 foreach (var n in EnumerarArbol(new[] { raiz }))
@@ -294,6 +303,10 @@ namespace Biblioteca
             foreach (var raiz in nodosConGastos)
                 {
                 if (raiz?.Inferiores == null || raiz.Inferiores.Count == 0) continue;
+
+                // Si el padre (tarea) está en 0, no distribuir en su rama (ya reseteada arriba).
+                if (string.Equals(raiz.Tipo, "T", StringComparison.OrdinalIgnoreCase) && raiz.CantidadReal == 0m)
+                    continue;
 
                 foreach (var (node, parent) in EnumerarDescendenciaConPadre(raiz))
                     {
@@ -312,14 +325,28 @@ namespace Biblioteca
                     }
                 }
 
+            // Garantizar que insumos sin candidatos sigan representados como "no imputados"
+            foreach (var insumoId in cantidadesPorInsumo.Keys)
+                {
+                if (!candidatosPorId.ContainsKey(insumoId))
+                    AddInsumoNoImputadoIfMissing(insumoId);
+                }
+
             foreach (var kv in candidatosPorId)
                 {
                 var insumoId = kv.Key;
                 if (!cantidadesPorInsumo.TryGetValue(insumoId, out var totalCantidad) || totalCantidad == 0m)
+                    {
+                    AddInsumoNoImputadoIfMissing(insumoId);
                     continue;
+                    }
 
                 var lista = kv.Value;
-                if (lista == null || lista.Count == 0) continue;
+                if (lista == null || lista.Count == 0)
+                    {
+                    AddInsumoNoImputadoIfMissing(insumoId);
+                    continue;
+                    }
 
                 var incidencias = new List<(Nodo node, decimal inc)>(lista.Count);
                 foreach (var (node, parent) in lista)
@@ -348,6 +375,8 @@ namespace Biblioteca
                         }
                     }
 
+                bool algunaAsignacion = false;
+
                 foreach (var (node, inc) in incidencias)
                     {
                     var proporcion = (sumaInc == 0m) ? 0m : (inc / sumaInc);
@@ -355,10 +384,21 @@ namespace Biblioteca
                     // Ajuste por CantidadReal del padre para distribuir dentro de la tarea actual
                     var parent = lista.First(p => p.node == node).parent;
                     var cantPadre = (parent?.CantidadReal ?? 1m);
-                    if (cantPadre == 0m) cantPadre = 1m;
+                    if (cantPadre == 0m)
+                        {
+                        node.CantidadReal = 0m;
+                        continue;
+                        }
 
-                    node.CantidadReal = (totalCantidad * proporcion) / cantPadre;
+                    var nuevaCantidad = (totalCantidad * proporcion) / cantPadre;
+                    node.CantidadReal = nuevaCantidad;
+                    if (nuevaCantidad != 0m) algunaAsignacion = true;
                     }
+
+                if (algunaAsignacion)
+                    RemoveInsumoNoImputado(insumoId);
+                else
+                    AddInsumoNoImputadoIfMissing(insumoId);
                 }
 
             // Local: recorrido completo del árbol
@@ -376,6 +416,124 @@ namespace Biblioteca
                             if (h != null) stack.Push(h);
                         }
                     }
+                }
+            }
+
+        // Elimina del árbol "R-INP" cualquier nodo con ID "I-INP-{nat}-{insumoId}" y limpia contenedores vacíos.
+        private void RemoveInsumoNoImputado(string insumoId)
+            {
+            if (string.IsNullOrWhiteSpace(insumoId)) return;
+
+            var rubroNoImputados = Arbol.FirstOrDefault(r =>
+                r != null && string.Equals(r.ID, "R-INP", StringComparison.OrdinalIgnoreCase));
+
+            if (rubroNoImputados == null || rubroNoImputados.Inferiores == null) return;
+
+            var tareasVacias = new List<Nodo>();
+
+            foreach (var t in rubroNoImputados.Inferiores.ToList())
+                {
+                if (t == null || t.Inferiores == null) continue;
+
+                var hijosAEliminar = t.Inferiores
+                    .Where(h => h != null
+                                && !string.IsNullOrWhiteSpace(h.ID)
+                                && h.ID.StartsWith("I-INP-", StringComparison.OrdinalIgnoreCase)
+                                && h.ID.EndsWith(insumoId, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+
+                foreach (var h in hijosAEliminar)
+                    t.Inferiores.Remove(h);
+
+                if (t.Inferiores.Count == 0)
+                    tareasVacias.Add(t);
+                }
+
+            foreach (var tv in tareasVacias)
+                rubroNoImputados.Inferiores.Remove(tv);
+
+            if (rubroNoImputados.Inferiores.Count == 0)
+                Arbol.Remove(rubroNoImputados);
+            }
+
+        // Asegura que el insumo exista bajo "R-INP/T-INP-{nat}" si no está ya presente.
+        private void AddInsumoNoImputadoIfMissing(string insumoId)
+            {
+            if (string.IsNullOrWhiteSpace(insumoId)) return;
+
+            var detallesDelInsumo = _detallesRelacionados
+                .Where(d => d != null && string.Equals(d.InsumoID?.Trim(), insumoId, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            if (detallesDelInsumo.Count == 0) return;
+
+            var rubroNoImputados = Arbol.FirstOrDefault(r => r != null && string.Equals(r.ID, "R-INP", StringComparison.OrdinalIgnoreCase));
+            if (rubroNoImputados == null)
+                {
+                rubroNoImputados = new Nodo
+                    {
+                    ID = "R-INP",
+                    Descripcion = "Insumos no imputados",
+                    Tipo = "R",
+                    Unidad = "Gl",
+                    Cantidad = 1,
+                    CantidadReal = 1,
+                    Sup = true,
+                    Inferiores = new ObservableCollection<Nodo>()
+                    };
+                Arbol.Add(rubroNoImputados);
+                }
+
+            foreach (var grupoNat in detallesDelInsumo.GroupBy(d => d.TipoID))
+                {
+                char nat = grupoNat.Key == '\0' ? 'O' : grupoNat.Key;
+                string tareaId = $"T-INP-{nat}";
+
+                var tareaINP = rubroNoImputados.Inferiores.FirstOrDefault(t => t != null && string.Equals(t.ID, tareaId, StringComparison.OrdinalIgnoreCase));
+                if (tareaINP == null)
+                    {
+                    tareaINP = new Nodo
+                        {
+                        ID = tareaId,
+                        Descripcion = $"{NaturalezaDescripcion(nat)} no imputados",
+                        Tipo = "T",
+                        Unidad = "Gl",
+                        Cantidad = 1,
+                        CantidadReal = 1,
+                        Sup = false,
+                        Inferiores = new ObservableCollection<Nodo>()
+                        };
+                    rubroNoImputados.Inferiores.Add(tareaINP);
+                    }
+
+                var yaExiste = tareaINP.Inferiores.Any(h =>
+                    h != null
+                    && !string.IsNullOrWhiteSpace(h.ID)
+                    && h.ID.StartsWith("I-INP-", StringComparison.OrdinalIgnoreCase)
+                    && h.ID.EndsWith(insumoId, StringComparison.OrdinalIgnoreCase));
+
+                if (yaExiste) continue;
+
+                var cantidadTotal = grupoNat.Sum(d => d.Cantidad);
+                var puAcum = grupoNat.Sum(d => d.Cantidad * d.PrecioUnitario);
+                var pu = cantidadTotal == 0m ? 0m : puAcum / cantidadTotal;
+
+                var detalleEjemplo = grupoNat.FirstOrDefault();
+
+                var nuevoInsumo = new Nodo
+                    {
+                    ID = $"I-INP-{nat}-{insumoId}",
+                    Descripcion = detalleEjemplo?.Descrip ?? $"Insumo {detalleEjemplo?.ID}",
+                    Tipo = nat.ToString(),
+                    Unidad = detalleEjemplo?.Unidad ?? "Gl",
+                    Cantidad = cantidadTotal,
+                    CantidadReal = cantidadTotal,
+                    Pur1 = pu,
+                    Sup = false,
+                    Inferiores = new ObservableCollection<Nodo>()
+                    };
+
+                tareaINP.Inferiores.Add(nuevoInsumo);
                 }
             }
 
@@ -542,6 +700,5 @@ namespace Biblioteca
                     _ => $"Naturaleza {tipo}"
                     };
             }
-
         }
     }
