@@ -153,7 +153,8 @@
             SelectionBackground="DarkGray"
             SelectionChanged="grillaArbol_SelectionChanged"
             SelectionForeground="Black"
-            SelectionMode="Single">
+            SelectionMode="Single"
+            syncfusion:SfSkinManager.VisualStyle="VisualStudio2015">
 
             <syncfusion:SfTreeGrid.ContextMenu>
                 <ContextMenu>

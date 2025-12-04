@@ -14,7 +14,8 @@
     sfSkinManager:SfSkinManager.VisualStyle="FluentLight"
     Office2010Icon="pack://application:,,,/Imagenes/DataObra.ico"
     TitleTextAlignment="Left"
-    mc:Ignorable="d" WindowStartupLocation="CenterOwner">
+    WindowStartupLocation="CenterOwner"
+    mc:Ignorable="d">
     <syncfusion:RibbonWindow.Resources>
         <clases:DecimalToStringConverter x:Key="DecimalToStringConverter" />
         <Style x:Key="TipoCellStyle" TargetType="syncfusion:TreeGridCell">
@@ -39,9 +40,12 @@
             </Style.Triggers>
         </Style>
         <Style x:Key="CantRealCellStyle" TargetType="syncfusion:TreeGridCell">
-
-            <Setter Property="Background" Value="LightYellow" />
-            <Setter Property="FontWeight" Value="Bold" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Tipo}" Value="T">
+                    <Setter Property="Background" Value="LightYellow" />
+                    <Setter Property="FontWeight" Value="Bold" />
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
     </syncfusion:RibbonWindow.Resources>
     <Grid x:Name="gridBase">
@@ -65,7 +69,7 @@
                     <StackPanel
                         Margin="2,30,2,0"
                         VerticalAlignment="Center"
-                        Orientation="Horizontal"/>
+                        Orientation="Horizontal" />
 
                 </syncfusion:RibbonBar>
 
@@ -138,13 +142,11 @@
         <!--  FILA INFERIOR: contendores que se intercambian  -->
         <Grid Grid.Row="1">
             <!--  Contenedor para Tareas  -->
-            <Grid
-                x:Name="gridTareas"
-                Background="Red"
-                Visibility="Visible">
+            <Grid x:Name="gridTareas" Visibility="Visible">
                 <syncfusion:SfTreeGrid
                     Name="grillaArbol"
                     Grid.Row="1"
+                    syncfusion:SfSkinManager.VisualStyle="VisualStudio2015"
                     AllowDraggingRows="True"
                     AllowDrop="True"
                     AllowEditing="True"
@@ -160,6 +162,7 @@
                     SelectionChanged="grillaArbol_SelectionChanged"
                     SelectionForeground="Black"
                     SelectionMode="Single">
+
 
                     <syncfusion:SfTreeGrid.Columns>
                         <syncfusion:TreeGridColumns>
@@ -210,52 +213,20 @@
                             <syncfusion:TreeGridNumericColumn
                                 Width="60"
                                 HeaderText="P.U. Previsto"
-                                MappingName="PU1">
-                                <syncfusion:TreeGridNumericColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock
-                                            Margin="0,0,3,0"
-                                            VerticalAlignment="Center"
-                                            Text="{Binding PU1, Converter={StaticResource DecimalToStringConverter}}"
-                                            TextAlignment="Right">
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding HasItems}" Value="True">
-                                                            <Setter Property="Foreground" Value="Blue" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-                                    </DataTemplate>
-                                </syncfusion:TreeGridNumericColumn.CellTemplate>
-                            </syncfusion:TreeGridNumericColumn>
+                                MappingName="PU1"
+                                NumberDecimalDigits="2"
+                                NumberDecimalSeparator=","
+                                NumberGroupSeparator="."
+                                NumberGroupSizes="3" />
 
                             <syncfusion:TreeGridNumericColumn
                                 Width="80"
                                 HeaderText="P.U. Real"
-                                MappingName="Pur1">
-                                <syncfusion:TreeGridNumericColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock
-                                            Margin="0,0,3,0"
-                                            VerticalAlignment="Center"
-                                            Text="{Binding Pur1, Converter={StaticResource DecimalToStringConverter}}"
-                                            TextAlignment="Right">
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding HasItems}" Value="True">
-                                                            <Setter Property="Foreground" Value="Blue" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-                                    </DataTemplate>
-                                </syncfusion:TreeGridNumericColumn.CellTemplate>
-                            </syncfusion:TreeGridNumericColumn>
+                                MappingName="Pur1"
+                                NumberDecimalDigits="2"
+                                NumberDecimalSeparator=","
+                                NumberGroupSeparator="."
+                                NumberGroupSizes="3" />
 
 
                             <syncfusion:TreeGridNumericColumn
@@ -305,6 +276,7 @@
                 <syncfusion:SfTreeGrid
                     x:Name="grillaListados"
                     Grid.Row="1"
+                    syncfusion:SfSkinManager.VisualStyle="Metro"
                     AllowDraggingRows="True"
                     AllowDrop="True"
                     AllowEditing="True"
@@ -312,6 +284,7 @@
                     AutoGenerateColumns="False"
                     ExpanderColumn="Descripcion"
                     SelectionMode="Single">
+
 
                     <syncfusion:SfTreeGrid.StackedHeaderRows>
                         <syncfusion:StackedHeaderRow>
