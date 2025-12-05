@@ -91,6 +91,10 @@
                             x:Name="RbInsumos"
                             Checked="Switch_Checked"
                             Content="Insumos" />
+                        <RadioButton
+                            x:Name="RbAmbos"
+                            Checked="Switch_Checked"
+                            Content="Ambos" />
                     </StackPanel>
                 </syncfusion:RibbonBar>
 
@@ -139,13 +143,22 @@
 
         </syncfusion:Ribbon>
 
-        <!--  FILA INFERIOR: contendores que se intercambian  -->
-        <Grid Grid.Row="1">
+        <!--  FILA INFERIOR  -->
+        <Grid x:Name="ppal" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="3" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
             <!--  Contenedor para Tareas  -->
             <Grid x:Name="gridTareas" Visibility="Visible">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="3" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
                 <syncfusion:SfTreeGrid
                     Name="grillaArbol"
-                    Grid.Row="1"
                     syncfusion:SfSkinManager.VisualStyle="VisualStudio2015"
                     AllowDraggingRows="True"
                     AllowDrop="True"
@@ -269,13 +282,38 @@
                         </syncfusion:TreeGridColumns>
                     </syncfusion:SfTreeGrid.Columns>
                 </syncfusion:SfTreeGrid>
+
+                <syncfusion:SfGridSplitter
+                    x:Name="sepDetalle"
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Height="5"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Top"
+                    EnableCollapseButton="True"
+                    ResizeBehavior="PreviousAndNext"
+                    ShowsPreview="True" />
+
+                <Grid Grid.Row="2" Background="Red" />
+
+
             </Grid>
 
+            <syncfusion:SfGridSplitter
+                Grid.Column="1"
+                Width="5"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Stretch"
+                EnableCollapseButton="True"
+                ResizeBehavior="PreviousAndNext"
+                ShowsPreview="True" />
+
+
+
             <!--  Contenedor para Insumos  -->
-            <Grid x:Name="gridInsumos" Visibility="Collapsed">
+            <Grid x:Name="gridInsumos" Grid.Column="2">
                 <syncfusion:SfTreeGrid
                     x:Name="grillaListados"
-                    Grid.Row="1"
                     syncfusion:SfSkinManager.VisualStyle="Metro"
                     AllowDraggingRows="True"
                     AllowDrop="True"

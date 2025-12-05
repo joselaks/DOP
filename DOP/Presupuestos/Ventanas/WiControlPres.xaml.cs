@@ -118,27 +118,44 @@ namespace DataObra.Presupuestos.Ventanas
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         private void Switch_Checked(object sender, RoutedEventArgs e)
-            {
-            UpdateSwitch();
-            }
+        {
+            // Evitar ejecutar antes de estar cargado completamente
+            if (!IsLoaded) return;
 
-        private void UpdateSwitch()
-            {
-            // Protección contra llamadas tempranas durante InitializeComponent donde los controles pueden ser null
-            if (RbTareas is null || gridTareas is null || gridInsumos is null)
+            // Validar Grid y columnas
+            if (ppal == null || ppal.ColumnDefinitions == null || ppal.ColumnDefinitions.Count < 3)
                 return;
 
-            if (RbTareas.IsChecked == true)
-                {
-                gridTareas.Visibility = Visibility.Visible;
-                gridInsumos.Visibility = Visibility.Collapsed;
-                }
-            else
-                {
-                gridTareas.Visibility = Visibility.Collapsed;
-                gridInsumos.Visibility = Visibility.Visible;
-                }
+            var rb = sender as RadioButton;
+            if (rb == null || rb.IsChecked != true)
+                return;
+
+            // Usar el Name del RadioButton para evitar dependencias de campos nulos
+            switch (rb.Name)
+            {
+                case "RbTareas":
+                    // Tareas: * | 3 | 0
+                    ppal.ColumnDefinitions[0].Width = new GridLength(1, GridUnitType.Star);
+                    ppal.ColumnDefinitions[1].Width = new GridLength(3, GridUnitType.Pixel);
+                    ppal.ColumnDefinitions[2].Width = new GridLength(0, GridUnitType.Pixel);
+                    break;
+
+                case "RbInsumos":
+                    // Insumos: 0 | 3 | *
+                    ppal.ColumnDefinitions[0].Width = new GridLength(0, GridUnitType.Pixel);
+                    ppal.ColumnDefinitions[1].Width = new GridLength(3, GridUnitType.Pixel);
+                    ppal.ColumnDefinitions[2].Width = new GridLength(1, GridUnitType.Star);
+                    break;
+
+                case "RbAmbos":
+                    // Ambos: * | 3 | *
+                    ppal.ColumnDefinitions[0].Width = new GridLength(1, GridUnitType.Star);
+                    ppal.ColumnDefinitions[1].Width = new GridLength(3, GridUnitType.Pixel);
+                    ppal.ColumnDefinitions[2].Width = new GridLength(1, GridUnitType.Star);
+                    break;
             }
+        }
+
 
         private void grillaArbol_CurrentCellBeginEdit(object sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridCurrentCellBeginEditEventArgs e)
             {
