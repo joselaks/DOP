@@ -294,7 +294,9 @@
                     ResizeBehavior="PreviousAndNext"
                     ShowsPreview="True" />
 
-                <Grid Grid.Row="2" Background="Red" />
+                <Grid Grid.Row="2"  >
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">Análisis de costo</TextBlock>
+                </Grid>
 
 
             </Grid>
@@ -357,7 +359,7 @@
                         <syncfusion:TreeGridNumericColumn
                             Width="90"
                             HeaderText="Cant. Real"
-                            MappingName="Cantidad"
+                            MappingName="CantidadReal"
                             NumberDecimalDigits="2"
                             NumberDecimalSeparator=","
                             NumberGroupSeparator="."
@@ -366,7 +368,7 @@
                         <syncfusion:TreeGridNumericColumn
                             Width="100"
                             HeaderText="Existencia"
-                            MappingName="Cantidad"
+                            MappingName="Existencia"
                             NumberDecimalDigits="2"
                             NumberDecimalSeparator=","
                             NumberGroupSeparator="."
@@ -390,7 +392,7 @@
                         <syncfusion:TreeGridNumericColumn
                             Width="90"
                             HeaderText="P.U. Real"
-                            MappingName="PU1"
+                            MappingName="Pur1"
                             NumberDecimalDigits="2"
                             NumberDecimalSeparator=","
                             NumberGroupSeparator="."

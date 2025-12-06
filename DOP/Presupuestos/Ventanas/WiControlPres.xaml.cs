@@ -89,7 +89,9 @@ namespace DataObra.Presupuestos.Ventanas
             this.DataContext = _control;                 // para bindings generales (p.ej. {Binding Arbol})
             if (grillaArbol != null)
                 grillaArbol.ItemsSource = _control.Arbol; // TreeGrid/TreeView del XAML, si usa ItemsSource
-               
+            if (grillaListados != null)
+                grillaListados.ItemsSource = _control.Insumos; // TreeGrid/TreeView del XAML, si usa ItemsSource
+
             }
 
         private void SaleExcel_Click(object sender, RoutedEventArgs e)
