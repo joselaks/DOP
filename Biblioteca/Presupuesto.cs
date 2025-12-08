@@ -859,6 +859,30 @@ namespace Bibioteca.Clases
 
             }
 
+        /// <summary>
+        /// Recorre la colección Insumos y copia su Cantidad al campo CanTotalEjec
+        /// de los ConceptoDTO en listaConceptosGrabar con el mismo ID.
+        /// </summary>
+        private void incluirCantidadesTotales()
+            {
+            if (Insumos == null || Insumos.Count == 0 || listaConceptosGrabar == null || listaConceptosGrabar.Count == 0)
+                return;
+
+            // Índice por ID para acceso rápido
+            var conceptosPorId = listaConceptosGrabar.ToDictionary(c => c.ConceptoID, c => c, StringComparer.OrdinalIgnoreCase);
+
+            foreach (var insumo in Insumos)
+                {
+                if (string.IsNullOrWhiteSpace(insumo.ID))
+                    continue;
+
+                if (conceptosPorId.TryGetValue(insumo.ID, out var concepto))
+                    {
+                    concepto.CanTotalEjec = insumo.Cantidad;
+                    }
+                }
+            }
+
         public void listaRubrosTareasAuxiliares(IEnumerable<Nodo> items)
             {
             foreach (Nodo item in items)
@@ -1170,6 +1194,8 @@ namespace Bibioteca.Clases
                         }
                     }
                 }
+            // Actualizar CanTotalEjec de conceptos con cantidades desde Insumos
+            incluirCantidadesTotales();
 
             // Mostrar mensaje con las cantidades de registros
             }

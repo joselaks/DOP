@@ -1,0 +1,199 @@
+﻿<syncfusion:RibbonWindow
+    x:Class="DataObra.Presupuestos.Ventanas.WiControl1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:DataObra.Presupuestos.Ventanas"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sfSkinManager="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    Title="Control"
+    Width="1090"
+    Height="800"
+    sfSkinManager:SfSkinManager.VisualStyle="FluentLight"
+    Office2010Icon="pack://application:,,,/Imagenes/DataObra.ico"
+    TitleTextAlignment="Left"
+    WindowStartupLocation="CenterOwner"
+    mc:Ignorable="d">
+    <Grid x:Name="gridBase">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="0" />
+            <ColumnDefinition Width="0" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <syncfusion:Ribbon BackStageHeader="" IsBackStageVisible="False">
+            <syncfusion:RibbonTab Caption="INICIO" IsChecked="True">
+                <syncfusion:RibbonBar
+                    Name="New"
+                    Header="Guardar"
+                    IsLauncherButtonVisible="False">
+                    <syncfusion:RibbonButton
+                        x:Name="BrnGuardar"
+                        Click="BrnGuardar_Click"
+                        Label="Guardar"
+                        LargeIcon="pack://application:,,,/Imagenes/Guardar48.png"
+                        SizeForm="Large" />
+                    <syncfusion:RibbonButton
+                        x:Name="BtnGuardarSalir"
+                        Click="BtnGuardarSalir_Click"
+                        Label="Guardar y Salir"
+                        LargeIcon="pack://application:,,,/Imagenes/GuardarSalir.png"
+                        SizeForm="Large" />
+                    <syncfusion:RibbonButton
+                        x:Name="BtnSalir"
+                        Click="BtnSalir_Click"
+                        Label="Salir sin cambios"
+                        LargeIcon="pack://application:,,,/Imagenes/Salir.png"
+                        SizeForm="Large" />
+                </syncfusion:RibbonBar>
+                <syncfusion:RibbonBar Header="Informes">
+                    <syncfusion:RibbonButton
+                        x:Name="SaleExcel"
+                        Click="SaleExcel_Click"
+                        Label="Excel"
+                        SizeForm="Small"
+                        SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
+                </syncfusion:RibbonBar>
+            </syncfusion:RibbonTab>
+        </syncfusion:Ribbon>
+
+        <!--  FILA INFERIOR  -->
+        <Grid x:Name="gridInsumos" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="3" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <syncfusion:SfTreeGrid
+                x:Name="grillaListados"
+                syncfusion:SfSkinManager.VisualStyle="Metro"
+                AllowDraggingRows="True"
+                AllowDrop="True"
+                AllowEditing="True"
+                AllowResizingColumns="True"
+                AutoGenerateColumns="False"
+                ExpanderColumn="Descripcion"
+                SelectionMode="Single">
+
+
+                <syncfusion:SfTreeGrid.StackedHeaderRows>
+                    <syncfusion:StackedHeaderRow>
+                        <syncfusion:StackedHeaderRow.StackedColumns>
+                            <syncfusion:StackedColumn ChildColumns="Cantidad,CantidadReal" HeaderText="Cantiades" />
+                            <syncfusion:StackedColumn ChildColumns="PU1,Pur1" HeaderText="Precio Unitario" />
+                        </syncfusion:StackedHeaderRow.StackedColumns>
+                    </syncfusion:StackedHeaderRow>
+                </syncfusion:SfTreeGrid.StackedHeaderRows>
+
+                <syncfusion:SfTreeGrid.Columns>
+
+
+                    <syncfusion:TreeGridTextColumn
+                        Width="50"
+                        IsHidden="true"
+                        MappingName="ID" />
+
+
+                    <syncfusion:TreeGridTextColumn Width="250" MappingName="Descripcion" />
+
+
+                    <syncfusion:TreeGridNumericColumn
+                        Width="90"
+                        HeaderText="Prevista"
+                        MappingName="Cantidad"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3" />
+
+                    <syncfusion:TreeGridNumericColumn
+                        Width="90"
+                        HeaderText="Real"
+                        MappingName="CantidadReal"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3" />
+
+
+                    <syncfusion:TreeGridNumericColumn
+                        Width="90"
+                        HeaderText="Previsto"
+                        MappingName="PU1"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3" />
+
+                    <syncfusion:TreeGridNumericColumn
+                        Width="90"
+                        HeaderText="Real"
+                        MappingName="Pur1"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3" />
+
+                    <syncfusion:TreeGridNumericColumn
+                        Width="130"
+                        HeaderText="Total Previsto"
+                        MappingName="PU1"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3" />
+                    <syncfusion:TreeGridNumericColumn
+                        Width="130"
+                        HeaderText="Total Real"
+                        MappingName="PU1"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3" />
+                    <syncfusion:TreeGridNumericColumn
+                        Width="130"
+                        HeaderText="Total Proyectado"
+                        MappingName="PU1"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3" />
+
+
+
+
+                </syncfusion:SfTreeGrid.Columns>
+
+            </syncfusion:SfTreeGrid>
+
+
+            <syncfusion:SfGridSplitter
+                x:Name="sepDetalle"
+                Grid.Row="1"
+                Grid.Column="0"
+                Height="5"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Top"
+                EnableCollapseButton="True"
+                ResizeBehavior="PreviousAndNext"
+                ShowsPreview="True" />
+
+            <Grid Grid.Row="2">
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Análisis de costo</TextBlock>
+            </Grid>
+
+
+        </Grid>
+
+
+
+
+
+
+    </Grid>
+</syncfusion:RibbonWindow>

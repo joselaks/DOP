@@ -38,7 +38,7 @@ namespace DataObra.Presupuestos.Ventanas
         private PresupuestoDTO _encabezado = new();
 
         // Instancia del generador de árbol para Control de Presupuesto
-        private Biblioteca.Control _control = new Biblioteca.Control();
+        private ControlPresupuesto _control = new ControlPresupuesto();
 
         public WiControlPres(PresupuestoDTO presupuestosRef)
             {

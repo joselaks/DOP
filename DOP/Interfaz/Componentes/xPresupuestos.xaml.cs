@@ -173,7 +173,7 @@ namespace DataObra.Interfaz.Componentes
 
         private void btnControl_Click(object sender, RoutedEventArgs e)
             {
-            var win = new WiInicioControlPres(escritorio._presupuestos);
+            var win = new WiControl1();
             win.Owner = escritorio;
             // Se muestra modal y, por la XAML, se centra respecto al Owner
             win.ShowDialog();
