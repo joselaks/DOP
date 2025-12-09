@@ -173,10 +173,17 @@ namespace DataObra.Interfaz.Componentes
 
         private void btnControl_Click(object sender, RoutedEventArgs e)
             {
-            var win = new WiControl1();
-            win.Owner = escritorio;
-            // Se muestra modal y, por la XAML, se centra respecto al Owner
-            win.ShowDialog();
+            if (GrillaPresupuestos.SelectedItem is PresupuestoDTO seleccionado && seleccionado.ID.HasValue)
+                {
+                var win = new WiControl1(seleccionado);
+                win.Owner = escritorio;
+                // Se muestra modal y, por la XAML, se centra respecto al Owner
+                win.ShowDialog();
+                }
+            else
+                {
+                MessageBox.Show("Seleccione un presupuesto para controlar.", "Atención", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
         }
     }

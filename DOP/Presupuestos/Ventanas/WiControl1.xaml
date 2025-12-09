@@ -65,7 +65,7 @@
         <Grid x:Name="gridInsumos" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
-                <RowDefinition Height="3" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -78,7 +78,8 @@
                 AllowResizingColumns="True"
                 AutoGenerateColumns="False"
                 ExpanderColumn="Descripcion"
-                SelectionMode="Single">
+                SelectionMode="Single"
+                SelectionChanged="grillaListados_SelectionChanged">
 
 
                 <syncfusion:SfTreeGrid.StackedHeaderRows>
@@ -95,11 +96,13 @@
 
                     <syncfusion:TreeGridTextColumn
                         Width="50"
-                        IsHidden="true"
-                        MappingName="ID" />
+                     
+                        MappingName="ConceptoID" />
 
 
-                    <syncfusion:TreeGridTextColumn Width="250" MappingName="Descripcion" />
+                    <syncfusion:TreeGridTextColumn Width="250" MappingName="Descrip" />
+
+                    <syncfusion:TreeGridTextColumn HeaderText="U.D." Width="50" MappingName="Unidad" />
 
 
                     <syncfusion:TreeGridNumericColumn
@@ -124,7 +127,7 @@
                     <syncfusion:TreeGridNumericColumn
                         Width="90"
                         HeaderText="Previsto"
-                        MappingName="PU1"
+                        MappingName="PrEjec"
                         NumberDecimalDigits="2"
                         NumberDecimalSeparator=","
                         NumberGroupSeparator="."
@@ -163,14 +166,8 @@
                         NumberDecimalSeparator=","
                         NumberGroupSeparator="."
                         NumberGroupSizes="3" />
-
-
-
-
                 </syncfusion:SfTreeGrid.Columns>
-
             </syncfusion:SfTreeGrid>
-
 
             <syncfusion:SfGridSplitter
                 x:Name="sepDetalle"
@@ -183,10 +180,17 @@
                 ResizeBehavior="PreviousAndNext"
                 ShowsPreview="True" />
 
-            <Grid Grid.Row="2">
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Análisis de costo</TextBlock>
-            </Grid>
-
+            <syncfusion:SfTreeGrid
+                x:Name="grillaGastos"
+                Grid.Row="2"
+                syncfusion:SfSkinManager.VisualStyle="Metro"
+                AllowDraggingRows="True"
+                AllowDrop="True"
+                AllowEditing="True"
+                AllowResizingColumns="True"
+                AutoGenerateColumns="True"
+                ExpanderColumn="Descripcion"
+                SelectionMode="Single" />
 
         </Grid>
 

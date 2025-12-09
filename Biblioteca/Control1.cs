@@ -1,0 +1,132 @@
+﻿using Bibioteca.Clases;
+using Biblioteca.DTO;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Biblioteca
+    {
+    public class Control1 : ObjetoNotificable
+        {
+        // Nueva lista con objetos propios, no derivados de ConceptoDTO ni GastoDetalleDTO
+        public List<ConceptoConGastosPropio> ConceptosConGastosPropios { get; set; } = new();
+
+        // Recibe los DTOs pero transforma a objetos propios
+        public void ConstruirConceptosConGastos(List<ConceptoDTO> conceptos, List<GastoDetalleDTO> detalles)
+            {
+
+            var tiposValidos = new HashSet<char> { 'M', 'D', 'S', 'O', 'E' };
+            var conceptosFiltrados = conceptos
+                .Where(c =>
+                    c != null &&
+                    tiposValidos.Contains(c.Tipo) // No uses ToUpperInvariant si los datos ya vienen en mayúscula
+                    && c.Tipo != '\0'
+                    && c.Tipo != ' '
+                    && !string.IsNullOrWhiteSpace(c.ConceptoID)
+                )
+                .ToList();
+
+            ConceptosConGastosPropios.Clear();
+
+            foreach (var item in conceptosFiltrados)
+                {
+                var conceptoPropio = new ConceptoConGastosPropio
+                    {
+                    PresupuestoID = item.PresupuestoID,
+                    ConceptoID = item.ConceptoID,
+                    Descrip = item.Descrip,
+                    Tipo = item.Tipo,
+                    Unidad = item.Unidad,
+                    PrEjec = item.PrEjec,
+                    PrEjec1 = item.PrEjec1,
+                    EjecMoneda = item.EjecMoneda,
+                    MesBase = item.MesBase,
+                    CanTotalEjec = item.CanTotalEjec,
+                    CantTotalReal = item.CantTotalReal,
+                    Existencias = item.Existencias,
+                    PrReal = item.PrReal,
+                    PrReal1 = item.PrReal1,
+                    ArticuloID = item.ArticuloID,
+                    FactorArticulo = item.FactorArticulo,
+                    Accion = item.Accion,
+                    Gastos = detalles
+                        .Where(d => d.InsumoID == item.ConceptoID )
+                        .Select(d => new GastoPropio
+                            {
+                            ID = d.ID,
+                            GastoID = d.GastoID,
+                            CobroID = d.CobroID,
+                            UsuarioID = d.UsuarioID,
+                            CuentaID = d.CuentaID,
+                            TipoID = d.TipoID,
+                            InsumoID = d.InsumoID,
+                            TareaID = d.TareaID,
+                            UnicoUso = d.UnicoUso,
+                            Descrip = d.Descrip,
+                            Unidad = d.Unidad,
+                            Cantidad = d.Cantidad,
+                            FactorCantidad = d.FactorCantidad,
+                            PrecioUnitario = d.PrecioUnitario,
+                            Importe = d.Importe,
+                            ArticuloID = d.ArticuloID,
+                            Moneda = d.Moneda,
+                            TipoCambioD = d.TipoCambioD,
+                            Fecha = d.Fecha,
+                            Accion = d.Accion
+                            })
+                        .ToList()
+                    };
+
+                ConceptosConGastosPropios.Add(conceptoPropio);
+                }
+            }
+        }
+
+    // Objeto propio para concepto con gastos, no hereda de ConceptoDTO
+    public class ConceptoConGastosPropio
+        {
+        public int PresupuestoID { get; set; }
+        public string ConceptoID { get; set; }
+        public string Descrip { get; set; }
+        public char Tipo { get; set; }
+        public string Unidad { get; set; }
+        public decimal PrEjec { get; set; }
+        public decimal PrEjec1 { get; set; }
+        public char EjecMoneda { get; set; }
+        public DateTime MesBase { get; set; }
+        public decimal CanTotalEjec { get; set; }
+        public decimal? CantTotalReal { get; set; }
+        public decimal? Existencias { get; set; }
+        public decimal? PrReal { get; set; }
+        public decimal? PrReal1 { get; set; }
+        public int? ArticuloID { get; set; }
+        public decimal? FactorArticulo { get; set; }
+        public char? Accion { get; set; }
+        public List<GastoPropio> Gastos { get; set; } = new();
+        }
+
+    // Objeto propio para gasto, no hereda de GastoDetalleDTO ni GastoDTO
+    public class GastoPropio
+        {
+        public int ID { get; set; }
+        public int? GastoID { get; set; }
+        public int? CobroID { get; set; }
+        public int UsuarioID { get; set; }
+        public int CuentaID { get; set; }
+        public char TipoID { get; set; }
+        public int? PresupuestoID { get; set; }
+        public string? InsumoID { get; set; }
+        public string? TareaID { get; set; }
+        public bool? UnicoUso { get; set; }
+        public string Descrip { get; set; }
+        public string Unidad { get; set; }
+        public decimal Cantidad { get; set; }
+        public decimal FactorCantidad { get; set; }
+        public decimal PrecioUnitario { get; set; }
+        public decimal Importe { get; set; }
+        public int? ArticuloID { get; set; }
+        public char Moneda { get; set; }
+        public decimal TipoCambioD { get; set; }
+        public DateTime? Fecha { get; set; }
+        public char Accion { get; set; }
+        }
+    }

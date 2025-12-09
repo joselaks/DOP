@@ -138,6 +138,7 @@
         <syncfusion:SfTreeGrid
             Name="grillaArbol"
             Grid.Row="1"
+            syncfusion:SfSkinManager.VisualStyle="VisualStudio2015"
             AllowDraggingRows="True"
             AllowDrop="True"
             AllowEditing="True"
@@ -153,8 +154,7 @@
             SelectionBackground="DarkGray"
             SelectionChanged="grillaArbol_SelectionChanged"
             SelectionForeground="Black"
-            SelectionMode="Single"
-            syncfusion:SfSkinManager.VisualStyle="VisualStudio2015">
+            SelectionMode="Single">
 
             <syncfusion:SfTreeGrid.ContextMenu>
                 <ContextMenu>
