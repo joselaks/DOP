@@ -47,9 +47,10 @@ namespace Biblioteca
                     PrReal1 = item.PrReal1,
                     ArticuloID = item.ArticuloID,
                     FactorArticulo = item.FactorArticulo,
+                    imprevisto = false,
                     Accion = item.Accion,
                     Gastos = detalles
-                        .Where(d => d.InsumoID == item.ConceptoID )
+                        .Where(d => d.InsumoID == item.ConceptoID)
                         .Select(d => new GastoPropio
                             {
                             ID = d.ID,
@@ -78,55 +79,128 @@ namespace Biblioteca
 
                 ConceptosConGastosPropios.Add(conceptoPropio);
                 }
+            AgregarNoImputados(detalles);
             }
-        }
 
-    // Objeto propio para concepto con gastos, no hereda de ConceptoDTO
-    public class ConceptoConGastosPropio
-        {
-        public int PresupuestoID { get; set; }
-        public string ConceptoID { get; set; }
-        public string Descrip { get; set; }
-        public char Tipo { get; set; }
-        public string Unidad { get; set; }
-        public decimal PrEjec { get; set; }
-        public decimal PrEjec1 { get; set; }
-        public char EjecMoneda { get; set; }
-        public DateTime MesBase { get; set; }
-        public decimal CanTotalEjec { get; set; }
-        public decimal? CantTotalReal { get; set; }
-        public decimal? Existencias { get; set; }
-        public decimal? PrReal { get; set; }
-        public decimal? PrReal1 { get; set; }
-        public int? ArticuloID { get; set; }
-        public decimal? FactorArticulo { get; set; }
-        public char? Accion { get; set; }
-        public List<GastoPropio> Gastos { get; set; } = new();
-        }
+        private void AgregarNoImputados(List<GastoDetalleDTO> detalles)
+            {
+            // Obtener todos los ConceptoID ya asociados
+            var idsAsociados = ConceptosConGastosPropios
+                .Select(c => c.ConceptoID)
+                .ToHashSet();
 
-    // Objeto propio para gasto, no hereda de GastoDetalleDTO ni GastoDTO
-    public class GastoPropio
-        {
-        public int ID { get; set; }
-        public int? GastoID { get; set; }
-        public int? CobroID { get; set; }
-        public int UsuarioID { get; set; }
-        public int CuentaID { get; set; }
-        public char TipoID { get; set; }
-        public int? PresupuestoID { get; set; }
-        public string? InsumoID { get; set; }
-        public string? TareaID { get; set; }
-        public bool? UnicoUso { get; set; }
-        public string Descrip { get; set; }
-        public string Unidad { get; set; }
-        public decimal Cantidad { get; set; }
-        public decimal FactorCantidad { get; set; }
-        public decimal PrecioUnitario { get; set; }
-        public decimal Importe { get; set; }
-        public int? ArticuloID { get; set; }
-        public char Moneda { get; set; }
-        public decimal TipoCambioD { get; set; }
-        public DateTime? Fecha { get; set; }
-        public char Accion { get; set; }
+            // Buscar todos los gastos no imputados (InsumoID no asociado a ningún ConceptoID)
+            var gastosNoImputados = detalles
+                .Where(g => string.IsNullOrWhiteSpace(g.InsumoID) || !idsAsociados.Contains(g.InsumoID))
+                .ToList();
+
+            if (gastosNoImputados.Count == 0)
+                return;
+
+            // Agrupar los gastos no imputados por InsumoID para crear Conceptos imprevistos
+            var agrupados = gastosNoImputados
+                .GroupBy(g => g.InsumoID ?? "SIN_ID")
+                .ToList();
+
+            foreach (var grupo in agrupados)
+                {
+                var primerGasto = grupo.First();
+                ConceptosConGastosPropios.Add(new ConceptoConGastosPropio
+                    {
+                    PresupuestoID = primerGasto.PresupuestoID ?? 0,
+                    ConceptoID = grupo.Key,
+                    Descrip = primerGasto.Descrip,
+                    Tipo = 'O', // O de "Otros"
+                    Unidad = primerGasto.Unidad,
+                    PrEjec = 0,
+                    PrEjec1 = 0,
+                    EjecMoneda = primerGasto.Moneda,
+                    MesBase = primerGasto.Fecha ?? DateTime.MinValue,
+                    CanTotalEjec = 0,
+                    CantTotalReal = null,
+                    Existencias = null,
+                    PrReal = null,
+                    PrReal1 = null,
+                    ArticuloID = primerGasto.ArticuloID,
+                    FactorArticulo = null,
+                    Accion = primerGasto.Accion,
+                    imprevisto = true,
+                    Gastos = grupo.Select(g => new GastoPropio
+                        {
+                        ID = g.ID,
+                        GastoID = g.GastoID,
+                        CobroID = g.CobroID,
+                        UsuarioID = g.UsuarioID,
+                        CuentaID = g.CuentaID,
+                        TipoID = g.TipoID,
+                        PresupuestoID = g.PresupuestoID,
+                        InsumoID = g.InsumoID,
+                        TareaID = g.TareaID,
+                        UnicoUso = g.UnicoUso,
+                        Descrip = g.Descrip,
+                        Unidad = g.Unidad,
+                        Cantidad = g.Cantidad,
+                        FactorCantidad = g.FactorCantidad,
+                        PrecioUnitario = g.PrecioUnitario,
+                        Importe = g.Importe,
+                        ArticuloID = g.ArticuloID,
+                        Moneda = g.Moneda,
+                        TipoCambioD = g.TipoCambioD,
+                        Fecha = g.Fecha,
+                        Accion = g.Accion
+                        }).ToList()
+                    });
+                }
+            }
+
+        // Objeto propio para concepto con gastos, no hereda de ConceptoDTO
+        public class ConceptoConGastosPropio
+            {
+            public int PresupuestoID { get; set; }
+            public string ConceptoID { get; set; }
+            public string Descrip { get; set; }
+            public char Tipo { get; set; }
+            public string Unidad { get; set; }
+            public decimal PrEjec { get; set; }
+            public decimal PrEjec1 { get; set; }
+            public char EjecMoneda { get; set; }
+            public DateTime MesBase { get; set; }
+            public decimal CanTotalEjec { get; set; }
+            public decimal? CantTotalReal { get; set; }
+            public decimal? Existencias { get; set; }
+            public decimal? PrReal { get; set; }
+            public decimal? PrReal1 { get; set; }
+            public int? ArticuloID { get; set; }
+            public decimal? FactorArticulo { get; set; }
+            public char? Accion { get; set; }
+            public bool imprevisto { get; set; }
+            public List<GastoPropio> Gastos { get; set; } = new();
+            }
+
+        // Objeto propio para gasto, no hereda de GastoDetalleDTO ni GastoDTO
+        public class GastoPropio
+            {
+            public int ID { get; set; }
+            public int? GastoID { get; set; }
+            public int? CobroID { get; set; }
+            public int UsuarioID { get; set; }
+            public int CuentaID { get; set; }
+            public char TipoID { get; set; }
+            public int? PresupuestoID { get; set; }
+            public string? InsumoID { get; set; }
+            public string? TareaID { get; set; }
+            public bool? UnicoUso { get; set; }
+            public string Descrip { get; set; }
+            public string Unidad { get; set; }
+            public decimal Cantidad { get; set; }
+            public decimal FactorCantidad { get; set; }
+            public decimal PrecioUnitario { get; set; }
+            public decimal Importe { get; set; }
+            public int? ArticuloID { get; set; }
+            public char Moneda { get; set; }
+            public decimal TipoCambioD { get; set; }
+            public DateTime? Fecha { get; set; }
+            public char Accion { get; set; }
+            }
         }
     }

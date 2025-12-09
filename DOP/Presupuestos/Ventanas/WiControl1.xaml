@@ -15,6 +15,18 @@
     TitleTextAlignment="Left"
     WindowStartupLocation="CenterOwner"
     mc:Ignorable="d">
+    <syncfusion:RibbonWindow.Resources>
+        <!-- Otros estilos -->
+        <Style x:Key="sinAsignar" TargetType="syncfusion:TreeGridRowControl">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding imprevisto}" Value="True">
+                    <Setter Property="FontStyle"  Value="Italic"/>
+                    <Setter Property="Foreground" Value="#FF888888"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </syncfusion:RibbonWindow.Resources>
+
     <Grid x:Name="gridBase">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -78,14 +90,15 @@
                 AllowResizingColumns="True"
                 AutoGenerateColumns="False"
                 ExpanderColumn="Descripcion"
+                SelectionChanged="grillaListados_SelectionChanged"
                 SelectionMode="Single"
-                SelectionChanged="grillaListados_SelectionChanged">
+                RowStyle="{StaticResource sinAsignar}">
 
 
                 <syncfusion:SfTreeGrid.StackedHeaderRows>
                     <syncfusion:StackedHeaderRow>
                         <syncfusion:StackedHeaderRow.StackedColumns>
-                            <syncfusion:StackedColumn ChildColumns="Cantidad,CantidadReal" HeaderText="Cantiades" />
+                            <syncfusion:StackedColumn ChildColumns="CanTotalEjec,CantidadReal" HeaderText="Cantiades" />
                             <syncfusion:StackedColumn ChildColumns="PU1,Pur1" HeaderText="Precio Unitario" />
                         </syncfusion:StackedHeaderRow.StackedColumns>
                     </syncfusion:StackedHeaderRow>
@@ -94,21 +107,21 @@
                 <syncfusion:SfTreeGrid.Columns>
 
 
-                    <syncfusion:TreeGridTextColumn
-                        Width="50"
-                     
-                        MappingName="ConceptoID" />
+                    <syncfusion:TreeGridTextColumn Width="50" MappingName="ID" />
 
 
                     <syncfusion:TreeGridTextColumn Width="250" MappingName="Descrip" />
 
-                    <syncfusion:TreeGridTextColumn HeaderText="U.D." Width="50" MappingName="Unidad" />
+                    <syncfusion:TreeGridTextColumn
+                        Width="50"
+                        HeaderText="U.D."
+                        MappingName="Unidad" />
 
 
                     <syncfusion:TreeGridNumericColumn
                         Width="90"
                         HeaderText="Prevista"
-                        MappingName="Cantidad"
+                        MappingName="CanTotalEjec"
                         NumberDecimalDigits="2"
                         NumberDecimalSeparator=","
                         NumberGroupSeparator="."
