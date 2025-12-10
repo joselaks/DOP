@@ -269,7 +269,7 @@
                 <syncfusion:GridNumericColumn
                     Width="100"
                     HeaderText="Factor"
-                    MappingName="FactorCantidad"
+                    MappingName="FactorConcepto"
                     NumberDecimalDigits="2"
                     NumberDecimalSeparator="," />
                 <syncfusion:GridNumericColumn

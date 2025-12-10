@@ -31,7 +31,6 @@ namespace Biblioteca
                 {
                 var conceptoPropio = new ConceptoConGastosPropio
                     {
-                    PresupuestoID = item.PresupuestoID,
                     ConceptoID = item.ConceptoID,
                     Descrip = item.Descrip,
                     Tipo = item.Tipo,
@@ -65,7 +64,7 @@ namespace Biblioteca
                             Descrip = d.Descrip,
                             Unidad = d.Unidad,
                             Cantidad = d.Cantidad,
-                            FactorCantidad = d.FactorCantidad,
+                            FactorCantidad = d.FactorConcepto,
                             PrecioUnitario = d.PrecioUnitario,
                             Importe = d.Importe,
                             ArticuloID = d.ArticuloID,
@@ -107,7 +106,6 @@ namespace Biblioteca
                 var primerGasto = grupo.First();
                 ConceptosConGastosPropios.Add(new ConceptoConGastosPropio
                     {
-                    PresupuestoID = primerGasto.PresupuestoID ?? 0,
                     ConceptoID = grupo.Key,
                     Descrip = primerGasto.Descrip,
                     Tipo = 'O', // O de "Otros"
@@ -140,7 +138,7 @@ namespace Biblioteca
                         Descrip = g.Descrip,
                         Unidad = g.Unidad,
                         Cantidad = g.Cantidad,
-                        FactorCantidad = g.FactorCantidad,
+                        FactorCantidad = g.FactorConcepto,
                         PrecioUnitario = g.PrecioUnitario,
                         Importe = g.Importe,
                         ArticuloID = g.ArticuloID,
@@ -156,7 +154,6 @@ namespace Biblioteca
         // Objeto propio para concepto con gastos, no hereda de ConceptoDTO
         public class ConceptoConGastosPropio
             {
-            public int PresupuestoID { get; set; }
             public string ConceptoID { get; set; }
             public string Descrip { get; set; }
             public char Tipo { get; set; }
@@ -167,9 +164,16 @@ namespace Biblioteca
             public DateTime MesBase { get; set; }
             public decimal CanTotalEjec { get; set; }
             public decimal? CantTotalReal { get; set; }
+            public decimal CanTotalSaldo { get; set; }
             public decimal? Existencias { get; set; }
             public decimal? PrReal { get; set; }
             public decimal? PrReal1 { get; set; }
+            public decimal ImporteTotalEjec { get; set; }
+            public decimal ImporteTotalEjec1 { get; set; }
+            public decimal ImporteRealEjec { get; set; }
+            public decimal ImporteRealEjec1 { get; set; }
+            public decimal ImporteSaldoEjec { get; set; }
+            public decimal ImporteSaldoEjec1 { get; set; }
             public int? ArticuloID { get; set; }
             public decimal? FactorArticulo { get; set; }
             public char? Accion { get; set; }

@@ -40,7 +40,7 @@ namespace Biblioteca.DTO
             }
         }
 
-        public decimal FactorCantidad { get; set; }
+        public decimal FactorConcepto { get; set; }
 
         private decimal _precioUnitario;
         public decimal PrecioUnitario

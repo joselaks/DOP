@@ -63,7 +63,7 @@ namespace Servidor.Repositorios
             tableDetalles.Columns.Add("Descrip", typeof(string));
             tableDetalles.Columns.Add("Unidad", typeof(string));
             tableDetalles.Columns.Add("Cantidad", typeof(decimal));
-            tableDetalles.Columns.Add("FactorCantidad", typeof(decimal));
+            tableDetalles.Columns.Add("FactorConcepto", typeof(decimal));
             tableDetalles.Columns.Add("PrecioUnitario", typeof(decimal));
             tableDetalles.Columns.Add("Moneda", typeof(char));
             tableDetalles.Columns.Add("TipoCambioD", typeof(decimal));
@@ -99,7 +99,7 @@ namespace Servidor.Repositorios
                     string.IsNullOrEmpty(d.Descrip) ? (object)DBNull.Value : d.Descrip,
                     string.IsNullOrEmpty(d.Unidad) ? (object)DBNull.Value : d.Unidad,
                     d.Cantidad,
-                    d.FactorCantidad,
+                    d.FactorConcepto,
                     d.PrecioUnitario,
                     monedaChar,
                     d.TipoCambioD,

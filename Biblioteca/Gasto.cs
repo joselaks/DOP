@@ -86,7 +86,7 @@ namespace Biblioteca
                 Descrip = d.Descrip,
                 Unidad = d.Unidad,
                 Cantidad = d.Cantidad,
-                FactorCantidad = d.FactorCantidad,
+                FactorConcepto = d.FactorConcepto,
                 PrecioUnitario = d.PrecioUnitario,
 
                 ArticuloID = d.ArticuloID,
@@ -144,8 +144,8 @@ namespace Biblioteca
                     det.Moneda = encabezado.Moneda;
 
                 // FactorCantidad por defecto 1
-                if (det.FactorCantidad == 0)
-                    det.FactorCantidad = 1.0000m;
+                if (det.FactorConcepto == 0)
+                    det.FactorConcepto = 1.0000m;
 
                 // Evitar nulos y truncar cadenas a la longitud máxima
                 det.Descrip ??= string.Empty;

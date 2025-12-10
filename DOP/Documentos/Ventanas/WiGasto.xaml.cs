@@ -121,7 +121,7 @@ namespace DataObra.Documentos.Ventanas
                 CuentaID = objeto.encabezado.CuentaID,
                 Moneda = objeto.encabezado.Moneda,
                 Fecha = objeto.encabezado.FechaDoc,
-                FactorCantidad = 1.0000m,
+                FactorConcepto = 1.0000m,
 
                 Cantidad = 0,
                 PrecioUnitario = 0,
