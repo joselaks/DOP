@@ -2,6 +2,7 @@
     x:Class="DataObra.Presupuestos.Ventanas.WiControl1"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:clase="clr-namespace:DataObra.Interfaz.Clases"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:DataObra.Presupuestos.Ventanas"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -16,6 +17,7 @@
     WindowStartupLocation="CenterOwner"
     mc:Ignorable="d">
     <syncfusion:RibbonWindow.Resources>
+        <clase:NumerosRojos x:Key="converter" />
         <!--  Otros estilos  -->
         <Style x:Key="sinAsignar" TargetType="syncfusion:TreeGridRowControl">
             <Style.Triggers>
@@ -81,115 +83,138 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <syncfusion:SfTreeGrid
-                x:Name="grillaListados"
-                syncfusion:SfSkinManager.VisualStyle="Metro"
-                AllowDraggingRows="True"
-                AllowDrop="True"
-                AllowEditing="True"
-                AllowResizingColumns="True"
-                AutoGenerateColumns="False"
-                ExpanderColumn="Descripcion"
-                RowStyle="{StaticResource sinAsignar}"
-                SelectionChanged="grillaListados_SelectionChanged"
-                SelectionMode="Single">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontSize="20"
+                    FontWeight="Bold"
+                    Text="Insumos del presupuesto" />
+                <syncfusion:SfTreeGrid
+                    x:Name="grillaListados"
+                    Grid.Row="1"
+                    syncfusion:SfSkinManager.VisualStyle="Metro"
+                    AllowDraggingRows="True"
+                    AllowDrop="True"
+                    AllowEditing="True"
+                    AllowResizingColumns="True"
+                    AutoGenerateColumns="False"
+                    ExpanderColumn="Descripcion"
+                    RowStyle="{StaticResource sinAsignar}"
+                    SelectionChanged="grillaListados_SelectionChanged"
+                    SelectionMode="Single">
 
 
-                <syncfusion:SfTreeGrid.StackedHeaderRows>
-                    <syncfusion:StackedHeaderRow>
-                        <syncfusion:StackedHeaderRow.StackedColumns>
-                            <syncfusion:StackedColumn ChildColumns="CanTotalEjec,CantidadReal,CanTotalSaldo" HeaderText="Cantiades" />
-                            <syncfusion:StackedColumn ChildColumns="PrEjec,PrReal" HeaderText="Precio Unitario" />
-                            <syncfusion:StackedColumn ChildColumns="ImporteTotalEjec,ImporteRealEjec,ImporteSaldoEjec" HeaderText="Importes" />
-                        </syncfusion:StackedHeaderRow.StackedColumns>
-                    </syncfusion:StackedHeaderRow>
-                </syncfusion:SfTreeGrid.StackedHeaderRows>
+                    <syncfusion:SfTreeGrid.StackedHeaderRows>
+                        <syncfusion:StackedHeaderRow>
+                            <syncfusion:StackedHeaderRow.StackedColumns>
+                                <syncfusion:StackedColumn ChildColumns="CanTotalEjec,CantTotalReal,CanTotalSaldo" HeaderText="Cantiades" />
+                                <syncfusion:StackedColumn ChildColumns="PrEjec,PrReal" HeaderText="Precio Unitario" />
+                                <syncfusion:StackedColumn ChildColumns="ImporteTotalEjec" HeaderText="Total Previsto" />
+                                <syncfusion:StackedColumn ChildColumns="ImporteRealEjec" HeaderText="Total Real" />
+                                <syncfusion:StackedColumn ChildColumns="ImporteSaldoEjec" HeaderText="Saldo disponible" />
 
-                <syncfusion:SfTreeGrid.Columns>
+                            </syncfusion:StackedHeaderRow.StackedColumns>
+                        </syncfusion:StackedHeaderRow>
+                    </syncfusion:SfTreeGrid.StackedHeaderRows>
 
-
-                    <syncfusion:TreeGridTextColumn Width="50" MappingName="ID" />
-
-
-                    <syncfusion:TreeGridTextColumn Width="250" MappingName="Descrip" />
-
-                    <syncfusion:TreeGridTextColumn
-                        Width="50"
-                        HeaderText="U.D."
-                        MappingName="Unidad" />
+                    <syncfusion:SfTreeGrid.Columns>
 
 
-                    <syncfusion:TreeGridNumericColumn
-                        Width="90"
-                        HeaderText="Prevista"
-                        MappingName="CanTotalEjec"
-                        NumberDecimalDigits="2"
-                        NumberDecimalSeparator=","
-                        NumberGroupSeparator="."
-                        NumberGroupSizes="3" />
-
-                    <syncfusion:TreeGridNumericColumn
-                        Width="90"
-                        HeaderText="Real"
-                        MappingName="CantidadReal"
-                        NumberDecimalDigits="2"
-                        NumberDecimalSeparator=","
-                        NumberGroupSeparator="."
-                        NumberGroupSizes="3" />
-                    <syncfusion:TreeGridNumericColumn
-                        Width="90"
-                        HeaderText="Margen"
-                        MappingName="CanTotalSaldo"
-                        NumberDecimalDigits="2"
-                        NumberDecimalSeparator=","
-                        NumberGroupSeparator="."
-                        NumberGroupSizes="3" />
+                        <syncfusion:TreeGridTextColumn Width="50" MappingName="ID" />
 
 
-                    <syncfusion:TreeGridNumericColumn
-                        Width="90"
-                        HeaderText="Previsto"
-                        MappingName="PrEjec"
-                        NumberDecimalDigits="2"
-                        NumberDecimalSeparator=","
-                        NumberGroupSeparator="."
-                        NumberGroupSizes="3" />
+                        <syncfusion:TreeGridTextColumn Width="250" MappingName="Descrip" />
 
-                    <syncfusion:TreeGridNumericColumn
-                        Width="90"
-                        HeaderText="Real"
-                        MappingName="PrReal"
-                        NumberDecimalDigits="2"
-                        NumberDecimalSeparator=","
-                        NumberGroupSeparator="."
-                        NumberGroupSizes="3" />
+                        <syncfusion:TreeGridTextColumn
+                            Width="50"
+                            HeaderText="U.D."
+                            MappingName="Unidad" />
 
-                    <syncfusion:TreeGridNumericColumn
-                        Width="130"
-                        HeaderText="Total Previsto"
-                        MappingName="ImporteTotalEjec"
-                        NumberDecimalDigits="2"
-                        NumberDecimalSeparator=","
-                        NumberGroupSeparator="."
-                        NumberGroupSizes="3" />
-                    <syncfusion:TreeGridNumericColumn
-                        Width="130"
-                        HeaderText="Total Real"
-                        MappingName="ImporteRealEjec"
-                        NumberDecimalDigits="2"
-                        NumberDecimalSeparator=","
-                        NumberGroupSeparator="."
-                        NumberGroupSizes="3" />
-                    <syncfusion:TreeGridNumericColumn
-                        Width="130"
-                        HeaderText="Margen"
-                        MappingName="ImporteSaldoEjec"
-                        NumberDecimalDigits="2"
-                        NumberDecimalSeparator=","
-                        NumberGroupSeparator="."
-                        NumberGroupSizes="3" />
-                </syncfusion:SfTreeGrid.Columns>
-            </syncfusion:SfTreeGrid>
+
+                        <syncfusion:TreeGridNumericColumn
+                            Width="90"
+                            HeaderText="Prevista"
+                            MappingName="CanTotalEjec"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3" />
+
+                        <syncfusion:TreeGridNumericColumn
+                            Width="90"
+                            HeaderText="Real"
+                            MappingName="CantTotalReal"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3" />
+
+
+                        <syncfusion:TreeGridNumericColumn
+                            Width="90"
+                            HeaderText=""
+                            MappingName="CanTotalSaldo"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3">
+                            <syncfusion:TreeGridNumericColumn.CellStyle>
+                                <Style TargetType="syncfusion:TreeGridCell">
+                                    <Setter Property="Foreground" Value="{Binding Path=CanTotalSaldo, Converter={StaticResource converter}}" />
+                                </Style>
+                            </syncfusion:TreeGridNumericColumn.CellStyle>
+                        </syncfusion:TreeGridNumericColumn>
+
+
+                        <syncfusion:TreeGridNumericColumn
+                            Width="90"
+                            HeaderText="Previsto"
+                            MappingName="PrEjec"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3" />
+
+                        <syncfusion:TreeGridNumericColumn
+                            Width="90"
+                            HeaderText="Real"
+                            MappingName="PrReal"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3" />
+
+                        <syncfusion:TreeGridNumericColumn
+                            x:Name="colImportePrevisto"
+                            Width="130"
+                            MappingName="ImporteTotalEjec"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3" />
+                        <syncfusion:TreeGridNumericColumn
+                            x:Name="colImporteReal"
+                            Width="130"
+                            MappingName="ImporteRealEjec"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3" />
+                        <syncfusion:TreeGridNumericColumn
+                            x:Name="colImporteSaldo"
+                            Width="130"
+                            MappingName="ImporteSaldoEjec"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3" />
+                    </syncfusion:SfTreeGrid.Columns>
+                </syncfusion:SfTreeGrid>
+            </Grid>
 
             <syncfusion:SfGridSplitter
                 x:Name="sepDetalle"
@@ -202,71 +227,84 @@
                 ResizeBehavior="PreviousAndNext"
                 ShowsPreview="True" />
 
-            <syncfusion:SfTreeGrid
-                x:Name="grillaGastos"
-                Grid.Row="2"
-                syncfusion:SfSkinManager.VisualStyle="Metro"
-                AllowDraggingRows="True"
-                AllowDrop="True"
-                AllowEditing="True"
-                AllowResizingColumns="True"
-                AutoGenerateColumns="False"
-                ExpanderColumn="Descripcion"
-                SelectionMode="Single">
-                <syncfusion:SfTreeGrid.Columns>
-                    <syncfusion:TreeGridTextColumn
-                        Width="50"
-                        HeaderText="ID"
-                        MappingName="ID" />
-                    <syncfusion:TreeGridTextColumn
-                        Width="250"
-                        HeaderText="Descripción"
-                        MappingName="Descrip" />
-                    <syncfusion:TreeGridTextColumn
-                        Width="50"
-                        HeaderText="UD"
-                        MappingName="Unidad" />
-                    <syncfusion:TreeGridNumericColumn
-                        Width="90"
-                        HeaderText="Cantidad"
-                        MappingName="Cantidad"
-                        NumberDecimalDigits="2"
-                        NumberDecimalSeparator=","
-                        NumberGroupSeparator="."
-                        NumberGroupSizes="3" />
-                    <syncfusion:TreeGridNumericColumn
-                        Width="90"
-                        HeaderText="Factor"
-                        MappingName="FactorCantidad"
-                        NumberDecimalDigits="2"
-                        NumberDecimalSeparator=","
-                        NumberGroupSeparator="."
-                        NumberGroupSizes="3" />
-                    <syncfusion:TreeGridNumericColumn
-                        Width="90"
-                        HeaderText="P.U."
-                        MappingName="PrecioUnitario"
-                        NumberDecimalDigits="2"
-                        NumberDecimalSeparator=","
-                        NumberGroupSeparator="."
-                        NumberGroupSizes="3" />
-                    <syncfusion:TreeGridNumericColumn
-                        Width="90"
-                        HeaderText="Importe"
-                        MappingName="Importe"
-                        NumberDecimalDigits="2"
-                        NumberDecimalSeparator=","
-                        NumberGroupSeparator="."
-                        NumberGroupSizes="3" />
-                    <syncfusion:TreeGridTextColumn
-                        Width="50"
-                        HeaderText="Moneda"
-                        MappingName="Moneda" />
+
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontSize="20"
+                    FontWeight="Bold"
+                    Text="Gastos imputados al Insumo" />
+
+                <syncfusion:SfTreeGrid
+                    x:Name="grillaGastos"
+                    Grid.Row="1"
+                    syncfusion:SfSkinManager.VisualStyle="Metro"
+                    AllowDraggingRows="True"
+                    AllowDrop="True"
+                    AllowEditing="True"
+                    AllowResizingColumns="True"
+                    AutoGenerateColumns="False"
+                    ExpanderColumn="Descripcion"
+                    SelectionMode="Single">
+                    <syncfusion:SfTreeGrid.Columns>
+                        <syncfusion:TreeGridTextColumn
+                            Width="50"
+                            HeaderText="ID"
+                            MappingName="ID" />
+                        <syncfusion:TreeGridTextColumn
+                            Width="250"
+                            HeaderText="Descripción"
+                            MappingName="Descrip" />
+                        <syncfusion:TreeGridTextColumn
+                            Width="50"
+                            HeaderText="UD"
+                            MappingName="Unidad" />
+                        <syncfusion:TreeGridNumericColumn
+                            Width="90"
+                            HeaderText="Cantidad"
+                            MappingName="Cantidad"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3" />
+                        <syncfusion:TreeGridNumericColumn
+                            Width="90"
+                            HeaderText="Factor"
+                            MappingName="FactorConcepto"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3" />
+                        <syncfusion:TreeGridNumericColumn
+                            Width="90"
+                            HeaderText="P.U."
+                            MappingName="PrecioUnitario"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3" />
+                        <syncfusion:TreeGridNumericColumn
+                            Width="90"
+                            HeaderText="Importe"
+                            MappingName="Importe"
+                            NumberDecimalDigits="2"
+                            NumberDecimalSeparator=","
+                            NumberGroupSeparator="."
+                            NumberGroupSizes="3" />
+                        <syncfusion:TreeGridTextColumn
+                            Width="50"
+                            HeaderText="Moneda"
+                            MappingName="Moneda" />
 
 
-                </syncfusion:SfTreeGrid.Columns>
+                    </syncfusion:SfTreeGrid.Columns>
 
-            </syncfusion:SfTreeGrid>
+                </syncfusion:SfTreeGrid>
+            </Grid>
 
         </Grid>
 

@@ -53,7 +53,7 @@ namespace DOP.Interfaz.Ventanas
                 ventanaEspera.Close();
                 MessageBox.Show("No hay conexión a Internet. Por favor, verifique su conexión y vuelva a intentarlo.", "Error de conexión", MessageBoxButton.OK, MessageBoxImage.Error);
                 Application.Current.Dispatcher.Invoke(() => Application.Current.Shutdown());
-                return false;
+                //return false;
                 }
 
             int failedAttempts = 0;

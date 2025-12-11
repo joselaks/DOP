@@ -9,6 +9,9 @@ namespace Biblioteca
         {
         // Nueva lista con objetos propios, no derivados de ConceptoDTO ni GastoDetalleDTO
         public List<ConceptoConGastosPropio> ConceptosConGastosPropios { get; set; } = new();
+        public decimal TotalPreviso = 0;
+        public decimal TotalReal = 0;
+        public decimal TotalSaldo = 0;
 
         // Recibe los DTOs pero transforma a objetos propios
         public void ConstruirConceptosConGastos(List<ConceptoDTO> conceptos, List<GastoDetalleDTO> detalles)
@@ -40,9 +43,9 @@ namespace Biblioteca
                     EjecMoneda = item.EjecMoneda,
                     MesBase = item.MesBase,
                     CanTotalEjec = item.CanTotalEjec,
-                    CantTotalReal = item.CantTotalReal,
+                    CantTotalReal = 0,
                     Existencias = item.Existencias,
-                    PrReal = item.PrReal,
+                    PrReal = 0,
                     PrReal1 = item.PrReal1,
                     ArticuloID = item.ArticuloID,
                     FactorArticulo = item.FactorArticulo,
@@ -64,7 +67,7 @@ namespace Biblioteca
                             Descrip = d.Descrip,
                             Unidad = d.Unidad,
                             Cantidad = d.Cantidad,
-                            FactorCantidad = d.FactorConcepto,
+                            FactorConcepto = d.FactorConcepto,
                             PrecioUnitario = d.PrecioUnitario,
                             Importe = d.Importe,
                             ArticuloID = d.ArticuloID,
@@ -79,8 +82,42 @@ namespace Biblioteca
                 ConceptosConGastosPropios.Add(conceptoPropio);
                 }
             AgregarNoImputados(detalles);
+            Recalculo ();
             }
+        public void Recalculo()
+            {
+            foreach (var concepto in ConceptosConGastosPropios)
+                {
+                if (concepto.Gastos == null || concepto.Gastos.Count == 0)
+                    {
+                    concepto.CantTotalReal = 0;
+                    concepto.CanTotalSaldo = concepto.CanTotalEjec - concepto.CantTotalReal;
+                    concepto.ImporteRealEjec = 0;
+                    concepto.PrReal = 0;
+                    concepto.ImporteTotalEjec = concepto.PrEjec * concepto.CanTotalEjec;
+                    concepto.ImporteSaldoEjec = concepto.ImporteTotalEjec;
 
+                    continue;
+                    }
+
+                // Sumar (Cantidad / FactorConcepto) de cada gasto
+                decimal suma = concepto.Gastos
+                    .Where(g => g.FactorConcepto != 0) // Evita división por cero
+                    .Sum(g => g.Cantidad / g.FactorConcepto);
+
+                concepto.CantTotalReal = suma;
+                concepto.CanTotalSaldo = concepto.CanTotalEjec - concepto.CantTotalReal ;
+                concepto.ImporteRealEjec = concepto.Gastos.Sum(g => g.Importe);
+                concepto.PrReal = concepto.CantTotalReal != 0 ? concepto.ImporteRealEjec / concepto.CantTotalReal : 0;
+
+                concepto.ImporteTotalEjec = concepto.PrEjec * concepto.CanTotalEjec;
+
+                concepto.ImporteSaldoEjec = concepto.ImporteTotalEjec - concepto.ImporteRealEjec;
+                }
+            TotalPreviso = ConceptosConGastosPropios.Sum(c => c.ImporteTotalEjec);
+            TotalReal = ConceptosConGastosPropios.Sum(c => c.ImporteRealEjec);
+            TotalSaldo = ConceptosConGastosPropios.Sum(c => c.ImporteSaldoEjec);
+            }
         private void AgregarNoImputados(List<GastoDetalleDTO> detalles)
             {
             // Obtener todos los ConceptoID ya asociados
@@ -115,9 +152,9 @@ namespace Biblioteca
                     EjecMoneda = primerGasto.Moneda,
                     MesBase = primerGasto.Fecha ?? DateTime.MinValue,
                     CanTotalEjec = 0,
-                    CantTotalReal = null,
+                    CantTotalReal = 0,
                     Existencias = null,
-                    PrReal = null,
+                    PrReal = 0,
                     PrReal1 = null,
                     ArticuloID = primerGasto.ArticuloID,
                     FactorArticulo = null,
@@ -138,7 +175,7 @@ namespace Biblioteca
                         Descrip = g.Descrip,
                         Unidad = g.Unidad,
                         Cantidad = g.Cantidad,
-                        FactorCantidad = g.FactorConcepto,
+                        FactorConcepto = g.FactorConcepto,
                         PrecioUnitario = g.PrecioUnitario,
                         Importe = g.Importe,
                         ArticuloID = g.ArticuloID,
@@ -152,7 +189,7 @@ namespace Biblioteca
             }
 
         // Objeto propio para concepto con gastos, no hereda de ConceptoDTO
-        public class ConceptoConGastosPropio
+        public class ConceptoConGastosPropio 
             {
             public string ConceptoID { get; set; }
             public string Descrip { get; set; }
@@ -163,10 +200,10 @@ namespace Biblioteca
             public char EjecMoneda { get; set; }
             public DateTime MesBase { get; set; }
             public decimal CanTotalEjec { get; set; }
-            public decimal? CantTotalReal { get; set; }
+            public decimal CantTotalReal { get; set; }
             public decimal CanTotalSaldo { get; set; }
             public decimal? Existencias { get; set; }
-            public decimal? PrReal { get; set; }
+            public decimal PrReal { get; set; }
             public decimal? PrReal1 { get; set; }
             public decimal ImporteTotalEjec { get; set; }
             public decimal ImporteTotalEjec1 { get; set; }
@@ -197,7 +234,7 @@ namespace Biblioteca
             public string Descrip { get; set; }
             public string Unidad { get; set; }
             public decimal Cantidad { get; set; }
-            public decimal FactorCantidad { get; set; }
+            public decimal FactorConcepto { get; set; }
             public decimal PrecioUnitario { get; set; }
             public decimal Importe { get; set; }
             public int? ArticuloID { get; set; }

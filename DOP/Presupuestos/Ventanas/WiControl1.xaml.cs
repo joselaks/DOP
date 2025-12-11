@@ -6,6 +6,7 @@ using Syncfusion.Windows.Tools.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,6 +35,7 @@ namespace DataObra.Presupuestos.Ventanas
             {
             InitializeComponent();
             _encabezado = presupuestosRef;
+            
 
             Loaded += WiControlPres_Loaded;
             }
@@ -59,6 +61,11 @@ namespace DataObra.Presupuestos.Ventanas
             // Construir árbol y mostrar en la UI
             _control = new Control1();
             _control.ConstruirConceptosConGastos(resultado.Conceptos, resultado.Detalles);
+            var cultura = new CultureInfo("es-ES") { NumberFormat = { NumberGroupSeparator = ".", NumberDecimalSeparator = "," } };
+
+            colImportePrevisto.HeaderText = $"{_control.TotalPreviso.ToString("N2", cultura)}";
+            colImporteReal.HeaderText = $"{_control.TotalReal.ToString("N2", cultura)}";
+            colImporteSaldo.HeaderText = $"{_control.TotalSaldo.ToString("N2", cultura)}";
 
             this.DataContext = _control;                 // para bindings generales (p.ej. {Binding Arbol})
             if (grillaListados != null)

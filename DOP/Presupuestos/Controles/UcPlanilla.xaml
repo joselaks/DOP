@@ -270,7 +270,6 @@
                         x:Name="colImporte1"
                         Width="120"
                         AllowEditing="False"
-                        HeaderText="{Binding totGeneral1}"
                         MappingName="Importe1"
                         NumberDecimalDigits="2"
                         NumberDecimalSeparator=","
