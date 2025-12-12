@@ -78,9 +78,51 @@ namespace DataObra.Presupuestos.Ventanas
             if (grillaListados != null)
                 grillaListados.ItemsSource = _control.ConceptosConGastosPropios; // TreeGrid/TreeView del XAML, si usa ItemsSource
 
+            grillaGastos.RowDragDropController.DragStart += RowDragDropController_DragStart;
+            grillaListados.RowDragDropController.Drop += RowDragDropController_Drop;
+
 
             }
 
+        private void RowDragDropController_DragStart(object? sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridRowDragStartEventArgs e)
+            {
+            }
+
+        private void RowDragDropController_Drop(object? sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridRowDropEventArgs e)
+            {
+
+            GastoPropio nodoMovido = null;
+            // Origen: GastoPropio arrastrado
+            if (e.DraggingNodes != null && e.DraggingNodes.Count > 0)
+                {
+                 nodoMovido = e.DraggingNodes[0].Item as GastoPropio;
+                }
+            else { 
+                return;
+                }
+            // Destino: ConceptoConGastosPropio sobre el que se suelta
+            var targetConcepto = e.TargetNode?.Item as Control1.ConceptoConGastosPropio;
+            if (targetConcepto == null) return;
+
+            // Buscar el concepto origen (el que tenía el gasto antes)
+            var conceptoOrigen = _control.ConceptosConGastosPropios
+                .FirstOrDefault(c => c.Gastos.Contains(nodoMovido));
+            if (conceptoOrigen == null) return;
+
+            // Eliminar de la lista original
+            conceptoOrigen.Gastos.Remove(nodoMovido);
+
+            // Actualizar el InsumoID y agregar al destino
+            nodoMovido.InsumoID = targetConcepto.ConceptoID;
+            targetConcepto.Gastos.Add(nodoMovido);
+
+            // Recalcular totales si es necesario
+            _control.Recalculo();
+
+            // Notificar cambios en la UI
+            OnPropertyChanged(nameof(_control.ConceptosConGastosPropios));
+            grillaGastos.ItemsSource = targetConcepto.Gastos;
+            }
 
         private void BrnGuardar_Click(object sender, RoutedEventArgs e)
             {

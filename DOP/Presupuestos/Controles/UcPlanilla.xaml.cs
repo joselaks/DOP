@@ -1,6 +1,7 @@
 ﻿using Bibioteca.Clases;
 using Biblioteca;
 using DOP.Presupuestos.Clases;
+using Syncfusion.SfSkinManager;
 using Syncfusion.UI.Xaml.Grid;
 using Syncfusion.UI.Xaml.ScrollAxis;
 using Syncfusion.UI.Xaml.TreeGrid;
@@ -50,6 +51,9 @@ namespace DOP.Presupuestos.Controles
 
         public UcPlanilla(Presupuesto objeto, UcDosaje dosaje)
             {
+            SfSkinManager.ApplyThemeAsDefaultStyle = true;
+            SfSkinManager.SetTheme(this, new Theme("FluentLight"));
+
             InitializeComponent();
             Dosaje = dosaje;
             Objeto = objeto;

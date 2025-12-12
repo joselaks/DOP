@@ -5,6 +5,7 @@ using DocumentFormat.OpenXml.Drawing.Charts;
 using DOP;
 using DOP.Datos;
 using DOP.Presupuestos.Ventanas;
+using Syncfusion.SfSkinManager;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,6 +22,9 @@ namespace DataObra.Interfaz.Componentes
 
         public xPresupuestos(WiEscritorio _escritorio)
         {
+            SfSkinManager.ApplyThemeAsDefaultStyle = true;
+            SfSkinManager.SetTheme(this, new Theme("FluentLight"));
+
             InitializeComponent();
             escritorio = _escritorio;
             this.Loaded += XPresupuestos_Loaded;

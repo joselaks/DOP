@@ -19,6 +19,7 @@
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
                     <Setter Property="FontWeight" Value="Bold" />
+                    <Setter Property="Background"  Value="LightGray" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -27,6 +28,7 @@
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
                     <Setter Property="FontWeight" Value="Bold" />
+                    <Setter Property="Background"  Value="LightGray" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -138,7 +140,6 @@
         <syncfusion:SfTreeGrid
             Name="grillaArbol"
             Grid.Row="1"
-            syncfusion:SfSkinManager.VisualStyle="VisualStudio2015"
             AllowDraggingRows="True"
             AllowDrop="True"
             AllowEditing="True"

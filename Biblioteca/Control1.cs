@@ -1,6 +1,7 @@
 ﻿using Bibioteca.Clases;
 using Biblioteca.DTO;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace Biblioteca
@@ -8,7 +9,7 @@ namespace Biblioteca
     public class Control1 : ObjetoNotificable
         {
         // Nueva lista con objetos propios, no derivados de ConceptoDTO ni GastoDetalleDTO
-        public List<ConceptoConGastosPropio> ConceptosConGastosPropios { get; set; } = new();
+        public ObservableCollection<ConceptoConGastosPropio> ConceptosConGastosPropios { get; set; } = new();
         public decimal TotalPreviso = 0;
         public decimal TotalReal = 0;
         public decimal TotalSaldo = 0;
@@ -51,38 +52,39 @@ namespace Biblioteca
                     FactorArticulo = item.FactorArticulo,
                     imprevisto = false,
                     Accion = item.Accion,
-                    Gastos = detalles
-                        .Where(d => d.InsumoID == item.ConceptoID)
-                        .Select(d => new GastoPropio
-                            {
-                            ID = d.ID,
-                            GastoID = d.GastoID,
-                            CobroID = d.CobroID,
-                            UsuarioID = d.UsuarioID,
-                            CuentaID = d.CuentaID,
-                            TipoID = d.TipoID,
-                            InsumoID = d.InsumoID,
-                            TareaID = d.TareaID,
-                            UnicoUso = d.UnicoUso,
-                            Descrip = d.Descrip,
-                            Unidad = d.Unidad,
-                            Cantidad = d.Cantidad,
-                            FactorConcepto = d.FactorConcepto,
-                            PrecioUnitario = d.PrecioUnitario,
-                            Importe = d.Importe,
-                            ArticuloID = d.ArticuloID,
-                            Moneda = d.Moneda,
-                            TipoCambioD = d.TipoCambioD,
-                            Fecha = d.Fecha,
-                            Accion = d.Accion
-                            })
-                        .ToList()
+                    Gastos = new ObservableCollection<GastoPropio>(
+    detalles
+        .Where(d => d.InsumoID == item.ConceptoID)
+        .Select(d => new GastoPropio
+            {
+            ID = d.ID,
+            GastoID = d.GastoID,
+            CobroID = d.CobroID,
+            UsuarioID = d.UsuarioID,
+            CuentaID = d.CuentaID,
+            TipoID = d.TipoID,
+            InsumoID = d.InsumoID,
+            TareaID = d.TareaID,
+            UnicoUso = d.UnicoUso,
+            Descrip = d.Descrip,
+            Unidad = d.Unidad,
+            Cantidad = d.Cantidad,
+            FactorConcepto = d.FactorConcepto,
+            PrecioUnitario = d.PrecioUnitario,
+            Importe = d.Importe,
+            ArticuloID = d.ArticuloID,
+            Moneda = d.Moneda,
+            TipoCambioD = d.TipoCambioD,
+            Fecha = d.Fecha,
+            Accion = d.Accion
+            })
+)
                     };
 
                 ConceptosConGastosPropios.Add(conceptoPropio);
                 }
             AgregarNoImputados(detalles);
-            Recalculo ();
+            Recalculo();
             }
         public void Recalculo()
             {
@@ -106,7 +108,7 @@ namespace Biblioteca
                     .Sum(g => g.Cantidad / g.FactorConcepto);
 
                 concepto.CantTotalReal = suma;
-                concepto.CanTotalSaldo = concepto.CanTotalEjec - concepto.CantTotalReal ;
+                concepto.CanTotalSaldo = concepto.CanTotalEjec - concepto.CantTotalReal;
                 concepto.ImporteRealEjec = concepto.Gastos.Sum(g => g.Importe);
                 concepto.PrReal = concepto.CantTotalReal != 0 ? concepto.ImporteRealEjec / concepto.CantTotalReal : 0;
 
@@ -160,36 +162,38 @@ namespace Biblioteca
                     FactorArticulo = null,
                     Accion = primerGasto.Accion,
                     imprevisto = true,
-                    Gastos = grupo.Select(g => new GastoPropio
-                        {
-                        ID = g.ID,
-                        GastoID = g.GastoID,
-                        CobroID = g.CobroID,
-                        UsuarioID = g.UsuarioID,
-                        CuentaID = g.CuentaID,
-                        TipoID = g.TipoID,
-                        PresupuestoID = g.PresupuestoID,
-                        InsumoID = g.InsumoID,
-                        TareaID = g.TareaID,
-                        UnicoUso = g.UnicoUso,
-                        Descrip = g.Descrip,
-                        Unidad = g.Unidad,
-                        Cantidad = g.Cantidad,
-                        FactorConcepto = g.FactorConcepto,
-                        PrecioUnitario = g.PrecioUnitario,
-                        Importe = g.Importe,
-                        ArticuloID = g.ArticuloID,
-                        Moneda = g.Moneda,
-                        TipoCambioD = g.TipoCambioD,
-                        Fecha = g.Fecha,
-                        Accion = g.Accion
-                        }).ToList()
+                    Gastos = new ObservableCollection<GastoPropio>(
+    grupo.Select(g => new GastoPropio
+        {
+        ID = g.ID,
+        GastoID = g.GastoID,
+        CobroID = g.CobroID,
+        UsuarioID = g.UsuarioID,
+        CuentaID = g.CuentaID,
+        TipoID = g.TipoID,
+        PresupuestoID = g.PresupuestoID,
+        InsumoID = g.InsumoID,
+        TareaID = g.TareaID,
+        UnicoUso = g.UnicoUso,
+        Descrip = g.Descrip,
+        Unidad = g.Unidad,
+        Cantidad = g.Cantidad,
+        FactorConcepto = g.FactorConcepto,
+        PrecioUnitario = g.PrecioUnitario,
+        Importe = g.Importe,
+        ArticuloID = g.ArticuloID,
+        Moneda = g.Moneda,
+        TipoCambioD = g.TipoCambioD,
+        Fecha = g.Fecha,
+        Accion = g.Accion
+        })
+)
                     });
                 }
             }
 
         // Objeto propio para concepto con gastos, no hereda de ConceptoDTO
-        public class ConceptoConGastosPropio 
+        public class ConceptoConGastosPropio : ObjetoNotificable
             {
             public string ConceptoID { get; set; }
             public string Descrip { get; set; }
@@ -203,19 +207,47 @@ namespace Biblioteca
             public decimal CantTotalReal { get; set; }
             public decimal CanTotalSaldo { get; set; }
             public decimal? Existencias { get; set; }
-            public decimal PrReal { get; set; }
+
+            private decimal _prReal;
+            public decimal PrReal
+            {
+                get => _prReal;
+                set { _prReal = value; OnPropertyChanged(nameof(PrReal)); }
+            }
+
             public decimal? PrReal1 { get; set; }
-            public decimal ImporteTotalEjec { get; set; }
+
+            private decimal _importeTotalEjec;
+            public decimal ImporteTotalEjec
+            {
+                get => _importeTotalEjec;
+                set { _importeTotalEjec = value; OnPropertyChanged(nameof(ImporteTotalEjec)); }
+            }
+
             public decimal ImporteTotalEjec1 { get; set; }
-            public decimal ImporteRealEjec { get; set; }
+
+            private decimal _importeRealEjec;
+            public decimal ImporteRealEjec
+            {
+                get => _importeRealEjec;
+                set { _importeRealEjec = value; OnPropertyChanged(nameof(ImporteRealEjec)); }
+            }
+
             public decimal ImporteRealEjec1 { get; set; }
-            public decimal ImporteSaldoEjec { get; set; }
+
+            private decimal _importeSaldoEjec;
+            public decimal ImporteSaldoEjec
+            {
+                get => _importeSaldoEjec;
+                set { _importeSaldoEjec = value; OnPropertyChanged(nameof(ImporteSaldoEjec)); }
+            }
+
             public decimal ImporteSaldoEjec1 { get; set; }
             public int? ArticuloID { get; set; }
             public decimal? FactorArticulo { get; set; }
             public char? Accion { get; set; }
             public bool imprevisto { get; set; }
-            public List<GastoPropio> Gastos { get; set; } = new();
+            public ObservableCollection<GastoPropio> Gastos { get; set; } = new();
             }
 
         // Objeto propio para gasto, no hereda de GastoDetalleDTO ni GastoDTO

@@ -4,13 +4,17 @@ using DataObra.Interfaz.Ventanas;
 using DataObra.Presupuestos.Ventanas;
 using DOP;
 using DOP.Datos;
+using Syncfusion.SfSkinManager;
+using Syncfusion.XlsIO;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,9 +25,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Text.Json;
-using System.IO.Compression;
-using Syncfusion.XlsIO;
 
 namespace DataObra.Interfaz.Componentes
     {
@@ -36,6 +37,9 @@ namespace DataObra.Interfaz.Componentes
         public ObservableCollection<GastoDTO> _gastos = new();
         public xGastos(WiEscritorio escritorio)
             {
+            SfSkinManager.ApplyThemeAsDefaultStyle = true;
+            SfSkinManager.SetTheme(this, new Theme("FluentLight"));
+
             InitializeComponent();
             this.escritorio = escritorio;
             this.Loaded += XGastos_Loaded;

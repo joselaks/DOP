@@ -52,6 +52,9 @@ namespace DataObra.Presupuestos.Ventanas
 
         public WiPres(PresupuestoDTO? _encabezado, List<ConceptoDTO> conceptos, List<RelacionDTO> relaciones, ObservableCollection<PresupuestoDTO> presupuestosRef)
             {
+            SfSkinManager.ApplyThemeAsDefaultStyle = true;
+            SfSkinManager.SetTheme(this, new Theme("FluentLight"));
+
             InitializeComponent();
             Objeto = new Presupuesto(_encabezado, conceptos, relaciones);
             Objeto.encabezado.UsuarioID = App.IdUsuario;
