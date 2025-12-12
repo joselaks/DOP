@@ -46,7 +46,7 @@ namespace DOP
         public App()
             {
             //Register Syncfusion license
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NNaF1cWGhIfEx1RHxQdld5ZFRHallYTnNWUj0eQnxTdEBjXH1dcXxXQGRVUUF3Wklfag==");
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1JFaF1cXGtCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWH1fcnRcR2VdVEdwWEFWYEg=");
 
             // Configurar HttpClient
             var serviceCollection = new ServiceCollection();

@@ -2,6 +2,7 @@
 using Biblioteca;
 using Biblioteca.DTO;
 using DOP.Datos;
+using Syncfusion.SfSkinManager;
 using Syncfusion.Windows.Tools.Controls;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using static Biblioteca.Control1;
+using Syncfusion.SfSkinManager;
+using Syncfusion.Windows.Tools.Controls;
 
 namespace DataObra.Presupuestos.Ventanas
     {
@@ -28,11 +31,13 @@ namespace DataObra.Presupuestos.Ventanas
     public partial class WiControl1 : RibbonWindow, INotifyPropertyChanged
         {
         private PresupuestoDTO _encabezado = new();
-        private Control1 _control = new Control1();
+        private Control1 _control = new Control1(); 
 
 
         public WiControl1(PresupuestoDTO presupuestosRef)
             {
+            SfSkinManager.ApplyThemeAsDefaultStyle = true;
+            SfSkinManager.SetTheme(this, new Theme("FluentLight"));
             InitializeComponent();
             _encabezado = presupuestosRef;
             
@@ -66,6 +71,8 @@ namespace DataObra.Presupuestos.Ventanas
             colImportePrevisto.HeaderText = $"{_control.TotalPreviso.ToString("N2", cultura)}";
             colImporteReal.HeaderText = $"{_control.TotalReal.ToString("N2", cultura)}";
             colImporteSaldo.HeaderText = $"{_control.TotalSaldo.ToString("N2", cultura)}";
+            
+
 
             this.DataContext = _control;                 // para bindings generales (p.ej. {Binding Arbol})
             if (grillaListados != null)
