@@ -198,6 +198,10 @@
                         Width="60"
                         MappingName="Unidad"
                         TextAlignment="Right" />
+                    <syncfusion:TreeGridTextColumn
+                        Width="60"
+                        MappingName="Cantidad"
+                        TextAlignment="Right" />
                     <syncfusion:TreeGridNumericColumn
                         Width="80"
                         HeaderText="P.U."

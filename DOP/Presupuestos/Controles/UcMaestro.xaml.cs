@@ -1,11 +1,13 @@
 ﻿using Bibioteca.Clases;
 using Biblioteca;
 using Biblioteca.DTO;
+using DataObra.Interfaz.Ventanas;
 using DOP.Presupuestos.Clases;
 using Syncfusion.UI.Xaml.TreeGrid;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +21,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static System.Runtime.InteropServices.JavaScript.JSType;
-using DataObra.Interfaz.Ventanas;
 
 namespace DOP.Presupuestos.Controles
     {
@@ -42,6 +43,7 @@ namespace DOP.Presupuestos.Controles
             this.grillaMaestro.RowDragDropController.Drop += RowDragDropController_Drop;
             this.grillaMaestro.RowDragDropController.DragStart += RowDragDropController_DragStart;
             this.grillaMaestro.Loaded += GrillaMaestro_Loaded;
+            this.grillaMaestro.ChildPropertyName = "Inferiores";
 
             }
 
@@ -77,6 +79,8 @@ namespace DOP.Presupuestos.Controles
             var PresupuestoDTO = new PresupuestoDTO();
             PresupuestoDTO.ID = idpres;
             Objeto = new Presupuesto(PresupuestoDTO, conceptos, relaciones);
+            Objeto.RecalculoCompleto();
+            TareasCero();
             grillaMaestro.ItemsSource = Objeto.Arbol;
             // Obtener todos los nodos tipo "T" y "R"
             var Filtrado = new ObservableCollection<Nodo>(ObtenerNodosPorTipos(Objeto.Arbol, "T"));
@@ -87,7 +91,24 @@ namespace DOP.Presupuestos.Controles
             comboTipoListado.SelectedIndex = 0;
             }
 
+        private void TareasCero()
+            {
+            if (Objeto == null || Objeto.Arbol == null) return;
 
+            void RecorrerYAnularCantidad(IEnumerable<Nodo> nodos)
+                {
+                foreach (var nodo in nodos)
+                    {
+                    if (nodo.Tipo == "T")
+                        nodo.Cantidad = 0;
+
+                    if (nodo.Inferiores != null && nodo.Inferiores.Count > 0)
+                        RecorrerYAnularCantidad(nodo.Inferiores);
+                    }
+                }
+
+            RecorrerYAnularCantidad(Objeto.Arbol);
+            }
 
         private UserControl GetParentUserControl(DependencyObject child)
             {
@@ -184,18 +205,58 @@ namespace DOP.Presupuestos.Controles
                 }
             }
 
-        public void comboTipoListado_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void comboTipoListado_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
             {
-            var combo = sender as ComboBox;
-            if (combo?.SelectedItem == null)
+            if (Objeto == null)
                 return;
 
-            string descripcion = combo.SelectedItem is ComboBoxItem item
-                ? item.Content?.ToString()
-                : combo.SelectedItem.ToString();
-            
+            var combo = sender as ComboBox;
+            if (combo == null)
+                return;
 
-            FiltrarPorTipoDescripcion(descripcion);
+            var selectedItem = combo.SelectedItem as ComboBoxItem;
+            string _seleccion = selectedItem?.Content?.ToString() ?? "Todos";
+
+            ObservableCollection<Nodo> filtrados = null;
+
+            switch (_seleccion)
+                {
+                case "Todos":
+                    filtrados = Objeto.Insumos ?? new ObservableCollection<Nodo>();
+                    break;
+                case "Materiales":
+                    filtrados = new ObservableCollection<Nodo>(
+                        Objeto.Insumos?.Where(x => x.Tipo == "M") ?? Enumerable.Empty<Nodo>());
+                    break;
+                case "Mano de Obra":
+                    filtrados = new ObservableCollection<Nodo>(
+                        Objeto.Insumos?.Where(x => x.Tipo == "D") ?? Enumerable.Empty<Nodo>());
+                    break;
+                case "Equipos":
+                    filtrados = new ObservableCollection<Nodo>(
+                        Objeto.Insumos?.Where(x => x.Tipo == "E") ?? Enumerable.Empty<Nodo>());
+                    break;
+                case "Subcontratos":
+                    filtrados = new ObservableCollection<Nodo>(
+                        Objeto.Insumos?.Where(x => x.Tipo == "S") ?? Enumerable.Empty<Nodo>());
+                    break;
+                case "Otros":
+                    filtrados = new ObservableCollection<Nodo>(
+                        Objeto.Insumos?.Where(x => x.Tipo == "O") ?? Enumerable.Empty<Nodo>());
+                    break;
+                case "Auxiliares":
+                    filtrados = Objeto.Auxiliares ?? new ObservableCollection<Nodo>();
+                    break;
+                default:
+                    filtrados = new ObservableCollection<Nodo>();
+                    break;
+                }
+
+            //if (SeleccionInsumo != null)
+            //    SeleccionInsumo.Text = _seleccion;
+
+            grillaMaestro.ItemsSource = filtrados;
+
             }
 
         private void comboModelo_SelectionChanged(object sender, SelectionChangedEventArgs e)
