@@ -1,6 +1,7 @@
 ﻿using Bibioteca.Clases;
 using Biblioteca;
 using Biblioteca.DTO;
+using DataObra.Documentos.Ventanas;
 using DOP.Datos;
 using Syncfusion.SfSkinManager;
 using Syncfusion.SfSkinManager;
@@ -33,6 +34,7 @@ namespace DataObra.Presupuestos.Ventanas
         {
         private PresupuestoDTO _encabezado = new();
         private Control1 _control = new Control1();
+        private bool _tieneCambiosPendientes = false;
 
 
         public WiControl1(PresupuestoDTO presupuestosRef)
@@ -83,6 +85,54 @@ namespace DataObra.Presupuestos.Ventanas
             grillaListados.RowDragDropController.Drop += RowDragDropController_Drop;
 
 
+            }
+
+        private void VerDocumento_Click(object sender, RoutedEventArgs e)
+            {
+            // NUEVO: bloquear si hay cambios pendientes
+            if (_tieneCambiosPendientes)
+                {
+                MessageBox.Show(
+                    "Hay cambios de reasignación pendientes de grabar. Guárdalos o descártalos antes de ver el documento.",
+                    "Cambios pendientes",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+                }
+
+            var item = grillaGastos.SelectedItem;
+            if (item == null)
+                {
+                MessageBox.Show("No hay ningún registro seleccionado.", "Ver documento", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+                }
+
+            int gastoID = 0;
+            if (item is Control1.GastoPropio gp)
+                {
+                gastoID = gp.GastoID ?? 0;
+                }
+            else
+                {
+                var propGastoID = item.GetType().GetProperty("GastoID");
+                if (propGastoID != null)
+                    {
+                    var val = propGastoID.GetValue(item);
+                    gastoID = val is int i ? i : (val as int?) ?? 0;
+                    }
+                }
+
+            if (gastoID <= 0)
+                {
+                MessageBox.Show("El registro seleccionado no tiene un GastoID válido.", "Ver documento", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+                }
+
+            var win = new WiGasto(gastoID, esCobro: false)
+                {
+                Owner = this
+                };
+            win.ShowDialog();
             }
 
         private void RowDragDropController_DragStart(object? sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridRowDragStartEventArgs e)
@@ -138,6 +188,7 @@ namespace DataObra.Presupuestos.Ventanas
 
                 grillaListados.Focus();
                 }
+            _tieneCambiosPendientes = true;
             }
 
         private async void BrnGuardar_Click(object sender, RoutedEventArgs e)
@@ -173,6 +224,7 @@ namespace DataObra.Presupuestos.Ventanas
                 {
                 MessageBox.Show("Cambios guardados correctamente.", "Guardar", MessageBoxButton.OK, MessageBoxImage.Information);
                 _control.LimpiarReasignaciones(); // limpiar después de guardar
+                _tieneCambiosPendientes = false;
                 return true;
                 }
             else

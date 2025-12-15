@@ -296,6 +296,37 @@ namespace Servidor.Repositorios
                 }
             }
 
+        public async Task<(GastoDTO Encabezado, List<GastoDetalleDTO> Detalles)> ObtenerGastoAsync(int gastoID, bool esCobro = false)
+            {
+            using (var db = new SqlConnection(_connectionString))
+                {
+                var parameters = new DynamicParameters();
+                parameters.Add("@GastoID", gastoID, DbType.Int32);
+                parameters.Add("@EsCobro", esCobro ? 1 : 0, DbType.Boolean);
+
+                try
+                    {
+                    using var multi = await db.QueryMultipleAsync(
+                        "[ObtenerGasto]",
+                        parameters,
+                        commandType: CommandType.StoredProcedure);
+
+                    // 1) Primer result set: encabezado desde dbo.Documentos
+                    var encabezado = await multi.ReadFirstOrDefaultAsync<GastoDTO>();
+
+                    // 2) Segundo result set: detalles desde dbo.DocumentosDet
+                    var detalles = (await multi.ReadAsync<GastoDetalleDTO>()).ToList();
+
+                    return (encabezado, detalles);
+                    }
+                catch (SqlException ex)
+                    {
+                    throw new Exception($"Error al obtener el encabezado y detalle del documento {gastoID}: {ex.Message}", ex);
+                    }
+                }
+            }
+
+
         // DTOs auxiliares para leer los result sets devueltos por el SP
         public class ProcesarGastoResult
             {

@@ -404,6 +404,31 @@ doc.MapPost("/gastos/reasignar", async (
         }
 }).RequireAuthorization();
 
+doc.MapGet("/gastos/{gastoID:int}", async (
+    int gastoID,
+    rDocumentos repo,
+    [FromQuery(Name = "esCobro")] int esCobro = 0) =>
+{
+    try
+        {
+        bool esCobroBool = esCobro == 1;
+        var (encabezado, detalles) = await repo.ObtenerGastoAsync(gastoID, esCobroBool);
+
+        if (encabezado == null || encabezado.ID == 0)
+            return Results.NotFound(new { Message = $"No se encontró el documento con ID {gastoID}." });
+
+        return Results.Ok(new
+            {
+            Encabezado = encabezado,
+            Detalles = detalles
+            });
+        }
+    catch (Exception ex)
+        {
+        return Results.BadRequest(new { Message = ex.Message });
+        }
+}).RequireAuthorization();
+
 
 #endregion
 

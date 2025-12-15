@@ -246,7 +246,15 @@
                 AutoGenerateColumns="False"
                 ExpanderColumn="Descripcion"
                 SelectionMode="Single">
+
+                <syncfusion:SfTreeGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Ver documento" Click="VerDocumento_Click"/>
+                    </ContextMenu>
+                </syncfusion:SfTreeGrid.ContextMenu>
+                
                 <syncfusion:SfTreeGrid.Columns>
+                    
                     <syncfusion:TreeGridTextColumn
                         Width="50"
                         HeaderText="ID"

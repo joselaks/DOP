@@ -496,9 +496,25 @@ public static async Task<(bool Success, string Message, Biblioteca.DTO.ProcesarG
 
             return (success, message);
             }
+     
 
+    public static async Task<(bool Success, string Message, GastoDTO? Encabezado, List<GastoDetalleDTO> Detalles)>
+    ObtenerGastoAsync(int gastoID, bool esCobro = false)
+            {
+            string url = $"{App.BaseUrl}documentos/gastos/{gastoID}";
+            if (esCobro)
+                url += "?esCobro=1";
+
+            var (success, message, data) = await ExecuteRequestAsync<GastoConDetalleResponse>(
+                () => httpClient.GetAsync(url),
+                $"Obtener gasto con detalle ID={gastoID}, esCobro={esCobro}"
+            );
+
+            return (success, message, data?.Encabezado, data?.Detalles ?? new List<GastoDetalleDTO>());
+            }
 
         }
+
 
     public class ProcesarArticulosPorListaRequest
         {
@@ -560,6 +576,12 @@ public static async Task<(bool Success, string Message, Biblioteca.DTO.ProcesarG
 
         [JsonPropertyName("Detalles")]
         public List<GastoDetalleDTO>? Detalles { get; set; }
+        }
+
+    public class GastoConDetalleResponse
+        {
+        public GastoDTO? Encabezado { get; set; }
+        public List<GastoDetalleDTO> Detalles { get; set; } = new();
         }
 
     }

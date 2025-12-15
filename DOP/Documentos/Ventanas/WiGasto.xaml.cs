@@ -44,6 +44,9 @@ namespace DataObra.Documentos.Ventanas
 
         public WiGasto(ObservableCollection<GastoDTO> _gastos, GastoDTO encabezado, List<GastoDetalleDTO> detalle, bool tipoGasto)
             {
+            SfSkinManager.ApplyThemeAsDefaultStyle = true;
+            SfSkinManager.SetTheme(this, new Theme("FluentLight"));
+
             InitializeComponent();
             objeto = new Gasto(encabezado, detalle, tipoGasto);
             this.DataContext = objeto;
@@ -60,6 +63,74 @@ namespace DataObra.Documentos.Ventanas
 
             RecalcularImportesInicial();
             }
+
+        // Sobrecarga: abrir por ID en modo solo lectura (opcionalmente como Cobro)
+        public WiGasto(int gastoID, bool esCobro = false)
+            {
+            SfSkinManager.ApplyThemeAsDefaultStyle = true;
+            SfSkinManager.SetTheme(this, new Theme("FluentLight"));
+
+            InitializeComponent();
+
+            // Forzar modo solo lectura en grillas
+            if (gridDetalle != null)
+                {
+                gridDetalle.AllowEditing = false;
+                gridDetalle.AllowDeleting = false;
+                }
+            if (grillaEncabezado != null)
+                grillaEncabezado.IsEnabled = false;
+
+            // Inicializar colección local vacía
+            gastos = new ObservableCollection<GastoDTO>();
+
+            // Cargar datos desde el servidor
+            _ = CargarGastoSoloLecturaAsync(gastoID, esCobro);
+            }
+
+        private async Task CargarGastoSoloLecturaAsync(int gastoID, bool esCobro)
+            {
+            try
+                {
+                var (success, message, encabezado, detalles) = await DOP.Datos.DatosWeb.ObtenerGastoAsync(gastoID, esCobro);
+
+                if (!success || encabezado == null)
+                    {
+                    MessageBox.Show(string.IsNullOrWhiteSpace(message) ? "No se encontró el documento solicitado." : message,
+                                    "Consultar gasto", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    this.Close();
+                    return;
+                    }
+
+                // Guardar referencia del encabezado original
+                originalEncabezado = encabezado;
+
+                // tipoGasto se asume como !esCobro (gasto=true, cobro=false)
+                bool tipoGasto = !esCobro;
+
+                // Construir el objeto de trabajo y enlazar
+                objeto = new Gasto(encabezado, detalles ?? new List<GastoDetalleDTO>(), tipoGasto);
+                this.DataContext = objeto;
+
+                if (grillaEncabezado != null)
+                    grillaEncabezado.DataContext = objeto.encabezado;
+
+                if (gridDetalle != null)
+                    {
+                    gridDetalle.ItemsSource = objeto.detalleGrabar;
+                    this.gridDetalle.RecordDeleting += GridDetalle_RecordDeleting;
+                    }
+
+                // Recalcular importes locales (por si el backend no los envía calculados)
+                RecalcularImportesInicial();
+                }
+            catch (Exception ex)
+                {
+                MessageBox.Show($"Error al cargar el gasto: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Close();
+                }
+            }
+
 
         private void RecalcularImportesInicial()
             {
