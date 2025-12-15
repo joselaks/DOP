@@ -156,7 +156,7 @@
                 </syncfusion:RibbonBar>
                 <syncfusion:RibbonBar
                     Name="Vistas"
-                    Width="80"
+                    Width="90"
                     Header="Ventanas"
                     IsLauncherButtonVisible="False">
 
@@ -178,7 +178,7 @@
                         x:Name="vMaestro"
                         Width="60"
                         Checked="ventanas_Checked"
-                        Content="Maestro"
+                        Content="Modelos"
                         IsChecked="False"
                         Unchecked="ventanas_Checked" />
 

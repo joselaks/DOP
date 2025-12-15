@@ -19,7 +19,7 @@
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
                     <Setter Property="FontWeight" Value="Bold" />
-                    <Setter Property="Background"  Value="LightGray" />
+                    <Setter Property="Background" Value="LightGray" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -28,7 +28,7 @@
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=Tipo}" Value="R">
                     <Setter Property="FontWeight" Value="Bold" />
-                    <Setter Property="Background"  Value="LightGray" />
+                    <Setter Property="Background" Value="LightGray" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>

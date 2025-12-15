@@ -58,14 +58,16 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <StackPanel VerticalAlignment="Center" Orientation="Horizontal"/>
+        <StackPanel VerticalAlignment="Center" Orientation="Horizontal" />
 
 
 
-        <WrapPanel Grid.Row="1" Margin="0,20,0,0"
-                x:Name="PanelModelos"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Top" />
+        <WrapPanel
+            x:Name="PanelModelos"
+            Grid.Row="1"
+            Margin="0,20,0,0"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Top" />
 
     </Grid>
 </UserControl>

@@ -19,6 +19,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using DataObra.Interfaz.Ventanas;
 
 namespace DOP.Presupuestos.Controles
     {
@@ -41,7 +42,7 @@ namespace DOP.Presupuestos.Controles
             this.grillaMaestro.RowDragDropController.Drop += RowDragDropController_Drop;
             this.grillaMaestro.RowDragDropController.DragStart += RowDragDropController_DragStart;
             this.grillaMaestro.Loaded += GrillaMaestro_Loaded;
-            //this.grillaMaestro.ChildPropertyName = "Inferiores";
+
             }
 
         private async void GrillaMaestro_Loaded(object sender, RoutedEventArgs e)
@@ -65,6 +66,26 @@ namespace DOP.Presupuestos.Controles
             comboTipoListado.SelectedIndex = 0;
             }
 
+
+
+        private async void ObtenerModelo(int _ID)
+            {
+            int idpres = _ID;
+            // Obtiene el presupuesto maestro
+            var (ok, msg, conceptos, relaciones) = await DOP.Datos.DatosWeb.ObtenerConceptosYRelacionesAsync(idpres);
+            Conceptos = conceptos; // Guarda los conceptos para usarlos después
+            var PresupuestoDTO = new PresupuestoDTO();
+            PresupuestoDTO.ID = idpres;
+            Objeto = new Presupuesto(PresupuestoDTO, conceptos, relaciones);
+            grillaMaestro.ItemsSource = Objeto.Arbol;
+            // Obtener todos los nodos tipo "T" y "R"
+            var Filtrado = new ObservableCollection<Nodo>(ObtenerNodosPorTipos(Objeto.Arbol, "T"));
+            this.grillaMaestro.ItemsSource = Filtrado;
+            this.grillaMaestro.View.Refresh();
+
+            // Selecciona el primer item ("Tareas") del ComboBox
+            comboTipoListado.SelectedIndex = 0;
+            }
 
 
 
@@ -172,32 +193,58 @@ namespace DOP.Presupuestos.Controles
             string descripcion = combo.SelectedItem is ComboBoxItem item
                 ? item.Content?.ToString()
                 : combo.SelectedItem.ToString();
+            
 
-            // Mostrar u ocultar el combo de Rubros según la selección
-            if (descripcion == "Tareas")
+            FiltrarPorTipoDescripcion(descripcion);
+            }
+
+        private void comboModelo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+            {
+            // Evitar ejecutar durante la carga o cuando se limpia la selección
+            if (comboModelo == null || e.AddedItems == null || e.AddedItems.Count == 0)
+                return;
+
+            int id = 0;
+
+            // 1) SelectedValue según SelectedValuePath="ID"
+            if (comboModelo.SelectedValue is int v)
+                id = v;
+            
+
+            if (id > 0)
+                ObtenerModelo(id); // async void existente
+            }
+
+
+        private void comboOrigen_SelectionChanged(object sender, SelectionChangedEventArgs e)
+            {
+            // Asegurar que los controles estén inicializados
+            if (comboOrigen == null || comboModelo == null)
+                return;
+
+
+            var escritorio = Application.Current.Windows.OfType<WiEscritorio>().FirstOrDefault();
+            if (escritorio == null) return;
+
+            var seleccionado = (comboOrigen.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? string.Empty;
+
+            if (seleccionado.Equals("DataObra", StringComparison.OrdinalIgnoreCase))
                 {
-                comboRubros.Visibility = Visibility.Visible;
-                if (Objeto != null && Objeto.Arbol != null)
-                    {
-                    // Obtiene los nodos tipo "R" (Rubros) y llena el combo con sus descripciones
-                    var rubros = ObtenerNodosPorTipos(Objeto.Arbol, "R")
-                                 .Select(n => n.Descripcion)
-                                 .Distinct()
-                                 .ToList();
-                    comboRubros.ItemsSource = rubros;
-                    }
-                else
-                    {
-                    comboRubros.ItemsSource = null;
-                    }
+                // Usar modelos públicos
+                comboModelo.ItemsSource = escritorio._modelos;
+                }
+            else if (seleccionado.Equals("Propio", StringComparison.OrdinalIgnoreCase))
+                {
+                // Usar modelos del usuario actual
+                comboModelo.ItemsSource = escritorio._modelosPropios;
                 }
             else
                 {
-                comboRubros.Visibility = Visibility.Collapsed;
-                comboRubros.ItemsSource = null;
+                comboModelo.ItemsSource = null;
                 }
 
-            FiltrarPorTipoDescripcion(descripcion);
+            // Opcional: limpiar selección previa
+            comboModelo.SelectedIndex = -1;
             }
 
         

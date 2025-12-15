@@ -56,9 +56,10 @@
             Grid.Row="1"
             Grid.Column="0"
             Background="LightGray">
-            <Grid x:Name="grillaModelos" Background="White" Margin="10">
-                
-            </Grid>
+            <Grid
+                x:Name="grillaModelos"
+                Margin="10"
+                Background="White" />
             <!--<syncfusion:TileViewControl
                 Name="tileEscritorioMercado"
                 Margin="20,20,20,20"
