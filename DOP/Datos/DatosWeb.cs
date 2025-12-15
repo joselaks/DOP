@@ -471,6 +471,33 @@ public static async Task<(bool Success, string Message, Biblioteca.DTO.ProcesarG
             }
 
 
+        public static async Task<(bool Success, string Message)> ReasignarGastosAsync(List<GastoReasignacionDTO> cambios)
+            {
+            string url = $"{App.BaseUrl}documentos/gastos/reasignar";
+            var json = JsonSerializer.Serialize(cambios, jsonSerializerOptions);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var (success, message, result) = await ExecuteRequestAsync<ResultadoOperacion>(
+                () => httpClient.PostAsync(url, content),
+                "Reasignar gastos"
+            );
+
+            // Cuando el servidor devuelve un objeto simple con { Success, Message }, úsalo; de lo contrario usa el mensaje agregado.
+            if (result != null)
+                {
+                string finalMessage = !string.IsNullOrEmpty(result.Message)
+                    ? result.Message
+                    : !string.IsNullOrEmpty(result.Mensaje)
+                        ? result.Mensaje
+                        : message;
+
+                return (result.Success, finalMessage);
+                }
+
+            return (success, message);
+            }
+
+
         }
 
     public class ProcesarArticulosPorListaRequest

@@ -386,6 +386,24 @@ doc.MapDelete("/gastos/{gastoID:int}", async (int gastoID, [FromQuery(Name = "pr
         }
 }).RequireAuthorization();
 
+doc.MapPost("/gastos/reasignar", async (
+    List<GastoReasignacionDTO> cambios,
+    rDocumentos repo) =>
+{
+    try
+        {
+        var (success, message) = await repo.ProcesarCambiosAsignacionGastosAsync(cambios);
+        if (success)
+            return Results.Ok(new { Success = true, Message = message });
+        else
+            return Results.BadRequest(new { Success = false, Message = message });
+        }
+    catch (Exception ex)
+        {
+        return Results.BadRequest(new { Success = false, Message = ex.Message });
+        }
+}).RequireAuthorization();
+
 
 #endregion
 

@@ -253,8 +253,48 @@ namespace Servidor.Repositorios
                     throw new Exception($"Error al borrar el gasto con ID {gastoID}: {ex.Message}", ex);
                 }
             }
+
+
+
         }
 
+        public async Task<(bool Success, string Message)> ProcesarCambiosAsignacionGastosAsync(List<GastoReasignacionDTO> cambios)
+            {
+            if (cambios == null || cambios.Count == 0)
+                return (true, "No hay cambios para procesar.");
+
+            using var db = new SqlConnection(_connectionString);
+
+            // Crear DataTable para el TVP
+            var table = new DataTable();
+            table.Columns.Add("GastoID", typeof(int));
+            table.Columns.Add("NuevoInsumoID", typeof(string));
+
+            foreach (var c in cambios)
+                table.Rows.Add(c.GastoID, c.NuevoInsumoID ?? (object)DBNull.Value);
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@Reasignaciones", table.AsTableValuedParameter("dbo.GastoReasignacionTableType"));
+
+            try
+                {
+                // El SP devuelve un result set con Success y Message
+                var result = await db.QueryFirstOrDefaultAsync<(int Success, string Message)>(
+                    "ProcesarCambiosAsignacionGastos",
+                    parameters,
+                    commandType: CommandType.StoredProcedure);
+
+                return (result.Success == 1, result.Message);
+                }
+            catch (SqlException ex)
+                {
+                return (false, $"Error SQL: {ex.Message}");
+                }
+            catch (Exception ex)
+                {
+                return (false, $"Error: {ex.Message}");
+                }
+            }
 
         // DTOs auxiliares para leer los result sets devueltos por el SP
         public class ProcesarGastoResult

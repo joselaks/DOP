@@ -17,8 +17,8 @@
     <syncfusion:RibbonWindow.Resources>
 
         <clases:NumerosRojos x:Key="converter" />
-
-
+        <local:UnidadGlOcultaConverter x:Key="unidadGlOcultaConverter" />
+        <clases:PrRealMayorAProyectadoConverter x:Key="prRealMayorAProyectadoConverter" />
 
         <!--  Otros estilos  -->
         <Style x:Key="sinAsignar" TargetType="syncfusion:TreeGridRowControl">
@@ -113,7 +113,10 @@
                 <syncfusion:SfTreeGrid.Columns>
 
 
-                    <syncfusion:TreeGridTextColumn Width="50" MappingName="ID" />
+                    <syncfusion:TreeGridTextColumn
+                        Width="50"
+                        HeaderText="ID"
+                        MappingName="ConceptoID" />
 
 
                     <syncfusion:TreeGridTextColumn Width="250" MappingName="Descrip" />
@@ -148,7 +151,13 @@
                         NumberDecimalDigits="2"
                         NumberDecimalSeparator=","
                         NumberGroupSeparator="."
-                        NumberGroupSizes="3" />
+                        NumberGroupSizes="3">
+                        <syncfusion:TreeGridNumericColumn.CellStyle>
+                            <Style TargetType="syncfusion:TreeGridCell">
+                                <Setter Property="Foreground" Value="{Binding Path=CanTotalSaldo, Converter={StaticResource converter}}" />
+                            </Style>
+                        </syncfusion:TreeGridNumericColumn.CellStyle>
+                    </syncfusion:TreeGridNumericColumn>
 
 
                     <syncfusion:TreeGridNumericColumn
@@ -167,7 +176,13 @@
                         NumberDecimalDigits="2"
                         NumberDecimalSeparator=","
                         NumberGroupSeparator="."
-                        NumberGroupSizes="3" />
+                        NumberGroupSizes="3">
+                        <syncfusion:TreeGridNumericColumn.CellStyle>
+                            <Style TargetType="syncfusion:TreeGridCell">
+                                <Setter Property="Foreground" Value="{Binding Path=DataContext, RelativeSource={RelativeSource Self}, Converter={StaticResource prRealMayorAProyectadoConverter}}" />
+                            </Style>
+                        </syncfusion:TreeGridNumericColumn.CellStyle>
+                    </syncfusion:TreeGridNumericColumn>
 
                     <syncfusion:TreeGridNumericColumn
                         x:Name="colImportePrevisto"
@@ -188,13 +203,19 @@
                         NumberGroupSizes="3" />
 
 
-                    <syncfusion:TreeGridNumericColumn x:Name="colImporteSaldo" MappingName="ImporteSaldoEjec">
+                    <syncfusion:TreeGridNumericColumn
+                        x:Name="colImporteSaldo"
+                        MappingName="ImporteSaldoEjec"
+                        NumberDecimalDigits="2"
+                        NumberDecimalSeparator=","
+                        NumberGroupSeparator="."
+                        NumberGroupSizes="3">
                         <syncfusion:TreeGridNumericColumn.CellStyle>
                             <Style TargetType="syncfusion:TreeGridCell">
                                 <Setter Property="Foreground" Value="{Binding Path=ImporteSaldoEjec, Converter={StaticResource converter}}" />
                             </Style>
                         </syncfusion:TreeGridNumericColumn.CellStyle>
-                        
+
                     </syncfusion:TreeGridNumericColumn>
 
 

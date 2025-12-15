@@ -3,6 +3,9 @@ using Biblioteca;
 using Biblioteca.DTO;
 using DOP.Datos;
 using Syncfusion.SfSkinManager;
+using Syncfusion.SfSkinManager;
+using Syncfusion.UI.Xaml.TreeGrid;
+using Syncfusion.Windows.Tools.Controls;
 using Syncfusion.Windows.Tools.Controls;
 using System;
 using System.Collections.Generic;
@@ -20,8 +23,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using static Biblioteca.Control1;
-using Syncfusion.SfSkinManager;
-using Syncfusion.Windows.Tools.Controls;
 
 namespace DataObra.Presupuestos.Ventanas
     {
@@ -31,7 +32,7 @@ namespace DataObra.Presupuestos.Ventanas
     public partial class WiControl1 : RibbonWindow, INotifyPropertyChanged
         {
         private PresupuestoDTO _encabezado = new();
-        private Control1 _control = new Control1(); 
+        private Control1 _control = new Control1();
 
 
         public WiControl1(PresupuestoDTO presupuestosRef)
@@ -40,7 +41,7 @@ namespace DataObra.Presupuestos.Ventanas
             SfSkinManager.SetTheme(this, new Theme("FluentLight"));
             InitializeComponent();
             _encabezado = presupuestosRef;
-            
+
 
             Loaded += WiControlPres_Loaded;
             }
@@ -71,7 +72,7 @@ namespace DataObra.Presupuestos.Ventanas
             colImportePrevisto.HeaderText = $"{_control.TotalPreviso.ToString("N2", cultura)}";
             colImporteReal.HeaderText = $"{_control.TotalReal.ToString("N2", cultura)}";
             colImporteSaldo.HeaderText = $"{_control.TotalSaldo.ToString("N2", cultura)}";
-            
+
 
 
             this.DataContext = _control;                 // para bindings generales (p.ej. {Binding Arbol})
@@ -90,14 +91,14 @@ namespace DataObra.Presupuestos.Ventanas
 
         private void RowDragDropController_Drop(object? sender, Syncfusion.UI.Xaml.TreeGrid.TreeGridRowDropEventArgs e)
             {
-
             GastoPropio nodoMovido = null;
             // Origen: GastoPropio arrastrado
             if (e.DraggingNodes != null && e.DraggingNodes.Count > 0)
                 {
-                 nodoMovido = e.DraggingNodes[0].Item as GastoPropio;
+                nodoMovido = e.DraggingNodes[0].Item as GastoPropio;
                 }
-            else { 
+            else
+                {
                 return;
                 }
             // Destino: ConceptoConGastosPropio sobre el que se suelta
@@ -122,16 +123,63 @@ namespace DataObra.Presupuestos.Ventanas
             // Notificar cambios en la UI
             OnPropertyChanged(nameof(_control.ConceptosConGastosPropios));
             grillaGastos.ItemsSource = targetConcepto.Gastos;
+
+            // --- Seleccionar y enfocar el registro de destino ---
+            if (grillaListados != null)
+                {
+                grillaListados.SelectedItem = targetConcepto;
+
+                // Obtener el índice de la fila del targetConcepto
+                int rowIndex = grillaListados.ResolveToRowIndex(targetConcepto);
+
+                // ScrollInView espera un RowColumnIndex
+                var rowColIndex = new Syncfusion.UI.Xaml.ScrollAxis.RowColumnIndex(rowIndex, 0);
+                grillaListados.ScrollInView(rowColIndex);
+
+                grillaListados.Focus();
+                }
             }
 
-        private void BrnGuardar_Click(object sender, RoutedEventArgs e)
+        private async void BrnGuardar_Click(object sender, RoutedEventArgs e)
             {
-
+            await GuardarReasignacionesAsync();
             }
 
-        private void BtnGuardarSalir_Click(object sender, RoutedEventArgs e)
+        private async void BtnGuardarSalir_Click(object sender, RoutedEventArgs e)
             {
+            if (await GuardarReasignacionesAsync())
+                {
+                this.Close();
+                }
+            }
 
+        //// Método auxiliar para guardar las reasignaciones
+        private async Task<bool> GuardarReasignacionesAsync()
+            {
+            _control.GenerarReasignacionDesdeComparacion();
+
+
+            var cambios = _control.reAasignacion;
+
+            if (cambios == null || cambios.Count == 0)
+                {
+                MessageBox.Show("No hay cambios de reasignación para guardar.", "Guardar", MessageBoxButton.OK, MessageBoxImage.Information);
+                return true;
+                }
+
+            var resultado = await DatosWeb.ReasignarGastosAsync(cambios.ToList());
+
+            if (resultado.Success)
+                {
+                MessageBox.Show("Cambios guardados correctamente.", "Guardar", MessageBoxButton.OK, MessageBoxImage.Information);
+                _control.LimpiarReasignaciones(); // limpiar después de guardar
+                return true;
+                }
+            else
+                {
+                MessageBox.Show($"Error al guardar cambios: {resultado.Message}", "Guardar", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+                }
             }
 
         private void BtnSalir_Click(object sender, RoutedEventArgs e)
@@ -143,8 +191,8 @@ namespace DataObra.Presupuestos.Ventanas
             {
 
             }
-        
-            public event PropertyChangedEventHandler? PropertyChanged;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
