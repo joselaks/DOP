@@ -614,6 +614,7 @@ namespace Bibioteca.Clases
                         item.PU1 = 0;
                         item.PU2 = 0;
                         item.PU3 = 0;
+                        item.PU4 = 0;
                         item.Unidad = string.Empty;
                         item.Importe1 = 0;
                         item.Importe2 = 0;
@@ -623,20 +624,20 @@ namespace Bibioteca.Clases
                     }
                 ordenint = 1;
                 }
+
+            // Evitar división por cero en todo el procedimiento
+            decimal tipoCambioSeguro = (encabezado?.TipoCambioD == 0) ? 1 : encabezado.TipoCambioD;
+
             foreach (var item in items)
                 {
-                //if (item.Tipo == "R" || item.Tipo == "T")
-                //    {
                 item.OrdenInt = ordenint;
                 ordenint = ordenint + 1;
 
-                //}
                 if (item.HasItems) //tiene inferiores
                     {
                     if (item.Sup == true) //es el rubro o nodo superior
                         {
                         FactorSup = item.Cantidad;
-
                         }
 
                     recalculo(item.Inferiores, false, FactorSup * item.Cantidad); //Primero sigo hasta abajo
@@ -658,8 +659,6 @@ namespace Bibioteca.Clases
                                           select c.Subcontratos1).Sum() * item.Cantidad;
                     item.Otros1 = (from c in item.Inferiores
                                    select c.Otros1).Sum() * item.Cantidad;
-
-
 
                     item.PU2 = (from c in item.Inferiores
                                 select c.Importe2).Sum();
@@ -763,7 +762,6 @@ namespace Bibioteca.Clases
                             item.Subcontratos3 = 0;
                             item.Otros3 = 0;
 
-
                             break;
                         case "S":
                             item.Subcontratos1 = item.Cantidad * item.PU1;
@@ -781,7 +779,6 @@ namespace Bibioteca.Clases
                             item.Equipos3 = 0;
                             item.Subcontratos3 = item.Cantidad * item.PU3;
                             item.Otros3 = 0;
-
 
                             break;
                         case "O":
@@ -801,7 +798,6 @@ namespace Bibioteca.Clases
                             item.Subcontratos3 = 0;
                             item.Otros3 = item.Cantidad * item.PU3;
 
-
                             break;
                         default:
                             break;
@@ -819,8 +815,8 @@ namespace Bibioteca.Clases
                         registro.Unidad = item.Unidad;
                         registro.PU1 = item.PU1;
                         registro.PU2 = item.PU2;
-                        registro.PU3 = item.PU1 + item.PU2 * encabezado.TipoCambioD;
-                        registro.PU4 = item.PU2 + item.PU1 / encabezado.TipoCambioD;
+                        registro.PU3 = item.PU1 + item.PU2 * tipoCambioSeguro;
+                        registro.PU4 = item.PU2 + (tipoCambioSeguro == 0 ? 0 : item.PU1 / tipoCambioSeguro);
                         registro.Importe1 = registro.Cantidad * registro.PU1;
                         registro.Importe2 = registro.Cantidad * registro.PU2;
                         registro.Importe3 = registro.Cantidad * registro.PU3;
@@ -833,8 +829,8 @@ namespace Bibioteca.Clases
                         sele.Unidad = item.Unidad;
                         sele.PU1 = item.PU1;
                         sele.PU2 = item.PU2;
-                        sele.PU3 = item.PU1 + item.PU2 * encabezado.TipoCambioD;
-                        sele.PU4 = item.PU2 + item.PU1 / encabezado.TipoCambioD;
+                        sele.PU3 = item.PU1 + item.PU2 * tipoCambioSeguro;
+                        sele.PU4 = item.PU2 + (tipoCambioSeguro == 0 ? 0 : item.PU1 / tipoCambioSeguro);
                         sele.Cantidad = sele.Cantidad + (item.Cantidad * FactorSup);
                         sele.Tipo = item.Tipo;
                         sele.Importe1 = sele.PU1 * sele.Cantidad;
@@ -846,8 +842,8 @@ namespace Bibioteca.Clases
 
                 item.Importe1 = item.Cantidad * item.PU1;
                 item.Importe2 = item.Cantidad * item.PU2;
-                item.Importe3 = item.Cantidad * (item.PU1 + item.PU2 * encabezado.TipoCambioD);
-                item.Importe4 = item.Cantidad * (item.PU2 + item.PU1 / encabezado.TipoCambioD);
+                item.Importe3 = item.Cantidad * (item.PU1 + item.PU2 * tipoCambioSeguro);
+                item.Importe4 = item.Cantidad * (item.PU2 + (tipoCambioSeguro == 0 ? 0 : item.PU1 / tipoCambioSeguro));
 
                 item.Factor = FactorSup;
                 }
@@ -856,7 +852,6 @@ namespace Bibioteca.Clases
                 {
                 RecalculoFinalizado?.Invoke(this, EventArgs.Empty);
                 }
-
             }
 
         /// <summary>

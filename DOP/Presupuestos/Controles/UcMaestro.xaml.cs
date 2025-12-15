@@ -221,6 +221,12 @@ namespace DOP.Presupuestos.Controles
 
             switch (_seleccion)
                 {
+                case "Rubros":
+                    filtrados = Objeto.Arbol;
+                    break;
+                case "Tareas":
+                    filtrados = new ObservableCollection<Nodo>(ObtenerNodosPorTipos(Objeto.Arbol, "T"));
+                    break;
                 case "Todos":
                     filtrados = Objeto.Insumos ?? new ObservableCollection<Nodo>();
                     break;

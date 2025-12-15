@@ -133,6 +133,7 @@
                 Margin="15,0,0,0"
                 VerticalAlignment="Center"
                 SelectionChanged="comboTipoListado_SelectionChanged">
+                <ComboBoxItem Content="Rubros" />
                 <ComboBoxItem Content="Tareas" />
                 <ComboBoxItem Content="Materiales" />
                 <ComboBoxItem Content="Mano de Obra" />
