@@ -824,7 +824,7 @@ namespace DOP.Presupuestos.Controles
                         grillaArbol.ExpandNode(node);
                     }
 
-                grillaArbol.View?.Refresh();
+                //grillaArbol.View?.Refresh();
                 }
             catch (Exception ex)
                 {
