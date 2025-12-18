@@ -212,6 +212,13 @@
                         Label="Excel"
                         SizeForm="Small"
                         SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
+                    <syncfusion:RibbonButton
+                        x:Name="SaleExcel2"
+                        Click="SaleExcel2_Click"
+                        Label="Excel directo"
+                        SizeForm="Small"
+                        SmallIcon="pack://application:,,,/Imagenes/Tarea.png" />
+
                 </syncfusion:RibbonBar>
                 <syncfusion:RibbonBar
                     Name="HacerDeshacer"

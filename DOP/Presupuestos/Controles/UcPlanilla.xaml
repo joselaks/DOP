@@ -167,6 +167,10 @@
                         Name="menuAgregarTarea"
                         Click="Agregar_Click"
                         Header="Agregar Tarea" />
+                    <MenuItem
+                        Name="menuBuscarIA"
+                        Click="menuBuscarIA_Click"
+                        Header="Buscar análisis de costo con IA" />
                 </ContextMenu>
             </syncfusion:SfTreeGrid.ContextMenu>
 
@@ -379,11 +383,11 @@
                         IsHidden="True"
                         MappingName="Tipo" />
 
-                    <syncfusion:TreeGridPercentColumn
+                    <!--<syncfusion:TreeGridPercentColumn
                         Width="60"
                         AllowEditing="False"
                         HeaderText="Incidencia"
-                        IsHidden="True" />
+                        IsHidden="True" />-->
 
                     <syncfusion:TreeGridTextColumn
                         Width="50"

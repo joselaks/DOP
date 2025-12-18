@@ -48,7 +48,8 @@
     <PackageReference Include="ClosedXML" Version="0.105.0" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.5" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.5" />
-    <PackageReference Include="Syncfusion.UI.WPF.NET" Version="31.2.18" />
+    <PackageReference Include="Syncfusion.DataGridExcelExport.Wpf" Version="32.1.19" />
+    <PackageReference Include="Syncfusion.UI.WPF.NET" Version="32.1.19" />
   </ItemGroup>
 
   <ItemGroup>

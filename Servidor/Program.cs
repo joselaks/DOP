@@ -17,6 +17,7 @@ using Microsoft.Win32;
 using Servidor;
 using Biblioteca.DTO;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
 string key = "ESTALLAVEFUNCOINARIASI12345PARARECORDARLAMEJOR=";
@@ -41,31 +42,68 @@ string connectionString = "Server=tcp:ghu95zexx2.database.windows.net,1433;Initi
 // Configura la conexión a la base
 //builder.Services.AddScoped<IDbConnection>(sp => new SqlConnection(connectionString));
 
-//Agrega el servicio del repositorio al contenedor de dependencias
+// Agrega el servicio del repositorio al contenedor de dependencias
 builder.Services.AddSingleton(new rUsuarios(connectionString));
 builder.Services.AddSingleton(new rPresupuestos(connectionString));
 builder.Services.AddSingleton(new rInsumos(connectionString));
 builder.Services.AddSingleton(new rDocumentos(connectionString));
 builder.Services.AddSingleton(new rControl(connectionString));
+// Registro de rIA con IHttpClientFactory + IConfiguration
+builder.Services.AddScoped<rIA>(sp =>
+    new rIA(connectionString,
+            sp.GetRequiredService<IHttpClientFactory>(),
+            sp.GetRequiredService<IConfiguration>()));
+
+builder.Services.AddHttpClient("openai", (sp, client) =>
+{
+    var cfg = sp.GetRequiredService<IConfiguration>();
+
+    var baseUrl = cfg["OpenAI:BaseUrl"];
+    var deployment = cfg["OpenAI:Deployment"];
+    var apiVersion = cfg["OpenAI:ApiVersion"];
+
+    // Construir la URL completa
+    client.BaseAddress = new Uri($"{baseUrl}openai/deployments/{deployment}/");
+
+    var apiKey =
+        cfg["OpenAI:ApiKey"] ??
+        cfg["OpenAI__ApiKey"] ??
+        cfg["OPENAI_API_KEY"] ??
+        Environment.GetEnvironmentVariable("OpenAI__ApiKey") ??
+        Environment.GetEnvironmentVariable("OPENAI_API_KEY");
+
+    if (string.IsNullOrWhiteSpace(apiKey))
+        throw new InvalidOperationException("Falta OpenAI ApiKey.");
+
+    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+    if (!client.DefaultRequestHeaders.Contains("api-key"))
+        client.DefaultRequestHeaders.Add("api-key", apiKey);
+
+    client.DefaultRequestHeaders.Accept.Clear();
+    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+    client.Timeout = TimeSpan.FromSeconds(100);
+});
+
+
 
 // Configurar servicios de Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
-    {
+        {
         Title = "Servidor DataObra",
         Version = "v1",
         Description = "Servidor API con los servicios necesarios"
-    });
+        });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
+        {
         Name = "Authorization",
         Type = SecuritySchemeType.ApiKey,
         Scheme = "Bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header
-    });
+        });
     c.OperationFilter<FiltroAutorizacion>();
 });
 builder.Services.AddCors(opciones =>
@@ -82,11 +120,11 @@ builder.Services.AddAuthentication("Bearer").AddJwtBearer(opt =>
     var signingCredentials = new SigningCredentials(signigKey, SecurityAlgorithms.HmacSha256Signature);
     opt.RequireHttpsMetadata = false;
     opt.TokenValidationParameters = new TokenValidationParameters()
-    {
+        {
         ValidateAudience = false,
         ValidateIssuer = false,
         IssuerSigningKey = signigKey
-    };
+        };
 });
 
 #endregion
@@ -100,7 +138,6 @@ app.UseSwaggerUI();
 app.UseAuthorization();
 
 app.MapGet("/health", () => Results.Ok(new { Status = "Conexión establecida" }));
-
 
 #region Grupo de rutas: /usuarios
 
@@ -131,8 +168,6 @@ usu.MapPost("logout/", async (int usuarioId, string macaddress, rUsuarios repo) 
     else
         return Results.BadRequest(new { Mensaje = "No se pudo registrar la salida." });
 });
-
-
 
 #endregion
 
@@ -166,9 +201,6 @@ pre.MapPost("/procesar", async (ProcesaPresupuestoRequest request, rPresupuestos
         }
 }).RequireAuthorization();
 
-
-
-
 pre.MapGet("/{presupuestoID:int}", async (int presupuestoID, rPresupuestos repo) =>
 {
     try
@@ -195,15 +227,11 @@ pre.MapDelete("/{presupuestoID:int}", async (int presupuestoID, rPresupuestos re
         }
 }).RequireAuthorization();
 
-
-
-
 #endregion
 
 #region Grupo de rutas: /ins
 
 var ins = app.MapGroup("/insumos");
-
 
 // Obtener listas de artículos por usuario
 ins.MapGet("/articulos/listas/{usuarioID:int}", async (int usuarioID, rInsumos repo) =>
@@ -237,28 +265,27 @@ ins.MapGet("/articulos/lista/{listaID:short}", async (short listaID, rInsumos re
 ins.MapPost("/articulos/lista/nueva", async (ArticulosListaDTO dto, rInsumos repo) =>
 {
     try
-    {
+        {
         var (newId, mensaje) = await repo.CrearNuevaListaArticulosAsync(dto);
         return Results.Ok(new { Success = newId > 0, ListaID = newId, Message = mensaje });
-    }
+        }
     catch (Exception ex)
-    {
+        {
         return Results.BadRequest(new { Success = false, Message = ex.Message });
-    }
+        }
 }).RequireAuthorization();
-
 
 ins.MapPost("/articulos/lista/procesar", async (ProcesarArticulosPorListaRequest request, rInsumos repo) =>
 {
     try
-    {
+        {
         await repo.ProcesarArticulosPorListaAsync(request.ListaID, request.Articulos);
         return Results.Ok(new { Success = true, Message = "Artículos procesados correctamente." });
-    }
+        }
     catch (Exception ex)
-    {
+        {
         return Results.BadRequest(new { Success = false, Message = ex.Message });
-    }
+        }
 }).RequireAuthorization();
 
 ins.MapDelete("/articulos/lista/{listaID:int}", async (int listaID, rInsumos repo) =>
@@ -281,14 +308,14 @@ ins.MapGet("/articulos/busqueda", async (
     rInsumos repo) =>
 {
     try
-    {
+        {
         var articulos = await repo.BuscarArticulosAsync(usuarioID, tipoID, descripBusqueda);
         return Results.Ok(articulos);
-    }
+        }
     catch (Exception ex)
-    {
+        {
         return Results.BadRequest(new { Message = ex.Message });
-    }
+        }
 }).RequireAuthorization();
 
 ins.MapPost("/articulos/lista/editar", async (ProcesarArticulosPorListaRequest request, rInsumos repo) =>
@@ -303,7 +330,6 @@ ins.MapPost("/articulos/lista/editar", async (ProcesarArticulosPorListaRequest r
         return Results.BadRequest(new { Success = false, Message = ex.Message });
         }
 }).RequireAuthorization();
-
 
 #endregion
 
@@ -324,45 +350,42 @@ doc.MapGet("/gastos/usuario/{usuarioID:int}", async (int usuarioID, rDocumentos 
         }
 }).RequireAuthorization();
 
-
 doc.MapPost("/gastos/procesar", async (ProcesarGastoRequest request, rDocumentos repo) =>
 {
     try
-    {
+        {
         var detalles = request.Detalles ?? new List<GastoDetalleDTO>();
         var presupuestos = request.PresupuestosAfectados ?? new List<int>();
 
         var result = await repo.ProcesarGastoAsync(request.Gasto, detalles, presupuestos);
 
         return Results.Ok(new
-        {
+            {
             Success = true,
             DocumentoID = result.DocumentoID,
             PresupuestoIDs = result.PresupuestoIDs,
             Resumenes = result.Resumenes,
             Message = "Gasto procesado exitosamente."
-        });
-    }
+            });
+        }
     catch (Exception ex)
-    {
+        {
         return Results.BadRequest(new { Success = false, Message = ex.Message });
-    }
+        }
 }).RequireAuthorization();
-
 
 doc.MapGet("/gastos/{gastoID:int}/detalle", async (int gastoID, rDocumentos repo, [FromQuery(Name = "esCobro")] int esCobro = 0) =>
 {
     try
-    {
-        // Convertir 1->true, 0->false (compatible con llamadas ?esCobro=1 o ?esCobro=true si las hay)
+        {
         bool esCobroBool = esCobro == 1;
         var detalles = await repo.ObtenerDetalleGastoAsync(gastoID, esCobroBool);
         return Results.Ok(detalles);
-    }
+        }
     catch (Exception ex)
-    {
+        {
         return Results.BadRequest(new { Message = ex.Message });
-    }
+        }
 }).RequireAuthorization();
 
 doc.MapDelete("/gastos/{gastoID:int}", async (int gastoID, [FromQuery(Name = "presupuestos")] int[]? presupuestos, rDocumentos repo) =>
@@ -429,7 +452,6 @@ doc.MapGet("/gastos/{gastoID:int}", async (
         }
 }).RequireAuthorization();
 
-
 #endregion
 
 #region Grupo de rutas: /cont
@@ -455,565 +477,28 @@ cont.MapGet("/presupuestos/{presupuestoID:int}/conceptos-relaciones-detalles", a
         }
 }).RequireAuthorization();
 
-
 #endregion
 
+#region Grupo de rutas: /ia
+
+var ia = app.MapGroup("/ia");
+
+// Analizar costo con IA (OpenAI) a través del repositorio rIA
+ia.MapGet("/analisis-costo", async ([FromQuery] string descripcion, rIA repo, CancellationToken ct) =>
+{
+    try
+        {
+        var items = await repo.AnalizarCostoAsync(descripcion, ct);
+        return Results.Ok(items);
+        }
+    catch (Exception ex)
+        {
+        return Results.BadRequest(new { Message = ex.Message });
+        }
+});
+
+#endregion
 
 #endregion
 
 app.Run();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

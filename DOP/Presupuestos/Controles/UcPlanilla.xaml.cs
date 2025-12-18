@@ -65,7 +65,7 @@ namespace DOP.Presupuestos.Controles
             this.grillaArbol.RowDragDropController.Drop += RowDragDropController_Drop;
             this.grillaArbol.RowDragDropController.DragStart += RowDragDropController_DragStart;
             this.grillaArbol.QueryCoveredRange += OnQueryCoveredRange;
-            TitulosColumnas(PU1, PU2, PU3, PU4, Imp1 , Imp2, Imp3 , Imp4);
+            TitulosColumnas(PU1, PU2, PU3, PU4, Imp1, Imp2, Imp3, Imp4);
             }
 
         private void Presupuesto_RecalculoFinalizado(object sender, EventArgs e)
@@ -351,7 +351,7 @@ namespace DOP.Presupuestos.Controles
             colSubcontratos1.HeaderText = $"{inicio.ToString("N2", cultura)}";
             colOtros1.HeaderText = $"{inicio.ToString("N2", cultura)}";
 
-          
+
 
             if (this.grillaArbol.View != null)
                 {
@@ -760,9 +760,78 @@ namespace DOP.Presupuestos.Controles
                 }
             }
 
+        private async void menuBuscarIA_Click(object sender, RoutedEventArgs e)
+            {
+            try
+                {
+                if (this.grillaArbol.SelectedItem is not Nodo origen)
+                    {
+                    MessageBox.Show("Debe seleccionar una tarea.");
+                    return;
+                    }
 
+                string descripcion = origen.Descripcion?.Trim() ?? string.Empty;
+                if (string.IsNullOrWhiteSpace(descripcion))
+                    {
+                    MessageBox.Show("La tarea no tiene descripción válida.");
+                    return;
+                    }
+
+                // Llama al servidor IA
+                var (ok, msg, items) = await DOP.Datos.DatosWeb.AnalizarCostoIAAsync(descripcion);
+                if (!ok)
+                    {
+                    MessageBox.Show(msg);
+                    return;
+                    }
+                if (items == null || items.Count == 0)
+                    {
+                    MessageBox.Show("La IA no devolvió ítems para esta descripción.");
+                    return;
+                    }
+
+                // Reemplaza los inferiores de la tarea por los sugeridos
+                if (origen.Inferiores == null)
+                    origen.Inferiores = new ObservableCollection<Nodo>();
+                else
+                    origen.Inferiores.Clear();
+
+                foreach (var it in items)
+                    {
+                    var n = new Nodo
+                        {
+                        ID = string.IsNullOrWhiteSpace(it.Id) ? Guid.NewGuid().ToString("N") : it.Id,
+                        Descripcion = it.Descripcion,
+                        Tipo = it.Tipo,              // M/D/E/S/O ya normalizado por el servidor
+                        Unidad = it.Unidad,
+                        Cantidad = it.Cantidad,      // cantidad por unidad de obra
+                        PU1 = it.PU1,
+                        PU2 = it.PU2,
+                        Sup = false,
+                        Inferiores = new ObservableCollection<Nodo>()
+                        };
+                    origen.Inferiores.Add(n);
+                    }
+
+                // Recalcula y refresca
+                Objeto.RecalculoCompleto();
+
+                var view = grillaArbol.View;
+                if (view != null)
+                    {
+                    var node = FindNodeByData(view.Nodes, origen);
+                    if (node != null && !node.IsExpanded)
+                        grillaArbol.ExpandNode(node);
+                    }
+
+                grillaArbol.View?.Refresh();
+                }
+            catch (Exception ex)
+                {
+                MessageBox.Show($"Error al buscar análisis de costo con IA: {ex.Message}");
+                }
+            }
 
         }
-
     }
 

@@ -513,6 +513,25 @@ public static async Task<(bool Success, string Message, Biblioteca.DTO.ProcesarG
             return (success, message, data?.Encabezado, data?.Detalles ?? new List<GastoDetalleDTO>());
             }
 
+        /// <summary>
+        /// Llama al servidor /ia/analisis-costo con la descripción dada y devuelve el desglose sugerido por IA.
+        /// </summary>
+        public static async Task<(bool Success, string Message, List<AnalisisCostoItemDTO> Items)>
+            AnalizarCostoIAAsync(string descripcion)
+            {
+            if (string.IsNullOrWhiteSpace(descripcion))
+                return (false, "La descripción está vacía.", new List<AnalisisCostoItemDTO>());
+
+            string url = $"{App.BaseUrl}ia/analisis-costo?descripcion={Uri.EscapeDataString(descripcion)}";
+
+            var (success, message, data) = await ExecuteRequestAsync<List<AnalisisCostoItemDTO>>(
+                () => httpClient.GetAsync(url),
+                $"IA análisis de costo: \"{descripcion}\""
+            );
+
+            return (success, message, data ?? new List<AnalisisCostoItemDTO>());
+            }
+
         }
 
 
@@ -582,6 +601,16 @@ public static async Task<(bool Success, string Message, Biblioteca.DTO.ProcesarG
         {
         public GastoDTO? Encabezado { get; set; }
         public List<GastoDetalleDTO> Detalles { get; set; } = new();
+        }
+    public sealed class AnalisisCostoItemDTO
+        {
+        public string Id { get; set; } = string.Empty;
+        public string Tipo { get; set; } = "O";          // Esperado: M/D/E/S/O
+        public string Descripcion { get; set; } = string.Empty;
+        public string Unidad { get; set; } = string.Empty;
+        public decimal Cantidad { get; set; }
+        public decimal PU1 { get; set; }
+        public decimal PU2 { get; set; }
         }
 
     }

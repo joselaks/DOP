@@ -105,7 +105,7 @@
                     HorizontalContentAlignment="Right"
                     Text="{Binding Documento, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-               
+
 
                 <syncfusion:SfTextBoxExt
                     Grid.Row="2"

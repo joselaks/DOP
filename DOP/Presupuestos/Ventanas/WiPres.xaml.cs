@@ -7,9 +7,11 @@ using DOP.Presupuestos.Clases;
 using DOP.Presupuestos.Controles;
 using Microsoft.Win32;
 using Syncfusion.SfSkinManager;
+using Syncfusion.UI.Xaml.TreeGrid;
 using Syncfusion.Windows.Controls.Input;
 using Syncfusion.Windows.Shared;
 using Syncfusion.Windows.Tools.Controls;
+using Syncfusion.XlsIO;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -27,6 +29,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Syncfusion.UI.Xaml.TreeGrid.Converter;
 
 namespace DataObra.Presupuestos.Ventanas
     {
@@ -638,5 +641,78 @@ namespace DataObra.Presupuestos.Ventanas
             SetMultimonedaEnabled(false);
             }
 
-    }
+        private void SaleExcel2_Click(object sender, RoutedEventArgs e)
+            {
+            var options = new TreeGridExcelExportingOptions
+                {
+                ExcelVersion = ExcelVersion.Excel2013
+                };
+            options.CellsExportingEventHandler = CellExportingHandler;
+
+            // Exporta y guarda en archivo temporal
+            using (var excelEngine = Planilla.grillaArbol.ExportToExcel(options))
+                {
+                var workBook = excelEngine.Excel.Workbooks[0];
+
+                string tempPath = System.IO.Path.Combine(
+                    System.IO.Path.GetTempPath(),
+                    $"Presupuesto_{Guid.NewGuid():N}.xlsx");
+
+                workBook.SaveAs(tempPath);
+
+                // Intentar abrir el archivo con la app asociada (Excel)
+                try
+                    {
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                        {
+                        FileName = tempPath,
+                        UseShellExecute = true
+                        });
+                    }
+                catch (Exception ex)
+                    {
+                    // Si no se pudo abrir, permitir al usuario elegir dónde guardar el archivo
+                    var saveDialog = new Microsoft.Win32.SaveFileDialog
+                        {
+                        Title = "Guardar archivo Excel",
+                        Filter = "Archivos de Excel (*.xlsx)|*.xlsx",
+                        FileName = "Presupuesto.xlsx"
+                        };
+
+                    if (saveDialog.ShowDialog() == true)
+                        {
+                        try
+                            {
+                            File.Copy(tempPath, saveDialog.FileName, true);
+                            MessageBox.Show($"Archivo guardado en:\n{saveDialog.FileName}", "Guardado exitoso", MessageBoxButton.OK, MessageBoxImage.Information);
+                            }
+                        catch (Exception copyEx)
+                            {
+                            MessageBox.Show($"No se pudo guardar el archivo.\nError: {copyEx.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
+                        }
+                    else
+                        {
+                        MessageBox.Show($"No se pudo abrir Excel automáticamente.\nArchivo temporal generado en:\n{tempPath}\n\nError: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                }
+            }
+        private static void CellExportingHandler(object sender, TreeGridCellExcelExportingEventArgs e)
+            {
+            // Si la columna no tiene nombre (no tiene MappingName), no intentes estilizarla
+            if (string.IsNullOrWhiteSpace(e.ColumnName))
+                return;
+
+            // Acceder al objeto de datos real
+            if (e.Node is TreeNode treeNode && treeNode.Item is Nodo record)
+                {
+                if (record.Tipo == "R")
+                    {
+                    e.Range.CellStyle.ColorIndex = ExcelKnownColors.Green;
+                    e.Range.CellStyle.Font.Color = ExcelKnownColors.White;
+                    }
+                }
+            }
+        }
 }
