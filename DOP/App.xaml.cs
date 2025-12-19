@@ -74,6 +74,7 @@ namespace DOP
             CultureInfo.DefaultThreadCurrentUICulture = cultura;
 
 
+
             }
 
         protected override void OnStartup(StartupEventArgs e)
