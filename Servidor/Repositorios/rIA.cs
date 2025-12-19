@@ -38,8 +38,9 @@ namespace Servidor.Repositorios
 Eres un analista de costos de construcción. Desglosa insumos y mano de obra para la tarea:
 ""{descripcion}""
 Responde en JSON con lista de items con campos:
-Id (corto), Tipo (M/D/E/S/O), Descripcion, Unidad, Cantidad (por unidad de obra), PU1 (decimal, opcional), PU2 (decimal, opcional).
-Si no conoces precios, deja PU1/PU2 en 0.
+Id (corto), Tipo (M/D/E/S/O), Descripcion, Unidad, Cantidad (por unidad de obra), PU1 (Precio unitario decimal). 
+Obtén los precios unitarios actualizados del mercado en Argentina (diciembre 2025). 
+No dejes PU1 en cero: si no hay datos exactos, usa valores de referencia de mercado.
 
 Ejemplo:
 [
