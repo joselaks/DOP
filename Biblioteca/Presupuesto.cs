@@ -706,6 +706,31 @@ namespace Bibioteca.Clases
                     }
                 else //es el ultimo del arbol
                     {
+                    // agregado para cuando queda en cero por drag & drop
+                    if (item.Tipo == "R" || item.Tipo == "T")
+                        {
+                        // PU en cero
+                        item.PU1 = 0;
+                        item.PU2 = 0;
+                        item.PU3 = 0;
+                        item.PU4 = 0;
+
+                        // Componentes en cero
+                        item.Materiales1 = 0; item.ManodeObra1 = 0; item.Equipos1 = 0; item.Subcontratos1 = 0; item.Otros1 = 0;
+                        item.Materiales2 = 0; item.ManodeObra2 = 0; item.Equipos2 = 0; item.Subcontratos2 = 0; item.Otros2 = 0;
+                        item.Materiales3 = 0; item.ManodeObra3 = 0; item.Equipos3 = 0; item.Subcontratos3 = 0; item.Otros3 = 0;
+                        item.Materiales4 = 0; item.ManodeObra4 = 0; item.Equipos4 = 0; item.Subcontratos4 = 0; item.Otros4 = 0;
+
+                        // Importes finales en cero (se recalculan abajo también)
+                        item.Importe1 = 0;
+                        item.Importe2 = 0;
+                        item.Importe3 = 0;
+                        item.Importe4 = 0;
+
+                        // Saltar registro en Insumos y el switch de tipos
+                        item.Factor = FactorSup;
+                        }
+                    // hasta acá
                     #region calculo totales por tipo
 
                     switch (item.Tipo)

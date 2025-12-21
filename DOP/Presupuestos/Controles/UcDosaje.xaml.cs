@@ -225,8 +225,8 @@ namespace DOP.Presupuestos.Controles
             this.grillaBase.Visibility = Visibility.Visible;
 
             NodoAnalizado = analizado;
+            this.DataContext = NodoAnalizado; // Actualiza el contexto para el binding del TextBlock
             grillaDetalle.ItemsSource = NodoAnalizado.Inferiores;
-            nombreTarea.Text = NodoAnalizado.Descripcion;
             colImporte1.HeaderText = $"{NodoAnalizado.PU1.ToString("N2", cultura)}";
 
             }

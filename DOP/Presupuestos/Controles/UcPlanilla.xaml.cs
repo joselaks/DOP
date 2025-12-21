@@ -113,124 +113,167 @@ namespace DOP.Presupuestos.Controles
 
         private void RowDragDropController_Drop(object? sender, TreeGridRowDropEventArgs e)
             {
-            e.Handled = true;
-            Nodo nodoMovido = null;
-            Nodo nodoReceptor = null;
-            Nodo nodoPadreOriginal = null;
-            int itemIndex = -1;
-            bool esDragDePlanilla = DragDropContext.DragSourceUserControl is UcPlanilla;
-            bool esDragDeMaestro = DragDropContext.DragSourceUserControl is UcMaestro;
-
-            // 1. Determinar el nodo a mover/clonar y el padre original si aplica
-            if (e.DraggingNodes != null && e.DraggingNodes.Count > 0)
+            try
                 {
+                e.Handled = true;
+
+                // 0) Guardar estado de expansión actual (solo RT)
+                GuardarNodosExpandidosRT();
+
+                Nodo nodoMovido = null;
+                Nodo nodoReceptor = null;
+                Nodo nodoPadreOriginal = null;
+                int itemIndex = -1;
+                bool esDragDePlanilla = DragDropContext.DragSourceUserControl is UcPlanilla;
+                bool esDragDeMaestro = DragDropContext.DragSourceUserControl is UcMaestro;
+
+                // 1) Determinar nodo movido y padre original
+                if (e.DraggingNodes != null && e.DraggingNodes.Count > 0)
+                    {
+                    if (esDragDePlanilla)
+                        {
+                        nodoMovido = e.DraggingNodes[0].Item as Nodo;
+                        nodoPadreOriginal = Objeto.FindParentNode(Objeto.Arbol, nodoMovido, null);
+                        itemIndex = nodoPadreOriginal != null
+                            ? nodoPadreOriginal.Inferiores.IndexOf(nodoMovido)
+                            : Objeto.Arbol.IndexOf(nodoMovido);
+                        }
+                    else if (esDragDeMaestro)
+                        {
+                        var nodoOriginal = e.DraggingNodes[0].Item as Nodo;
+                        nodoMovido = Objeto.clonar(nodoOriginal, true);
+                        }
+                    }
+
+                // 2) Colección origen
+                var coleccionOrigen = nodoPadreOriginal != null ? nodoPadreOriginal.Inferiores : Objeto.Arbol;
+                if (coleccionOrigen == null)
+                    coleccionOrigen = Objeto.Arbol;
+
+                // 3) Nodo receptor y colección destino
+                ObservableCollection<Nodo> coleccionDestino;
+                Nodo padreDestino;
+                int posicionDestino;
+
+                if (e.TargetNode != null)
+                    {
+                    nodoReceptor = e.TargetNode.Item as Nodo;
+
+                    if (nodoMovido != null && nodoMovido.Tipo == "T" && nodoReceptor != null && nodoReceptor.Tipo == "R")
+                        {
+                        if (nodoReceptor.Inferiores == null)
+                            nodoReceptor.Inferiores = new ObservableCollection<Nodo>();
+                        coleccionDestino = nodoReceptor.Inferiores;
+                        padreDestino = nodoReceptor;
+                        posicionDestino = coleccionDestino.Count;
+                        }
+                    else
+                        {
+                        padreDestino = Objeto.FindParentNode(Objeto.Arbol, nodoReceptor, null);
+                        coleccionDestino = padreDestino != null ? padreDestino.Inferiores : Objeto.Arbol;
+
+                        int idx = coleccionDestino.IndexOf(nodoReceptor);
+                        if (idx < 0) idx = 0;
+
+                        posicionDestino = (e.DropPosition == Syncfusion.UI.Xaml.TreeGrid.DropPosition.DropAbove) ? idx : idx + 1;
+                        }
+                    }
+                else
+                    {
+                    padreDestino = null;
+                    coleccionDestino = Objeto.Arbol;
+                    posicionDestino = coleccionDestino.Count;
+                    }
+
+                // 4) Regla: si mismo padre y solo un hijo, no mover
+                if (ReferenceEquals(coleccionOrigen, coleccionDestino) && coleccionOrigen != null && coleccionOrigen.Count == 1)
+                    return;
+
+                // 5) Validación negocio
+                if (esDragDePlanilla && nodoReceptor != null && nodoReceptor.Tipo == "T" && nodoMovido.Tipo == "R")
+                    {
+                    MessageBox.Show("No se puede mover un rubro dentro de una tarea");
+                    return;
+                    }
+
+                // 6) Remover del origen si drag interno
                 if (esDragDePlanilla)
                     {
-                    nodoMovido = e.DraggingNodes[0].Item as Nodo;
-                    nodoPadreOriginal = Objeto.FindParentNode(Objeto.Arbol, nodoMovido, null);
-                    itemIndex = nodoPadreOriginal != null
-                        ? nodoPadreOriginal.Inferiores.IndexOf(nodoMovido)
-                        : Objeto.Arbol.IndexOf(nodoMovido);
+                    if (nodoPadreOriginal != null)
+                        nodoPadreOriginal.Inferiores.Remove(nodoMovido);
+                    else
+                        Objeto.Arbol.Remove(nodoMovido);
+                    }
+
+                // 7) Ajustar posición si origen == destino
+                if (ReferenceEquals(coleccionOrigen, coleccionDestino) && itemIndex >= 0)
+                    {
+                    if (posicionDestino > itemIndex)
+                        posicionDestino--;
+                    }
+
+                // 8) Clamp posición
+                if (posicionDestino < 0) posicionDestino = 0;
+                if (posicionDestino > coleccionDestino.Count) posicionDestino = coleccionDestino.Count;
+
+                // 9) Insertar
+                coleccionDestino.Insert(posicionDestino, nodoMovido);
+
+                // 10) Undo/Redo
+                if (esDragDePlanilla)
+                    {
+                    var undoRegistro = new Cambios
+                        {
+                        TipoCambio = "Mover",
+                        NodoMovido = nodoMovido,
+                        NodoPadreAnterior = nodoPadreOriginal,
+                        NodoPadreNuevo = padreDestino,
+                        Posicion = posicionDestino,
+                        PosicionOriginal = itemIndex
+                        };
+                    Objeto.undoStack.Push(undoRegistro);
                     }
                 else if (esDragDeMaestro)
                     {
-                    var nodoOriginal = e.DraggingNodes[0].Item as Nodo;
-                    nodoMovido = Objeto.clonar(nodoOriginal, true);
+                    var undoRegistro = new Cambios
+                        {
+                        TipoCambio = "Nuevo",
+                        despuesCambio = nodoMovido,
+                        NodoPadre = padreDestino,
+                        Posicion = posicionDestino
+                        };
+                    Objeto.undoStack.Push(undoRegistro);
+                    }
+
+                Objeto.redoStack.Clear();
+
+                // 10.1) Recalcular rubros y totales
+                Objeto.RecalculoCompleto();
+
+                // 11) Refrescar vista y restaurar expansión
+                grillaArbol.View?.Refresh();
+                RestaurarNodosExpandidosRT();
+
+                // 12) UX: asegurar expandido del padre destino (si aplica)
+                if (grillaArbol.View != null)
+                    {
+                    var padreNode = e.TargetNode ?? grillaArbol.View.Nodes.FirstOrDefault(n => n.Item == padreDestino);
+                    if (padreNode != null)
+                        grillaArbol.ExpandNode(padreNode);
                     }
                 }
-
-            // preparacion de colección origen (para comparaciones)
-            var coleccionOrigen = nodoPadreOriginal != null ? nodoPadreOriginal.Inferiores : Objeto.Arbol;
-            if (coleccionOrigen == null)
-                coleccionOrigen = Objeto.Arbol;
-
-            // 2. Determinar el nodo receptor y la colección destino
-            ObservableCollection<Nodo> coleccionDestino;
-            Nodo padreDestino;
-            int posicionDestino;
-
-            if (e.TargetNode != null)
+            catch (ArgumentOutOfRangeException ex)
                 {
-                nodoReceptor = e.TargetNode.Item as Nodo;
-
-                // --- AJUSTE: Si se suelta una tarea sobre un rubro, agregar como hijo ---
-                if (nodoMovido != null && nodoMovido.Tipo == "T" && nodoReceptor != null && nodoReceptor.Tipo == "R")
-                    {
-                    if (nodoReceptor.Inferiores == null)
-                        nodoReceptor.Inferiores = new ObservableCollection<Nodo>();
-                    coleccionDestino = nodoReceptor.Inferiores;
-                    padreDestino = nodoReceptor;
-                    posicionDestino = coleccionDestino.Count; // al final de los hijos
-                    }
-                else
-                    {
-                    padreDestino = Objeto.FindParentNode(Objeto.Arbol, nodoReceptor, null);
-                    coleccionDestino = padreDestino != null ? padreDestino.Inferiores : Objeto.Arbol;
-                    int idx = coleccionDestino.IndexOf(nodoReceptor);
-                    posicionDestino = (e.DropPosition == Syncfusion.UI.Xaml.TreeGrid.DropPosition.DropAbove) ? idx : idx + 1;
-                    }
+                MessageBox.Show($"No se pudo completar el movimiento: índice fuera de rango. Detalle: {ex.Message}");
                 }
-            else
+            catch (Exception ex)
                 {
-                padreDestino = null;
-                coleccionDestino = Objeto.Arbol;
-                posicionDestino = coleccionDestino.Count;
+                MessageBox.Show($"Error al mover el ítem: {ex.Message}");
                 }
-
-            // Verificación inicial: si se está intentando mover dentro del mismo superior y ese superior sólo tiene un hijo, no hacer nada
-            if (ReferenceEquals(coleccionOrigen, coleccionDestino) && coleccionOrigen != null && coleccionOrigen.Count == 1)
+            finally
                 {
-                // Nada que mover: único elemento en el mismo padre / raíz.
-                return;
+                DragDropContext.DragSourceUserControl = null;
                 }
-
-            // 3. Validar reglas de negocio (ejemplo: no mover rubro dentro de tarea)
-            if (esDragDePlanilla && nodoReceptor != null && nodoReceptor.Tipo == "T" && nodoMovido.Tipo == "R")
-                {
-                MessageBox.Show("No se puede mover un rubro dentro de una tarea");
-                return;
-                }
-
-            // 4. Eliminar el nodo de su colección original si es drag interno
-            if (esDragDePlanilla)
-                {
-                if (nodoPadreOriginal != null)
-                    nodoPadreOriginal.Inferiores.Remove(nodoMovido);
-                else
-                    Objeto.Arbol.Remove(nodoMovido);
-                }
-
-            // 5. Insertar el nodo en la colección destino
-            coleccionDestino.Insert(posicionDestino, nodoMovido);
-
-            // 6. Registrar undo/redo
-            if (esDragDePlanilla)
-                {
-                var undoRegistro = new Cambios
-                    {
-                    TipoCambio = "Mover",
-                    NodoMovido = nodoMovido,
-                    NodoPadreAnterior = nodoPadreOriginal,
-                    NodoPadreNuevo = padreDestino,
-                    Posicion = posicionDestino,
-                    PosicionOriginal = itemIndex // <-- aquí guardas la posición original
-                    };
-                Objeto.undoStack.Push(undoRegistro);
-                }
-            else if (esDragDeMaestro)
-                {
-                var undoRegistro = new Cambios
-                    {
-                    TipoCambio = "Nuevo",
-                    despuesCambio = nodoMovido,
-                    NodoPadre = padreDestino,
-                    Posicion = posicionDestino
-                    };
-                Objeto.undoStack.Push(undoRegistro);
-                }
-
-            Objeto.redoStack.Clear();
-            DragDropContext.DragSourceUserControl = null;
             }
 
 
@@ -257,7 +300,7 @@ namespace DOP.Presupuestos.Controles
                 }
             else if (sender is MenuItem menuItem)
                 {
-                // Puedes usar Name si lo defines, o Header si solo usas el texto
+                // Puedes usar Name si lodefines, o Header si solo usas el texto
                 accion = menuItem.Name;
                 if (string.IsNullOrEmpty(accion) && menuItem.Header is string header)
                     accion = header;
@@ -640,31 +683,21 @@ namespace DOP.Presupuestos.Controles
             }
 
 
+        // Guarda los IDs de los nodos expandidos (solo aplica cuando ChildPropertyName == "Inferiores")
         private void GuardarNodosExpandidosRT()
             {
             nodosExpandidosRT.Clear();
-            if (grillaArbol.View != null)
-                {
-                foreach (var node in grillaArbol.View.Nodes)
-                    {
-                    GuardarNodosExpandidosRecursivo(node, nodosExpandidosRT);
-                    }
-                }
-            }
+            if (grillaArbol?.View == null || grillaArbol.ChildPropertyName != "Inferiores")
+                return;
 
-        private void RestaurarNodosExpandidosRT()
-            {
-            if (grillaArbol.View != null && nodosExpandidosRT.Count > 0)
-                {
-                foreach (var node in grillaArbol.View.Nodes)
-                    {
-                    RestaurarNodosExpandidosRecursivo(node, nodosExpandidosRT);
-                    }
-                }
+            foreach (var node in grillaArbol.View.Nodes)
+                GuardarNodosExpandidosRecursivo(node, nodosExpandidosRT);
             }
 
         private void GuardarNodosExpandidosRecursivo(TreeNode node, HashSet<string> expandidos)
             {
+            if (node == null) return;
+
             if (node.IsExpanded && node.Item is Nodo n && !string.IsNullOrEmpty(n.ID))
                 expandidos.Add(n.ID);
 
@@ -672,8 +705,23 @@ namespace DOP.Presupuestos.Controles
                 GuardarNodosExpandidosRecursivo(child, expandidos);
             }
 
+        // Restaura la expansión previamente guardada. Se difiere al Dispatcher para asegurar que la vista esté lista tras el Refresh.
+        private void RestaurarNodosExpandidosRT()
+            {
+            if (grillaArbol?.View == null || nodosExpandidosRT.Count == 0 || grillaArbol.ChildPropertyName != "Inferiores")
+                return;
+
+            Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    foreach (var node in grillaArbol.View.Nodes)
+                        RestaurarNodosExpandidosRecursivo(node, nodosExpandidosRT);
+                }));
+            }
+
         private void RestaurarNodosExpandidosRecursivo(TreeNode node, HashSet<string> expandidos)
             {
+            if (node == null) return;
+
             if (node.Item is Nodo n && expandidos.Contains(n.ID))
                 grillaArbol.ExpandNode(node);
 
@@ -777,7 +825,10 @@ namespace DOP.Presupuestos.Controles
                     return;
                     }
 
-                // Llama al servidor IA
+                // 1) Guardar estado de expansión actual (solo vista RT)
+                GuardarNodosExpandidosRT();
+
+                // 2) Llama al servidor IA
                 var (ok, msg, items) = await DOP.Datos.DatosWeb.AnalizarCostoIAAsync(descripcion);
                 if (!ok)
                     {
@@ -790,7 +841,7 @@ namespace DOP.Presupuestos.Controles
                     return;
                     }
 
-                // Reemplaza los inferiores de la tarea por los sugeridos
+                // 3) Reemplaza los inferiores de la tarea por los sugeridos
                 if (origen.Inferiores == null)
                     origen.Inferiores = new ObservableCollection<Nodo>();
                 else
@@ -802,9 +853,9 @@ namespace DOP.Presupuestos.Controles
                         {
                         ID = string.IsNullOrWhiteSpace(it.Id) ? Guid.NewGuid().ToString("N") : it.Id,
                         Descripcion = it.Descripcion,
-                        Tipo = it.Tipo,              // M/D/E/S/O ya normalizado por el servidor
+                        Tipo = it.Tipo,              // M/D/E/S/O
                         Unidad = it.Unidad,
-                        Cantidad = it.Cantidad,      // cantidad por unidad de obra
+                        Cantidad = it.Cantidad,
                         PU1 = it.PU1,
                         PU2 = it.PU2,
                         Sup = false,
@@ -813,25 +864,28 @@ namespace DOP.Presupuestos.Controles
                     origen.Inferiores.Add(n);
                     }
 
-                // Recalcula y refresca
+                // 4) Recalcula y refresca
                 Objeto.RecalculoCompleto();
+                grillaArbol.View?.Refresh();
 
+                // 5) Restaurar expansión global
+                RestaurarNodosExpandidosRT();
+
+                // 6) Asegurar que la tarea origen quede expandida
                 var view = grillaArbol.View;
                 if (view != null)
                     {
                     var node = FindNodeByData(view.Nodes, origen);
-                    if (node != null && !node.IsExpanded)
+                    if (node != null)
                         grillaArbol.ExpandNode(node);
                     }
-
-                grillaArbol.View?.Refresh();
                 }
             catch (Exception ex)
                 {
                 MessageBox.Show($"Error al buscar análisis de costo con IA: {ex.Message}");
                 }
             }
-
         }
     }
+
 
